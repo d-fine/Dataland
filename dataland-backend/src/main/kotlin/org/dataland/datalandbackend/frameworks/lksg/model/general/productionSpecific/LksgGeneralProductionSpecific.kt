@@ -25,6 +25,6 @@ data class LksgGeneralProductionSpecific(
 
     val market: LksgGeneralProductionspecificMarketOptions? = null,
 
-    val specificProcurement: LksgGeneralProductionspecificSpecificProcurementOptions? = null,
+    val specificProcurement: EnumSet<SpecificProcurementOptions>? = null,
 
 )

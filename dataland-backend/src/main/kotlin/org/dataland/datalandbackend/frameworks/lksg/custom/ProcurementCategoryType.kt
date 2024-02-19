@@ -9,5 +9,5 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class ProcurementCategoryType {
-    Products, RawMaterials, Services,
+    Products, RawMaterials, Services
 }

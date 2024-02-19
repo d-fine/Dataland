@@ -7169,22 +7169,17 @@
             ]
           },
           "specificProcurement": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LksgGeneralProductionspecificSpecificProcurementOptions"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/SpecificProcurementOptions"
+            }
           }
         }
       },
       "LksgGeneralProductionSpecificOwnOperations": {
         "type": "object",
         "properties": {
-          "warningremovelater": {
-            "type": "string",
-            "nullable": true
-          },
           "mostImportantProducts": {
             "type": "array",
             "nullable": true,
@@ -7207,15 +7202,6 @@
           "National",
           "International",
           "Both"
-        ]
-      },
-      "LksgGeneralProductionspecificSpecificProcurementOptions": {
-        "type": "string",
-        "enum": [
-          "ShortLivedAndChangingBusinessRelationships",
-          "HighPricePressure",
-          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
-          "NoneOfTheAbove"
         ]
       },
       "LksgGovernance": {
@@ -8570,6 +8556,15 @@
             "nullable": true
           }
         }
+      },
+      "SpecificProcurementOptions": {
+        "type": "string",
+        "enum": [
+          "ShortLivedAndChangingBusinessRelationships",
+          "HighPricePressure",
+          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
+          "NoneOfTheAbove"
+        ]
       },
       "SubcontractingCompaniesCountriesOptions": {
         "type": "string",
@@ -13842,7 +13837,10 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
@@ -13852,10 +13850,7 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           }
         }

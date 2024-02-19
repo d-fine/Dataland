@@ -10,8 +10,6 @@ import kotlin.collections.List
  * The data-model for the ProductionSpecificOwnOperations section
  */
 data class LksgGeneralProductionSpecificOwnOperations(
-    val warningremovelater: String? = null,
-
     val mostImportantProducts: List<LksgProduct>? = null,
 
     val procurementCategories: Map<ProcurementCategoryType, LksgProcurementCategory>? = null,

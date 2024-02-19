@@ -4,7 +4,6 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { LksgGenerator } from "@e2e/fixtures/frameworks/lksg/LksgGenerator";
 import { pickSubsetOfElements, pickOneElement, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import {
-  LksgGeneralProductionspecificSpecificProcurementOptions,
   LksgGeneralProductionspecificMarketOptions,
   LksgGeneralMasterdataShareOfTemporaryWorkersOptions,
   type LksgData,
@@ -57,11 +56,15 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         numberOfProductionSites: dataGenerator.randomFloat(),
         market: dataGenerator.valueOrNull(pickOneElement(Object.values(LksgGeneralProductionspecificMarketOptions))),
         specificProcurement: dataGenerator.valueOrNull(
-          pickOneElement(Object.values(LksgGeneralProductionspecificSpecificProcurementOptions)),
+          pickSubsetOfElements([
+            "ShortLivedAndChangingBusinessRelationships",
+            "HighPricePressure",
+            "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
+            "NoneOfTheAbove",
+          ]),
         ),
       },
       productionSpecificOwnOperations: {
-        warningremovelater: dataGenerator.randomShortString(),
         mostImportantProducts: dataGenerator.randomArray(() => dataGenerator.generateLksgProduct(), 0, 10),
         procurementCategories: dataGenerator.generateProcurementCategories(),
       },
@@ -154,7 +157,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         forcedLaborAndSlaveryPreventionOtherMeasures: dataGenerator.randomBaseDataPoint(
           dataGenerator.guaranteedYesNo(),
         ),
-        forcedLaborAndSlaveryPreventionOtherMeasuresDescription: dataGenerator.randomShortString(),
+        forcedLaborAndSlaveryPreventionOtherMeasuresDescription: dataGenerator.randomParagraphs(),
       },
       withholdingAdequateWages: {
         adequateWageWithholding: dataGenerator.randomYesNo(),
@@ -280,7 +283,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         persistentOrganicPollutantsUsePreventionOtherMeasures: dataGenerator.randomBaseDataPoint(
           dataGenerator.guaranteedYesNo(),
         ),
-        persistentOrganicPollutantsUsePreventionOtherMeasuresDescription: dataGenerator.randomShortString(),
+        persistentOrganicPollutantsUsePreventionOtherMeasuresDescription: dataGenerator.randomParagraphs(),
       },
       exportImportOfHazardousWasteBaselConvention: {
         persistentOrganicPollutantsProductionAndUseTransboundaryMovements: dataGenerator.randomYesNo(),

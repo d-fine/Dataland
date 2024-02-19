@@ -2,2108 +2,2755 @@
 import { type LksgData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import {formatStringForDatatable} from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import {formatYesNoValueForDatatable} from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import {wrapDisplayValueWithDatapointInformation} from "@/components/resources/dataTable/conversion/DataPoints";
-import {formatPercentageForDatatable} from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
-import {formatListOfStringsForDatatable} from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
-import {getOriginalNameFromTechnicalName} from "@/components/resources/dataTable/conversion/Utils";
-import {formatNumberForDatatable} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import {formatLksgProcurementCategoriesForDisplay, formatLksgMostImportantProductsForDisplay} from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
-import {formatNaceCodesForDatatable} from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-export const lksgViewConfiguration: MLDTConfig<LksgData> = [    {
-      type: "section",
-      label: "General",
-      expandOnPageLoad: true,
-      shouldDisplay: (): boolean => true
-    ,
-      children: [    {
-          type: "section",
-          label: "Master Data",
-          expandOnPageLoad: true,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Data Date",
-              explanation: "The date until when the information collected is valid",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.masterData?.dataDate)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Head Office in Germany",
-              explanation: "Is your head office, administrative headquarters, registered office, or subsidiary located in Germany?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.masterData?.headOfficeInGermany)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Group of Companies",
-              explanation: "Do you belong to a group of companies?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.masterData?.groupOfCompanies)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Group of Companies Name",
-              explanation: "If yes, name of company group",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.masterData?.groupOfCompanies == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.masterData?.groupOfCompaniesName)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Industry",
-              explanation: "In which industry is your company primarily active (select all that apply)?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatNaceCodesForDatatable(
-            dataset.general?.masterData?.industry,
-            'Industry',
-            )
-            ,
-            },
-            {
-              type: "cell",
-              label: "Number of Employees",
-              explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees?.value, ""), "Number of Employees", dataset.general?.masterData?.numberOfEmployees)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Seasonal or Migrant Workers",
-              explanation: "Do your company employ seasonal or migrant workers?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.masterData?.seasonalOrMigrantWorkers)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Share of Temporary Workers",
-              explanation: "What share of the total number of employees in your company is made up by temporary workers?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.masterData?.seasonalOrMigrantWorkers == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
+import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
+import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
+import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import {
+  formatLksgProcurementCategoriesForDisplay,
+  formatLksgMostImportantProductsForDisplay,
+} from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
+import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
+export const lksgViewConfiguration: MLDTConfig<LksgData> = [
+  {
+    type: "section",
+    label: "General",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "section",
+        label: "Master Data",
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Data Date",
+            explanation: "The date until when the information collected is valid",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.masterData?.dataDate),
+          },
+          {
+            type: "cell",
+            label: "Head Office in Germany",
+            explanation:
+              "Is your head office, administrative headquarters, registered office, or subsidiary located in Germany?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.masterData?.headOfficeInGermany),
+          },
+          {
+            type: "cell",
+            label: "Group of Companies",
+            explanation: "Do you belong to a group of companies?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.masterData?.groupOfCompanies),
+          },
+          {
+            type: "cell",
+            label: "Group of Companies Name",
+            explanation: "If yes, name of company group",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.general?.masterData?.groupOfCompanies == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.masterData?.groupOfCompaniesName),
+          },
+          {
+            type: "cell",
+            label: "Industry",
+            explanation: "In which industry is your company primarily active (select all that apply)?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatNaceCodesForDatatable(dataset.general?.masterData?.industry, "Industry"),
+          },
+          {
+            type: "cell",
+            label: "Number of Employees",
+            explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees?.value, ""),
+                "Number of Employees",
+                dataset.general?.masterData?.numberOfEmployees,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Seasonal or Migrant Workers",
+            explanation: "Do your company employ seasonal or migrant workers?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.masterData?.seasonalOrMigrantWorkers),
+          },
+          {
+            type: "cell",
+            label: "Share of Temporary Workers",
+            explanation: "What share of the total number of employees in your company is made up by temporary workers?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.masterData?.seasonalOrMigrantWorkers == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 Smaller10: "<10%",
                 Between10And25: "10-25%",
                 Between25And50: "25-50%",
                 Greater50: ">50%",
-            }
-            return formatStringForDatatable(
-            dataset.general?.masterData?.shareOfTemporaryWorkers ? getOriginalNameFromTechnicalName(dataset.general?.masterData?.shareOfTemporaryWorkers, mappings) : ""
-            )
-            }
-            ,
+              };
+              return formatStringForDatatable(
+                dataset.general?.masterData?.shareOfTemporaryWorkers
+                  ? getOriginalNameFromTechnicalName(dataset.general?.masterData?.shareOfTemporaryWorkers, mappings)
+                  : "",
+              );
             },
-            {
-              type: "cell",
-              label: "Annual Total Revenue",
-              explanation: "Total revenue per annum",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.general?.masterData?.annualTotalRevenue, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fixed and Working Capital",
-              explanation: "Combined fixed and working capital (only for own operations) in same currency than total revenue",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.general?.masterData?.fixedAndWorkingCapital, "")
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Production-specific",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Manufacturing Company",
-              explanation: "Is your company a manufacturing company?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.productionSpecific?.manufacturingCompany)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Capacity",
-              explanation: "Production capacity per year, e.g. quantity with units.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.productionSpecific?.capacity)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Production via Subcontracting",
-              explanation: "Is the production done via subcontracting?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionViaSubcontracting)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Subcontracting Companies Countries",
-              explanation: "In which countries do the subcontracting companies operate?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "Annual Total Revenue",
+            explanation: "Total revenue per annum",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.general?.masterData?.annualTotalRevenue, ""),
+          },
+          {
+            type: "cell",
+            label: "Fixed and Working Capital",
+            explanation:
+              "Combined fixed and working capital (only for own operations) in same currency than total revenue",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.general?.masterData?.fixedAndWorkingCapital, ""),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Production-specific",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Manufacturing Company",
+            explanation: "Is your company a manufacturing company?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.productionSpecific?.manufacturingCompany),
+          },
+          {
+            type: "cell",
+            label: "Capacity",
+            explanation: "Production capacity per year, e.g. quantity with units.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.productionSpecific?.capacity),
+          },
+          {
+            type: "cell",
+            label: "Production via Subcontracting",
+            explanation: "Is the production done via subcontracting?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionViaSubcontracting),
+          },
+          {
+            type: "cell",
+            label: "Subcontracting Companies Countries",
+            explanation: "In which countries do the subcontracting companies operate?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 Iso2Codes: "ISO 2 Codes",
-            }
-            return formatListOfStringsForDatatable(dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'Subcontracting Companies Countries')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Subcontracting Companies Countries",
+              );
             },
-            {
-              type: "cell",
-              label: "Subcontracting Companies Industries",
-              explanation: "In which industries do the subcontracting companies operate?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatNaceCodesForDatatable(
-            dataset.general?.productionSpecific?.subcontractingCompaniesIndustries,
-            'Subcontracting Companies Industries',
-            )
-            ,
-            },
-            {
-              type: "cell",
-              label: "Production Sites",
-              explanation: "Do you have production sites in your company?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionSites)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Number of Production Sites",
-    
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionSites == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.general?.productionSpecific?.numberOfProductionSites, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Market",
-              explanation: "Does your business focus predominantly on national or international markets?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "Subcontracting Companies Industries",
+            explanation: "In which industries do the subcontracting companies operate?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatNaceCodesForDatatable(
+                dataset.general?.productionSpecific?.subcontractingCompaniesIndustries,
+                "Subcontracting Companies Industries",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Production Sites",
+            explanation: "Do you have production sites in your company?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionSites),
+          },
+          {
+            type: "cell",
+            label: "Number of Production Sites",
+            explanation: "How many production sites are there?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.productionSites == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.general?.productionSpecific?.numberOfProductionSites, ""),
+          },
+          {
+            type: "cell",
+            label: "Market",
+            explanation: "Does your business focus predominantly on national or international markets?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 National: "National",
                 International: "International",
                 Both: "Both",
-            }
-            return formatStringForDatatable(
-            dataset.general?.productionSpecific?.market ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.market, mappings) : ""
-            )
-            }
-            ,
+              };
+              return formatStringForDatatable(
+                dataset.general?.productionSpecific?.market
+                  ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.market, mappings)
+                  : "",
+              );
             },
-            {
-              type: "cell",
-              label: "Specific Procurement",
-              explanation: "Does your company have one of the specific procurement models?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "Specific Procurement",
+            explanation: "Does your company have one of the specific procurement models?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 ShortLivedAndChangingBusinessRelationships: "Short-lived and changing business relationships",
                 HighPricePressure: "High price pressure",
-                TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers: "Tightly timed or short-term adjusted delivery deadlines and conditions with suppliers",
+                TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers:
+                  "Tightly timed or short-term adjusted delivery deadlines and conditions with suppliers",
                 NoneOfTheAbove: "None of the above",
-            }
-            return formatStringForDatatable(
-            dataset.general?.productionSpecific?.specificProcurement ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.specificProcurement, mappings) : ""
-            )
-            }
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.general?.productionSpecific?.specificProcurement?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Specific Procurement",
+              );
             },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Production-specific - Own Operations",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "WARNINGREMOVELATER",
-              explanation: "Warning remove this object later in the process!",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.productionSpecificOwnOperations?.warningremovelater)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Most Important Products",
-              explanation: "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatLksgMostImportantProductsForDisplay(dataset.general?.productionSpecificOwnOperations?.mostImportantProducts, "Most Important Products")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Procurement Categories",
-              explanation: "Name their procurement categories (products, raw materials, services) (own operations)",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatLksgProcurementCategoriesForDisplay(dataset.general?.productionSpecificOwnOperations?.procurementCategories, "Procurement Categories")
-            ,
-            },
-            ],
-    
-        },
+          },
         ],
-      labelBadgeColor: "orange",
-    },
-    {
-      type: "section",
-      label: "Governance",
-      expandOnPageLoad: false,
-      shouldDisplay: (): boolean => true
-    ,
-      children: [    {
-          type: "section",
-          label: "Risk management - Own Operations",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Risk Management System",
-              explanation: "Does your company have an adequate and effective Risk Management system?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value), "Risk Management System", dataset.governance?.riskManagementOwnOperations?.riskManagementSystem)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Risk Analysis in Fiscal Year",
-              explanation: "Did you perform a risk analysis as part of risk management this fiscal year?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Risks Identified",
-              explanation: "Were risks identified during this period?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.risksIdentified)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Identified Risks",
-              explanation: "Which risks were specifically identified in the risk analysis?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+      },
+      {
+        type: "section",
+        label: "Production-specific - Own Operations",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Most Important Products",
+            explanation:
+              "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgMostImportantProductsForDisplay(
+                dataset.general?.productionSpecificOwnOperations?.mostImportantProducts,
+                "Most Important Products",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Procurement Categories",
+            explanation: "Name their procurement categories (products, raw materials, services) (own operations)",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgProcurementCategoriesForDisplay(
+                dataset.general?.productionSpecificOwnOperations?.procurementCategories,
+                "Procurement Categories",
+              ),
+          },
+        ],
+      },
+    ],
+    labelBadgeColor: "orange",
+  },
+  {
+    type: "section",
+    label: "Governance",
+    expandOnPageLoad: false,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "section",
+        label: "Risk management - Own Operations",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Risk Management System",
+            explanation: "Does your company have an adequate and effective Risk Management system?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value,
+                ),
+                "Risk Management System",
+                dataset.governance?.riskManagementOwnOperations?.riskManagementSystem,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Risk Analysis in Fiscal Year",
+            explanation: "Did you perform a risk analysis as part of risk management this fiscal year?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear),
+          },
+          {
+            type: "cell",
+            label: "Risks Identified",
+            explanation: "Were risks identified during this period?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.riskAnalysisInFiscalYear == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.risksIdentified),
+          },
+          {
+            type: "cell",
+            label: "Identified Risks",
+            explanation: "Which risks were specifically identified in the risk analysis?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 LksgRiskPositions: "LkSG - risk Positions",
-            }
-            return formatListOfStringsForDatatable(dataset.governance?.riskManagementOwnOperations?.identifiedRisks?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'Identified Risks')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.riskManagementOwnOperations?.identifiedRisks?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Identified Risks",
+              );
             },
-            {
-              type: "cell",
-              label: "Counteracting Measures",
-              explanation: "Have measures been defined to counteract the risks?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.riskManagementOwnOperations?.identifiedRisks == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.counteractingMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Which Counteracting Measures",
-              explanation: "Which measures have been applied to counteract the risks?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.riskManagementOwnOperations?.counteractingMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.governance?.riskManagementOwnOperations?.whichCounteractingMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Regulated Risk Management Responsibility",
-              explanation: "Is the responsibility for Risk Management in your company regulated, for example by appointing a human rights officer?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.regulatedRiskManagementResponsibility)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Grievance mechanism - Own Operations",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Grievance Handling Mechanism",
-              explanation: "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) to protect human and environmental rights in your business?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value), "Grievance Handling Mechanism", dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Grievance Handling Reporting Accessible",
-              explanation: "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external stakeholders (e.g. suppliers and their employees, NGOs) access the grievance reporting/whistleblowing system?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingReportingAccessible)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Appropriate Grievance Handling Information",
-              explanation: "Is the grievance procedure adapted to your company context and articulated in a way that is understandable to the target groups?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingInformation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Appropriate Grievance Handling Support",
-              explanation: "Is the necessary support provided in a way that the target groups can actually use the procedure?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingSupport)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Access to Expertise for Grievance Handling",
-              explanation: "Do the target groups have access to the expertise, advice and information that they need to participate in the grievance procedure in a fair, informed and respectful manner?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.accessToExpertiseForGrievanceHandling)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Grievance Complaints",
-              explanation: "Have there been any complaints being entered into the system?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Complaints Number",
-              explanation: "How many complaints have been received (for the reported fiscal year)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value, ""), "Complaints Number", dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Complaints Risk Position",
-              explanation: "Please define the respective risk position of each complaint",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "Counteracting Measures",
+            explanation: "Have measures been defined to counteract the risks?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.counteractingMeasures),
+          },
+          {
+            type: "cell",
+            label: "Which Counteracting Measures",
+            explanation: "Which measures have been applied to counteract the risks?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.counteractingMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.governance?.riskManagementOwnOperations?.whichCounteractingMeasures),
+          },
+          {
+            type: "cell",
+            label: "Regulated Risk Management Responsibility",
+            explanation:
+              "Is the responsibility for Risk Management in your company regulated, for example by appointing a human rights officer?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.riskManagementSystem?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.riskManagementOwnOperations?.regulatedRiskManagementResponsibility,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Grievance mechanism - Own Operations",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Grievance Handling Mechanism",
+            explanation:
+              "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) to protect human and environmental rights in your business?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value,
+                ),
+                "Grievance Handling Mechanism",
+                dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Grievance Handling Reporting Accessible",
+            explanation:
+              "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external stakeholders (e.g. suppliers and their employees, NGOs) access the grievance reporting/whistleblowing system?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingReportingAccessible,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Appropriate Grievance Handling Information",
+            explanation:
+              "Is the grievance procedure adapted to your company context and articulated in a way that is understandable to the target groups?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingInformation,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Appropriate Grievance Handling Support",
+            explanation:
+              "Is the necessary support provided in a way that the target groups can actually use the procedure?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.appropriateGrievanceHandlingSupport,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Access to Expertise for Grievance Handling",
+            explanation:
+              "Do the target groups have access to the expertise, advice and information that they need to participate in the grievance procedure in a fair, informed and respectful manner?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.accessToExpertiseForGrievanceHandling,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Grievance Complaints",
+            explanation: "Have there been any complaints being entered into the system?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints),
+          },
+          {
+            type: "cell",
+            label: "Complaints Number",
+            explanation: "How many complaints have been received (for the reported fiscal year)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value,
+                  "",
+                ),
+                "Complaints Number",
+                dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Complaints Risk Position",
+            explanation: "Please define the respective risk position of each complaint",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 LksgRiskPositions: "LkSG - risk Positions",
-            }
-            return formatListOfStringsForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'Complaints Risk Position')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Complaints Risk Position",
+              );
             },
-            {
-              type: "cell",
-              label: "Complaints Reason",
-              explanation: "Please specify the complaint.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsReason)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Actions for Complaints Undertaken",
-              explanation: "Were measures taken to address the complaints?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Which Actions for Complaints Undertaken",
-              explanation: "Which measures were taken to address the reported complaints?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.whichActionsForComplaintsUndertaken)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Public Access to Grievance Handling",
-              explanation: "Does your company have publicly accessible rules that clearly describe the process for dealing with complaints?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.publicAccessToGrievanceHandling)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Whistleblower Protection",
-              explanation: "Are whistleblowers effectively protected from disadvantage or punishment?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.whistleblowerProtection)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Due Diligence Process for Grievance Handling",
-              explanation: "Are insights from reported complaints used to improve your due diligence process?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.dueDiligenceProcessForGrievanceHandling)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Certifications, policies and responsibilities",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Additional Certifications",
-              explanation: "Does your company hold further certification / verfication / best practices etc. that mitigate human rights and/or environmental risks? If yes, please share the documents with us",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications?.value), "Additional Certifications", dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Code of Conduct",
-              explanation: "Has your company implemented and enforced internal behavioral guidelines that address the issues of human rights protection and respect for the environment  (e.g. within the code of conduct)?  If yes, please share the relevant document with us.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value), "Code of Conduct", dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Code of Conduct Training",
-              explanation: "Are your employees regularly made aware of your internal rules of conduct and trained on them?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConductTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Supplier Code of Conduct",
-              explanation: "Does your company have a supplier code of conduct? If yes, please share the supplier code of conduct with us.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct?.value), "Supplier Code of Conduct", dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Policy Statement",
-              explanation: "Does your company have a policy statement on its human rights strategy? If yes, please share the policy with us.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value), "Policy Statement", dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Human Rights Strategy",
-              explanation: "In which relevant departments/business processes has the anchoring of the human rights strategy been ensured?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.humanRightsStrategy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Environmental Impact Policy",
-              explanation: "Does your company have an environmental impact policy? If yes, please share the policy with us.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy?.value), "Environmental Impact Policy", dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fair Working Conditions Policy",
-              explanation: "Does your company have a fair working conditions policy? If yes, please share the policy with us.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy?.value), "Fair Working Conditions Policy", dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "General violations",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Responsibilities for Fair Working Conditions",
-              explanation: "Has your company established official responsibilities for the topic of fair working conditions, according to the nature and extent of the enterprise’s business activities?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.responsibilitiesForFairWorkingConditions)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Responsibilities for the Environment",
-              explanation: "Has your company established official responsibilities for the topic of the environment, according to the nature and extent of the enterprise’s business activities?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.responsibilitiesForTheEnvironment)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Responsibilities for Occupational Safety",
-              explanation: "Has your company established official responsibilities for the topic of occupational safety, according to the nature and extent of the enterprise’s business activities?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.responsibilitiesForOccupationalSafety)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Legal Proceedings",
-              explanation: "Has your company been involved in legal disputes in the last 5 years (including currently ongoing disputes) with third parties regarding human rights and environmental violations?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.legalProceedings)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Human Rights or Environmental Violations",
-              explanation: "Have there been any human rights or environmental violations on your company’s part in the last 5 years?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Human Rights or Environmental Violations Definition",
-              explanation: "Please define those violations.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "Complaints Reason",
+            explanation: "Please specify the complaint.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsReason),
+          },
+          {
+            type: "cell",
+            label: "Actions for Complaints Undertaken",
+            explanation: "Were measures taken to address the complaints?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Which Actions for Complaints Undertaken",
+            explanation: "Which measures were taken to address the reported complaints?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.whichActionsForComplaintsUndertaken,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Public Access to Grievance Handling",
+            explanation:
+              "Does your company have publicly accessible rules that clearly describe the process for dealing with complaints?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.publicAccessToGrievanceHandling,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Whistleblower Protection",
+            explanation: "Are whistleblowers effectively protected from disadvantage or punishment?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.whistleblowerProtection,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Due Diligence Process for Grievance Handling",
+            explanation: "Are insights from reported complaints used to improve your due diligence process?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.grievanceMechanismOwnOperations?.grievanceHandlingMechanism?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.dueDiligenceProcessForGrievanceHandling,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Certifications, policies and responsibilities",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Additional Certifications",
+            explanation:
+              "Does your company hold further certification / verfication / best practices etc. that mitigate human rights and/or environmental risks? If yes, please share the documents with us",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications?.value,
+                ),
+                "Additional Certifications",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Code of Conduct",
+            explanation:
+              "Has your company implemented and enforced internal behavioral guidelines that address the issues of human rights protection and respect for the environment  (e.g. within the code of conduct)?  If yes, please share the relevant document with us.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value,
+                ),
+                "Code of Conduct",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Code of Conduct Training",
+            explanation:
+              "Are your employees regularly made aware of your internal rules of conduct and trained on them?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConduct?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.codeOfConductTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Supplier Code of Conduct",
+            explanation:
+              "Does your company have a supplier code of conduct? If yes, please share the supplier code of conduct with us.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct?.value,
+                ),
+                "Supplier Code of Conduct",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.supplierCodeOfConduct,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Policy Statement",
+            explanation:
+              "Does your company have a policy statement on its human rights strategy? If yes, please share the policy with us.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value,
+                ),
+                "Policy Statement",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Human Rights Strategy",
+            explanation:
+              "In which relevant departments/business processes has the anchoring of the human rights strategy been ensured?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.certificationsPoliciesAndResponsibilities?.policyStatement?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.humanRightsStrategy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Environmental Impact Policy",
+            explanation:
+              "Does your company have an environmental impact policy? If yes, please share the policy with us.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy?.value,
+                ),
+                "Environmental Impact Policy",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.environmentalImpactPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Fair Working Conditions Policy",
+            explanation:
+              "Does your company have a fair working conditions policy? If yes, please share the policy with us.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy?.value,
+                ),
+                "Fair Working Conditions Policy",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "General violations",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Responsibilities for Fair Working Conditions",
+            explanation:
+              "Has your company established official responsibilities for the topic of fair working conditions, according to the nature and extent of the enterprise’s business activities?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.generalViolations?.responsibilitiesForFairWorkingConditions,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Responsibilities for the Environment",
+            explanation:
+              "Has your company established official responsibilities for the topic of the environment, according to the nature and extent of the enterprise’s business activities?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.responsibilitiesForTheEnvironment),
+          },
+          {
+            type: "cell",
+            label: "Responsibilities for Occupational Safety",
+            explanation:
+              "Has your company established official responsibilities for the topic of occupational safety, according to the nature and extent of the enterprise’s business activities?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.generalViolations?.responsibilitiesForOccupationalSafety,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Legal Proceedings",
+            explanation:
+              "Has your company been involved in legal disputes in the last 5 years (including currently ongoing disputes) with third parties regarding human rights and environmental violations?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.legalProceedings),
+          },
+          {
+            type: "cell",
+            label: "Human Rights or Environmental Violations",
+            explanation:
+              "Have there been any human rights or environmental violations on your company’s part in the last 5 years?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations),
+          },
+          {
+            type: "cell",
+            label: "Human Rights or Environmental Violations Definition",
+            explanation: "Please define those violations.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 LksgRiskPositions: "LkSG - risk Positions",
-            }
-            return formatListOfStringsForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'Human Rights or Environmental Violations Definition')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Human Rights or Environmental Violations Definition",
+              );
             },
-            {
-              type: "cell",
-              label: "Human Rights or Environmental Violations Measures",
-              explanation: "Have measures been taken to address this violation?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Human Rights or Environmental Violations Measures Definition",
-              explanation: "Please define these measures.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasuresDefinition)
-            ,
-            },
-            {
-              type: "cell",
-              label: "High Risk Countries Raw Materials",
-              explanation: "Do you source materials from countries associated with high-risk or conflict?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesRawMaterials)
-            ,
-            },
-            {
-              type: "cell",
-              label: "High Risk Countries Raw Materials Location",
-              explanation: "From which conflict/high-risk regions do you source your raw materials?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.generalViolations?.highRiskCountriesRawMaterials == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "Human Rights or Environmental Violations Measures",
+            explanation: "Have measures been taken to address this violation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Human Rights or Environmental Violations Measures Definition",
+            explanation: "Please define these measures.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasuresDefinition,
+              ),
+          },
+          {
+            type: "cell",
+            label: "High Risk Countries Raw Materials",
+            explanation: "Do you source materials from countries associated with high-risk or conflict?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesRawMaterials),
+          },
+          {
+            type: "cell",
+            label: "High Risk Countries Raw Materials Location",
+            explanation: "From which conflict/high-risk regions do you source your raw materials?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.highRiskCountriesRawMaterials == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 Iso2Codes: "ISO 2 Codes",
-            }
-            return formatListOfStringsForDatatable(dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'High Risk Countries Raw Materials Location')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "High Risk Countries Raw Materials Location",
+              );
             },
-            {
-              type: "cell",
-              label: "High Risk Countries Activity",
-              explanation: "Does your company operate in countries where there are high risks for human rights and/or the environment?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesActivity)
-            ,
-            },
-            {
-              type: "cell",
-              label: "High Risk Countries",
-              explanation: "Which ones?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.generalViolations?.highRiskCountriesActivity == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "High Risk Countries Activity",
+            explanation:
+              "Does your company operate in countries where there are high risks for human rights and/or the environment?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesActivity),
+          },
+          {
+            type: "cell",
+            label: "High Risk Countries",
+            explanation: "Which ones?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.highRiskCountriesActivity == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 Iso2Codes: "ISO 2 Codes",
-            }
-            return formatListOfStringsForDatatable(dataset.governance?.generalViolations?.highRiskCountries?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'High Risk Countries')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.generalViolations?.highRiskCountries?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "High Risk Countries",
+              );
             },
-            {
-              type: "cell",
-              label: "High Risk Countries Procurement",
-              explanation: "Does your company procure from countries with high risks for human rights and/or the environment?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesProcurement)
-            ,
-            },
-            {
-              type: "cell",
-              label: "High Risk Countries Procurement Name",
-              explanation: "Which ones?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.governance?.generalViolations?.highRiskCountriesProcurement == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
+          },
+          {
+            type: "cell",
+            label: "High Risk Countries Procurement",
+            explanation:
+              "Does your company procure from countries with high risks for human rights and/or the environment?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.highRiskCountriesProcurement),
+          },
+          {
+            type: "cell",
+            label: "High Risk Countries Procurement Name",
+            explanation: "Which ones?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.highRiskCountriesProcurement == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
                 Iso2Codes: "ISO 2 Codes",
-            }
-            return formatListOfStringsForDatatable(dataset.governance?.generalViolations?.highRiskCountriesProcurementName?.map(it => 
-               getOriginalNameFromTechnicalName(it, mappings)), 'High Risk Countries Procurement Name')}
-            ,
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.generalViolations?.highRiskCountriesProcurementName?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "High Risk Countries Procurement Name",
+              );
             },
-            ],
-    
-        },
+          },
         ],
-    
-    },
-    {
-      type: "section",
-      label: "Social",
-      expandOnPageLoad: false,
-      shouldDisplay: (): boolean => true
-    ,
-      children: [    {
-          type: "section",
-          label: "Child labor",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Employee(s) Under 18",
-              explanation: "Does your company have employees under the age of 18?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employee(s) Under 15",
-              explanation: "With regard to the place of employment and the applicable laws: do you employ school-age children or children under the age of 15 on a full-time basis?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder15)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employee(s) Under 18 in Apprenticeship",
-              explanation: "Are your employees under the age of 18 exclusively apprentices within the meaning of the locally applicable laws?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18InApprenticeship)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Worst Forms of Child Labor Prohibition",
-              explanation: "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Worst Forms of Child Labor",
-              explanation: "Have there been any worst forms of child labor in your company in the last 5 years?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLabor)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Worst Forms of Child Labor Forms",
-              explanation: "Which of these worst forms of child labor are not prevented?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Measures for  Prevention of Employment Under Local Minimum Age ",
-              explanation: "Does your company take measures to prevent the employment of children under the local minimum age?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employment Under Local Minimum Age Prevention -  Employment Contracts",
-              explanation: "Do you have a formal recruitment process, including employment contracts?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionEmploymentContracts)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employment Under Local Minimum Age Prevention  -  Job Description",
-              explanation: "Do you have a clear job description for employees under local minimum age as part of your recruitment process and employment contracts?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionJobDescription)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employment Under Local Minimum Age Prevention - Identity Documents",
-              explanation: "Do you check official documents, such as identity documents or certificates?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionIdentityDocuments)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employment Under Local Minimum Age Prevention - Training",
-              explanation: "Do you offer awareness trainings for people involved in the recruitment process to prevent child labor?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining?.value), "Employment Under Local Minimum Age Prevention - Training", dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employment Under Local Minimum Age Prevention - Checking Of Legal Minimum Age",
-              explanation: "Do you regularly check that your employees are at least of minimum age?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Child Labor Prevention Policy",
-              explanation: "Does your company have a policy to prevent child labor? If yes, please share the policy with us.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.childLabor?.childLaborPreventionPolicy?.value), "Child Labor Prevention Policy", dataset.social?.childLabor?.childLaborPreventionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Additional Child Labor Other Measures",
-              explanation: "Have any other measures been taken to prevent the employment of children under the locally applicable minimum age?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value), "Additional Child Labor Other Measures", dataset.social?.childLabor?.additionalChildLaborOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Additional Child Labor Other Measures Description",
-              explanation: "Please list any other measures (if available) you take to prevent the employment of children under the locally applicable minimum age?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.childLabor?.additionalChildLaborOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Forced labor, slavery",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Forced Labor and Slavery Practices",
-              explanation: "Does your company have practices that lead or may lead to forced labor and/or slavery? The following are included: Creating unacceptable working and living conditions by working in hazardous conditions or within unacceptable accommodations provided by the employer; Excessive levels of overtime; Use of intimidation, threats, and/or punishment; Other types of forced labor (e.g. debt bondage, human trafficking)",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Practices Specification",
-              explanation: "Please specify which practices apply.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPracticesSpecification)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention Measures",
-              explanation: "Does your company take measures to prevent forced labor and slavery?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention - Employment Contracts",
-              explanation: "Do you have a formal hiring process, including employment contracts in the employee\'s local language, with appropriate wage and termination clauses?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionEmploymentContracts)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention - Identity Documents",
-              explanation: "Do you prohibit the withholding of identity documents?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionIdentityDocuments)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention - Free Movement",
-              explanation: "Do you ensure that doors and windows can be opened to allow the free movement of employees, as well as the ability to leave the company\'s premises at any time?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionFreeMovement)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention - Provision Social Rooms and Toilets",
-              explanation: "Do you provide social rooms and toilets that can be used at any time?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention - Training",
-              explanation: "Do you offer awareness trainings for people involved in the recruitment process to prevent forced labor?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining?.value), "Forced Labor and Slavery Prevention - Training", dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor Prevention Policy",
-              explanation: "Does your company have a policy to prevent forced labor? If yes, please share the policy with us.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy?.value), "Forced Labor Prevention Policy", dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention Other Measures",
-              explanation: "Have any other measures been taken to prevent forced labor and slavery?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value), "Forced Labor and Slavery Prevention Other Measures", dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Forced Labor and Slavery Prevention Other Measures Description",
-              explanation: "Please list any other measures (if available) you take to prevent forced labor and slavery.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Withholding adequate wages",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Adequate Wage Withholding",
-              explanation: "Is your company currently withholding adequate wages (adequate in the sense of local laws)?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageWithholding)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Adequate Wages Measures",
-              explanation: "Are any measures taken to prevent the withholding of adequate wages?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWagesMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Documented Working Hours and Wages",
-              explanation: "Does your company document the working hours and wages of its employees?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages?.value), "Documented Working Hours and Wages", dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Adequate Living Wage",
-              explanation: "Does your company pay employees adequate living wages? (the appropriate wage is at least the minimum wage set by the applicable law and is otherwise measured according to the law of the place of employment)",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateLivingWage?.value), "Adequate Living Wage", dataset.social?.withholdingAdequateWages?.adequateLivingWage)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Regular Wages Process Flow",
-              explanation: "Has your company implemented the payment of wages through standardized and regular process flows?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.regularWagesProcessFlow)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fixed Hourly Wages",
-              explanation: "Do fixed hourly wages exist in your company?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedHourlyWages)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fixed Piecework Wages",
-              explanation: "Does your company have fixed piecework wages (pay per unit)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedPieceworkWages)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Adequate Wage Other Measures",
-              explanation: "Have any other measures been taken to prevent withholding adequate wages?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value), "Adequate Wage Other Measures", dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Adequate Wage Other Measures Description",
-              explanation: "Please list other measures (if available) you take to prevent withholding adequate wages?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Disregard for occupational health/safety",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Low Skill Work",
-              explanation: "Do your employees perform low-skill or repetitive manual labor?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.lowSkillWork)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Machines",
-              explanation: "Are hazardous machines used in the manufacturing of (preliminary) products?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.hazardousMachines)
-            ,
-            },
-            {
-              type: "cell",
-              label: "OSH Measures",
-              explanation: "Does your company take measures to prevent the disregard for occupational health and safety?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "OSH Policy",
-              explanation: "Has your company implemented and enforced a formal occupational health and safety (OSH) policy that complies with local laws, industry requirements, and international standards?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy?.value), "OSH Policy", dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "OSH Training",
-              explanation: "Has your company introduced mandatory training for employees to improve occupational safety?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshTraining?.value), "OSH Training", dataset.social?.disregardForOccupationalHealthSafety?.oshTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Health and Safety Policy",
-              explanation: "Does your company have a Health and Safety Policy? If yes, please share the policy with us.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy?.value), "Health and Safety Policy", dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Other OSH Measures",
-              explanation: "Have any other measures been taken to prevent the disregard for occupational health and safety?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures?.value), "Other OSH Measures", dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Other OSH Measures Description",
-              explanation: "Please list other measures (if available) you take to prevent the disregard for occupational health and safety?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasuresDescription)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Under 10 Workplace Accidents",
-              explanation: "Have there been less than 10 incidents in which employees suffered work-related injuries with serious consequences in the past fiscal year?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.under10WorkplaceAccidents)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Disregard for freedom of association",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Freedom Of Association",
-              explanation: "Does your company ensure that employees are free to form or join trade unions?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Employee Representation",
-              explanation: "What is your percentage of employees who are represented by trade unions?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.social?.disregardForFreedomOfAssociation?.employeeRepresentation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Freedom of Association Disregard Prevention",
-              explanation: "Does your company take measures to prevent the disregard for freedom of association?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Discrimination for Trade Union Members",
-              explanation: "Does your company ensure that no consequences are taken against employees in the event of the formation, joining, and membership of a trade union?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.discriminationForTradeUnionMembers)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Freedom of Operation for Trade Union",
-              explanation: "Does your company ensure that trade unions are free to operate in accordance with the law in the place of employment?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfOperationForTradeUnion)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Freedom of Association Training",
-              explanation: "Do employees receive information about their rights as a part of training, notices, or company brochures?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining?.value), "Freedom of Association Training", dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Works Council",
-              explanation: "Does your company have a works council or employee representative committee (if these are legal according to local law)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.worksCouncil?.value), "Works Council", dataset.social?.disregardForFreedomOfAssociation?.worksCouncil)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Freedom of Association Other Measures",
-              explanation: "Have other measures been taken to prevent the disregard for freedom of association?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures?.value), "Freedom of Association Other Measures", dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Freedom of Association Other Measures Description",
-              explanation: "Please list other measures (if available) you take to prevent the disregard for freedom of association.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Unequal treatment of employment",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Unequal Treatment of Employment",
-              explanation: "Does your company treat employees unequally because of national/ethnic origin, social origin, health status, disability, sexual orientation, age, gender, political opinion, religion or belief?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unequal Treatment of Employment Prevention Measures",
-              explanation: "Does your company take measures to prevent unequal treatment of employment?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Diversity and Inclusion Role",
-              explanation: "Is a member of your company\'s management responsible for promoting diversity in the workforce and among business partners?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Prevention of Mistreatments",
-              explanation: "Does your company\'s management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unequal Treatment Prevention Training",
-              explanation: "Has your company introduced mandatory offers and training for employees that target unequal treatment of employment?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining?.value), "Unequal Treatment Prevention Training", dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Equal Opportunities Officer",
-              explanation: "Do you have an equal opportunities officer or a similar function?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Equal Employment Policy",
-              explanation: "Does your company have an equal employment policy? If yes, please share the policy with us.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy?.value), "Equal Employment Policy", dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unequal Treatment Prevention Other Measures",
-              explanation: "Have other measures been taken to prevent unequal treatment of employment?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures?.value), "Unequal Treatment Prevention Other Measures", dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unequal Treatment Prevention Other Measures Description",
-              explanation: "Please list other measures (if available) you take to prevent unequal treatment of employment.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Harmful Soil Change",
-              explanation: "Is there a risk of your company causing a harmful soil change?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil Degradation",
-              explanation: "Does your company have measures in place to prevent the degradation of the local soil structure caused by the use of heavy machinery?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilDegradation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil Erosion",
-              explanation: "Does your company have measures in place to prevent soil erosion caused by deforestation or overgrazing?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilErosion)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil-borne Diseases",
-              explanation: "Does your company have measures in place to prevent the development of soil-borne diseases and pests to maintain soil fertility?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilBorneDiseases)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil Contamination",
-              explanation: "Does your company have measures in place to prevent soil contamination caused by antibiotics and toxins?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilContamination)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil Salinization",
-              explanation: "Does your company have measures in place to prevent soil salinization?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSalinization)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil Protection Policy",
-              explanation: "Does your company have a soil protection policy? If yes, please share the policy with us.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilProtectionPolicy?.value), "Soil Protection Policy", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilProtectionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Soil Spot Checks",
-              explanation: "Does your company carry out regular spot checks of the soils with corresponding documentation?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks?.value), "Soil Spot Checks", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Harmful Water Pollution",
-              explanation: "Is there a risk of your company causing harmful water pollution?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulWaterPollution)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fertilizers or Pollutants",
-              explanation: "Does your company use fertilizers or pollutants such as chemicals or heavy metals?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulWaterPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.fertilizersOrPollutants)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Waste Water Filtration",
-              explanation: "Does your company have waste water filtration systems?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulWaterPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.wasteWaterFiltration)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Protection Policy",
-              explanation: "Does your company have a water protection policy? If yes, please share the policy with us. ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulWaterPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterProtectionPolicy?.value), "Water Protection Policy", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterProtectionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Spot Checks",
-              explanation: "Does your company carry out regular spot checks of the waters with corresponding documentation?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulWaterPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks?.value), "Water Spot Checks", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Harmful Air Pollution",
-              explanation: "Is there a risk of harmful air pollution caused by your company?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Air Filtration",
-              explanation: "Does your company have air filtration systems?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airFiltration)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Air Quality Protection Policy",
-              explanation: "Does your company have an air quality protection policy? If yes, please share the policy with us. ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualityProtectionPolicy?.value), "Air Quality Protection Policy", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualityProtectionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Air Quality Spot Checks",
-              explanation: "Does your company conduct regular spot checks of air quality with corresponding documentation?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualitySpotChecks?.value), "Air Quality Spot Checks", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airQualitySpotChecks)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Harmful Noise Emission",
-              explanation: "Is there a risk of harmful noise emission caused by your company?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Reduction of Noise Emissions",
-              explanation: "Has your company implemented structural measures to reduce noise emissions?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.reductionOfNoiseEmissions)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Noise Reduction Policy",
-              explanation: "Does your company have a noise reduction policy? If yes, please share the policy with us. ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseReductionPolicy?.value), "Noise Reduction Policy", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseReductionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Noise Emissions Spot Checks",
-              explanation: "Does your company carry out regular spot checks of noise emissions with corresponding documentation?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulNoiseEmission == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseEmissionsSpotChecks?.value), "Noise Emissions Spot Checks", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.noiseEmissionsSpotChecks)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Excessive Water Consumption",
-              explanation: "Is there a risk of excessive water consumption in your company?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.excessiveWaterConsumption)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Saving Measures",
-              explanation: "Does your company take measures to prevent excessive water consumption?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.excessiveWaterConsumption == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Saving Measures Name",
-              explanation: "If yes, which ones?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasuresName)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Use Reduction Policy",
-              explanation: "Does your company have a water use reduction policy? If yes, please share the policy with us. ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.excessiveWaterConsumption == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterUseReductionPolicy?.value), "Water Use Reduction Policy", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterUseReductionPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Consumption Spot Checks",
-              explanation: "Does your company carry out regular spot checks of water consumption with corresponding documentation?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.excessiveWaterConsumption == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterConsumptionSpotChecks?.value), "Water Consumption Spot Checks", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterConsumptionSpotChecks)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Water Sources",
-              explanation: "Does your company use water sources that are important for the local population or agriculture?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.excessiveWaterConsumption == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSources)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Contamination Prevention Measures",
-              explanation: "Have other measures been taken to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\'s access to sanitary facilities; Harms the health of any person",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.contaminationPreventionMeasures?.value), "Contamination Prevention Measures", dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.contaminationPreventionMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Contamination Prevention Measures Description",
-              explanation: "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\'s access to sanitary facilities; Harms the health of any person",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.contaminationPreventionMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.contaminationPreventionMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Unlawful eviction/deprivation of land, forest and water",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Unlawful Eviction and Taking of Land",
-              explanation: "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person\'s livelihood, at risk of carrying out: Unlawful evictions; Unlawful claims of land, forests, or water?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unlawful Eviction and Taking of Land - Risk",
-              explanation: "If so, what exactly is the risk?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandRisk)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unlawful Eviction and Taking of Land - Measures",
-              explanation: "Has your company developed and implemented measures that avoid, reduce, mitigate, or remedy direct and indirect negative impacts on the land, and natural resources of indigenous peoples and local communities?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Model Contracts for Land Purchase or Leasing",
-              explanation: "Does your company have model contracts for buying or leasing land?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.modelContractsForLandPurchaseOrLeasing?.value), "Model Contracts for Land Purchase or Leasing", dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.modelContractsForLandPurchaseOrLeasing)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Involvement of Locals in Decision-Making",
-              explanation: "Are local communities and stakeholders involved in decision-making processes?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.involvementOfLocalsInDecisionMaking)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Governance of Tenure Policy",
-              explanation: "Does your company have a policy for the governance of tenure?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy?.value), "Governance of Tenure Policy", dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unlawful Eviction and Taking of Land - Other Measures",
-              explanation: "Have other measures been taken to avoid, reduce, mitigate, or remedy direct and indirect adverse impacts on the lands and natural resources of indigenous peoples and local communities?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value), "Unlawful Eviction and Taking of Land - Other Measures", dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Unlawful Eviction and Taking of Land - Other Measures Description",
-              explanation: "Please list other measures (if available) you take to avoid, reduce, mitigate, or remedy direct and indirect adverse impacts on the lands and natural resources of indigenous peoples and local communities.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Voluntary Guidelines on the Responsible Governance of Tenure",
-              explanation: "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Use of private/public security forces with disregard for human rights",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Use of Private Public Security Forces",
-              explanation: "Does your company use private and/or public security forces to protect company projects?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForces)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Use of Private Public Security Forces and Risk of Violation of Human Rights",
-              explanation: "Does your company have measures in place to prevent your security forces from: Violating the prohibition of torture or cruel, inhuman, or degrading treatment; Damaging life or limbs; Impairing the right to exercise the freedom of association?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForces == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Instruction of Security Forces",
-              explanation: "Do you have adequate instructions for the security forces?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.instructionOfSecurityForces?.value), "Instruction of Security Forces", dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.instructionOfSecurityForces)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Human Rights Training",
-              explanation: "Are security forces trained on human rights?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining?.value), "Human Rights Training", dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining)
-            ,
-            },
-            {
-              type: "cell",
-              label: "State Security Forces",
-              explanation: "Have the state security forces been checked on former human right violations before they were commissioned? (Only in the case of state security forces) ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.stateSecurityForces)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Private Security Forces",
-              explanation: "Have the contractual relationships with private security forces been designed in a way that they comply with the applicable legal framework? (Only in the case of private security forces)",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces?.value), "Private Security Forces", dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Use of Private Public Security Forces Measures",
-              explanation: "Have other measures been taken to prevent the use of private and/or public security forces that violate human rights?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesMeasures?.value), "Use of Private Public Security Forces Measures", dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Use of Private Public Security Forces Measures Description",
-              explanation: "Please list any other measures you are taking to prevent the use of private and/or public security forces that violate human rights.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
+      },
+    ],
+  },
+  {
+    type: "section",
+    label: "Social",
+    expandOnPageLoad: false,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "section",
+        label: "Child labor",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Employee(s) Under 18",
+            explanation: "Does your company have employees under the age of 18?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18),
+          },
+          {
+            type: "cell",
+            label: "Employee(s) Under 15",
+            explanation:
+              "With regard to the place of employment and the applicable laws: do you employ school-age children or children under the age of 15 on a full-time basis?",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder15),
+          },
+          {
+            type: "cell",
+            label: "Employee(s) Under 18 in Apprenticeship",
+            explanation:
+              "Are your employees under the age of 18 exclusively apprentices within the meaning of the locally applicable laws?",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18InApprenticeship),
+          },
+          {
+            type: "cell",
+            label: "Worst Forms of Child Labor Prohibition",
+            explanation:
+              "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
+          },
+          {
+            type: "cell",
+            label: "Worst Forms of Child Labor",
+            explanation: "Have there been any worst forms of child labor in your company in the last 5 years?",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLabor),
+          },
+          {
+            type: "cell",
+            label: "Worst Forms of Child Labor Forms",
+            explanation: "Which of these worst forms of child labor are not prevented?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
+          },
+          {
+            type: "cell",
+            label: "Measures for  Prevention of Employment Under Local Minimum Age ",
+            explanation:
+              "Does your company take measures to prevent the employment of children under the local minimum age?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Employment Under Local Minimum Age Prevention -  Employment Contracts",
+            explanation: "Do you have a formal recruitment process, including employment contracts?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionEmploymentContracts,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Employment Under Local Minimum Age Prevention  -  Job Description",
+            explanation:
+              "Do you have a clear job description for employees under local minimum age as part of your recruitment process and employment contracts?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionJobDescription,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Employment Under Local Minimum Age Prevention - Identity Documents",
+            explanation: "Do you check official documents, such as identity documents or certificates?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionIdentityDocuments,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Employment Under Local Minimum Age Prevention - Training",
+            explanation:
+              "Do you offer awareness trainings for people involved in the recruitment process to prevent child labor?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining?.value,
+                ),
+                "Employment Under Local Minimum Age Prevention - Training",
+                dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Employment Under Local Minimum Age Prevention - Checking Of Legal Minimum Age",
+            explanation: "Do you regularly check that your employees are at least of minimum age?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.childLabor?.employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Child Labor Prevention Policy",
+            explanation:
+              "Does your company have a policy to prevent child labor? If yes, please share the policy with us.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.childLabor?.childLaborPreventionPolicy?.value),
+                "Child Labor Prevention Policy",
+                dataset.social?.childLabor?.childLaborPreventionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Additional Child Labor Other Measures",
+            explanation:
+              "Have any other measures been taken to prevent the employment of children under the locally applicable minimum age?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.measuresForPreventionOfEmploymentUnderLocalMinimumAge == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value),
+                "Additional Child Labor Other Measures",
+                dataset.social?.childLabor?.additionalChildLaborOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Additional Child Labor Other Measures Description",
+            explanation:
+              "Please list any other measures (if available) you take to prevent the employment of children under the locally applicable minimum age?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.additionalChildLaborOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.social?.childLabor?.additionalChildLaborOtherMeasuresDescription),
+          },
         ],
-    
-    },
-    {
-      type: "section",
-      label: "Environmental",
-      expandOnPageLoad: false,
-      shouldDisplay: (): boolean => true
-    ,
-      children: [    {
-          type: "section",
-          label: "Use of mercury, mercury waste (Minamata Convention)",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Mercury and Mercury Waste Handling",
-              explanation: "Does your company deal with mercury or mercury waste as part of its business model?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury Added-Products Handling",
-              explanation: "Are you involved in the manufacturing, use, treatment, import, or export of products containing mercury?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury Added-Products Handling - Risk of Exposure",
-              explanation: "Is there a risk of manufacturing, importing or exporting products containing mercury that are not subject to the Annex A Part 1 exemption of the Minamata Convention (BGBI. 2017 II p.610, 611)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandlingRiskOfExposure)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury Added-Products Handling - Risk of Disposal",
-              explanation: "If there are products that are contaminated with mercury, is there a risk within your company that mercury waste will be disposed of not in accordance with the provisions of Article 11 of the Minamata Agreement (BGBI. 2017 II p. 610, 611)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandlingRiskOfDisposal)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury and Mercury Compounds Production and Use",
-              explanation: "Are there manufacturing processes in your company that use mercury or mercury compounds?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryCompoundsProductionAndUse)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury and Mercury Compounds Production and Use - Risk of Exposure",
-              explanation: "Is there a risk in your company that mercury or mercury compounds used in the manufacturing process have already exceeded the specified phase-out date and are therefore prohibited according to Article 5(2), Annex B of the Minamata Agreement (BGBI. 2017 II p. 616, 617)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury and Mercury Waste Use Prevention Measures",
-              explanation: "Does your company take measures to prevent the use of mercury and mercury waste?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury and Mercury Waste Handling Policy",
-              explanation: "Does your company have a policy for safely handling mercury or mercury waste? If yes, please share the policy with us.\n\n",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandlingPolicy?.value), "Mercury and Mercury Waste Handling Policy", dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandlingPolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury and Mercury Waste Use Prevention Other Measures",
-              explanation: "Have other measures been taken to prevent the use of mercury and mercury waste?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionOtherMeasures?.value), "Mercury and Mercury Waste Use Prevention Other Measures", dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Mercury and Mercury Waste Use Prevention Other Measures Description",
-              explanation: "Please list other measures (if available) you take to prevent the use of mercury and mercury waste.",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Production and use of persistent organic pollutants (POPs Convention)",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Persistent Organic Pollutants Production and Use",
-              explanation: "Do you use and/or produce persistent organic pollutants (POPs), i.e. chemical compounds that don´t decompose, or transform very slowly in the environment?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Used",
-              explanation: "If yes, which organic pollutants are used and/or produced?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsed)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Production and Use - Risk Of Exposure",
-              explanation: "Is there a risk in your company that these organic pollutants fall under Article 3(1)(a), Annex A of the Stockholm Convention of May 23rd 2001 on persistent organic pollutants (BGBl. 2002 II p. 803-804) (POPs Convention) and therefore banned?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUseRiskOfExposure)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Production and Use - Risk Of Disposal",
-              explanation: "In relation to the waste of these pollutants, is there a risk that they will be subject to the rules laid down in the applicable legal system in accordance with the provisions of Article 6(1)(d)(i) and (ii) of the POP Convention (BGBI. 2002 II p. 803, 804) and will: Not be handled, collected, stored, or transported in an environmentally sound manner; Not be disposed of in an environmentally friendly manner, i.e. disposed of in such a way that the persistent organic pollutants contained therein are destroyed or irreversibly converted?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUseRiskOfDisposal)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Use Prevention Measures",
-              explanation: "Does your company take measures to prevent the use of persistent organic pollutants (POP)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Use Policy",
-              explanation: "Does your company have a policy for handling these materials? If yes, please share the policy with us. ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Use Prevention Other Measures",
-              explanation: "Have other measures been taken to prevent the use of persistent organic pollutants (POP)?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionMeasures == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionOtherMeasures?.value), "Persistent Organic Pollutants Use Prevention Other Measures", dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Use Prevention Other Measures Description",
-              explanation: "Please list other measures (if available) you take to prevent the use of persistent organic pollutants (POP).",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionOtherMeasures?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsUsePreventionOtherMeasuresDescription)
-            ,
-            },
-            ],
-    
-        },
-        {
-          type: "section",
-          label: "Export/import of hazardous waste (Basel Convention)",
-          expandOnPageLoad: false,
-          shouldDisplay: (): boolean => true
-        ,
-          children: [    {
-              type: "cell",
-              label: "Persistent Organic Pollutants Production And Use - Transboundary Movements",
-              explanation: "Is there a risk in your company that: Hazardous waste within the meaning of the Basel Convention  (Article 1(1), BGBI. 1994 II p. 2703, 2704) or other waste that requires special consideration (household waste or its byproducts) is transported across borders?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Persistent Organic Pollutants Production and Use - Risk for Importing State",
-              explanation: "Are these wastes transported or shipped to an importing State that is subject to the Basel Convention and has not given its written consent to the specific import (if that importing State has not prohibited the importation of that hazardous waste) (Article 4(1)(c)); is not a contracting party (Article 4, paragraph 5); does not treat waste in an environmentally friendly manner because it does not have the appropriate capacity for environmentally friendly disposal and cannot guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or\ntransported by a party that has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The term \"importing state\" includes: a contracting party to which a transboundary shipment of hazardous waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to disposal in an area not under the sovereignty of a state. (Article 2 No. 11)",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseRiskForImportingState)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Transboundary Movements - Located OECD, EU, Liechtenstein",
-              explanation: "Is your company based in a country that is within the OECD, EU, or Liechtenstein?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Transboundary Movements - Outside OECD, EU, or Liechtenstein",
-              explanation: "Is there a risk in your company that hazardous waste is transported to a country that is outside the OECD, EU / Liechtenstein?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Transport Prevention Measures",
-              explanation: "Does your company take measures to prevent the transport of hazardous waste?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransportPreventionMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Waste Policy",
-              explanation: "Does your company have a waste policy? If yes, please share the policy with us. ",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy?.value), "Waste Policy", dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Transport Prevention Other Measures",
-              explanation: "Have other measures been taken to prevent the transport of hazardous waste?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteTransportPreventionOtherMeasures)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Disposal",
-              explanation: "Do you dispose of hazardous waste in accordance with the Basel Convention (Article 1(1), BGBI. 1994 II p. 2703, 2704)?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Disposal - Risk of Import",
-              explanation: "Are you at risk of having these hazardous wastes imported from a country that is not a member of the Basel Convention?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalRiskOfImport)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Disposal - Other Waste Import",
-              explanation: "Do you import other wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2))?",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport?.value), "Hazardous Waste Disposal - Other Waste Import", dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Hazardous Waste Disposal - Other Waste Import Description",
-              explanation: "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
-              shouldDisplay: (dataset: LksgData): boolean => dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport?.value == "Yes"
-            ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImportDescription)
-            ,
-            },
-            ],
-    
-        },
+      },
+      {
+        type: "section",
+        label: "Forced labor, slavery",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Practices",
+            explanation:
+              "Does your company have practices that lead or may lead to forced labor and/or slavery? The following are included: Creating unacceptable working and living conditions by working in hazardous conditions or within unacceptable accommodations provided by the employer; Excessive levels of overtime; Use of intimidation, threats, and/or punishment; Other types of forced labor (e.g. debt bondage, human trafficking)",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Practices Specification",
+            explanation: "Please specify which practices apply.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPractices == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPracticesSpecification),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention Measures",
+            explanation: "Does your company take measures to prevent forced labor and slavery?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention - Employment Contracts",
+            explanation:
+              "Do you have a formal hiring process, including employment contracts in the employee's local language, with appropriate wage and termination clauses?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionEmploymentContracts,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention - Identity Documents",
+            explanation: "Do you prohibit the withholding of identity documents?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionIdentityDocuments,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention - Free Movement",
+            explanation:
+              "Do you ensure that doors and windows can be opened to allow the free movement of employees, as well as the ability to leave the company's premises at any time?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionFreeMovement,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention - Provision Social Rooms and Toilets",
+            explanation: "Do you provide social rooms and toilets that can be used at any time?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention - Training",
+            explanation:
+              "Do you offer awareness trainings for people involved in the recruitment process to prevent forced labor?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining?.value,
+                ),
+                "Forced Labor and Slavery Prevention - Training",
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor Prevention Policy",
+            explanation:
+              "Does your company have a policy to prevent forced labor? If yes, please share the policy with us.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy?.value),
+                "Forced Labor Prevention Policy",
+                dataset.social?.forcedLaborSlavery?.forcedLaborPreventionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention Other Measures",
+            explanation: "Have any other measures been taken to prevent forced labor and slavery?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value,
+                ),
+                "Forced Labor and Slavery Prevention Other Measures",
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Forced Labor and Slavery Prevention Other Measures Description",
+            explanation: "Please list any other measures (if available) you take to prevent forced labor and slavery.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasuresDescription,
+              ),
+          },
         ],
-    
-    },
-    ];
+      },
+      {
+        type: "section",
+        label: "Withholding adequate wages",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Adequate Wage Withholding",
+            explanation: "Is your company currently withholding adequate wages (adequate in the sense of local laws)?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageWithholding),
+          },
+          {
+            type: "cell",
+            label: "Adequate Wages Measures",
+            explanation: "Are any measures taken to prevent the withholding of adequate wages?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateWagesMeasures),
+          },
+          {
+            type: "cell",
+            label: "Documented Working Hours and Wages",
+            explanation: "Does your company document the working hours and wages of its employees?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages?.value,
+                ),
+                "Documented Working Hours and Wages",
+                dataset.social?.withholdingAdequateWages?.documentedWorkingHoursAndWages,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Adequate Living Wage",
+            explanation:
+              "Does your company pay employees adequate living wages? (the appropriate wage is at least the minimum wage set by the applicable law and is otherwise measured according to the law of the place of employment)",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.adequateLivingWage?.value),
+                "Adequate Living Wage",
+                dataset.social?.withholdingAdequateWages?.adequateLivingWage,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Regular Wages Process Flow",
+            explanation:
+              "Has your company implemented the payment of wages through standardized and regular process flows?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.regularWagesProcessFlow),
+          },
+          {
+            type: "cell",
+            label: "Fixed Hourly Wages",
+            explanation: "Do fixed hourly wages exist in your company?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedHourlyWages),
+          },
+          {
+            type: "cell",
+            label: "Fixed Piecework Wages",
+            explanation: "Does your company have fixed piecework wages (pay per unit)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.withholdingAdequateWages?.fixedPieceworkWages),
+          },
+          {
+            type: "cell",
+            label: "Adequate Wage Other Measures",
+            explanation: "Have any other measures been taken to prevent withholding adequate wages?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWagesMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value,
+                ),
+                "Adequate Wage Other Measures",
+                dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Adequate Wage Other Measures Description",
+            explanation: "Please list other measures (if available) you take to prevent withholding adequate wages?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.social?.withholdingAdequateWages?.adequateWageOtherMeasuresDescription),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Disregard for occupational health/safety",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Low Skill Work",
+            explanation: "Do your employees perform low-skill or repetitive manual labor?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.lowSkillWork),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Machines",
+            explanation: "Are hazardous machines used in the manufacturing of (preliminary) products?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.hazardousMachines),
+          },
+          {
+            type: "cell",
+            label: "OSH Measures",
+            explanation: "Does your company take measures to prevent the disregard for occupational health and safety?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures),
+          },
+          {
+            type: "cell",
+            label: "OSH Policy",
+            explanation:
+              "Has your company implemented and enforced a formal occupational health and safety (OSH) policy that complies with local laws, industry requirements, and international standards?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy?.value),
+                "OSH Policy",
+                dataset.social?.disregardForOccupationalHealthSafety?.oshPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "OSH Training",
+            explanation: "Has your company introduced mandatory training for employees to improve occupational safety?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.disregardForOccupationalHealthSafety?.oshTraining?.value),
+                "OSH Training",
+                dataset.social?.disregardForOccupationalHealthSafety?.oshTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Health and Safety Policy",
+            explanation: "Does your company have a Health and Safety Policy? If yes, please share the policy with us.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy?.value,
+                ),
+                "Health and Safety Policy",
+                dataset.social?.disregardForOccupationalHealthSafety?.healthAndSafetyPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Other OSH Measures",
+            explanation:
+              "Have any other measures been taken to prevent the disregard for occupational health and safety?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForOccupationalHealthSafety?.oshMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures?.value,
+                ),
+                "Other OSH Measures",
+                dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Other OSH Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to prevent the disregard for occupational health and safety?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.disregardForOccupationalHealthSafety?.otherOshMeasuresDescription,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Under 10 Workplace Accidents",
+            explanation:
+              "Have there been less than 10 incidents in which employees suffered work-related injuries with serious consequences in the past fiscal year?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.disregardForOccupationalHealthSafety?.under10WorkplaceAccidents,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Disregard for freedom of association",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Freedom Of Association",
+            explanation: "Does your company ensure that employees are free to form or join trade unions?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation),
+          },
+          {
+            type: "cell",
+            label: "Employee Representation",
+            explanation: "What is your percentage of employees who are represented by trade unions?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociation == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.social?.disregardForFreedomOfAssociation?.employeeRepresentation),
+          },
+          {
+            type: "cell",
+            label: "Freedom of Association Disregard Prevention",
+            explanation: "Does your company take measures to prevent the disregard for freedom of association?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Discrimination for Trade Union Members",
+            explanation:
+              "Does your company ensure that no consequences are taken against employees in the event of the formation, joining, and membership of a trade union?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.disregardForFreedomOfAssociation?.discriminationForTradeUnionMembers,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Freedom of Operation for Trade Union",
+            explanation:
+              "Does your company ensure that trade unions are free to operate in accordance with the law in the place of employment?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.disregardForFreedomOfAssociation?.freedomOfOperationForTradeUnion,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Freedom of Association Training",
+            explanation:
+              "Do employees receive information about their rights as a part of training, notices, or company brochures?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining?.value,
+                ),
+                "Freedom of Association Training",
+                dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Works Council",
+            explanation:
+              "Does your company have a works council or employee representative committee (if these are legal according to local law)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.social?.disregardForFreedomOfAssociation?.worksCouncil?.value),
+                "Works Council",
+                dataset.social?.disregardForFreedomOfAssociation?.worksCouncil,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Freedom of Association Other Measures",
+            explanation: "Have other measures been taken to prevent the disregard for freedom of association?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationDisregardPrevention == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures?.value,
+                ),
+                "Freedom of Association Other Measures",
+                dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Freedom of Association Other Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to prevent the disregard for freedom of association.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.disregardForFreedomOfAssociation?.freedomOfAssociationOtherMeasuresDescription,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Unequal treatment of employment",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Unequal Treatment of Employment",
+            explanation:
+              "Does your company treat employees unequally because of national/ethnic origin, social origin, health status, disability, sexual orientation, age, gender, political opinion, religion or belief?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment),
+          },
+          {
+            type: "cell",
+            label: "Unequal Treatment of Employment Prevention Measures",
+            explanation: "Does your company take measures to prevent unequal treatment of employment?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Diversity and Inclusion Role",
+            explanation:
+              "Is a member of your company's management responsible for promoting diversity in the workforce and among business partners?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole),
+          },
+          {
+            type: "cell",
+            label: "Prevention of Mistreatments",
+            explanation:
+              "Does your company's management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments),
+          },
+          {
+            type: "cell",
+            label: "Unequal Treatment Prevention Training",
+            explanation:
+              "Has your company introduced mandatory offers and training for employees that target unequal treatment of employment?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining?.value,
+                ),
+                "Unequal Treatment Prevention Training",
+                dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Equal Opportunities Officer",
+            explanation: "Do you have an equal opportunities officer or a similar function?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer),
+          },
+          {
+            type: "cell",
+            label: "Equal Employment Policy",
+            explanation: "Does your company have an equal employment policy? If yes, please share the policy with us.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy?.value,
+                ),
+                "Equal Employment Policy",
+                dataset.social?.unequalTreatmentOfEmployment?.equalEmploymentPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Unequal Treatment Prevention Other Measures",
+            explanation: "Have other measures been taken to prevent unequal treatment of employment?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures?.value,
+                ),
+                "Unequal Treatment Prevention Other Measures",
+                dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Unequal Treatment Prevention Other Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to prevent unequal treatment of employment.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentPreventionOtherMeasuresDescription,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Harmful Soil Change",
+            explanation: "Is there a risk of your company causing a harmful soil change?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil Degradation",
+            explanation:
+              "Does your company have measures in place to prevent the degradation of the local soil structure caused by the use of heavy machinery?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilDegradation,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil Erosion",
+            explanation:
+              "Does your company have measures in place to prevent soil erosion caused by deforestation or overgrazing?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilErosion,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil-borne Diseases",
+            explanation:
+              "Does your company have measures in place to prevent the development of soil-borne diseases and pests to maintain soil fertility?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilBorneDiseases,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil Contamination",
+            explanation:
+              "Does your company have measures in place to prevent soil contamination caused by antibiotics and toxins?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilContamination,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil Salinization",
+            explanation: "Does your company have measures in place to prevent soil salinization?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSalinization,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil Protection Policy",
+            explanation: "Does your company have a soil protection policy? If yes, please share the policy with us.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.soilProtectionPolicy?.value,
+                ),
+                "Soil Protection Policy",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.soilProtectionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Soil Spot Checks",
+            explanation:
+              "Does your company carry out regular spot checks of the soils with corresponding documentation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulSoilChange ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks
+                    ?.value,
+                ),
+                "Soil Spot Checks",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.soilSpotChecks,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Harmful Water Pollution",
+            explanation: "Is there a risk of your company causing harmful water pollution?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.harmfulWaterPollution,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Fertilizers or Pollutants",
+            explanation: "Does your company use fertilizers or pollutants such as chemicals or heavy metals?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulWaterPollution == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.fertilizersOrPollutants,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Waste Water Filtration",
+            explanation: "Does your company have waste water filtration systems?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulWaterPollution == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.wasteWaterFiltration,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Protection Policy",
+            explanation: "Does your company have a water protection policy? If yes, please share the policy with us. ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulWaterPollution == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.waterProtectionPolicy?.value,
+                ),
+                "Water Protection Policy",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.waterProtectionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Spot Checks",
+            explanation:
+              "Does your company carry out regular spot checks of the waters with corresponding documentation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulWaterPollution == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks
+                    ?.value,
+                ),
+                "Water Spot Checks",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSpotChecks,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Harmful Air Pollution",
+            explanation: "Is there a risk of harmful air pollution caused by your company?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Air Filtration",
+            explanation: "Does your company have air filtration systems?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.airFiltration,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Air Quality Protection Policy",
+            explanation:
+              "Does your company have an air quality protection policy? If yes, please share the policy with us. ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.airQualityProtectionPolicy?.value,
+                ),
+                "Air Quality Protection Policy",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.airQualityProtectionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Air Quality Spot Checks",
+            explanation:
+              "Does your company conduct regular spot checks of air quality with corresponding documentation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.harmfulAirPollution ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.airQualitySpotChecks?.value,
+                ),
+                "Air Quality Spot Checks",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.airQualitySpotChecks,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Harmful Noise Emission",
+            explanation: "Is there a risk of harmful noise emission caused by your company?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.harmfulNoiseEmission,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Reduction of Noise Emissions",
+            explanation: "Has your company implemented structural measures to reduce noise emissions?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulNoiseEmission == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.reductionOfNoiseEmissions,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Noise Reduction Policy",
+            explanation: "Does your company have a noise reduction policy? If yes, please share the policy with us. ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulNoiseEmission == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.noiseReductionPolicy?.value,
+                ),
+                "Noise Reduction Policy",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.noiseReductionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Noise Emissions Spot Checks",
+            explanation:
+              "Does your company carry out regular spot checks of noise emissions with corresponding documentation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.harmfulNoiseEmission == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.noiseEmissionsSpotChecks?.value,
+                ),
+                "Noise Emissions Spot Checks",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.noiseEmissionsSpotChecks,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Excessive Water Consumption",
+            explanation: "Is there a risk of excessive water consumption in your company?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.excessiveWaterConsumption,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Saving Measures",
+            explanation: "Does your company take measures to prevent excessive water consumption?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.excessiveWaterConsumption == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Saving Measures Name",
+            explanation: "If yes, which ones?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.waterSavingMeasuresName,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Use Reduction Policy",
+            explanation:
+              "Does your company have a water use reduction policy? If yes, please share the policy with us. ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.excessiveWaterConsumption == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.waterUseReductionPolicy?.value,
+                ),
+                "Water Use Reduction Policy",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.waterUseReductionPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Consumption Spot Checks",
+            explanation:
+              "Does your company carry out regular spot checks of water consumption with corresponding documentation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.excessiveWaterConsumption == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.waterConsumptionSpotChecks?.value,
+                ),
+                "Water Consumption Spot Checks",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.waterConsumptionSpotChecks,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Water Sources",
+            explanation:
+              "Does your company use water sources that are important for the local population or agriculture?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.excessiveWaterConsumption == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?.waterSources,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Contamination Prevention Measures",
+            explanation:
+              "Have other measures been taken to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person's access to sanitary facilities; Harms the health of any person",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                    ?.contaminationPreventionMeasures?.value,
+                ),
+                "Contamination Prevention Measures",
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.contaminationPreventionMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Contamination Prevention Measures Description",
+            explanation:
+              "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person's access to sanitary facilities; Harms the health of any person",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                ?.contaminationPreventionMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
+                  ?.contaminationPreventionMeasuresDescription,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Unlawful eviction/deprivation of land, forest and water",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Unlawful Eviction and Taking of Land",
+            explanation:
+              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person's livelihood, at risk of carrying out: Unlawful evictions; Unlawful claims of land, forests, or water?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Unlawful Eviction and Taking of Land - Risk",
+            explanation: "If so, what exactly is the risk?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandRisk,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Unlawful Eviction and Taking of Land - Measures",
+            explanation:
+              "Has your company developed and implemented measures that avoid, reduce, mitigate, or remedy direct and indirect negative impacts on the land, and natural resources of indigenous peoples and local communities?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                  ?.unlawfulEvictionAndTakingOfLandMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Model Contracts for Land Purchase or Leasing",
+            explanation: "Does your company have model contracts for buying or leasing land?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                ?.unlawfulEvictionAndTakingOfLandMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                    ?.modelContractsForLandPurchaseOrLeasing?.value,
+                ),
+                "Model Contracts for Land Purchase or Leasing",
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.modelContractsForLandPurchaseOrLeasing,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Involvement of Locals in Decision-Making",
+            explanation: "Are local communities and stakeholders involved in decision-making processes?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                ?.unlawfulEvictionAndTakingOfLandMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.involvementOfLocalsInDecisionMaking,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Governance of Tenure Policy",
+            explanation: "Does your company have a policy for the governance of tenure?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                ?.unlawfulEvictionAndTakingOfLandMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy?.value,
+                ),
+                "Governance of Tenure Policy",
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater?.governanceOfTenurePolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Unlawful Eviction and Taking of Land - Other Measures",
+            explanation:
+              "Have other measures been taken to avoid, reduce, mitigate, or remedy direct and indirect adverse impacts on the lands and natural resources of indigenous peoples and local communities?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                ?.unlawfulEvictionAndTakingOfLandMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                    ?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value,
+                ),
+                "Unlawful Eviction and Taking of Land - Other Measures",
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                  ?.unlawfulEvictionAndTakingOfLandOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Unlawful Eviction and Taking of Land - Other Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to avoid, reduce, mitigate, or remedy direct and indirect adverse impacts on the lands and natural resources of indigenous peoples and local communities.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                ?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                  ?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Voluntary Guidelines on the Responsible Governance of Tenure",
+            explanation:
+              "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
+                  ?.voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Use of private/public security forces with disregard for human rights",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Use of Private Public Security Forces",
+            explanation: "Does your company use private and/or public security forces to protect company projects?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                  ?.useOfPrivatePublicSecurityForces,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Use of Private Public Security Forces and Risk of Violation of Human Rights",
+            explanation:
+              "Does your company have measures in place to prevent your security forces from: Violating the prohibition of torture or cruel, inhuman, or degrading treatment; Damaging life or limbs; Impairing the right to exercise the freedom of association?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForces == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                  ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Instruction of Security Forces",
+            explanation: "Do you have adequate instructions for the security forces?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                    ?.instructionOfSecurityForces?.value,
+                ),
+                "Instruction of Security Forces",
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                  ?.instructionOfSecurityForces,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Human Rights Training",
+            explanation: "Are security forces trained on human rights?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining
+                    ?.value,
+                ),
+                "Human Rights Training",
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.humanRightsTraining,
+              ),
+          },
+          {
+            type: "cell",
+            label: "State Security Forces",
+            explanation:
+              "Have the state security forces been checked on former human right violations before they were commissioned? (Only in the case of state security forces) ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.stateSecurityForces,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Private Security Forces",
+            explanation:
+              "Have the contractual relationships with private security forces been designed in a way that they comply with the applicable legal framework? (Only in the case of private security forces)",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces
+                    ?.value,
+                ),
+                "Private Security Forces",
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights?.privateSecurityForces,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Use of Private Public Security Forces Measures",
+            explanation:
+              "Have other measures been taken to prevent the use of private and/or public security forces that violate human rights?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                    ?.useOfPrivatePublicSecurityForcesMeasures?.value,
+                ),
+                "Use of Private Public Security Forces Measures",
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                  ?.useOfPrivatePublicSecurityForcesMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Use of Private Public Security Forces Measures Description",
+            explanation:
+              "Please list any other measures you are taking to prevent the use of private and/or public security forces that violate human rights.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                  ?.useOfPrivatePublicSecurityForcesMeasuresDescription,
+              ),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "section",
+    label: "Environmental",
+    expandOnPageLoad: false,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "section",
+        label: "Use of mercury, mercury waste (Minamata Convention)",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Mercury and Mercury Waste Handling",
+            explanation: "Does your company deal with mercury or mercury waste as part of its business model?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury Added-Products Handling",
+            explanation:
+              "Are you involved in the manufacturing, use, treatment, import, or export of products containing mercury?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAddedProductsHandling,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury Added-Products Handling - Risk of Exposure",
+            explanation:
+              "Is there a risk of manufacturing, importing or exporting products containing mercury that are not subject to the Annex A Part 1 exemption of the Minamata Convention (BGBI. 2017 II p.610, 611)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAddedProductsHandlingRiskOfExposure,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury Added-Products Handling - Risk of Disposal",
+            explanation:
+              "If there are products that are contaminated with mercury, is there a risk within your company that mercury waste will be disposed of not in accordance with the provisions of Article 11 of the Minamata Agreement (BGBI. 2017 II p. 610, 611)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAddedProductsHandlingRiskOfDisposal,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury and Mercury Compounds Production and Use",
+            explanation: "Are there manufacturing processes in your company that use mercury or mercury compounds?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAndMercuryCompoundsProductionAndUse,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury and Mercury Compounds Production and Use - Risk of Exposure",
+            explanation:
+              "Is there a risk in your company that mercury or mercury compounds used in the manufacturing process have already exceeded the specified phase-out date and are therefore prohibited according to Article 5(2), Annex B of the Minamata Agreement (BGBI. 2017 II p. 616, 617)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury and Mercury Waste Use Prevention Measures",
+            explanation: "Does your company take measures to prevent the use of mercury and mercury waste?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandling ==
+              "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAndMercuryWasteUsePreventionMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury and Mercury Waste Handling Policy",
+            explanation:
+              "Does your company have a policy for safely handling mercury or mercury waste? If yes, please share the policy with us.\n\n",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                ?.mercuryAndMercuryWasteUsePreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                    ?.mercuryAndMercuryWasteHandlingPolicy?.value,
+                ),
+                "Mercury and Mercury Waste Handling Policy",
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention?.mercuryAndMercuryWasteHandlingPolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury and Mercury Waste Use Prevention Other Measures",
+            explanation: "Have other measures been taken to prevent the use of mercury and mercury waste?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                ?.mercuryAndMercuryWasteUsePreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                    ?.mercuryAndMercuryWasteUsePreventionOtherMeasures?.value,
+                ),
+                "Mercury and Mercury Waste Use Prevention Other Measures",
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAndMercuryWasteUsePreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mercury and Mercury Waste Use Prevention Other Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to prevent the use of mercury and mercury waste.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                ?.mercuryAndMercuryWasteUsePreventionOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.environmental?.useOfMercuryMercuryWasteMinamataConvention
+                  ?.mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Production and use of persistent organic pollutants (POPs Convention)",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Production and Use",
+            explanation:
+              "Do you use and/or produce persistent organic pollutants (POPs), i.e. chemical compounds that don´t decompose, or transform very slowly in the environment?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsProductionAndUse,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Used",
+            explanation: "If yes, which organic pollutants are used and/or produced?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsProductionAndUse == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsUsed,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Production and Use - Risk Of Exposure",
+            explanation:
+              "Is there a risk in your company that these organic pollutants fall under Article 3(1)(a), Annex A of the Stockholm Convention of May 23rd 2001 on persistent organic pollutants (BGBl. 2002 II p. 803-804) (POPs Convention) and therefore banned?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsProductionAndUse == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsProductionAndUseRiskOfExposure,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Production and Use - Risk Of Disposal",
+            explanation:
+              "In relation to the waste of these pollutants, is there a risk that they will be subject to the rules laid down in the applicable legal system in accordance with the provisions of Article 6(1)(d)(i) and (ii) of the POP Convention (BGBI. 2002 II p. 803, 804) and will: Not be handled, collected, stored, or transported in an environmentally sound manner; Not be disposed of in an environmentally friendly manner, i.e. disposed of in such a way that the persistent organic pollutants contained therein are destroyed or irreversibly converted?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsProductionAndUse == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsProductionAndUseRiskOfDisposal,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Use Prevention Measures",
+            explanation: "Does your company take measures to prevent the use of persistent organic pollutants (POP)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsProductionAndUse == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsUsePreventionMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Use Policy",
+            explanation:
+              "Does your company have a policy for handling these materials? If yes, please share the policy with us. ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsUsePreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsUsePolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Use Prevention Other Measures",
+            explanation: "Have other measures been taken to prevent the use of persistent organic pollutants (POP)?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsUsePreventionMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                    ?.persistentOrganicPollutantsUsePreventionOtherMeasures?.value,
+                ),
+                "Persistent Organic Pollutants Use Prevention Other Measures",
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsUsePreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Use Prevention Other Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to prevent the use of persistent organic pollutants (POP).",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                ?.persistentOrganicPollutantsUsePreventionOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                  ?.persistentOrganicPollutantsUsePreventionOtherMeasuresDescription,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Export/import of hazardous waste (Basel Convention)",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Production And Use - Transboundary Movements",
+            explanation:
+              "Is there a risk in your company that: Hazardous waste within the meaning of the Basel Convention  (Article 1(1), BGBI. 1994 II p. 2703, 2704) or other waste that requires special consideration (household waste or its byproducts) is transported across borders?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Persistent Organic Pollutants Production and Use - Risk for Importing State",
+            explanation:
+              'Are these wastes transported or shipped to an importing State that is subject to the Basel Convention and has not given its written consent to the specific import (if that importing State has not prohibited the importation of that hazardous waste) (Article 4(1)(c)); is not a contracting party (Article 4, paragraph 5); does not treat waste in an environmentally friendly manner because it does not have the appropriate capacity for environmentally friendly disposal and cannot guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or\ntransported by a party that has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The term "importing state" includes: a contracting party to which a transboundary shipment of hazardous waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to disposal in an area not under the sovereignty of a state. (Article 2 No. 11)',
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Transboundary Movements - Located OECD, EU, Liechtenstein",
+            explanation: "Is your company based in a country that is within the OECD, EU, or Liechtenstein?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Transboundary Movements - Outside OECD, EU, or Liechtenstein",
+            explanation:
+              "Is there a risk in your company that hazardous waste is transported to a country that is outside the OECD, EU / Liechtenstein?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Transport Prevention Measures",
+            explanation: "Does your company take measures to prevent the transport of hazardous waste?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.persistentOrganicPollutantsProductionAndUseTransboundaryMovements == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteTransportPreventionMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Waste Policy",
+            explanation: "Does your company have a waste policy? If yes, please share the policy with us. ",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy?.value,
+                ),
+                "Waste Policy",
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.wastePolicy,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Transport Prevention Other Measures",
+            explanation: "Have other measures been taken to prevent the transport of hazardous waste?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteTransportPreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Disposal",
+            explanation:
+              "Do you dispose of hazardous waste in accordance with the Basel Convention (Article 1(1), BGBI. 1994 II p. 2703, 2704)?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Disposal - Risk of Import",
+            explanation:
+              "Are you at risk of having these hazardous wastes imported from a country that is not a member of the Basel Convention?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalRiskOfImport,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Disposal - Other Waste Import",
+            explanation:
+              "Do you import other wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2))?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                    ?.hazardousWasteDisposalOtherWasteImport?.value,
+                ),
+                "Hazardous Waste Disposal - Other Waste Import",
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteDisposalOtherWasteImport,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Disposal - Other Waste Import Description",
+            explanation:
+              "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
+                ?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteDisposalOtherWasteImportDescription,
+              ),
+          },
+        ],
+      },
+    ],
+  },
+];
