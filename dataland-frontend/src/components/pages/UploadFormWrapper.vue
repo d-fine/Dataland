@@ -24,7 +24,6 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { DataTypeEnum } from "@clients/backend";
 
 import CreateEsgQuestionnaireDataset from "@/components/forms/CreateEsgQuestionnaireDataset.vue";
-import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue.old";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
@@ -76,8 +75,6 @@ export default defineComponent({
           return CreateEuTaxonomyNonFinancials;
         case `${DataTypeEnum.EutaxonomyFinancials}`:
           return CreateEuTaxonomyForFinancials;
-        case `${DataTypeEnum.Lksg}`:
-          return CreateLksgDataset;
         case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
