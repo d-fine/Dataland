@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * @param dataType contains the enum of the framework for which the count is valid
  * @param dataRequestCompanyIdentifierType contains the identifier type for which the count is valid
  * @param dataRequestCompanyIdentifierValue contains the identifier value for which the count is valid
+ * @param requestStatus contains the request status for which the count is valid
  * @param count the count of existing data requests for this framework, identifierType and identifierValue
  */
 data class AggregatedDataRequest(
