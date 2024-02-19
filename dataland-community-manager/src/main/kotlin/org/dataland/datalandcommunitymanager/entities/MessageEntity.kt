@@ -20,19 +20,17 @@ data class MessageEntity(
     @Id
     val messageId: String,
 
-    val ordinal: Int,
-
     @Column(columnDefinition = "TEXT")
     val contacts: String,
 
     @Column(columnDefinition = "TEXT")
     val message: String?,
 
-    val lastModifiedDate: Long,
+    val creationTimestamp: Long,
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
-    var dataRequest: DataRequestEntity?,
+    var dataRequest: DataRequestEntity,
 ) {
     companion object {
         private const val emailSeparator = ";"
@@ -46,14 +44,12 @@ data class MessageEntity(
 
     constructor(
         messageObject: StoredDataRequestMessageObject,
-        ordinal: Int,
-        dataRequest: DataRequestEntity? = null,
+        dataRequest: DataRequestEntity,
     ) : this(
         messageId = UUID.randomUUID().toString(),
-        ordinal = ordinal,
         contacts = messageObject.contacts.joinToString(emailSeparator),
         message = messageObject.message,
-        lastModifiedDate = messageObject.lastModifiedDate ?: Instant.now().toEpochMilli(),
+        creationTimestamp = messageObject.creationTimestamp ?: Instant.now().toEpochMilli(),
         dataRequest = dataRequest,
     )
 
@@ -62,8 +58,8 @@ data class MessageEntity(
      * @returns the generated message object
      */
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
-        contacts = contacts.split(emailSeparator)?.toSet() ?: emptySet(),
+        contacts = contacts.split(emailSeparator).toSet(),
         message = message,
-        lastModifiedDate = lastModifiedDate,
+        creationTimestamp = creationTimestamp,
     )
 }

@@ -228,14 +228,10 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
-      const contacts = Array.from(
-        new Set(
-          this.contactsAsString
-            .split(",")
-            .map((rawEmail) => rawEmail.trim())
-            .filter((email) => email),
-        ),
-      );
+      const contacts = this.contactsAsString
+        .split(",")
+        .map((rawEmail) => rawEmail.trim())
+        .filter((email) => email);
       return {
         companyIdentifier: this.companyIdentifier,
         dataType: this.frameworkName,

@@ -75,7 +75,7 @@ data class DataRequestEntity(
      */
     fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
         this.messageHistory = messageHistory.mapIndexed { index, it ->
-            MessageEntity(it, index, this)
+            MessageEntity(it, this)
         }
     }
 
@@ -92,7 +92,7 @@ data class DataRequestEntity(
         dataRequestCompanyIdentifierType = dataRequestCompanyIdentifierType,
         dataRequestCompanyIdentifierValue = dataRequestCompanyIdentifierValue,
         messageHistory = messageHistory
-            .sortedBy { it.ordinal }
+            .sortedBy { it.creationTimestamp }
             .map { it.toStoredDataRequestMessageObject() },
         lastModifiedDate = lastModifiedDate,
         requestStatus = requestStatus,
