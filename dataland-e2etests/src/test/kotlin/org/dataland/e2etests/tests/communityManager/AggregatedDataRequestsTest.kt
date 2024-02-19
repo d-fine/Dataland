@@ -196,7 +196,7 @@ class AggregatedDataRequestsTest {
             BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
-        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
+        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(status = RequestStatus.open)
         assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(aggregatedDataRequests, randomLei, 2)
         val aggregatedRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
         assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(aggregatedRequestsNoFilter, randomLei, 2)
@@ -204,21 +204,21 @@ class AggregatedDataRequestsTest {
 
     private fun assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(
         aggregatedDataRequests: List<AggregatedDataRequest>,
-        companyIdentifier: String,
+        companyIdentifierValue: String,
         countOfOpenRequests: Long,
     ) {
         val allRequestStati = RequestStatus.entries.toSet()
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifier, setOf(RequestStatus.open), countOfOpenRequests,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.open), countOfOpenRequests,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifier, setOf(RequestStatus.answered), 0,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.answered), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifier, setOf(RequestStatus.closed), 0,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.closed), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifier, allRequestStati, countOfOpenRequests,
+            aggregatedDataRequests, companyIdentifierValue, allRequestStati, countOfOpenRequests,
         )
     }
 
