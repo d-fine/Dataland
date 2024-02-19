@@ -84,6 +84,8 @@ class BulkDataRequestManager(
     /** This method triggers a query to get aggregated data requests.
      * @param identifierValue can be used to filter via substring matching
      * @param dataTypes can be used to filter on frameworks
+     * @param reportingPeriod can be used to filter on reporting periods
+     * @param status can be used to filter on request status
      * @returns aggregated data requests
      */
     fun getAggregatedDataRequests(

@@ -40,6 +40,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param identifierValue to check for
      * @param reportingPeriod to check for
      * @param dataTypeNames to check for
+     * @param status to check for
      * @returns the aggregated data requests
      */
     @Query(
@@ -90,8 +91,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     ): List<DataRequestEntity>
 
     /** This method updates the Request Status to Answered for an open request with a specific framework,
-     * reporting period as well as company identifier as soon as the (manual) QA accepted the provided data
-     * by the corresponding company.
+     * reporting period as well as company identifier
      * @param dataRequestCompanyIdentifierValue to check for
      * @param reportingPeriod to check for
      * @param dataTypeName to check for
