@@ -32,11 +32,12 @@ import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import { inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { getAnsweredDataRequestsForViewPage } from "@/utils/RequestUtils";
+import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
 import { type DataTypeEnum } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import { RequestStatus } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -72,13 +73,21 @@ export default defineComponent({
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
-        console.log(" here I will close the request #todo");
-        const listOFMyRequests = await getAnsweredDataRequestsForViewPage(
+        const answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
           this.companyId,
           this.framework as DataTypeEnum,
           this.getKeycloakPromise,
         );
-        console.log(listOFMyRequests);
+        for (const answeredRequest of answeredDataRequestsForViewPage) {
+          void (await patchDataRequestStatus(
+            answeredRequest.dataRequestId,
+            RequestStatus.Closed,
+            this.getKeycloakPromise,
+          ));
+        }
+
+        console.log("submitted the patch for closing of these requests:");
+        console.log(answeredDataRequestsForViewPage);
       }
     },
     /**
@@ -89,13 +98,16 @@ export default defineComponent({
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
-        console.log(" here I will reopen the request #todo");
-        const listOFMyRequests = await getAnsweredDataRequestsForViewPage(
+        const answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
           this.companyId,
           this.framework as DataTypeEnum,
           this.getKeycloakPromise,
         );
-        console.log(listOFMyRequests);
+
+        for (const answeredRequest of answeredDataRequestsForViewPage) {
+          await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open, this.getKeycloakPromise);
+        }
+        console.log("submitted the patch for reopening");
       }
     },
     /**
