@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -12,10 +12,12 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,6 +34,7 @@ class SingleDataRequestManager(
 ) {
     val logger = LoggerFactory.getLogger(javaClass)
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
+    val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**
      * Processes a single data request from a user
@@ -43,12 +46,21 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        logger.info("The datalandCompanyId is: $singleDataRequest.companyIdentifier")
-        val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
-            singleDataRequest.companyIdentifier,
-        )
-        logger.info("The datalandCompanyId is: $datalandCompanyId")
+        var datalandCompanyId: String?
+
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
+        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
+            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
+            datalandCompanyId = singleDataRequest.companyIdentifier
+
+        } else {
+             datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
+                singleDataRequest.companyIdentifier,
+            )
+        }
+
         if (datalandCompanyId == null) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         } else {
@@ -63,6 +75,19 @@ class SingleDataRequestManager(
             )
         }
         return storedDataRequests
+    }
+
+    private fun checkIfCompanyIsValid(companyId: String) {
+        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
+        try {
+            companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
+        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            throw ResourceNotFoundApiException(
+                "Company not found",
+                "Dataland-backend does not know the company ID $companyId",
+            )
+        }
+        }
     }
 
     private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
@@ -121,7 +146,7 @@ class SingleDataRequestManager(
      * @param requestStatus the status to apply to the data request
      * @param userId the user to apply to the data request
      * @param reportingPeriod the reporting period to apply to the data request
-     * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
+     * @param datalandCompanyId the company identifier value to apply to the data request
      * @return all filtered data requests
      */
 

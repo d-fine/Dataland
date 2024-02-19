@@ -19,6 +19,7 @@ import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIde
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
+import org.dataland.e2etests.utils.getDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -87,7 +88,8 @@ class SingleDataRequestsTest {
             ),
         )
     }
-    /** toDo 404 vs 400 client error which one is required?
+
+
     @Test
     fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
         val unknownCompanyId = UUID.randomUUID().toString()
@@ -104,20 +106,17 @@ class SingleDataRequestsTest {
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("resource-not-found"))
     }
-    */
 
-    /** toDo add companies/{companyId}/info endpoint to single data requests as companyId are allowed for single data
-     * requests
+
     @Test
     fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
         val singleDataRequest = SingleDataRequest(
-            companyIdentifier = companyIdOfNewCompany, /
+            companyIdentifier = companyIdOfNewCompany,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
-
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
 
@@ -126,7 +125,7 @@ class SingleDataRequestsTest {
         assertEquals(companyIdOfNewCompany, retrievedDataRequest.datalandCompanyId)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
     }
-    */
+
 
     @Test
     fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
@@ -158,6 +157,8 @@ class SingleDataRequestsTest {
     }
 
     /** toDO Florian fragen, wie der Check jetzt funktioniert, da "validateContactsAndMessage" nicht mehr existiert
+
+
     @Test
     fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
@@ -323,16 +324,15 @@ class SingleDataRequestsTest {
         val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
         val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.resolved)
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            dataRequestCompanyIdentifierValue = permIdOfRequestB,
+            datalandCompanyId = getDatalandCompanyIdForIdentifierValue(permIdOfRequestB),
         )
-        authenticateAsPremiumUser()
+
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
 
         val allQueryResults = listOf(
             allDataRequests, lksgDataRequests, reportingPeriod2021DataRequests,
             resolvedDataRequests, specificPermIdDataRequests, specificUsersDataRequests,
         )
-
         allQueryResults.forEach { storedDataRequestsQueryResult ->
             assertTrue(storedDataRequestsQueryResult.isNotEmpty())
         }
@@ -341,7 +341,8 @@ class SingleDataRequestsTest {
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
-        assertTrue(specificPermIdDataRequests.all { it.datalandCompanyId == permIdOfRequestB })
+        assertTrue(specificPermIdDataRequests.all {
+            it.datalandCompanyId == getDatalandCompanyIdForIdentifierValue(permIdOfRequestB) })
         assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })
     }
 

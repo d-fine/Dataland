@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.repositories
 
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -73,8 +73,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.datalandCompanyIdFilterLength} =0 " +
-            "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyId})",
+            "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
+            "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyIdFilter})",
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,

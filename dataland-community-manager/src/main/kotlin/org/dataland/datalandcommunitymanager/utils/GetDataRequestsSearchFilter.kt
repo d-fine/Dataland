@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.repositories.utils
+package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 
