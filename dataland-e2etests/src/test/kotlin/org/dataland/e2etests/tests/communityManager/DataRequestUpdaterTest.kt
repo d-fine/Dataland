@@ -56,7 +56,7 @@ class DataRequestUpdaterTest {
             Assertions.assertEquals(storedDataRequest.requestStatus, retrievedDataRequest.requestStatus)
         }
 
-        uploadDatasetAndValidatePendingState(mapOfIds)
+        uploadDataset(mapOfIds)
         Thread.sleep(1000)
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
@@ -65,7 +65,7 @@ class DataRequestUpdaterTest {
             checkRequestStatusAfterUpload(retrievedDataRequest)
         }
     }
-    private fun uploadDatasetAndValidatePendingState(mapOfIds: Map<String, String>) {
+    private fun uploadDataset(mapOfIds: Map<String, String>) {
         dummyCompanyAssociatedData =
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds["companyId"].toString(),
