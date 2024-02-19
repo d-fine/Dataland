@@ -2,6 +2,7 @@ package org.dataland.datalandemail.email
 
 import com.mailjet.client.transactional.SendContact
 import com.mailjet.client.transactional.TransactionalEmail
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 
 /**
  * A class to represent an email contact
@@ -49,3 +50,14 @@ fun TransactionalEmail.TransactionalEmailBuilder
  * @returns true if and only if the string matches email address pattern
  */
 fun String.isEmailAddress() = Regex("^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+.){1,2}[a-z]{2,}\$").matches(this)
+
+fun String.validateIsEmailAddress() {
+    if(!isEmailAddress()) {
+        throw InvalidEmailFormatApiException(this)
+    }
+}
+
+class InvalidEmailFormatApiException(email: String) : InvalidInputApiException(
+    "Invalid email address \"$email\"",
+    "The email address \"$email\" you have provided has an invalid format.",
+)

@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.isEmailAddress
+import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -54,12 +54,7 @@ class SingleDataRequestManager(
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
-        if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) { // todo use validate function
-            throw InvalidInputApiException(
-                "Invalid email address",
-                "At least one email address you have provided has an invalid format.",
-            )
-        }
+        contacts?.forEach { it.validateIsEmailAddress() }
         if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
             throw InvalidInputApiException(
                 "No recipients provided for the message",
