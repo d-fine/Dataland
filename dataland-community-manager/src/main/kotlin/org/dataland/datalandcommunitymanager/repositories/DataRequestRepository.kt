@@ -24,19 +24,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param dataType to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
-        userId: String,
-        dataRequestCompanyIdentifierValue: String,
-        dataType: String,
-        reportingPeriod: String,
-    ): Boolean
-
-    /** This method checks if a data request with the provided params already exists in the database.
-     * @param userId to check for
-     * @param dataRequestCompanyIdentifierValue to check for
-     * @param dataType to check for
-     * @returns a Boolean stating the result of the check
-     */
     fun findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,

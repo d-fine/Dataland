@@ -165,7 +165,7 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
+        @RequestParam requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.

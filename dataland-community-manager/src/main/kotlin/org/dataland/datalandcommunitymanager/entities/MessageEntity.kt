@@ -8,7 +8,6 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandemail.email.isEmailAddress
-import java.time.Instant
 import java.util.UUID
 
 /**
@@ -49,7 +48,7 @@ data class MessageEntity(
         messageId = UUID.randomUUID().toString(),
         contacts = messageObject.contacts.joinToString(emailSeparator),
         message = messageObject.message,
-        creationTimestamp = messageObject.creationTimestamp ?: Instant.now().toEpochMilli(),
+        creationTimestamp = messageObject.creationTimestamp,
         dataRequest = dataRequest,
     )
 
