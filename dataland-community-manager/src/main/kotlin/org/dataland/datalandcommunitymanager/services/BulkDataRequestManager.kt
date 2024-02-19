@@ -31,7 +31,7 @@ class BulkDataRequestManager(
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
-        assureValidityOfRequestLists(bulkDataRequest)
+        assureValidityOfRequests(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
@@ -58,40 +58,40 @@ class BulkDataRequestManager(
     }
 
     private fun errorMessageForEmptyInputConfigurations(
-        listOfIdentifiers: Set<String>,
-        listOfFrameworks: Set<DataTypeEnum>,
-        listOfReportingPeriods: Set<String>,
+        identifiers: Set<String>,
+        frameworks: Set<DataTypeEnum>,
+        reportingPeriods: Set<String>,
     ): String {
         return when {
-            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            identifiers.isEmpty() && frameworks.isEmpty() && reportingPeriods.isEmpty() ->
                 "All " +
                     "provided lists are empty."
 
-            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
+            identifiers.isEmpty() && frameworks.isEmpty() ->
                 "The lists of company identifiers and " +
                     "frameworks are empty."
 
-            listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            identifiers.isEmpty() && reportingPeriods.isEmpty() ->
                 "The lists of company identifiers and " +
                     "reporting periods are empty."
 
-            listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            frameworks.isEmpty() && reportingPeriods.isEmpty() ->
                 "The lists of frameworks and reporting " +
                     "periods are empty."
 
-            listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
-            listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+            identifiers.isEmpty() -> "The list of company identifiers is empty."
+            frameworks.isEmpty() -> "The list of frameworks is empty."
             else -> "The list of reporting periods is empty."
         }
     }
 
-    private fun assureValidityOfRequestLists(bulkDataRequest: BulkDataRequest) {
-        val listOfIdentifiers = bulkDataRequest.companyIdentifiers
-        val listOfFrameworks = bulkDataRequest.dataTypes
-        val listOfReportingPeriods = bulkDataRequest.reportingPeriods
-        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty() || listOfReportingPeriods.isEmpty()) {
+    private fun assureValidityOfRequests(bulkDataRequest: BulkDataRequest) {
+        val identifiers = bulkDataRequest.companyIdentifiers
+        val frameworks = bulkDataRequest.dataTypes
+        val reportingPeriods = bulkDataRequest.reportingPeriods
+        if (identifiers.isEmpty() || frameworks.isEmpty() || reportingPeriods.isEmpty()) {
             val errorMessage = errorMessageForEmptyInputConfigurations(
-                listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+                identifiers, frameworks, reportingPeriods,
             )
             throw InvalidInputApiException(
                 "No empty lists are allowed as input for bulk data request.",

@@ -85,7 +85,7 @@ class DataRequestProcessingUtils(
      * @param identifierType the type of the company identifier
      * @param dataType the enum entry corresponding to the framework
      * @param reportingPeriod the reporting period
-     * @param contactList a list of email addresses to inform about the potentially stored data request
+     * @param contacts a list of email addresses to inform about the potentially stored data request
      * @param message a message to equip the notification with
      */
     fun storeDataRequestEntityIfNotExisting(
@@ -93,7 +93,7 @@ class DataRequestProcessingUtils(
         identifierType: DataRequestCompanyIdentifierType,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-        contactList: Set<String>? = null,
+        contacts: Set<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
         findAlreadyExistingDataRequestForCurrentUser(identifierValue, dataType, reportingPeriod)?.also {
@@ -107,8 +107,8 @@ class DataRequestProcessingUtils(
             identifierValue,
         )
         dataRequestRepository.save(dataRequestEntity)
-        val messageHistory = if (!contactList.isNullOrEmpty()) {
-            listOf(StoredDataRequestMessageObject(contactList, message, Instant.now().toEpochMilli()))
+        val messageHistory = if (!contacts.isNullOrEmpty()) {
+            listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
         } else {
             listOf()
         }

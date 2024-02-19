@@ -49,7 +49,7 @@ class DataRequestQueryManager(
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
         } else {
-            dataTypes?.map { it.value }
+            dataTypes?.map { it.value }?.toSet()
         }
         val aggregatedDataRequestEntities =
             dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)

@@ -144,7 +144,7 @@ class SingleDataRequestEmailSenderTest {
                     properCompanyId,
                     dataType,
                     reportingPeriods = reportingPeriods,
-                    contacts = contactEmails.toSet(),
+                    contacts = contactEmails,
                     message = defaultMessage,
                 ),
                 DataRequestCompanyIdentifierType.DatalandCompanyId,
@@ -212,7 +212,7 @@ class SingleDataRequestEmailSenderTest {
         expectedNotToBeContainedInHtmlContent = emptySet(),
     )
 
-    fun expectSentEmailsToMatchContactEmail(expectedReceiversGetter: () -> Set<EmailContact>) {
+    private fun expectSentEmailsToMatchContactEmail(expectedReceiversGetter: () -> Set<EmailContact>) {
         val sharedContent = setOf(
             "from $companyName",
             "$proxyPrimaryUrl/companies/$companyIdentifier",
@@ -229,10 +229,10 @@ class SingleDataRequestEmailSenderTest {
         )
     }
 
-    private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (List<String>) -> Unit) {
+    private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (Set<String>) -> Unit) {
         val unaddressedContactEmails = contactEmails.toMutableList()
         expectSentEmailsToMatchContactEmail { setOf(EmailContact(unaddressedContactEmails.removeFirst())) }
-        test(contactEmails)
+        test(contactEmails.toSet())
         assertEquals(0, unaddressedContactEmails.size)
         assertNumEmailsSentEquals(contactEmails.size)
     }

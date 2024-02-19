@@ -68,7 +68,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
-        @Param("dataTypes") dataTypes: List<String>?,
+        @Param("dataTypes") dataTypes: Set<String>?,
         @Param("reportingPeriod") reportingPeriod: String?,
     ): List<AggregatedDataRequestEntity>
 

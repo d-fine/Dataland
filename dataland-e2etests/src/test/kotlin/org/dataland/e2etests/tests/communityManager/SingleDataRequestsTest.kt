@@ -142,7 +142,7 @@ class SingleDataRequestsTest {
 
     private fun postStandardSingleDataRequest(
         companyIdentifier: String,
-        contactList: List<String>? = null,
+        contacts: List<String>? = null,
         message: String? = null,
     ): StoredDataRequest {
         return requestControllerApi.postSingleDataRequest(
@@ -150,7 +150,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = companyIdentifier,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = listOf("2022"),
-                contacts = contactList,
+                contacts = contacts,
                 message = message,
             ),
         ).first()
