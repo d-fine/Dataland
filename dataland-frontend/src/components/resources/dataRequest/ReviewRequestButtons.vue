@@ -21,6 +21,7 @@
     <OverlayPanel ref="reportingPeriodsOverlayPanel">
       <SelectReportingPeriodDialog
         :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+        :answered-data-requests="answeredDataRequestsForViewPage"
         @selected-reporting-period="handleReportingPeriodSelection"
       />
     </OverlayPanel>
@@ -37,7 +38,7 @@ import OverlayPanel from "primevue/overlaypanel";
 import { type DataTypeEnum } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
-import { RequestStatus } from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -64,7 +65,25 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      answeredDataRequestsForViewPage: [] as StoredDataRequest[],
+    };
+  },
+  mounted() {
+    void this.updateAnsweredDataRequestsForViewPage();
+  },
   methods: {
+    /**
+     * Makes the api call and updates the list of answered data requests.
+     */
+    async updateAnsweredDataRequestsForViewPage() {
+      this.answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
+        this.companyId,
+        this.framework as DataTypeEnum,
+        this.getKeycloakPromise,
+      );
+    },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
@@ -73,21 +92,15 @@ export default defineComponent({
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
-        const answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
-          this.companyId,
-          this.framework as DataTypeEnum,
-          this.getKeycloakPromise,
-        );
-        for (const answeredRequest of answeredDataRequestsForViewPage) {
+        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
           void (await patchDataRequestStatus(
             answeredRequest.dataRequestId,
             RequestStatus.Closed,
             this.getKeycloakPromise,
           ));
         }
-
         console.log("submitted the patch for closing of these requests:");
-        console.log(answeredDataRequestsForViewPage);
+        console.log(this.answeredDataRequestsForViewPage);
       }
     },
     /**
@@ -98,16 +111,11 @@ export default defineComponent({
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
-        const answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
-          this.companyId,
-          this.framework as DataTypeEnum,
-          this.getKeycloakPromise,
-        );
-
-        for (const answeredRequest of answeredDataRequestsForViewPage) {
+        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
           await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open, this.getKeycloakPromise);
         }
-        console.log("submitted the patch for reopening");
+        console.log("submitted the patch for reopening these requests:");
+        console.log(this.answeredDataRequestsForViewPage);
       }
     },
     /**

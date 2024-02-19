@@ -61,4 +61,5 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
 export interface ReportingPeriodTableEntry {
   reportingPeriod: string;
   editUrl: string;
+  dataRequestId?: string;
 }
