@@ -23,7 +23,7 @@ class V3__MigrateMessageHistory : BaseJavaMigration() {
                 "data_request_id varchar(255) NOT NULL, " +
                 "contacts text, " +
                 "message text, " +
-                "last_modified_date bigint NOT NULL, " +
+                "creation_timestamp bigint NOT NULL, " +
                 "PRIMARY KEY (message_id), " +
                 "CONSTRAINT fk_data_request FOREIGN KEY(data_request_id) REFERENCES data_requests(data_request_id)" +
                 ")",
