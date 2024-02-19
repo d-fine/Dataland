@@ -74,7 +74,7 @@ data class DataRequestEntity(
      * @param messageHistory a list of ordered message objects
      */
     fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
-        this.messageHistory = messageHistory.mapIndexed { index, it ->
+        this.messageHistory = messageHistory.map {
             MessageEntity(it, this)
         }
     }
