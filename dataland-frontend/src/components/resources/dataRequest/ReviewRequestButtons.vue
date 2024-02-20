@@ -46,7 +46,7 @@
       <SelectReportingPeriodDialog
         :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
         :answered-data-requests="answeredDataRequestsForViewPage"
-        :action-on-click="this.actionOnClick"
+        :action-on-click="actionOnClick"
         @selected-reporting-period="handleReportingPeriodSelection"
       />
     </OverlayPanel>
