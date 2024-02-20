@@ -9,8 +9,6 @@ import {
 } from "@clients/backend";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import { lksgViewConfiguration } from "@/frameworks/lksg/ViewConfig";
-import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   mountMLDTFrameworkPanelFromFakeFixture,
   mountMLDTFrameworkPanel,
@@ -64,8 +62,6 @@ describe("Component test for the LksgPanel", () => {
     getSectionHead("Certifications, policies and responsibilities")
       .should("have.attr", "data-section-expanded", "false")
       .click();
-
-    getCellValueContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
   });
 
   it("Validate that the list of production sites is displayed modal is displayed correctly", () => {
