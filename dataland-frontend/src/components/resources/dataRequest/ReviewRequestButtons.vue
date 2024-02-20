@@ -88,9 +88,18 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["isVisible"],
   computed: {
     isVisible() {
       return this.answeredDataRequestsForViewPage.length > 0;
+    },
+  },
+  watch: {
+    isVisible(newStatus: boolean) {
+      this.$emit("isVisible", newStatus);
+    },
+    companyId() {
+      void this.updateAnsweredDataRequestsForViewPage();
     },
   },
   data() {
@@ -128,7 +137,6 @@ export default defineComponent({
         this.framework as DataTypeEnum,
         this.getKeycloakPromise,
       );
-      console.log(this.answeredDataRequestsForViewPage);
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked

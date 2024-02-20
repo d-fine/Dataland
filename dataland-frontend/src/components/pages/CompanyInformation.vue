@@ -18,7 +18,13 @@
           </div>
         </div>
         <div class="right-elements">
-          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
+          <ReviewRequestButtons
+            :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
+            :framework="framework"
+            :company-id="companyId"
+            @is-visible="handleRequestButtons"
+          />
+          <SingleDataRequestButton :company-id="companyId" v-if="isSingleDataRequestbuttonvisible" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
@@ -66,10 +72,11 @@ import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwn
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
+  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton, ReviewRequestButtons },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -86,9 +93,14 @@ export default defineComponent({
       hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
+      areReviewRequestButtonsVisible: false,
     };
   },
   computed: {
+    isSingleDataRequestbuttonvisible() {
+      return !this.areReviewRequestButtonsVisible && this.showSingleDataRequestButton;
+    },
+
     displaySector() {
       if (this.companyInformation?.sector) {
         return this.companyInformation?.sector;
@@ -121,6 +133,14 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    framework: {
+      type: String,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map,
+      required: false,
+    },
   },
   mounted() {
     void this.getCompanyInformation();
@@ -140,6 +160,13 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Handles the visibility of the review and request buttons of data request
+     * @param areReviewButtonsVisible the change of the visibility of the review buttons
+     */
+    handleRequestButtons(areReviewButtonsVisible: boolean) {
+      this.areReviewRequestButtonsVisible = areReviewButtonsVisible;
+    },
     /**
      * Updates the hasCompanyDataOwner in an async way
      */

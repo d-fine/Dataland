@@ -23,6 +23,8 @@
       :companyId="companyId"
       :show-single-data-request-button="showSingleDataRequestButton"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+      :framework="framework"
+      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
       class="w-12"
     />
   </div>
@@ -61,6 +63,14 @@ const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
   showSingleDataRequestButton: {
     type: Boolean,
     default: false,
+  },
+  framework: {
+    type: String,
+    required: false,
+  },
+  mapOfReportingPeriodToActiveDataset: {
+    type: Map,
+    required: false,
   },
 });
 
