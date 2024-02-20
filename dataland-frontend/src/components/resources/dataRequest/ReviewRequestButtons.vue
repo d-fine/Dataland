@@ -3,18 +3,25 @@
     id="successModal"
     :dismissableMask="true"
     :modal="true"
-    header="Header"
-    footer="Footer"
     v-model:visible="dialogIsVisible"
     :closable="false"
+    style="border-radius: 0.75rem; text-align: center"
+    :show-header="false"
   >
-    <template #header>
-      <h2 class="m-0">Success</h2>
-    </template>
-    Request closed successfully.
-    <template #footer>
-      <PrimeButton label="TO DATA REQUEST" @click="dialogIsVisible = !dialogIsVisible" class="p-button-outlined" />
-    </template>
+    <div class="text-center" style="display: flex; flex-direction: column">
+      <div style="margin: 10px">
+        <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+        <div style="margin: 10px">
+          <h2 class="m-0">Success</h2>
+        </div>
+        <div style="margin: 15px">
+          <div>Request closed successfully.</div>
+        </div>
+        <div style="margin: 10px">
+          <PrimeButton label="CLOSE" @click="dialogIsVisible = !dialogIsVisible" class="p-button-outlined" />
+        </div>
+      </div>
+    </div>
   </PrimeDialog>
   <div v-if="isVisible">
     <PrimeButton
@@ -159,9 +166,4 @@ export default defineComponent({
 });
 </script>
 
-<style>
-#successModal {
-  border-radius: 0.75rem;
-  text-align: center;
-}
-</style>
+<style scoped lang="scss"></style>
