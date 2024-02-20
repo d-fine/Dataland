@@ -71,7 +71,7 @@ describe(
           });
 
           it(
-            "Checks that all the uploaded company ids and data ids can be retrieved1",
+            "Checks that all the uploaded company ids and data ids can be retrieved2",
             {
               retries: {
                 runMode: 5,
