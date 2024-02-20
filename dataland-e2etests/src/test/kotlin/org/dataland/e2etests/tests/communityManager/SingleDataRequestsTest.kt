@@ -159,21 +159,20 @@ class SingleDataRequestsTest {
     @Test
     fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
-        val invalidEmailAddress = "invalidMail@"
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val contactSetsThatContainInvalidEmailAddresses =
-            listOf(setOf(""), setOf(" "), setOf(invalidEmailAddress, "validMail@somemailabc.abc"))
-        contactSetsThatContainInvalidEmailAddresses.forEach {
+        val contactListsThatContainInvalidEmailAddresses =
+            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
+        contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
-                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
+                postStandardSingleDataRequest(validLei, it.toSet(), "Dummy test message.")
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Invalid email address \"$invalidEmailAddress\""))
+            assertTrue(responseBody.contains("Invalid email address \\\"${it[0]}\\\""))
             assertTrue(
                 responseBody.contains(
-                    "The email address \"$invalidEmailAddress\" you have provided has an invalid format.",
+                    "The email address \\\"${it[0]}\\\" you have provided has an invalid format.",
                 ),
             )
         }
