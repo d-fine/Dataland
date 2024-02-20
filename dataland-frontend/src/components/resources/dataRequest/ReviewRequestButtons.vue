@@ -207,7 +207,7 @@ export default defineComponent({
           "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
         if (e instanceof AxiosError) {
           const responseMessages = (e.response?.data as ErrorResponse)?.errors;
-          errorMessage += responseMessages ? responseMessages[0].message : e.message;
+          errorMessage = responseMessages ? responseMessages[0].message : e.message;
         }
         this.openSuccessModal(errorMessage, false);
         return;
@@ -215,7 +215,7 @@ export default defineComponent({
       await this.updateAnsweredDataRequestsForViewPage();
       switch (requestStatusToPatch) {
         case RequestStatus.Open:
-          this.openSuccessModal("Request opened successfully.");
+          this.openSuccessModal("Once data are provided, you \nwill be notified through email.");
           return;
         case RequestStatus.Closed:
           this.openSuccessModal("Request closed successfully.");
