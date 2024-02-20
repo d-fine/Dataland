@@ -5,6 +5,8 @@
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
+      :framework="dataType"
+      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
     <div v-if="isDataProcessedSuccesfully">
       <MarginWrapper
@@ -47,13 +49,7 @@
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />
-            <ReviewRequestButtons
-              :company-id="companyID"
-              :framework="dataType"
-              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
-              :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
-              :is-visible="true"
-            />
+
             <PrimeButton
               v-if="isEditableByCurrentUser"
               class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
@@ -122,7 +118,6 @@ import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
@@ -139,7 +134,6 @@ export default defineComponent({
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
     InputSwitch,
-    ReviewRequestButtons,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {

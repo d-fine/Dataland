@@ -102,9 +102,18 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["isVisible"],
   computed: {
     isVisible() {
       return this.answeredDataRequestsForViewPage.length > 0;
+    },
+  },
+  watch: {
+    isVisible(newStatus: boolean) {
+      this.$emit("isVisible", newStatus);
+    },
+    companyId() {
+      void this.updateAnsweredDataRequestsForViewPage();
     },
   },
   data() {
