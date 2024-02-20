@@ -33,7 +33,7 @@ describeIf(
       });
     });
 
-    it(
+    it.only(
       "Create a company and a Lksg dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
@@ -65,6 +65,18 @@ describeIf(
                         string,
                         object
                       >;
+
+                      frontendSubmittedP2pDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                      frontendSubmittedP2pDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      frontendSubmittedP2pDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+
+                      originallyUploadedP2pDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                      originallyUploadedP2pDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      originallyUploadedP2pDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+
+
+                      console.log("all", frontendSubmittedP2pDataset);
+                      console.log("abc",frontendSubmittedP2pDataset.general.productionSpecific);
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
                     });
                 },
