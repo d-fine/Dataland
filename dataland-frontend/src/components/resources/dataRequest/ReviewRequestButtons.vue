@@ -18,7 +18,7 @@
           <div>Request closed successfully.</div>
         </div>
         <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="dialogIsVisible = !dialogIsVisible" class="p-button-outlined" />
+          <PrimeButton label="CLOSE" @click="closeSuccessDialog()" class="p-button-outlined" />
         </div>
       </div>
     </div>
@@ -100,6 +100,12 @@ export default defineComponent({
     void this.updateAnsweredDataRequestsForViewPage();
   },
   methods: {
+    /**
+     * Closes the SuccessDialog
+     */
+    closeSuccessDialog() {
+      this.dialogIsVisible = false;
+    },
     /**
      * Makes the api call and updates the list of answered data requests.
      */
