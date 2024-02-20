@@ -77,7 +77,7 @@ describeIf(
       cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
       submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
-        checkIfRequestContentIsValid(interception);
+        checkIfRequestBodyIsValid(interception);
       });
       checkCompanyInfoSheet();
       cy.get("[data-test=submittedDiv]").should("exist");
@@ -103,14 +103,18 @@ describeIf(
      * Checks if the request body that is sent to the backend is valid and matches the given information
      * @param interception the object of interception with the backend
      */
-    function checkIfRequestContentIsValid(interception: Interception): void {
+    function checkIfRequestBodyIsValid(interception: Interception): void {
+      type SingleDataRequestTypeInInterception = Omit<SingleDataRequest, "reportingPeriods" | "contacts"> & {
+        reportingPeriods: string[];
+        contacts: string[];
+      };
       if (interception.request !== undefined) {
-        const requestBody = interception.request.body as SingleDataRequest;
-        const expectedRequest: SingleDataRequest = {
+        const requestBody = interception.request.body as SingleDataRequestTypeInInterception;
+        const expectedRequest: SingleDataRequestTypeInInterception = {
           companyIdentifier: testStoredCompany.companyId,
           dataType: DataTypeEnum.Lksg,
-          reportingPeriods: new Set(["2023"]),
-          contacts: new Set(["example@Email.com"]),
+          reportingPeriods: ["2023"],
+          contacts: ["example@Email.com"],
           message: "Frontend test message",
         };
         expect(requestBody).to.deep.equal(expectedRequest);
