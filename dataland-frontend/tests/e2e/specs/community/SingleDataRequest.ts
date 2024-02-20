@@ -109,8 +109,8 @@ describeIf(
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
           dataType: DataTypeEnum.Lksg,
-          reportingPeriods: ["2023"],
-          contacts: ["example@Email.com"],
+          reportingPeriods: new Set("2023"),
+          contacts: new Set("example@Email.com"),
           message: "Frontend test message",
         };
         expect(requestBody).to.deep.equal(expectedRequest);

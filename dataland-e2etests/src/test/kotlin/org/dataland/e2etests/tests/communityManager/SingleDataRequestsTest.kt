@@ -170,10 +170,10 @@ class SingleDataRequestsTest {
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Invalid email address $invalidEmailAddress"))
+            assertTrue(responseBody.contains("Invalid email address \"$invalidEmailAddress\""))
             assertTrue(
                 responseBody.contains(
-                    "The email address $invalidEmailAddress you have provided has an invalid format.",
+                    "The email address \"$invalidEmailAddress\" you have provided has an invalid format.",
                 ),
             )
         }
