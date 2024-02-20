@@ -15,7 +15,7 @@
           <h2 class="m-0">Success</h2>
         </div>
         <div style="margin: 15px">
-          <div>{{ dialog }}</div>
+          <p>{{ dialog }}</p>
         </div>
         <div style="margin: 10px">
           <PrimeButton label="CLOSE" @click="closeSuccessModal()" class="p-button-outlined" />
@@ -55,8 +55,7 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import { defineComponent } from "vue";
-import { inject } from "vue";
+import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
@@ -65,6 +64,7 @@ import SelectReportingPeriodDialog from "@/components/general/SelectReportingPer
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import PrimeDialog from "primevue/dialog";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -128,6 +128,7 @@ export default defineComponent({
         this.framework as DataTypeEnum,
         this.getKeycloakPromise,
       );
+      console.log(this.answeredDataRequestsForViewPage);
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
@@ -144,18 +145,18 @@ export default defineComponent({
             RequestStatus.Closed,
             this.getKeycloakPromise,
           ));
+          this.openSuccessModal("Request closed successfully.");
         }
         console.log("submitted the patch for closing of these requests:");
         console.log(this.answeredDataRequestsForViewPage);
       }
-      this.openSuccessModal("Request closed successfully.");
     },
     /**
      * Method to reopen the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
      */
     async reOpenRequest(event: Event) {
-      this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
+      this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
@@ -180,9 +181,29 @@ export default defineComponent({
      * Handles the selection of the reporting period in th dropdown panel
      * @param reportingPeriodTableEntry object, which was chosen
      */
-    handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
-      console.log("this is the selected object:");
-      console.log(reportingPeriodTableEntry);
+    async handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
+      const dataRequestId = assertDefined(reportingPeriodTableEntry.dataRequestId);
+      const requestStatusToPatch = assertDefined(
+        this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
+      );
+      void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
+      console.log(requestStatusToPatch);
+      this.openSuccessModal("Request " + requestStatusToPatch + " successfully.");
+
+      await this.updateAnsweredDataRequestsForViewPage();
+    },
+    /**
+     * Helper function to handle the different actions given by the different buttons
+     * @param actionOnClick the action on click
+     * @returns the corresponding request status
+     */
+    mapActionToStatus(actionOnClick: ReportingPeriodTableActions) {
+      switch (actionOnClick) {
+        case ReportingPeriodTableActions.CloseRequest:
+          return RequestStatus.Closed;
+        case ReportingPeriodTableActions.ReopenRequest:
+          return RequestStatus.Open;
+      }
     },
   },
 });
