@@ -56,7 +56,8 @@ function generateFixtureWithALotOfNullFields(): FixtureData<LksgData> {
 function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
   newFixture.companyInformation.companyName = "lksg-not-a-manufacturing-company-but-has-production-sites";
-  const twoProductionSites = [generateProductionSite(), generateProductionSite()];
+  const lksgGeneratorNoUndefined = new LksgGenerator(0);
+  const twoProductionSites = [lksgGeneratorNoUndefined.generateLksgProductionSite(), lksgGeneratorNoUndefined.generateLksgProductionSite()];
 
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.No;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.No;
@@ -119,14 +120,13 @@ function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgDa
  */
 function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
-  const twoProductionSites = [generateProductionSite(), generateProductionSite()];
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
 
   newFixture.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
 
-  newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification =
+  newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct =
     lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
-
+  const twoProductionSites = [lksgGeneratorNoUndefined.generateLksgProductionSite(), lksgGeneratorNoUndefined.generateLksgProductionSite()];
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.Yes;
   newFixture.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
