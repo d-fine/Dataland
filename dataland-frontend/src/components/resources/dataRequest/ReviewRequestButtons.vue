@@ -167,8 +167,6 @@ export default defineComponent({
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
           await this.patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed);
-          await this.updateAnsweredDataRequestsForViewPage();
-          this.openSuccessModal("Request closed successfully.");
         }
       }
     },
@@ -183,8 +181,6 @@ export default defineComponent({
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
           await this.patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open);
-          await this.updateAnsweredDataRequestsForViewPage();
-          this.openSuccessModal("Request opened successfully.");
         }
       }
     },
@@ -219,6 +215,15 @@ export default defineComponent({
         this.openSuccessModal(errorMessage, false);
         return;
       }
+      await this.updateAnsweredDataRequestsForViewPage();
+      switch (requestStatusToPatch) {
+        case RequestStatus.Open:
+          this.openSuccessModal("Request opened successfully.");
+          return;
+        case RequestStatus.Closed:
+          this.openSuccessModal("Request closed successfully.");
+          return;
+      }
     },
     /**
      * Handles the selection of the reporting period in th dropdown panel
@@ -230,15 +235,6 @@ export default defineComponent({
         this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
       );
       await this.patchDataRequestStatus(dataRequestId, requestStatusToPatch);
-      await this.updateAnsweredDataRequestsForViewPage();
-      switch (requestStatusToPatch) {
-        case RequestStatus.Open:
-          this.openSuccessModal("Request opened successfully.");
-          return;
-        case RequestStatus.Closed:
-          this.openSuccessModal("Request closed successfully.");
-          return;
-      }
     },
     /**
      * Helper function to handle the different actions given by the different buttons
