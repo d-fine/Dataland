@@ -45,8 +45,8 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022", "2023"),
-            contacts = listOf("someContact@webserver.de", "simpleString@some.thing"),
+            reportingPeriods = setOf("2022", "2023"),
+            contacts = setOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -67,7 +67,7 @@ class SingleDataRequestsTest {
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022"),
+            reportingPeriods = setOf("2022"),
         )
         val clientException = assertThrows<ClientException> {
             requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
@@ -89,7 +89,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = unknownCompanyId,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022"),
+            reportingPeriods = setOf("2022"),
         )
         val clientException = assertThrows<ClientException> {
             requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -107,7 +107,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = companyIdOfNewCompany,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022"),
+            reportingPeriods = setOf("2022"),
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
@@ -142,14 +142,14 @@ class SingleDataRequestsTest {
 
     private fun postStandardSingleDataRequest(
         companyIdentifier: String,
-        contacts: List<String>? = null,
+        contacts: Set<String>? = null,
         message: String? = null,
     ): StoredDataRequest {
         return requestControllerApi.postSingleDataRequest(
             SingleDataRequest(
                 companyIdentifier = companyIdentifier,
                 dataType = SingleDataRequest.DataType.sfdr,
-                reportingPeriods = listOf("2022"),
+                reportingPeriods = setOf("2022"),
                 contacts = contacts,
                 message = message,
             ),
@@ -159,20 +159,21 @@ class SingleDataRequestsTest {
     @Test
     fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
+        val invalidEmailAddress = "invalidMail@"
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val contactListsThatContainInvalidEmailAddresses =
-            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
-        contactListsThatContainInvalidEmailAddresses.forEach {
+        val contactSetsThatContainInvalidEmailAddresses =
+            listOf(setOf(""), setOf(" "), setOf(invalidEmailAddress, "validMail@somemailabc.abc"))
+        contactSetsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Invalid email address \\\"${it[0]}\\\""))
+            assertTrue(responseBody.contains("Invalid email address $invalidEmailAddress"))
             assertTrue(
                 responseBody.contains(
-                    "The email address \\\"${it[0]}\\\" you have provided has an invalid format.",
+                    "The email address $invalidEmailAddress you have provided has an invalid format.",
                 ),
             )
         }
@@ -183,9 +184,9 @@ class SingleDataRequestsTest {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val contactListsThatDontHaveEmailAddresses =
-            listOf<List<String>?>(null, listOf())
-        contactListsThatDontHaveEmailAddresses.forEach {
+        val contactSetsThatDontHaveEmailAddresses =
+            listOf<Set<String>?>(null, setOf())
+        contactSetsThatDontHaveEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
@@ -205,7 +206,7 @@ class SingleDataRequestsTest {
     fun `post a single data requests without a message but with valid email address in contact list`() {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
-        val storedDataRequest = postStandardSingleDataRequest(validLei, listOf("test@someprovider.abc"))
+        val storedDataRequest = postStandardSingleDataRequest(validLei, setOf("test@someprovider.abc"))
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
         assertEquals(
@@ -220,7 +221,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022"),
+            reportingPeriods = setOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -257,7 +258,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022"),
+            reportingPeriods = setOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -275,7 +276,7 @@ class SingleDataRequestsTest {
         val requestA = SingleDataRequest(
             companyIdentifier = generateRandomIsin(),
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = listOf("2022"),
+            reportingPeriods = setOf("2022"),
         )
         requestControllerApi.postSingleDataRequest(requestA)
 
@@ -283,7 +284,7 @@ class SingleDataRequestsTest {
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
             dataType = SingleDataRequest.DataType.sfdr,
-            reportingPeriods = listOf("2021"),
+            reportingPeriods = setOf("2021"),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()

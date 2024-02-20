@@ -32,7 +32,6 @@ data class SingleDataRequest(
             type = "string",
             example = "[\"2022\", \"2023\"]",
         ),
-        schema = Schema(type = "string"),
     )
     val reportingPeriods: Set<String>,
 
@@ -41,7 +40,6 @@ data class SingleDataRequest(
             type = "string",
             example = "[\"testuser@dataland.com\"]",
         ),
-        schema = Schema(type = "string"),
     )
     val contacts: Set<String>?,
 

@@ -776,6 +776,7 @@
             ]
           },
           "reportingPeriods": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "2022",
@@ -786,6 +787,7 @@
             }
           },
           "contacts": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "testuser@dataland.com"
