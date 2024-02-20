@@ -15,10 +15,10 @@
           <h2 class="m-0">Success</h2>
         </div>
         <div style="margin: 15px">
-          <div>Request closed successfully.</div>
+          <div>{{ dialog }}</div>
         </div>
         <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="closeSuccessDialog()" class="p-button-outlined" />
+          <PrimeButton label="CLOSE" @click="closeSuccessModal()" class="p-button-outlined" />
         </div>
       </div>
     </div>
@@ -96,7 +96,8 @@ export default defineComponent({
   data() {
     return {
       answeredDataRequestsForViewPage: [] as StoredDataRequest[],
-      dialogIsVisible: true,
+      dialogIsVisible: false,
+      dialog: "",
       actionOnClick: ReportingPeriodTableActions.ReopenRequest,
     };
   },
@@ -105,10 +106,18 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Closes the SuccessDialog
+     * Closes the SuccessModal
      */
-    closeSuccessDialog() {
+    closeSuccessModal() {
       this.dialogIsVisible = false;
+    },
+    /**
+     * Opens the SuccessModal with given dialog
+     * @param dialog desired dialog
+     */
+    openSuccessModal(dialog: string) {
+      this.dialog = dialog;
+      this.dialogIsVisible = true;
     },
     /**
      * Makes the api call and updates the list of answered data requests.
@@ -139,6 +148,7 @@ export default defineComponent({
         console.log("submitted the patch for closing of these requests:");
         console.log(this.answeredDataRequestsForViewPage);
       }
+      this.openSuccessModal("Request closed successfully.");
     },
     /**
      * Method to reopen the request or provide dropdown for that when the button is clicked
