@@ -161,23 +161,15 @@ export default defineComponent({
      * @param event ClickEvent
      */
     async closeRequest(event: Event) {
-      try {
-        this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
-        if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
-          this.openReportingPeriodPanel(event);
-        } else {
-          for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-            await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed, this.getKeycloakPromise);
-            await this.updateAnsweredDataRequestsForViewPage();
-            this.openSuccessModal("Request closed successfully.");
-          }
+      this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
+      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+        this.openReportingPeriodPanel(event);
+      } else {
+        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
+          await this.patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed);
+          await this.updateAnsweredDataRequestsForViewPage();
+          this.openSuccessModal("Request closed successfully.");
         }
-      } catch (e) {
-        let errorMessage = "An error occurred. Please try again later.";
-        if (e instanceof Error) {
-          errorMessage = e.name + ": " + e.message;
-        }
-        this.openSuccessModal(errorMessage, false);
       }
     },
     /**
@@ -185,23 +177,15 @@ export default defineComponent({
      * @param event ClickEvent
      */
     async reOpenRequest(event: Event) {
-      try {
-        this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
-        if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
-          this.openReportingPeriodPanel(event);
-        } else {
-          for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-            await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open, this.getKeycloakPromise);
-            await this.updateAnsweredDataRequestsForViewPage();
-            this.openSuccessModal("Request opened successfully.");
-          }
+      this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
+      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+        this.openReportingPeriodPanel(event);
+      } else {
+        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
+          await this.patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open);
+          await this.updateAnsweredDataRequestsForViewPage();
+          this.openSuccessModal("Request opened successfully.");
         }
-      } catch (e) {
-        let errorMessage = "An error occurred. Please try again later.";
-        if (e instanceof Error) {
-          errorMessage = e.name + ": " + e.message;
-        }
-        this.openSuccessModal(errorMessage, false);
       }
     },
     /**
@@ -215,6 +199,28 @@ export default defineComponent({
       }
     },
     /**
+     * Trys to patch DataRequest, displays possible error message
+     * @param dataRequestId DataRequest to be closed
+     * @param requestStatusToPatch desired requestStatus
+     */
+    async patchDataRequestStatus(dataRequestId: string, requestStatusToPatch: RequestStatus) {
+      try {
+        void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
+      } catch (e) {
+        let errorMessage =
+          "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+        if (e instanceof Error) {
+          errorMessage = e.name + ": " + e.message + "\n";
+        }
+        if (e instanceof AxiosError) {
+          const responseMessages = (e.response?.data as ErrorResponse)?.errors;
+          errorMessage += responseMessages ? responseMessages[0].message : e.message;
+        }
+        this.openSuccessModal(errorMessage, false);
+        return;
+      }
+    },
+    /**
      * Handles the selection of the reporting period in th dropdown panel
      * @param reportingPeriodTableEntry object, which was chosen
      */
@@ -223,22 +229,15 @@ export default defineComponent({
       const requestStatusToPatch = assertDefined(
         this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
       );
-      try {
-        void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
-      } catch (e) {
-        let errorMessage = "An error occurred. Please try again later.";
-        if (e instanceof Error) {
-          errorMessage = e.name + ": " + e.message;
-        }
-        if (e instanceof AxiosError) {
-          const responseMessages = (e.response?.data as ErrorResponse)?.errors;
-          errorMessage = responseMessages ? responseMessages[0].message : e.message;
-        } else {
-          errorMessage =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-        }
-        this.openSuccessModal(errorMessage, false);
-        await this.updateAnsweredDataRequestsForViewPage();
+      await this.patchDataRequestStatus(dataRequestId, requestStatusToPatch);
+      await this.updateAnsweredDataRequestsForViewPage();
+      switch (requestStatusToPatch) {
+        case RequestStatus.Open:
+          this.openSuccessModal("Request opened successfully.");
+          return;
+        case RequestStatus.Closed:
+          this.openSuccessModal("Request closed successfully.");
+          return;
       }
     },
     /**
