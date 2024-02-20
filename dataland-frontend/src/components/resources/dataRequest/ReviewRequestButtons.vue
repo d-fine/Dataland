@@ -140,15 +140,10 @@ export default defineComponent({
         this.openReportingPeriodPanel(event);
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-          void (await patchDataRequestStatus(
-            answeredRequest.dataRequestId,
-            RequestStatus.Closed,
-            this.getKeycloakPromise,
-          ));
+          await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed, this.getKeycloakPromise);
+          await this.updateAnsweredDataRequestsForViewPage();
           this.openSuccessModal("Request closed successfully.");
         }
-        console.log("submitted the patch for closing of these requests:");
-        console.log(this.answeredDataRequestsForViewPage);
       }
     },
     /**
@@ -162,9 +157,9 @@ export default defineComponent({
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
           await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open, this.getKeycloakPromise);
+          await this.updateAnsweredDataRequestsForViewPage();
+          this.openSuccessModal("Request opened successfully.");
         }
-        console.log("submitted the patch for reopening these requests:");
-        console.log(this.answeredDataRequestsForViewPage);
       }
     },
     /**
@@ -187,8 +182,7 @@ export default defineComponent({
         this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
       );
       void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
-      console.log(requestStatusToPatch);
-      this.openSuccessModal("Request " + requestStatusToPatch + " successfully.");
+      this.openSuccessModal("Request " + requestStatusToPatch + " successfully."); // todo
 
       await this.updateAnsweredDataRequestsForViewPage();
     },
