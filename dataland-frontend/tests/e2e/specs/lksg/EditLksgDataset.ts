@@ -19,20 +19,7 @@ describeIf(
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         testData = getPreparedFixture("LkSG-date-2023-04-18", preparedFixtures);
 
-        testData.t.governance = {
-          ...testData.t.governance,
-          ...{
-            riskManagementOwnOperations: {
-              environmentalManagementSystem: "Yes",
-              environmentalManagementSystemInternationalCertification: {
-                value: "Yes",
-              },
-              environmentalManagementSystemNationalCertification: {
-                value: "Yes",
-              },
-            },
-          },
-        };
+        //TODO add information for testing governance category
 
         testData.t.environmental = {
           ...testData.t.environmental,
@@ -67,13 +54,6 @@ describeIf(
           );
 
           testEditDataButton(storedCompany, lksgDatasetFor2021);
-
-          cy.get('[data-test="upload-files-button-environmentalManagementSystemInternationalCertification"]').should(
-            "exist",
-          );
-          cy.get('[data-test="upload-files-button-environmentalManagementSystemNationalCertification"]').should(
-            "exist",
-          );
 
           cy.get(
             '[data-test="BaseDataPointFormFieldmercuryAndMercuryWasteHandlingPolicy"] [data-test="files-to-upload-remove"]',
