@@ -57,7 +57,10 @@ function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
   newFixture.companyInformation.companyName = "lksg-not-a-manufacturing-company-but-has-production-sites";
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
-  const twoProductionSites = [lksgGeneratorNoUndefined.generateLksgProductionSite(), lksgGeneratorNoUndefined.generateLksgProductionSite()];
+  const twoProductionSites = [
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+  ];
 
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.No;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.No;
@@ -126,7 +129,10 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
 
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct =
     lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
-  const twoProductionSites = [lksgGeneratorNoUndefined.generateLksgProductionSite(), lksgGeneratorNoUndefined.generateLksgProductionSite()];
+  const twoProductionSites = [
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+  ];
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.Yes;
   newFixture.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;

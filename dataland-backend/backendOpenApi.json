@@ -13898,9 +13898,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
@@ -13912,6 +13909,9 @@
             "nullable": true
           },
           "headquarters": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "permId": {
@@ -13939,10 +13939,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
