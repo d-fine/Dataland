@@ -1,6 +1,6 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
-import { type SingleDataRequest } from "@clients/communitymanager";
+import { RequestControllerApi, RequestStatus, type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
 import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -23,8 +23,9 @@ describeIf(
 
     /**
      * Uploads a company with lksg data
+     * @param reportingPeriod the year for which the data is uploaded
      */
-    function uploadCompanyWithData(): void {
+    function uploadCompanyWithData(reportingPeriod: string): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
           async (storedCompany) => {
@@ -33,7 +34,7 @@ describeIf(
               DataTypeEnum.Lksg,
               token,
               storedCompany.companyId,
-              "2015",
+              reportingPeriod,
               getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
             );
           },
@@ -43,7 +44,7 @@ describeIf(
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        uploadCompanyWithData();
+        uploadCompanyWithData("2020");
       });
     });
     beforeEach(() => {
@@ -68,7 +69,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      chooseReportingPeriod();
+      chooseReportingPeriod("2020");
       checkDropdownLabels();
       chooseFramework();
 
@@ -88,7 +89,7 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      chooseReportingPeriod();
+      chooseReportingPeriod("2020");
       chooseFramework();
       submit();
       cy.get("[data-test=submittedDiv]").should("exist");
@@ -96,6 +97,22 @@ describeIf(
         "contain.text",
         "The submission of your data request was unsuccessful.",
       );
+    });
+
+    it("Create a single data request, set the status to answered, then close the request on the view page", () => {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
+      cy.get('[data-test="closeRequestButton"]').should("not.exist");
+      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
+      chooseReportingPeriod("2023");
+      submit();
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
+      cy.get('[data-test="closeRequestButton"]').should("not.exist");
+      setRequestStatusToAnswered("2023", DataTypeEnum.Lksg);
+      cy.get('[data-test="reOpenRequestButton"]').should("exist");
+      cy.get('[data-test="closeRequestButton"]').should("exist").click();
     });
 
     /**
@@ -108,7 +125,7 @@ describeIf(
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
           frameworkName: "lksg",
-          listOfReportingPeriods: ["2023"],
+          listOfReportingPeriods: ["2020"],
           contactList: ["example@Email.com"],
           message: "Frontend test message",
         };
@@ -123,12 +140,13 @@ describeIf(
     }
     /**
      * Choose reporting periods
+     * @param year selected reporting period
      */
-    function chooseReportingPeriod(): void {
+    function chooseReportingPeriod(year: string): void {
       cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
         .should("exist")
         .get('[data-test="toggle-chip"')
-        .contains("2023")
+        .contains(year)
         .click()
         .parent()
         .should("have.class", "toggled");
@@ -181,6 +199,15 @@ describeIf(
      */
     function checkCompanyInfoSheet(): void {
       cy.get("[data-test='companyNameTitle']").should("contain.text", testCompanyName);
+    }
+    /**
+     * Sets the status of a single data request from open to answered
+     * @param year the reporting period matching the request
+     * @param framework the framework matching the request
+     */
+    function setRequestStatusToAnswered(year: string, framework: DataTypeEnum): void {
+      const requestId = RequestControllerApi.getDataRequests({ dataType: framework }, { year: year })[0].dataRequestId;
+      RequestControllerApi.patchDataRequest({ dataRequestId: requestId }, { requestStatus: RequestStatus.Answered });
     }
   },
 );
