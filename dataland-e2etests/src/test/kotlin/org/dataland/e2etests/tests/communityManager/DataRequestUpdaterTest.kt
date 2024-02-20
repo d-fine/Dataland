@@ -1,11 +1,9 @@
 package org.dataland.e2etests.tests.communityManager
 
-import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
-import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -19,7 +17,7 @@ import java.util.*
 class DataRequestUpdaterTest {
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
-    private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    private val requestControllerApi = apiAccessor.requestControllerApi
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     private lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
     private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
@@ -42,7 +40,7 @@ class DataRequestUpdaterTest {
             companyIdentifier = mapOfIds["companyId"].toString(),
             frameworkName = SingleDataRequest.FrameworkName.eutaxonomyMinusNonMinusFinancials,
             listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "simpleString"),
+            contactList = listOf("someContact@webserver.de", "valid@e.mail"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
 
