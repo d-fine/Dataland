@@ -5,6 +5,7 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
@@ -202,7 +203,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
           {
             type: "cell",
             label: "Number of Production Sites",
-
+            explanation: "How many production sites are there?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionSites == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
@@ -253,10 +254,11 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                   "Tightly timed or short-term adjusted delivery deadlines and conditions with suppliers",
                 NoneOfTheAbove: "None of the above",
               };
-              return formatStringForDatatable(
-                dataset.general?.productionSpecific?.specificProcurement
-                  ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.specificProcurement, mappings)
-                  : "",
+              return formatListOfStringsForDatatable(
+                dataset.general?.productionSpecific?.specificProcurement?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Specific Procurement",
               );
             },
           },
@@ -268,14 +270,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "WARNINGREMOVELATER",
-            explanation: "Warning remove this object later in the process!",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.productionSpecificOwnOperations?.warningremovelater),
-          },
           {
             type: "cell",
             label: "Most Important Products",
@@ -389,7 +383,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Counteracting Measures",
             explanation: "Have measures been defined to counteract the risks?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.riskManagementOwnOperations?.identifiedRisks == "Yes",
+              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.counteractingMeasures),
           },
@@ -827,7 +821,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Human Rights or Environmental Violations Measures",
             explanation: "Have measures been taken to address this violation?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition == "Yes",
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures,
@@ -1234,7 +1228,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasuresDescription,
               ),
           },
@@ -2653,7 +2647,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                 ?.persistentOrganicPollutantsUsePreventionOtherMeasures?.value == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePreventionOtherMeasuresDescription,
               ),

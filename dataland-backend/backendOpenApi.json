@@ -7212,22 +7212,17 @@
             ]
           },
           "specificProcurement": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LksgGeneralProductionspecificSpecificProcurementOptions"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/SpecificProcurementOptions"
+            }
           }
         }
       },
       "LksgGeneralProductionSpecificOwnOperations": {
         "type": "object",
         "properties": {
-          "warningremovelater": {
-            "type": "string",
-            "nullable": true
-          },
           "mostImportantProducts": {
             "type": "array",
             "nullable": true,
@@ -7250,15 +7245,6 @@
           "National",
           "International",
           "Both"
-        ]
-      },
-      "LksgGeneralProductionspecificSpecificProcurementOptions": {
-        "type": "string",
-        "enum": [
-          "ShortLivedAndChangingBusinessRelationships",
-          "HighPricePressure",
-          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
-          "NoneOfTheAbove"
         ]
       },
       "LksgGovernance": {
@@ -8635,6 +8621,15 @@
             "nullable": true
           }
         }
+      },
+      "SpecificProcurementOptions": {
+        "type": "string",
+        "enum": [
+          "ShortLivedAndChangingBusinessRelationships",
+          "HighPricePressure",
+          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
+          "NoneOfTheAbove"
+        ]
       },
       "SubcontractingCompaniesCountriesOptions": {
         "type": "string",
@@ -13903,9 +13898,15 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
@@ -13913,15 +13914,9 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },

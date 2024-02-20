@@ -195,6 +195,7 @@ export const lksgDataModel = [
           {
             name: "numberOfProductionSites",
             label: "Number of Production Sites",
+            description: "How many production sites are there?",
 
             component: "NumberFormField",
             required: false,
@@ -255,7 +256,7 @@ export const lksgDataModel = [
               },
             ],
 
-            component: "SingleSelectFormField",
+            component: "MultiSelectFormField",
             required: false,
             showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
           },
@@ -265,15 +266,6 @@ export const lksgDataModel = [
         name: "productionSpecificOwnOperations",
         label: "Production-specific - Own Operations",
         fields: [
-          {
-            name: "warningremovelater",
-            label: "WARNINGREMOVELATER",
-            description: "Warning remove this object later in the process!",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
           {
             name: "mostImportantProducts",
             label: "Most Important Products",
@@ -408,7 +400,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.riskManagementOwnOperations?.identifiedRisks == "Yes",
+              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
           },
           {
             name: "whichCounteractingMeasures",
@@ -853,7 +845,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition == "Yes",
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
           },
           {
             name: "humanRightsOrEnvironmentalViolationsMeasuresDefinition",
@@ -1223,7 +1215,7 @@ export const lksgDataModel = [
             label: "Forced Labor and Slavery Prevention Other Measures Description",
             description: "Please list any other measures (if available) you take to prevent forced labor and slavery.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionOtherMeasures?.value == "Yes",
@@ -2367,7 +2359,7 @@ export const lksgDataModel = [
             description:
               "Please list other measures (if available) you take to prevent the use of persistent organic pollutants (POP).",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
