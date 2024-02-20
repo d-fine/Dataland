@@ -73,12 +73,13 @@ import { inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
-import { type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import PrimeDialog from "primevue/dialog";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { AxiosError } from "axios";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -222,10 +223,23 @@ export default defineComponent({
       const requestStatusToPatch = assertDefined(
         this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
       );
-      void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
-      this.openSuccessModal("Request " + requestStatusToPatch + " successfully."); // todo
-
-      await this.updateAnsweredDataRequestsForViewPage();
+      try {
+        void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
+      } catch (e) {
+        let errorMessage = "An error occurred. Please try again later.";
+        if (e instanceof Error) {
+          errorMessage = e.name + ": " + e.message;
+        }
+        if (e instanceof AxiosError) {
+          const responseMessages = (e.response?.data as ErrorResponse)?.errors;
+          errorMessage = responseMessages ? responseMessages[0].message : e.message;
+        } else {
+          errorMessage =
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+        }
+        this.openSuccessModal(errorMessage, false);
+        await this.updateAnsweredDataRequestsForViewPage();
+      }
     },
     /**
      * Helper function to handle the different actions given by the different buttons
