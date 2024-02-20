@@ -46,6 +46,7 @@ class DataRequestUpdaterTest {
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
 
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
