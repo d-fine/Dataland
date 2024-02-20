@@ -83,6 +83,7 @@
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SelectReportingPeriodDialog
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              :action-on-click="ReportingPeriodTableActions.EditDataset"
               @selected-reporting-period="handleReportingPeriodSelection"
             />
           </OverlayPanel>
@@ -122,7 +123,7 @@ import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSea
 import InputSwitch from "primevue/inputswitch";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
-import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -191,6 +192,9 @@ export default defineComponent({
     };
   },
   computed: {
+    ReportingPeriodTableActions() {
+      return ReportingPeriodTableActions;
+    },
     DataTypeEnum() {
       return DataTypeEnum;
     },

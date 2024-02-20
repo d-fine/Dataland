@@ -4,9 +4,9 @@
     <div class="three-in-row" data-test="reporting-periods">
       <a
         v-for="(el, index) in dataTableContents"
-        class="link"
+        :class="el.isClickable ? 'link' : ''"
         :key="index"
-        @click="$emit('selectedReportingPeriod', el)"
+        @click="el.isClickable ? $emit('selectedReportingPeriod', el) : () => {}"
       >
         {{ el.reportingPeriod }}</a
       >
@@ -18,7 +18,7 @@
 import { defineComponent } from "vue";
 import { type DataMetaInformation } from "@clients/backend";
 import { compareReportingPeriods } from "@/utils/DataTableDisplay";
-import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 import { type StoredDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
@@ -34,6 +34,10 @@ export default defineComponent({
     },
     answeredDataRequests: {
       type: Object as () => StoredDataRequest[],
+    },
+    actionOnClick: {
+      type: String as () => ReportingPeriodTableActions,
+      required: true,
     },
   },
   emits: ["selectedReportingPeriod"],
@@ -51,17 +55,32 @@ export default defineComponent({
           (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
         ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
-          const dataRequestId = this.answeredDataRequests?.filter((answeredDataRequest: StoredDataRequest) => {
-            return answeredDataRequest.reportingPeriod == key;
-          });
+          const answeredDataRequestId = this.answeredDataRequests
+            ?.filter((answeredDataRequest: StoredDataRequest) => {
+              return answeredDataRequest.reportingPeriod == key;
+            })
+            .map((answeredDataRequest: StoredDataRequest) => {
+              return answeredDataRequest.dataRequestId;
+            });
+          let isClickable;
+          if (this.actionOnClick == ReportingPeriodTableActions.EditDataset) {
+            isClickable = true;
+          } else {
+            if (answeredDataRequestId) {
+              isClickable = answeredDataRequestId.length > 0;
+            } else {
+              isClickable = false;
+            }
+          }
           this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
-            dataRequestId: dataRequestId,
+            dataRequestId: answeredDataRequestId,
+            actionOnClick: this.actionOnClick,
+            isClickable: isClickable,
           } as ReportingPeriodTableEntry);
         }
       }
-      console.log(this.dataTableContents);
     },
   },
 });

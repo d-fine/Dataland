@@ -46,6 +46,7 @@
       <SelectReportingPeriodDialog
         :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
         :answered-data-requests="answeredDataRequestsForViewPage"
+        :action-on-click="this.actionOnClick"
         @selected-reporting-period="handleReportingPeriodSelection"
       />
     </OverlayPanel>
@@ -61,7 +62,7 @@ import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/ut
 import OverlayPanel from "primevue/overlaypanel";
 import { type DataTypeEnum } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
-import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import PrimeDialog from "primevue/dialog";
 
@@ -74,9 +75,6 @@ export default defineComponent({
   },
   components: { PrimeButton, OverlayPanel, SelectReportingPeriodDialog, PrimeDialog },
   props: {
-    isVisible: {
-      default: false,
-    },
     companyId: {
       type: String,
       required: true,
@@ -90,10 +88,16 @@ export default defineComponent({
       required: true,
     },
   },
+  computed: {
+    isVisible() {
+      return this.answeredDataRequestsForViewPage.length > 0;
+    },
+  },
   data() {
     return {
       answeredDataRequestsForViewPage: [] as StoredDataRequest[],
       dialogIsVisible: true,
+      actionOnClick: ReportingPeriodTableActions.ReopenRequest,
     };
   },
   mounted() {
@@ -121,6 +125,7 @@ export default defineComponent({
      * @param event ClickEvent
      */
     async closeRequest(event: Event) {
+      this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
@@ -140,6 +145,7 @@ export default defineComponent({
      * @param event ClickEvent
      */
     async reOpenRequest(event: Event) {
+      this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
@@ -165,8 +171,8 @@ export default defineComponent({
      * @param reportingPeriodTableEntry object, which was chosen
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
-      console.log("this is the selected Reporting period:");
-      console.log(reportingPeriodTableEntry.reportingPeriod);
+      console.log("this is the selected object:");
+      console.log(reportingPeriodTableEntry);
     },
   },
 });
