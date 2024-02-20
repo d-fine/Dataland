@@ -8,19 +8,32 @@
     style="border-radius: 0.75rem; text-align: center"
     :show-header="false"
   >
-    <div class="text-center" style="display: flex; flex-direction: column">
-      <div style="margin: 10px">
-        <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+    <template v-if="dialogIsSuccess">
+      <div class="text-center" style="display: flex; flex-direction: column">
+        <div style="margin: 10px">
+          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+        </div>
         <div style="margin: 10px">
           <h2 class="m-0">Success</h2>
         </div>
-        <div style="margin: 15px">
-          <p>{{ dialog }}</p>
+      </div>
+    </template>
+    <template v-if="!dialogIsSuccess">
+      <div class="text-center" style="display: flex; flex-direction: column">
+        <div style="margin: 10px">
+          <em class="material-icons info-icon red-text" style="font-size: 2.5em"> error </em>
         </div>
         <div style="margin: 10px">
-          <PrimeButton label="CLOSE" @click="closeSuccessModal()" class="p-button-outlined" />
+          <h2 class="m-0">Failure</h2>
         </div>
       </div>
+    </template>
+
+    <div class="text-block" style="margin: 15px; white-space: pre">
+      {{ dialog }}
+    </div>
+    <div style="margin: 10px">
+      <PrimeButton label="CLOSE" @click="closeSuccessModal()" class="p-button-outlined" />
     </div>
   </PrimeDialog>
   <div v-if="isVisible">
@@ -55,7 +68,8 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
+import { inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
@@ -97,7 +111,8 @@ export default defineComponent({
     return {
       answeredDataRequestsForViewPage: [] as StoredDataRequest[],
       dialogIsVisible: false,
-      dialog: "",
+      dialog: "Default\n text.",
+      dialogIsSuccess: false,
       actionOnClick: ReportingPeriodTableActions.ReopenRequest,
     };
   },
@@ -114,8 +129,10 @@ export default defineComponent({
     /**
      * Opens the SuccessModal with given dialog
      * @param dialog desired dialog
+     * @param dialogIsSuccess if false, display error message
      */
-    openSuccessModal(dialog: string) {
+    openSuccessModal(dialog: string, dialogIsSuccess: boolean = true) {
+      this.dialogIsSuccess = dialogIsSuccess;
       this.dialog = dialog;
       this.dialogIsVisible = true;
     },
@@ -128,22 +145,29 @@ export default defineComponent({
         this.framework as DataTypeEnum,
         this.getKeycloakPromise,
       );
-      console.log(this.answeredDataRequestsForViewPage);
     },
     /**
      * Method to close the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
      */
     async closeRequest(event: Event) {
-      this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
-      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
-        this.openReportingPeriodPanel(event);
-      } else {
-        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-          await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed, this.getKeycloakPromise);
-          await this.updateAnsweredDataRequestsForViewPage();
-          this.openSuccessModal("Request closed successfully.");
+      try {
+        this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
+        if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+          this.openReportingPeriodPanel(event);
+        } else {
+          for (const answeredRequest of this.answeredDataRequestsForViewPage) {
+            await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed, this.getKeycloakPromise);
+            await this.updateAnsweredDataRequestsForViewPage();
+            this.openSuccessModal("Request closed successfully.");
+          }
         }
+      } catch (e) {
+        let errorMessage = "An error occurred. Please try again later.";
+        if (e instanceof Error) {
+          errorMessage = e.name + ": " + e.message;
+        }
+        this.openSuccessModal(errorMessage, false);
       }
     },
     /**
@@ -151,15 +175,23 @@ export default defineComponent({
      * @param event ClickEvent
      */
     async reOpenRequest(event: Event) {
-      this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
-      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
-        this.openReportingPeriodPanel(event);
-      } else {
-        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-          await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open, this.getKeycloakPromise);
-          await this.updateAnsweredDataRequestsForViewPage();
-          this.openSuccessModal("Request opened successfully.");
+      try {
+        this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
+        if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+          this.openReportingPeriodPanel(event);
+        } else {
+          for (const answeredRequest of this.answeredDataRequestsForViewPage) {
+            await patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open, this.getKeycloakPromise);
+            await this.updateAnsweredDataRequestsForViewPage();
+            this.openSuccessModal("Request opened successfully.");
+          }
         }
+      } catch (e) {
+        let errorMessage = "An error occurred. Please try again later.";
+        if (e instanceof Error) {
+          errorMessage = e.name + ": " + e.message;
+        }
+        this.openSuccessModal(errorMessage, false);
       }
     },
     /**
