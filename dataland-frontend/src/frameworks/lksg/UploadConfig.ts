@@ -2382,7 +2382,16 @@ export const lksgDataModel = [
             name: "persistentOrganicPollutantsProductionAndUseRiskForImportingState",
             label: "Persistent Organic Pollutants Production and Use - Risk for Importing State",
             description:
-              'Are these wastes transported or shipped to an importing State that is subject to the Basel Convention and has not given its written consent to the specific import (if that importing State has not prohibited the importation of that hazardous waste) (Article 4(1)(c)); is not a contracting party (Article 4, paragraph 5); does not treat waste in an environmentally friendly manner because it does not have the appropriate capacity for environmentally friendly disposal and cannot guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or\ntransported by a party that has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The term "importing state" includes: a contracting party to which a transboundary shipment of hazardous waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to disposal in an area not under the sovereignty of a state. (Article 2 No. 11)',
+              "Are these wastes transported or shipped to an importing State that is subject to the Basel Convention " +
+              "and has not given its written consent to the specific import (if that importing State has not " +
+              "prohibited the importation of that hazardous waste) (Article 4(1)(c)); is not a contracting " +
+              "party (Article 4, paragraph 5); does not treat waste in an environmentally friendly manner because" +
+              " it does not have the appropriate capacity for environmentally friendly disposal and cannot " +
+              "guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or\ntransported by a party that " +
+              "has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The " +
+              'term "importing state" includes: a contracting party to which a transboundary shipment of hazardous' +
+              " waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to" +
+              " disposal in an area not under the sovereignty of a state. (Article 2 No. 11)",
 
             component: "YesNoFormField",
             required: false,
