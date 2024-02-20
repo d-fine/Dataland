@@ -1,7 +1,9 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
-import { type LksgProcurementCategory } from "@clients/backend";
+import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/backend";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
+import { faker } from "@faker-js/faker";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -33,5 +35,24 @@ export class LksgGenerator extends Generator {
       lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory()),
     );
     return Object.fromEntries(lksgProcurementCategoriesMap);
+  }
+  /**
+   * Generates a random production site
+   * @param localNullProbability the probability (as number between 0 and 1) for "null" values in optional fields
+   * @returns a random production site
+   */
+  generateLksgProductionSite(localNullProbability = this.nullProbability): LksgProductionSite {
+    return {
+      nameOfProductionSite: this.valueOrNull(faker.company.name()),
+      addressOfProductionSite: generateAddress(localNullProbability),
+      listOfGoodsOrServices: this.valueOrNull(this.generateListOfGoodsOrServices()),
+    };
+  }
+  /**
+   * Generates a random array of goods or services
+   * @returns random array of goods or services
+   */
+  generateListOfGoodsOrServices(): string[] {
+    return this.guaranteedArray(() => faker.commerce.productName(), 1);
   }
 }

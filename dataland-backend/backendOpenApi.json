@@ -7196,6 +7196,13 @@
             "type": "number",
             "nullable": true
           },
+          "listOfProductionSites": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/LksgProductionSite"
+            }
+          },
           "market": {
             "nullable": true,
             "allOf": [
@@ -7205,17 +7212,22 @@
             ]
           },
           "specificProcurement": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/SpecificProcurementOptions"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgGeneralProductionspecificSpecificProcurementOptions"
+              }
+            ]
           }
         }
       },
       "LksgGeneralProductionSpecificOwnOperations": {
         "type": "object",
         "properties": {
+          "warningremovelater": {
+            "type": "string",
+            "nullable": true
+          },
           "mostImportantProducts": {
             "type": "array",
             "nullable": true,
@@ -7238,6 +7250,15 @@
           "National",
           "International",
           "Both"
+        ]
+      },
+      "LksgGeneralProductionspecificSpecificProcurementOptions": {
+        "type": "string",
+        "enum": [
+          "ShortLivedAndChangingBusinessRelationships",
+          "HighPricePressure",
+          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
+          "NoneOfTheAbove"
         ]
       },
       "LksgGovernance": {
@@ -7660,6 +7681,28 @@
           "relatedCorporateSupplyChain": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "LksgProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
+        "type": "object",
+        "properties": {
+          "nameOfProductionSite": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressOfProductionSite": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "listOfGoodsOrServices": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -8592,15 +8635,6 @@
             "nullable": true
           }
         }
-      },
-      "SpecificProcurementOptions": {
-        "type": "string",
-        "enum": [
-          "ShortLivedAndChangingBusinessRelationships",
-          "HighPricePressure",
-          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
-          "NoneOfTheAbove"
-        ]
       },
       "SubcontractingCompaniesCountriesOptions": {
         "type": "string",
@@ -13869,10 +13903,17 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
@@ -13881,13 +13922,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "permId": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

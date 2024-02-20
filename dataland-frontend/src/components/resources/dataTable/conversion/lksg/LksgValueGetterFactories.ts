@@ -11,6 +11,7 @@ import { type LksgProcurementType } from "@/components/resources/dataTable/conve
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
+import { type LksgProductionSite } from "@clients/backend";
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
@@ -153,6 +154,40 @@ export function formatLksgProcurementCategoriesForDisplay(
         data: {
           listOfRowContents: convertedValueForModal,
           kpiKeyOfTable: "mostImportantProducts",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+/**
+ * Generates a display modal component for all production sites
+ * @param input list of lksg production site for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgProductionSitesForDisplay(
+  input: LksgProductionSite[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: input,
+          kpiKeyOfTable: "listOfProductionSites",
           columnHeaders: lksgModalColumnHeaders,
         },
       },
