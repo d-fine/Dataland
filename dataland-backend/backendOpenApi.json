@@ -13904,14 +13904,14 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "permId": {
