@@ -22,9 +22,8 @@
             :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
             :framework="framework"
             :company-id="companyId"
-            @is-visible="handleRequestButtons"
           />
-          <SingleDataRequestButton :company-id="companyId" v-if="isSingleDataRequestbuttonvisible" />
+          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
@@ -93,14 +92,9 @@ export default defineComponent({
       hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      areReviewRequestButtonsVisible: false,
     };
   },
   computed: {
-    isSingleDataRequestbuttonvisible() {
-      return !this.areReviewRequestButtonsVisible && this.showSingleDataRequestButton;
-    },
-
     displaySector() {
       if (this.companyInformation?.sector) {
         return this.companyInformation?.sector;
@@ -160,13 +154,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Handles the visibility of the review and request buttons of data request
-     * @param areReviewButtonsVisible the change of the visibility of the review buttons
-     */
-    handleRequestButtons(areReviewButtonsVisible: boolean) {
-      this.areReviewRequestButtonsVisible = areReviewButtonsVisible;
-    },
     /**
      * Updates the hasCompanyDataOwner in an async way
      */
