@@ -217,6 +217,7 @@ export default defineComponent({
           errorMessage += responseMessages ? responseMessages[0].message : e.message;
         }
         this.openSuccessModal(errorMessage, false);
+        return;
       }
     },
     /**
@@ -230,7 +231,14 @@ export default defineComponent({
       );
       await this.patchDataRequestStatus(dataRequestId, requestStatusToPatch);
       await this.updateAnsweredDataRequestsForViewPage();
-      this.openSuccessModal("Request closed successfully.");
+      switch (requestStatusToPatch) {
+        case RequestStatus.Open:
+          this.openSuccessModal("Request opened successfully.");
+          return;
+        case RequestStatus.Closed:
+          this.openSuccessModal("Request closed successfully.");
+          return;
+      }
     },
     /**
      * Helper function to handle the different actions given by the different buttons
