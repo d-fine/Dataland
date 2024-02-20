@@ -31,7 +31,7 @@
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
-                          :options="reportingPeriods"
+                          :options="reportingPeriodOptions"
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
@@ -40,7 +40,7 @@
                         class="text-danger text-xs mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
-                        Select at least one reporting period.
+                        Select at least one reporting period to submit your request.
                       </p>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
@@ -52,7 +52,7 @@
                         :options="frameworkOptions"
                         validation="required"
                         :validation-messages="{
-                          required: 'Select a framework',
+                          required: 'Select a framework to submit your request',
                         }"
                         outer-class="long"
                         :data-test="'datapoint-framework'"
@@ -94,7 +94,7 @@
                       label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
                       name="submit_request_button"
-                      @click="checkReportingPeriods()"
+                      @click="checkIfAtLeastOneReportingPeriodSelected()"
                     >
                       SUBMIT DATA REQUEST
                     </PrimeButton>
@@ -187,7 +187,7 @@ export default defineComponent({
       dataRequesterMessage: "",
       errorMessage: "",
       selectedReportingPeriodsError: false,
-      reportingPeriods: [
+      reportingPeriodOptions: [
         { name: "2023", value: false },
         { name: "2022", value: false },
         { name: "2021", value: false },
@@ -199,9 +199,15 @@ export default defineComponent({
   },
   computed: {
     selectedReportingPeriods(): string[] {
-      return this.reportingPeriods
-        .filter((reportingPeriod) => reportingPeriod.value)
-        .map((reportingPeriod) => reportingPeriod.name);
+      return this.reportingPeriodOptions
+        .filter((reportingPeriodOption) => reportingPeriodOption.value)
+        .map((reportingPeriodOption) => reportingPeriodOption.name);
+    },
+    selectedContacts(): string[] {
+      return this.contactsAsString
+        .split(",")
+        .map((rawEmail) => rawEmail.trim())
+        .filter((email) => email);
     },
     companyIdentifier(): string {
       return this.$route.params.companyId as string;
@@ -211,7 +217,7 @@ export default defineComponent({
     /**
      * Check whether reporting periods have been selected
      */
-    checkReportingPeriods(): void {
+    checkIfAtLeastOneReportingPeriodSelected(): void {
       if (!this.selectedReportingPeriods.length) {
         this.selectedReportingPeriodsError = true;
       }
@@ -228,15 +234,11 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
-      const contacts = this.contactsAsString
-        .split(",")
-        .map((rawEmail) => rawEmail.trim())
-        .filter((email) => email);
       return {
         companyIdentifier: this.companyIdentifier,
         dataType: this.frameworkName,
-        reportingPeriods: this.selectedReportingPeriods,
-        contacts: contacts,
+        reportingPeriods: this.selectedReportingPeriods as Set<string>,
+        contacts: this.selectedContacts as Set<string>,
         message: this.dataRequesterMessage,
       };
     },

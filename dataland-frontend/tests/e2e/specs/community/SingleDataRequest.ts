@@ -144,11 +144,11 @@ describeIf(
       submit();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
-        .should("contain.text", "Select at least one reporting period.");
+        .should("contain.text", "Select at least one reporting period to submit your request.");
 
       cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
         .should("be.visible")
-        .should("contain.text", "Select a framework");
+        .should("contain.text", "Select a framework to submit your request");
     }
 
     /**
