@@ -7196,6 +7196,13 @@
             "type": "number",
             "nullable": true
           },
+          "listOfProductionSites": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/LksgProductionSite"
+            }
+          },
           "market": {
             "nullable": true,
             "allOf": [
@@ -7660,6 +7667,28 @@
           "relatedCorporateSupplyChain": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "LksgProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
+        "type": "object",
+        "properties": {
+          "nameOfProductionSite": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressOfProductionSite": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "listOfGoodsOrServices": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -13875,14 +13904,14 @@
           "companyId": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
           },
           "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
             "type": "string"
           },
           "permId": {

@@ -13,6 +13,7 @@ import { formatNumberForDatatable } from "@/components/resources/dataTable/conve
 import {
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
+  formatLksgProductionSitesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
@@ -207,6 +208,18 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.productionSpecific?.productionSites == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.general?.productionSpecific?.numberOfProductionSites, ""),
+          },
+          {
+            type: "cell",
+            label: "List Of Production Sites",
+            explanation: "Please list the production sites in your company.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.productionSites == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgProductionSitesForDisplay(
+                dataset.general?.productionSpecific?.listOfProductionSites,
+                "List Of Production Sites",
+              ),
           },
           {
             type: "cell",

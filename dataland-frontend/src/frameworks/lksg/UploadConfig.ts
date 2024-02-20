@@ -202,6 +202,15 @@ export const lksgDataModel = [
             showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionSites == "Yes",
           },
           {
+            name: "listOfProductionSites",
+            label: "List Of Production Sites",
+            description: "Please list the production sites in your company.",
+
+            component: "ProductionSitesFormField",
+            required: false,
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionSites == "Yes",
+          },
+          {
             name: "market",
             label: "Market",
             description: "Does your business focus predominantly on national or international markets?",
@@ -261,8 +270,7 @@ export const lksgDataModel = [
             name: "mostImportantProducts",
             label: "Most Important Products",
             description:
-              "Please give an overview of the most important products or services in terms of sales that your" +
-              " company manufactures, distributes and/or offers (own operations)",
+              "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
 
             component: "MostImportantProductsFormField",
             required: false,
@@ -425,8 +433,7 @@ export const lksgDataModel = [
             name: "grievanceHandlingMechanism",
             label: "Grievance Handling Mechanism",
             description:
-              "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) " +
-              "to protect human and environmental rights in your business?",
+              "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) to protect human and environmental rights in your business?",
 
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -436,9 +443,7 @@ export const lksgDataModel = [
             name: "grievanceHandlingReportingAccessible",
             label: "Grievance Handling Reporting Accessible",
             description:
-              "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external " +
-              "stakeholders (e.g. suppliers and their employees, NGOs) access the grievance " +
-              "reporting/whistleblowing system?",
+              "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external stakeholders (e.g. suppliers and their employees, NGOs) access the grievance reporting/whistleblowing system?",
 
             component: "YesNoFormField",
             required: false,
@@ -449,8 +454,7 @@ export const lksgDataModel = [
             name: "appropriateGrievanceHandlingInformation",
             label: "Appropriate Grievance Handling Information",
             description:
-              "Is the grievance procedure adapted to your company context and articulated in a way that is" +
-              " understandable to the target groups?",
+              "Is the grievance procedure adapted to your company context and articulated in a way that is understandable to the target groups?",
 
             component: "YesNoFormField",
             required: false,
@@ -472,8 +476,7 @@ export const lksgDataModel = [
             name: "accessToExpertiseForGrievanceHandling",
             label: "Access to Expertise for Grievance Handling",
             description:
-              "Do the target groups have access to the expertise, advice and information that they need to" +
-              " participate in the grievance procedure in a fair, informed and respectful manner?",
+              "Do the target groups have access to the expertise, advice and information that they need to participate in the grievance procedure in a fair, informed and respectful manner?",
 
             component: "YesNoFormField",
             required: false,
@@ -2382,16 +2385,7 @@ export const lksgDataModel = [
             name: "persistentOrganicPollutantsProductionAndUseRiskForImportingState",
             label: "Persistent Organic Pollutants Production and Use - Risk for Importing State",
             description:
-              "Are these wastes transported or shipped to an importing State that is subject to the Basel Convention " +
-              "and has not given its written consent to the specific import (if that importing State has not " +
-              "prohibited the importation of that hazardous waste) (Article 4(1)(c)); is not a contracting " +
-              "party (Article 4, paragraph 5); does not treat waste in an environmentally friendly manner because" +
-              " it does not have the appropriate capacity for environmentally friendly disposal and cannot " +
-              "guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or\ntransported by a party that " +
-              "has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The " +
-              'term "importing state" includes: a contracting party to which a transboundary shipment of hazardous' +
-              " waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to" +
-              " disposal in an area not under the sovereignty of a state. (Article 2 No. 11)",
+              'Are these wastes transported or shipped to an importing State that is subject to the Basel Convention and has not given its written consent to the specific import (if that importing State has not prohibited the importation of that hazardous waste) (Article 4(1)(c)); is not a contracting party (Article 4, paragraph 5); does not treat waste in an environmentally friendly manner because it does not have the appropriate capacity for environmentally friendly disposal and cannot guarantee this elsewhere either (Article 4 paragraph 8 sentence 1) or\ntransported by a party that has banned the import of such hazardous and other wastes (Article 4(1)(b) Basel Convention)? (The term "importing state" includes: a contracting party to which a transboundary shipment of hazardous waste or other waste is planned for the purpose of disposal or for the purpose of loading prior to disposal in an area not under the sovereignty of a state. (Article 2 No. 11)',
 
             component: "YesNoFormField",
             required: false,
