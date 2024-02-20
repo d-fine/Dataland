@@ -1,10 +1,10 @@
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
-import {minimalKeycloakMock} from "@ct/testUtils/Keycloak";
-import {FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
-import {CompanyAssociatedDataLksgData, LksgData} from "@clients/backend";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type CompanyAssociatedDataLksgData, type LksgData } from "@clients/backend";
 
 describe("test YesNoBaseDataPointFormField for entries", () => {
-  let preparedFixtures: Array<FixtureData<LksgData>>
+  let preparedFixtures: Array<FixtureData<LksgData>>;
   before(() => {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -19,14 +19,14 @@ describe("test YesNoBaseDataPointFormField for entries", () => {
       data: dummyData,
     };
     cy.intercept("**/api/data/lksg/*", (interception) => {
-      interception.reply({ statusCode: 200, body: dummyCompanyAssociatedData })
-    })
+      interception.reply({ statusCode: 200, body: dummyCompanyAssociatedData });
+    });
     cy.mountWithPlugins(CreateLksgDataset, {
       keycloak: minimalKeycloakMock({}),
       data: () => ({
         route: {
           query: {
-            templateDataId: "data-id"
+            templateDataId: "data-id",
           },
         },
       }),

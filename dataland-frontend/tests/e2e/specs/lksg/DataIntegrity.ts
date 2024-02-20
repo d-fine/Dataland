@@ -57,14 +57,8 @@ describeIf(
                   return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
-                      const frontendSubmittedP2pDataset = axiosGetResponse.data.data as unknown as Record<
-                        string,
-                        object
-                      >;
-                      const originallyUploadedP2pDataset = lksgFixtureWithNoNullFields.t as unknown as Record<
-                        string,
-                        object
-                      >;
+                      const frontendSubmittedP2pDataset = axiosGetResponse.data.data;
+                      const originallyUploadedP2pDataset = lksgFixtureWithNoNullFields.t;
 
                       frontendSubmittedP2pDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
                       frontendSubmittedP2pDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
@@ -74,10 +68,12 @@ describeIf(
                       originallyUploadedP2pDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
                       originallyUploadedP2pDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
-
                       console.log("all", frontendSubmittedP2pDataset);
-                      console.log("abc",frontendSubmittedP2pDataset.general.productionSpecific);
-                      compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
+                      console.log("abc", frontendSubmittedP2pDataset.general.productionSpecific);
+                      compareObjectKeysAndValuesDeep(
+                        originallyUploadedP2pDataset as unknown as Record<string, object>,
+                        frontendSubmittedP2pDataset as unknown as Record<string, object>,
+                      );
                     });
                 },
               );
