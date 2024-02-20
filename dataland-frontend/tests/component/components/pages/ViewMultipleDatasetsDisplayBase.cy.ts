@@ -8,7 +8,7 @@ import {
   QaStatus,
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { KEYCLOAK_ROLE_UPLOADER} from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 describe("Component test for the view multiple dataset display base component", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -49,26 +49,29 @@ describe("Component test for the view multiple dataset display base component", 
 
   it.only("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
     const preparedFixture = {
-      companyInformation: {companyName: "hello"},
+      companyInformation: { companyName: "hello" },
       t: {
         general: {
           masterData: {
-            dataDate: "somethign"
-          }
-        }
-      }
-    }//getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
+            dataDate: "somethign",
+          },
+        },
+      },
+    }; //getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
     const mockedData2024 = constructCompanyApiResponseForLksg(preparedFixture.t);
-    mockedData2024.metaInfo.dataId = "id-2024"
-    mockedData2024.metaInfo.reportingPeriod = "2024"
+    mockedData2024.metaInfo.dataId = "id-2024";
+    mockedData2024.metaInfo.reportingPeriod = "2024";
     const mockedData2023 = constructCompanyApiResponseForLksg(preparedFixture.t);
-    mockedData2023.metaInfo.dataId = "id-2023"
-    mockedData2023.metaInfo.reportingPeriod = "2023"
+    mockedData2023.metaInfo.dataId = "id-2023";
+    mockedData2023.metaInfo.reportingPeriod = "2023";
     cy.intercept(`/api/companies/*/info`, preparedFixture.companyInformation);
     cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedData2024, mockedData2023]);
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, {status: 200, body: [mockedData2024.metaInfo, mockedData2023.metaInfo]});
+    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
+      status: 200,
+      body: [mockedData2024.metaInfo, mockedData2023.metaInfo],
+    });
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
-      keycloak: minimalKeycloakMock({roles: [KEYCLOAK_ROLE_UPLOADER],}),
+      keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
@@ -86,10 +89,11 @@ describe("Component test for the view multiple dataset display base component", 
         .should("contain", "2023")
         .click();
 
-      cy.wrap(mounted.component).its("$route.fullPath")
+      cy.wrap(mounted.component)
+        .its("$route.fullPath")
         .should(
           "eq",
-          `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`
+          `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`,
         );
     });
   });
