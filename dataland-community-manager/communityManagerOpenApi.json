@@ -264,7 +264,7 @@
             }
           },
           {
-            "name": "dataRequestCompanyIdentifierValue",
+            "name": "datalandCompanyId",
             "in": "query",
             "required": false,
             "schema": {
@@ -799,16 +799,6 @@
           }
         }
       },
-      "DataRequestCompanyIdentifierType": {
-        "type": "string",
-        "enum": [
-          "Lei",
-          "Isin",
-          "PermId",
-          "MultipleRegexMatches",
-          "DatalandCompanyId"
-        ]
-      },
       "RequestStatus": {
         "type": "string",
         "enum": [
@@ -819,9 +809,8 @@
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
           "dataRequestId",
+          "datalandCompanyId",
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
@@ -856,10 +845,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
           },
           "messageHistory": {
@@ -976,8 +962,7 @@
       "AggregatedDataRequest": {
         "required": [
           "count",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue"
+          "datalandCompanyId"
         ],
         "type": "object",
         "properties": {
@@ -997,10 +982,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
           },
           "count": {

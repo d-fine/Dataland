@@ -54,9 +54,8 @@ class SingleDataRequestManager(
         if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             datalandCompanyId = singleDataRequest.companyIdentifier
-
         } else {
-             datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
+            datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
                 singleDataRequest.companyIdentifier,
             )
         }

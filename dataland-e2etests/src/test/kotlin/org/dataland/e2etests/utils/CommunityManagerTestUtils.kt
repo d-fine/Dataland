@@ -6,10 +6,13 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
-import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.JwtAuthenticationHelper
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.tests.communityManager.BulkDataRequestsTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -19,6 +22,7 @@ import java.time.Instant
 import java.util.*
 
 private val apiAccessor = ApiAccessor()
+ val jwtHelper = JwtAuthenticationHelper()
 
 fun retrieveTimeAndWaitOneMillisecond(): Long {
     val timestamp = Instant.now().toEpochMilli()
@@ -71,11 +75,11 @@ fun generateRandomPermId(numberOfDigits: Int? = null): String {
     return (1..numberOfCharacters).map { digits.random() }.joinToString("")
 }
 
-fun generateMapWithOneRandomValueForEachIdentifierType(): Map<DataRequestCompanyIdentifierType, String> {
+fun generateMapWithOneRandomValueForEachIdentifierType(): Map<IdentifierType, String> {
     return mapOf(
-        DataRequestCompanyIdentifierType.lei to generateRandomLei(),
-        DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
-        DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
+        IdentifierType.lei to generateRandomLei(),
+        IdentifierType.isin to generateRandomIsin(),
+        IdentifierType.permId to generateRandomPermId(),
     )
 }
 
@@ -135,10 +139,12 @@ fun checkThatMessageIsAsExpected(
 fun checkThatAllIdentifiersWereAccepted(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfAcceptedIdentifiers: Int,
+    expectedNumberOfRejectedIdentifiers: Int,
 ) {
     checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers)
-    checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, 0)
-    checkThatMessageIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers, 0)
+    checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
+    checkThatMessageIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers,
+        expectedNumberOfRejectedIdentifiers)
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
@@ -156,18 +162,16 @@ fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
     framework: BulkDataRequest.ListOfFrameworkNames,
     reportingPeriod: String,
-    dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
-    dataRequestCompanyIdentifierValue: String,
+    dataRequestCompanyIdentifierValue: String?,
 ) {
     assertEquals(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
             storedDataRequest.dataType == findStoredDataRequestDataTypeForFramework(framework) &&
                 storedDataRequest.reportingPeriod == reportingPeriod &&
-                storedDataRequest.dataRequestCompanyIdentifierType == dataRequestCompanyIdentifierType &&
-                storedDataRequest.dataRequestCompanyIdentifierValue == dataRequestCompanyIdentifierValue
+                storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
         }.size,
-        "For the ${dataRequestCompanyIdentifierType.value} $dataRequestCompanyIdentifierValue " +
+        "For dataland company Id $dataRequestCompanyIdentifierValue " +
             "and the framework ${framework.value} there is not exactly one newly stored request as expected.",
     )
 }
@@ -244,7 +248,8 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
 fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
     check400ClientExceptionErrorMessage(clientException)
     val responseBody = (clientException.response as ClientError<*>).body as String
-    assertTrue(responseBody.contains("All provided company identifiers have an invalid format."))
+    assertTrue(responseBody.contains("All provided company identifiers have an invalid format or could not be " +
+            "recognized."))
     assertTrue(
         responseBody.contains(
             "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId.",
@@ -256,26 +261,25 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     framework: BulkDataRequest.ListOfFrameworkNames,
     reportingPeriod: String,
-    identifierType: DataRequestCompanyIdentifierType,
     identifierValue: String,
     count: Long,
 ) {
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
-            aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
-            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
+            aggregatedDataRequest.datalandCompanyId ==  apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            identifierValue).first().companyId
     }
     assertEquals(
         1,
         matchingAggregatedRequests.size,
-        "For the ${identifierType.value} $identifierValue and the framework ${framework.value} " +
+        "For the $identifierValue and the framework ${framework.value} " +
             "there is not exactly one aggregated request as expected.",
     )
     assertEquals(
         count,
         matchingAggregatedRequests[0].count,
-        "For the aggregated data request with ${identifierType.value} $identifierValue and the " +
+        "For the aggregated data request with  $identifierValue and the " +
             "framework ${framework.value} the count is not as expected.",
     )
 }
@@ -284,14 +288,14 @@ fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWit
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     reportingPeriods: List<String>,
-    identifierMap: Map<DataRequestCompanyIdentifierType, String>,
+    identifierMap: Map<IdentifierType, String>,
     count: Long,
 ) {
     frameworks.forEach { framework ->
         reportingPeriods.forEach { reportingPeriod ->
             identifierMap.forEach { (identifierType, identifierValue) ->
                 checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, count,
+                    aggregatedDataRequests, framework, reportingPeriod, identifierValue, count,
                 )
             }
         }
@@ -309,4 +313,64 @@ fun patchDataRequestAndAssertNewStatus(dataRequestId: UUID, newStatus: RequestSt
         .patchDataRequest(dataRequestId, newStatus)
     assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
     assertStatusForDataRequestId(dataRequestId, newStatus)
+}
+
+ fun generateCompaniesWithOneRandomValueForEachIdentifierType(
+    uniqueIdentifiersMap: Map<IdentifierType, String>
+) {
+    val companyZero = CompanyInformation(
+        companyName = "Name",
+        headquarters = "HQ",
+        identifiers = mapOf(
+            "Dummmy" to listOf(),
+        ),
+        countryCode = "DE",
+    )
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+    for ((key, value) in uniqueIdentifiersMap) {
+        when {
+            (key == IdentifierType.lei) -> {
+                val companyOne = companyZero.copy(
+                    identifiers = mapOf(
+                        IdentifierType.lei.value to listOf(
+                            "Test-Lei${uniqueIdentifiersMap.getValue(IdentifierType.lei)}"
+                        )
+                    ),
+                )
+                apiAccessor.companyDataControllerApi.postCompany(companyOne)
+            }
+
+            (key == IdentifierType.isin) -> {
+                val companyTwo = companyZero.copy(
+                    identifiers = mapOf(
+                        IdentifierType.isin.value to listOf(
+                            "Test-Isin${
+                                uniqueIdentifiersMap.getValue(IdentifierType.isin)
+                            }"
+                        )
+                    ),
+                )
+                apiAccessor.companyDataControllerApi.postCompany(companyTwo)
+            }
+
+            (key == IdentifierType.permId) -> {
+                val companyThree = companyZero.copy(
+                    identifiers = mapOf(
+                        IdentifierType.permId.value to listOf(
+                            "Test-PermId${uniqueIdentifiersMap.getValue(IdentifierType.permId)}"
+                        )
+                    ),
+                )
+                apiAccessor.companyDataControllerApi.postCompany(companyThree)
+            } else -> "The provided IdentifierType has not been implemented in the " +
+                "generateCompaniesWithOneRandomValueForEachIdentifierType function"
+        }
+    }
+}
+
+ fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String {
+    val matchingCompanyIdsAndNamesOnDataland =
+        apiAccessor.companyDataControllerApi.getCompaniesBySearchString(identifierValue)
+    return matchingCompanyIdsAndNamesOnDataland.first().companyId
+
 }
