@@ -48,7 +48,7 @@ class BulkDataRequestManager(
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
-            val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
             if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
@@ -95,19 +95,6 @@ class BulkDataRequestManager(
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedStoredDataRequestsForUser
-    }
-
-    fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
-        var datalandCompanyId: String? = null
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
-        val matchingCompanyIdsAndNamesOnDataland =
-            companyGetter.getCompanyIdsAndNamesForSearchString(identifierValue, bearerTokenOfRequestingUser)
-        if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
-        }
-        dataRequestLogger
-            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
-        return datalandCompanyId
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -247,8 +234,7 @@ class BulkDataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format or could not be recognized."
-        val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN or PermId or are not known to Dataland."
+        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
         throw InvalidInputApiException(
             summary,
             message,

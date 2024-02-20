@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests.communityManager
 
-import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException

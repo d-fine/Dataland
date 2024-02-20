@@ -2,13 +2,17 @@ package org.dataland.e2etests.tests.communityManager
 
 import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.causeClientExceptionByBulkDataRequest
+import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
@@ -28,6 +32,8 @@ import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
+import org.hamcrest.collection.IsIn
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -38,7 +44,7 @@ import java.util.*
 class BulkDataRequestsTest {
 
     val jwtHelper = JwtAuthenticationHelper()
-
+    val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
@@ -62,7 +68,7 @@ class BulkDataRequestsTest {
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
 
-        checkThatAllIdentifiersWereAccepted(response,identifiers.size)
+        checkThatAllIdentifiersWereAccepted(response,identifiers.size,0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests, identifiers.size * frameworks.size * reportingPeriods.size,
@@ -104,38 +110,30 @@ class BulkDataRequestsTest {
         )
     }
 
-    /**
     @Test
     fun `post bulk data request with at least one company duplicate and check that only one request is stored`() {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
-        val identifierTypeForUnknownCompany = IdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
-        val identifiersForBulkRequest = listOf(
-            leiForCompany, isinForCompany, identifierValueForUnknownCompany,
-        )
+        val identifiersForBulkRequest = listOf(leiForCompany, isinForCompany, identifierValueForUnknownCompany)
         val frameworksForBulkRequest = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
         val reportingPeriodsForBulkRequest = listOf("2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest, reportingPeriodsForBulkRequest),
         )
-        checkThatAllIdentifiersWereAccepted(response, identifiersForBulkRequest.size)
+        checkThatAllIdentifiersWereAccepted(response, (identifiersForBulkRequest.size-1),1)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests,
-            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size * reportingPeriodsForBulkRequest.size,
+            (identifiersForBulkRequest.size - 2) * frameworksForBulkRequest.size * reportingPeriodsForBulkRequest.size,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
             newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],companyId,
         )
-        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
-            identifierValueForUnknownCompany,
-        )
     }
-    */
+
 
     private fun checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
         requestsStoredAfterBulkRequest: List<StoredDataRequest>,
@@ -166,12 +164,11 @@ class BulkDataRequestsTest {
         firstIdentifiers: List<String>,
         secondIdentifiers: List<String>,
     ) {
-        logger.info("firstIdentifiers ${firstIdentifiers}.")
         val timeBeforeFirstBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val firstResponse = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(firstIdentifiers, frameworks, reportingPeriods),
         )
-        checkThatAllIdentifiersWereAccepted(firstResponse, firstIdentifiers.size)
+        checkThatAllIdentifiersWereAccepted(firstResponse, firstIdentifiers.size,0)
         val newRequestsAfter1stBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newRequestsAfter1stBulkRequest, firstIdentifiers.size * frameworks.size * reportingPeriods.size,
@@ -187,7 +184,7 @@ class BulkDataRequestsTest {
             BulkDataRequest(secondIdentifiers, frameworks, reportingPeriods),
         )
 
-        checkThatAllIdentifiersWereAccepted(secondResponse, secondIdentifiers.size)
+        checkThatAllIdentifiersWereAccepted(secondResponse, secondIdentifiers.size,0)
         val newRequestsAfter2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSecondBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newRequestsAfter2ndBulkRequest, 0)
         val newRequestsAfter1stAnd2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
@@ -250,7 +247,7 @@ class BulkDataRequestsTest {
         val responseForReader = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
-        checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size)
+        checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size,0)
     }
 
     @Test
@@ -287,7 +284,7 @@ class BulkDataRequestsTest {
             identifiersToRecognizeMap + mapOf(IdentifierType.lei to differentLei), 1,
         )
     }
-    /** toDo permId is part of other Ids, which leads to multiple matches -> solved by new logic?
+    /**toDo permId is part of other Ids, which leads to multiple matches -> solved by new logic?
     @Test
     fun `post bulk data request and check that filter for the identifier value on aggregated level works properly`() {
         val permId = generateRandomPermId(10)
@@ -307,7 +304,7 @@ class BulkDataRequestsTest {
         logger.info("identifiersToRecognizeMap " + identifiersToRecognizeMap)
         logger.info("identifiers " + identifiers)
         logger.info("response " + response)
-        checkThatAllIdentifiersWereAccepted(response, identifiers.values.toList().size)
+        checkThatAllIdentifiersWereAccepted(response, identifiers.values.toList().size, 0)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(identifierValue = permId)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequests, frameworks, reportingPeriods, identifiersToRecognizeMap, 1,
@@ -318,6 +315,16 @@ class BulkDataRequestsTest {
         )
     }
     */
+    private fun checkIfSetAndGetCompanyIdsAreTheSame (
+        setCompanyCompanyID: String,
+        getCompanyCompanyID: String,
+    ) {
+        Assertions.assertEquals(
+            setCompanyCompanyID,
+            getCompanyCompanyID,
+            "The received company Ids ${setCompanyCompanyID} and ${setCompanyCompanyID} do not match",
+        )
+    }
 
     private fun checkAggregationForNonTrivialFrameworkFilter(
         frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
@@ -352,7 +359,7 @@ class BulkDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
         )
-        checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
+        checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
         checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap)
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(dataTypes = null)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
@@ -373,7 +380,7 @@ class BulkDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
         )
-        checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
+        checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
         val randomReportingPeriod = reportingPeriods.random()
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
             reportingPeriod = randomReportingPeriod,
@@ -392,5 +399,35 @@ class BulkDataRequestsTest {
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap, 1,
         )
+    }
+
+    @Test
+    fun `post bulk data request and verify that only unique identifier are accepted `() {
+        val permId = generateRandomPermId(20)
+        val leiId = permId
+        val identifiersMap = mapOf(
+            IdentifierType.permId to permId,
+            IdentifierType.lei to leiId,)
+        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val reportingPeriods = listOf("2023")
+        val companyOne = CompanyInformation(
+            companyName = "companyOne",
+            headquarters = "HQ",
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId)),
+            countryCode = "DE",
+        )
+        val companyTwo = companyOne.copy(
+            companyName = "companyTwo",
+            identifiers = mapOf(IdentifierType.lei.value  to listOf(leiId))
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.postCompany(companyOne)
+        apiAccessor.companyDataControllerApi.postCompany(companyTwo)
+
+        val clientException = causeClientExceptionByBulkDataRequest(identifiersMap.values.toList(), frameworks,
+            reportingPeriods)
+        checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
+
     }
 }
