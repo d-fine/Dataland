@@ -69,7 +69,7 @@ class DataRequestUpdater(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info("Received data QA completed message for dataset with ID $dataId")
-        if(qaCompletedMessage.validationResult != QaStatus.Accepted) {
+        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
         }
