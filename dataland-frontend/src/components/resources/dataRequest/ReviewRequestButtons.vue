@@ -201,7 +201,7 @@ export default defineComponent({
      */
     async patchDataRequestStatus(dataRequestId: string, requestStatusToPatch: RequestStatus) {
       try {
-        void (await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise));
+        await patchDataRequestStatus(dataRequestId, requestStatusToPatch, this.getKeycloakPromise);
       } catch (e) {
         let errorMessage =
           "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -249,5 +249,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped lang="scss"></style>
