@@ -1,7 +1,7 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import {type LksgData, YesNo} from "@clients/backend";
+import { type LksgData, YesNo } from "@clients/backend";
 import { generateLksgFixtures } from "./LksgDataFixtures";
-import {LksgGenerator} from "@e2e/fixtures/frameworks/lksg/LksgGenerator";
+import { LksgGenerator } from "@e2e/fixtures/frameworks/lksg/LksgGenerator";
 
 /**
  * Generates lksg prepared fixtures by generating random lksg datasets and
@@ -18,7 +18,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     generateFixtureToNotBeAManufacturingCompany,
     generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15,
     generateFixtureToContainProcurementCategories,
-    generateFixtureForSixLksgDataSetsInDifferentYears
+    generateFixtureForSixLksgDataSetsInDifferentYears,
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
@@ -89,12 +89,9 @@ function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> 
   const newFixture = generateLksgFixtures(1)[0];
   newFixture.companyInformation.companyName = "lksg-with-procurement-categories";
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
-  if (
-      Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {})
-          .length < 1
-  ) {
+  if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
     throw Error(
-        "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",
+      "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",
     );
   }
   return newFixture;
@@ -128,7 +125,7 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
   newFixture.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
 
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.sa8000Certification =
-      lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
+    lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
 
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.Yes;

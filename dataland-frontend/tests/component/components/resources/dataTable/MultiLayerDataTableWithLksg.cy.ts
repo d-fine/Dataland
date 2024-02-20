@@ -8,7 +8,7 @@ import {
   QaStatus,
 } from "@clients/backend";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { lksgViewConfiguration } from "@/frameworks/lksg/ViewConfig";
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
@@ -25,7 +25,6 @@ import {
 
 describe("Component test for the LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
-  const lksgDisplayConfiguration = convertDataModelToMLDTConfig(lksgDataModel) as MLDTConfig<LksgData>;
 
   before(function () {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
@@ -35,7 +34,7 @@ describe("Component test for the LksgPanel", () => {
 
   it("Should be able to handle null values in a Lksg dataset and display rows for those values", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
     getCellValueContainer("Data Date").should("contain.text", "1999-12-24");
     getCellValueContainer("Industry").should("exist");
@@ -43,7 +42,7 @@ describe("Component test for the LksgPanel", () => {
 
   it("Check that the Master Data section is auto-expanded on page load and can be collapsed", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
     getCellValueContainer("Data Date")
@@ -59,7 +58,7 @@ describe("Component test for the LksgPanel", () => {
 
   it("Validate that certificate links are displayed correctly", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
     getSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
     getSectionHead("Certifications, policies and responsibilities")
@@ -71,7 +70,7 @@ describe("Component test for the LksgPanel", () => {
 
   it("Validate that the list of production sites is displayed modal is displayed correctly", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
@@ -87,7 +86,7 @@ describe("Component test for the LksgPanel", () => {
 
   it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
     const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
     getSectionHead("Production-specific - Own Operations")
       .should("have.attr", "data-section-expanded", "false")
@@ -109,7 +108,7 @@ describe("Component test for the LksgPanel", () => {
     );
     mountMLDTFrameworkPanelFromFakeFixture(
       DataTypeEnum.Lksg,
-      lksgDisplayConfiguration,
+      lksgViewConfiguration,
       [preparedFixture],
       "mock-company-id",
       true,
@@ -158,7 +157,7 @@ describe("Component test for the LksgPanel", () => {
   it("Check Lksg view page for company with six Lksg data sets reported in different years ", () => {
     const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksgForSixYears(preparedFixture.t);
-    mountMLDTFrameworkPanel(DataTypeEnum.Lksg, lksgDisplayConfiguration, mockedData);
+    mountMLDTFrameworkPanel(DataTypeEnum.Lksg, lksgViewConfiguration, mockedData);
 
     cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).get("span").contains("2023");
 
