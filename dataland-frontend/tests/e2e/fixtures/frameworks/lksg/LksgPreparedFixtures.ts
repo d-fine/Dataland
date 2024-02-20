@@ -5,7 +5,7 @@ import { LksgGenerator } from "@e2e/fixtures/frameworks/lksg/LksgGenerator";
 
 /**
  * Generates lksg prepared fixtures by generating random lksg datasets and
- * afterwards manipulating some fields via manipulator-functions to set specific values for those fields.
+ * afterward manipulating some fields via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
@@ -19,11 +19,17 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15,
     generateFixtureToContainProcurementCategories,
     generateFixtureForSixLksgDataSetsInDifferentYears,
+    generateOneLksgDatasetWithManyNulls,
+    generateFixtureForSixLksgDataSetsInDifferentYears,
+    generateFixtureForOneLksgDataSetWithProductionSites,
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
+    preparedFixturesBeforeManipulation.push(generateFixtureForDate("2023-04-18"));
+    preparedFixturesBeforeManipulation.push(generateFixtureForDate("2023-06-22"));
+    preparedFixturesBeforeManipulation.push(generateFixtureForDate("2023-04-18"));
   }
 
   return preparedFixtures;
@@ -57,7 +63,10 @@ function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
   newFixture.companyInformation.companyName = "lksg-not-a-manufacturing-company-but-has-production-sites";
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
-  const twoProductionSites = [lksgGeneratorNoUndefined.generateLksgProductionSite(), lksgGeneratorNoUndefined.generateLksgProductionSite()];
+  const twoProductionSites = [
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+  ];
 
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.No;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.No;
@@ -68,7 +77,6 @@ function generateFixtureToNotBeAManufacturingCompany(): FixtureData<LksgData> {
 
 /**
  * Ensures that the fixture contains child labor under 18
- * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
 function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): FixtureData<LksgData> {
@@ -83,7 +91,6 @@ function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): Fixture
 
 /**
  * Ensures that the fixture contains procurement categories that are displayed (respecting show-if)
- * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
 function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> {
@@ -100,7 +107,6 @@ function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> 
 
 /**
  * Sets the company name and the date in the fixture data to a specific string
- * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
 function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgData> {
@@ -115,7 +121,6 @@ function generateFixtureForSixLksgDataSetsInDifferentYears(): FixtureData<LksgDa
 /**
  * Sets the company name in the fixture data to a specific string, the field "employeeUnder18Apprentices" to "No", and
  * sets exactly two production sites for the "listOfProductionSites" field.
- * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
 function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<LksgData> {
@@ -126,9 +131,53 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
 
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct =
     lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);
-  const twoProductionSites = [lksgGeneratorNoUndefined.generateLksgProductionSite(), lksgGeneratorNoUndefined.generateLksgProductionSite()];
+  const twoProductionSites = [
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+    lksgGeneratorNoUndefined.generateLksgProductionSite(),
+  ];
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionSites = YesNo.Yes;
   newFixture.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
+  return newFixture;
+}
+
+/**
+ * Sets the company name, data date and reporting period in the fixture data to
+ * specific values needed for tests.
+ * @param date the date in the format "YYYY-MM-DD"
+ * @returns the manipulated fixture data
+ */
+function generateFixtureForDate(date: string): FixtureData<LksgData> {
+  const newFixture = generateLksgFixtures(1)[0];
+  newFixture.companyInformation.companyName = "LkSG-date-" + date;
+  newFixture.t.general.masterData.dataDate = date;
+  newFixture.reportingPeriod = date.split("-")[0];
+  return newFixture;
+}
+
+/**
+ * Generates an LKSG dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+function generateOneLksgDatasetWithManyNulls(): FixtureData<LksgData> {
+  const newFixture = generateLksgFixtures(1)[0];
+  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
+
+  newFixture.t.governance = null;
+  newFixture.t.social = null;
+  newFixture.t.environmental = null;
+
+  newFixture.t.general.masterData.dataDate = "1999-12-24";
+  newFixture.t.general.masterData.headOfficeInGermany = null;
+  newFixture.t.general.masterData.groupOfCompanies = null;
+  newFixture.t.general.masterData.industry = null;
+  newFixture.t.general.masterData.seasonalOrMigrantWorkers = null;
+  newFixture.t.general.masterData.shareOfTemporaryWorkers = null;
+  newFixture.t.general.masterData.annualTotalRevenue = null;
+  newFixture.t.general.masterData.fixedAndWorkingCapital = null;
+  newFixture.t.general.productionSpecific = null;
+  newFixture.t.general.productionSpecificOwnOperations = null;
+
   return newFixture;
 }
