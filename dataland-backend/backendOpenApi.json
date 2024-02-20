@@ -13898,6 +13898,12 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
@@ -13907,12 +13913,6 @@
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
           },
           "permId": {
             "type": "string",
@@ -13999,11 +13999,11 @@
         "enum": [
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
+          "lksg",
           "p2p",
           "sfdr",
           "sme",
           "esg-questionnaire",
-          "lksg",
           "heimathafen"
         ]
       },

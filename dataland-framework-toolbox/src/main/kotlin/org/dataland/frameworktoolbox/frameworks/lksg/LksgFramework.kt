@@ -22,7 +22,7 @@ class LksgFramework : InDevelopmentPavedRoadFramework(
     label = "LkSG",
     explanation = "Lieferkettensorgfaltspflichtengesetz",
     File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
-    order = 6,
+    order = 3,
 ) {
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {

@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.social.LksgSocial
  * The root data-model for the Lksg Framework
  */
 @Suppress("MagicNumber")
-@DataType("lksg", 6)
+@DataType("lksg", 3)
 data class LksgData(
     @field:Valid()
     val general: LksgGeneral,
