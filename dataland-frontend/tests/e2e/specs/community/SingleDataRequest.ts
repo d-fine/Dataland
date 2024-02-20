@@ -1,6 +1,5 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
-import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
 import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -10,6 +9,7 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
+import { type SingleDataRequest } from "@clients/communitymanager";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -109,8 +109,8 @@ describeIf(
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
           dataType: DataTypeEnum.Lksg,
-          reportingPeriods: new Set("2023"),
-          contacts: new Set("example@Email.com"),
+          reportingPeriods: new Set(["2023"]),
+          contacts: new Set(["example@Email.com"]),
           message: "Frontend test message",
         };
         expect(requestBody).to.deep.equal(expectedRequest);
