@@ -162,7 +162,7 @@ interface RequestApi {
         value = ["/{dataRequestId}/requestStatus"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
