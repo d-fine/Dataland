@@ -7,6 +7,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
+//TODO deicde if test can be removed completely (is tested in every blanket test)
 describeIf(
   "Validates the edit button functionality on the view framework page",
   {
