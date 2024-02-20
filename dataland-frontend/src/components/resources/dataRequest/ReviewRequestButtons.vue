@@ -24,7 +24,7 @@
           <em class="material-icons info-icon red-text" style="font-size: 2.5em"> error </em>
         </div>
         <div style="margin: 10px">
-          <h2 class="m-0">Failure</h2>
+          <h2 class="m-0">Changing the status of your request was unsuccessful.</h2>
         </div>
       </div>
     </template>
