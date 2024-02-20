@@ -98,17 +98,11 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { type LksgProcurementCategory } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
-  inject: {
-    procurementCategories: {
-      from: "procurementCategories",
-      default: {} as { [key: string]: LksgProcurementCategory },
-    },
-  },
   components: {
     InputSwitch,
     FormKit,
@@ -121,7 +115,7 @@ export default defineComponent({
   props: BaseFormFieldProps,
   data() {
     return {
-      isItActive: !!this.procurementCategories[this.name],
+      isItActive: !!lksgModalColumnHeaders.procurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
@@ -131,7 +125,8 @@ export default defineComponent({
     };
   },
   mounted() {
-    if (this.procurementCategories[this.name]) {
+    console.log(lksgModalColumnHeaders.procurementCategories);
+    if (lksgModalColumnHeaders.procurementCategories[this.name]) {
       this.selectedCountries = this.setPreSelectedCountries();
     }
   },
@@ -143,7 +138,9 @@ export default defineComponent({
     setPreSelectedCountries() {
       return this.allCountries.filter((el) =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
-        this.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value),
+        lksgModalColumnHeaders.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(
+          el.value,
+        ),
       );
     },
     /**
