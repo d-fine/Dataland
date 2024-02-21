@@ -14,7 +14,6 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 
   const manipulatorFunctions: Array<(input: FixtureData<LksgData>) => FixtureData<LksgData>> = [
     generateFixutreWithNoNullFields,
-    generateFixtureWithALotOfNullFields,
     generateFixtureToNotBeAManufacturingCompany,
     generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15,
     generateFixtureToContainProcurementCategories,
@@ -41,16 +40,6 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   newFixture.companyInformation.companyName = "lksg-all-fields";
-  return newFixture;
-}
-
-/**
- * Generates a lksg fixture with a lot of null fields
- * @returns the fixture
- */
-function generateFixtureWithALotOfNullFields(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 0.8)[0];
-  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls"; //TODO check if this is used anywhere
   return newFixture;
 }
 

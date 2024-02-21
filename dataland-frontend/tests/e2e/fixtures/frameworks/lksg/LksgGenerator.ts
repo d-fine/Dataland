@@ -13,7 +13,6 @@ export class LksgGenerator extends Generator {
     };
   }
 
-  //TODO generalize with a template
   generateCustomRandomMap(numEntries: number): { [p: string]: number } {
     const map = new Map<string, number>();
     const randomStringArray = this.guaranteedArray(() => this.guaranteedShortString(), 0, numEntries);
