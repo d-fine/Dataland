@@ -28,7 +28,6 @@ import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndId
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -102,7 +101,7 @@ class BulkDataRequestsTest {
         checkThatMessageIsAsExpected(response, validIdentifiers.size, invalidIdentifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, validIdentifiers.size)
-        assertFalse(
+        Assertions.assertFalse(
             newlyStoredRequests.any { invalidIdentifiers.contains(it.dataRequestCompanyIdentifierValue) },
         )
     }
@@ -310,7 +309,7 @@ class BulkDataRequestsTest {
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequests, frameworks, reportingPeriods, identifiersToRecognizeMap, 1,
         )
-        assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
+        Assertions.assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
         testNonTrivialIdentifierValueFilterOnAggregatedLevel(
             frameworks, reportingPeriods, identifiersToRecognizeMap, differentLei,
         )
@@ -330,7 +329,7 @@ class BulkDataRequestsTest {
             )
             val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
             frameworksNotToBeFound.forEach { framework ->
-                assertFalse(
+                Assertions.assertFalse(
                     aggregatedDataRequests.any {
                         it.dataType == findAggregatedDataRequestDataTypeForFramework(framework)
                     },
@@ -376,7 +375,7 @@ class BulkDataRequestsTest {
             aggregatedDataRequests, frameworks, listOf(randomReportingPeriod), identifierMap, 1,
         )
         reportingPeriods.filter { it != randomReportingPeriod }.forEach { filteredReportingPeriod ->
-            assertFalse(aggregatedDataRequests.any { it.reportingPeriod == filteredReportingPeriod })
+            Assertions.assertFalse(aggregatedDataRequests.any { it.reportingPeriod == filteredReportingPeriod })
         }
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(reportingPeriod = null)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
