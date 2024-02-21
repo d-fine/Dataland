@@ -39,7 +39,6 @@ class Lksg {
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
         val fixedDataSet = removeNullMapEntriesFromSupplierCountryCount(listOfOneLksgDataSet[0])
-        println(fixedDataSet)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOf(fixedDataSet),
@@ -51,7 +50,6 @@ class Lksg {
         val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
             .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
 
-        println(downloadedAssociatedData.data)
         var sortedFixedDataset = fixedDataSet.copy(
             governance = fixedDataSet.governance?.copy(
                 riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
