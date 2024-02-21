@@ -34,9 +34,9 @@ class AggregatedDataRequestsTest {
 
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
         technicalUser: TechnicalUser,
-        identifiers: List<String>,
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-        reportingPeriods: List<String>,
+        identifiers: Set<String>,
+        frameworks: Set<BulkDataRequest.DataTypes>,
+        reportingPeriods: Set<String>,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val responseForReader = requestControllerApi.postBulkDataRequest(
@@ -55,11 +55,11 @@ class AggregatedDataRequestsTest {
                 DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
             )
             ).toMutableMap()
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2022", "2023")
+        val frameworks = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val reportingPeriods = setOf("2022", "2023")
         TechnicalUser.entries.forEach {
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
-                it, identifierMap.values.toList(), frameworks, reportingPeriods,
+                it, identifierMap.values.toSet(), frameworks, reportingPeriods,
             )
         }
         identifierMap[DataRequestCompanyIdentifierType.datalandCompanyId] = companyId
@@ -70,8 +70,8 @@ class AggregatedDataRequestsTest {
     }
 
     private fun testNonTrivialIdentifierValueFilterOnAggregatedLevel(
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-        reportingPeriods: List<String>,
+        frameworks: Set<BulkDataRequest.DataTypes>,
+        reportingPeriods: Set<String>,
         identifiersToRecognizeMap: Map<DataRequestCompanyIdentifierType, String>,
         differentLei: String,
     ) {
@@ -96,9 +96,9 @@ class AggregatedDataRequestsTest {
             DataRequestCompanyIdentifierType.isin to generateRandomIsin().substring(0, 2) + permId,
         )
         val differentLei = generateRandomLei()
-        val identifiers = identifiersToRecognizeMap.values.toList() + listOf(differentLei)
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-        val reportingPeriods = listOf("2023")
+        val identifiers = identifiersToRecognizeMap.values.toSet() + setOf(differentLei)
+        val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
+        val reportingPeriods = setOf("2023")
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
@@ -114,8 +114,8 @@ class AggregatedDataRequestsTest {
     }
 
     private fun checkAggregationForNonTrivialFrameworkFilter(
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-        reportingPeriods: List<String>,
+        frameworks: Set<BulkDataRequest.DataTypes>,
+        reportingPeriods: Set<String>,
         identifierMap: Map<DataRequestCompanyIdentifierType, String>,
     ) {
         listOf(1, (2 until frameworks.size).random(), frameworks.size).forEach { numberOfRandomFrameworks ->
@@ -124,7 +124,7 @@ class AggregatedDataRequestsTest {
                 dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
             )
             iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-                aggregatedDataRequests, randomFrameworks, reportingPeriods, identifierMap, 1,
+                aggregatedDataRequests, randomFrameworks.toSet(), reportingPeriods, identifierMap, 1,
             )
             val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
             frameworksNotToBeFound.forEach { framework ->
@@ -139,11 +139,11 @@ class AggregatedDataRequestsTest {
 
     @Test
     fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2023")
+        val frameworks = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val reportingPeriods = setOf("2023")
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
+            BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
         checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap)
@@ -160,10 +160,10 @@ class AggregatedDataRequestsTest {
     @Test
     fun `post bulk data request and check that the filter for reporting periods on aggregated level works properly`() {
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-        val reportingPeriods = listOf("2020", "2021", "2022", "2023")
+        val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
+        val reportingPeriods = setOf("2020", "2021", "2022", "2023")
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
+            BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
         val randomReportingPeriod = reportingPeriods.random()
@@ -171,7 +171,7 @@ class AggregatedDataRequestsTest {
             reportingPeriod = randomReportingPeriod,
         )
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, listOf(randomReportingPeriod), identifierMap, 1,
+            aggregatedDataRequests, frameworks, setOf(randomReportingPeriod), identifierMap, 1,
         )
         reportingPeriods.filter { it != randomReportingPeriod }.forEach { filteredReportingPeriod ->
             assertFalse(aggregatedDataRequests.any { it.reportingPeriod == filteredReportingPeriod })
@@ -190,10 +190,10 @@ class AggregatedDataRequestsTest {
     fun `post bulk data request and check that the filter for request status on aggregated level works properly`() {
         val randomLei = generateRandomLei()
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to randomLei)
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-        val reportingPeriods = listOf("2020", "2021")
+        val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
+        val reportingPeriods = setOf("2020", "2021")
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
+            BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(status = RequestStatus.open)

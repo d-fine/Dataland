@@ -23,7 +23,7 @@ data class StoredDataRequest(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum?,
+    val dataType: DataTypeEnum,
 
     val reportingPeriod: String,
 
@@ -31,7 +31,7 @@ data class StoredDataRequest(
 
     val dataRequestCompanyIdentifierValue: String,
 
-    val messageHistory: MutableList<StoredDataRequestMessageObject>,
+    val messageHistory: List<StoredDataRequestMessageObject>,
 
     val lastModifiedDate: Long,
 

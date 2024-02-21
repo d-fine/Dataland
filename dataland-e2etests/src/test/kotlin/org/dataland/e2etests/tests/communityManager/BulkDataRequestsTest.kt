@@ -46,45 +46,45 @@ class BulkDataRequestsTest {
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
-        val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2022", "2023")
+        val identifiers = uniqueIdentifiersMap.values.toSet() + setOf(multipleRegexMatchingIdentifier)
+        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val reportingPeriods = setOf("2022", "2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
+            BulkDataRequest(identifiers, dataTypes, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newlyStoredRequests, identifiers.size * frameworks.size * reportingPeriods.size,
+            newlyStoredRequests, identifiers.size * dataTypes.size * reportingPeriods.size,
         )
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
             checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-                newlyStoredRequests, frameworks.random(), reportingPeriods.random(),
+                newlyStoredRequests, dataTypes.random(), reportingPeriods.random(),
                 randomUniqueDataRequestCompanyIdentifierType, it,
             )
         }
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworks.random(), reportingPeriods.random(),
+            newlyStoredRequests, dataTypes.random(), reportingPeriods.random(),
             DataRequestCompanyIdentifierType.multipleRegexMatches, multipleRegexMatchingIdentifier,
         )
     }
 
     @Test
     fun `post a bulk data request with at least one invalid identifier and check that this gives no stored request`() {
-        val validIdentifiers = listOf(
+        val validIdentifiers = setOf(
             generateRandomLei(), generateRandomIsin(), generateRandomPermId(),
         )
-        val invalidIdentifiers = listOf(
+        val invalidIdentifiers = setOf(
             generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
         )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(
                 validIdentifiers + invalidIdentifiers,
-                listOf(BulkDataRequest.ListOfFrameworkNames.lksg),
-                listOf("2023"),
+                setOf(BulkDataRequest.DataTypes.lksg),
+                setOf("2023"),
             ),
         )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, validIdentifiers.size)
@@ -102,36 +102,35 @@ class BulkDataRequestsTest {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
-        val identifierTypeForUnknownCompany = DataRequestCompanyIdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
-        val identifiersForBulkRequest = listOf(
+        val identifiersForBulkRequest = setOf(
             leiForCompany, isinForCompany, identifierValueForUnknownCompany,
         )
-        val frameworksForBulkRequest = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-        val reportingPeriodsForBulkRequest = listOf("2023")
+        val frameworksForBulkRequest = listOf(BulkDataRequest.DataTypes.lksg)
+        val reportingPeriod = "2023"
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest, reportingPeriodsForBulkRequest),
+            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
         )
         checkThatAllIdentifiersWereAccepted(response, identifiersForBulkRequest.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests,
-            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size * reportingPeriodsForBulkRequest.size,
+            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
+            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriod,
             DataRequestCompanyIdentifierType.datalandCompanyId, companyId,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
-            identifierTypeForUnknownCompany, identifierValueForUnknownCompany,
+            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriod,
+            DataRequestCompanyIdentifierType.lei, identifierValueForUnknownCompany,
         )
     }
 
     private fun checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
         requestsStoredAfterBulkRequest: List<StoredDataRequest>,
-        framework: BulkDataRequest.ListOfFrameworkNames,
+        framework: BulkDataRequest.DataTypes,
         reportingPeriod: String,
         companyId: String,
         identifierTypeForUnknownCompany: DataRequestCompanyIdentifierType,
@@ -154,36 +153,36 @@ class BulkDataRequestsTest {
     }
 
     private fun checkThatAlreadyExistingRequestsAreNeitherStoredForKnownNorForUnknownCompanies(
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        dataTypes: List<BulkDataRequest.DataTypes>,
         reportingPeriods: List<String>,
         companyId: String,
         identifierMapForUnknownCompany: Map<DataRequestCompanyIdentifierType, String>,
-        firstIdentifiers: List<String>,
-        secondIdentifiers: List<String>,
+        firstIdentifiers: Set<String>,
+        secondIdentifiers: Set<String>,
     ) {
         val timeBeforeFirstBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val firstResponse = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(firstIdentifiers, frameworks, reportingPeriods),
+            BulkDataRequest(firstIdentifiers, dataTypes.toSet(), reportingPeriods.toSet()),
         )
         checkThatAllIdentifiersWereAccepted(firstResponse, firstIdentifiers.size)
         val newRequestsAfter1stBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newRequestsAfter1stBulkRequest, firstIdentifiers.size * frameworks.size * reportingPeriods.size,
+            newRequestsAfter1stBulkRequest, firstIdentifiers.size * dataTypes.size * reportingPeriods.size,
         )
         checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
-            newRequestsAfter1stBulkRequest, frameworks[0], reportingPeriods[0], companyId,
+            newRequestsAfter1stBulkRequest, dataTypes[0], reportingPeriods[0], companyId,
             identifierMapForUnknownCompany.keys.toList()[0], identifierMapForUnknownCompany.values.toList()[0],
         )
         val timestampBeforeSecondBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val secondResponse = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(secondIdentifiers, frameworks, reportingPeriods),
+            BulkDataRequest(secondIdentifiers, dataTypes.toSet(), reportingPeriods.toSet()),
         )
         checkThatAllIdentifiersWereAccepted(secondResponse, secondIdentifiers.size)
         val newRequestsAfter2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSecondBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newRequestsAfter2ndBulkRequest, 0)
         val newRequestsAfter1stAnd2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
-            newRequestsAfter1stAnd2ndBulkRequest, frameworks[0], reportingPeriods[0], companyId,
+            newRequestsAfter1stAnd2ndBulkRequest, dataTypes[0], reportingPeriods[0], companyId,
             identifierMapForUnknownCompany.keys.toList()[0], identifierMapForUnknownCompany.values.toList()[0],
         )
     }
@@ -194,10 +193,10 @@ class BulkDataRequestsTest {
         val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierMapForUnknownCompany = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val frameworks = listOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = listOf("2023")
-        val firstIdentifiers = listOf(leiForCompany, identifierMapForUnknownCompany.values.toList()[0])
-        val secondIdentifiers = listOf(isinForCompany, identifierMapForUnknownCompany.values.toList()[0])
+        val firstIdentifiers = setOf(leiForCompany, identifierMapForUnknownCompany.values.toList()[0])
+        val secondIdentifiers = setOf(isinForCompany, identifierMapForUnknownCompany.values.toList()[0])
         checkThatAlreadyExistingRequestsAreNeitherStoredForKnownNorForUnknownCompanies(
             frameworks,
             reportingPeriods,
@@ -210,20 +209,20 @@ class BulkDataRequestsTest {
 
     @Test
     fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
-        val validIdentifiers = listOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2023")
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, frameworks, emptyList())
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptyList(), reportingPeriods)
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), frameworks, reportingPeriods)
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptyList(), emptyList())
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), frameworks, emptyList())
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), emptyList(), reportingPeriods)
-        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), emptyList(), emptyList())
-        val invalidIdentifiers = listOf(
+        val validIdentifiers = setOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
+        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val reportingPeriods = setOf("2023")
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, dataTypes, emptySet())
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptySet(), reportingPeriods)
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, reportingPeriods)
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptySet(), emptySet())
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, emptySet())
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), reportingPeriods)
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), emptySet())
+        val invalidIdentifiers = setOf(
             generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
         )
-        val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, frameworks, reportingPeriods)
+        val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, dataTypes, reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
 }
