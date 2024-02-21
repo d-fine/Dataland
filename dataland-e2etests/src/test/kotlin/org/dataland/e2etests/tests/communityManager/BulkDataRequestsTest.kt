@@ -407,7 +407,7 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post a bulk data request and patch your own closed data request as a reader and assert that it is forbidden`() {
+    fun `post a bulk data request and patch own closed data request as a reader and assert that it is forbidden`() {
         val newlyStoredRequest = getSingleOpenDataRequest()
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
