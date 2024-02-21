@@ -477,6 +477,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
           }
         ],
         "responses": {
@@ -803,7 +811,8 @@
         "type": "string",
         "enum": [
           "Open",
-          "Resolved"
+          "Answered",
+          "Closed"
         ]
       },
       "StoredDataRequest": {
@@ -962,7 +971,8 @@
       "AggregatedDataRequest": {
         "required": [
           "count",
-          "datalandCompanyId"
+          "datalandCompanyId",
+          "requestStatus"
         ],
         "type": "object",
         "properties": {
@@ -984,6 +994,9 @@
           },
           "datalandCompanyId": {
             "type": "string"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
           },
           "count": {
             "type": "integer",

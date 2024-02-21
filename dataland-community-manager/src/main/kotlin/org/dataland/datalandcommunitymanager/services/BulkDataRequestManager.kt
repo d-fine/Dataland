@@ -2,12 +2,15 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -28,12 +31,12 @@ import java.util.*
 class BulkDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
+    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyApi, objectMapper)
 
     /**
      * Processes a bulk data request from a user
@@ -100,12 +103,15 @@ class BulkDataRequestManager(
     /** This method triggers a query to get aggregated data requests.
      * @param identifierValue can be used to filter via substring matching
      * @param dataTypes can be used to filter on frameworks
+     * @param reportingPeriod can be used to filter on reporting periods
+     * @param status can be used to filter on request status
      * @returns aggregated data requests
      */
     fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
+        status: RequestStatus?,
     ): List<AggregatedDataRequest> {
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
@@ -113,12 +119,18 @@ class BulkDataRequestManager(
             dataTypes?.map { it.value }
         }
         val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
+            dataRequestRepository.getAggregatedDataRequests(
+                identifierValue,
+                dataTypesFilterForQuery,
+                reportingPeriod,
+                status,
+            )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
                 utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.datalandCompanyId,
+                aggregatedDataRequestEntity.requestStatus,
                 aggregatedDataRequestEntity.count,
             )
         }

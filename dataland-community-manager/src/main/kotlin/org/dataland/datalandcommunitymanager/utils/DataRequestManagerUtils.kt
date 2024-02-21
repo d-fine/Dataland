@@ -2,7 +2,10 @@ package org.dataland.datalandcommunitymanager.utils
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -20,7 +23,7 @@ import java.util.*
 class DataRequestManagerUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     /**
@@ -30,9 +33,8 @@ class DataRequestManagerUtils(
      */
     fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
         var datalandCompanyId: String? = null
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
         val matchingCompanyIdsAndNamesOnDataland =
-            companyGetter.getCompanyIdsAndNamesForSearchString(identifierValue, bearerTokenOfRequestingUser)
+            companyApi.getCompaniesBySearchString(identifierValue)
         if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
             datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
         }

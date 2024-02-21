@@ -1,5 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
@@ -18,7 +20,7 @@ class SingleDataRequestInternalEmailBuilder(
     @Value("\${dataland.notification.sender.name}") senderName: String,
     @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedReceiverEmails: String,
     @Value("\${dataland.notification.data-request.internal.cc}") semicolonSeparatedCcEmails: String,
-    @Autowired val companyGetter: CompanyGetter,
+    @Autowired val companyApi: CompanyDataControllerApi,
 ) : PropertyStyleEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
@@ -42,6 +44,9 @@ class SingleDataRequestInternalEmailBuilder(
             "Dataland Company ID" to datalandCompanyId,
         )
         properties["Company Name"] = companyGetter.getCompanyInfo(datalandCompanyId).companyName
+        if (companyIdentifierType == DataRequestCompanyIdentifierType.DatalandCompanyId) {
+            properties["Company Name"] = companyApi.getCompanyInfo(companyIdentifierValue).companyName
+        }
         return buildPropertyStyleEmail(
             subject = "Dataland Single Data Request",
             textTitle = "A single data request has been submitted",
