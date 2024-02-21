@@ -72,7 +72,7 @@ class LksgProductionSitesComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 10)",
+            "dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5)",
         )
     }
 }
