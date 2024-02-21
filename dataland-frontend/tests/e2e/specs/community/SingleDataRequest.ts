@@ -119,7 +119,7 @@ describeIf(
       cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
       cy.get('[data-test="closeRequestButton"]').should("not.exist");
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod2023()
+      singleDataRequestPage.chooseReportingPeriod2023();
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
@@ -135,7 +135,7 @@ describeIf(
       cy.ensureLoggedIn(premium_user_name, premium_user_pw);
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod2023()
+      singleDataRequestPage.chooseReportingPeriod2023();
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
@@ -150,8 +150,10 @@ describeIf(
       cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
       cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
       cy.get('[data-test="closeRequestButton"]').should("not.exist");
-    });
 
+      //todo check dropdown case for ?close? button option
+    });
+    //todo check for error message
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
      * @param interception the object of interception with the backend
@@ -215,13 +217,14 @@ describeIf(
      * @param interception containing the response body
      */
     function setRequestStatusToAnswered(interception: Interception): void {
+      // todo refactor to requestID as parameter
       if (interception.response !== undefined) {
         const responseBody = interception.response.body as StoredDataRequest[];
         const dataRequestId = responseBody[0].dataRequestId;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           const requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
-          requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Answered).catch((reason) => {
-            console.error(reason);
+          requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Answered).catch((reason) => {
+            console.error(reason); //todo
           });
         });
       }
