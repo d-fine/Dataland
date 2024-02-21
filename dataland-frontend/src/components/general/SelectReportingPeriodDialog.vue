@@ -65,13 +65,12 @@ export default defineComponent({
           let isClickable;
           if (this.actionOnClick == ReportingPeriodTableActions.EditDataset) {
             isClickable = true;
+          } else if (answeredDataRequestId) {
+            isClickable = answeredDataRequestId.length > 0;
           } else {
-            if (answeredDataRequestId) {
-              isClickable = answeredDataRequestId.length > 0;
-            } else {
-              isClickable = false;
-            }
+            isClickable = false;
           }
+
           this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,

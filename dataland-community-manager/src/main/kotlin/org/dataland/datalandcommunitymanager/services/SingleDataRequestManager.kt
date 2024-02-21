@@ -17,10 +17,8 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandemail.email.isEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -73,7 +71,7 @@ class SingleDataRequestManager(
             throw InvalidInputApiException(
                 "No recipients provided for the message",
                 "You have provided a message, but no recipients. " +
-                        "Without at least one valid email address being provided no message can be forwarded.",
+                    "Without at least one valid email address being provided no message can be forwarded.",
             )
         }
     }
@@ -101,7 +99,7 @@ class SingleDataRequestManager(
         throw InvalidInputApiException(
             "The provided company identifier has an invalid format.",
             "The company identifier you provided does not match the patterns " +
-                    "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+                "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
         )
     }
 
@@ -199,30 +197,11 @@ class SingleDataRequestManager(
     @Transactional
     fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
         throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
-        throwAccessDeniedExceptionIfUserIsNotAccessingOwnRequest(dataRequestId)
-        throwAccessDeniedExceptionIfUserIsAccessingRequestWithWrongStatus(dataRequestId)
         var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
         dataRequestEntity.requestStatus = requestStatus
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
-    }
-
-    private fun throwAccessDeniedExceptionIfUserIsNotAccessingOwnRequest(dataRequestId: String) {
-        if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)) {
-            val dataRequesterUserId = getDataRequestById(dataRequestId).userId
-            if (dataRequesterUserId != DatalandAuthentication.fromContext().userId) {
-                throw AccessDeniedException("Access to this resource has been denied. Please contact support if you believe this to be an error.")
-            }
-        }
-    }
-
-    private fun throwAccessDeniedExceptionIfUserIsAccessingRequestWithWrongStatus(dataRequestId: String) {
-        if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)) {
-            if (getDataRequestById(dataRequestId).requestStatus != RequestStatus.Answered) {
-                throw AccessDeniedException("Access to this resource has been denied. Please contact support if you believe this to be an error.")
-            }
-        }
     }
 }
