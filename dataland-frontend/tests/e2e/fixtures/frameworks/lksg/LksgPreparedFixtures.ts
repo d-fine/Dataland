@@ -50,7 +50,7 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
  * @returns the fixture
  */
 function generateFixtureWithALotOfNullFields(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 80)[0];
+  const newFixture = generateLksgFixtures(1, 0.8)[0];
   newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls"; //TODO check if this is used anywhere
   return newFixture;
 }
