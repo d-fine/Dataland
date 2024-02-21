@@ -33,7 +33,7 @@ describeIf(
       });
     });
 
-    it.only(
+    it(
       "Create a company and a Lksg dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
