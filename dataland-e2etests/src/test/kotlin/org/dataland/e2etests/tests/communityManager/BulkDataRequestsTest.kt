@@ -40,6 +40,7 @@ class BulkDataRequestsTest {
 
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    private val clientError403 = "Client error : 403 "
 
     private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
         return requestControllerApi.getDataRequestsForUser().filter { storedDataRequest ->
@@ -62,6 +63,7 @@ class BulkDataRequestsTest {
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
+
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests, identifiers.size * frameworks.size * reportingPeriods.size,
@@ -234,7 +236,6 @@ class BulkDataRequestsTest {
         val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, frameworks, reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
-
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
         technicalUser: TechnicalUser,
         identifiers: List<String>,
@@ -271,7 +272,6 @@ class BulkDataRequestsTest {
             aggregatedDataRequests, frameworks, reportingPeriods, identifierMap, TechnicalUser.entries.size.toLong(),
         )
     }
-
     private fun testNonTrivialIdentifierValueFilterOnAggregatedLevel(
         frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
         reportingPeriods: List<String>,
@@ -315,7 +315,6 @@ class BulkDataRequestsTest {
             frameworks, reportingPeriods, identifiersToRecognizeMap, differentLei,
         )
     }
-
     private fun checkAggregationForNonTrivialFrameworkFilter(
         frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
         reportingPeriods: List<String>,
@@ -391,7 +390,7 @@ class BulkDataRequestsTest {
 
     @Test
     fun `post a bulk data request and check that you can patch your own answered data request as a reader`() {
-        val newlyStoredRequest = getSingleOpenDataRequest()
+        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"), enumValues<BulkDataRequest.ListOfFrameworkNames>().toList())[0]
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -407,11 +406,17 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post a bulk data request and patch own closed data request as a reader and assert that it is forbidden`() {
-        val newlyStoredRequest = getSingleOpenDataRequest()
+    fun `post a bulk data request and patch a open or closed data request as a reader and assert that it is forbidden`() {
+        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"), enumValues<BulkDataRequest.ListOfFrameworkNames>().toList())[0]
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
+        for (requestStatus in RequestStatus.entries) {
+            val clientException = assertThrows<ClientException> {
+                requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
+            }
+            Assertions.assertEquals(clientError403, clientException.message)
+        }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val answeredDataRequest = requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.closed)
@@ -423,35 +428,16 @@ class BulkDataRequestsTest {
             val clientException = assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
             }
-            Assertions.assertEquals("Client error : 403 ", clientException.message)
+            Assertions.assertEquals(clientError403, clientException.message)
         }
     }
-
-    @Test
-    fun `post a bulk data request and patch your own open data request as a reader and assert that it is forbidden`() {
-        val newlyStoredRequest = getSingleOpenDataRequest()
-        val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
-        Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
-
-        for (requestStatus in RequestStatus.entries) {
-            val clientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
-            }
-            Assertions.assertEquals("Client error : 403 ", clientException.message)
-        }
-    }
-    private fun getSingleOpenDataRequest(): StoredDataRequest {
+    private fun getSingleOpenDataRequest(years: List<String>, frameworks: List<BulkDataRequest.ListOfFrameworkNames>): List<StoredDataRequest> {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
-        val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
+        requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier), frameworks, years),
         )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size)
-
-        return getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)[0]
+        return getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
     }
 }
