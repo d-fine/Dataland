@@ -150,7 +150,7 @@
         ],
         "summary": "Update status of data request.",
         "description": "Updates status of data request given data request id.",
-        "operationId": "patchDataRequest",
+        "operationId": "patchDataRequestStatus",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -264,7 +264,7 @@
             }
           },
           {
-            "name": "datalandCompanyId",
+            "name": "dataRequestCompanyIdentifierValue",
             "in": "query",
             "required": false,
             "schema": {
@@ -760,8 +760,8 @@
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
-          "frameworkName",
-          "listOfReportingPeriods"
+          "dataType",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
@@ -769,7 +769,7 @@
             "type": "string",
             "example": "DE0005190003"
           },
-          "frameworkName": {
+          "dataType": {
             "type": "string",
             "example": "p2p",
             "enum": [
@@ -783,7 +783,8 @@
               "heimathafen"
             ]
           },
-          "listOfReportingPeriods": {
+          "reportingPeriods": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "2022",
@@ -793,7 +794,8 @@
               "type": "string"
             }
           },
-          "contactList": {
+          "contacts": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "testuser@dataland.com"
@@ -807,6 +809,16 @@
           }
         }
       },
+      "DataRequestCompanyIdentifierType": {
+        "type": "string",
+        "enum": [
+          "Lei",
+          "Isin",
+          "PermId",
+          "MultipleRegexMatches",
+          "DatalandCompanyId"
+        ]
+      },
       "RequestStatus": {
         "type": "string",
         "enum": [
@@ -818,8 +830,10 @@
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
+          "dataRequestCompanyIdentifierType",
+          "dataRequestCompanyIdentifierValue",
           "dataRequestId",
-          "datalandCompanyId",
+          "dataType",
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
@@ -854,7 +868,10 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "datalandCompanyId": {
+          "dataRequestCompanyIdentifierType": {
+            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
+          },
+          "dataRequestCompanyIdentifierValue": {
             "type": "string"
           },
           "messageHistory": {
@@ -874,11 +891,13 @@
       },
       "StoredDataRequestMessageObject": {
         "required": [
-          "contactList"
+          "contacts",
+          "creationTimestamp"
         ],
         "type": "object",
         "properties": {
-          "contactList": {
+          "contacts": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -887,7 +906,7 @@
           "message": {
             "type": "string"
           },
-          "lastModifiedDate": {
+          "creationTimestamp": {
             "type": "integer",
             "format": "int64"
           }
@@ -895,13 +914,14 @@
       },
       "BulkDataRequest": {
         "required": [
-          "listOfCompanyIdentifiers",
-          "listOfFrameworkNames",
-          "listOfReportingPeriods"
+          "companyIdentifiers",
+          "dataTypes",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
-          "listOfCompanyIdentifiers": {
+          "companyIdentifiers": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "DE0005190003",
@@ -911,7 +931,8 @@
               "type": "string"
             }
           },
-          "listOfFrameworkNames": {
+          "dataTypes": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "p2p",
@@ -931,7 +952,8 @@
               ]
             }
           },
-          "listOfReportingPeriods": {
+          "reportingPeriods": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "2022",
@@ -971,7 +993,8 @@
       "AggregatedDataRequest": {
         "required": [
           "count",
-          "datalandCompanyId",
+          "dataRequestCompanyIdentifierType",
+          "dataRequestCompanyIdentifierValue",
           "requestStatus"
         ],
         "type": "object",
@@ -992,7 +1015,10 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "datalandCompanyId": {
+          "dataRequestCompanyIdentifierType": {
+            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
+          },
+          "dataRequestCompanyIdentifierValue": {
             "type": "string"
           },
           "requestStatus": {

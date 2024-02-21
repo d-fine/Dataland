@@ -1,13 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -15,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -29,15 +24,11 @@ import java.util.*
  */
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val utils: DataRequestProcessingUtils,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyApi, objectMapper)
-
     /**
      * Processes a bulk data request from a user
      * @param bulkDataRequest info provided by a user in order to request a bulk of datasets on Dataland.
@@ -45,7 +36,8 @@ class BulkDataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
-        val cleanedBulkDataRequest = runValidationsAndRemoveDuplicates(bulkDataRequest)
+        utils.throwExceptionIfNotJwtAuth()
+        assureValidityOfRequests(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
@@ -57,8 +49,8 @@ class BulkDataRequestManager(
                 continue
             }
             acceptedIdentifiers.add(userProvidedIdentifierValue)
-            for (framework in cleanedBulkDataRequest.listOfFrameworkNames) {
-                for (reportingPeriod in cleanedBulkDataRequest.listOfReportingPeriods) {
+            for (framework in bulkDataRequest.listOfFrameworkNames) {
+                for (reportingPeriod in bulkDataRequest.listOfReportingPeriods) {
                     utils.storeDataRequestEntityIfNotExisting(
                         datalandCompanyId,
                         framework,
@@ -67,74 +59,11 @@ class BulkDataRequestManager(
                 }
             }
         }
-        if (!acceptedIdentifiers.isNotEmpty()) {
+        if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
-        return buildResponseForBulkDataRequest(cleanedBulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
-    }
-
-    /** This method retrieves all the data requests for the current user from the database and logs a message.
-     * @returns all data requests for the current user
-     */
-    fun getDataRequestsForUser(): List<StoredDataRequest> {
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.findByUserId(currentUserId)
-        val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            StoredDataRequest(
-                dataRequestEntity.dataRequestId,
-                dataRequestEntity.userId,
-                dataRequestEntity.creationTimestamp,
-                utils.getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
-                dataRequestEntity.reportingPeriod,
-                dataRequestEntity.datalandCompanyId,
-                objectMapper.readValue(
-                    dataRequestEntity.messageHistory,
-                    object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
-                ),
-                dataRequestEntity.lastModifiedDate,
-                dataRequestEntity.requestStatus,
-            )
-        }
-        dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-        return retrievedStoredDataRequestsForUser
-    }
-
-    /** This method triggers a query to get aggregated data requests.
-     * @param identifierValue can be used to filter via substring matching
-     * @param dataTypes can be used to filter on frameworks
-     * @param reportingPeriod can be used to filter on reporting periods
-     * @param status can be used to filter on request status
-     * @returns aggregated data requests
-     */
-    fun getAggregatedDataRequests(
-        identifierValue: String?,
-        dataTypes: Set<DataTypeEnum>?,
-        reportingPeriod: String?,
-        status: RequestStatus?,
-    ): List<AggregatedDataRequest> {
-        val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
-            null
-        } else {
-            dataTypes?.map { it.value }
-        }
-        val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(
-                identifierValue,
-                dataTypesFilterForQuery,
-                reportingPeriod,
-                status,
-            )
-        val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
-            AggregatedDataRequest(
-                utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
-                aggregatedDataRequestEntity.reportingPeriod,
-                aggregatedDataRequestEntity.datalandCompanyId,
-                aggregatedDataRequestEntity.requestStatus,
-                aggregatedDataRequestEntity.count,
-            )
-        }
-        return aggregatedDataRequests
+        sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
+        return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
 
     private fun throwExceptionIfNotJwtAuth() {
@@ -144,40 +73,40 @@ class BulkDataRequestManager(
     }
 
     private fun errorMessageForEmptyInputConfigurations(
-        listOfIdentifiers: List<String>,
-        listOfFrameworks: List<DataTypeEnum>,
-        listOfReportingPeriods: List<String>,
+        identifiers: Set<String>,
+        frameworks: Set<DataTypeEnum>,
+        reportingPeriods: Set<String>,
     ): String {
         return when {
-            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            identifiers.isEmpty() && frameworks.isEmpty() && reportingPeriods.isEmpty() ->
                 "All " +
                     "provided lists are empty."
 
-            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
+            identifiers.isEmpty() && frameworks.isEmpty() ->
                 "The lists of company identifiers and " +
                     "frameworks are empty."
 
-            listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            identifiers.isEmpty() && reportingPeriods.isEmpty() ->
                 "The lists of company identifiers and " +
                     "reporting periods are empty."
 
-            listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            frameworks.isEmpty() && reportingPeriods.isEmpty() ->
                 "The lists of frameworks and reporting " +
                     "periods are empty."
 
-            listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
-            listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+            identifiers.isEmpty() -> "The list of company identifiers is empty."
+            frameworks.isEmpty() -> "The list of frameworks is empty."
             else -> "The list of reporting periods is empty."
         }
     }
 
-    private fun assureValidityOfRequestLists(bulkDataRequest: BulkDataRequest) {
-        val listOfIdentifiers = bulkDataRequest.listOfCompanyIdentifiers
-        val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
-        val listOfReportingPeriods = bulkDataRequest.listOfReportingPeriods
-        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty() || listOfReportingPeriods.isEmpty()) {
+    private fun assureValidityOfRequests(bulkDataRequest: BulkDataRequest) {
+        val identifiers = bulkDataRequest.companyIdentifiers
+        val frameworks = bulkDataRequest.dataTypes
+        val reportingPeriods = bulkDataRequest.reportingPeriods
+        if (identifiers.isEmpty() || frameworks.isEmpty() || reportingPeriods.isEmpty()) {
             val errorMessage = errorMessageForEmptyInputConfigurations(
-                listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+                identifiers, frameworks, reportingPeriods,
             )
             throw InvalidInputApiException(
                 "No empty lists are allowed as input for bulk data request.",
@@ -223,7 +152,7 @@ class BulkDataRequestManager(
     ): BulkDataRequestResponse {
         return BulkDataRequestResponse(
             message = buildResponseMessageForBulkDataRequest(
-                bulkDataRequest.listOfCompanyIdentifiers.size,
+                bulkDataRequest.companyIdentifiers.size,
                 rejectedCompanyIdentifiers.size,
             ),
             rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,

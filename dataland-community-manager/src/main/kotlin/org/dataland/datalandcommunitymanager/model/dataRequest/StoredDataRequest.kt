@@ -21,13 +21,13 @@ data class StoredDataRequest(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum?,
+    val dataType: DataTypeEnum,
 
     val reportingPeriod: String,
 
     val datalandCompanyId: String,
 
-    val messageHistory: MutableList<StoredDataRequestMessageObject>,
+    val messageHistory: List<StoredDataRequestMessageObject>,
 
     val lastModifiedDate: Long,
 

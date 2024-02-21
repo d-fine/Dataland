@@ -29,9 +29,9 @@ class SingleDataRequestEmailSender(
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
     ) {
-        if (singleDataRequest.listOfReportingPeriods.isEmpty()) return
+        if (singleDataRequest.reportingPeriods.isEmpty()) return
         if (
-            singleDataRequest.contactList.isNullOrEmpty()
+            singleDataRequest.contacts.isNullOrEmpty()
         ) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
@@ -48,15 +48,15 @@ class SingleDataRequestEmailSender(
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
     ) {
-        singleDataRequest.contactList?.forEach { contactEmail ->
+        singleDataRequest.contacts?.forEach { contactEmail ->
             emailSender.sendEmail(
                 singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
                     requesterEmail = userAuthentication.username,
                     receiverEmail = contactEmail,
                     companyId = datalandCompanyId,
-                    dataType = singleDataRequest.frameworkName,
-                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
-                    message = singleDataRequest.message,
+                    dataType = singleDataRequest.dataType,
+                    reportingPeriods = singleDataRequest.reportingPeriods,
+                    rawMessage = singleDataRequest.message,
                 ),
             )
         }
@@ -71,8 +71,8 @@ class SingleDataRequestEmailSender(
             singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
                 userAuthentication = userAuthentication,
                 datalandCompanyId,
-                dataType = singleDataRequest.frameworkName,
-                reportingPeriods = singleDataRequest.listOfReportingPeriods,
+                dataType = singleDataRequest.dataType,
+                reportingPeriods = singleDataRequest.reportingPeriods,
             ),
         )
     }

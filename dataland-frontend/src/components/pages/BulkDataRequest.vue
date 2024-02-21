@@ -223,7 +223,7 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { AxiosError } from "axios";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
-import { type BulkDataRequest } from "@clients/communitymanager";
+import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "BulkDataRequest",
@@ -326,9 +326,9 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
-        listOfReportingPeriods: this.selectedReportingPeriods,
-        listOfCompanyIdentifiers: this.identifiers,
-        listOfFrameworkNames: this.selectedFrameworks,
+        reportingPeriods: this.selectedReportingPeriods as Set<string>,
+        companyIdentifiers: this.identifiers as Set<string>,
+        dataTypes: this.selectedFrameworks as Set<BulkDataRequestDataTypesEnum>,
       };
     },
     /**

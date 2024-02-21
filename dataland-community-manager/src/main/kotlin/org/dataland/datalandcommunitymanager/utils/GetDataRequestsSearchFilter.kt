@@ -7,14 +7,14 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
  * convenient usage of SEPL instructions in the query
  */
 data class GetDataRequestsSearchFilter(
-    val dataTypeNameFilter: String,
+    val dataTypeFilter: String,
     val userIdFilter: String,
     val requestStatus: RequestStatus?,
     val reportingPeriodFilter: String,
     val datalandCompanyIdFilter: String,
 ) {
-    val dataTypeNameFilterLength: Int
-        get() = dataTypeNameFilter.length
+    val dataTypeFilterLength: Int
+        get() = dataTypeFilter.length
 
     val userIdFilterLength: Int
         get() = userIdFilter.length
