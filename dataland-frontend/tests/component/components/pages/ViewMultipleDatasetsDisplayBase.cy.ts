@@ -47,17 +47,8 @@ describe("Component test for the view multiple dataset display base component", 
     cy.get('td[data-cell-label="Employee(s) Under 15"]').should("not.exist");
   });
 
-  it.only("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
-    const preparedFixture = {
-      companyInformation: { companyName: "hello" },
-      t: {
-        general: {
-          masterData: {
-            dataDate: "somethign",
-          },
-        },
-      },
-    }; //getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
+  it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
+    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
     const mockedData2024 = constructCompanyApiResponseForLksg(preparedFixture.t);
     mockedData2024.metaInfo.dataId = "id-2024";
     mockedData2024.metaInfo.reportingPeriod = "2024";
