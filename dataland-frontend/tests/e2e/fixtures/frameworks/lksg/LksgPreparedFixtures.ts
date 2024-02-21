@@ -51,7 +51,7 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
  */
 function generateFixtureWithALotOfNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 80)[0];
-  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
+  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls"; //TODO check if this is used anywhere
   return newFixture;
 }
 
