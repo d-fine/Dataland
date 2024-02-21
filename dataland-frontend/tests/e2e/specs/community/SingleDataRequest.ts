@@ -1,6 +1,11 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
-import { RequestControllerApi, RequestStatus, type SingleDataRequest } from "@clients/communitymanager";
+import {
+  RequestControllerApi,
+  RequestStatus,
+  type SingleDataRequest,
+  type StoredDataRequest,
+} from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
 import { Configuration, DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -9,7 +14,6 @@ import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
   {
@@ -27,12 +31,10 @@ describeIf(
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
-          async (storedCompany) => {
-            testStoredCompany = storedCompany;
-            return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
-          },
-        );
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          testStoredCompany = storedCompany;
+          return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
+        });
       });
     }
     /**
@@ -239,11 +241,13 @@ describeIf(
      */
     function setRequestStatusToAnswered(interception: Interception): void {
       if (interception.response !== undefined) {
-        const responseBody = interception.response.body;
+        const responseBody = interception.response.body as StoredDataRequest[];
         const dataRequestId = responseBody[0].dataRequestId;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           const requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
-          requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Answered);
+          requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Answered).catch((reason) => {
+            console.error(reason);
+          });
         });
       }
     }
