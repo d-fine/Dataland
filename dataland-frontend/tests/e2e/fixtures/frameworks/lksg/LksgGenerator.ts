@@ -21,19 +21,26 @@ export class LksgGenerator extends Generator {
     return Object.fromEntries(map);
   }
 
-  generateLkSGProcurementCategory(): LksgProcurementCategory {
-    return {
-      procuredProductTypesAndServicesNaceCodes: this.guaranteedArray(() => this.guaranteedShortString(), 0, 10),
-      numberOfSuppliersPerCountryCode: this.generateCustomRandomMap(this.guaranteedInt(0, 10)),
-      shareOfTotalProcurementInPercent: this.randomInt(0, 100),
-    };
+  generateLkSGProcurementCategory(localNullProbability: number): LksgProcurementCategory {
+    if (localNullProbability == 0)
+      return {
+        procuredProductTypesAndServicesNaceCodes: this.guaranteedArray(() => this.guaranteedShortString(), 0, 10),
+        numberOfSuppliersPerCountryCode: this.generateCustomRandomMap(this.guaranteedInt(0, 10)),
+        shareOfTotalProcurementInPercent: this.guaranteedInt(0, 100),
+      };
+    else
+      return {
+        procuredProductTypesAndServicesNaceCodes: this.guaranteedArray(() => this.guaranteedShortString(), 0, 10),
+        numberOfSuppliersPerCountryCode: this.generateCustomRandomMap(this.guaranteedInt(0, 10)),
+        shareOfTotalProcurementInPercent: this.randomInt(0, 100),
+      };
   }
 
   generateProcurementCategories(localNullProbability = this.nullProbability): { [p: string]: LksgProcurementCategory } {
     const categoryTypes = Object.values(ProcurementCategoryType).filter(() => Math.random() > localNullProbability);
     const lksgProcurementCategoriesMap = new Map<ProcurementCategoryType, LksgProcurementCategory>();
     categoryTypes.forEach((categoryType) =>
-      lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory()),
+      lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory(localNullProbability)),
     );
     return Object.fromEntries(lksgProcurementCategoriesMap);
   }
