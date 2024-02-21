@@ -116,6 +116,7 @@ function generateFixtureForOneLksgDataSetWithProductionSites(): FixtureData<Lksg
   const lksgGeneratorNoUndefined = new LksgGenerator(0);
 
   newFixture.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
+  newFixture.reportingPeriod = "2024";
 
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct =
     lksgGeneratorNoUndefined.randomBaseDataPoint(YesNo.Yes);

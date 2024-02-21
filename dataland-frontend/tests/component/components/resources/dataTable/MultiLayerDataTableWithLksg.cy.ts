@@ -31,10 +31,9 @@ describe("Component test for the LksgPanel", () => {
   });
 
   it("Should be able to handle null values in a Lksg dataset and display rows for those values", () => {
-    const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
+    const preparedFixture = getPreparedFixture("lksg-almost-only-nulls", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
-
-    getCellValueContainer("Data Date").should("contain.text", "2024-10-12");
+    getCellValueContainer("Data Date").should("contain.text", "1999-12-24");
     getCellValueContainer("Industry").should("exist");
   });
 
@@ -68,7 +67,6 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
-
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
     getCellValueContainer("List Of Production Sites").contains("a").should("be.visible").click();
@@ -90,6 +88,8 @@ describe("Component test for the LksgPanel", () => {
     getCellValueContainer("Procurement Categories").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
+      cy.get("th");
+      cy.pause();
       cy.get("th").eq(0).should("have.text", "Procurement Category");
       cy.get("th").eq(1).should("have.text", "Procured Products/Services");
       cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
