@@ -34,7 +34,7 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getCellValueContainer("Data Date").should("contain.text", "1999-12-24");
+    getCellValueContainer("Data Date").should("contain.text", "2024-11-06");
     getCellValueContainer("Industry").should("exist");
   });
 
@@ -87,7 +87,7 @@ describe("Component test for the LksgPanel", () => {
     getSectionHead("Production-specific - Own Operations")
       .should("have.attr", "data-section-expanded", "false")
       .click();
-    getCellValueContainer("Products/Services Categories purchased").find("a").should("be.visible").click();
+    getCellValueContainer("Procurement Categories").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
       cy.get("th").eq(0).should("have.text", "Procurement Category");
