@@ -38,22 +38,26 @@
   </PrimeDialog>
   <div v-if="isVisible">
     <PrimeButton
-      class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
+      class="uppercase p-button-outlined p-button p-button-sm d-letters"
       aria-label="CLOSE REQUEST"
       @click="closeRequest"
       data-test="closeRequestButton"
     >
       <span class="px-2">CLOSE REQUEST</span>
-      <span class="material-icons-outlined" v-if="mapOfReportingPeriodToActiveDataset.size > 1"> arrow_drop_down </span>
+      <span class="material-icons-outlined no-line-height" v-if="mapOfReportingPeriodToActiveDataset.size > 1">
+        arrow_drop_down
+      </span>
     </PrimeButton>
     <PrimeButton
-      class="uppercase p-button p-button-sm d-letters ml-3"
+      class="uppercase p-button p-button-sm d-letters"
       aria-label="REOPEN REQUEST"
       @click="reOpenRequest"
       data-test="reOpenRequestButton"
     >
       <span class="px-2">REOPEN REQUEST</span>
-      <span class="material-icons-outlined" v-if="mapOfReportingPeriodToActiveDataset.size > 1"> arrow_drop_down </span>
+      <span class="material-icons-outlined no-line-height" v-if="mapOfReportingPeriodToActiveDataset.size > 1">
+        arrow_drop_down
+      </span>
     </PrimeButton>
     <OverlayPanel ref="reportingPeriodsOverlayPanel">
       <SelectReportingPeriodDialog
@@ -72,7 +76,7 @@ import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
-import { type DataTypeEnum, type ErrorResponse } from "@clients/backend";
+import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
@@ -152,6 +156,7 @@ export default defineComponent({
       this.answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
         this.companyId,
         this.framework as DataTypeEnum,
+        Array.from((this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).keys()),
         this.getKeycloakPromise,
       );
     },
@@ -248,3 +253,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss">
+.no-line-height {
+  line-height: 0;
+}
+</style>
