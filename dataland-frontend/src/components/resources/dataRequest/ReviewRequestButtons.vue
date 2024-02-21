@@ -68,8 +68,7 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import { defineComponent } from "vue";
-import { inject } from "vue";
+import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
