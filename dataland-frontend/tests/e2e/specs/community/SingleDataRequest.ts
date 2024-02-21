@@ -2,7 +2,7 @@ import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, 
 import { type Interception } from "cypress/types/net-stubbing";
 import { RequestControllerApi, RequestStatus, type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
+import {Configuration, DataTypeEnum, type LksgData, type StoredCompany} from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -106,14 +106,18 @@ describeIf(
       cy.get('[data-test="closeRequestButton"]').should("not.exist");
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
       chooseReportingPeriod("2023");
+      cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
+      cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
+        setRequestStatusToAnswered(interception);
+      });
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
-      cy.get('[data-test="closeRequestButton"]').should("not.exist");
-      setRequestStatusToAnswered("2023", DataTypeEnum.Lksg);
       cy.get('[data-test="reOpenRequestButton"]').should("exist");
       cy.get('[data-test="closeRequestButton"]').should("exist").click();
+      cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
     });
+
+
 
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
@@ -202,12 +206,17 @@ describeIf(
     }
     /**
      * Sets the status of a single data request from open to answered
-     * @param year the reporting period matching the request
-     * @param framework the framework matching the request
+     * @param interception containing the response body
      */
-    function setRequestStatusToAnswered(year: string, framework: DataTypeEnum): void {
-      const requestId = RequestControllerApi.getDataRequests({ dataType: framework }, { year: year })[0].dataRequestId;
-      RequestControllerApi.patchDataRequest({ dataRequestId: requestId }, { requestStatus: RequestStatus.Answered });
+    function setRequestStatusToAnswered(interception: Interception): void {
+      if (interception.response !== undefined) {
+        const responseBody = interception.response.body;
+        const dataRequestId = responseBody[0].dataRequestId;
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+          let requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
+          requestControllerApi.patchDataRequest(dataRequestId , RequestStatus.Answered );
+        })
+      }
     }
   },
 );
