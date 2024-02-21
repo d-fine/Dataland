@@ -34,7 +34,7 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getCellValueContainer("Data Date").should("contain.text", "2024-11-06");
+    getCellValueContainer("Data Date").should("contain.text", "2024-10-12");
     getCellValueContainer("Industry").should("exist");
   });
 
