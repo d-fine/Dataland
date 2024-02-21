@@ -57,22 +57,22 @@ describeIf(
                   return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
-                      const frontendSubmittedP2pDataset = axiosGetResponse.data.data;
-                      const originallyUploadedP2pDataset = lksgFixtureWithNoNullFields.t;
+                      const frontendSubmittedLksgDataset = axiosGetResponse.data.data;
+                      const originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
 
-                      frontendSubmittedP2pDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      frontendSubmittedP2pDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
-                      frontendSubmittedP2pDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+                      frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
+                      frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                      frontendSubmittedLksgDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
-                      originallyUploadedP2pDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      originallyUploadedP2pDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
-                      originallyUploadedP2pDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+                      originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
+                      originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                      originallyUploadedLksgDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
-                      console.log("all", frontendSubmittedP2pDataset);
-                      console.log("abc", frontendSubmittedP2pDataset.general.productionSpecific);
                       compareObjectKeysAndValuesDeep(
-                        originallyUploadedP2pDataset as unknown as Record<string, object>,
-                        frontendSubmittedP2pDataset as unknown as Record<string, object>,
+                        originallyUploadedLksgDataset as unknown as Record<string, object>,
+                        frontendSubmittedLksgDataset as unknown as Record<string, object>,
                       );
                     });
                 },
