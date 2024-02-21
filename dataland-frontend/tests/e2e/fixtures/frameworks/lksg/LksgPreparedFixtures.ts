@@ -19,7 +19,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15,
     generateFixtureToContainProcurementCategories,
     generateFixtureForSixLksgDataSetsInDifferentYears,
-    generateOneLksgDatasetWithManyNulls,
+    generateOneLksgDatasetWithOnlyNulls,
     generateFixtureForSixLksgDataSetsInDifferentYears,
     generateFixtureForOneLksgDataSetWithProductionSites,
   ];
@@ -51,7 +51,7 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
  */
 function generateFixtureWithALotOfNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 80)[0];
-  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
+  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls"; //TODO check if this is used anywhere
   return newFixture;
 }
 
@@ -160,9 +160,9 @@ function generateFixtureForDate(date: string): FixtureData<LksgData> {
  * Datasets that were uploaded via the Dataland API can look like this in production.
  * @returns the dataset
  */
-function generateOneLksgDatasetWithManyNulls(): FixtureData<LksgData> {
+function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1)[0];
-  newFixture.companyInformation.companyName = "lksg-a-lot-of-nulls";
+  newFixture.companyInformation.companyName = "lksg-almost-only-nulls";
 
   newFixture.t.governance = null;
   newFixture.t.social = null;

@@ -29,7 +29,7 @@ describeIf(
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
         lksgFixtureWithNoNullFields = getPreparedFixture("lksg-all-fields", preparedFixturesLksg);
-        lksgFixtureWithMinimalFields = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixturesLksg);
+        lksgFixtureWithMinimalFields = getPreparedFixture("lksg-almost-only-nulls", preparedFixturesLksg);
       });
     });
 
