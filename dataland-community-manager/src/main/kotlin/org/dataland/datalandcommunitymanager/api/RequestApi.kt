@@ -97,6 +97,7 @@ interface RequestApi {
         @RequestParam identifierValue: String? = null,
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
+        @RequestParam status: RequestStatus? = null,
     ): ResponseEntity<List<AggregatedDataRequest>>
 
     /**

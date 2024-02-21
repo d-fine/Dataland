@@ -19,9 +19,11 @@ plugins {
     jacoco
     id("org.springframework.boot")
     kotlin("kapt")
+    id("com.gorylenko.gradle-git-properties")
 }
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.moshi.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.jackson.kotlin)
@@ -29,6 +31,7 @@ dependencies {
     implementation(libs.commons.io)
     testImplementation(Spring.boot.test)
     implementation(Spring.boot.security)
+    implementation(Spring.boot.web)
 }
 
 tasks.test {
@@ -94,4 +97,8 @@ tasks.register<Copy>("getTestData") {
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
+}
+
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

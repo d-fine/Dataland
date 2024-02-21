@@ -477,6 +477,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
           }
         ],
         "responses": {
@@ -813,7 +821,8 @@
         "type": "string",
         "enum": [
           "Open",
-          "Resolved"
+          "Answered",
+          "Closed"
         ]
       },
       "StoredDataRequest": {
@@ -977,7 +986,8 @@
         "required": [
           "count",
           "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue"
+          "dataRequestCompanyIdentifierValue",
+          "requestStatus"
         ],
         "type": "object",
         "properties": {
@@ -1002,6 +1012,9 @@
           },
           "dataRequestCompanyIdentifierValue": {
             "type": "string"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
           },
           "count": {
             "type": "integer",
