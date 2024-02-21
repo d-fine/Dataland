@@ -22,6 +22,7 @@
     <CompanyInformationBanner
       :companyId="companyId"
       :show-single-data-request-button="showSingleDataRequestButton"
+      :show-review-request-buttons="showReviewRequestButtons"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
       :framework="framework"
       :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
@@ -48,31 +49,36 @@ import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 const injectedMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
 
+const showReviewRequestButtons = computed<boolean>(() => {
+  return framework != "" && framework != undefined;
+});
+
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
-  companyId: {
-    type: String,
-    required: true,
-  },
-  showSearchBar: {
-    type: Boolean,
-    default: true,
-  },
-  showSingleDataRequestButton: {
-    type: Boolean,
-    default: false,
-  },
-  framework: {
-    type: String,
-    required: false,
-  },
-  mapOfReportingPeriodToActiveDataset: {
-    type: Map,
-    required: false,
-  },
-});
+const { companyId, showSearchBar, showSingleDataRequestButton, framework, mapOfReportingPeriodToActiveDataset } =
+  defineProps({
+    companyId: {
+      type: String,
+      required: true,
+    },
+    showSearchBar: {
+      type: Boolean,
+      default: true,
+    },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
+    },
+    framework: {
+      type: String,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map,
+      required: false,
+    },
+  });
 
 const emit = defineEmits(["fetchedCompanyInformation"]);
 
