@@ -22,6 +22,7 @@ class YesNoNaComponent(
 ) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport, SimpleDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
@@ -56,6 +57,7 @@ class YesNoNaComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport, SimpleDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
