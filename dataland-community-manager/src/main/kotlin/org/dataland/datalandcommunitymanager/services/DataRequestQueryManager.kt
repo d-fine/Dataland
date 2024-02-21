@@ -40,12 +40,15 @@ class DataRequestQueryManager(
     /** This method triggers a query to get aggregated data requests.
      * @param identifierValue can be used to filter via substring matching
      * @param dataTypes can be used to filter on frameworks
+     * @param reportingPeriod can be used to filter on reporting periods
+     * @param status can be used to filter on request status
      * @returns aggregated data requests
      */
     fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
+        status: RequestStatus?,
     ): List<AggregatedDataRequest> {
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
@@ -53,13 +56,19 @@ class DataRequestQueryManager(
             dataTypes?.map { it.value }?.toSet()
         }
         val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
+            dataRequestRepository.getAggregatedDataRequests(
+                identifierValue,
+                dataTypesFilterForQuery,
+                reportingPeriod,
+                status,
+            )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
                 getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
+                aggregatedDataRequestEntity.requestStatus,
                 aggregatedDataRequestEntity.count,
             )
         }
