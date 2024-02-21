@@ -108,7 +108,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * reporting period as well as company identifier
      * @param dataRequestCompanyIdentifierValue to check for
      * @param reportingPeriod to check for
-     * @param dataTypeName to check for
+     * @param dataType to check for
      * @returns the aggregated data requests
      */
     @Transactional
@@ -119,7 +119,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "SET d.requestStatus = " +
             ":#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
             "WHERE " +
-            "(d.dataTypeName = :#{#dataTypeName} AND " +
+            "(d.dataType = :#{#dataType} AND " +
             "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
             "AND " +
             "d.reportingPeriod = :#{#reportingPeriod} AND " +
@@ -128,6 +128,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun updateDataRequestEntitiesFromOpenToAnswered(
         dataRequestCompanyIdentifierValue: String,
         reportingPeriod: String,
-        dataTypeName: String,
+        dataType: String,
     )
 }
