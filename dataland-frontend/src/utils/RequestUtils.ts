@@ -31,7 +31,6 @@ export async function getAnsweredDataRequestsForViewPage(
     }
   } catch (error) {
     console.error(error);
-    throw error;
   }
   return [];
 }
