@@ -13886,6 +13886,13 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
@@ -13897,13 +13904,6 @@
             "nullable": true
           },
           "countryCode": {
-            "type": "string"
-          },
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
             "type": "string"
           }
         }
@@ -13927,10 +13927,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
