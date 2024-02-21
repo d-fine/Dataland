@@ -43,13 +43,13 @@ interface DataOwnerApi {
         produces = ["application/json"],
         value = ["/{companyId}/data-owners/{userId}"],
 
-    )
+        )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDataOwner(
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
     ):
-        ResponseEntity<CompanyDataOwners>
+            ResponseEntity<CompanyDataOwners>
 
     /**
      * A method to retrieve a  data owner information from companies in dataland
@@ -70,12 +70,12 @@ interface DataOwnerApi {
         produces = ["application/json"],
         value = ["/{companyId}/data-owners"],
 
-    )
+        )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataOwners(
         @PathVariable("companyId") companyId: UUID,
     ):
-        ResponseEntity<List<String>>
+            ResponseEntity<List<String>>
 
     /**
      * A method to delete a data ownership relation in dataland
@@ -96,13 +96,13 @@ interface DataOwnerApi {
         produces = ["application/json"],
         value = ["/{companyId}/data-owners/{userId}"],
 
-    )
+        )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteDataOwner(
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
     ):
-        ResponseEntity<CompanyDataOwners>
+            ResponseEntity<CompanyDataOwners>
 
     /**
      * A method to check if a user specified via their ID is data owner for a certain company
@@ -119,7 +119,7 @@ interface DataOwnerApi {
             ApiResponse(
                 responseCode = "404",
                 description = "Either the specified company does not exist on Dataland or the user isn't data owner " +
-                    "of that company.",
+                        "of that company.",
             ),
         ],
     )
@@ -127,7 +127,7 @@ interface DataOwnerApi {
         method = [RequestMethod.HEAD],
         value = ["/{companyId}/data-owners/{userId}"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserDataOwner(#userId)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.amIAskingForMySelf(#userId)")
     fun isUserDataOwnerForCompany(
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
