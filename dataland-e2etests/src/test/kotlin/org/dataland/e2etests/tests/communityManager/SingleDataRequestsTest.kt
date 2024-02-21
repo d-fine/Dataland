@@ -78,7 +78,7 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns" +
-                    " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+                        " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
             ),
         )
     }
@@ -195,7 +195,7 @@ class SingleDataRequestsTest {
             assertTrue(
                 responseBody.contains(
                     "You have provided a message, but no recipients. " +
-                        "Without at least one valid email address being provided no message can be forwarded.",
+                            "Without at least one valid email address being provided no message can be forwarded.",
                 ),
             )
         }
@@ -252,7 +252,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `patch a open data request as a reader and assert that it is forbidden`() {
+    fun `patch a open data request of admin as a reader and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
@@ -271,6 +271,7 @@ class SingleDataRequestsTest {
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
+
     @Test
     fun `patch your own answered data request as a premiumUser to closed`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
@@ -294,6 +295,7 @@ class SingleDataRequestsTest {
         val closedDataRequest = requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.closed)
         assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
     }
+
     @Test
     fun `patch a non owned answered data request as a premiumUser and assert that it is forbidden`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -318,6 +320,7 @@ class SingleDataRequestsTest {
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
+
     @Test
     fun `patch your own open data request as a premiumUser and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
