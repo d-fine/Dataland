@@ -51,28 +51,29 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
-  companyId: {
-    type: String,
-    required: true,
-  },
-  showSearchBar: {
-    type: Boolean,
-    default: true,
-  },
-  showSingleDataRequestButton: {
-    type: Boolean,
-    default: false,
-  },
-  framework: {
-    type: String,
-    required: false,
-  },
-  mapOfReportingPeriodToActiveDataset: {
-    type: Map,
-    required: false,
-  },
-});
+const { companyId, showSearchBar, showSingleDataRequestButton, framework, mapOfReportingPeriodToActiveDataset } =
+  defineProps({
+    companyId: {
+      type: String,
+      required: true,
+    },
+    showSearchBar: {
+      type: Boolean,
+      default: true,
+    },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
+    },
+    framework: {
+      type: String,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map,
+      required: false,
+    },
+  });
 
 const emit = defineEmits(["fetchedCompanyInformation"]);
 

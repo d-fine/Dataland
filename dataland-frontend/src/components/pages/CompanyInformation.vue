@@ -19,6 +19,7 @@
         </div>
         <div class="right-elements">
           <ReviewRequestButtons
+            v-if="showReviewRequestButtons"
             :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
             :framework="framework"
             :company-id="companyId"
@@ -116,6 +117,9 @@ export default defineComponent({
         });
       }
       return listOfItems;
+    },
+    showReviewRequestButtons() {
+      return this.framework != "" && this.framework != undefined;
     },
   },
   props: {
