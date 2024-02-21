@@ -372,7 +372,7 @@ class BulkDataRequestsTest {
 
     @Test
     fun `patch your own answered bulk data request as a reader`() {
-        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"))[0]
+        val newlyStoredRequest = getOpenDataRequests(listOf("2022", "2023"))[0]
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -389,7 +389,7 @@ class BulkDataRequestsTest {
 
     @Test
     fun `patch open or closed bulk data request as a reader and assert that it is forbidden`() {
-        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"))[0]
+        val newlyStoredRequest = getOpenDataRequests(listOf("2022", "2023"))[0]
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -413,7 +413,7 @@ class BulkDataRequestsTest {
             Assertions.assertEquals(clientError403, clientException.message)
         }
     }
-    private fun getSingleOpenDataRequest(years: List<String>): List<StoredDataRequest> {
+    private fun getOpenDataRequests(years: List<String>): List<StoredDataRequest> {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
