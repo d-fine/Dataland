@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Generates MultiSelectComponents from rows with the component "Multi-Select Dropdown" //TODO edit
+ * Generates ISO2 Country Codes from rows with the component "ISO2CountryCodesMultiSelectComponent"
  */
 @Component
 class Iso2CountryCodesMultiSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :

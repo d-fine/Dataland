@@ -18,8 +18,8 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
- * A MultiSelectComponent represents a selection of string-options. Multiple of those string-options
- * can be selected. TODO edit
+ * An ISO2 Country Code represents a selection of string-options generated from country Codes. Multiple entries can be
+ * selected.
  */
 open class Iso2CountryCodesMultiSelectComponent(
     identifier: String,
