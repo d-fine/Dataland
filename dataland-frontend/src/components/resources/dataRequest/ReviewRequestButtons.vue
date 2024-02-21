@@ -130,7 +130,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void this.updateAnsweredDataRequestsForViewPage();
+    void (await this.updateAnsweredDataRequestsForViewPage());
   },
   methods: {
     /**
