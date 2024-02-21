@@ -9,24 +9,7 @@ import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.utils.causeClientExceptionByBulkDataRequest
-import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiersInBulkRequest
-import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
-import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
-import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
-import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
-import org.dataland.e2etests.utils.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
-import org.dataland.e2etests.utils.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
-import org.dataland.e2etests.utils.findAggregatedDataRequestDataTypeForFramework
-import org.dataland.e2etests.utils.findRequestControllerApiDataTypeForFramework
-import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifierType
-import org.dataland.e2etests.utils.generateRandomIsin
-import org.dataland.e2etests.utils.generateRandomLei
-import org.dataland.e2etests.utils.generateRandomPermId
-import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
-import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
-import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
-import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
+import org.dataland.e2etests.utils.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -388,8 +371,8 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post a bulk data request and check that you can patch your own answered data request as a reader`() {
-        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"), enumValues<BulkDataRequest.ListOfFrameworkNames>().toList())[0]
+    fun `patch your own answered bulk data request as a reader`() {
+        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"))[0]
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -405,8 +388,8 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post a bulk data request and patch a open or closed data request as a reader and assert that it is forbidden`() {
-        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"), enumValues<BulkDataRequest.ListOfFrameworkNames>().toList())[0]
+    fun `patch open or closed bulk data request as a reader and assert that it is forbidden`() {
+        val newlyStoredRequest = getSingleOpenDataRequest(listOf("2022", "2023"))[0]
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -430,9 +413,10 @@ class BulkDataRequestsTest {
             Assertions.assertEquals(clientError403, clientException.message)
         }
     }
-    private fun getSingleOpenDataRequest(years: List<String>, frameworks: List<BulkDataRequest.ListOfFrameworkNames>): List<StoredDataRequest> {
+    private fun getSingleOpenDataRequest(years: List<String>): List<StoredDataRequest> {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
+        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postBulkDataRequest(
             BulkDataRequest(uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier), frameworks, years),
