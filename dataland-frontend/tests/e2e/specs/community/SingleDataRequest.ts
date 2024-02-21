@@ -2,7 +2,7 @@ import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, 
 import { type Interception } from "cypress/types/net-stubbing";
 import { RequestControllerApi, RequestStatus, type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import {Configuration, DataTypeEnum, type LksgData, type StoredCompany} from "@clients/backend";
+import { Configuration, DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -30,14 +30,24 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
           async (storedCompany) => {
             testStoredCompany = storedCompany;
-            return uploadFrameworkData(
-              DataTypeEnum.Lksg,
-              token,
-              storedCompany.companyId,
-              reportingPeriod,
-              getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
-            );
+            return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
           },
+        );
+      });
+    }
+    /**
+     * Sets the status of a single data request from open to answered
+     * @param companyId id of the company
+     * @param reportingPeriod the year for which the framework is uploaded
+     */
+    function uploadFrameworkDataForCompany(companyId: string, reportingPeriod: string): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadFrameworkData(
+          DataTypeEnum.Lksg,
+          token,
+          companyId,
+          reportingPeriod,
+          getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
         );
       });
     }
@@ -69,7 +79,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      chooseReportingPeriod("2020");
+      chooseReportingPeriod("2023");
       checkDropdownLabels();
       chooseFramework();
 
@@ -89,7 +99,7 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      chooseReportingPeriod("2020");
+      chooseReportingPeriod("2023");
       chooseFramework();
       submit();
       cy.get("[data-test=submittedDiv]").should("exist");
@@ -100,12 +110,12 @@ describeIf(
     });
 
     it("Create a single data request, set the status to answered, then close the request on the view page", () => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
       cy.get('[data-test="closeRequestButton"]').should("not.exist");
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      chooseReportingPeriod("2023");
+      chooseReportingPeriod("2020");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
@@ -114,10 +124,29 @@ describeIf(
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="reOpenRequestButton"]').should("exist");
       cy.get('[data-test="closeRequestButton"]').should("exist").click();
-      cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
     });
 
-
+    it("Create two data request, set the status to answered, then update one of the request on the view page", () => {
+      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
+      chooseReportingPeriod("2021");
+      cy.intercept("POST", "**/community/requests/single").as("postRequestData");
+      submit();
+      cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
+        uploadFrameworkDataForCompany(testStoredCompany.companyId, "2021");
+        setRequestStatusToAnswered(interception);
+      });
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="closeRequestButton"]').should("exist");
+      cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+      cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
+      cy.get('[data-test="reporting-periods"] a').contains("2021").should("have.class", "link").click();
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+      cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
+      cy.get('[data-test="closeRequestButton"]').should("not.exist");
+    });
 
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
@@ -129,7 +158,7 @@ describeIf(
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
           frameworkName: "lksg",
-          listOfReportingPeriods: ["2020"],
+          listOfReportingPeriods: ["2023"],
           contactList: ["example@Email.com"],
           message: "Frontend test message",
         };
@@ -213,9 +242,9 @@ describeIf(
         const responseBody = interception.response.body;
         const dataRequestId = responseBody[0].dataRequestId;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          let requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
-          requestControllerApi.patchDataRequest(dataRequestId , RequestStatus.Answered );
-        })
+          const requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
+          requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Answered);
+        });
       }
     }
   },
