@@ -19,7 +19,6 @@
         </div>
         <div class="right-elements">
           <ReviewRequestButtons
-            v-if="showReviewRequestButtons"
             :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
             :framework="framework"
             :company-id="companyId"
@@ -125,10 +124,6 @@ export default defineComponent({
       required: true,
     },
     showSingleDataRequestButton: {
-      type: Boolean,
-      default: false,
-    },
-    showReviewRequestButtons: {
       type: Boolean,
       default: false,
     },
