@@ -50,33 +50,9 @@ class Lksg {
         val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
             .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
 
-        var sortedFixedDataset = fixedDataSet.copy(
-            governance = fixedDataSet.governance?.copy(
-                riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
-                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
-                ),
-            ),
-        )
-        sortedFixedDataset = sortedFixedDataset.copy(
-            governance = sortedFixedDataset.governance?.copy(
-                grievanceMechanismOwnOperations = sortedFixedDataset.governance?.grievanceMechanismOwnOperations?.copy(
-                    complaintsRiskPosition = sortedFixedDataset.governance?.grievanceMechanismOwnOperations
-                        ?.complaintsRiskPosition?.sorted(),
-                ),
-            ),
-        )
-        sortedFixedDataset = sortedFixedDataset.copy(
-            governance = sortedFixedDataset.governance?.copy(
-                generalViolations = sortedFixedDataset.governance?.generalViolations?.copy(
-                    humanRightsOrEnvironmentalViolationsDefinition = sortedFixedDataset.governance?.generalViolations
-                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
-                ),
-            ),
-        )
-
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(sortedFixedDataset, downloadedAssociatedData.data)
+        assertEquals(sortDatasetsInFirstTest(fixedDataSet), downloadedAssociatedData.data)
     }
 
     @Test
@@ -101,7 +77,62 @@ class Lksg {
                 showOnlyActive = true,
                 reportingPeriod = "2023",
             )
+        assertDownloadedDatasets(
+            downLoadedDataSets,
+            activeDownloadedDatasets,
+            downloaded2023Datasets,
+            downloadedActive2023Datasets,
+            listOf(uploadedDataSets[0], sortDatasetsInSecondTest(uploadedDataSets)),
+        )
+    }
 
+    private fun assertDownloadedDatasets(
+        downLoadedDataSets: List<DataAndMetaInformationLksgData>,
+        activeDownloadedDatasets: List<DataAndMetaInformationLksgData>,
+        downloaded2023Datasets: List<DataAndMetaInformationLksgData>,
+        downloadedActive2023Datasets: List<DataAndMetaInformationLksgData>,
+        uploadedDataSets: List<Any>,
+    ) {
+        assertTrue(
+            downLoadedDataSets.size == 4 && activeDownloadedDatasets.size == 2 &&
+                downloaded2023Datasets.size == 2 && downloadedActive2023Datasets.size == 1,
+            "At least of the retrieved meta data lists does not have the expected size.",
+        )
+        assertEquals(
+            downloadedActive2023Datasets[0].data,
+            uploadedDataSets[1],
+            "Active dataset in 2023 not equal to latest upload.",
+        )
+    }
+
+    private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
+        var sortedFixedDataset = fixedDataSet.copy(
+            governance = fixedDataSet.governance?.copy(
+                riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
+                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                ),
+            ),
+        )
+        sortedFixedDataset = sortedFixedDataset.copy(
+            governance = sortedFixedDataset.governance?.copy(
+                grievanceMechanismOwnOperations = sortedFixedDataset.governance?.grievanceMechanismOwnOperations?.copy(
+                    complaintsRiskPosition = sortedFixedDataset.governance?.grievanceMechanismOwnOperations
+                        ?.complaintsRiskPosition?.sorted(),
+                ),
+            ),
+        )
+        sortedFixedDataset = sortedFixedDataset.copy(
+            governance = sortedFixedDataset.governance?.copy(
+                generalViolations = sortedFixedDataset.governance?.generalViolations?.copy(
+                    humanRightsOrEnvironmentalViolationsDefinition = sortedFixedDataset.governance?.generalViolations
+                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                ),
+            ),
+        )
+        return sortedFixedDataset
+    }
+
+    private fun sortDatasetsInSecondTest(uploadedDataSets: List<LksgData>): LksgData {
         var sortedUploadedDatasets = uploadedDataSets[1].copy(
             governance = uploadedDataSets[1].governance?.copy(
                 riskManagementOwnOperations =
@@ -130,32 +161,7 @@ class Lksg {
             ),
         )
 
-        assertDownloadedDatasets(
-            downLoadedDataSets,
-            activeDownloadedDatasets,
-            downloaded2023Datasets,
-            downloadedActive2023Datasets,
-            listOf(uploadedDataSets[0], sortedUploadedDatasets),
-        )
-    }
-
-    private fun assertDownloadedDatasets(
-        downLoadedDataSets: List<DataAndMetaInformationLksgData>,
-        activeDownloadedDatasets: List<DataAndMetaInformationLksgData>,
-        downloaded2023Datasets: List<DataAndMetaInformationLksgData>,
-        downloadedActive2023Datasets: List<DataAndMetaInformationLksgData>,
-        uploadedDataSets: List<LksgData>,
-    ) {
-        assertTrue(
-            downLoadedDataSets.size == 4 && activeDownloadedDatasets.size == 2 &&
-                downloaded2023Datasets.size == 2 && downloadedActive2023Datasets.size == 1,
-            "At least of the retrieved meta data lists does not have the expected size.",
-        )
-        assertEquals(
-            downloadedActive2023Datasets[0].data,
-            uploadedDataSets[1],
-            "Active dataset in 2023 not equal to latest upload.",
-        )
+        return sortedUploadedDatasets
     }
 
     private fun uploadFourDatasetsForACompany(): Pair<String, List<LksgData>> {

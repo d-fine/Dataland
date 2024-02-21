@@ -32,14 +32,14 @@ class LksgFramework : InDevelopmentPavedRoadFramework(
                 editShareOfTemporaryWorkersOptions(it)
             }
         val governanceComponent = framework.root.getOrNull<ComponentGroup>("governance")
-        governanceComponent?.getOrNull<ComponentGroup>("riskManagementOwnOperations")?.let { it ->
-            writeLksgRiskPositions(it, "identifiedRisks")
+        governanceComponent?.getOrNull<ComponentGroup>("riskManagementOwnOperations")?.let { parent ->
+            writeLksgRiskPositions(parent, "identifiedRisks")
         }
-        governanceComponent?.getOrNull<ComponentGroup>("grievanceMechanismOwnOperations")?.let { it ->
-            writeLksgRiskPositions(it, "complaintsRiskPosition")
+        governanceComponent?.getOrNull<ComponentGroup>("grievanceMechanismOwnOperations")?.let { parent ->
+            writeLksgRiskPositions(parent, "complaintsRiskPosition")
         }
-        governanceComponent?.getOrNull<ComponentGroup>("generalViolations")?.let { it ->
-            writeLksgRiskPositions(it, "humanRightsOrEnvironmentalViolationsDefinition")
+        governanceComponent?.getOrNull<ComponentGroup>("generalViolations")?.let { parent ->
+            writeLksgRiskPositions(parent, "humanRightsOrEnvironmentalViolationsDefinition")
         }
     }
 
