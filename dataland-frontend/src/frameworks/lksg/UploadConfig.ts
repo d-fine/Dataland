@@ -1,9 +1,6 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type LksgData } from "@clients/backend";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export const lksgDataModel = [
   {
