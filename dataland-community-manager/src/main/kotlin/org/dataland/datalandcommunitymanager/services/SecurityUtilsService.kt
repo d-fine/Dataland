@@ -36,11 +36,11 @@ class SecurityUtilsService(
     ): Boolean {
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
         return (
-                (currentRequestStatus == RequestStatus.Answered) &&
-                        (
-                                requestStatusToPatch == RequestStatus.Closed ||
-                                        requestStatusToPatch == RequestStatus.Open
-                                )
-                )
+            (currentRequestStatus == RequestStatus.Answered) &&
+                (
+                    requestStatusToPatch == RequestStatus.Closed ||
+                        requestStatusToPatch == RequestStatus.Open
+                    )
+            )
     }
 }

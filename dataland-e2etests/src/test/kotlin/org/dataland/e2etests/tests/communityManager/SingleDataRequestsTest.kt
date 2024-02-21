@@ -78,7 +78,7 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns" +
-                        " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+                    " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
             ),
         )
     }
@@ -195,7 +195,7 @@ class SingleDataRequestsTest {
             assertTrue(
                 responseBody.contains(
                     "You have provided a message, but no recipients. " +
-                            "Without at least one valid email address being provided no message can be forwarded.",
+                        "Without at least one valid email address being provided no message can be forwarded.",
                 ),
             )
         }
@@ -304,7 +304,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022")
+            listOfReportingPeriods = listOf("2022"),
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
@@ -315,7 +315,7 @@ class SingleDataRequestsTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        for(requestStatus in RequestStatus.entries){
+        for (requestStatus in RequestStatus.entries) {
             val clientException = assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
             }
@@ -336,13 +336,14 @@ class SingleDataRequestsTest {
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
-        for(requestStatus in RequestStatus.entries){
+        for (requestStatus in RequestStatus.entries) {
             val clientException: ClientException = assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
             }
             assertEquals("Client error : 403 ", clientException.message)
         }
     }
+
     @Test
     fun `patch your own closed data request as a premiumUser and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
@@ -362,14 +363,13 @@ class SingleDataRequestsTest {
         assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        for(requestStatus in RequestStatus.entries){
+        for (requestStatus in RequestStatus.entries) {
             val clientException: ClientException = assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
             }
             assertEquals("Client error : 403 ", clientException.message)
         }
     }
-
 
     private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
         val requestA = SingleDataRequest(
