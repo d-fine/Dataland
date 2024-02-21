@@ -1,15 +1,16 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
 /**
+ * --- API model ---
  * Contains info about a stored message object on Dataland.
- * @param contactList  a list of strings which include all contact (mail) details
+ * @param contacts  a list of strings which include all contact (mail) details
  * @param message a string of all messages which were created during the life cycle
- * @param lastModifiedDate the date when the data request has been modified the last time
+ * @param creationTimestamp the creation time of the message object
  */
 data class StoredDataRequestMessageObject(
-    var contactList: List<String>,
+    var contacts: Set<String>,
 
-    val message: String? = null,
+    val message: String?,
 
-    val lastModifiedDate: Long? = null,
+    val creationTimestamp: Long,
 )

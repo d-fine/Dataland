@@ -27,17 +27,17 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
 }
 
 fun findStoredDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.DataTypes,
 ): StoredDataRequest.DataType {
     return StoredDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
 fun findAggregatedDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.DataTypes,
 ): AggregatedDataRequest.DataType {
     return AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
 fun findRequestControllerApiDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.DataTypes,
 ): RequestControllerApi.DataTypesGetAggregatedDataRequests {
     return RequestControllerApi.DataTypesGetAggregatedDataRequests.entries.find { dataType ->
         dataType.value == framework.value
@@ -154,7 +154,7 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 
 fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.DataTypes,
     reportingPeriod: String,
     dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     dataRequestCompanyIdentifierValue: String,
@@ -177,14 +177,14 @@ fun check400ClientExceptionErrorMessage(clientException: ClientException) {
 }
 
 fun causeClientExceptionByBulkDataRequest(
-    listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-    listOfReportingPeriods: List<String>,
+    identifiers: Set<String>,
+    dataTypes: Set<BulkDataRequest.DataTypes>,
+    reportingPeriods: Set<String>,
 ): ClientException {
     val clientException = assertThrows<ClientException> {
         RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER).postBulkDataRequest(
             BulkDataRequest(
-                listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+                identifiers, dataTypes, reportingPeriods,
             ),
         )
     }
@@ -192,50 +192,50 @@ fun causeClientExceptionByBulkDataRequest(
 }
 
 private fun errorMessageForEmptyInputConfigurations(
-    listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-    listOfReportingPeriods: List<String>,
+    identifiers: Set<String>,
+    dataTypes: Set<BulkDataRequest.DataTypes>,
+    reportingPeriods: Set<String>,
 ): String {
     return when {
-        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+        identifiers.isEmpty() && dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
             "All " +
                 "provided lists are empty."
-        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
+        identifiers.isEmpty() && dataTypes.isEmpty() ->
             "The lists of company identifiers and " +
                 "frameworks are empty."
-        listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
+        identifiers.isEmpty() && reportingPeriods.isEmpty() ->
             "The lists of company identifiers and " +
                 "reporting periods are empty."
-        listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+        dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
             "The lists of frameworks and reporting " +
                 "periods are empty."
-        listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
-        listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+        identifiers.isEmpty() -> "The list of company identifiers is empty."
+        dataTypes.isEmpty() -> "The list of frameworks is empty."
         else -> "The list of reporting periods is empty."
     }
 }
 
 fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
-    listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-    listOfReportingPeriods: List<String>,
+    identifiers: Set<String>,
+    dataTypes: Set<BulkDataRequest.DataTypes>,
+    reportingPeriods: Set<String>,
 ) {
     val logger = LoggerFactory.getLogger(BulkDataRequestsTest::class.java)
-    if (listOfIdentifiers.isNotEmpty() && listOfFrameworks.isNotEmpty() && listOfReportingPeriods.isNotEmpty()) {
+    if (identifiers.isNotEmpty() && dataTypes.isNotEmpty() && reportingPeriods.isNotEmpty()) {
         logger.info(
             "None of the input lists is empty although a function to assert the error message due to their" +
                 "emptiness is called.",
         )
     } else {
         val clientException = causeClientExceptionByBulkDataRequest(
-            listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+            identifiers, dataTypes, reportingPeriods,
         )
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
         assertTrue(
             responseBody.contains(
-                errorMessageForEmptyInputConfigurations(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods),
+                errorMessageForEmptyInputConfigurations(identifiers, dataTypes, reportingPeriods),
             ),
         )
     }
@@ -254,7 +254,7 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.DataTypes,
     reportingPeriod: String,
     identifierType: DataRequestCompanyIdentifierType,
     identifierValue: String,
@@ -282,8 +282,8 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
 
 fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
-    frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-    reportingPeriods: List<String>,
+    frameworks: Set<BulkDataRequest.DataTypes>,
+    reportingPeriods: Set<String>,
     identifierMap: Map<DataRequestCompanyIdentifierType, String>,
     count: Long,
 ) {
@@ -304,9 +304,14 @@ fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestSta
     assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
 }
 
-fun patchDataRequestAndAssertNewStatus(dataRequestId: UUID, newStatus: RequestStatus) {
-    val storedDataRequestAfterPatch = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-        .patchDataRequest(dataRequestId, newStatus)
+fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID, newStatus: RequestStatus) {
+    val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    val storedDataRequestAfterPatch = requestControllerApi
+        .patchDataRequestStatus(dataRequestId, newStatus)
+    val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
+    assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
     assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
     assertStatusForDataRequestId(dataRequestId, newStatus)
 }

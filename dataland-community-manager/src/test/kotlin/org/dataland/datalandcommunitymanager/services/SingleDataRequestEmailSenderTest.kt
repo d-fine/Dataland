@@ -40,7 +40,7 @@ class SingleDataRequestEmailSenderTest {
     private val companyName = "Real Company"
     private val defaultMessage = "Dummy Message"
 
-    private val reportingPeriods = listOf("2023", "2022")
+    private val reportingPeriods = setOf("2023", "2022")
 
     private val senderEmail = "info@dataland.com"
     private val senderName = "Dataland"
@@ -83,10 +83,10 @@ class SingleDataRequestEmailSenderTest {
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
             SingleDataRequest(
-                properCompanyId,
-                dataType,
-                listOfReportingPeriods = listOf(),
-                contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
+                companyIdentifier = properCompanyId,
+                dataType = dataType,
+                reportingPeriods = setOf(),
+                contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
@@ -105,8 +105,8 @@ class SingleDataRequestEmailSenderTest {
             SingleDataRequest(
                 properCompanyId,
                 dataType,
-                listOfReportingPeriods = reportingPeriods,
-                contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
+                reportingPeriods = reportingPeriods,
+                contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
@@ -126,8 +126,8 @@ class SingleDataRequestEmailSenderTest {
             SingleDataRequest(
                 properCompanyId,
                 dataType,
-                listOfReportingPeriods = reportingPeriods,
-                contactList = listOf(),
+                reportingPeriods = reportingPeriods,
+                contacts = setOf(),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
@@ -144,8 +144,8 @@ class SingleDataRequestEmailSenderTest {
                 SingleDataRequest(
                     properCompanyId,
                     dataType,
-                    listOfReportingPeriods = reportingPeriods,
-                    contactList = contactEmails,
+                    reportingPeriods = reportingPeriods,
+                    contacts = contactEmails,
                     message = defaultMessage,
                 ),
                 DataRequestCompanyIdentifierType.DatalandCompanyId,
@@ -213,7 +213,7 @@ class SingleDataRequestEmailSenderTest {
         expectedNotToBeContainedInHtmlContent = emptySet(),
     )
 
-    fun expectSentEmailsToMatchContactEmail(expectedReceiversGetter: () -> Set<EmailContact>) {
+    private fun expectSentEmailsToMatchContactEmail(expectedReceiversGetter: () -> Set<EmailContact>) {
         val sharedContent = setOf(
             "from $companyName",
             "$proxyPrimaryUrl/companies/$companyIdentifier",
@@ -230,10 +230,10 @@ class SingleDataRequestEmailSenderTest {
         )
     }
 
-    private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (List<String>) -> Unit) {
+    private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (Set<String>) -> Unit) {
         val unaddressedContactEmails = contactEmails.toMutableList()
         expectSentEmailsToMatchContactEmail { setOf(EmailContact(unaddressedContactEmails.removeFirst())) }
-        test(contactEmails)
+        test(contactEmails.toSet())
         assertEquals(0, unaddressedContactEmails.size)
         assertNumEmailsSentEquals(contactEmails.size)
     }
