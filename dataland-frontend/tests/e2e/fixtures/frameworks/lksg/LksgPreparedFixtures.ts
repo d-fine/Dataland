@@ -27,11 +27,10 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-    preparedFixturesBeforeManipulation.push(generateFixtureForDate("2023-04-18"));
-    preparedFixturesBeforeManipulation.push(generateFixtureForDate("2023-06-22"));
-    preparedFixturesBeforeManipulation.push(generateFixtureForDate("2023-04-18"));
   }
-
+  preparedFixtures.push(generateFixtureForDate("2023-04-18"));
+  preparedFixtures.push(generateFixtureForDate("2023-06-22"));
+  preparedFixtures.push(generateFixtureForDate("2022-07-30"));
   return preparedFixtures;
 }
 
