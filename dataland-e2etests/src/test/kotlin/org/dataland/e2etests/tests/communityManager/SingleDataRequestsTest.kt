@@ -252,7 +252,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `patch data request as a reader and assert that it is forbidden`() {
+    fun `patch a open data request as a reader and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
@@ -282,6 +282,7 @@ class SingleDataRequestsTest {
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
