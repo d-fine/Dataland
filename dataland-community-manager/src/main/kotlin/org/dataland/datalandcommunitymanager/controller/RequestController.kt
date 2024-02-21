@@ -44,9 +44,15 @@ class RequestController(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
+        status: RequestStatus?,
     ): ResponseEntity<List<AggregatedDataRequest>> {
         return ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod),
+            dataRequestQueryManager.getAggregatedDataRequests(
+                identifierValue,
+                dataTypes,
+                reportingPeriod,
+                status,
+            ),
         )
     }
 

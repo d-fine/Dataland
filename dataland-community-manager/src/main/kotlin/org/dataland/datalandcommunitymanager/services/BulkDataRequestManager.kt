@@ -1,10 +1,14 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandemail.email.EmailSender
@@ -19,6 +23,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val utils: DataRequestProcessingUtils,

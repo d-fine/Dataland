@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
@@ -92,15 +93,15 @@ class SingleDataRequestManager(
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
         try {
-            companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
-        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-            throw ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland-backend does not know the company ID $companyId",
-            )
-        }
+            companyApi.getCompanyById(companyId)
+        } catch (e: ClientException) {
+            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                throw ResourceNotFoundApiException(
+                    "Company not found",
+                    "Dataland-backend does not know the company ID $companyId",
+                )
+            }
         }
     }
 
