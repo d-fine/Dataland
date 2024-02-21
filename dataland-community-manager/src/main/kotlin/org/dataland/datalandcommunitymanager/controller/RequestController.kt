@@ -40,9 +40,15 @@ class RequestController(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
+        status: RequestStatus?,
     ): ResponseEntity<List<AggregatedDataRequest>> {
         return ResponseEntity.ok(
-            bulkDataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod),
+            bulkDataRequestManager.getAggregatedDataRequests(
+                identifierValue,
+                dataTypes,
+                reportingPeriod,
+                status,
+            ),
         )
     }
 

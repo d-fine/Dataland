@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -51,12 +52,12 @@ class SingleDataRequestEmailSenderTest {
 
     @BeforeEach
     fun setupSingleDataRequestEmailSender() {
-        val mockCompanyGetter: CompanyGetter = mock(CompanyGetter::class.java)
+        val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
         val singleDataRequestEmailBuilder = SingleDataRequestEmailBuilder(
             proxyPrimaryUrl,
             senderEmail,
             senderName,
-            mockCompanyGetter,
+            mockCompanyApi,
         )
         val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
             proxyPrimaryUrl,
@@ -64,7 +65,7 @@ class SingleDataRequestEmailSenderTest {
             senderName,
             semicolonSeparatedInternalReceiverEmails,
             semicolonSeparatedInternalCcEmails,
-            mockCompanyGetter,
+            mockCompanyApi,
         )
         mockEmailSender = mock(EmailSender::class.java)
         singleDataRequestEmailSender = SingleDataRequestEmailSender(
@@ -74,7 +75,7 @@ class SingleDataRequestEmailSenderTest {
         )
         val mockCompanyInformation = mock(CompanyInformation::class.java)
         `when`(mockCompanyInformation.companyName).thenReturn(companyName)
-        `when`(mockCompanyGetter.getCompanyInfo(companyIdentifier)).thenReturn(mockCompanyInformation)
+        `when`(mockCompanyApi.getCompanyInfo(companyIdentifier)).thenReturn(mockCompanyInformation)
     }
 
     @Test
