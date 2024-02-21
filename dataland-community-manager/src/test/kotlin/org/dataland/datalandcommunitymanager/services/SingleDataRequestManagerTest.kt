@@ -20,21 +20,22 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
 
 class SingleDataRequestManagerTest {
 
-    private lateinit var singleDataRequestManager: SingleDataRequestManager
+    private lateinit var singleDataRequestManagerMock: SingleDataRequestManager
     private lateinit var singleDataRequestEmailSenderMock: SingleDataRequestEmailSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var utilsMock: DataRequestProcessingUtils
 
-    private val companyIdRegexSafeCompanyId = "d623c5b6-ba18-23c3-1234-333555554444"
+    private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailSenderMock = mock(SingleDataRequestEmailSender::class.java)
         utilsMock = mockDataRequestProcessingUtils()
-        singleDataRequestManager = SingleDataRequestManager(
+        singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             companyGetter = mock(CompanyGetter::class.java),
             singleDataRequestEmailSender = singleDataRequestEmailSenderMock,
@@ -93,7 +94,7 @@ class SingleDataRequestManagerTest {
             .thenReturn(DataRequestCompanyIdentifierType.DatalandCompanyId)
         `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
             .thenReturn(companyIdRegexSafeCompanyId)
-        singleDataRequestManager.processSingleDataRequest(
+        singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
         verify(singleDataRequestEmailSenderMock, times(1)).sendSingleDataRequestEmails(
@@ -118,7 +119,7 @@ class SingleDataRequestManagerTest {
             .thenReturn(DataRequestCompanyIdentifierType.Isin)
         `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
             .thenReturn(null)
-        singleDataRequestManager.processSingleDataRequest(
+        singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
         verify(singleDataRequestEmailSenderMock, times(1)).sendSingleDataRequestEmails(
