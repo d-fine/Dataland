@@ -1,7 +1,7 @@
 <template>
   <div data-test="toggleChipsFormInput">
     <template v-for="option in options" :key="option.name">
-      <ToggleChip :label="option.name" @on-change="onToggleChange(option, $event)"></ToggleChip>
+      <ToggleChip :label="option.name" @on-change="onToggleChange(option, $event)" />
     </template>
     <div class="hidden">
       <FormKit type="checkbox" v-model="value" :name="name" :options="checkboxOptions" />

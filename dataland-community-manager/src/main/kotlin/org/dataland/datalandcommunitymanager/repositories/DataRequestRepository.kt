@@ -24,44 +24,44 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
-     * @param dataTypeName to check for
+     * @param dataType to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+    fun findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
-        dataTypeName: String,
+        dataType: String,
         reportingPeriod: String,
-    ): Boolean
+    ): DataRequestEntity?
 
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.
      * It also filters these results based on the provided identifier value and frameworks.
      * @param identifierValue to check for
      * @param reportingPeriod to check for
-     * @param dataTypeNames to check for
+     * @param dataTypes to check for
      * @param status to check for
      * @returns the aggregated data requests
      */
     @Query(
         "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
-            "d.dataTypeName, " +
+            "d.dataType, " +
             "d.reportingPeriod, " +
             "d.dataRequestCompanyIdentifierType, " +
             "d.dataRequestCompanyIdentifierValue, " +
             "d.requestStatus, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
-            "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
+            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
             "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
             "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
             "  AND (:status IS NULL OR d.requestStatus = :status) " +
-            "GROUP BY d.dataTypeName, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
+            "GROUP BY d.dataType, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
             "  d.dataRequestCompanyIdentifierValue, d.requestStatus",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
-        @Param("dataTypes") dataTypeNames: List<String>?,
+        @Param("dataTypes") dataTypes: Set<String>?,
         @Param("reportingPeriod") reportingPeriod: String?,
         @Param("status") status: RequestStatus?,
     ): List<AggregatedDataRequestEntity>
@@ -75,8 +75,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         "SELECT d FROM DataRequestEntity d  " +
             "WHERE " +
-            "(:#{#searchFilter.dataTypeNameFilterLength} = 0 " +
-            "OR d.dataTypeName = :#{#searchFilter.dataTypeNameFilter}) AND " +
+            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
+            "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
@@ -90,11 +90,25 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
     ): List<DataRequestEntity>
 
+    /**
+     * Fetches data request entities together with the associated message history
+     * @param dataRequests the requests entities for which the message histories to fetch
+     * @returns the initial list of data request entities together with the associated message history
+     */
+    @Query(
+        "SELECT DISTINCT d FROM DataRequestEntity d " +
+            "LEFT JOIN FETCH d.messageHistory " +
+            "WHERE d IN :dataRequests",
+    )
+    fun fetchMessages(
+        dataRequests: List<DataRequestEntity>,
+    ): List<DataRequestEntity>
+
     /** This method updates the Request Status to Answered for an open request with a specific framework,
      * reporting period as well as company identifier
      * @param dataRequestCompanyIdentifierValue to check for
      * @param reportingPeriod to check for
-     * @param dataTypeName to check for
+     * @param dataType to check for
      * @returns the aggregated data requests
      */
     @Transactional
@@ -105,7 +119,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "SET d.requestStatus = " +
             ":#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
             "WHERE " +
-            "(d.dataTypeName = :#{#dataTypeName} AND " +
+            "(d.dataType = :#{#dataType} AND " +
             "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
             "AND " +
             "d.reportingPeriod = :#{#reportingPeriod} AND " +
@@ -114,6 +128,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun updateDataRequestEntitiesFromOpenToAnswered(
         dataRequestCompanyIdentifierValue: String,
         reportingPeriod: String,
-        dataTypeName: String,
+        dataType: String,
     )
 }

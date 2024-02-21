@@ -34,9 +34,10 @@ class SingleDataRequestEmailBuilder(
         receiverEmail: String,
         companyId: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
-        message: String?,
+        reportingPeriods: Set<String>,
+        rawMessage: String?,
     ): Email {
+        val message = rawMessage.takeIf { !it.isNullOrBlank() }
         val companyName = companyApi.getCompanyInfo(companyId).companyName
         val content = EmailContent(
             subject = "A message from Dataland: Your ESG data are high on demand!",
@@ -56,7 +57,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         message: String?,
     ): String {
         return StringBuilder()
@@ -79,7 +80,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         message: String?,
     ): String {
         val freemarkerContext = mapOf(
