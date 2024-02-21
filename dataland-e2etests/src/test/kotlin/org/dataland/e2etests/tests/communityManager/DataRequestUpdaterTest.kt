@@ -38,9 +38,9 @@ class DataRequestUpdaterTest {
 
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = mapOfIds["companyId"].toString(),
-            frameworkName = SingleDataRequest.FrameworkName.eutaxonomyMinusNonMinusFinancials,
-            listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "valid@e.mail"),
+            dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
+            reportingPeriods = setOf("2022", "2023"),
+            contacts = setOf("someContact@webserver.de", "valid@e.mail"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
 

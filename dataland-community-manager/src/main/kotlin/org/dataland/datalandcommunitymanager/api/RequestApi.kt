@@ -168,9 +168,9 @@ interface RequestApi {
             "or (@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) " +
             "and @SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus))",
     )
-    fun patchDataRequest(
+    fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
+        @RequestParam requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
