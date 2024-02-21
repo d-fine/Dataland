@@ -388,21 +388,9 @@ class BulkDataRequestsTest {
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap, 1,
         )
     }
-
     @Test
-    fun `post a bulk data request and check that you can patch your own answered data request as a reader`() {
-        val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
-        val multipleRegexMatchingIdentifier = generateRandomPermId(20)
-        val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2022", "2023")
-        val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
-        )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size)
-
-        val newlyStoredRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)[0]
+    fun `post a bulk data request and check that you can patch your own answered data request as a reader`(){
+        val newlyStoredRequest = getSingleOpenDataRequest()
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -418,19 +406,8 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post a bulk data request and patch your own closed data request as a reader and assert that it is forbidden`() {
-        val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
-        val multipleRegexMatchingIdentifier = generateRandomPermId(20)
-        val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val reportingPeriods = listOf("2023")
-        val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
-        )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size)
-
-        val newlyStoredRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)[0]
+    fun `post a bulk data request and patch your own closed data request as a reader and assert that it is forbidden`(){
+        val newlyStoredRequest = getSingleOpenDataRequest()
         val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
@@ -448,9 +425,20 @@ class BulkDataRequestsTest {
             Assertions.assertEquals("Client error : 403 ", clientException.message)
         }
     }
-
     @Test
-    fun `post a bulk data request and patch your own open data request as a reader and assert that it is forbidden`() {
+    fun `post a bulk data request and patch your own open data request as a reader and assert that it is forbidden`(){
+        val newlyStoredRequest = getSingleOpenDataRequest()
+        val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
+        Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
+
+        for(requestStatus in RequestStatus.entries){
+            val clientException = assertThrows<ClientException> {
+                requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
+            }
+            Assertions.assertEquals("Client error : 403 ", clientException.message)
+        }
+    }
+    private fun getSingleOpenDataRequest():StoredDataRequest{
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
@@ -462,15 +450,6 @@ class BulkDataRequestsTest {
         )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
 
-        val newlyStoredRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)[0]
-        val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
-        Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
-
-        for (requestStatus in RequestStatus.entries) {
-            val clientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(storedDataRequestId, requestStatus)
-            }
-            Assertions.assertEquals("Client error : 403 ", clientException.message)
-        }
+        return getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)[0]
     }
 }
