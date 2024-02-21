@@ -9,6 +9,4 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class HighRiskCountriesProcurementNameOptions {
-    Iso2Codes,
-}
+enum class HighRiskCountriesProcurementNameOptions

@@ -94,7 +94,7 @@ function generateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(): Fixture
  * @returns the manipulated fixture data
  */
 function generateFixtureToContainProcurementCategories(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1)[0];
+  const newFixture = generateLksgFixtures(1, 0)[0];
   newFixture.companyInformation.companyName = "lksg-with-procurement-categories";
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {

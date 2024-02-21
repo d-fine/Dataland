@@ -6692,22 +6692,13 @@
         ]
       },
       "HighRiskCountriesOptions": {
-        "type": "string",
-        "enum": [
-          "Iso2Codes"
-        ]
+        "type": "string"
       },
       "HighRiskCountriesProcurementNameOptions": {
-        "type": "string",
-        "enum": [
-          "Iso2Codes"
-        ]
+        "type": "string"
       },
       "HighRiskCountriesRawMaterialsLocationOptions": {
-        "type": "string",
-        "enum": [
-          "Iso2Codes"
-        ]
+        "type": "string"
       },
       "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
         "type": "string",
@@ -8632,10 +8623,7 @@
         ]
       },
       "SubcontractingCompaniesCountriesOptions": {
-        "type": "string",
-        "enum": [
-          "Iso2Codes"
-        ]
+        "type": "string"
       },
       "BaseDataPointString": {
         "type": "object",
@@ -13898,25 +13886,25 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "countryCode": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
             "type": "string"
           },
           "permId": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
           }
         }
       },
@@ -13939,10 +13927,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -13999,11 +13987,11 @@
         "enum": [
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
+          "lksg",
           "p2p",
           "sfdr",
           "sme",
           "esg-questionnaire",
-          "lksg",
           "heimathafen"
         ]
       },

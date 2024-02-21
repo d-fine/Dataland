@@ -1,5 +1,9 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type LksgData } from "@clients/backend";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export const lksgDataModel = [
   {
@@ -161,12 +165,7 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesCountries",
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
-            options: [
-              {
-                label: "ISO 2 Codes",
-                value: "Iso2Codes",
-              },
-            ],
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: "MultiSelectFormField",
             required: false,
@@ -870,12 +869,7 @@ export const lksgDataModel = [
             name: "highRiskCountriesRawMaterialsLocation",
             label: "High Risk Countries Raw Materials Location",
             description: "From which conflict/high-risk regions do you source your raw materials?",
-            options: [
-              {
-                label: "ISO 2 Codes",
-                value: "Iso2Codes",
-              },
-            ],
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: "MultiSelectFormField",
             required: false,
@@ -896,12 +890,7 @@ export const lksgDataModel = [
             name: "highRiskCountries",
             label: "High Risk Countries",
             description: "Which ones?",
-            options: [
-              {
-                label: "ISO 2 Codes",
-                value: "Iso2Codes",
-              },
-            ],
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: "MultiSelectFormField",
             required: false,
@@ -922,12 +911,7 @@ export const lksgDataModel = [
             name: "highRiskCountriesProcurementName",
             label: "High Risk Countries Procurement Name",
             description: "Which ones?",
-            options: [
-              {
-                label: "ISO 2 Codes",
-                value: "Iso2Codes",
-              },
-            ],
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
             component: "MultiSelectFormField",
             required: false,
