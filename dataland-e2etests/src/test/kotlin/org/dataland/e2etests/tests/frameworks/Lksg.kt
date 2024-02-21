@@ -39,6 +39,7 @@ class Lksg {
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
         val fixedDataSet = removeNullMapEntriesFromSupplierCountryCount(listOfOneLksgDataSet[0])
+        println(fixedDataSet)
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOf(fixedDataSet),
@@ -50,9 +51,34 @@ class Lksg {
         val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
             .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
 
+        println(downloadedAssociatedData.data)
+        var sortedFixedDataset = fixedDataSet.copy(
+            governance = fixedDataSet.governance?.copy(
+                riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
+                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                ),
+            ),
+        )
+        sortedFixedDataset = sortedFixedDataset.copy(
+            governance = sortedFixedDataset.governance?.copy(
+                grievanceMechanismOwnOperations = sortedFixedDataset.governance?.grievanceMechanismOwnOperations?.copy(
+                    complaintsRiskPosition = sortedFixedDataset.governance?.grievanceMechanismOwnOperations
+                        ?.complaintsRiskPosition?.sorted(),
+                ),
+            ),
+        )
+        sortedFixedDataset = sortedFixedDataset.copy(
+            governance = sortedFixedDataset.governance?.copy(
+                generalViolations = sortedFixedDataset.governance?.generalViolations?.copy(
+                    humanRightsOrEnvironmentalViolationsDefinition = sortedFixedDataset.governance?.generalViolations
+                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                ),
+            ),
+        )
+
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(fixedDataSet, downloadedAssociatedData.data)
+        assertEquals(sortedFixedDataset, downloadedAssociatedData.data)
     }
 
     @Test
@@ -77,12 +103,41 @@ class Lksg {
                 showOnlyActive = true,
                 reportingPeriod = "2023",
             )
+
+        var sortedUploadedDatasets = uploadedDataSets[1].copy(
+            governance = uploadedDataSets[1].governance?.copy(
+                riskManagementOwnOperations =
+                uploadedDataSets[1].governance?.riskManagementOwnOperations?.copy(
+                    identifiedRisks = uploadedDataSets[1].governance
+                        ?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                ),
+            ),
+        )
+        sortedUploadedDatasets = sortedUploadedDatasets.copy(
+            governance = sortedUploadedDatasets.governance?.copy(
+                grievanceMechanismOwnOperations =
+                sortedUploadedDatasets.governance?.grievanceMechanismOwnOperations?.copy(
+                    complaintsRiskPosition = sortedUploadedDatasets.governance
+                        ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sorted(),
+                ),
+            ),
+        )
+        sortedUploadedDatasets = sortedUploadedDatasets.copy(
+            governance = sortedUploadedDatasets.governance?.copy(
+                generalViolations =
+                sortedUploadedDatasets.governance?.generalViolations?.copy(
+                    humanRightsOrEnvironmentalViolationsDefinition = sortedUploadedDatasets.governance
+                        ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                ),
+            ),
+        )
+
         assertDownloadedDatasets(
             downLoadedDataSets,
             activeDownloadedDatasets,
             downloaded2023Datasets,
             downloadedActive2023Datasets,
-            uploadedDataSets,
+            listOf(uploadedDataSets[0], sortedUploadedDatasets),
         )
     }
 
