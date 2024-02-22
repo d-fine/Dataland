@@ -14,6 +14,7 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
         };
       },
     }).then(() => {
+      cy.get('[data-test="dataPointToggleButton"]').click();
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("be.visible");
       cy.get('[data-test="dataPointToggleButton"]').click();
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("not.exist");
