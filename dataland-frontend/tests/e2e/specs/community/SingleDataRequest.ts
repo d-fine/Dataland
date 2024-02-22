@@ -83,7 +83,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseReportingPeriod("2023");
       checkDropdownLabels();
       singleDataRequestPage.chooseFrameworkLksg();
 
@@ -103,7 +103,7 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseReportingPeriod("2023");
       singleDataRequestPage.chooseFrameworkLksg();
       submit();
       cy.get("[data-test=submittedDiv]").should("exist");
@@ -119,11 +119,15 @@ describeIf(
       cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
       cy.get('[data-test="closeRequestButton"]').should("not.exist");
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseReportingPeriod("2023");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
-        setRequestStatusToAnswered(interception);
+        if (interception.response !== undefined) {
+          const responseBody = interception.response.body as StoredDataRequest[];
+          const dataRequestId = responseBody[0].dataRequestId;
+          setRequestStatusToAnswered(dataRequestId);
+        }
       });
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="reOpenRequestButton"]').should("exist");
@@ -131,29 +135,53 @@ describeIf(
       cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
     });
 
-    it("Create two data request, set the status to answered, then update one of the request on the view page", () => {
+    it("Create two datasets, set the status of one request of them to answered, then update this request on the view page", () => {
       cy.ensureLoggedIn(premium_user_name, premium_user_pw);
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseReportingPeriod("2021");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
+      let dataRequestId: string;
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         uploadFrameworkDataForCompany(testStoredCompany.companyId, "2021");
-        setRequestStatusToAnswered(interception);
+        if (interception.response !== undefined) {
+          const responseBody = interception.response.body as StoredDataRequest[];
+          dataRequestId = responseBody[0].dataRequestId;
+        }
+        setRequestStatusToAnswered(dataRequestId);
+        cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+        checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
+
+        setRequestStatusToAnswered(dataRequestId);
+        cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+        setRequestStatusToAnswered(dataRequestId);
+        checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
       });
-      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="closeRequestButton"]').should("exist");
-      cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    });
+
+    //todo check for error message
+    /**
+     * Checks for the two review request buttons, clicks the one to click and chooses the clickable
+     * reporting period and checks if the buttons are gone afterwards
+     * @param buttonToClick the data-test label of the button to click
+     * @param buttonNotToClick the data-test label of the button not to click
+     */
+    function checkForReviewButtonsAndClickOnDropDownReportingPeriod(
+      buttonToClick: string,
+      buttonNotToClick: string,
+    ): void {
+      const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
+      const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
+
+      cy.get(buttonNotToClickSelector).should("exist");
+      cy.get(buttonToClickSelector).should("exist").click();
       cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
       cy.get('[data-test="reporting-periods"] a').contains("2021").should("have.class", "link").click();
       cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-      cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
-      cy.get('[data-test="closeRequestButton"]').should("not.exist");
-
-      //todo check dropdown case for ?close? button option
-    });
-    //todo check for error message
+      cy.get(buttonNotToClickSelector).should("not.exist");
+      cy.get(buttonToClickSelector).should("not.exist");
+    }
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
      * @param interception the object of interception with the backend
@@ -214,20 +242,18 @@ describeIf(
     }
     /**
      * Sets the status of a single data request from open to answered
-     * @param interception containing the response body
+     * @param dataRequestId the ID of the request
      */
-    function setRequestStatusToAnswered(interception: Interception): void {
-      // todo refactor to requestID as parameter
-      if (interception.response !== undefined) {
-        const responseBody = interception.response.body as StoredDataRequest[];
-        const dataRequestId = responseBody[0].dataRequestId;
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          const requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
-          requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Answered).catch((reason) => {
-            console.error(reason); //todo
-          });
+    function setRequestStatusToAnswered(dataRequestId: string): void {
+      cy.intercept("PATCH", "**/community/requests/*/requestStatus*").as("patchRequestStatus");
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        const requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
+        requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Answered).catch((reason) => {
+          console.error(reason);
+          throw reason;
         });
-      }
+      });
+      cy.wait("@patchRequestStatus", { timeout: Cypress.env("short_timeout_in_ms") as number });
     }
   },
 );
