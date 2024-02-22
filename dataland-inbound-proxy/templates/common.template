@@ -31,7 +31,7 @@ location /qa/ {
 }
 
 location /community/ {
-  proxy_pass http://host.docker.internal:8081/community/;
+  proxy_pass http://community-manager:8080/community/;
   include utils/proxy.conf;
   include utils/communityManagerErrors.conf;
 }
