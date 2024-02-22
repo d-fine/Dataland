@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.communityManager
 
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -25,6 +27,7 @@ class DataRequestUpdaterTest {
 
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
+    private val clientError403 = "Client error : 403 "
 
     @BeforeAll
     fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
@@ -81,6 +84,109 @@ class DataRequestUpdaterTest {
             Assertions.assertEquals(RequestStatus.answered, retrievedDataRequest.requestStatus)
         } else {
             Assertions.assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+        }
+    }
+    @Test
+    fun `patch your own answered data request as a premiumUser to closed`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = SingleDataRequest.DataType.lksg,
+            reportingPeriods = setOf("2022"),
+        )
+
+        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
+        Assertions.assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+
+        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
+        Assertions.assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
+    }
+
+    @Test
+    fun `patch a non owned answered data request as a premiumUser and assert that it is forbidden`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = SingleDataRequest.DataType.lksg,
+            reportingPeriods = setOf("2022"),
+        )
+
+        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+
+        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
+        Assertions.assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+
+        for (requestStatus in RequestStatus.entries) {
+            val clientException = assertThrows<ClientException> {
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
+            }
+            Assertions.assertEquals(clientError403, clientException.message)
+        }
+    }
+
+    @Test
+    fun `patch your own open data request as a premiumUser and assert that it is forbidden`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+
+        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = SingleDataRequest.DataType.lksg,
+            reportingPeriods = setOf("2022"),
+        )
+
+        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
+
+        for (requestStatus in RequestStatus.entries) {
+            val clientException: ClientException = assertThrows<ClientException> {
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
+            }
+            Assertions.assertEquals(clientError403, clientException.message)
+        }
+    }
+
+    @Test
+    fun `patch your own closed data request as a premiumUser and assert that it is forbidden`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+
+        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = SingleDataRequest.DataType.lksg,
+            reportingPeriods = setOf("2022"),
+        )
+
+        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
+        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
+        Assertions.assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        for (requestStatus in RequestStatus.entries) {
+            val clientException: ClientException = assertThrows<ClientException> {
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
+            }
+            Assertions.assertEquals(clientError403, clientException.message)
         }
     }
 }

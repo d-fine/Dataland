@@ -33,7 +33,6 @@ class SingleDataRequestsTest {
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-    private val clientError403 = "Client error : 403 "
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
@@ -224,16 +223,16 @@ class SingleDataRequestsTest {
             reportingPeriods = setOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
+        assertStatusForDataRequestId(storedDataRequestId, RequestStatus.open)
 
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.answered)
 
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.open)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.open)
     }
 
     @Test
@@ -246,21 +245,20 @@ class SingleDataRequestsTest {
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
-        assertEquals(clientError403, clientException.message)
+        assertEquals("Client error : 404 ", clientException.message)
         assertTrue(
             responseBody.contains("Dataland does not know the Data request ID $nonExistingDataRequestId"),
         )
     }
 
     @Test
-    fun `patch a open data request of admin as a reader and assert that it is forbidden`() {
+    fun `patch data request as an reader and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = setOf("2022"),
         )
-
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
@@ -270,106 +268,7 @@ class SingleDataRequestsTest {
         val clientException = assertThrows<ClientException> {
             requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.answered)
         }
-        assertEquals(clientError403, clientException.message)
-    }
-
-    @Test
-    fun `patch your own answered data request as a premiumUser to closed`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
-        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
-        assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
-        assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
-    }
-
-    @Test
-    fun `patch a non owned answered data request as a premiumUser and assert that it is forbidden`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-
-        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
-        assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
-        for (requestStatus in RequestStatus.entries) {
-            val clientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
-            }
-            assertEquals(clientError403, clientException.message)
-        }
-    }
-
-    @Test
-    fun `patch your own open data request as a premiumUser and assert that it is forbidden`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
-        for (requestStatus in RequestStatus.entries) {
-            val clientException: ClientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
-            }
-            assertEquals(clientError403, clientException.message)
-        }
-    }
-
-    @Test
-    fun `patch your own closed data request as a premiumUser and assert that it is forbidden`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
-        assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        for (requestStatus in RequestStatus.entries) {
-            val clientException: ClientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
-            }
-            assertEquals(clientError403, clientException.message)
-        }
+        assertEquals("Client error : 403 ", clientException.message)
     }
 
     private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
@@ -433,6 +332,6 @@ class SingleDataRequestsTest {
         val clientException = assertThrows<ClientException> {
             requestControllerApi.getDataRequests()
         }
-        assertEquals(clientError403, clientException.message)
+        assertEquals("Client error : 403 ", clientException.message)
     }
 }
