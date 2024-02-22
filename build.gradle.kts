@@ -121,7 +121,11 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
 
                 // backend
-                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt",
+                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
+
+                // toolbox
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
+                "/Iso2CountryCodesMultiSelectComponent.kt",
         )
         property(
             "sonar.exclusions",
