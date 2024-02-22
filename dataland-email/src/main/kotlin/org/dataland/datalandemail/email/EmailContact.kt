@@ -52,6 +52,12 @@ fun TransactionalEmail.TransactionalEmailBuilder
 fun String.isEmailAddress() = Regex("^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+.){1,2}[a-z]{2,}\$").matches(this)
 
 /**
+ * Checks if a string is an email address
+ * @returns true if and only if the string matches email address pattern
+ */
+fun String.isEmailAddress() = Regex("^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+.){1,2}[a-z]{2,}\$").matches(this)
+
+/**
  * Validates that a string is an email address and throws an exception if not
  * @throws InvalidEmailFormatApiException if the email format is violated
  */

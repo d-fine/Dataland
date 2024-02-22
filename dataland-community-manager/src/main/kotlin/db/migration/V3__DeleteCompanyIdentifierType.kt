@@ -11,15 +11,15 @@ class V3__DeleteCompanyIdentifierType : BaseJavaMigration() {
         // TODO test this script with prod clone
         context!!.connection.createStatement().execute(
             "DELETE FROM data_requests " +
-                "WHERE data_request_company_identifier_type <> 'DatalandCompanyId'"
+                "WHERE data_request_company_identifier_type <> 'DatalandCompanyId'",
         )
         context.connection.createStatement().execute(
             "ALTER TABLE data_requests " +
-                "RENAME COLUMN data_request_company_identifier_value TO dataland_company_id"
+                "RENAME COLUMN data_request_company_identifier_value TO dataland_company_id",
         )
         context.connection.createStatement().execute(
             "ALTER TABLE data_requests " +
-                "DROP COLUMN data_request_company_identifier_type"
+                "DROP COLUMN data_request_company_identifier_type",
         )
     }
 }

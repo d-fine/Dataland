@@ -46,8 +46,7 @@ data class DataRequestEntity(
         userId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-        identifierType: DataRequestCompanyIdentifierType,
-        identifierValue: String,
+        datalandCompanyId: String,
         creationTimestamp: Long,
     ) : this(
         dataRequestId = UUID.randomUUID().toString(),
@@ -55,8 +54,7 @@ data class DataRequestEntity(
         creationTimestamp = creationTimestamp,
         dataType = dataType.value,
         reportingPeriod = reportingPeriod,
-        dataRequestCompanyIdentifierType = identifierType,
-        dataRequestCompanyIdentifierValue = identifierValue,
+        datalandCompanyId = datalandCompanyId,
         messageHistory = listOf(),
         lastModifiedDate = creationTimestamp,
         requestStatus = RequestStatus.Open,
@@ -84,8 +82,7 @@ data class DataRequestEntity(
         creationTimestamp = creationTimestamp,
         dataType = getDataTypeEnumForFrameworkName(dataType)!!,
         reportingPeriod = reportingPeriod,
-        dataRequestCompanyIdentifierType = dataRequestCompanyIdentifierType,
-        dataRequestCompanyIdentifierValue = dataRequestCompanyIdentifierValue,
+        datalandCompanyId = datalandCompanyId,
         messageHistory = messageHistory
             .sortedBy { it.creationTimestamp }
             .map { it.toStoredDataRequestMessageObject() },

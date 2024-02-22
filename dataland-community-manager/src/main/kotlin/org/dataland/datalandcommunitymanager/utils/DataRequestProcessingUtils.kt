@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.utils
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -9,6 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -23,6 +23,15 @@ class DataRequestProcessingUtils(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
+    /**
+     * We want to avoid users from using other authentication methods than jwt-authentication, such as
+     * api-key-authentication.
+     */
+    fun throwExceptionIfNotJwtAuth() {
+        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
+        }
+    }
     /**
      * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
      * @param identifierValue the identifier value
@@ -55,7 +64,7 @@ class DataRequestProcessingUtils(
         contacts: Set<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
-        findAlreadyExistingDataRequestForCurrentUser(identifierValue, dataType, reportingPeriod)?.also {
+        findAlreadyExistingDataRequestForCurrentUser(datalandCompanyId, dataType, reportingPeriod)?.also {
             return it
         }
         val dataRequestEntity = DataRequestEntity(
@@ -82,7 +91,7 @@ class DataRequestProcessingUtils(
     ): DataRequestEntity? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
         val foundRequest = dataRequestRepository
-            .findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 requestingUserId, identifierValue, framework.name, reportingPeriod,
             )
         if (foundRequest != null) {

@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
@@ -270,6 +271,12 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
             aggregatedDataRequest.datalandCompanyId ==  apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             identifierValue).first().companyId
     }
+    logger.info("identifierValue " + identifierValue)
+    logger.info("companyID " + apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+        identifierValue))
+    logger.info("companyID " + apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+        identifierValue).first().companyId)
+
     assertEquals(
         1,
         matchingAggregatedRequests.size,
@@ -311,8 +318,7 @@ fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestSta
 fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID, newStatus: RequestStatus) {
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
-    val storedDataRequestAfterPatch = requestControllerApi
-        .patchDataRequestStatus(dataRequestId, newStatus)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequestStatus(dataRequestId, newStatus)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
     assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
@@ -336,8 +342,9 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
         when {
             (key == IdentifierType.lei) -> {
                 val companyOne = companyZero.copy(
+                    companyName = "companyOne",
                     identifiers = mapOf(
-                        IdentifierType.lei.value to listOf(
+                        key.value to listOf(
                             "Test-Lei${uniqueIdentifiersMap.getValue(IdentifierType.lei)}"
                         )
                     ),
@@ -347,8 +354,9 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
 
             (key == IdentifierType.isin) -> {
                 val companyTwo = companyZero.copy(
+                    companyName = "companyTwo",
                     identifiers = mapOf(
-                        IdentifierType.isin.value to listOf(
+                        key.value to listOf(
                             "Test-Isin${
                                 uniqueIdentifiersMap.getValue(IdentifierType.isin)
                             }"
@@ -360,8 +368,9 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
 
             (key == IdentifierType.permId) -> {
                 val companyThree = companyZero.copy(
+                    companyName = "companyThree",
                     identifiers = mapOf(
-                        IdentifierType.permId.value to listOf(
+                        key.value to listOf(
                             "Test-PermId${uniqueIdentifiersMap.getValue(IdentifierType.permId)}"
                         )
                     ),

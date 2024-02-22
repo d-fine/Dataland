@@ -2,6 +2,7 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type AxiosError } from "axios";
 import { waitForAndReturnResolvedKeycloakPromise } from "@/utils/KeycloakUtils";
+import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
 /**
  * Check if a user is data owner of a company
@@ -13,9 +14,7 @@ export async function isUserDataOwnerForCompany(
   companyId: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
-  const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  const isCompanyIdValid = uuidRegexExp.test(companyId);
-  if (keycloakPromiseGetter && isCompanyIdValid) {
+  if (keycloakPromiseGetter && isCompanyIdValid(companyId)) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     if (userId) {
@@ -31,5 +30,29 @@ export async function isUserDataOwnerForCompany(
         throw error;
       }
     } else return false;
+  } else return false;
+}
+/**
+ * Get the Information about Data-ownership
+ * @param companyId identifier of the company
+ * @param keyCloakPromiseGetter getter for a keycloak promise
+ * @returns a promise which resolves to a boolean if the company has at least one data owner
+ */
+export async function hasCompanyAtLeastOneDataOwner(
+  companyId: string,
+  keyCloakPromiseGetter?: () => Promise<Keycloak>,
+): Promise<boolean> {
+  if (keyCloakPromiseGetter && isCompanyIdValid(companyId)) {
+    try {
+      await new ApiClientProvider(keyCloakPromiseGetter()).backendClients.companyDataController.hasCompanyDataOwner(
+        companyId,
+      );
+      return true;
+    } catch (error) {
+      if ((error as AxiosError)?.response?.status == 404) {
+        return false;
+      }
+      throw error;
+    }
   } else return false;
 }

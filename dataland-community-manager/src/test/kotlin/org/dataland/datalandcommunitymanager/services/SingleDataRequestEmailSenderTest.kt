@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -74,7 +73,7 @@ class SingleDataRequestEmailSenderTest {
         )
         val mockCompanyInformation = mock(CompanyInformation::class.java)
         `when`(mockCompanyInformation.companyName).thenReturn(companyName)
-        `when`(mockCompanyApi.getCompanyInfo(companyIdentifier)).thenReturn(mockCompanyInformation)
+        `when`(mockCompanyApi.getCompanyInfo(properCompanyId)).thenReturn(mockCompanyInformation)
     }
 
     @Test

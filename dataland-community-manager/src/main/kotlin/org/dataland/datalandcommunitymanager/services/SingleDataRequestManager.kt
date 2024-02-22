@@ -1,19 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -44,11 +38,9 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
-        }
+        utils.throwExceptionIfNotJwtAuth()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
-        val storedDataRequests = mutableListOf<StoredDataRequest>()
+        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
         var datalandCompanyId: String?
 
         dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
@@ -60,25 +52,34 @@ class SingleDataRequestManager(
                 singleDataRequest.companyIdentifier,
             )
         }
-
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
                 "The specified company is unknown to Dataland",
                 "The company with identifier: \"${singleDataRequest.companyIdentifier}\" is unknown to Dataland",
             )
-        } else {
-            throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
-            storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-                storedDataRequests, singleDataRequest, datalandCompanyId,
-            )
-            singleDataRequestEmailSender.sendSingleDataRequestEmails(
-                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-                singleDataRequest = singleDataRequest,
-                datalandCompanyId,
-            )
         }
+        val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+        singleDataRequest, datalandCompanyId)
+        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+            singleDataRequest = singleDataRequest,
+            datalandCompanyId,
+        )
         return storedDataRequests
     }
+
+    private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
+        contacts?.forEach { it.validateIsEmailAddress() }
+        if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
+            throw InvalidInputApiException(
+                "No recipients provided for the message",
+                "You have provided a message, but no recipients. " +
+                    "Without at least one valid email address being provided no message can be forwarded.",
+            )
+        }
+    }
+
+
 
     private fun checkIfCompanyIsValid(companyId: String) {
         try {
@@ -93,17 +94,9 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
-        if (utils.isContactListTrivial(singleDataRequest.contactList) && !singleDataRequest.message.isNullOrBlank()) {
-            throw InvalidInputApiException(
-                "Insufficient information to create message object.",
-                "Without at least one proper email address being provided no message can be forwarded.",
-            )
-        }
-    }
+
 
     private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-        storedDataRequests: MutableList<StoredDataRequest>,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
     ): List<StoredDataRequest> {

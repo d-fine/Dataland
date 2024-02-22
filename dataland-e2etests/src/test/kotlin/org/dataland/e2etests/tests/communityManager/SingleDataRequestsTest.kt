@@ -106,6 +106,7 @@ class SingleDataRequestsTest {
         assertTrue(responseBody.contains("resource-not-found"))
     }
 
+
     @Test
     fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
@@ -303,7 +304,6 @@ class SingleDataRequestsTest {
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         requestControllerApi.patchDataRequestStatus(UUID.fromString(req2.dataRequestId), RequestStatus.answered)
-
         return listOf(requestA, requestB)
     }
 
@@ -321,6 +321,7 @@ class SingleDataRequestsTest {
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
             datalandCompanyId = getDatalandCompanyIdForIdentifierValue(permIdOfRequestB),
         )
+
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
 
         val allQueryResults = listOf(
@@ -334,7 +335,6 @@ class SingleDataRequestsTest {
         assertTrue(allDataRequests.size > 1)
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
-        assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
         assertTrue(specificPermIdDataRequests.all {
             it.datalandCompanyId == getDatalandCompanyIdForIdentifierValue(permIdOfRequestB) })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
