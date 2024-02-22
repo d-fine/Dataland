@@ -134,6 +134,7 @@ sonar {
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 // -> no need to cover the heimathafen-ViewConfig because there are no custom fields
 
                 // backend
