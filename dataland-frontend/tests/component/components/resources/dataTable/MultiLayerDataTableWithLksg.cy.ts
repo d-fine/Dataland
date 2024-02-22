@@ -89,7 +89,6 @@ describe("Component test for the LksgPanel", () => {
 
     cy.get("div.p-dialog").within(() => {
       cy.get("th");
-      cy.pause();
       cy.get("th").eq(0).should("have.text", "Procurement Category");
       cy.get("th").eq(1).should("have.text", "Procured Products/Services");
       cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
