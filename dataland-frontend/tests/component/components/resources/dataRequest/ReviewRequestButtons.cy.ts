@@ -1,4 +1,4 @@
-import ReviewRequestButtonsComponent from "@components/resources/dataRequest/ReviewRequestButtons.vue";
+import ReviewRequestButtonsComponent from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
@@ -9,8 +9,6 @@ describe("Component tests for the data request review buttons", function (): voi
     mockPatchRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       props: {
         companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
@@ -33,8 +31,6 @@ describe("Component tests for the data request review buttons", function (): voi
     mockUserRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       props: {
         companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
@@ -58,8 +54,6 @@ describe("Component tests for the data request review buttons", function (): voi
     mockPatchRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       props: {
         companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
