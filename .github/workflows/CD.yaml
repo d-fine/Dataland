@@ -20,7 +20,7 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -41,7 +41,7 @@ jobs:
     needs:
       - rebuild-docker-images
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -70,7 +70,7 @@ jobs:
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -158,7 +158,7 @@ jobs:
       matrix:
         testGroup: [ 1,2,3,4 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:

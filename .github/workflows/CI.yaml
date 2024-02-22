@@ -12,7 +12,7 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -76,7 +76,7 @@ jobs:
   framework-toolbox-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -175,7 +175,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -243,7 +243,7 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
         name: log job contexts
@@ -360,7 +360,7 @@ jobs:
       - python-tests
       - framework-toolbox-tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/logObjects
@@ -441,7 +441,7 @@ jobs:
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
