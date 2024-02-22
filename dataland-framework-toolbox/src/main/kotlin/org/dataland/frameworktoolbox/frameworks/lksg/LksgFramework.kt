@@ -43,6 +43,7 @@ class LksgFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
+    @Suppress("FunctionTooLong")
     private fun writeLksgRiskPositions(parentComponent: ComponentGroup, fieldName: String) {
         parentComponent.edit<MultiSelectComponent>(fieldName) {
             options = mutableSetOf(
