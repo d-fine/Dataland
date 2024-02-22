@@ -119,7 +119,7 @@ describeIf(
       cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
       cy.get('[data-test="closeRequestButton"]').should("not.exist");
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod("2023");
+      singleDataRequestPage.chooseReportingPeriod("2020");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
