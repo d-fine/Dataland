@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.utils
 
+import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -32,6 +33,7 @@ class DataRequestProcessingUtils(
             throw AuthenticationMethodNotSupportedException()
         }
     }
+
     /**
      * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
      * @param identifierValue the identifier value

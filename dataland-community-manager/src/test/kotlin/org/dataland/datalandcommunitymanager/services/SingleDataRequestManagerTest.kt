@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -15,8 +13,9 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.any
-import org.mockito.Mockito.anyString
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -45,7 +44,7 @@ class SingleDataRequestManagerTest {
             singleDataRequestEmailSender = singleDataRequestEmailSenderMock,
             utils = utilsMock,
         )
-        `when`(mockCompanyApi.getCompanyIdsAndNamesForSearchString(anyString(), anyString())).thenReturn(
+        `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
             listOf(
                 CompanyIdAndName(
                     companyName = "Dummmy",
@@ -69,22 +68,20 @@ class SingleDataRequestManagerTest {
         `when`(
             utilsMock.storeDataRequestEntityIfNotExisting(
                 anyString(),
-                any() ?: DataRequestCompanyIdentifierType.DatalandCompanyId,
                 any() ?: DataTypeEnum.lksg,
+                any() ?: "2023",
+                any(),
                 anyString(),
-                any(),
-                any(),
             ),
         ).thenAnswer {
             DataRequestEntity(
                 dataRequestId = "request-id",
-                dataRequestCompanyIdentifierType = it.arguments[1] as DataRequestCompanyIdentifierType,
-                dataRequestCompanyIdentifierValue = it.arguments[0] as String,
-                reportingPeriod = it.arguments[3] as String,
+                datalandCompanyId = it.arguments[0] as String,
+                reportingPeriod = it.arguments[2] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
                 requestStatus = RequestStatus.Open,
-                dataType = (it.arguments[2] as DataTypeEnum).value,
+                dataType = (it.arguments[1] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
                 userId = "user-id",
 
@@ -102,8 +99,6 @@ class SingleDataRequestManagerTest {
             contacts = setOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
-        `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))
-            .thenReturn(DataRequestCompanyIdentifierType.DatalandCompanyId)
         `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
             .thenReturn(companyIdRegexSafeCompanyId)
         singleDataRequestManagerMock.processSingleDataRequest(

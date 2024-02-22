@@ -271,12 +271,6 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
             aggregatedDataRequest.datalandCompanyId ==  apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             identifierValue).first().companyId
     }
-    logger.info("identifierValue " + identifierValue)
-    logger.info("companyID " + apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-        identifierValue))
-    logger.info("companyID " + apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-        identifierValue).first().companyId)
-
     assertEquals(
         1,
         matchingAggregatedRequests.size,

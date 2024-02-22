@@ -68,7 +68,7 @@ class SingleDataRequestsTest {
 
     @Test
     fun `post single data request for companyId with invalid format and assert exception`() {
-        val invalidCompanyIdentifier = "b" //toDO check why Identifier "a" exists
+        val invalidCompanyIdentifier = "a"
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
             dataType = SingleDataRequest.DataType.lksg,
@@ -79,11 +79,10 @@ class SingleDataRequestsTest {
         }
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("The provided company identifier has an invalid format."))
+        assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
         assertTrue(
             responseBody.contains(
-                "The company identifier you provided do not match the patterns " +
-                        "of a valid LEI, ISIN or PermId.",
+                "The company with identifier: ${invalidCompanyIdentifier} is unknown to Dataland",
             ),
         )
     }
@@ -154,9 +153,6 @@ class SingleDataRequestsTest {
             ),
         ).first()
     }
-
-    // toDO Florian fragen, wie der Check jetzt funktioniert, da "validateContactsAndMessage" nicht mehr existiert
-
 
     @Test
     fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
@@ -311,6 +307,7 @@ class SingleDataRequestsTest {
     fun `query data requests with various filters and assert that the expected results are being retrieved`() {
         val singleDataRequests = postDataRequestsBeforeQueryTest()
         val permIdOfRequestB = singleDataRequests[1].companyIdentifier
+        val companyIdForPermId = getDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
 
         val allDataRequests = requestControllerApi.getDataRequests()
         val lksgDataRequests = requestControllerApi.getDataRequests(
@@ -338,7 +335,7 @@ class SingleDataRequestsTest {
         assertTrue(specificPermIdDataRequests.all {
             it.datalandCompanyId == getDatalandCompanyIdForIdentifierValue(permIdOfRequestB) })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
-        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == permIdOfRequestB })
+        assertTrue(specificPermIdDataRequests.all { it.datalandCompanyId == companyIdForPermId })
         assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })
     }
 

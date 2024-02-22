@@ -106,7 +106,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /** This method updates the Request Status to Answered for an open request with a specific framework,
      * reporting period as well as company identifier
-     * @param dataRequestCompanyIdentifierValue to check for
+     * @param datalandCompanyId to check for
      * @param reportingPeriod to check for
      * @param dataType to check for
      * @returns the aggregated data requests
@@ -126,7 +126,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "d.datalandCompanyId = :#{#datalandCompanyId})",
     )
     fun updateDataRequestEntitiesFromOpenToAnswered(
-        dataRequestCompanyIdentifierValue: String,
+        datalandCompanyId: String,
         reportingPeriod: String,
         dataType: String,
     )

@@ -52,7 +52,7 @@ class AggregatedDataRequestsTest {
     fun `post bulk data requests for different users and check that aggregation works properly`() {
         val identifierMap = generateMapWithOneRandomValueForEachIdentifierType()
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val frameworks = enumValues<BulkDataRequest.DataTypes>().toSet()
         val reportingPeriods = setOf("2022", "2023")
         TechnicalUser.entries.forEach {
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
@@ -86,28 +86,33 @@ class AggregatedDataRequestsTest {
     @Test
     fun `post bulk data request and check that filter for the identifier value on aggregated level works properly`() {
         val permId = generateRandomPermId(10)
-        val identifiersToRecognizeMap = mapOf(
-            DataRequestCompanyIdentifierType.permId to permId,
-            DataRequestCompanyIdentifierType.lei to permId + generateRandomLei().substring(10),
-            DataRequestCompanyIdentifierType.isin to generateRandomIsin().substring(0, 2) + permId,
-        )
+        val identifierToRecognize = mapOf(
+
+            IdentifierType.isin to generateRandomIsin().substring(0, 2) + permId)
+        generateCompaniesWithOneRandomValueForEachIdentifierType(identifierToRecognize)
         val differentLei = generateRandomLei()
-        val identifiers = identifiersToRecognizeMap.values.toSet() + setOf(differentLei)
+        val somePermId = mapOf(IdentifierType.permId to permId)
+        val identifiersNotToRecognizeSet =  setOf(generateRandomLei()) + somePermId.values.toSet()
+        val identifiers = identifierToRecognize.values.toSet() + identifiersNotToRecognizeSet
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2023")
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size)
-        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(identifierValue = permId)
+        println("identifiers " + identifiers)
+        println("differentLei " + generateRandomLei())
+        println("response " + response)
+        checkThatAllIdentifiersWereAccepted(response, identifiers.size-2, 2)
+        val aggregatedDataRequest = requestControllerApi.getAggregatedDataRequests(identifierValue = identifierToRecognize.getValue(IdentifierType.isin))
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, reportingPeriods, identifiersToRecognizeMap, 1,
+            aggregatedDataRequest, frameworks, reportingPeriods, identifierToRecognize, 1,
         )
-        assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
+        assertFalse(aggregatedDataRequest.any { it.datalandCompanyId == differentLei })
         testNonTrivialIdentifierValueFilterOnAggregatedLevel(
-            frameworks, reportingPeriods, identifiersToRecognizeMap, differentLei,
+            frameworks, reportingPeriods, identifierToRecognize, differentLei,
         )
     }
+
 
     private fun checkAggregationForNonTrivialFrameworkFilter(
         frameworks: Set<BulkDataRequest.DataTypes>,
@@ -187,16 +192,21 @@ class AggregatedDataRequestsTest {
     fun `post bulk data request and check that the filter for request status on aggregated level works properly`() {
         val randomLei = generateRandomLei()
         val identifierMap = mapOf(IdentifierType.lei to randomLei)
+        generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
+        val datalandCompanyIDForLei = getDatalandCompanyIdForIdentifierValue(identifierMap.getValue(IdentifierType.lei))
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2020", "2021")
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
         )
+        println(response)
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size,0)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(status = RequestStatus.open)
-        assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(aggregatedDataRequests, randomLei, 2)
+        assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(aggregatedDataRequests, datalandCompanyIDForLei,
+            2)
         val aggregatedRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
-        assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(aggregatedRequestsNoFilter, randomLei, 2)
+        assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(aggregatedRequestsNoFilter, datalandCompanyIDForLei,
+            2)
     }
 
     private fun assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(

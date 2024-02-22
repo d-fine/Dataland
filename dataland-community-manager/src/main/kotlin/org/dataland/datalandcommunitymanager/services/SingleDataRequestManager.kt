@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -55,11 +54,12 @@ class SingleDataRequestManager(
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
                 "The specified company is unknown to Dataland",
-                "The company with identifier: \"${singleDataRequest.companyIdentifier}\" is unknown to Dataland",
+                "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland",
             )
         }
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-        singleDataRequest, datalandCompanyId)
+            singleDataRequest, datalandCompanyId,
+        )
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
@@ -79,8 +79,6 @@ class SingleDataRequestManager(
         }
     }
 
-
-
     private fun checkIfCompanyIsValid(companyId: String) {
         try {
             companyApi.getCompanyById(companyId)
@@ -93,8 +91,6 @@ class SingleDataRequestManager(
             }
         }
     }
-
-
 
     private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
         singleDataRequest: SingleDataRequest,

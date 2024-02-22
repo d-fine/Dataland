@@ -178,7 +178,7 @@ class BulkDataRequestsTest {
         val newRequestsAfter1stAnd2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
             newRequestsAfter1stAnd2ndBulkRequest, dataTypes[0], reportingPeriods[0], companyId,
-            identifierMapForUnknownCompany,
+            identifierForUnknownCompany,
         )
     }
 
@@ -225,9 +225,9 @@ class BulkDataRequestsTest {
 
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
         technicalUser: TechnicalUser,
-        identifiers: List<String>,
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-        reportingPeriods: List<String>,
+        identifiers: Set<String>,
+        frameworks: Set<BulkDataRequest.DataTypes>,
+        reportingPeriods: Set<String>,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val responseForReader = requestControllerApi.postBulkDataRequest(
@@ -238,14 +238,14 @@ class BulkDataRequestsTest {
 
 
     @Test
-    fun `post bulk data request and verify that only unique identifier are accepted `() {
+    fun `post bulk data request and verify that only unique identifiers are accepted `() {
         val permId = generateRandomPermId(20)
         val leiId = permId
         val identifiersMap = mapOf(
             IdentifierType.permId to permId,
             IdentifierType.lei to leiId,)
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-        val reportingPeriods = listOf("2023")
+        val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
+        val reportingPeriods = setOf("2023")
         val companyOne = CompanyInformation(
             companyName = "companyOne",
             headquarters = "HQ",
@@ -261,7 +261,7 @@ class BulkDataRequestsTest {
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
 
-        val clientException = causeClientExceptionByBulkDataRequest(identifiersMap.values.toList(), frameworks,
+        val clientException = causeClientExceptionByBulkDataRequest(identifiersMap.values.toSet(), frameworks,
             reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
 
