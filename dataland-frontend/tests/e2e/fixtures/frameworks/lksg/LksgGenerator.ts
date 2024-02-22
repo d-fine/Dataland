@@ -55,14 +55,14 @@ export class LksgGenerator extends Generator {
     return {
       nameOfProductionSite: this.valueOrNull(faker.company.name()),
       addressOfProductionSite: generateAddress(localNullProbability),
-      listOfGoodsOrServices: this.valueOrNull(this.generateListOfGoodsOrServices()),
+      listOfGoodsOrServices: this.valueOrNull(this.generateguaranteedListOfGoodsOrServices()),
     };
   }
   /**
    * Generates a random array of goods or services
    * @returns random array of goods or services
    */
-  generateListOfGoodsOrServices(): string[] {
+  generateguaranteedListOfGoodsOrServices(): string[] {
     return this.guaranteedArray(() => faker.commerce.productName(), 1);
   }
 }
