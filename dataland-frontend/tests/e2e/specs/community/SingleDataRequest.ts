@@ -17,7 +17,7 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
 
 describeIf(
-  "As a premium user, I want to be able to navigate to the single data request page and submit a request",
+  "As a premium user, I want to be able to navigate to the single data request page and submit a request and review it on the view page",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -27,6 +27,7 @@ describeIf(
     let testStoredCompany: StoredCompany;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
 
+    let dataRequestId: string;
     /**
      * Uploads a company with lksg data
      * @param reportingPeriod the year for which the data is uploaded
@@ -112,8 +113,7 @@ describeIf(
         "The submission of your data request was unsuccessful.",
       );
     });
-
-    it("Create a single data request, set the status to answered, then close the request on the view page", () => {
+    it("Create a single data request, set the status to answered, then review the request on the view page", () => {
       cy.ensureLoggedIn(premium_user_name, premium_user_pw);
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
@@ -122,19 +122,18 @@ describeIf(
       singleDataRequestPage.chooseReportingPeriod("2020");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
-      let dataRequestId: string;
-      cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
+      cy.wait("@postRequestData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((interception) => {
         if (interception.response !== undefined) {
           const responseBody = interception.response.body as StoredDataRequest[];
           dataRequestId = responseBody[0].dataRequestId;
+          setRequestStatusToAnswered(dataRequestId);
+          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+          checkForReviewButtonsAndClick("closeRequestButton", "reOpenRequestButton");
+          setRequestStatusToAnswered(dataRequestId);
+          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+          checkForReviewButtonsAndClick("reOpenRequestButton", "closeRequestButton");
         }
       });
-      setRequestStatusToAnswered(dataRequestId);
-      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      checkForReviewButtonsAndClick("closeRequestButton", "reOpenRequestButton");
-      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      setRequestStatusToAnswered(dataRequestId);
-      checkForReviewButtonsAndClick("reOpenRequestButton", "closeRequestButton");
     });
 
     it("Create two datasets, set the status of one request of them to answered, then update this request on the view page", () => {
@@ -144,21 +143,21 @@ describeIf(
       singleDataRequestPage.chooseReportingPeriod("2021");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
-      let dataRequestId: string;
-      cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
+      cy.wait("@postRequestData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((interception) => {
         uploadFrameworkDataForCompany(testStoredCompany.companyId, "2021");
         if (interception.response !== undefined) {
           const responseBody = interception.response.body as StoredDataRequest[];
           dataRequestId = responseBody[0].dataRequestId;
-        }
-        setRequestStatusToAnswered(dataRequestId);
-        cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-        checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
 
-        setRequestStatusToAnswered(dataRequestId);
-        cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-        setRequestStatusToAnswered(dataRequestId);
-        checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+          setRequestStatusToAnswered(dataRequestId);
+          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+          checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
+
+          setRequestStatusToAnswered(dataRequestId);
+          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+          setRequestStatusToAnswered(dataRequestId);
+          checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+        }
       });
     });
 
