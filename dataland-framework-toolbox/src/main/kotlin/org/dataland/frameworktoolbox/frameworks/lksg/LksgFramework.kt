@@ -28,8 +28,8 @@ class LksgFramework : InDevelopmentPavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)
         framework.root.getOrNull<ComponentGroup>("general")
-            ?.getOrNull<ComponentGroup>("masterData")?.let { it ->
-                editShareOfTemporaryWorkersOptions(it)
+            ?.getOrNull<ComponentGroup>("masterData")?.let { parent ->
+                editShareOfTemporaryWorkersOptions(parent)
             }
         val governanceComponent = framework.root.getOrNull<ComponentGroup>("governance")
         governanceComponent?.getOrNull<ComponentGroup>("riskManagementOwnOperations")?.let { parent ->
@@ -89,8 +89,8 @@ class LksgFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun editShareOfTemporaryWorkersOptions(component: ComponentGroup) {
-        component.edit<SingleSelectComponent>("shareOfTemporaryWorkers") {
+    private fun editShareOfTemporaryWorkersOptions(parent: ComponentGroup) {
+        parent.edit<SingleSelectComponent>("shareOfTemporaryWorkers") {
             options = mutableSetOf(
                 SelectionOption("Smaller10", "<10%"),
                 SelectionOption("Between10And25", "10-25%"),
