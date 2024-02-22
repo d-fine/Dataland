@@ -224,16 +224,16 @@ class SingleDataRequestsTest {
             reportingPeriods = setOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        assertStatusForDataRequestId(storedDataRequestId, RequestStatus.open)
+        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
 
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
 
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.open)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.open)
     }
 
     @Test
@@ -246,7 +246,7 @@ class SingleDataRequestsTest {
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
-        assertEquals("Client error : 404 ", clientException.message)
+        assertEquals(clientError403, clientException.message)
         assertTrue(
             responseBody.contains("Dataland does not know the Data request ID $nonExistingDataRequestId"),
         )
@@ -283,17 +283,17 @@ class SingleDataRequestsTest {
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.answered)
+        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
         assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.closed)
+        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
         assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
     }
 
@@ -309,16 +309,16 @@ class SingleDataRequestsTest {
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
 
-        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.answered)
+        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
         assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         for (requestStatus in RequestStatus.entries) {
             val clientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(storedDataRequestId, requestStatus)
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
             }
             assertEquals(clientError403, clientException.message)
         }
@@ -334,12 +334,12 @@ class SingleDataRequestsTest {
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         for (requestStatus in RequestStatus.entries) {
             val clientException: ClientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(storedDataRequestId, requestStatus)
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
             }
             assertEquals(clientError403, clientException.message)
         }
@@ -355,18 +355,18 @@ class SingleDataRequestsTest {
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.closed)
+        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
         assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         for (requestStatus in RequestStatus.entries) {
             val clientException: ClientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(storedDataRequestId, requestStatus)
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
             }
             assertEquals(clientError403, clientException.message)
         }

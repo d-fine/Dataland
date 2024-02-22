@@ -372,42 +372,42 @@ class BulkDataRequestsTest {
     @Test
     fun `patch your own answered bulk data request as a reader`() {
         val newlyStoredRequest = getOpenDataRequests(setOf("2022", "2023"))[0]
-        val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.answered)
+        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
         Assertions.assertEquals(RequestStatus.answered, answeredDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.closed)
+        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
         Assertions.assertEquals(RequestStatus.closed, closedDataRequest.requestStatus)
     }
 
     @Test
     fun `patch open or closed bulk data request as a reader and assert that it is forbidden`() {
         val newlyStoredRequest = getOpenDataRequests(setOf("2022", "2023"))[0]
-        val storedDataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
+        val dataRequestId = UUID.fromString(newlyStoredRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, newlyStoredRequest.requestStatus)
 
         for (requestStatus in RequestStatus.entries) {
             val clientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(storedDataRequestId, requestStatus)
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
             }
             Assertions.assertEquals(clientError403, clientException.message)
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.closed)
+        val answeredDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
         Assertions.assertEquals(RequestStatus.closed, answeredDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         for (requestStatus in RequestStatus.entries) {
             val clientException = assertThrows<ClientException> {
-                requestControllerApi.patchDataRequestStatus(storedDataRequestId, requestStatus)
+                requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
             }
             Assertions.assertEquals(clientError403, clientException.message)
         }
