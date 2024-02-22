@@ -160,6 +160,7 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
   newFixture.t.general.masterData.dataDate = "1999-12-24";
   newFixture.t.general.masterData.headOfficeInGermany = null;
   newFixture.t.general.masterData.groupOfCompanies = null;
+  newFixture.t.general.masterData.groupOfCompaniesName = null;
   newFixture.t.general.masterData.industry = null;
   newFixture.t.general.masterData.seasonalOrMigrantWorkers = null;
   newFixture.t.general.masterData.shareOfTemporaryWorkers = null;
@@ -167,6 +168,5 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
   newFixture.t.general.masterData.fixedAndWorkingCapital = null;
   newFixture.t.general.productionSpecific = null;
   newFixture.t.general.productionSpecificOwnOperations = null;
-
   return newFixture;
 }
