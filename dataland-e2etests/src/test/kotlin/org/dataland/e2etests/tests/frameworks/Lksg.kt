@@ -82,7 +82,7 @@ class Lksg {
             activeDownloadedDatasets,
             downloaded2023Datasets,
             downloadedActive2023Datasets,
-            listOf(uploadedDataSets[0], sortDatasetsInSecondTest(uploadedDataSets)),
+            sortDatasetsInSecondTest(uploadedDataSets),
         )
     }
 
@@ -106,61 +106,48 @@ class Lksg {
     }
 
     private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
-        var sortedFixedDataset = fixedDataSet.copy(
+        return fixedDataSet.copy(
             governance = fixedDataSet.governance?.copy(
                 riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
                     identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
                 ),
-            ),
-        )
-        sortedFixedDataset = sortedFixedDataset.copy(
-            governance = sortedFixedDataset.governance?.copy(
-                grievanceMechanismOwnOperations = sortedFixedDataset.governance?.grievanceMechanismOwnOperations?.copy(
-                    complaintsRiskPosition = sortedFixedDataset.governance?.grievanceMechanismOwnOperations
+                grievanceMechanismOwnOperations = fixedDataSet.governance?.grievanceMechanismOwnOperations?.copy(
+                    complaintsRiskPosition = fixedDataSet.governance?.grievanceMechanismOwnOperations
                         ?.complaintsRiskPosition?.sorted(),
                 ),
-            ),
-        )
-        sortedFixedDataset = sortedFixedDataset.copy(
-            governance = sortedFixedDataset.governance?.copy(
-                generalViolations = sortedFixedDataset.governance?.generalViolations?.copy(
-                    humanRightsOrEnvironmentalViolationsDefinition = sortedFixedDataset.governance?.generalViolations
+                generalViolations = fixedDataSet.governance?.generalViolations?.copy(
+                    humanRightsOrEnvironmentalViolationsDefinition = fixedDataSet.governance?.generalViolations
                         ?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
                 ),
             ),
         )
-        return sortedFixedDataset
     }
 
-    private fun sortDatasetsInSecondTest(uploadedDataSets: List<LksgData>): LksgData {
-        var sortedUploadedDatasets = uploadedDataSets[1].copy(
-            governance = uploadedDataSets[1].governance?.copy(
-                riskManagementOwnOperations =
-                uploadedDataSets[1].governance?.riskManagementOwnOperations?.copy(
-                    identifiedRisks = uploadedDataSets[1].governance
-                        ?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+    private fun sortDatasetsInSecondTest(uploadedDataSets: List<LksgData>): List<LksgData> {
+        val sortedUploadedDatasets = mutableListOf<LksgData>()
+        uploadedDataSets.forEach { dataset ->
+            sortedUploadedDatasets.add(
+                dataset.copy(
+                    governance = dataset.governance?.copy(
+                        riskManagementOwnOperations =
+                        dataset.governance?.riskManagementOwnOperations?.copy(
+                            identifiedRisks = dataset.governance
+                                ?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                        ),
+                        grievanceMechanismOwnOperations =
+                        dataset.governance?.grievanceMechanismOwnOperations?.copy(
+                            complaintsRiskPosition = dataset.governance
+                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sorted(),
+                        ),
+                        generalViolations =
+                        dataset.governance?.generalViolations?.copy(
+                            humanRightsOrEnvironmentalViolationsDefinition = dataset.governance
+                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                        ),
+                    ),
                 ),
-            ),
-        )
-        sortedUploadedDatasets = sortedUploadedDatasets.copy(
-            governance = sortedUploadedDatasets.governance?.copy(
-                grievanceMechanismOwnOperations =
-                sortedUploadedDatasets.governance?.grievanceMechanismOwnOperations?.copy(
-                    complaintsRiskPosition = sortedUploadedDatasets.governance
-                        ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sorted(),
-                ),
-            ),
-        )
-        sortedUploadedDatasets = sortedUploadedDatasets.copy(
-            governance = sortedUploadedDatasets.governance?.copy(
-                generalViolations =
-                sortedUploadedDatasets.governance?.generalViolations?.copy(
-                    humanRightsOrEnvironmentalViolationsDefinition = sortedUploadedDatasets.governance
-                        ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
-                ),
-            ),
-        )
-
+            )
+        }
         return sortedUploadedDatasets
     }
 
