@@ -115,7 +115,7 @@ export function formatLksgMostImportantProductsForDisplay(
         },
         data: {
           listOfRowContents: input,
-          kpiKeyOfTable: "procurementCategories",
+          kpiKeyOfTable: "mostImportantProducts",
           columnHeaders: lksgModalColumnHeaders,
         },
       },
@@ -153,7 +153,7 @@ export function formatLksgProcurementCategoriesForDisplay(
         },
         data: {
           listOfRowContents: convertedValueForModal,
-          kpiKeyOfTable: "mostImportantProducts",
+          kpiKeyOfTable: "procurementCategories",
           columnHeaders: lksgModalColumnHeaders,
         },
       },

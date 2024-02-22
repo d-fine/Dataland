@@ -301,7 +301,7 @@ export default defineComponent({
   },
   provide() {
     return {
-      procurementCategories: computed(() => {
+      selectedProcurementCategories: computed(() => {
         return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
       }),
       listOfFilledKpis: computed(() => {

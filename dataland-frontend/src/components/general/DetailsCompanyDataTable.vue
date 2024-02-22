@@ -60,6 +60,8 @@ export default defineComponent({
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
+    console.log("column headers:", this.columnHeaders);
+    console.log("kpiKeyOfTable", this.kpiKeyOfTable);
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
       this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));

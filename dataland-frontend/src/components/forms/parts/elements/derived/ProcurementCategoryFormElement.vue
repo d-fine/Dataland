@@ -1,12 +1,12 @@
 <template>
   <div class="form-field">
     <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
-      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isItActive" />
+      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isActive" />
       <h5 data-test="dataPointToggleTitle" class="m-2">
         {{ label }}
       </h5>
     </div>
-    <FormKit type="group" :name="name" v-if="isItActive">
+    <FormKit type="group" :name="name" v-if="isActive">
       <div data-test="ProcurementCategoryFormElementContent">
         <div class="form-field border-none">
           <NaceCodeFormField
@@ -99,7 +99,7 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
+import { type LksgProcurementCategory } from "@clients/backend";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
@@ -113,9 +113,15 @@ export default defineComponent({
     PercentageFormField,
   },
   props: BaseFormFieldProps,
+  inject: {
+    selectedProcurementCategories: {
+      from: "selectedProcurementCategories",
+      default: {} as { [key: string]: LksgProcurementCategory },
+    },
+  },
   data() {
     return {
-      isItActive: !!lksgModalColumnHeaders.procurementCategories[this.name],
+      isActive: !!this.selectedProcurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
@@ -125,8 +131,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    console.log(lksgModalColumnHeaders.procurementCategories);
-    if (lksgModalColumnHeaders.procurementCategories[this.name]) {
+    if (this.isActive) {
       this.selectedCountries = this.setPreSelectedCountries();
     }
   },
@@ -138,9 +143,7 @@ export default defineComponent({
     setPreSelectedCountries() {
       return this.allCountries.filter((el) =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
-        lksgModalColumnHeaders.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(
-          el.value,
-        ),
+        this.selectedProcurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value),
       );
     },
     /**
