@@ -48,7 +48,7 @@ export async function patchDataRequestStatus(
 ): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
-      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
+      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequestStatus(
         dataRequestId,
         requestStatus,
       );
