@@ -2109,18 +2109,6 @@ export const lksgDataModel = [
               dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
                 ?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights == "Yes",
           },
-          {
-            name: "useOfPrivatePublicSecurityForcesMeasuresDescription",
-            label: "Use of Private Public Security Forces Measures Description",
-            description:
-              "Please list any other measures you are taking to prevent the use of private and/or public security forces that violate human rights.",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
-                ?.useOfPrivatePublicSecurityForcesMeasures?.value == "Yes",
-          },
         ],
       },
     ],
@@ -2461,18 +2449,6 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
-          },
-          {
-            name: "hazardousWasteDisposalOtherWasteImportDescription",
-            label: "Hazardous Waste Disposal - Other Waste Import Description",
-            description:
-              "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
-                ?.value == "Yes",
           },
         ],
       },
