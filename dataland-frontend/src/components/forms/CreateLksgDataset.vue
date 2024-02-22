@@ -249,6 +249,8 @@ export default defineComponent({
         this.companyAssociatedLksgData = objectDropNull(
           lksgResponseData as ObjectType,
         ) as CompanyAssociatedDataLksgData;
+      } else {
+        throw TypeError("The framework seems to be undefined as the corresponding DataTypeEnum entry was not found");
       }
 
       this.waitingForData = false;
