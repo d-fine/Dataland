@@ -416,7 +416,7 @@ class BulkDataRequestsTest {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val frameworks = enumValues<BulkDataRequest.DataTypes>().toSet()
-        val identifiers= uniqueIdentifiersMap.values.toSet() + setOf(multipleRegexMatchingIdentifier)
+        val identifiers = uniqueIdentifiersMap.values.toSet() + setOf(multipleRegexMatchingIdentifier)
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, years),
