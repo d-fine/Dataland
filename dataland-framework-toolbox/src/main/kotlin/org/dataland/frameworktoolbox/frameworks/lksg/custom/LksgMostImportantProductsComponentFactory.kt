@@ -27,7 +27,7 @@ class LksgMostImportantProductsComponentFactory(@Autowired val templateDiagnosti
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<LksgMostImporantProductsComponent>(
+        return componentGroup.create<LksgMostImportantProductsComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

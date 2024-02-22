@@ -19,7 +19,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 /**
  * Represents the most Important Products component for the Lksg Framework
  */
-class LksgMostImporantProductsComponent(
+class LksgMostImportantProductsComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
