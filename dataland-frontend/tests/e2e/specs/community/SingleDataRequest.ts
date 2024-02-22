@@ -1,13 +1,8 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
-import {
-  RequestControllerApi,
-  RequestStatus,
-  type SingleDataRequest,
-  type StoredDataRequest,
-} from "@clients/communitymanager";
+import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { Configuration, DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
+import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -27,7 +22,6 @@ describeIf(
     let testStoredCompany: StoredCompany;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
 
-    let dataRequestId: string;
     /**
      * Uploads a company with lksg data
      * @param reportingPeriod the year for which the data is uploaded
@@ -113,89 +107,7 @@ describeIf(
         "The submission of your data request was unsuccessful.",
       );
     });
-    it("Create a single data request, set the status to answered, then review the request on the view page", () => {
-      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
-      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
-      cy.get('[data-test="closeRequestButton"]').should("not.exist");
-      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod("2020");
-      cy.intercept("POST", "**/community/requests/single").as("postRequestData");
-      submit();
-      cy.wait("@postRequestData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((interception) => {
-        if (interception.response !== undefined) {
-          const responseBody = interception.response.body as StoredDataRequest[];
-          dataRequestId = responseBody[0].dataRequestId;
-          setRequestStatusToAnswered(dataRequestId);
-          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-          checkForReviewButtonsAndClick("closeRequestButton", "reOpenRequestButton");
-          setRequestStatusToAnswered(dataRequestId);
-          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-          checkForReviewButtonsAndClick("reOpenRequestButton", "closeRequestButton");
-        }
-      });
-    });
 
-    it("Create two datasets, set the status of one request of them to answered, then update this request on the view page", () => {
-      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
-      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-      singleDataRequestPage.chooseReportingPeriod("2021");
-      cy.intercept("POST", "**/community/requests/single").as("postRequestData");
-      submit();
-      cy.wait("@postRequestData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then((interception) => {
-        uploadFrameworkDataForCompany(testStoredCompany.companyId, "2021");
-        if (interception.response !== undefined) {
-          const responseBody = interception.response.body as StoredDataRequest[];
-          dataRequestId = responseBody[0].dataRequestId;
-
-          setRequestStatusToAnswered(dataRequestId);
-          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-          checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
-
-          setRequestStatusToAnswered(dataRequestId);
-          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-          setRequestStatusToAnswered(dataRequestId);
-          checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
-        }
-      });
-    });
-
-    /**
-     * Checks for the two review request buttons, clicks the one to click and checks if the buttons are gone afterwards
-     * @param buttonToClick the data-test label of the button to click
-     * @param buttonNotToClick the data-test label of the button not to click
-     */
-    function checkForReviewButtonsAndClick(buttonToClick: string, buttonNotToClick: string): void {
-      const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
-      const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
-
-      cy.get(buttonNotToClickSelector).should("exist");
-      cy.get(buttonToClickSelector).should("exist").click();
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-      cy.get(buttonNotToClickSelector).should("not.exist");
-      cy.get(buttonToClickSelector).should("not.exist");
-    }
-    /**
-     * Checks for the two review request buttons, clicks the one to click and chooses the clickable
-     * reporting period and checks if the buttons are gone afterwards
-     * @param buttonToClick the data-test label of the button to click
-     * @param buttonNotToClick the data-test label of the button not to click
-     */
-    function checkForReviewButtonsAndClickOnDropDownReportingPeriod(
-      buttonToClick: string,
-      buttonNotToClick: string,
-    ): void {
-      const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
-      const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
-      cy.get(buttonNotToClickSelector).should("exist");
-      cy.get(buttonToClickSelector).should("exist").click();
-      cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
-      cy.get('[data-test="reporting-periods"] a').contains("2021").should("have.class", "link").click();
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-      cy.get(buttonNotToClickSelector).should("not.exist");
-      cy.get(buttonToClickSelector).should("not.exist");
-    }
     /**
      * Checks if the request body that is sent to the backend is valid and matches the given information
      * @param interception the object of interception with the backend
@@ -253,21 +165,6 @@ describeIf(
      */
     function checkCompanyInfoSheet(): void {
       cy.get("[data-test='companyNameTitle']").should("contain.text", testCompanyName);
-    }
-    /**
-     * Sets the status of a single data request from open to answered
-     * @param dataRequestId the ID of the request
-     */
-    function setRequestStatusToAnswered(dataRequestId: string): void {
-      cy.intercept("PATCH", "**/community/requests/*/requestStatus*").as("patchRequestStatus");
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        const requestControllerApi = new RequestControllerApi(new Configuration({ accessToken: token }));
-        requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Answered).catch((reason) => {
-          console.error(reason);
-          throw reason;
-        });
-      });
-      cy.wait("@patchRequestStatus", { timeout: Cypress.env("short_timeout_in_ms") as number });
     }
   },
 );

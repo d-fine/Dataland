@@ -15,7 +15,10 @@ describe("Component tests for the company info sheet", function (): void {
       companyInformationForTest = smeFixtures[0].companyInformation;
     });
   });
-  function mockRequestsOnMounted(hasCompanyDataOwner: boolean = false): void {
+  /**
+   *  Mocks the desired requests
+   */
+  function mockRequestsOnMounted(): void {
     cy.intercept(`**/api/companies/${dummyCompanyId}/info`, {
       body: companyInformationForTest,
       times: 1,
@@ -30,24 +33,14 @@ describe("Component tests for the company info sheet", function (): void {
         } as StoredDataRequest,
       ],
     }).as("fetchUserRequests");
-
-    cy.intercept("**/api/companies/*/data-owners/mock-data-owner-id", {
-      status: 200,
-    }).as("fetchUserIsDataOwnerTrue");
-    if (hasCompanyDataOwner) {
-      cy.intercept("**/api/companies/*/data-owners", {
-        body: ["company-owner-id"],
-      }).as("fetchHasCompanyDataOwnersFalse");
-    }
   }
   it("Check visibility of review request buttons", function () {
-    mockRequestsOnMounted(false);
+    mockRequestsOnMounted();
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
       void mounted.wrapper.setProps({
         companyId: dummyCompanyId,
-        showSingleDataRequestButton: true,
         framework: DataTypeEnum.EutaxonomyNonFinancials,
         mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
           ["1996", {} as DataMetaInformation],
@@ -57,5 +50,23 @@ describe("Component tests for the company info sheet", function (): void {
     });
     cy.get('[data-test="reOpenRequestButton"]').should("exist");
     cy.get('[data-test="closeRequestButton"]').should("exist");
+  });
+  it("Check non-visibility of review request buttons", function () {
+    mockRequestsOnMounted();
+    cy.mountWithPlugins(CompanyInformationComponent, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyId: dummyCompanyId,
+        framework: undefined,
+        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
+          ["1996", {} as DataMetaInformation],
+          ["1997", {} as DataMetaInformation],
+        ]),
+      },
+    });
+    cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
+    cy.get('[data-test="closeRequestButton"]').should("not.exist");
   });
 });

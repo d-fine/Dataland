@@ -9,6 +9,8 @@ describe("Component tests for the data request review buttons", function (): voi
     mockPatchRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
@@ -31,6 +33,8 @@ describe("Component tests for the data request review buttons", function (): voi
     mockUserRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
@@ -54,6 +58,8 @@ describe("Component tests for the data request review buttons", function (): voi
     mockPatchRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
