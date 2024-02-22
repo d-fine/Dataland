@@ -122,17 +122,19 @@ describeIf(
       singleDataRequestPage.chooseReportingPeriod("2020");
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       submit();
+      let dataRequestId: string;
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         if (interception.response !== undefined) {
           const responseBody = interception.response.body as StoredDataRequest[];
-          const dataRequestId = responseBody[0].dataRequestId;
-          setRequestStatusToAnswered(dataRequestId);
+          dataRequestId = responseBody[0].dataRequestId;
         }
       });
+      setRequestStatusToAnswered(dataRequestId);
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-      cy.get('[data-test="reOpenRequestButton"]').should("exist");
-      cy.get('[data-test="closeRequestButton"]').should("exist").click();
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+      checkForReviewButtonsAndClick("closeRequestButton", "reOpenRequestButton");
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      setRequestStatusToAnswered(dataRequestId);
+      checkForReviewButtonsAndClick("reOpenRequestButton", "closeRequestButton");
     });
 
     it("Create two datasets, set the status of one request of them to answered, then update this request on the view page", () => {
@@ -160,7 +162,21 @@ describeIf(
       });
     });
 
-    //todo check for error message
+    /**
+     * Checks for the two review request buttons, clicks the one to click and checks if the buttons are gone afterwards
+     * @param buttonToClick the data-test label of the button to click
+     * @param buttonNotToClick the data-test label of the button not to click
+     */
+    function checkForReviewButtonsAndClick(buttonToClick: string, buttonNotToClick: string): void {
+      const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
+      const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
+
+      cy.get(buttonNotToClickSelector).should("exist");
+      cy.get(buttonToClickSelector).should("exist").click();
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+      cy.get(buttonNotToClickSelector).should("not.exist");
+      cy.get(buttonToClickSelector).should("not.exist");
+    }
     /**
      * Checks for the two review request buttons, clicks the one to click and chooses the clickable
      * reporting period and checks if the buttons are gone afterwards
@@ -173,7 +189,6 @@ describeIf(
     ): void {
       const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
       const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
-
       cy.get(buttonNotToClickSelector).should("exist");
       cy.get(buttonToClickSelector).should("exist").click();
       cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
