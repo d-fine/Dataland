@@ -86,6 +86,7 @@ class DataRequestUpdaterTest {
             Assertions.assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
         }
     }
+
     @Test
     fun `patch your own answered data request as a premiumUser to closed`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
