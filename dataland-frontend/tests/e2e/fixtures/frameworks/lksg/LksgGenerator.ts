@@ -4,6 +4,7 @@ import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -23,7 +24,7 @@ export class LksgGenerator extends Generator {
   generateLkSGProcurementCategory(localNullProbability: number): LksgProcurementCategory {
     if (localNullProbability == 0)
       return {
-        procuredProductTypesAndServicesNaceCodes: this.guaranteedArray(() => this.guaranteedShortString(), 0, 10),
+        procuredProductTypesAndServicesNaceCodes: generateNaceCodes(),
         numberOfSuppliersPerCountryCode: this.generateCustomRandomMap(this.guaranteedInt(0, 10)),
         shareOfTotalProcurementInPercent: this.guaranteedInt(0, 100),
       };
