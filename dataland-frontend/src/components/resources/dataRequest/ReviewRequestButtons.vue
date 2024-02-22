@@ -1,5 +1,6 @@
 <template>
   <PrimeDialog
+    v-if="dialogIsVisible"
     id="successModal"
     :dismissableMask="true"
     :modal="true"
@@ -14,7 +15,7 @@
           <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
         </div>
         <div style="margin: 10px">
-          <h2 class="m-0">Success</h2>
+          <h2 class="m-0" data-test="successText">Success</h2>
         </div>
       </div>
     </template>
@@ -24,7 +25,7 @@
           <em class="material-icons info-icon red-text" style="font-size: 2.5em"> error </em>
         </div>
         <div style="margin: 10px">
-          <h2 class="m-0">Changing the status of your request was unsuccessful.</h2>
+          <h2 class="m-0" data-test="noSuccessText">Changing the status of your request was unsuccessful.</h2>
         </div>
       </div>
     </template>

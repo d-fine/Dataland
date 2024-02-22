@@ -1,14 +1,146 @@
-import ReviewRequestButtonsComponent from "@/components/resources/ReviewRequestButtons.vue";
+import ReviewRequestButtonsComponent from "@components/resources/dataRequest/ReviewRequestButtons.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { DataTypeEnum } from "../../../../../build/clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 describe("Component tests for the data request review buttons", function (): void {
-  it("Check reopen functionality", function () {
+  const mockCompanyId: string = "Mock-company-id";
+  it("Check review functionality", function () {
+    mockUserRequestsOnMounted();
+    mockPatchRequestsOnMounted();
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
-        companyId: "",
+        companyId: mockCompanyId,
         framework: DataTypeEnum.Lksg,
+        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
+          ["2022", {} as DataMetaInformation],
+        ]),
       },
-    }).then(() => {});
+    }).then((mounted) => {
+      void mounted.wrapper;
+      cy.get('[data-test="closeRequestButton"]').should("exist").click();
+      cy.get('[data-test="successText"]').should("exist");
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+
+      cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+      cy.get('[data-test="successText"]').should("exist");
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    });
   });
+  it("Check review functionality with error message", function () {
+    mockUserRequestsOnMounted();
+    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyId: mockCompanyId,
+        framework: DataTypeEnum.Lksg,
+        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
+          ["2022", {} as DataMetaInformation],
+        ]),
+      },
+    }).then((mounted) => {
+      void mounted.wrapper;
+      cy.get('[data-test="closeRequestButton"]').should("exist").click();
+      cy.get('[data-test="noSuccessText"]').should("exist");
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+
+      cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+      cy.get('[data-test="noSuccessText"]').should("exist");
+      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    });
+  });
+  it("Check review functionality with multiple reporting periods", function () {
+    mockUserRequestsOnMounted();
+    mockPatchRequestsOnMounted();
+    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyId: mockCompanyId,
+        framework: DataTypeEnum.Lksg,
+        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
+          ["2020", {} as DataMetaInformation],
+          ["2021", {} as DataMetaInformation],
+          ["2022", {} as DataMetaInformation],
+        ]),
+      },
+    }).then((mounted) => {
+      void mounted.wrapper;
+      checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+
+      checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
+    });
+  });
+  /**
+   * Checks dropdown functionality of request review button
+   * @param buttonToClick desired dialog
+   * @param buttonNotToClick if false, display error message
+   */
+  function checkForReviewButtonsAndClickOnDropDownReportingPeriod(
+    buttonToClick: string,
+    buttonNotToClick: string,
+  ): void {
+    const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
+    const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
+    cy.get(buttonNotToClickSelector).should("exist");
+    cy.get(buttonToClickSelector).should("exist").click();
+
+    cy.get('[data-test="reporting-periods"] a').contains("2024").should("not.exist");
+    cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
+    cy.get('[data-test="reporting-periods"] a').contains("2021").should("not.have.class", "link");
+    cy.get('[data-test="reporting-periods"] a').contains("2022").should("have.class", "link").click();
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+  }
+  /**
+   * Mocks the answers for all the requests
+   */
+  function mockUserRequestsOnMounted(): void {
+    cy.intercept(`**/community/requests/user`, {
+      body: [
+        {
+          dataType: DataTypeEnum.Lksg,
+          dataRequestCompanyIdentifierValue: mockCompanyId,
+          reportingPeriod: "2021",
+          requestStatus: RequestStatus.Open,
+          dataRequestId: "Mock-Request-Id",
+        } as StoredDataRequest,
+        {
+          dataType: DataTypeEnum.Lksg,
+          dataRequestCompanyIdentifierValue: mockCompanyId,
+          reportingPeriod: "2022",
+          requestStatus: RequestStatus.Answered,
+          dataRequestId: "Mock-Request-Id",
+        } as StoredDataRequest,
+        {
+          dataType: DataTypeEnum.Lksg,
+          dataRequestCompanyIdentifierValue: mockCompanyId,
+          reportingPeriod: "2024",
+          requestStatus: RequestStatus.Answered,
+          dataRequestId: "Mock-Request-Id",
+        } as StoredDataRequest,
+      ],
+    }).as("fetchUserRequests");
+  }
+  /**
+   * Mocks the answer for patching the request status
+   */
+  function mockPatchRequestsOnMounted(): void {
+    cy.intercept(`**/requestStatus?requestStatus=Closed`, {
+      body: {
+        requestStatus: RequestStatus.Closed,
+      } as StoredDataRequest,
+      status: 200,
+    }).as("closeUserRequest");
+    cy.intercept(`**/requestStatus?requestStatus=Open`, {
+      body: {
+        requestStatus: RequestStatus.Open,
+      } as StoredDataRequest,
+      status: 200,
+    }).as("reOpenUserRequest");
+  }
 });
