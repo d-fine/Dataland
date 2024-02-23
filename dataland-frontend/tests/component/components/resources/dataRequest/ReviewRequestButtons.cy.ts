@@ -4,13 +4,16 @@ import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 describe("Component tests for the data request review buttons", function (): void {
   const mockCompanyId: string = "Mock-company-id";
+
   it("Check review functionality", function () {
     mockUserRequestsOnMounted();
     mockPatchRequestsOnMounted();
+
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
       ["2022", {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
+
     cy.get('[data-test="closeRequestButton"]').should("exist").click();
     cy.get('[data-test="successText"]').should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
@@ -19,12 +22,14 @@ describe("Component tests for the data request review buttons", function (): voi
     cy.get('[data-test="successText"]').should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   });
+
   it("Check review functionality with error message", function () {
     mockUserRequestsOnMounted();
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
       ["2022", {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
+
     cy.get('[data-test="closeRequestButton"]').should("exist").click();
     cy.get('[data-test="noSuccessText"]').should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
@@ -33,9 +38,11 @@ describe("Component tests for the data request review buttons", function (): voi
     cy.get('[data-test="noSuccessText"]').should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   });
+
   it("Check review functionality with multiple reporting periods", function () {
     mockUserRequestsOnMounted();
     mockPatchRequestsOnMounted();
+
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
       ["2020", {} as DataMetaInformation],
       ["2021", {} as DataMetaInformation],
