@@ -7,75 +7,47 @@ describe("Component tests for the data request review buttons", function (): voi
   it("Check review functionality", function () {
     mockUserRequestsOnMounted();
     mockPatchRequestsOnMounted();
-    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        companyId: mockCompanyId,
-        framework: DataTypeEnum.Lksg,
-        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
-          ["2022", {} as DataMetaInformation],
-        ]),
-      },
-    }).then((mounted) => {
-      void mounted.wrapper;
-      cy.get('[data-test="closeRequestButton"]').should("exist").click();
-      cy.get('[data-test="successText"]').should("exist");
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
+      ["2022", {} as DataMetaInformation],
+    ]);
+    mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
+    cy.get('[data-test="closeRequestButton"]').should("exist").click();
+    cy.get('[data-test="successText"]').should("exist");
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
 
-      cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
-      cy.get('[data-test="successText"]').should("exist");
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-    });
+    cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    cy.get('[data-test="successText"]').should("exist");
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   });
   it("Check review functionality with error message", function () {
     mockUserRequestsOnMounted();
-    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        companyId: mockCompanyId,
-        framework: DataTypeEnum.Lksg,
-        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
-          ["2022", {} as DataMetaInformation],
-        ]),
-      },
-    }).then((mounted) => {
-      void mounted.wrapper;
-      cy.get('[data-test="closeRequestButton"]').should("exist").click();
-      cy.get('[data-test="noSuccessText"]').should("exist");
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
+      ["2022", {} as DataMetaInformation],
+    ]);
+    mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
+    cy.get('[data-test="closeRequestButton"]').should("exist").click();
+    cy.get('[data-test="noSuccessText"]').should("exist");
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
 
-      cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
-      cy.get('[data-test="noSuccessText"]').should("exist");
-      cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-    });
+    cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    cy.get('[data-test="noSuccessText"]').should("exist");
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   });
   it("Check review functionality with multiple reporting periods", function () {
     mockUserRequestsOnMounted();
     mockPatchRequestsOnMounted();
-    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
-      keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        companyId: mockCompanyId,
-        framework: DataTypeEnum.Lksg,
-        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
-          ["2020", {} as DataMetaInformation],
-          ["2021", {} as DataMetaInformation],
-          ["2022", {} as DataMetaInformation],
-        ]),
-      },
-    }).then((mounted) => {
-      void mounted.wrapper;
-      checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+    const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
+      ["2020", {} as DataMetaInformation],
+      ["2021", {} as DataMetaInformation],
+      ["2022", {} as DataMetaInformation],
+    ]);
+    mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
 
-      checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
-    });
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
   });
+
   /**
    * Checks dropdown functionality of request review button
    * @param buttonToClick desired dialog
@@ -142,5 +114,29 @@ describe("Component tests for the data request review buttons", function (): voi
       } as StoredDataRequest,
       status: 200,
     }).as("reOpenUserRequest");
+  }
+  /**
+   * Mount review request button component with given props
+   * @param companyId companyId
+   * @param framework framework
+   * @param map mapOfReportingPeriodToActiveDataset
+   */
+  function mountReviewRequestButtonsWithProps(
+    companyId: string,
+    framework: DataTypeEnum,
+    map: Map<string, DataMetaInformation>,
+  ): void {
+    cy.mountWithPlugins(ReviewRequestButtonsComponent, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyId: companyId,
+        framework: framework,
+        mapOfReportingPeriodToActiveDataset: map,
+      },
+    }).then((mounted) => {
+      mounted.wrapper;
+    });
   }
 });
