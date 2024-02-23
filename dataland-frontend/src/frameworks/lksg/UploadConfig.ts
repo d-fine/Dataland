@@ -111,7 +111,7 @@ export const lksgDataModel = [
             label: "Annual Total Revenue",
             description: "Total revenue per annum",
 
-            component: "NumberFormField",
+            component: "CurrencyDataPointFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -959,16 +959,6 @@ export const lksgDataModel = [
             showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
           },
           {
-            name: "worstFormsOfChildLaborProhibition",
-            label: "Worst Forms of Child Labor Prohibition",
-            description:
-              "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
-          },
-          {
             name: "worstFormsOfChildLabor",
             label: "Worst Forms of Child Labor",
             description: "Have there been any worst forms of child labor in your company in the last 5 years?",
@@ -976,6 +966,16 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
+          },
+          {
+            name: "worstFormsOfChildLaborProhibition",
+            label: "Worst Forms of Child Labor Prohibition",
+            description:
+              "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
+
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
           },
           {
             name: "worstFormsOfChildLaborForms",
@@ -1518,7 +1518,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "diversityAndInclusionRole",
@@ -1529,7 +1529,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "preventionOfMistreatments",
@@ -1540,7 +1540,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "unequalTreatmentPreventionTraining",
@@ -1551,7 +1551,7 @@ export const lksgDataModel = [
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "equalOpportunitiesOfficer",
@@ -1561,7 +1561,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "equalEmploymentPolicy",
@@ -1571,7 +1571,7 @@ export const lksgDataModel = [
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "unequalTreatmentPreventionOtherMeasures",
@@ -1581,7 +1581,7 @@ export const lksgDataModel = [
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
           },
           {
             name: "unequalTreatmentPreventionOtherMeasuresDescription",

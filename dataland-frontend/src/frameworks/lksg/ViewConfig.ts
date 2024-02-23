@@ -16,6 +16,7 @@ import {
   formatLksgProductionSitesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
+import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -116,7 +117,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total revenue per annum",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.masterData?.annualTotalRevenue, ""),
+              formatCurrencyForDisplay(dataset.general?.masterData?.annualTotalRevenue, "Annual Total Revenue"),
           },
           {
             type: "cell",
@@ -954,20 +955,20 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
           },
           {
             type: "cell",
-            label: "Worst Forms of Child Labor Prohibition",
-            explanation:
-              "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
-          },
-          {
-            type: "cell",
             label: "Worst Forms of Child Labor",
             explanation: "Have there been any worst forms of child labor in your company in the last 5 years?",
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLabor),
+          },
+          {
+            type: "cell",
+            label: "Worst Forms of Child Labor Prohibition",
+            explanation:
+              "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
           },
           {
             type: "cell",
@@ -1580,7 +1581,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Unequal Treatment of Employment Prevention Measures",
             explanation: "Does your company take measures to prevent unequal treatment of employment?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures,
@@ -1592,7 +1593,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Is a member of your company's management responsible for promoting diversity in the workforce and among business partners?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole),
           },
@@ -1602,7 +1603,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Does your company's management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments),
           },
@@ -1612,7 +1613,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Has your company introduced mandatory offers and training for employees that target unequal treatment of employment?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
@@ -1627,7 +1628,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Equal Opportunities Officer",
             explanation: "Do you have an equal opportunities officer or a similar function?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer),
           },
@@ -1636,7 +1637,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Equal Employment Policy",
             explanation: "Does your company have an equal employment policy? If yes, please share the policy with us.",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
@@ -1651,7 +1652,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Unequal Treatment Prevention Other Measures",
             explanation: "Have other measures been taken to prevent unequal treatment of employment?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(

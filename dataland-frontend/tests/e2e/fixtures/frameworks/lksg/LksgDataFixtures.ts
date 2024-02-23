@@ -43,7 +43,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         shareOfTemporaryWorkers: dataGenerator.valueOrNull(
           pickOneElement(Object.values(LksgGeneralMasterdataShareOfTemporaryWorkersOptions)),
         ),
-        annualTotalRevenue: dataGenerator.randomFloat(),
+        annualTotalRevenue: dataGenerator.randomCurrencyDataPoint(),
         fixedAndWorkingCapital: dataGenerator.randomFloat(),
       },
       productionSpecific: {
@@ -176,8 +176,8 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         employeeSUnder18: dataGenerator.randomYesNo(),
         employeeSUnder15: dataGenerator.randomYesNo(),
         employeeSUnder18InApprenticeship: dataGenerator.randomYesNo(),
-        worstFormsOfChildLaborProhibition: dataGenerator.randomYesNo(),
         worstFormsOfChildLabor: dataGenerator.randomYesNo(),
+        worstFormsOfChildLaborProhibition: dataGenerator.randomYesNo(),
         worstFormsOfChildLaborForms: dataGenerator.randomShortString(),
         measuresForPreventionOfEmploymentUnderLocalMinimumAge: dataGenerator.randomYesNo(),
         employmentUnderLocalMinimumAgePreventionEmploymentContracts: dataGenerator.randomYesNo(),
