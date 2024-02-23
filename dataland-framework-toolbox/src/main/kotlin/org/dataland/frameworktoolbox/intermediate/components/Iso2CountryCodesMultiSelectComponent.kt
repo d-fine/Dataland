@@ -22,7 +22,7 @@ import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOpt
 open class Iso2CountryCodesMultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "java.util.EnumSet") {
+) : ComponentBase(identifier, parent, "List") {
 
     var options: Set<SelectionOption> = mutableSetOf()
 
