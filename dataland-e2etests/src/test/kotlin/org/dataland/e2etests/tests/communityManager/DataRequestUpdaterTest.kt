@@ -113,7 +113,7 @@ class DataRequestUpdaterTest {
     }
 
     @Test
-    fun `patch a non owned answered data request as a premiumUser and assert that it is forbidden`() {
+    fun `patch a non-owned, answered data request as a premiumUser and assert that it is forbidden`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
