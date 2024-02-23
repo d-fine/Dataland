@@ -6691,15 +6691,6 @@
           "ExportImportOfHazardousWaste"
         ]
       },
-      "HighRiskCountriesOptions": {
-        "type": "string"
-      },
-      "HighRiskCountriesProcurementNameOptions": {
-        "type": "string"
-      },
-      "HighRiskCountriesRawMaterialsLocationOptions": {
-        "type": "string"
-      },
       "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
         "type": "string",
         "enum": [
@@ -7169,7 +7160,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SubcontractingCompaniesCountriesOptions"
+              "type": "string"
             }
           },
           "subcontractingCompaniesIndustries": {
@@ -7418,7 +7409,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HighRiskCountriesRawMaterialsLocationOptions"
+              "type": "string"
             }
           },
           "highRiskCountriesActivity": {
@@ -7433,7 +7424,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HighRiskCountriesOptions"
+              "type": "string"
             }
           },
           "highRiskCountriesProcurement": {
@@ -7448,7 +7439,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HighRiskCountriesProcurementNameOptions"
+              "type": "string"
             }
           }
         }
@@ -8625,9 +8616,6 @@
           "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
           "NoneOfTheAbove"
         ]
-      },
-      "SubcontractingCompaniesCountriesOptions": {
-        "type": "string"
       },
       "BaseDataPointString": {
         "type": "object",
@@ -13890,6 +13878,10 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -13905,10 +13897,6 @@
           },
           "headquarters": {
             "type": "string"
-          },
-          "permId": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

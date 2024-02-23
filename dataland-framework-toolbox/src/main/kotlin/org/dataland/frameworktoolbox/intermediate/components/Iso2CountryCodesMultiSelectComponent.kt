@@ -4,7 +4,6 @@ import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -13,7 +12,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -27,22 +25,21 @@ open class Iso2CountryCodesMultiSelectComponent(
 ) : ComponentBase(identifier, parent, "java.util.EnumSet") {
 
     var options: Set<SelectionOption> = mutableSetOf()
-    val enumName = "${identifier.capitalizeEn()}Options"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val enum = dataClassBuilder.parentPackage.addEnum(
-            name = enumName,
-            options = options,
-            comment = "Enum class for the multi-select-field $identifier",
-        )
-        dataClassBuilder.addPropertyWithDocumentSupport(
-            documentSupport,
-            identifier,
-            TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        dataClassBuilder.addProperty(
+            this.identifier,
+            TypeReference(
+                "List",
+                isNullable,
+                listOf(TypeReference("String", false)),
+            ),
         )
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
@@ -81,7 +78,7 @@ open class Iso2CountryCodesMultiSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.identifier)}\"" } + "]"
+        val formattedString = "[ \"DE\", \"AL\", \"AZ\", \"EN\", \"US\", \"DK\"]"
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(

@@ -27,14 +27,14 @@ data class LksgGovernanceGeneralViolations(
 
     val highRiskCountriesRawMaterials: YesNo? = null,
 
-    val highRiskCountriesRawMaterialsLocation: EnumSet<HighRiskCountriesRawMaterialsLocationOptions>? = null,
+    val highRiskCountriesRawMaterialsLocation: List<String>? = null,
 
     val highRiskCountriesActivity: YesNo? = null,
 
-    val highRiskCountries: EnumSet<HighRiskCountriesOptions>? = null,
+    val highRiskCountries: List<String>? = null,
 
     val highRiskCountriesProcurement: YesNo? = null,
 
-    val highRiskCountriesProcurementName: EnumSet<HighRiskCountriesProcurementNameOptions>? = null,
+    val highRiskCountriesProcurementName: List<String>? = null,
 
 )

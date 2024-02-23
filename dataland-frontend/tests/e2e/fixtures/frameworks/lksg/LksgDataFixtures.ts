@@ -50,8 +50,10 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         manufacturingCompany: dataGenerator.randomYesNo(),
         capacity: dataGenerator.randomShortString(),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
-        subcontractingCompaniesCountries: dataGenerator.valueOrNull(pickSubsetOfElements([])),
-        subcontractingCompaniesIndustries: dataGenerator.valueOrNull(generateNaceCodes()),
+        subcontractingCompaniesCountries: dataGenerator.valueOrNull(
+          pickSubsetOfElements(["DE", "AL", "AZ", "EN", "US", "DK"]),
+        ),
+        subcontractingCompaniesIndustries: dataGenerator.valueOrNull(generateNaceCodes(1, 5)),
         productionSites: dataGenerator.randomYesNo(),
         numberOfProductionSites: dataGenerator.randomFloat(),
         listOfProductionSites: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),
@@ -164,11 +166,15 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         humanRightsOrEnvironmentalViolationsMeasures: dataGenerator.randomYesNo(),
         humanRightsOrEnvironmentalViolationsMeasuresDefinition: dataGenerator.randomShortString(),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
-        highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrNull(pickSubsetOfElements([])),
+        highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrNull(
+          pickSubsetOfElements(["DE", "AL", "AZ", "EN", "US", "DK"]),
+        ),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
-        highRiskCountries: dataGenerator.valueOrNull(pickSubsetOfElements([])),
+        highRiskCountries: dataGenerator.valueOrNull(pickSubsetOfElements(["DE", "AL", "AZ", "EN", "US", "DK"])),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
-        highRiskCountriesProcurementName: dataGenerator.valueOrNull(pickSubsetOfElements([])),
+        highRiskCountriesProcurementName: dataGenerator.valueOrNull(
+          pickSubsetOfElements(["DE", "AL", "AZ", "EN", "US", "DK"]),
+        ),
       },
     },
     social: {
