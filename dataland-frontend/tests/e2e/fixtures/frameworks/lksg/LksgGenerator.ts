@@ -36,9 +36,9 @@ export class LksgGenerator extends Generator {
       };
   }
 
-  generateProcurementCategories(localNullProbability = this.nullProbability): { [p: string]: LksgProcurementCategory } {
+  generateProcurementCategories(): { [p: string]: LksgProcurementCategory } {
     const categoryTypes = Object.values(ProcurementCategoryType).filter(
-      () => faker.number.float() > localNullProbability,
+      () => faker.number.float() > this.nullProbability,
     );
     const lksgProcurementCategoriesMap = new Map<ProcurementCategoryType, LksgProcurementCategory>();
     categoryTypes.forEach((categoryType) =>
@@ -48,13 +48,12 @@ export class LksgGenerator extends Generator {
   }
   /**
    * Generates a random production site
-   * @param localNullProbability the probability (as number between 0 and 1) for "null" values in optional fields
    * @returns a random production site
    */
-  generateLksgProductionSite(localNullProbability = this.nullProbability): LksgProductionSite {
+  generateLksgProductionSite(): LksgProductionSite {
     return {
       nameOfProductionSite: this.valueOrNull(faker.company.name()),
-      addressOfProductionSite: generateAddress(localNullProbability),
+      addressOfProductionSite: generateAddress(this.nullProbability),
       listOfGoodsOrServices: this.valueOrNull(this.guaranteedListOfGoodsOrServices()),
     };
   }
