@@ -59,23 +59,20 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: componentTestCypressLogs
+          name: componentTestCypressLogs-${{ matrix.testGroup }}
           path: cypress-component-test-logs.log
-          overwrite: true
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults
+          name: lcovResults-${{ matrix.testGroup }}
           path: ./dataland-frontend/coverage/*.info
-          overwrite: true
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-component-tests
+          name: cypress-component-tests-${{ matrix.testGroup }}
           path: ./dataland-frontend/cypress
-          overwrite: true
   framework-toolbox-tests:
     runs-on: ubuntu-latest
     steps:
@@ -102,9 +99,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsUnitTests-${{ matrix.testGroup }}
           path: ./**/*.exec
-          overwrite: true
   gradle-based-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -161,18 +157,16 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: GradleReports
+          name: GradleReports-${{ matrix.testGroup }}
           path: |
             ./**/build/reports
             ./**/coverage
-          overwrite: true
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsUnitTests-${{ matrix.testGroup }}
           path: ./**/*.exec
-          overwrite: true
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -225,9 +219,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PythonUnitTestCoverage
+          name: PythonUnitTestCoverage-${{ matrix.testGroup }}
           path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
-          overwrite: true
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -324,40 +317,35 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsE2ETest
+          name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
           path: ./*.exec
-          overwrite: true
       - name: Upload Python Coverage Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PythonE2eTestCoverage
+          name: PythonE2eTestCoverage-${{ matrix.testGroup }}
           path: ./*.xml
-          overwrite: true
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults
+          name: lcovResults-${{ matrix.testGroup }}
           path: ./*.info
-          overwrite: true
       - name: Upload E2E Test and Cypress Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestReports
+          name: e2eTestReports-${{ matrix.testGroup }}
           path: |
             ./cypress
             ./coverage
             ./reports
-          overwrite: true
       - name: Upload database dumps
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestDatabaseDumps
+          name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
           path: ./dbdumps/
-          overwrite: true
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -448,9 +436,8 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: SonarStageReports
+          name: SonarStageReports-${{ matrix.testGroup }}
           path: ./build/reports
-          overwrite: true
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
