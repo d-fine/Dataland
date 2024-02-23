@@ -13,7 +13,6 @@ describe("Component tests for the data request review buttons", function (): voi
       ["2022", {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-
     checkForReviewButtonsPopUpModal("successText");
   });
 
@@ -23,7 +22,6 @@ describe("Component tests for the data request review buttons", function (): voi
       ["2022", {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-
     checkForReviewButtonsPopUpModal("noSuccessText");
   });
 
@@ -39,6 +37,7 @@ describe("Component tests for the data request review buttons", function (): voi
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
 
     checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+
     checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
   });
   /**
@@ -47,7 +46,6 @@ describe("Component tests for the data request review buttons", function (): voi
    */
   function checkForReviewButtonsPopUpModal(expectedPopUp: string): void {
     const popUpdataTestId = `[data-test="${expectedPopUp}"]`;
-
     cy.get('[data-test="closeRequestButton"]').should("exist").click();
     cy.get(popUpdataTestId).should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
@@ -65,11 +63,8 @@ describe("Component tests for the data request review buttons", function (): voi
     buttonToClick: string,
     buttonNotToClick: string,
   ): void {
-    const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
-    const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
-
-    cy.get(buttonNotToClickSelector).should("exist");
-    cy.get(buttonToClickSelector).should("exist").click();
+    cy.get(`[data-test="${buttonNotToClick}"]`).should("exist");
+    cy.get(`[data-test="${buttonToClick}"]`).should("exist").click();
 
     cy.get('[data-test="reporting-periods"] a').contains("2024").should("not.exist");
     cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
@@ -125,7 +120,7 @@ describe("Component tests for the data request review buttons", function (): voi
     }).as("reOpenUserRequest");
   }
   /**
-   * Mounts review request button component with given props
+   * Mount review request button component with given props
    * @param companyId companyId
    * @param framework framework
    * @param map mapOfReportingPeriodToActiveDataset
