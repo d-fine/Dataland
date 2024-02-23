@@ -2,19 +2,20 @@ import ProcurementCategoryFormElement from "@/components/forms/parts/elements/de
 
 describe("Component tests for the CreateLksgDataset that test dependent fields", () => {
   it("On the upload page, ensure that procurementCategories is displayed correctly", () => {
-    cy.mountWithPlugins(ProcurementCategoryFormElement,
-        {
-          global: {
-            provide: {
-              selectedProcurementCategories: {
-              "Products": {
-                procuredProductTypesAndServicesNaceCodes: ["naceCode1"],
-                numberOfSuppliersPerCountryCodeValue: {"AL":4,"AU":2, "DE":6 },
-                shareOfTotalProcurementInPercent: 72,
-              }}
-            }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cy.mountWithPlugins(ProcurementCategoryFormElement, {
+      global: {
+        provide: {
+          selectedProcurementCategories: {
+            Products: {
+              procuredProductTypesAndServicesNaceCodes: ["naceCode1"],
+              numberOfSuppliersPerCountryCodeValue: { AL: 4, AU: 2, DE: 6 },
+              shareOfTotalProcurementInPercent: 72,
+            },
           },
-          props: { name: "Products",  label: "Products"},
+        },
+      },
+      props: { name: "Products", label: "Products" },
     }).then(() => {
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("be.visible");
       cy.get('[data-test="dataPointToggleButton"]').click();
