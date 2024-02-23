@@ -88,21 +88,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import InputSwitch from "primevue/inputswitch";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { FormKit } from "@formkit/vue";
+import {BaseFormFieldProps} from "@/components/forms/parts/fields/FormFieldProps";
+import {FormKit} from "@formkit/vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { type LksgProcurementCategory } from "@clients/backend";
+import {DropdownDatasetIdentifier, getDataset} from "@/utils/PremadeDropdownDatasets";
+import {getCountryNameFromCountryCode} from "@/utils/CountryCodeConverter";
+import {type LksgProcurementCategory} from "@clients/backend";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
+  inject: {
+    selectedProcurementCategories: {
+      from: "selectedProcurementCategories",
+      default: {} as Map<string, LksgProcurementCategory>,
+    },
+  },
   components: {
     InputSwitch,
     FormKit,
@@ -113,19 +119,13 @@ export default defineComponent({
     PercentageFormField,
   },
   props: BaseFormFieldProps,
-  inject: {
-    selectedProcurementCategories: {
-      from: "selectedProcurementCategories",
-      default: {} as { [key: string]: LksgProcurementCategory },
-    },
-  },
-  data() {
+    data() {
     return {
       isActive: !!this.selectedProcurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
-      selectedCountries: [],
+      selectedCountries: [] as { label:string, value:string }[],
       numberOfSuppliersPerCountryCodeValue: [],
       getCountryNameFromCountryCode,
     };
@@ -141,9 +141,9 @@ export default defineComponent({
      * @returns Pre Selected Countries
      */
     setPreSelectedCountries() {
-      return this.allCountries.filter((el) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
-        this.selectedProcurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value),
+      return this.allCountries.filter((element) =>
+          this.selectedProcurementCategories[this.name]
+              ?.numberOfSuppliersPerCountryCodeValue?.hasOwnProperty(element.value)
       );
     },
     /**

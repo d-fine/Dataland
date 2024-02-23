@@ -107,6 +107,11 @@ class Lksg {
 
     private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
         return fixedDataSet.copy(
+            general = fixedDataSet.general.copy(
+                productionSpecific = fixedDataSet.general.productionSpecific?.copy(
+                    specificProcurement = fixedDataSet.general.productionSpecific?.specificProcurement?.sorted(),
+                ),
+            ),
             governance = fixedDataSet.governance?.copy(
                 riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
                     identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
@@ -128,6 +133,11 @@ class Lksg {
         uploadedDataSets.forEach { dataset ->
             sortedUploadedDatasets.add(
                 dataset.copy(
+                    general = dataset.general.copy(
+                        productionSpecific = dataset.general.productionSpecific?.copy(
+                            specificProcurement = dataset.general.productionSpecific?.specificProcurement?.sorted(),
+                        ),
+                    ),
                     governance = dataset.governance?.copy(
                         riskManagementOwnOperations =
                         dataset.governance?.riskManagementOwnOperations?.copy(

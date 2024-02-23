@@ -2,21 +2,21 @@ import ProcurementCategoryFormElement from "@/components/forms/parts/elements/de
 
 describe("Component tests for the CreateLksgDataset that test dependent fields", () => {
   it("On the upload page, ensure that procurementCategories is displayed correctly", () => {
-    cy.mountWithPlugins(ProcurementCategoryFormElement, {
-      data() {
-        return {
-          isActive: true,
-          selectedCountries: [
-            //TODO check why this doesn't work
-            { label: "American Samoa (AS)", value: "AS" },
-            { label: "Andorra (AD)", value: "AD" },
-            { label: "Germany (DE)", value: "DE" },
-          ],
-        };
-      },
+    cy.mountWithPlugins(ProcurementCategoryFormElement,
+        {
+          global: {
+            provide: {
+              selectedProcurementCategories: {
+              "Products": {
+                procuredProductTypesAndServicesNaceCodes: ["naceCode1"],
+                numberOfSuppliersPerCountryCodeValue: {"AL":4,"AU":2, "DE":6 },
+                shareOfTotalProcurementInPercent: 72,
+              }}
+            }
+          },
+          props: { name: "Products",  label: "Products"},
     }).then(() => {
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("be.visible");
-
       cy.get('[data-test="dataPointToggleButton"]').click();
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("not.exist");
       cy.get('[data-test="dataPointToggleButton"]').click();
@@ -25,10 +25,7 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
       cy.get('[name="shareOfTotalProcurementInPercent"]').clear().type("22");
 
       cy.get('[data-test="suppliersPerCountryCode"] .p-multiselect').click();
-      cy.get("li").contains("American Samoa (AS)").click();
-      cy.get("li").contains("Andorra (AD)").click();
-      cy.get("li").contains("Germany (DE)").click();
-      cy.pause();
+
       cy.get('[data-test="supplierCountry"]').should("have.length", 3);
       cy.get('[data-test="supplierCountry"]').find('[data-test="removeElementBtn"]').eq(1).click();
       cy.get('[data-test="supplierCountry"]').should("have.length", 2);
