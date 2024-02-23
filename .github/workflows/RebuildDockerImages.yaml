@@ -68,11 +68,13 @@ jobs:
       - name: Store docker image versions
         uses: actions/upload-artifact@v4
         with:
-          name: dockerImageVersions-${{ matrix.runs-on }}
+          name: dockerImageVersions
           path: ./*github_env.log
+          overwrite: true
       - name: Store env and secrets
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: parameters-${{ matrix.runs-on }}
+          name: parameters
           path: ./logs/
+          overwrite: true

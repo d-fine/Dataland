@@ -69,5 +69,6 @@ runs:
     - name: Store env and secrets
       uses: actions/upload-artifact@v4
       with:
-        name: parameters-${{ matrix.runs-on }}
+        name: parameters
         path: ./logs/
+        overwrite: true

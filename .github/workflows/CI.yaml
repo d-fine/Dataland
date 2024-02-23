@@ -59,20 +59,23 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: componentTestCypressLogs-${{ matrix.runs-on }}
+          name: componentTestCypressLogs
           path: cypress-component-test-logs.log
+          overwrite: true
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults-${{ matrix.runs-on }}
+          name: lcovResults
           path: ./dataland-frontend/coverage/*.info
+          overwrite: true
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-component-tests-${{ matrix.runs-on }}
+          name: cypress-component-tests
           path: ./dataland-frontend/cypress
+          overwrite: true
   framework-toolbox-tests:
     runs-on: ubuntu-latest
     steps:
@@ -99,8 +102,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests-${{ matrix.runs-on }}
+          name: JaCoCoResultsUnitTests
           path: ./**/*.exec
+          overwrite: true
   gradle-based-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -157,16 +161,18 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: GradleReports-${{ matrix.runs-on }}
+          name: GradleReports
           path: |
             ./**/build/reports
             ./**/coverage
+          overwrite: true
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests-${{ matrix.runs-on }}
+          name: JaCoCoResultsUnitTests
           path: ./**/*.exec
+          overwrite: true
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -219,8 +225,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PythonUnitTestCoverage-${{ matrix.runs-on }}
+          name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
+          overwrite: true
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -317,35 +324,40 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsE2ETest-${{ matrix.runs-on }}
+          name: JaCoCoResultsE2ETest
           path: ./*.exec
+          overwrite: true
       - name: Upload Python Coverage Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PythonE2eTestCoverage-${{ matrix.runs-on }}
+          name: PythonE2eTestCoverage
           path: ./*.xml
+          overwrite: true
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults-${{ matrix.runs-on }}
+          name: lcovResults
           path: ./*.info
+          overwrite: true
       - name: Upload E2E Test and Cypress Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestReports-${{ matrix.runs-on }}
+          name: e2eTestReports
           path: |
             ./cypress
             ./coverage
             ./reports
+          overwrite: true
       - name: Upload database dumps
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestDatabaseDumps-${{ matrix.runs-on }}
+          name: e2eTestDatabaseDumps
           path: ./dbdumps/
+          overwrite: true
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -436,8 +448,9 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: SonarStageReports-${{ matrix.runs-on }}
+          name: SonarStageReports
           path: ./build/reports
+          overwrite: true
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
