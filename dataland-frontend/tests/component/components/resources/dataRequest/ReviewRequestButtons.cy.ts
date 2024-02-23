@@ -63,10 +63,8 @@ describe("Component tests for the data request review buttons", function (): voi
     buttonToClick: string,
     buttonNotToClick: string,
   ): void {
-    const buttonNotToClickSelector = `[data-test="${buttonNotToClick}"]`;
-    const buttonToClickSelector = `[data-test="${buttonToClick}"]`;
-    cy.get(buttonNotToClickSelector).should("exist");
-    cy.get(buttonToClickSelector).should("exist").click();
+    cy.get(`[data-test="${buttonNotToClick}"]`).should("exist");
+    cy.get(`[data-test="${buttonToClick}"]`).should("exist").click();
 
     cy.get('[data-test="reporting-periods"] a').contains("2024").should("not.exist");
     cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
