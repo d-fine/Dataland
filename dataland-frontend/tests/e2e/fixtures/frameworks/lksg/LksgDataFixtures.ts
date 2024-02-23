@@ -302,6 +302,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         stateSecurityForces: dataGenerator.randomYesNoNa(),
         privateSecurityForces: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNoNa()),
         useOfPrivatePublicSecurityForcesMeasures: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        useOfPrivatePublicSecurityForcesMeasuresDescription: dataGenerator.randomParagraphs(),
       },
     },
     environmental: {
@@ -342,6 +343,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         hazardousWasteDisposal: dataGenerator.randomYesNo(),
         hazardousWasteDisposalRiskOfImport: dataGenerator.randomYesNo(),
         hazardousWasteDisposalOtherWasteImport: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        hazardousWasteDisposalOtherWasteImportDescription: dataGenerator.randomParagraphs(),
       },
     },
   };

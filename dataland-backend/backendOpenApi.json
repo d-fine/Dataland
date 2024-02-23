@@ -6882,6 +6882,10 @@
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
+          },
+          "hazardousWasteDisposalOtherWasteImportDescription": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8529,6 +8533,10 @@
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
+          },
+          "useOfPrivatePublicSecurityForcesMeasuresDescription": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

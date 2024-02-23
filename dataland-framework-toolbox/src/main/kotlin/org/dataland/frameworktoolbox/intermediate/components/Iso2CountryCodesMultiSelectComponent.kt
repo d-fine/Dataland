@@ -73,7 +73,7 @@ open class Iso2CountryCodesMultiSelectComponent(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = "getDataset(DropdownDatasetIdentifier.CountryCodesIso2)",
                 imports =
-                setOf("import { DropdownDatasetIdentifier, getDataset } from \"@/utils/PremadeDropdownDatasets\";"),
+                setOf("import { DropdownDatasetIdentifier, getDataset } from \"@/utils/PremadeDropdownDatasets\""),
             ),
             component = this,
             uploadComponentName = "MultiSelectFormField",

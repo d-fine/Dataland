@@ -56,7 +56,7 @@ class LksgProcurementCategoriesComponent(
                 setOf(
                     TypeScriptImport(
                         "formatLksgProcurementCategoriesForDisplay",
-                        "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories",
+                        "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters",
                     ),
                 ),
             ),

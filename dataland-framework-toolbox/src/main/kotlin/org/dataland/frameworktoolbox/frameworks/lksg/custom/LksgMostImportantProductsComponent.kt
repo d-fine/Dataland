@@ -52,7 +52,7 @@ class LksgMostImportantProductsComponent(
                 setOf(
                     TypeScriptImport(
                         "formatLksgMostImportantProductsForDisplay",
-                        "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories",
+                        "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters",
                     ),
                 ),
             ),

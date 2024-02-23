@@ -28,4 +28,6 @@ data class LksgSocialUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights
     @field:Valid()
     val useOfPrivatePublicSecurityForcesMeasures: BaseDataPoint<YesNo>? = null,
 
+    val useOfPrivatePublicSecurityForcesMeasuresDescription: String? = null,
+
 )

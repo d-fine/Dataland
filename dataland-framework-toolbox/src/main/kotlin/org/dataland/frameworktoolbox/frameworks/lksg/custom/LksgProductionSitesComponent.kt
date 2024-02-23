@@ -53,7 +53,7 @@ class LksgProductionSitesComponent(
                 setOf(
                     TypeScriptImport(
                         "formatLksgProductionSitesForDisplay",
-                        "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories",
+                        "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters",
                     ),
                 ),
             ),

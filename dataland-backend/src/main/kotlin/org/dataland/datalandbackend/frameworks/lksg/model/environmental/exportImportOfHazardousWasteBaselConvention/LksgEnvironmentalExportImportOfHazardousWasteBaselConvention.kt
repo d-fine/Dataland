@@ -31,4 +31,6 @@ data class LksgEnvironmentalExportImportOfHazardousWasteBaselConvention(
     @field:Valid()
     val hazardousWasteDisposalOtherWasteImport: BaseDataPoint<YesNo>? = null,
 
+    val hazardousWasteDisposalOtherWasteImportDescription: String? = null,
+
 )

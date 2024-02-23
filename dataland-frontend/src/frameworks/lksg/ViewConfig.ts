@@ -2,9 +2,9 @@
 import { type LksgData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
-import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
@@ -2353,6 +2353,20 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                   ?.useOfPrivatePublicSecurityForcesMeasures,
               ),
           },
+          {
+            type: "cell",
+            label: "Use of Private Public Security Forces Measures Description",
+            explanation:
+              "Please list any other measures you are taking to prevent the use of private and/or public security forces that violate human rights.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                ?.useOfPrivatePublicSecurityForcesMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.social?.useOfPrivatePublicSecurityForcesWithDisregardForHumanRights
+                  ?.useOfPrivatePublicSecurityForcesMeasuresDescription,
+              ),
+          },
         ],
       },
     ],
@@ -2772,6 +2786,20 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 "Hazardous Waste Disposal - Other Waste Import",
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImport,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Disposal - Other Waste Import Description",
+            explanation:
+              "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
+                ?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteDisposalOtherWasteImportDescription,
               ),
           },
         ],
