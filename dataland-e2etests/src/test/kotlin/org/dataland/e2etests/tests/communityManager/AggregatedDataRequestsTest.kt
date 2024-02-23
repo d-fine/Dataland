@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.findAggregatedDataRequestDataTypeForFramework
 import org.dataland.e2etests.utils.findRequestControllerApiDataTypeForFramework
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.TestInstance
 class AggregatedDataRequestsTest {
 
     val jwtHelper = JwtAuthenticationHelper()
+    val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     @BeforeAll
@@ -69,47 +71,50 @@ class AggregatedDataRequestsTest {
         frameworks: Set<BulkDataRequest.DataTypes>,
         reportingPeriods: Set<String>,
         identifiersToRecognizeMap: Map<IdentifierType, String>,
-        differentLei: String,
     ) {
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(identifierValue = null)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods,
-            identifiersToRecognizeMap + mapOf(IdentifierType.lei to differentLei), 1,
+            identifiersToRecognizeMap , 1,
         )
         val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(identifierValue = "")
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods,
-            identifiersToRecognizeMap + mapOf(IdentifierType.lei to differentLei), 1,
+            identifiersToRecognizeMap, 1,
         )
+
+
     }
 
     @Test
     fun `post bulk data request and check that filter for the identifier value on aggregated level works properly`() {
         val permId = generateRandomPermId(10)
-        val identifierToRecognize = mapOf(
-
+        val identifiersToMap = mapOf(
+            IdentifierType.permId to permId,
+            IdentifierType.lei to permId + generateRandomLei().substring(10),
             IdentifierType.isin to generateRandomIsin().substring(0, 2) + permId)
-        generateCompaniesWithOneRandomValueForEachIdentifierType(identifierToRecognize)
+        generateCompaniesWithOneRandomValueForEachIdentifierType(identifiersToMap)
         val differentLei = generateRandomLei()
-        val somePermId = mapOf(IdentifierType.permId to permId)
-        val identifiersNotToRecognizeSet =  setOf(generateRandomLei()) + somePermId.values.toSet()
-        val identifiers = identifierToRecognize.values.toSet() + identifiersNotToRecognizeSet
+        val identifierNotToRecognizeSet =  setOf(generateRandomLei())
+        val identifiers = identifiersToMap.values.toSet() + identifierNotToRecognizeSet
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2023")
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
-        println("identifiers " + identifiers)
-        println("differentLei " + generateRandomLei())
-        println("response " + response)
+
         checkThatAllIdentifiersWereAccepted(response, identifiers.size-2, 2)
-        val aggregatedDataRequest = requestControllerApi.getAggregatedDataRequests(identifierValue = identifierToRecognize.getValue(IdentifierType.isin))
+        val aggregatedDataRequest = requestControllerApi.getAggregatedDataRequests(identifierValue =
+        apiAccessor.companyDataControllerApi.getCompaniesBySearchString(identifiersToMap.getValue(
+            IdentifierType.isin)).first().companyId
+        )
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequest, frameworks, reportingPeriods, identifierToRecognize, 1,
+            aggregatedDataRequest, frameworks, reportingPeriods,
+            identifiersToMap.filterKeys { it == IdentifierType.isin },1,
         )
         assertFalse(aggregatedDataRequest.any { it.datalandCompanyId == differentLei })
         testNonTrivialIdentifierValueFilterOnAggregatedLevel(
-            frameworks, reportingPeriods, identifierToRecognize, differentLei,
+            frameworks, reportingPeriods, identifiersToMap,
         )
     }
 

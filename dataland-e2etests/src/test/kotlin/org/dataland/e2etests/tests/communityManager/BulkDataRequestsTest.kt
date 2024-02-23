@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -10,6 +11,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.causeClientExceptionByBulkDataRequest
+import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
@@ -26,6 +28,7 @@ import org.dataland.e2etests.utils.getDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -223,20 +226,6 @@ class BulkDataRequestsTest {
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
 
-    private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
-        technicalUser: TechnicalUser,
-        identifiers: Set<String>,
-        frameworks: Set<BulkDataRequest.DataTypes>,
-        reportingPeriods: Set<String>,
-    ) {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-        val responseForReader = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks, reportingPeriods),
-        )
-        checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size,0)
-    }
-
-
     @Test
     fun `post bulk data request and verify that only unique identifiers are accepted `() {
         val permId = generateRandomPermId(20)
@@ -264,6 +253,5 @@ class BulkDataRequestsTest {
         val clientException = causeClientExceptionByBulkDataRequest(identifiersMap.values.toSet(), frameworks,
             reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
-
     }
 }

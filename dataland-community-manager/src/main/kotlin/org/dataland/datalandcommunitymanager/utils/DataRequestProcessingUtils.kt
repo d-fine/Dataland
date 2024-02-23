@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.utils
 
-import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -41,6 +40,7 @@ class DataRequestProcessingUtils(
      */
     fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
         var datalandCompanyId: String? = null
+        println("identifierValue " + identifierValue)
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
         if (matchingCompanyIdsAndNamesOnDataland.size == 1) {

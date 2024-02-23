@@ -130,7 +130,7 @@ fun checkThatMessageIsAsExpected(
         assertEquals(
             "$expectedNumberOfRejectedIdentifiers of your " +
                 "${expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers} distinct company " +
-                "identifiers were rejected because of a format that is not matching a valid LEI, ISIN or PermId.",
+                    "identifiers were rejected because they could not be matched with an existing company on dataland.",
             requestResponse.message,
             errorMessage,
         )
@@ -249,13 +249,18 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
 fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
     check400ClientExceptionErrorMessage(clientException)
     val responseBody = (clientException.response as ClientError<*>).body as String
-    assertTrue(responseBody.contains("All provided company identifiers have an invalid format or could not be " +
+    assertTrue(responseBody.contains("All provided company identifiers are not unique or could not be " +
             "recognized."))
     assertTrue(
         responseBody.contains(
-            "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId.",
+            "The company identifiers you provided could not be matched with an existing company on dataland",
         ),
     )
+}
+
+fun checkThatRequestedIdentifierIsUnique(identifierValue: String): String {
+   val companyIdForIdentifierValue = getDatalandCompanyIdForIdentifierValue(identifierValue)
+    return companyIdForIdentifierValue
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
@@ -265,11 +270,11 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     identifierValue: String,
     count: Long,
 ) {
+    val companyIdForIdentifierValue  = checkThatRequestedIdentifierIsUnique(identifierValue)
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
-            aggregatedDataRequest.datalandCompanyId ==  apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            identifierValue).first().companyId
+            aggregatedDataRequest.datalandCompanyId == companyIdForIdentifierValue
     }
     assertEquals(
         1,

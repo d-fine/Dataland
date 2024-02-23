@@ -11,7 +11,6 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -27,7 +26,6 @@ class SingleDataRequestManager(
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
-    val logger = LoggerFactory.getLogger(javaClass)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**

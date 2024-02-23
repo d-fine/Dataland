@@ -130,8 +130,8 @@ class BulkDataRequestManager(
             0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                    "distinct company identifiers were rejected because of a format that is not matching a valid " +
-                    "LEI, ISIN or PermId."
+                    "distinct company identifiers were rejected because they could not be matched with an existing" +
+                    " company on dataland."
         }
     }
 
@@ -164,8 +164,8 @@ class BulkDataRequestManager(
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers have an invalid format or could not be recognized."
-        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
+        val summary = "All provided company identifiers are not unique or could not be recognized."
+        val message = "The company identifiers you provided could not be matched with an existing company on dataland"
         throw InvalidInputApiException(
             summary,
             message,
