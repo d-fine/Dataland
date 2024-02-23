@@ -29,6 +29,16 @@ jobs:
           vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
+  merge-docker-images:
+    runs-on: ubuntu-latest
+    needs:
+      - rebuild-docker-images
+    steps:
+      - name: Merge Docker Image Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: dockerImageVersions
+          pattern: dockerImageVersions-*
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -102,7 +112,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
   gradle-based-tests:
     runs-on: ubuntu-latest
@@ -169,7 +179,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsUnitTests-Gradle
           path: ./**/*.exec
       - uses: ./.github/workflows/dockerLogs
         if: always()
@@ -230,7 +240,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     needs:
-      - rebuild-docker-images
+      - merge-docker-images
     strategy:
       fail-fast: false
       matrix:
@@ -253,7 +263,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
-          task: "e2e-tests"
+          task: "e2e-tests"-${{ matrix.testGroup }}
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -356,15 +366,25 @@ jobs:
         if: always()
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
+  merge-jacoco:
+    runs-on: ubuntu-latest
+    needs:
+      - gradle-based-tests
+      - framework-toolbox-tests
+    steps:
+      - name: Merge Jacoco Unit Tests Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: JaCoCoResultsUnitTests
+          pattern: JaCoCoResultsUnitTests-*
   sonar:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     needs:
       - e2e-tests
-      - gradle-based-tests
       - frontend-component-tests
       - python-tests
-      - framework-toolbox-tests
+      - merge-jacoco
     steps:
       - uses: actions/checkout@v4
         with:
@@ -453,11 +473,21 @@ jobs:
           fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
         run: git log --since $(date -d "- 35 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
+  merge-parameter:
+    runs-on: ubuntu-latest
+    needs:
+      - sonar
+    steps:
+      - name: Merge Parameter Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: parameter
+          pattern: parameter-*
   summary:
     runs-on: ubuntu-latest
     if: success()
     needs:
-      - sonar
+      - merge-parameter
       - manual-maintenance-check
     steps:
       - name: Summary of this workflow's overall outcome
