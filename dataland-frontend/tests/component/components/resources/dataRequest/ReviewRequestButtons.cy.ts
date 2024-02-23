@@ -13,14 +13,7 @@ describe("Component tests for the data request review buttons", function (): voi
       ["2022", {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-
-    cy.get('[data-test="closeRequestButton"]').should("exist").click();
-    cy.get('[data-test="successText"]').should("exist");
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-
-    cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
-    cy.get('[data-test="successText"]').should("exist");
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    checkForReviewButtonsPopUpModal("successText");
   });
 
   it("Check review functionality with error message", function () {
@@ -29,14 +22,7 @@ describe("Component tests for the data request review buttons", function (): voi
       ["2022", {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-
-    cy.get('[data-test="closeRequestButton"]').should("exist").click();
-    cy.get('[data-test="noSuccessText"]').should("exist");
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
-
-    cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
-    cy.get('[data-test="noSuccessText"]').should("exist");
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    checkForReviewButtonsPopUpModal("noSuccessText");
   });
 
   it("Check review functionality with multiple reporting periods", function () {
@@ -54,7 +40,20 @@ describe("Component tests for the data request review buttons", function (): voi
 
     checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
   });
+  /**
+   * Checks for pop up modal
+   * @param expectedPopUp expected pop up dialog
+   */
+  function checkForReviewButtonsPopUpModal(expectedPopUp: string): void {
+    const popUpdataTestId = `[data-test="${expectedPopUp}"]`;
+    cy.get('[data-test="closeRequestButton"]').should("exist").click();
+    cy.get(popUpdataTestId).should("exist");
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
 
+    cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    cy.get(popUpdataTestId).should("exist");
+    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+  }
   /**
    * Checks dropdown functionality of request review button
    * @param buttonToClick desired dialog
@@ -142,8 +141,6 @@ describe("Component tests for the data request review buttons", function (): voi
         framework: framework,
         mapOfReportingPeriodToActiveDataset: map,
       },
-    }).then((mounted) => {
-      mounted.wrapper;
     });
   }
 });
