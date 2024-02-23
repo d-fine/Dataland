@@ -974,8 +974,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: "cell",
             label: "Worst Forms of Child Labor Forms",
             explanation: "Which of these worst forms of child labor are not prevented?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
           },

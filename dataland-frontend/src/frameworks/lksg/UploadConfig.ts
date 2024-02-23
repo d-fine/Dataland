@@ -984,8 +984,7 @@ export const lksgDataModel = [
 
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "Yes",
+            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
           },
           {
             name: "measuresForPreventionOfEmploymentUnderLocalMinimumAge",
