@@ -60,7 +60,7 @@ jobs:
       - name: Store generated frontend API clients for use by cypress
         uses: actions/upload-artifact@v4
         with:
-          name: frontendClients-${{ matrix.testGroup }}
+          name: frontendClients
           path: ./dataland-frontend/build/clients/
   deploy-to-server-with-latest-built-images:
     runs-on: ubuntu-latest
@@ -222,6 +222,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-${{ matrix.testGroup }}
+          name: cypress
           path: ./dataland-frontend/cypressresult/
           retention-days: 1

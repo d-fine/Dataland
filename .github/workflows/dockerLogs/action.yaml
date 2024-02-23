@@ -23,5 +23,5 @@ runs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: dockerLogs-${{ matrix.testGroup }}
+        name: dockerLogs
         path: ./dockerLogs

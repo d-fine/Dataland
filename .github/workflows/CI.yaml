@@ -59,19 +59,19 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: componentTestCypressLogs-${{ matrix.testGroup }}
+          name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults-${{ matrix.testGroup }}
+          name: lcovResults
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-component-tests-${{ matrix.testGroup }}
+          name: cypress-component-tests
           path: ./dataland-frontend/cypress
   framework-toolbox-tests:
     runs-on: ubuntu-latest
@@ -99,7 +99,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests-${{ matrix.testGroup }}
+          name: JaCoCoResultsUnitTests
           path: ./**/*.exec
   gradle-based-tests:
     runs-on: ubuntu-latest
@@ -157,7 +157,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: GradleReports-${{ matrix.testGroup }}
+          name: GradleReports
           path: |
             ./**/build/reports
             ./**/coverage
@@ -165,7 +165,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests-${{ matrix.testGroup }}
+          name: JaCoCoResultsUnitTests
           path: ./**/*.exec
       - uses: ./.github/workflows/dockerLogs
         if: always()
@@ -219,7 +219,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PythonUnitTestCoverage-${{ matrix.testGroup }}
+          name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
   e2e-tests:
     runs-on: ubuntu-latest
@@ -317,25 +317,25 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
+          name: JaCoCoResultsE2ETest
           path: ./*.exec
       - name: Upload Python Coverage Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PythonE2eTestCoverage-${{ matrix.testGroup }}
+          name: PythonE2eTestCoverage
           path: ./*.xml
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults-${{ matrix.testGroup }}
+          name: lcovResults
           path: ./*.info
       - name: Upload E2E Test and Cypress Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestReports-${{ matrix.testGroup }}
+          name: e2eTestReports
           path: |
             ./cypress
             ./coverage
@@ -344,7 +344,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
+          name: e2eTestDatabaseDumps
           path: ./dbdumps/
       - uses: ./.github/workflows/dockerLogs
         if: always()
@@ -436,7 +436,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: SonarStageReports-${{ matrix.testGroup }}
+          name: SonarStageReports
           path: ./build/reports
   manual-maintenance-check:
     runs-on: ubuntu-latest
