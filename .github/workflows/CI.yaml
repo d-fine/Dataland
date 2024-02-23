@@ -16,6 +16,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
+          task: "log-everything"
           github: ${{ toJSON(github) }}
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
@@ -36,6 +37,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "frontend-component-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -80,6 +82,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "framework-toolbox-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -109,6 +112,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "gradle-based-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -179,6 +183,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "python-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -248,6 +253,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "e2e-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -366,6 +372,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "sonar"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
