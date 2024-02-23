@@ -14,7 +14,7 @@ import {
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
-} from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
+} from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
