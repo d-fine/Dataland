@@ -1,9 +1,6 @@
 import CompanyInformationComponent from "@/components/pages/CompanyInformation.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { DataTypeEnum } from "@clients/backend";
-import { type DataMetaInformation } from "@clients/backend";
-import { type CompanyInformation } from "@clients/backend";
-import { type SmeData } from "@clients/backend";
+import { type CompanyInformation, type SmeData, type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 describe("Component tests for the company info sheet", function (): void {
