@@ -39,6 +39,7 @@ jobs:
         with:
           name: dockerImageVersions
           pattern: dockerImageVersions-*
+          delete-merged: true
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -377,6 +378,7 @@ jobs:
         with:
           name: JaCoCoResultsUnitTests
           pattern: JaCoCoResultsUnitTests-*
+          delete-merged: true
   sonar:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
@@ -483,6 +485,7 @@ jobs:
         with:
           name: parameter
           pattern: parameter-*
+          delete-merged: true
   summary:
     runs-on: ubuntu-latest
     if: success()
