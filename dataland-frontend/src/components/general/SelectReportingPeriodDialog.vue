@@ -3,12 +3,12 @@
     <h4 class="title">SELECT YEAR</h4>
     <div class="three-in-row" data-test="reporting-periods">
       <a
-        v-for="(el, index) in dataTableContents"
-        :class="el.isClickable ? 'link' : ''"
+        v-for="(element, index) in dataTableContents"
+        :class="element.isClickable ? 'link' : ''"
         :key="index"
-        @click="el.isClickable ? $emit('selectedReportingPeriod', el) : () => {}"
+        @click="element.isClickable ? $emit('selectedReportingPeriod', element) : () => {}"
       >
-        {{ el.reportingPeriod }}</a
+        {{ element.reportingPeriod }}</a
       >
     </div>
   </div>
@@ -53,7 +53,7 @@ export default defineComponent({
       if (this.mapOfReportingPeriodToActiveDataset) {
         const sortedReportingPeriodMetaInfoPairs = Array.from(
           (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
-        ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
+        ).sort((firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0]));
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
           const answeredDataRequestId = this.answeredDataRequests
             ?.filter((answeredDataRequest: StoredDataRequest) => {
