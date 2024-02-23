@@ -58,7 +58,7 @@ jobs:
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
       - name: Store generated frontend API clients for use by cypress
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
@@ -220,7 +220,7 @@ jobs:
           mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.SENSITIVE_ARTIFACT_ENCRYPTION_KEY }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/

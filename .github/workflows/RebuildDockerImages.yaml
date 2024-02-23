@@ -66,13 +66,13 @@ jobs:
           chmod +x "./build-utils/$BUILD_SCRIPT"
           "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: dockerImageVersions
+          name: dockerImageVersions-${{ matrix.runs-on }}
           path: ./*github_env.log
       - name: Store env and secrets
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: parameters
+          name: parameters-${{ matrix.runs-on }}
           path: ./logs/

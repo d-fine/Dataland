@@ -57,19 +57,19 @@ jobs:
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcovResults
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
@@ -97,7 +97,7 @@ jobs:
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: JaCoCoResultsUnitTests
           path: ./**/*.exec
@@ -155,7 +155,7 @@ jobs:
           ! grep -ri "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: GradleReports
           path: |
@@ -163,7 +163,7 @@ jobs:
             ./**/coverage
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: JaCoCoResultsUnitTests
           path: ./**/*.exec
@@ -217,7 +217,7 @@ jobs:
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       - name: Upload Python Unit Test Coverage Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
@@ -315,25 +315,25 @@ jobs:
           FRONTEND_LOCATION_CONFIG: "Test"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
       - name: Upload Python Coverage Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: PythonE2eTestCoverage
           path: ./*.xml
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcovResults
           path: ./*.info
       - name: Upload E2E Test and Cypress Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: e2eTestReports
           path: |
@@ -342,7 +342,7 @@ jobs:
             ./reports
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: e2eTestDatabaseDumps
           path: ./dbdumps/
@@ -434,7 +434,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload Reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SonarStageReports
           path: ./build/reports
