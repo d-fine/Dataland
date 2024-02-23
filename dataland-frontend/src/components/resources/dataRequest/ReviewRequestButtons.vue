@@ -117,9 +117,6 @@ export default defineComponent({
     isVisible(newStatus: boolean) {
       this.$emit("isVisible", newStatus);
     },
-    companyId() {
-      void this.updateAnsweredDataRequestsForViewPage();
-    },
   },
   data() {
     return {
