@@ -4,6 +4,7 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
   it("On the upload page, ensure that procurementCategories is displayed correctly", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cy.mountWithPlugins(ProcurementCategoryFormElement, {
+      props: { name: "Products" },
       global: {
         provide: {
           selectedProcurementCategories: {
@@ -15,7 +16,6 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
           },
         },
       },
-      props: { name: "Products" },
     }).then(() => {
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("be.visible");
       cy.get('[data-test="dataPointToggleButton"]').click();
