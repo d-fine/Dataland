@@ -15,7 +15,7 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
           },
         },
       },
-      props: { name: "Products", label: "Products" },
+      props: { name: "Products" },
     }).then(() => {
       cy.get('[data-test="ProcurementCategoryFormElementContent"]').should("be.visible");
       cy.get('[data-test="dataPointToggleButton"]').click();
