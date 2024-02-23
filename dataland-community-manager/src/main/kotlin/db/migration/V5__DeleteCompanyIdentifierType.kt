@@ -8,7 +8,6 @@ import org.flywaydb.core.api.migration.Context
  */
 class V3__DeleteCompanyIdentifierType : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        // TODO test this script with prod clone
         context!!.connection.createStatement().execute(
             "DELETE FROM data_requests " +
                 "WHERE data_request_company_identifier_type <> 'DatalandCompanyId'",
