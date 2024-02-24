@@ -78,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lcovResults
+          name: lcovResults-frontend
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
@@ -399,7 +399,7 @@ jobs:
         if: always()
         with:
           name: lcovResults
-          pattern: lcovResults*
+          pattern: lcovResults-*
           delete-merged: true
       - name: Merge E2E Test Artifacts
         uses: actions/upload-artifact/merge@v4
