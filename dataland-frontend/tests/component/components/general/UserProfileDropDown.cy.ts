@@ -27,16 +27,17 @@ describe("Component test for UserProfileDropDown", () => {
 
   const profileDropdownToggleSelector = "div[id='profile-picture-dropdown-toggle']";
   const qaAnchorSelector = "a[id='profile-picture-dropdown-qa-services-anchor']";
-  it("Checks QA menu item is visible for the reviewer role", () => {
+  it.only("Checks QA menu item is visible for the reviewer role", () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_REVIEWER],
     });
-    cy.mountWithPlugins(UserProfileDropDown, {
+    cy.mount(UserProfileDropDown, {
       keycloak: reviewerKeycloakMock,
     }).then((mounted) => {
       cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should("exist").should("be.visible");
       cy.get(qaAnchorSelector).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
+      console.log(mounted.component.$route);
     });
   });
 
