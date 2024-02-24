@@ -382,24 +382,28 @@ jobs:
           delete-merged: true
       - name: Merge Jacoco E2E Test Artifacts
         uses: actions/upload-artifact/merge@v4
+        if: always()
         with:
           name: JaCoCoResultsE2ETest
           pattern: JaCoCoResultsE2ETest-*
           delete-merged: true
       - name: Merge Python Test Artifacts
         uses: actions/upload-artifact/merge@v4
+        if: always()
         with:
           name: PythonE2eTestCoverage
           pattern: PythonE2eTestCoverage-*
           delete-merged: true
       - name: Merge lcovResults Test Artifacts
         uses: actions/upload-artifact/merge@v4
+        if: always()
         with:
           name: lcovResults
           pattern: lcovResults*
           delete-merged: true
       - name: Merge E2E Test Artifacts
         uses: actions/upload-artifact/merge@v4
+        if: always()
         with:
           name: e2eTestReports
           pattern: e2eTestReports-*
@@ -513,6 +517,7 @@ jobs:
           delete-merged: true
       - name: Merge Docker Logs Artifacts
         uses: actions/upload-artifact/merge@v4
+        if: always()
         with:
           name: dockerLogs
           pattern: dockerLogs-*
