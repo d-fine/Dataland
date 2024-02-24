@@ -361,7 +361,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2eTestDatabaseDumps
+          name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
           path: ./dbdumps/
       - uses: ./.github/workflows/dockerLogs
         if: always()
