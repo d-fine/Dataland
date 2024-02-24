@@ -24,6 +24,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
+          task: "log-everything"
           github: ${{ toJSON(github) }}
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
@@ -45,6 +46,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "upload-dataland-frontend-client"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -74,6 +76,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "deploy-to-server-with-latest-built-images"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -222,6 +225,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress
+          name: cypress-${{ matrix.testGroup }}
           path: ./dataland-frontend/cypressresult/
           retention-days: 1
