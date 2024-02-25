@@ -176,6 +176,7 @@ jobs:
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: e2e-tests-${{ matrix.testGroup }}
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
