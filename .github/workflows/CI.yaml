@@ -511,11 +511,11 @@ jobs:
       - sonar
     if: always()
     steps:
-      - name: Merge Parameter Artifacts
+      - name: Merge Parameters Artifacts
         uses: actions/upload-artifact/merge@v4
         with:
-          name: parameter
-          pattern: parameter-*
+          name: parameters
+          pattern: parameters-*
           delete-merged: true
       - name: Merge Docker Logs Artifacts
         uses: actions/upload-artifact/merge@v4
