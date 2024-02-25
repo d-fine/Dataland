@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "src/**/*",
     "src/**/*.vue",
@@ -13,7 +13,7 @@
       "ESNext",
       "DOM"
     ],
-    // These override some properties in the tsconfig.web.json (and will likely break <script setup> clauses
+    // These override some properties in the tsconfig.dom.json (and will likely break <script setup> clauses
     // But are required as otherwise the openApi client won't compile properly
     "importsNotUsedAsValues": "remove",
     "preserveValueImports": false,
