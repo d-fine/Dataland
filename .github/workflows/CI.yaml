@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - rebuild-docker-images
+    if: always()
     steps:
       - name: Merge Docker Image Artifacts
         uses: actions/upload-artifact/merge@v4
@@ -373,6 +374,7 @@ jobs:
       - gradle-based-tests
       - framework-toolbox-tests
       - e2e-tests
+    if: always()
     steps:
       - name: Merge Jacoco Unit Test Artifacts
         uses: actions/upload-artifact/merge@v4
@@ -412,7 +414,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     needs:
-      - e2e-tests
       - frontend-component-tests
       - python-tests
       - merge-test-reports
@@ -508,6 +509,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - sonar
+    if: always()
     steps:
       - name: Merge Parameter Artifacts
         uses: actions/upload-artifact/merge@v4
