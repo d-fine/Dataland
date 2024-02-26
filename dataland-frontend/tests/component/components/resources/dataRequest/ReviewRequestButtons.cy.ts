@@ -3,11 +3,17 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 describe("Component tests for the data request review buttons", function (): void {
-  const mockCompanyId: string = "Mock-company-id";
+  const mockCompanyId: string = "Mock-Company-Id";
+  let mockedRequests: StoredDataRequest[];
+  before(() => {
+    cy.fixture("DataRequestsMock").then((jsonContent) => {
+      mockedRequests = jsonContent as Array<StoredDataRequest>;
+    });
+  });
 
   it("Check review functionality", function () {
-    mockUserRequestsOnMounted();
-    mockPatchRequestsOnMounted();
+    interceptUserRequestsOnMounted();
+    interceptPatchRequestsOnMounted();
 
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
       ["2022", {} as DataMetaInformation],
@@ -17,7 +23,7 @@ describe("Component tests for the data request review buttons", function (): voi
   });
 
   it("Check review functionality with error message", function () {
-    mockUserRequestsOnMounted();
+    interceptUserRequestsOnMounted();
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
       ["2022", {} as DataMetaInformation],
     ]);
@@ -26,8 +32,8 @@ describe("Component tests for the data request review buttons", function (): voi
   });
 
   it("Check review functionality with multiple reporting periods", function () {
-    mockUserRequestsOnMounted();
-    mockPatchRequestsOnMounted();
+    interceptUserRequestsOnMounted();
+    interceptPatchRequestsOnMounted();
 
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
       ["2020", {} as DataMetaInformation],
@@ -73,39 +79,17 @@ describe("Component tests for the data request review buttons", function (): voi
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   }
   /**
-   * Mocks the answers for all the requests
+   * Mocks the community-manager answer for the request of the users data requests
    */
-  function mockUserRequestsOnMounted(): void {
+  function interceptUserRequestsOnMounted(): void {
     cy.intercept(`**/community/requests/user`, {
-      body: [
-        {
-          dataType: DataTypeEnum.Lksg,
-          dataRequestCompanyIdentifierValue: mockCompanyId,
-          reportingPeriod: "2021",
-          requestStatus: RequestStatus.Open,
-          dataRequestId: "Mock-Request-Id",
-        } as StoredDataRequest,
-        {
-          dataType: DataTypeEnum.Lksg,
-          dataRequestCompanyIdentifierValue: mockCompanyId,
-          reportingPeriod: "2022",
-          requestStatus: RequestStatus.Answered,
-          dataRequestId: "Mock-Request-Id",
-        } as StoredDataRequest,
-        {
-          dataType: DataTypeEnum.Lksg,
-          dataRequestCompanyIdentifierValue: mockCompanyId,
-          reportingPeriod: "2024",
-          requestStatus: RequestStatus.Answered,
-          dataRequestId: "Mock-Request-Id",
-        } as StoredDataRequest,
-      ],
+      body: mockedRequests,
     }).as("fetchUserRequests");
   }
   /**
    * Mocks the answer for patching the request status
    */
-  function mockPatchRequestsOnMounted(): void {
+  function interceptPatchRequestsOnMounted(): void {
     cy.intercept(`**/requestStatus?requestStatus=Closed`, {
       body: {
         requestStatus: RequestStatus.Closed,
