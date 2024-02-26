@@ -151,6 +151,8 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
   name: "SingleDataRequest",
