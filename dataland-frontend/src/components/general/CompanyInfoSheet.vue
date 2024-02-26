@@ -42,8 +42,8 @@
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import { type CompanyInformation } from "@clients/backend";
-import { computed, inject, onMounted, onUnmounted, ref } from "vue";
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
+import { computed, inject, onMounted, onUnmounted, type PropType, ref } from "vue";
 
 const injectedMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
@@ -66,11 +66,11 @@ const { companyId, showSearchBar, showSingleDataRequestButton, framework, mapOfR
       default: false,
     },
     framework: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: false,
     },
     mapOfReportingPeriodToActiveDataset: {
-      type: Map,
+      type: Map as PropType<Map<string, DataMetaInformation>>,
       required: false,
     },
   });
