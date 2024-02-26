@@ -19,7 +19,7 @@ class IntegrationTestFramework : PavedRoadFramework(
     enabledFeatures = setOf(
         FrameworkGenerationFeatures.DataModel,
         FrameworkGenerationFeatures.ViewPage,
-        //   FrameworkGenerationFeatures.FakeFixtures,
+        FrameworkGenerationFeatures.FakeFixtures,
     ),
     order = 0,
 )
