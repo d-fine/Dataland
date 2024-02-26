@@ -103,7 +103,7 @@ export default defineComponent({
       required: true,
     },
     mapOfReportingPeriodToActiveDataset: {
-      type: Map,
+      type: Map as PropType<Map<string, DataMetaInformation>>,
       required: true,
     },
   },
@@ -154,7 +154,7 @@ export default defineComponent({
       this.answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
         this.companyId,
         this.framework,
-        Array.from((this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).keys()),
+        Array.from(this.mapOfReportingPeriodToActiveDataset.keys()),
         this.getKeycloakPromise,
       );
     },
