@@ -49,6 +49,18 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
       DataTypeEnum.Lksg,
     ),
   );
+  storedDataRequests.push(
+    manipulateFixtureToHaveDataType(
+      manipulateFixtureToHaveCompanyId(
+        manipulateFixtureToHaveReportingPeriod(
+          manipulateFixtureToHaveStatus(generateStoredDataRequest(), RequestStatus.Answered),
+          "1996",
+        ),
+        "550e8400-e29b-11d4-a716-446655440000",
+      ),
+      DataTypeEnum.EutaxonomyNonFinancials,
+    ),
+  );
   return storedDataRequests;
 }
 

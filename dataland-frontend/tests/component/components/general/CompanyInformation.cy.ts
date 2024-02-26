@@ -2,14 +2,18 @@ import CompanyInformationComponent from "@/components/pages/CompanyInformation.v
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type CompanyInformation, type SmeData, type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { type StoredDataRequest } from "@clients/communitymanager";
 describe("Component tests for the company info sheet", function (): void {
   let companyInformationForTest: CompanyInformation;
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
+  let mockedStoredDataRequests: StoredDataRequest[];
   before(function () {
     cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
       const smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
       companyInformationForTest = smeFixtures[0].companyInformation;
+    });
+    cy.fixture("DataRequestsMock").then(function (jsonContent) {
+      mockedStoredDataRequests = jsonContent as Array<StoredDataRequest>;
     });
   });
   /**
@@ -21,14 +25,7 @@ describe("Component tests for the company info sheet", function (): void {
       times: 1,
     }).as("fetchCompanyInfo");
     cy.intercept(`**/community/requests/user`, {
-      body: [
-        {
-          dataType: DataTypeEnum.EutaxonomyNonFinancials,
-          dataRequestCompanyIdentifierValue: dummyCompanyId,
-          reportingPeriod: "1996",
-          requestStatus: RequestStatus.Answered,
-        } as StoredDataRequest,
-      ],
+      body: mockedStoredDataRequests,
     }).as("fetchUserRequests");
   }
   it("Check visibility of review request buttons", function () {
