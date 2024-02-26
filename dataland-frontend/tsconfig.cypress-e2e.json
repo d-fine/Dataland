@@ -14,10 +14,8 @@
       "cypress",
       "node"
     ],
-    // These override some properties in the tsconfig.dom.json (and will likely break <script setup> clauses
-    // But are required as otherwise the openApi client won't compile properly
-    "importsNotUsedAsValues": "remove",
-    "preserveValueImports": false,
+    // Setting the following to true breaks the imports of the auto-generated clients
+    "verbatimModuleSyntax": false,
     "paths": {
       "@/*": [
         "./src/*"
