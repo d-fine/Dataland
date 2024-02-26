@@ -55,7 +55,7 @@ export default defineComponent({
           (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
         ).sort((firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0]));
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
-          const answeredDataRequestId = this.answeredDataRequests
+          const answeredDataRequestIds = this.answeredDataRequests
             ?.filter((answeredDataRequest: StoredDataRequest) => {
               return answeredDataRequest.reportingPeriod == key;
             })
@@ -65,16 +65,14 @@ export default defineComponent({
           let isClickable;
           if (this.actionOnClick == ReportingPeriodTableActions.EditDataset) {
             isClickable = true;
-          } else if (answeredDataRequestId) {
-            isClickable = answeredDataRequestId.length > 0;
           } else {
-            isClickable = false;
+            isClickable = answeredDataRequestIds && answeredDataRequestIds.length > 0;
           }
 
           this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
-            dataRequestId: answeredDataRequestId,
+            dataRequestId: answeredDataRequestIds,
             actionOnClick: this.actionOnClick,
             isClickable: isClickable,
           } as ReportingPeriodTableEntry);
