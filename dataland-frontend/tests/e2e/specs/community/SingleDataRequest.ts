@@ -12,7 +12,7 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
 
 describeIf(
-  "As a premium user, I want to be able to navigate to the single data request page and submit a request and review it on the view page",
+  "As a premium user, I want to be able to navigate to the single data request page and submit a request",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -84,7 +84,7 @@ describeIf(
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
       cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
-      submit();
+      clickSubmitButton();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
@@ -100,7 +100,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       singleDataRequestPage.chooseReportingPeriod("2023");
       singleDataRequestPage.chooseFrameworkLksg();
-      submit();
+      clickSubmitButton();
       cy.get("[data-test=submittedDiv]").should("exist");
       cy.get("[data-test=requestStatusText]").should(
         "contain.text",
@@ -132,7 +132,7 @@ describeIf(
     /**
      * Clicks submit button
      */
-    function submit(): void {
+    function clickSubmitButton(): void {
       cy.get("button[type='submit']").should("exist").click();
     }
 
@@ -150,7 +150,7 @@ describeIf(
      * Checks basic validation
      */
     function checkValidation(): void {
-      submit();
+      clickSubmitButton();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
         .should("contain.text", "Select at least one reporting period to submit your request.");
