@@ -28,5 +28,13 @@ export function exportCustomMocks(): void {
     "../testing/data/DataSearchStoredCompanyMocks.json",
     JSON.stringify(generateListOfDataSearchStoredCompany(), null, "\t"),
   );
-  fs.writeFileSync("../testing/data/DataRequestsMock.json", JSON.stringify(generateStoredDataRequests(), null, "\t"));
+  fs.writeFileSync(
+    "../testing/data/DataRequestsMock.json",
+    JSON.stringify(
+      generateStoredDataRequests(),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      (_key, value) => (value instanceof Set ? Array.from(value) : value),
+      "\t",
+    ),
+  );
 }
