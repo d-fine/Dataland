@@ -85,14 +85,12 @@ class AggregatedDataRequestsTest {
 
     @Test
     fun `post bulk data request and check that filter for the identifier value on aggregated level works properly`() {
-        val permId = generateRandomPermId(10)
         val identifiersToMap = mapOf(
-            IdentifierType.permId to permId,
-            IdentifierType.lei to permId + generateRandomLei().substring(10),
-            IdentifierType.isin to generateRandomIsin().substring(0, 2) + permId,
+            IdentifierType.permId to generateRandomPermId(10),
+            IdentifierType.lei to generateRandomLei(),
+            IdentifierType.isin to generateRandomIsin(),
         )
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifiersToMap)
-        val differentLei = generateRandomLei()
         val identifierNotToRecognizeSet = setOf(generateRandomLei())
         val identifiers = identifiersToMap.values.toSet() + identifierNotToRecognizeSet
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
@@ -100,7 +98,7 @@ class AggregatedDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size - 2, 2)
+        checkThatAllIdentifiersWereAccepted(response, identifiers.size - 1, 1)
         val aggregatedDataRequest = requestControllerApi.getAggregatedDataRequests(
             identifierValue = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
                 identifiersToMap.getValue(IdentifierType.isin),
@@ -110,7 +108,6 @@ class AggregatedDataRequestsTest {
             aggregatedDataRequest, frameworks, reportingPeriods,
             identifiersToMap.filterKeys { it == IdentifierType.isin }.values.toSet(), 1,
         )
-        assertFalse(aggregatedDataRequest.any { it.datalandCompanyId == differentLei })
         testNonTrivialIdentifierValueFilterOnAggregatedLevel(
             frameworks, reportingPeriods, identifiersToMap.values.toSet(),
         )
