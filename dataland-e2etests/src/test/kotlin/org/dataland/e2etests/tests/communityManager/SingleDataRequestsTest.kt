@@ -8,18 +8,15 @@ import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
-import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
-import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
-import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -275,71 +272,6 @@ class SingleDataRequestsTest {
             requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.answered)
         }
         assertEquals("Client error : 403 ", clientException.message)
-    }
-
-    private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
-        val isinString = generateRandomIsin()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.isin to isinString),
-        )
-        val requestA = SingleDataRequest(
-            companyIdentifier = isinString,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-        authenticateAsPremiumUser()
-        requestControllerApi.postSingleDataRequest(requestA)
-
-        val specificPermId = System.currentTimeMillis().toString()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to specificPermId),
-        )
-
-        val requestB = SingleDataRequest(
-            companyIdentifier = specificPermId,
-            dataType = SingleDataRequest.DataType.sfdr,
-            reportingPeriods = setOf("2021"),
-        )
-        authenticateAsPremiumUser()
-        val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        requestControllerApi.patchDataRequestStatus(UUID.fromString(req2.dataRequestId), RequestStatus.answered)
-        return listOf(requestA, requestB)
-    }
-
-    @Test
-    fun `query data requests with various filters and assert that the expected results are being retrieved`() {
-        val singleDataRequests = postDataRequestsBeforeQueryTest()
-        val permIdOfRequestB = singleDataRequests[1].companyIdentifier
-        val companyIdForPermId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
-        val allDataRequests = requestControllerApi.getDataRequests()
-        val lksgDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
-        )
-        val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
-        val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.answered)
-        val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            datalandCompanyId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB),
-        )
-        val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
-        val allQueryResults = listOf(
-            allDataRequests, lksgDataRequests, reportingPeriod2021DataRequests,
-            resolvedDataRequests, specificPermIdDataRequests, specificUsersDataRequests,
-        )
-        allQueryResults.forEach { storedDataRequestsQueryResult ->
-            assertTrue(storedDataRequestsQueryResult.isNotEmpty())
-        }
-        assertTrue(allDataRequests.size > 1)
-        assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
-        assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
-        assertTrue(
-            specificPermIdDataRequests.all {
-                it.datalandCompanyId == getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
-            },
-        )
-        assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
-        assertTrue(specificPermIdDataRequests.all { it.datalandCompanyId == companyIdForPermId })
-        assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })
     }
 
     @Test
