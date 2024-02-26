@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import { type DataMetaInformation } from "@clients/backend";
 import { compareReportingPeriods } from "@/utils/DataTableDisplay";
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
@@ -30,7 +30,7 @@ export default defineComponent({
   },
   props: {
     mapOfReportingPeriodToActiveDataset: {
-      type: Map,
+      type: Map as PropType<Map<string, DataMetaInformation>>,
     },
     answeredDataRequests: {
       type: Object as () => StoredDataRequest[],
@@ -51,9 +51,9 @@ export default defineComponent({
      */
     setReportingPeriodDataTableContents(): void {
       if (this.mapOfReportingPeriodToActiveDataset) {
-        const sortedReportingPeriodMetaInfoPairs = Array.from(
-          (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
-        ).sort((firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0]));
+        const sortedReportingPeriodMetaInfoPairs = Array.from(this.mapOfReportingPeriodToActiveDataset.entries()).sort(
+          (firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0]),
+        );
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
           const answeredDataRequestIds = this.answeredDataRequests
             ?.filter((answeredDataRequest: StoredDataRequest) => {
