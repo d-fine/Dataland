@@ -22,8 +22,8 @@ import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifie
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
-import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
+import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
 import org.junit.jupiter.api.Assertions.assertFalse

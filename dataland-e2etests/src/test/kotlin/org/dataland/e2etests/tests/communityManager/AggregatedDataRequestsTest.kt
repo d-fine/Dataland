@@ -61,7 +61,8 @@ class AggregatedDataRequestsTest {
         }
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, reportingPeriods, identifierMap.values.toSet(), TechnicalUser.entries.size.toLong(),
+            aggregatedDataRequests, frameworks, reportingPeriods,
+            identifierMap.values.toSet(), TechnicalUser.entries.size.toLong(),
         )
     }
 
@@ -199,7 +200,9 @@ class AggregatedDataRequestsTest {
         val randomLei = generateRandomLei()
         val identifierMap = mapOf(IdentifierType.lei to randomLei)
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val datalandCompanyIDForLei = getUniqueDatalandCompanyIdForIdentifierValue(identifierMap.getValue(IdentifierType.lei))
+        val datalandCompanyIDForLei = getUniqueDatalandCompanyIdForIdentifierValue(
+            identifierMap.getValue(IdentifierType.lei)
+        )
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2020", "2021")
         val response = requestControllerApi.postBulkDataRequest(
