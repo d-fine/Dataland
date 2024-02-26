@@ -68,7 +68,7 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
  * Creates a default stored data request
  * @returns The request
  */
-function generateStoredDataRequest(): StoredDataRequest {
+export function generateStoredDataRequest(): StoredDataRequest {
   const messageHistory = generateArray(() => generateStoredDataRequestMessage(), 1);
   return {
     dataRequestId: faker.string.uuid(),
@@ -88,7 +88,10 @@ function generateStoredDataRequest(): StoredDataRequest {
  * @param requestStatus the desired status
  * @returns The manipulated request
  */
-function manipulateFixtureToHaveStatus(input: StoredDataRequest, requestStatus: RequestStatus): StoredDataRequest {
+export function manipulateFixtureToHaveStatus(
+  input: StoredDataRequest,
+  requestStatus: RequestStatus,
+): StoredDataRequest {
   input.requestStatus = requestStatus;
   return input;
 }
@@ -98,7 +101,10 @@ function manipulateFixtureToHaveStatus(input: StoredDataRequest, requestStatus: 
  * @param reportingPeriod new reporting period
  * @returns The manipulated request
  */
-function manipulateFixtureToHaveReportingPeriod(input: StoredDataRequest, reportingPeriod: string): StoredDataRequest {
+export function manipulateFixtureToHaveReportingPeriod(
+  input: StoredDataRequest,
+  reportingPeriod: string,
+): StoredDataRequest {
   input.reportingPeriod = reportingPeriod;
   return input;
 }
@@ -109,7 +115,7 @@ function manipulateFixtureToHaveReportingPeriod(input: StoredDataRequest, report
  * @param dataType new framework
  * @returns The manipulated request
  */
-function manipulateFixtureToHaveDataType(input: StoredDataRequest, dataType: DataTypeEnum): StoredDataRequest {
+export function manipulateFixtureToHaveDataType(input: StoredDataRequest, dataType: DataTypeEnum): StoredDataRequest {
   input.dataType = dataType;
   return input;
 }
@@ -119,7 +125,7 @@ function manipulateFixtureToHaveDataType(input: StoredDataRequest, dataType: Dat
  * @param companyId new company id (dataland company id)
  * @returns The manipulated request
  */
-function manipulateFixtureToHaveCompanyId(input: StoredDataRequest, companyId: string): StoredDataRequest {
+export function manipulateFixtureToHaveCompanyId(input: StoredDataRequest, companyId: string): StoredDataRequest {
   input.datalandCompanyId = companyId;
   return input;
 }
