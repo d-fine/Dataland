@@ -263,11 +263,6 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
     )
 }
 
-fun checkThatRequestedIdentifierIsUnique(identifierValue: String): String {
-    val companyIdForIdentifierValue = getDatalandCompanyIdForIdentifierValue(identifierValue)
-    return companyIdForIdentifierValue
-}
-
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     framework: BulkDataRequest.DataTypes,
@@ -275,7 +270,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     identifierValue: String,
     count: Long,
 ) {
-    val companyIdForIdentifierValue = checkThatRequestedIdentifierIsUnique(identifierValue)
+    val companyIdForIdentifierValue = getUniqueDatalandCompanyIdForIdentifierValue(identifierValue)
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
@@ -299,14 +294,14 @@ fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWit
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
-    identifierMap: Map<IdentifierType, String>,
+    identifiers: Set<String>,
     count: Long,
 ) {
     frameworks.forEach { framework ->
         reportingPeriods.forEach { reportingPeriod ->
-            identifierMap.forEach { (identifierType, identifierValue) ->
+            identifiers.forEach { identifier ->
                 checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests, framework, reportingPeriod, identifierValue, count,
+                    aggregatedDataRequests, framework, reportingPeriod, identifier, count,
                 )
             }
         }
@@ -342,7 +337,7 @@ fun generateCompaniesWithOneRandomValueForEachIdentifierType(
         countryCode = "DE",
     )
     jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-    for ((key, value) in uniqueIdentifiersMap) {
+    for (key in uniqueIdentifiersMap.keys) {
         when {
             (key == IdentifierType.lei) -> {
                 val companyOne = companyZero.copy(
@@ -387,8 +382,9 @@ fun generateCompaniesWithOneRandomValueForEachIdentifierType(
     }
 }
 
-fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String {
+fun getUniqueDatalandCompanyIdForIdentifierValue(identifierValue: String): String {
     val matchingCompanyIdsAndNamesOnDataland =
         apiAccessor.companyDataControllerApi.getCompaniesBySearchString(identifierValue)
+    assertEquals(1, matchingCompanyIdsAndNamesOnDataland.size)
     return matchingCompanyIdsAndNamesOnDataland.first().companyId
 }

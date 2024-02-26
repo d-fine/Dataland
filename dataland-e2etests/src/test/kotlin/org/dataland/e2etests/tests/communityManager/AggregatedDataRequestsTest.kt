@@ -17,7 +17,7 @@ import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifie
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
-import org.dataland.e2etests.utils.getDatalandCompanyIdForIdentifierValue
+import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -61,24 +61,24 @@ class AggregatedDataRequestsTest {
         }
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, reportingPeriods, identifierMap, TechnicalUser.entries.size.toLong(),
+            aggregatedDataRequests, frameworks, reportingPeriods, identifierMap.values.toSet(), TechnicalUser.entries.size.toLong(),
         )
     }
 
     private fun testNonTrivialIdentifierValueFilterOnAggregatedLevel(
         frameworks: Set<BulkDataRequest.DataTypes>,
         reportingPeriods: Set<String>,
-        identifiersToRecognizeMap: Map<IdentifierType, String>,
+        identifiersToRecognize: Set<String>,
     ) {
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(identifierValue = null)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods,
-            identifiersToRecognizeMap, 1,
+            identifiersToRecognize, 1,
         )
         val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(identifierValue = "")
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods,
-            identifiersToRecognizeMap, 1,
+            identifiersToRecognize, 1,
         )
     }
 
@@ -111,18 +111,18 @@ class AggregatedDataRequestsTest {
         )
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequest, frameworks, reportingPeriods,
-            identifiersToMap.filterKeys { it == IdentifierType.isin }, 1,
+            identifiersToMap.filterKeys { it == IdentifierType.isin }.values.toSet(), 1,
         )
         assertFalse(aggregatedDataRequest.any { it.datalandCompanyId == differentLei })
         testNonTrivialIdentifierValueFilterOnAggregatedLevel(
-            frameworks, reportingPeriods, identifiersToMap,
+            frameworks, reportingPeriods, identifiersToMap.values.toSet(),
         )
     }
 
     private fun checkAggregationForNonTrivialFrameworkFilter(
         frameworks: Set<BulkDataRequest.DataTypes>,
         reportingPeriods: Set<String>,
-        identifierMap: Map<IdentifierType, String>,
+        identifiers: Set<String>,
     ) {
         listOf(1, (2 until frameworks.size).random(), frameworks.size).forEach { numberOfRandomFrameworks ->
             val randomFrameworks = frameworks.shuffled().take(numberOfRandomFrameworks)
@@ -130,7 +130,7 @@ class AggregatedDataRequestsTest {
                 dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
             )
             iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-                aggregatedDataRequests, randomFrameworks.toSet(), reportingPeriods, identifierMap, 1,
+                aggregatedDataRequests, randomFrameworks.toSet(), reportingPeriods, identifiers, 1,
             )
             val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
             frameworksNotToBeFound.forEach { framework ->
@@ -153,14 +153,14 @@ class AggregatedDataRequestsTest {
             BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
-        checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap)
+        checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap.values.toSet())
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(dataTypes = null)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods, identifierMap, 1,
+            aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods, identifierMap.values.toSet(), 1,
         )
         val aggregatedDataRequestsForEmptyList = requestControllerApi.getAggregatedDataRequests(dataTypes = emptyList())
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequestsForEmptyList, frameworks, reportingPeriods, identifierMap, 1,
+            aggregatedDataRequestsForEmptyList, frameworks, reportingPeriods, identifierMap.values.toSet(), 1,
         )
     }
 
@@ -179,18 +179,18 @@ class AggregatedDataRequestsTest {
             reportingPeriod = randomReportingPeriod,
         )
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, setOf(randomReportingPeriod), identifierMap, 1,
+            aggregatedDataRequests, frameworks, setOf(randomReportingPeriod), identifierMap.values.toSet(), 1,
         )
         reportingPeriods.filter { it != randomReportingPeriod }.forEach { filteredReportingPeriod ->
             assertFalse(aggregatedDataRequests.any { it.reportingPeriod == filteredReportingPeriod })
         }
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(reportingPeriod = null)
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods, identifierMap, 1,
+            aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods, identifierMap.values.toSet(), 1,
         )
         val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(reportingPeriod = "")
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap, 1,
+            aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap.values.toSet(), 1,
         )
     }
 
@@ -199,7 +199,7 @@ class AggregatedDataRequestsTest {
         val randomLei = generateRandomLei()
         val identifierMap = mapOf(IdentifierType.lei to randomLei)
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val datalandCompanyIDForLei = getDatalandCompanyIdForIdentifierValue(identifierMap.getValue(IdentifierType.lei))
+        val datalandCompanyIDForLei = getUniqueDatalandCompanyIdForIdentifierValue(identifierMap.getValue(IdentifierType.lei))
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2020", "2021")
         val response = requestControllerApi.postBulkDataRequest(

@@ -18,7 +18,7 @@ import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIde
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
-import org.dataland.e2etests.utils.getDatalandCompanyIdForIdentifierValue
+import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -309,7 +309,7 @@ class SingleDataRequestsTest {
     fun `query data requests with various filters and assert that the expected results are being retrieved`() {
         val singleDataRequests = postDataRequestsBeforeQueryTest()
         val permIdOfRequestB = singleDataRequests[1].companyIdentifier
-        val companyIdForPermId = getDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
+        val companyIdForPermId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
 
         val allDataRequests = requestControllerApi.getDataRequests()
         val lksgDataRequests = requestControllerApi.getDataRequests(
@@ -318,7 +318,7 @@ class SingleDataRequestsTest {
         val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
         val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.answered)
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            datalandCompanyId = getDatalandCompanyIdForIdentifierValue(permIdOfRequestB),
+            datalandCompanyId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB),
         )
 
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
@@ -336,7 +336,7 @@ class SingleDataRequestsTest {
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(
             specificPermIdDataRequests.all {
-                it.datalandCompanyId == getDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
+                it.datalandCompanyId == getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
             },
         )
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
