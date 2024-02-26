@@ -16,7 +16,7 @@ data class BulkDataRequest(
     @field:ArraySchema(
         arraySchema = Schema(
             type = "string",
-            example = "[\"DE0005190003\", \"exampleForAnInvalidIdentifier\"]",
+            example = "[\"enterValidIdentifiers\"]",
         ),
     )
     val companyIdentifiers: Set<String>,
