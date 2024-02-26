@@ -111,17 +111,6 @@ class BulkDataRequestManager(
         }
     }
 
-    private fun removeDuplicatesInRequestLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
-        val distinctCompanyIdentifiers = bulkDataRequest.companyIdentifiers
-        val distinctFrameworkNames = bulkDataRequest.dataTypes
-        val distinctReportingPeriods = bulkDataRequest.reportingPeriods
-        return bulkDataRequest.copy(
-            companyIdentifiers = distinctCompanyIdentifiers,
-            dataTypes = distinctFrameworkNames,
-            reportingPeriods = distinctReportingPeriods,
-        )
-    }
-
     private fun buildResponseMessageForBulkDataRequest(
         totalNumberOfRequestedCompanyIdentifiers: Int,
         numberOfRejectedCompanyIdentifiers: Int,

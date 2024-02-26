@@ -189,7 +189,8 @@ class BulkDataRequestsTest {
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierMapForUnknownCompany = mapOf(IdentifierType.lei to generateRandomLei())
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMapForUnknownCompany)
-        val companyIdForUnknownCompany = getDatalandCompanyIdForIdentifierValue(identifierMapForUnknownCompany.getValue(IdentifierType.lei))
+        val companyIdForUnknownCompany = getDatalandCompanyIdForIdentifierValue(identifierMapForUnknownCompany
+            .getValue(IdentifierType.lei))
         val frameworks = listOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = listOf("2023")
         val firstIdentifiers = setOf(leiForCompany, identifierMapForUnknownCompany.values.toList()[0])
