@@ -1,8 +1,11 @@
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type BulkDataRequestResponse } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum, IdentifierType } from "@clients/backend";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describeIf(
   "As a user I want to be able to conduct a bulk request request",
@@ -10,6 +13,15 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   () => {
+    let permIdOfExistingCompany: string;
+    before(() => {
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+        const companyToUpload = generateDummyCompanyInformation(`Test Co. ${new Date().getTime()}`);
+        permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
+        await uploadCompanyViaApi(token, companyToUpload);
+      });
+    });
+
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount("/bulkdatarequest");
@@ -23,7 +35,7 @@ describeIf(
       chooseFrameworks();
 
       cy.get("textarea[name='listOfCompanyIdentifiers']")
-        .type("549300VJTTKH8P0QWG18, 12345incorrectNumber")
+        .type(`${permIdOfExistingCompany}, 12345incorrectNumber`)
         .get("button[type='submit']")
         .should("exist")
         .click();
@@ -44,7 +56,7 @@ describeIf(
       chooseFrameworks();
 
       cy.get("textarea[name='listOfCompanyIdentifiers']")
-        .type("549300VJTTKH8P0QWG18")
+        .type(permIdOfExistingCompany)
         .get("button[type='submit']")
         .should("exist")
         .click();
