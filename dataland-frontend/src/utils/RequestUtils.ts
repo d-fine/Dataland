@@ -24,7 +24,7 @@ export async function getAnsweredDataRequestsForViewPage(
       ).data.filter(
         (dataRequest) =>
           dataRequest.dataType == framework &&
-          dataRequest.dataRequestCompanyIdentifierValue == companyId &&
+          dataRequest.datalandCompanyId == companyId &&
           reportingPeriods.includes(dataRequest.reportingPeriod) &&
           dataRequest.requestStatus == RequestStatus.Answered,
       );
