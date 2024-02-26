@@ -269,6 +269,20 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
     )
 }
 
+fun checkErrorMessageForAmbivalentIdentifiersInBulkRequest(clientException: ClientException) {
+    check400ClientExceptionErrorMessage(clientException)
+    val responseBody = (clientException.response as ClientError<*>).body as String
+    responseBody.also { println(it) }
+    assertTrue(
+        responseBody.contains("No unique identifier. Multiple companies could be found."),
+    )
+    assertTrue(
+        responseBody.contains(
+            "Multiple companies have been found for the identifier you specified.",
+        ),
+    )
+}
+
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     framework: BulkDataRequest.DataTypes,

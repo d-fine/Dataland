@@ -27,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import java.time.Instant
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -69,7 +70,7 @@ class SingleDataRequestsTest {
 
     @Test
     fun `post single data request for companyId with invalid format and assert exception`() {
-        val invalidCompanyIdentifier = "a"
+        val invalidCompanyIdentifier = "invalid-identifier-${Instant.now().toEpochMilli()}"
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
             dataType = SingleDataRequest.DataType.lksg,
@@ -80,6 +81,7 @@ class SingleDataRequestsTest {
         }
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
+        println(responseBody)
         assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
         assertTrue(
             responseBody.contains(

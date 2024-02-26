@@ -10,6 +10,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.causeClientExceptionByBulkDataRequest
+import org.dataland.e2etests.utils.checkErrorMessageForAmbivalentIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
@@ -255,6 +256,6 @@ class BulkDataRequestsTest {
             identifiersMap.values.toSet(), frameworks,
             reportingPeriods,
         )
-        checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
+        checkErrorMessageForAmbivalentIdentifiersInBulkRequest(clientException)
     }
 }
