@@ -1,4 +1,4 @@
-import { DataRequestCompanyIdentifierType, RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import { DataTypeEnum } from "@clients/backend";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
@@ -64,8 +64,7 @@ function generateStoredDataRequest(): StoredDataRequest {
     creationTimestamp: generateInt(500),
     dataType: pickOneElement(Object.values(DataTypeEnum)),
     reportingPeriod: generateReportingPeriod(),
-    dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType.DatalandCompanyId,
-    dataRequestCompanyIdentifierValue: faker.string.uuid(),
+    datalandCompanyId: faker.string.uuid(),
     messageHistory: messageHistory,
     lastModifiedDate: generateInt(500) + 500,
     requestStatus: pickOneElement(Object.values(RequestStatus)),
@@ -105,11 +104,10 @@ function manipulateFixtureToHaveDataType(input: StoredDataRequest, dataType: Dat
 /**
  * Sets the requests companyId to the desired string
  * @param input request to be manipulated
- * @param companyId new company Id (dataland company Id)
+ * @param companyId new company id (dataland company id)
  * @returns The manipulated request
  */
 function manipulateFixtureToHaveCompanyId(input: StoredDataRequest, companyId: string): StoredDataRequest {
-  input.dataRequestCompanyIdentifierType = DataRequestCompanyIdentifierType.DatalandCompanyId;
-  input.dataRequestCompanyIdentifierValue = companyId;
+  input.datalandCompanyId = companyId;
   return input;
 }
