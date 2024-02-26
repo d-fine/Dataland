@@ -35,11 +35,13 @@ fun findStoredDataRequestDataTypeForFramework(
 ): StoredDataRequest.DataType {
     return StoredDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
+
 fun findAggregatedDataRequestDataTypeForFramework(
     framework: BulkDataRequest.DataTypes,
 ): AggregatedDataRequest.DataType {
     return AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
+
 fun findRequestControllerApiDataTypeForFramework(
     framework: BulkDataRequest.DataTypes,
 ): RequestControllerApi.DataTypesGetAggregatedDataRequests {
@@ -206,15 +208,19 @@ private fun errorMessageForEmptyInputConfigurations(
         identifiers.isEmpty() && dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
             "All " +
                 "provided lists are empty."
+
         identifiers.isEmpty() && dataTypes.isEmpty() ->
             "The lists of company identifiers and " +
                 "frameworks are empty."
+
         identifiers.isEmpty() && reportingPeriods.isEmpty() ->
             "The lists of company identifiers and " +
                 "reporting periods are empty."
+
         dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
             "The lists of frameworks and reporting " +
                 "periods are empty."
+
         identifiers.isEmpty() -> "The list of company identifiers is empty."
         dataTypes.isEmpty() -> "The list of frameworks is empty."
         else -> "The list of reporting periods is empty."
@@ -328,7 +334,7 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
 fun generateCompaniesWithOneRandomValueForEachIdentifierType(
     uniqueIdentifiersMap: Map<IdentifierType, String>,
 ) {
-    val companyZero = CompanyInformation(
+    val baseCompany = CompanyInformation(
         companyName = "Name",
         headquarters = "HQ",
         identifiers = mapOf(
@@ -337,48 +343,17 @@ fun generateCompaniesWithOneRandomValueForEachIdentifierType(
         countryCode = "DE",
     )
     jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-    for (key in uniqueIdentifiersMap.keys) {
-        when {
-            (key == IdentifierType.lei) -> {
-                val companyOne = companyZero.copy(
-                    companyName = "companyOne",
-                    identifiers = mapOf(
-                        key.value to listOf(
-                            "Test-Lei${uniqueIdentifiersMap.getValue(IdentifierType.lei)}",
-                        ),
+    for (identifierType in uniqueIdentifiersMap.keys) {
+        apiAccessor.companyDataControllerApi.postCompany(
+            baseCompany.copy(
+                companyName = "Company${identifierType.value}",
+                identifiers = mapOf(
+                    identifierType.value to listOf(
+                        "Test-${identifierType.value}${uniqueIdentifiersMap.getValue(identifierType)}",
                     ),
-                )
-                apiAccessor.companyDataControllerApi.postCompany(companyOne)
-            }
-
-            (key == IdentifierType.isin) -> {
-                val companyTwo = companyZero.copy(
-                    companyName = "companyTwo",
-                    identifiers = mapOf(
-                        key.value to listOf(
-                            "Test-Isin${
-                                uniqueIdentifiersMap.getValue(IdentifierType.isin)
-                            }",
-                        ),
-                    ),
-                )
-                apiAccessor.companyDataControllerApi.postCompany(companyTwo)
-            }
-
-            (key == IdentifierType.permId) -> {
-                val companyThree = companyZero.copy(
-                    companyName = "companyThree",
-                    identifiers = mapOf(
-                        key.value to listOf(
-                            "Test-PermId${uniqueIdentifiersMap.getValue(IdentifierType.permId)}",
-                        ),
-                    ),
-                )
-                apiAccessor.companyDataControllerApi.postCompany(companyThree)
-            } else ->
-                "The provided IdentifierType has not been implemented in the " +
-                    "generateCompaniesWithOneRandomValueForEachIdentifierType function"
-        }
+                ),
+            ),
+        )
     }
 }
 
