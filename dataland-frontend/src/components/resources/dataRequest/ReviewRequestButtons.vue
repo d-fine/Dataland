@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, type PropType } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
@@ -99,7 +99,7 @@ export default defineComponent({
       required: true,
     },
     framework: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: true,
     },
     mapOfReportingPeriodToActiveDataset: {
@@ -153,7 +153,7 @@ export default defineComponent({
     async updateAnsweredDataRequestsForViewPage() {
       this.answeredDataRequestsForViewPage = await getAnsweredDataRequestsForViewPage(
         this.companyId,
-        this.framework as DataTypeEnum,
+        this.framework,
         Array.from((this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).keys()),
         this.getKeycloakPromise,
       );

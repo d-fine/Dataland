@@ -56,11 +56,6 @@ describe("Component tests for the company info sheet", function (): void {
       // @ts-ignore
       props: {
         companyId: dummyCompanyId,
-        framework: undefined,
-        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
-          ["1996", {} as DataMetaInformation],
-          ["1997", {} as DataMetaInformation],
-        ]),
       },
     });
     cy.get('[data-test="reOpenRequestButton"]').should("not.exist");

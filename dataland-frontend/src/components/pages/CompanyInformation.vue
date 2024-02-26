@@ -63,8 +63,8 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import { type CompanyInformation, IdentifierType } from "@clients/backend";
+import { defineComponent, inject, type PropType } from "vue";
+import { type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
@@ -119,7 +119,7 @@ export default defineComponent({
       return listOfItems;
     },
     showReviewRequestButtons() {
-      return this.framework != "" && this.framework != undefined;
+      return this.framework != undefined;
     },
   },
   props: {
@@ -132,7 +132,7 @@ export default defineComponent({
       default: false,
     },
     framework: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: false,
     },
     mapOfReportingPeriodToActiveDataset: {
