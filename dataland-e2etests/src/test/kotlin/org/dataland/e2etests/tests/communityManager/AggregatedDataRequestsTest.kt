@@ -201,7 +201,7 @@ class AggregatedDataRequestsTest {
         val identifierMap = mapOf(IdentifierType.lei to randomLei)
         generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
         val datalandCompanyIDForLei = getUniqueDatalandCompanyIdForIdentifierValue(
-            identifierMap.getValue(IdentifierType.lei)
+            identifierMap.getValue(IdentifierType.lei),
         )
         val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
         val reportingPeriods = setOf("2020", "2021")
