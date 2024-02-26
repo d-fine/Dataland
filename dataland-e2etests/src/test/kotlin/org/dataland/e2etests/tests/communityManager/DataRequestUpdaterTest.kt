@@ -119,7 +119,6 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch an answered but not owned data request as a premiumUser and assert that it is forbidden`() {
-
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
             mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
