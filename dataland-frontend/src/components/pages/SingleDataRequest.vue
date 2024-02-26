@@ -142,7 +142,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, DataTypeEnum, type ErrorResponse } from "@clients/backend";
+import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
