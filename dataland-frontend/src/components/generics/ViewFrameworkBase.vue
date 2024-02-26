@@ -8,7 +8,7 @@
       :framework="dataType"
       :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
-    <div v-if="isDataProcessedSuccesfully">
+    <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
         style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
@@ -103,7 +103,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { computed, defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject, type PropType, ref } from "vue";
 
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
@@ -142,7 +142,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: true,
     },
     singleDataMetaInfoToDisplay: {
@@ -172,7 +172,7 @@ export default defineComponent({
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
-      isDataProcessedSuccesfully: true,
+      isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
@@ -351,9 +351,9 @@ export default defineComponent({
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
-        this.isDataProcessedSuccesfully = true;
+        this.isDataProcessedSuccessfully = true;
       } catch (error) {
-        this.isDataProcessedSuccesfully = false;
+        this.isDataProcessedSuccessfully = false;
         console.error(error);
       }
     },
