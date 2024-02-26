@@ -40,16 +40,17 @@ class DataRequestProcessingUtils(
      * @return the company ID or null
      */
     fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
-        var datalandCompanyId: String? = null
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
-        if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
+        val datalandCompanyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+            matchingCompanyIdsAndNamesOnDataland.first().companyId
         } else if (matchingCompanyIdsAndNamesOnDataland.size > 1) {
             throw InvalidInputApiException(
                 summary = "No unique identifier. Multiple companies could be found.",
                 message = "Multiple companies have been found for the identifier you specified.",
             )
+        } else {
+            null
         }
         dataRequestLogger
             .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)

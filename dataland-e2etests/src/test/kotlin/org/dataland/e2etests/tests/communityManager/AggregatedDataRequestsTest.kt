@@ -100,14 +100,10 @@ class AggregatedDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
-
         checkThatAllIdentifiersWereAccepted(response, identifiers.size - 2, 2)
         val aggregatedDataRequest = requestControllerApi.getAggregatedDataRequests(
-            identifierValue =
-            apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-                identifiersToMap.getValue(
-                    IdentifierType.isin,
-                ),
+            identifierValue = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+                identifiersToMap.getValue(IdentifierType.isin),
             ).first().companyId,
         )
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(

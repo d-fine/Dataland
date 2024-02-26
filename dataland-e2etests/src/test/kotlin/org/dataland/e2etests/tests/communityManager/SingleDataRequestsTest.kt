@@ -310,7 +310,6 @@ class SingleDataRequestsTest {
         val singleDataRequests = postDataRequestsBeforeQueryTest()
         val permIdOfRequestB = singleDataRequests[1].companyIdentifier
         val companyIdForPermId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
-
         val allDataRequests = requestControllerApi.getDataRequests()
         val lksgDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
@@ -320,9 +319,7 @@ class SingleDataRequestsTest {
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
             datalandCompanyId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfRequestB),
         )
-
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
-
         val allQueryResults = listOf(
             allDataRequests, lksgDataRequests, reportingPeriod2021DataRequests,
             resolvedDataRequests, specificPermIdDataRequests, specificUsersDataRequests,
@@ -330,7 +327,6 @@ class SingleDataRequestsTest {
         allQueryResults.forEach { storedDataRequestsQueryResult ->
             assertTrue(storedDataRequestsQueryResult.isNotEmpty())
         }
-
         assertTrue(allDataRequests.size > 1)
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
