@@ -38,14 +38,13 @@ class SingleDataRequestManager(
         utils.throwExceptionIfNotJwtAuth()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
         validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
-        var datalandCompanyId: String?
 
         dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
-        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
+        val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            datalandCompanyId = singleDataRequest.companyIdentifier
+            singleDataRequest.companyIdentifier
         } else {
-            datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
+            utils.getDatalandCompanyIdForIdentifierValue(
                 singleDataRequest.companyIdentifier,
             )
         }
