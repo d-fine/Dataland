@@ -30,7 +30,11 @@ export function exportCustomMocks(): void {
   );
   fs.writeFileSync(
     "../testing/data/DataRequestsMock.json",
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    JSON.stringify(generateStoredDataRequests(), (_key, value) => (value instanceof Set ? [...value] : value), "\t"),
+    JSON.stringify(
+      generateStoredDataRequests(),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      (_key, value) => (value instanceof Set ? Array(...value) : value),
+      "\t",
+    ),
   );
 }
