@@ -121,7 +121,7 @@ export default defineComponent({
   props: BaseFormFieldProps,
   data() {
     return {
-      isActive: !!this.selectedProcurementCategories[this.name],
+      isActive: !!this.selectedProcurementCategories?.[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
