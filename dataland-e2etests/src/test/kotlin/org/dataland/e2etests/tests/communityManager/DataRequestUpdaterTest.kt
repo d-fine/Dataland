@@ -5,9 +5,11 @@ import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -89,13 +91,16 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch your own answered data request as a premiumUser to closed`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = setOf("2022"),
         )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -114,14 +119,17 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch an answered but not owned data request as a premiumUser and assert that it is forbidden`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = setOf("2022"),
         )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -141,14 +149,17 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch your own open data request as a premiumUser and assert that it is forbidden`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = setOf("2022"),
         )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -164,14 +175,17 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch your own closed data request as a premiumUser and assert that it is forbidden`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = setOf("2022"),
         )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
