@@ -45,7 +45,8 @@ class SingleDataRequestsTest {
     fun `post single data request and check if retrieval of stored requests via their IDs works as expected`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex))
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
@@ -82,11 +83,10 @@ class SingleDataRequestsTest {
         assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
         assertTrue(
             responseBody.contains(
-                "The company with identifier: ${invalidCompanyIdentifier} is unknown to Dataland",
+                "The company with identifier: $invalidCompanyIdentifier is unknown to Dataland",
             ),
         )
     }
-
 
     @Test
     fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
@@ -105,7 +105,6 @@ class SingleDataRequestsTest {
         assertTrue(responseBody.contains("resource-not-found"))
     }
 
-
     @Test
     fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
@@ -123,7 +122,6 @@ class SingleDataRequestsTest {
         assertEquals(companyIdOfNewCompany, retrievedDataRequest.datalandCompanyId)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
     }
-
 
     @Test
     fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
@@ -216,7 +214,8 @@ class SingleDataRequestsTest {
     fun `post a single data request and check if patching it changes its status accordingly`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex))
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
@@ -256,7 +255,8 @@ class SingleDataRequestsTest {
     fun `patch data request as an reader and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex))
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
@@ -278,7 +278,8 @@ class SingleDataRequestsTest {
     private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
         val isinString = generateRandomIsin()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.isin to isinString))
+            mapOf(IdentifierType.isin to isinString),
+        )
         val requestA = SingleDataRequest(
             companyIdentifier = isinString,
             dataType = SingleDataRequest.DataType.lksg,
@@ -289,7 +290,8 @@ class SingleDataRequestsTest {
 
         val specificPermId = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to specificPermId))
+            mapOf(IdentifierType.permId to specificPermId),
+        )
 
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
@@ -332,8 +334,11 @@ class SingleDataRequestsTest {
         assertTrue(allDataRequests.size > 1)
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
-        assertTrue(specificPermIdDataRequests.all {
-            it.datalandCompanyId == getDatalandCompanyIdForIdentifierValue(permIdOfRequestB) })
+        assertTrue(
+            specificPermIdDataRequests.all {
+                it.datalandCompanyId == getDatalandCompanyIdForIdentifierValue(permIdOfRequestB)
+            },
+        )
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
         assertTrue(specificPermIdDataRequests.all { it.datalandCompanyId == companyIdForPermId })
         assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })

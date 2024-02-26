@@ -290,7 +290,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EutaxonomyNonFinancialsData,
     ):
-            Map<String, String> {
+        Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),

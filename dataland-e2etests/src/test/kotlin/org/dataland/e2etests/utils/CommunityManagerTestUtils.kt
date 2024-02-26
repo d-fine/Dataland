@@ -1,6 +1,5 @@
 package org.dataland.e2etests.utils
 
-import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
@@ -23,7 +22,7 @@ import java.time.Instant
 import java.util.*
 
 private val apiAccessor = ApiAccessor()
- val jwtHelper = JwtAuthenticationHelper()
+val jwtHelper = JwtAuthenticationHelper()
 
 fun retrieveTimeAndWaitOneMillisecond(): Long {
     val timestamp = Instant.now().toEpochMilli()
@@ -130,7 +129,7 @@ fun checkThatMessageIsAsExpected(
         assertEquals(
             "$expectedNumberOfRejectedIdentifiers of your " +
                 "${expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers} distinct company " +
-                    "identifiers were rejected because they could not be matched with an existing company on dataland.",
+                "identifiers were rejected because they could not be matched with an existing company on dataland.",
             requestResponse.message,
             errorMessage,
         )
@@ -144,8 +143,10 @@ fun checkThatAllIdentifiersWereAccepted(
 ) {
     checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers)
     checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
-    checkThatMessageIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers,
-        expectedNumberOfRejectedIdentifiers)
+    checkThatMessageIsAsExpected(
+        requestResponse, expectedNumberOfAcceptedIdentifiers,
+        expectedNumberOfRejectedIdentifiers,
+    )
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
@@ -249,8 +250,12 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
 fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
     check400ClientExceptionErrorMessage(clientException)
     val responseBody = (clientException.response as ClientError<*>).body as String
-    assertTrue(responseBody.contains("All provided company identifiers are not unique or could not be " +
-            "recognized."))
+    assertTrue(
+        responseBody.contains(
+            "All provided company identifiers are not unique or could not be " +
+                "recognized.",
+        ),
+    )
     assertTrue(
         responseBody.contains(
             "The company identifiers you provided could not be matched with an existing company on dataland",
@@ -259,7 +264,7 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
 }
 
 fun checkThatRequestedIdentifierIsUnique(identifierValue: String): String {
-   val companyIdForIdentifierValue = getDatalandCompanyIdForIdentifierValue(identifierValue)
+    val companyIdForIdentifierValue = getDatalandCompanyIdForIdentifierValue(identifierValue)
     return companyIdForIdentifierValue
 }
 
@@ -270,7 +275,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     identifierValue: String,
     count: Long,
 ) {
-    val companyIdForIdentifierValue  = checkThatRequestedIdentifierIsUnique(identifierValue)
+    val companyIdForIdentifierValue = checkThatRequestedIdentifierIsUnique(identifierValue)
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
@@ -325,8 +330,8 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
     assertStatusForDataRequestId(dataRequestId, newStatus)
 }
 
- fun generateCompaniesWithOneRandomValueForEachIdentifierType(
-    uniqueIdentifiersMap: Map<IdentifierType, String>
+fun generateCompaniesWithOneRandomValueForEachIdentifierType(
+    uniqueIdentifiersMap: Map<IdentifierType, String>,
 ) {
     val companyZero = CompanyInformation(
         companyName = "Name",
@@ -344,8 +349,8 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
                     companyName = "companyOne",
                     identifiers = mapOf(
                         key.value to listOf(
-                            "Test-Lei${uniqueIdentifiersMap.getValue(IdentifierType.lei)}"
-                        )
+                            "Test-Lei${uniqueIdentifiersMap.getValue(IdentifierType.lei)}",
+                        ),
                     ),
                 )
                 apiAccessor.companyDataControllerApi.postCompany(companyOne)
@@ -358,8 +363,8 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
                         key.value to listOf(
                             "Test-Isin${
                                 uniqueIdentifiersMap.getValue(IdentifierType.isin)
-                            }"
-                        )
+                            }",
+                        ),
                     ),
                 )
                 apiAccessor.companyDataControllerApi.postCompany(companyTwo)
@@ -370,20 +375,20 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID
                     companyName = "companyThree",
                     identifiers = mapOf(
                         key.value to listOf(
-                            "Test-PermId${uniqueIdentifiersMap.getValue(IdentifierType.permId)}"
-                        )
+                            "Test-PermId${uniqueIdentifiersMap.getValue(IdentifierType.permId)}",
+                        ),
                     ),
                 )
                 apiAccessor.companyDataControllerApi.postCompany(companyThree)
-            } else -> "The provided IdentifierType has not been implemented in the " +
-                "generateCompaniesWithOneRandomValueForEachIdentifierType function"
+            } else ->
+                "The provided IdentifierType has not been implemented in the " +
+                    "generateCompaniesWithOneRandomValueForEachIdentifierType function"
         }
     }
 }
 
- fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String {
+fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String {
     val matchingCompanyIdsAndNamesOnDataland =
         apiAccessor.companyDataControllerApi.getCompaniesBySearchString(identifierValue)
     return matchingCompanyIdsAndNamesOnDataland.first().companyId
-
 }

@@ -6,7 +6,7 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script extends the data_requests table
  */
-class V3__DeleteCompanyIdentifierType : BaseJavaMigration() {
+class V5__DeleteCompanyIdentifierType : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "DELETE FROM data_requests " +
