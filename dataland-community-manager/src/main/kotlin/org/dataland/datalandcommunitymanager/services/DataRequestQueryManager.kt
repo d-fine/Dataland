@@ -1,13 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +23,7 @@ class DataRequestQueryManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
 ) {
+
     /** This method retrieves all the data requests for the current user from the database and logs a message.
      * @returns all data requests for the current user
      */
@@ -66,8 +67,7 @@ class DataRequestQueryManager(
             AggregatedDataRequest(
                 getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                 aggregatedDataRequestEntity.reportingPeriod,
-                aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
-                aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
+                aggregatedDataRequestEntity.datalandCompanyId,
                 aggregatedDataRequestEntity.requestStatus,
                 aggregatedDataRequestEntity.count,
             )
@@ -94,22 +94,23 @@ class DataRequestQueryManager(
      * @param requestStatus the status to apply to the data request
      * @param userId the user to apply to the data request
      * @param reportingPeriod the reporting period to apply to the data request
-     * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
+     * @param datalandCompanyId the Dataland company ID to apply to the data request
      * @return all filtered data requests
      */
+    @Transactional
     fun getDataRequests(
         dataType: DataTypeEnum?,
         userId: String?,
         requestStatus: RequestStatus?,
         reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?,
+        datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
             dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
             requestStatus = requestStatus,
             reportingPeriodFilter = reportingPeriod ?: "",
-            dataRequestCompanyIdentifierValueFilter = dataRequestCompanyIdentifierValue ?: "",
+            datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
 

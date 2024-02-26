@@ -1,11 +1,9 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -38,20 +36,33 @@ class SingleDataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
         utils.throwExceptionIfNotJwtAuth()
-        dataRequestLogger.logMessageForSingleDataRequestReceived()
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
         validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
-        val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
-            singleDataRequest.companyIdentifier,
+
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
+        val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
+            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
+            singleDataRequest.companyIdentifier
+        } else {
+            utils.getDatalandCompanyIdForIdentifierValue(
+                singleDataRequest.companyIdentifier,
+            )
+        }
+        if (datalandCompanyId == null) {
+            throw InvalidInputApiException(
+                "The specified company is unknown to Dataland",
+                "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland",
+            )
+        }
+        val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+            singleDataRequest, datalandCompanyId,
         )
-        val storedDataRequestEntities =
-            storeOneDataRequestPerReportingPeriod(singleDataRequest, identifierValueToStore, identifierTypeToStore)
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
-            companyIdentifierType = identifierTypeToStore,
-            companyIdentifierValue = identifierValueToStore,
+            datalandCompanyId,
         )
-        return storedDataRequestEntities.map { it.toStoredDataRequest() }
+        return storedDataRequests
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
@@ -63,33 +74,6 @@ class SingleDataRequestManager(
                     "Without at least one valid email address being provided no message can be forwarded.",
             )
         }
-    }
-
-    private fun identifyIdentifierTypeAndTryGetDatalandCompanyId(
-        companyIdentifier: String,
-    ): Pair<DataRequestCompanyIdentifierType, String> {
-        if (companyIdRegex.matches(companyIdentifier)) {
-            checkIfCompanyIsValid(companyIdentifier)
-            return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
-        }
-        val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(companyIdentifier)
-        if (matchedIdentifierType != null) {
-            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
-                companyIdentifier,
-            )
-            return Pair(
-                datalandCompanyId?.let {
-                    DataRequestCompanyIdentifierType.DatalandCompanyId
-                } ?: matchedIdentifierType,
-                datalandCompanyId ?: companyIdentifier,
-            )
-        }
-        throw InvalidInputApiException(
-            "The provided company identifier has an invalid format.",
-            "The company identifier you provided does not match the patterns " +
-                "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
-        )
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
@@ -105,20 +89,18 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun storeOneDataRequestPerReportingPeriod(
+    private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
         singleDataRequest: SingleDataRequest,
-        identifierValueToStore: String,
-        identifierTypeToStore: DataRequestCompanyIdentifierType,
-    ): List<DataRequestEntity> {
+        datalandCompanyId: String,
+    ): List<StoredDataRequest> {
         return singleDataRequest.reportingPeriods.map { reportingPeriod ->
             utils.storeDataRequestEntityIfNotExisting(
-                identifierValueToStore,
-                identifierTypeToStore,
+                datalandCompanyId,
                 singleDataRequest.dataType,
                 reportingPeriod,
                 singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-            )
+            ).toStoredDataRequest()
         }
     }
 }
