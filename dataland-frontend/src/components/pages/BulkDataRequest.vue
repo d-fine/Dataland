@@ -33,7 +33,7 @@
 
                     <template v-if="!submittingSucceded">
                       <em class="material-icons info-icon red-text">error</em>
-                      <h1 class="status-text" data-test="requestStatusText">Request Unssuccessful</h1>
+                      <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
                     </template>
 
                     <p v-if="message" class="py-3">{{ message }}</p>
