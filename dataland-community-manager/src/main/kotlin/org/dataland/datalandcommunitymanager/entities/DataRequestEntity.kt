@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import java.util.*
 
 /**
@@ -80,7 +79,7 @@ data class DataRequestEntity(
         dataRequestId = dataRequestId,
         userId = userId,
         creationTimestamp = creationTimestamp,
-        dataType = getDataTypeEnumForFrameworkName(dataType)!!,
+        dataType = dataType,
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
         messageHistory = messageHistory

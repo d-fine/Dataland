@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -96,7 +97,7 @@ class SingleDataRequestManager(
         return singleDataRequest.reportingPeriods.map { reportingPeriod ->
             utils.storeDataRequestEntityIfNotExisting(
                 datalandCompanyId,
-                singleDataRequest.dataType,
+                getDataTypeEnumForFrameworkName(singleDataRequest.dataType),
                 reportingPeriod,
                 singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 singleDataRequest.message.takeIf { !it.isNullOrBlank() },

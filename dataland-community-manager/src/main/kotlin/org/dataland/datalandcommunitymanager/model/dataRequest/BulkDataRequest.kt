@@ -28,7 +28,7 @@ data class BulkDataRequest(
             example = "[\"p2p\", \"sme\"]",
         ),
     )
-    val dataTypes: Set<DataTypeEnum>,
+    val dataTypes: Set<String>,
 
     @field:JsonProperty(required = true)
     @field:ArraySchema(

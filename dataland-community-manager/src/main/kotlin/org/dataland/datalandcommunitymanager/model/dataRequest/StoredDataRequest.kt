@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-
 /**
  * --- API model ---
  * Contains info about a stored data request on Dataland.
@@ -21,7 +19,7 @@ data class StoredDataRequest(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum,
+    val dataType: String,
 
     val reportingPeriod: String,
 

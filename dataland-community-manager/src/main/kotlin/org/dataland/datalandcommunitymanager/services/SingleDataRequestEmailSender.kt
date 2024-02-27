@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
+import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -54,7 +55,7 @@ class SingleDataRequestEmailSender(
                     requesterEmail = userAuthentication.username,
                     receiverEmail = contactEmail,
                     companyId = datalandCompanyId,
-                    dataType = singleDataRequest.dataType,
+                    dataType = getDataTypeEnumForFrameworkName(singleDataRequest.dataType),
                     reportingPeriods = singleDataRequest.reportingPeriods,
                     rawMessage = singleDataRequest.message,
                 ),
@@ -71,7 +72,7 @@ class SingleDataRequestEmailSender(
             singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
                 userAuthentication = userAuthentication,
                 datalandCompanyId,
-                dataType = singleDataRequest.dataType,
+                dataType = getDataTypeEnumForFrameworkName(singleDataRequest.dataType),
                 reportingPeriods = singleDataRequest.reportingPeriods,
             ),
         )

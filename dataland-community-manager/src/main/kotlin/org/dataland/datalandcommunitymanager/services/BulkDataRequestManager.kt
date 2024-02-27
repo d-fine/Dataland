@@ -7,6 +7,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -46,10 +47,11 @@ class BulkDataRequestManager(
             }
             acceptedIdentifiers.add(userProvidedIdentifierValue)
             for (framework in bulkDataRequest.dataTypes) {
+                val frameworkString = getDataTypeEnumForFrameworkName(framework)
                 for (reportingPeriod in bulkDataRequest.reportingPeriods) {
                     utils.storeDataRequestEntityIfNotExisting(
                         datalandCompanyId,
-                        framework,
+                        frameworkString,
                         reportingPeriod,
                     )
                 }
@@ -98,11 +100,15 @@ class BulkDataRequestManager(
 
     private fun assureValidityOfRequests(bulkDataRequest: BulkDataRequest) {
         val identifiers = bulkDataRequest.companyIdentifiers
-        val frameworks = bulkDataRequest.dataTypes
+        val frameworks = bulkDataRequest.dataTypes.map {
+                framework ->
+            getDataTypeEnumForFrameworkName(framework)
+        }.toSet()
         val reportingPeriods = bulkDataRequest.reportingPeriods
         if (identifiers.isEmpty() || frameworks.isEmpty() || reportingPeriods.isEmpty()) {
             val errorMessage = errorMessageForEmptyInputConfigurations(
-                identifiers, frameworks, reportingPeriods,
+                identifiers, frameworks,
+                reportingPeriods,
             )
             throw InvalidInputApiException(
                 "No empty lists are allowed as input for bulk data request.",
