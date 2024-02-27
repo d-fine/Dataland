@@ -38,28 +38,44 @@ class BulkDataRequestManager(
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
+        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
             val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
             if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
             }
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
             acceptedIdentifiers.add(userProvidedIdentifierValue)
-            for (framework in bulkDataRequest.dataTypes) {
-                for (reportingPeriod in bulkDataRequest.reportingPeriods) {
-                    utils.storeDataRequestEntityIfNotExisting(
-                        datalandCompanyId,
-                        framework,
-                        reportingPeriod,
-                    )
-                }
-            }
+            storeDataRequests(
+                dataTypes = bulkDataRequest.dataTypes,
+                reportingPeriods = bulkDataRequest.reportingPeriods,
+                datalandCompanyId = datalandCompanyId,
+            )
         }
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
+        sendBulkDataRequestNotificationMail(
+            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), bulkDataRequestId,
+        )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
+    }
+
+    private fun storeDataRequests(
+        dataTypes: Set<DataTypeEnum>,
+        reportingPeriods: Set<String>,
+        datalandCompanyId: String,
+    ) {
+        for (framework in dataTypes) {
+            for (reportingPeriod in reportingPeriods) {
+                utils.storeDataRequestEntityIfNotExisting(
+                    datalandCompanyId,
+                    framework,
+                    reportingPeriod,
+                )
+            }
+        }
     }
 
     private fun throwExceptionIfNotJwtAuth() {
@@ -141,12 +157,12 @@ class BulkDataRequestManager(
 
     private fun sendBulkDataRequestNotificationMail(
         bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdentifiers: List<String>,
+        acceptedDatalandCompanyIds: List<String>,
         bulkDataRequestId: String,
     ) {
         val emailToSend = emailBuilder.buildBulkDataRequestEmail(
             bulkDataRequest,
-            acceptedCompanyIdentifiers,
+            acceptedDatalandCompanyIds,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
         emailSender.sendEmail(emailToSend)
