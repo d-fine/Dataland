@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-
 /**
  * --- API model ---
  * Contains aggregated info about the count of existing data requests on Dataland.
@@ -12,7 +10,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * @param count the count of existing data requests for this framework, identifierType and identifierValue
  */
 data class AggregatedDataRequest(
-    val dataType: DataTypeEnum?,
+    val dataType: String?,
     val reportingPeriod: String?,
     val datalandCompanyId: String,
     val requestStatus: RequestStatus,

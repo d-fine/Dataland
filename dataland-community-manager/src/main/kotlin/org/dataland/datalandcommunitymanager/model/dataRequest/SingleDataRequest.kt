@@ -24,7 +24,7 @@ data class SingleDataRequest(
         implementation = DataTypeEnum::class,
         example = "p2p",
     )
-    val dataType: DataTypeEnum,
+    val dataType: String,
 
     @field:JsonProperty(required = true)
     @field:ArraySchema(
