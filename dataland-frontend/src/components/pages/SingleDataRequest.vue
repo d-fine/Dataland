@@ -31,7 +31,7 @@
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'reportingPeriods'"
-                          :options="reportingPeriods"
+                          :options="reportingPeriodOptions"
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
@@ -40,7 +40,7 @@
                         class="text-danger text-xs mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
-                        Select at least one reporting period.
+                        Select at least one reporting period to submit your request.
                       </p>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
@@ -52,19 +52,20 @@
                         :options="frameworkOptions"
                         validation="required"
                         :validation-messages="{
-                          required: 'Select a framework',
+                          required: 'Select a framework to submit your request',
                         }"
                         outer-class="long"
                         :data-test="'datapoint-framework'"
                       />
                     </BasicFormSection>
                     <BasicFormSection header="Provide Contact Details">
-                      <label for="Email" class="label-with-optional">
-                        <b>Email</b><span class="optional-text">Optional</span>
+                      <label for="Emails" class="label-with-optional">
+                        <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit v-model="contact" type="text" name="contactDetails" data-test="contactEmail" />
+                      <FormKit v-model="contactsAsString" type="text" name="contactDetails" data-test="contactEmail" />
                       <p class="gray-text font-italic" style="text-align: left">
-                        By specifying a contact person here, your data request will be directed accordingly.<br />
+                        By specifying contacts your data request will be directed accordingly.<br />
+                        You can specify multiple comma separated email addresses.<br />
                         This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
@@ -83,7 +84,7 @@
                         data-test="dataRequesterMessage"
                       />
                       <p class="gray-text font-italic" style="text-align: left">
-                        Let your contact know what exactly your are looking for.
+                        Let your contacts know what exactly your are looking for.
                       </p>
                     </BasicFormSection>
                   </div>
@@ -93,7 +94,7 @@
                       label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
                       name="submit_request_button"
-                      @click="checkReportingPeriods()"
+                      @click="checkIfAtLeastOneReportingPeriodSelected()"
                     >
                       SUBMIT DATA REQUEST
                     </PrimeButton>
@@ -141,7 +142,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import type { CompanyInformation, DataTypeEnum, ErrorResponse } from "@clients/backend";
+import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
@@ -171,7 +172,6 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-
   data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
@@ -182,11 +182,11 @@ export default defineComponent({
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
       frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
-      contact: "",
+      contactsAsString: "",
       dataRequesterMessage: "",
       errorMessage: "",
       selectedReportingPeriodsError: false,
-      reportingPeriods: [
+      reportingPeriodOptions: [
         { name: "2023", value: false },
         { name: "2022", value: false },
         { name: "2021", value: false },
@@ -198,9 +198,15 @@ export default defineComponent({
   },
   computed: {
     selectedReportingPeriods(): string[] {
-      return this.reportingPeriods
-        .filter((reportingPeriod) => reportingPeriod.value)
-        .map((reportingPeriod) => reportingPeriod.name);
+      return this.reportingPeriodOptions
+        .filter((reportingPeriodOption) => reportingPeriodOption.value)
+        .map((reportingPeriodOption) => reportingPeriodOption.name);
+    },
+    selectedContacts(): string[] {
+      return this.contactsAsString
+        .split(",")
+        .map((rawEmail) => rawEmail.trim())
+        .filter((email) => email);
     },
     companyIdentifier(): string {
       return this.$route.params.companyId as string;
@@ -210,7 +216,7 @@ export default defineComponent({
     /**
      * Check whether reporting periods have been selected
      */
-    checkReportingPeriods(): void {
+    checkIfAtLeastOneReportingPeriodSelected(): void {
       if (!this.selectedReportingPeriods.length) {
         this.selectedReportingPeriodsError = true;
       }
@@ -227,12 +233,11 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
-      const contactAsList = this.contact ? [this.contact] : undefined;
       return {
         companyIdentifier: this.companyIdentifier,
-        frameworkName: this.frameworkName,
-        listOfReportingPeriods: this.selectedReportingPeriods,
-        contactList: contactAsList,
+        dataType: this.frameworkName,
+        reportingPeriods: this.selectedReportingPeriods as Set<string>,
+        contacts: this.selectedContacts as Set<string>,
         message: this.dataRequesterMessage,
       };
     },

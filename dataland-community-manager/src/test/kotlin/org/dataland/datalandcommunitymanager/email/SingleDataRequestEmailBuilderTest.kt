@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.email
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.services.CompanyGetter
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestEmailBuilder
 import org.dataland.datalandemail.email.EmailContact
 import org.dataland.datalandemail.utils.assertEmailContactInformationEquals
@@ -20,23 +20,23 @@ class SingleDataRequestEmailBuilderTest {
     private val receiverEmail = "receiver1@dataland.com"
     private val companyId = "8"
     private val companyName = "Test Inc."
-    private val reportingPeriods = listOf("2022", "2023")
+    private val reportingPeriods = setOf("2022", "2023")
     private val message = "This is a comment"
 
     @Test
     fun `validate that the output of the single data request email builder is correctly formatted`() {
-        val mockCompanyGetter = mock(CompanyGetter::class.java)
+        val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
         val mockCompanyInformation = mock(CompanyInformation::class.java)
         `when`(mockCompanyInformation.companyName).thenReturn(companyName)
-        `when`(mockCompanyGetter.getCompanyInfo(anyString())).thenReturn(mockCompanyInformation)
-        val email = SingleDataRequestEmailBuilder(proxyPrimaryUrl, senderEmail, senderName, mockCompanyGetter)
+        `when`(mockCompanyApi.getCompanyInfo(anyString())).thenReturn(mockCompanyInformation)
+        val email = SingleDataRequestEmailBuilder(proxyPrimaryUrl, senderEmail, senderName, mockCompanyApi)
             .buildSingleDataRequestEmail(
                 requesterEmail = requesterEmail,
                 receiverEmail = receiverEmail,
                 companyId = companyId,
                 dataType = DataTypeEnum.lksg,
                 reportingPeriods = reportingPeriods,
-                message = message,
+                rawMessage = message,
             )
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),

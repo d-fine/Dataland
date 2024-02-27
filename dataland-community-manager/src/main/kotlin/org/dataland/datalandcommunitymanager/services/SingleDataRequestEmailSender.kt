@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -23,29 +22,25 @@ class SingleDataRequestEmailSender(
      * or no contact is specified and no data owner is known
      * @param userAuthentication the authentication of the user who called this method
      * @param singleDataRequest the fundamental data request
-     * @param companyIdentifierType the type of the identifer provided by the user or the Dataland company ID
-     * @param companyIdentifierValue an identifier for the company of type [companyIdentifierType]
+     * @param datalandCompanyId is the companyId of the company in dataland
      */
     fun sendSingleDataRequestEmails(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
-        companyIdentifierType: DataRequestCompanyIdentifierType,
-        companyIdentifierValue: String,
+        datalandCompanyId: String,
     ) {
-        if (singleDataRequest.listOfReportingPeriods.isEmpty()) return
+        if (singleDataRequest.reportingPeriods.isEmpty()) return
         if (
-            companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId ||
-            singleDataRequest.contactList.isNullOrEmpty()
+            singleDataRequest.contacts.isNullOrEmpty()
         ) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
-                companyIdentifierType = companyIdentifierType,
-                companyIdentifierValue = companyIdentifierValue,
+                datalandCompanyId = datalandCompanyId,
             )
             return
         }
-        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, companyIdentifierValue)
+        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, datalandCompanyId)
     }
 
     private fun sendEmailToSpecifiedContacts(
@@ -53,15 +48,15 @@ class SingleDataRequestEmailSender(
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
     ) {
-        singleDataRequest.contactList?.forEach { contactEmail ->
+        singleDataRequest.contacts?.forEach { contactEmail ->
             emailSender.sendEmail(
                 singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
                     requesterEmail = userAuthentication.username,
                     receiverEmail = contactEmail,
                     companyId = datalandCompanyId,
-                    dataType = singleDataRequest.frameworkName,
-                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
-                    message = singleDataRequest.message,
+                    dataType = singleDataRequest.dataType,
+                    reportingPeriods = singleDataRequest.reportingPeriods,
+                    rawMessage = singleDataRequest.message,
                 ),
             )
         }
@@ -69,17 +64,15 @@ class SingleDataRequestEmailSender(
 
     private fun sendInternalEmail(
         userAuthentication: DatalandJwtAuthentication,
-        companyIdentifierType: DataRequestCompanyIdentifierType,
-        companyIdentifierValue: String,
+        datalandCompanyId: String,
         singleDataRequest: SingleDataRequest,
     ) {
         emailSender.sendEmail(
             singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
                 userAuthentication = userAuthentication,
-                companyIdentifierType = companyIdentifierType,
-                companyIdentifierValue = companyIdentifierValue,
-                dataType = singleDataRequest.frameworkName,
-                reportingPeriods = singleDataRequest.listOfReportingPeriods,
+                datalandCompanyId,
+                dataType = singleDataRequest.dataType,
+                reportingPeriods = singleDataRequest.reportingPeriods,
             ),
         )
     }

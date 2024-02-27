@@ -97,6 +97,7 @@ interface RequestApi {
         @RequestParam identifierValue: String? = null,
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
+        @RequestParam status: RequestStatus? = null,
     ): ResponseEntity<List<AggregatedDataRequest>>
 
     /**
@@ -163,9 +164,9 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun patchDataRequest(
+    fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
+        @RequestParam requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
@@ -189,6 +190,6 @@ interface RequestApi {
         @RequestParam userId: String?,
         @RequestParam requestStatus: RequestStatus?,
         @RequestParam reportingPeriod: String?,
-        @RequestParam dataRequestCompanyIdentifierValue: String?,
+        @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>>
 }

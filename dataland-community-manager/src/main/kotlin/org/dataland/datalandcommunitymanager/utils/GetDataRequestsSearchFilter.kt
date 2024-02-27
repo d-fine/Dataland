@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.repositories.utils
+package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 
@@ -7,14 +7,14 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
  * convenient usage of SEPL instructions in the query
  */
 data class GetDataRequestsSearchFilter(
-    val dataTypeNameFilter: String,
+    val dataTypeFilter: String,
     val userIdFilter: String,
     val requestStatus: RequestStatus?,
     val reportingPeriodFilter: String,
-    val dataRequestCompanyIdentifierValueFilter: String,
+    val datalandCompanyIdFilter: String,
 ) {
-    val dataTypeNameFilterLength: Int
-        get() = dataTypeNameFilter.length
+    val dataTypeFilterLength: Int
+        get() = dataTypeFilter.length
 
     val userIdFilterLength: Int
         get() = userIdFilter.length
@@ -22,6 +22,6 @@ data class GetDataRequestsSearchFilter(
     val reportingPeriodFilterLength: Int
         get() = reportingPeriodFilter.length
 
-    val dataRequestCompanyIdentifierValueFilterLength: Int
-        get() = dataRequestCompanyIdentifierValueFilter.length
+    val datalandCompanyIdFilterLength: Int
+        get() = datalandCompanyIdFilter.length
 }

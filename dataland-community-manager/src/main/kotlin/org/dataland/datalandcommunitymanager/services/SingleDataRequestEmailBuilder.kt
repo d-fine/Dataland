@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.email.FreeMarker
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
@@ -20,7 +21,7 @@ class SingleDataRequestEmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val companyApi: CompanyDataControllerApi,
 ) : BaseEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
@@ -33,10 +34,11 @@ class SingleDataRequestEmailBuilder(
         receiverEmail: String,
         companyId: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
-        message: String?,
+        reportingPeriods: Set<String>,
+        rawMessage: String?,
     ): Email {
-        val companyName = companyGetter.getCompanyInfo(companyId).companyName
+        val message = rawMessage.takeIf { !it.isNullOrBlank() }
+        val companyName = companyApi.getCompanyInfo(companyId).companyName
         val content = EmailContent(
             subject = "A message from Dataland: Your ESG data are high on demand!",
             textContent = buildTextContent(requesterEmail, companyId, companyName, dataType, reportingPeriods, message),
@@ -55,7 +57,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         message: String?,
     ): String {
         return StringBuilder()
@@ -78,7 +80,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         message: String?,
     ): String {
         val freemarkerContext = mapOf(

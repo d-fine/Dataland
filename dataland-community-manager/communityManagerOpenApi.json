@@ -150,7 +150,7 @@
         ],
         "summary": "Update status of data request.",
         "description": "Updates status of data request given data request id.",
-        "operationId": "patchDataRequest",
+        "operationId": "patchDataRequestStatus",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -264,7 +264,7 @@
             }
           },
           {
-            "name": "dataRequestCompanyIdentifierValue",
+            "name": "datalandCompanyId",
             "in": "query",
             "required": false,
             "schema": {
@@ -476,6 +476,14 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
             }
           }
         ],
@@ -752,8 +760,8 @@
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
-          "frameworkName",
-          "listOfReportingPeriods"
+          "dataType",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
@@ -761,7 +769,7 @@
             "type": "string",
             "example": "DE0005190003"
           },
-          "frameworkName": {
+          "dataType": {
             "type": "string",
             "example": "p2p",
             "enum": [
@@ -775,7 +783,8 @@
               "heimathafen"
             ]
           },
-          "listOfReportingPeriods": {
+          "reportingPeriods": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "2022",
@@ -785,7 +794,8 @@
               "type": "string"
             }
           },
-          "contactList": {
+          "contacts": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "testuser@dataland.com"
@@ -799,29 +809,20 @@
           }
         }
       },
-      "DataRequestCompanyIdentifierType": {
-        "type": "string",
-        "enum": [
-          "Lei",
-          "Isin",
-          "PermId",
-          "MultipleRegexMatches",
-          "DatalandCompanyId"
-        ]
-      },
       "RequestStatus": {
         "type": "string",
         "enum": [
           "Open",
-          "Resolved"
+          "Answered",
+          "Closed"
         ]
       },
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
           "dataRequestId",
+          "dataType",
+          "datalandCompanyId",
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
@@ -856,10 +857,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
           },
           "messageHistory": {
@@ -879,11 +877,13 @@
       },
       "StoredDataRequestMessageObject": {
         "required": [
-          "contactList"
+          "contacts",
+          "creationTimestamp"
         ],
         "type": "object",
         "properties": {
-          "contactList": {
+          "contacts": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -892,7 +892,7 @@
           "message": {
             "type": "string"
           },
-          "lastModifiedDate": {
+          "creationTimestamp": {
             "type": "integer",
             "format": "int64"
           }
@@ -900,23 +900,24 @@
       },
       "BulkDataRequest": {
         "required": [
-          "listOfCompanyIdentifiers",
-          "listOfFrameworkNames",
-          "listOfReportingPeriods"
+          "companyIdentifiers",
+          "dataTypes",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
-          "listOfCompanyIdentifiers": {
+          "companyIdentifiers": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
-              "DE0005190003",
-              "exampleForAnInvalidIdentifier"
+              "enterValidIdentifiers"
             ],
             "items": {
               "type": "string"
             }
           },
-          "listOfFrameworkNames": {
+          "dataTypes": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "p2p",
@@ -936,7 +937,8 @@
               ]
             }
           },
-          "listOfReportingPeriods": {
+          "reportingPeriods": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "2022",
@@ -976,8 +978,8 @@
       "AggregatedDataRequest": {
         "required": [
           "count",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue"
+          "datalandCompanyId",
+          "requestStatus"
         ],
         "type": "object",
         "properties": {
@@ -997,11 +999,11 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
           },
           "count": {
             "type": "integer",

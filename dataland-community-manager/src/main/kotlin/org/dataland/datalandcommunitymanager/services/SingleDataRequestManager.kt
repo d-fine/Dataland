@@ -1,20 +1,14 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
-import org.dataland.datalandemail.email.isEmailAddress
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,13 +21,11 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
+    @Autowired private val utils: DataRequestProcessingUtils,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**
@@ -44,29 +36,37 @@ class SingleDataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
         utils.throwExceptionIfNotJwtAuth()
-        dataRequestLogger.logMessageForSingleDataRequestReceived()
-        validateContactsAndMessage(singleDataRequest.contactList, singleDataRequest.message)
-        val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
-            singleDataRequest.companyIdentifier,
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
+        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
+
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
+        val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
+            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
+            singleDataRequest.companyIdentifier
+        } else {
+            utils.getDatalandCompanyIdForIdentifierValue(
+                singleDataRequest.companyIdentifier,
+            )
+        }
+        if (datalandCompanyId == null) {
+            throw InvalidInputApiException(
+                "The specified company is unknown to Dataland",
+                "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland",
+            )
+        }
+        val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+            singleDataRequest, datalandCompanyId,
         )
-        val storedDataRequestEntities =
-            storeOneDataRequestPerReportingPeriod(singleDataRequest, identifierValueToStore, identifierTypeToStore)
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
-            companyIdentifierType = identifierTypeToStore,
-            companyIdentifierValue = identifierValueToStore,
+            datalandCompanyId,
         )
-        return storedDataRequestEntities.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
+        return storedDataRequests
     }
 
-    private fun validateContactsAndMessage(contacts: List<String>?, message: String?) {
-        if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
-            throw InvalidInputApiException(
-                "Invalid email address",
-                "At least one email address you have provided has an invalid format.",
-            )
-        }
+    private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
+        contacts?.forEach { it.validateIsEmailAddress() }
         if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
             throw InvalidInputApiException(
                 "No recipients provided for the message",
@@ -76,131 +76,31 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun identifyIdentifierTypeAndTryGetDatalandCompanyId(
-        companyIdentifier: String,
-    ): Pair<DataRequestCompanyIdentifierType, String> {
-        if (companyIdRegex.matches(companyIdentifier)) {
-            checkIfCompanyIsValid(companyIdentifier)
-            return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
-        }
-        val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(companyIdentifier)
-        if (matchedIdentifierType != null) {
-            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
-                companyIdentifier,
-            )
-            return Pair(
-                datalandCompanyId?.let {
-                    DataRequestCompanyIdentifierType.DatalandCompanyId
-                } ?: matchedIdentifierType,
-                datalandCompanyId ?: companyIdentifier,
-            )
-        }
-        throw InvalidInputApiException(
-            "The provided company identifier has an invalid format.",
-            "The company identifier you provided does not match the patterns " +
-                "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
-        )
-    }
-
     private fun checkIfCompanyIsValid(companyId: String) {
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
         try {
-            companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
-        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-            throw ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland-backend does not know the company ID $companyId",
-            )
-        }
+            companyApi.getCompanyById(companyId)
+        } catch (e: ClientException) {
+            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                throw ResourceNotFoundApiException(
+                    "Company not found",
+                    "Dataland-backend does not know the company ID $companyId",
+                )
+            }
         }
     }
 
-    private fun storeOneDataRequestPerReportingPeriod(
+    private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
         singleDataRequest: SingleDataRequest,
-        identifierValueToStore: String,
-        identifierTypeToStore: DataRequestCompanyIdentifierType,
-    ): List<DataRequestEntity> {
-        val storedDataRequestEntities = mutableListOf<DataRequestEntity>()
-        singleDataRequest.listOfReportingPeriods.distinct().forEach { reportingPeriod ->
-            storedDataRequestEntities.add(
-                utils.storeDataRequestEntityIfNotExisting(
-                    identifierValueToStore,
-                    identifierTypeToStore,
-                    singleDataRequest.frameworkName,
-                    reportingPeriod,
-                    singleDataRequest.contactList.takeIf { !it.isNullOrEmpty() },
-                    singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-                ),
-            )
+        datalandCompanyId: String,
+    ): List<StoredDataRequest> {
+        return singleDataRequest.reportingPeriods.map { reportingPeriod ->
+            utils.storeDataRequestEntityIfNotExisting(
+                datalandCompanyId,
+                singleDataRequest.dataType,
+                reportingPeriod,
+                singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
+                singleDataRequest.message.takeIf { !it.isNullOrBlank() },
+            ).toStoredDataRequest()
         }
-        return storedDataRequestEntities
-    }
-
-    /**
-     * Method to retrieve a data request by its ID
-     * @param dataRequestId the ID of the data request to retrieve
-     * @return the data request corresponding to the provided ID
-     */
-    @Transactional
-    fun getDataRequestById(dataRequestId: String): StoredDataRequest {
-        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
-    }
-
-    private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
-        if (!dataRequestRepository.existsById(dataRequestId)) {
-            throw ResourceNotFoundApiException(
-                "Data request not found",
-                "Dataland does not know the Data request ID $dataRequestId",
-            )
-        }
-    }
-
-    /**
-     * Method to get all data requests based on filters.
-     * @param dataType the framework to apply to the data request
-     * @param requestStatus the status to apply to the data request
-     * @param userId the user to apply to the data request
-     * @param reportingPeriod the reporting period to apply to the data request
-     * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
-     * @return all filtered data requests
-     */
-
-    fun getDataRequests(
-        dataType: DataTypeEnum?,
-        userId: String?,
-        requestStatus: RequestStatus?,
-        reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?,
-    ): List<StoredDataRequest>? {
-        val filter = GetDataRequestsSearchFilter(
-            dataTypeNameFilter = dataType?.name ?: "",
-            userIdFilter = userId ?: "",
-            requestStatus = requestStatus,
-            reportingPeriodFilter = reportingPeriod ?: "",
-            dataRequestCompanyIdentifierValueFilter = dataRequestCompanyIdentifierValue ?: "",
-        )
-        val result = dataRequestRepository.searchDataRequestEntity(filter)
-
-        return result.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
-    }
-
-    /**
-     * Method to patch the status of a data request.
-     * @param dataRequestId the id of the data request to patch
-     * @param requestStatus the status to apply to the data request
-     * @return the updated data request object
-     */
-    @Transactional
-    fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
-        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
-        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
-        dataRequestEntity.requestStatus = requestStatus
-        dataRequestRepository.save(dataRequestEntity)
-        dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 }

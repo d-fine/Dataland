@@ -10,8 +10,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * Contains all necessary info that a user has to provide in order to perform a single data request on Dataland.
  * @param companyIdentifier the company identifier for which the user wants to request framework data
  * @param frameworkName the name of the framework for which the user wants to request framework data
- * @param listOfReportingPeriods a list of reporting periods for which the user wants to request framework data
- * @param contactList a list of e-mail addresses related to the company to which a notification shall be sent
+ * @param reportingPeriods a set of reporting periods for which the user wants to request framework data
+ * @param contacts a set of e-mail addresses related to the company to which a notification shall be sent
  * @param message a message that shall accompany the notification to the provided contacts
  */
 data class SingleDataRequest(
@@ -24,7 +24,7 @@ data class SingleDataRequest(
         implementation = DataTypeEnum::class,
         example = "p2p",
     )
-    val frameworkName: DataTypeEnum,
+    val dataType: DataTypeEnum,
 
     @field:JsonProperty(required = true)
     @field:ArraySchema(
@@ -32,18 +32,16 @@ data class SingleDataRequest(
             type = "string",
             example = "[\"2022\", \"2023\"]",
         ),
-        schema = Schema(type = "string"),
     )
-    val listOfReportingPeriods: List<String>,
+    val reportingPeriods: Set<String>,
 
     @field:ArraySchema(
         arraySchema = Schema(
             type = "string",
             example = "[\"testuser@dataland.com\"]",
         ),
-        schema = Schema(type = "string"),
     )
-    val contactList: List<String>?,
+    val contacts: Set<String>?,
 
     val message: String?,
 )

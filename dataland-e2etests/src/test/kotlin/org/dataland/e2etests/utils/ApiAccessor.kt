@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
@@ -27,6 +28,7 @@ import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -42,6 +44,8 @@ class ApiAccessor {
 
     val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
+
+    val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
     private val qaApiAccessor = QaApiAccessor()
@@ -77,6 +81,7 @@ class ApiAccessor {
         EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderEuTaxonomyForFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
+
     fun euTaxonomyFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyFinancialsData: EuTaxonomyDataForFinancials,
@@ -226,26 +231,32 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForLksgData,
                 frameworkDataUploadFunction = this::lksgUploaderFunction,
             )
+
             DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForSfdrData,
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
             )
+
             DataTypeEnum.sme -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForSmeData,
                 frameworkDataUploadFunction = this::smeUploaderFunction,
             )
+
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
                 frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
             )
+
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderEuTaxonomyForFinancials,
                 frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
             )
+
             DataTypeEnum.p2p -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
             )
+
             else -> {
                 throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
             }
@@ -384,7 +395,6 @@ class ApiAccessor {
         return uploadedMetaData
     }
 }
-
 data class UploadInfo(
     val inputCompanyInformation: CompanyInformation,
     val actualStoredCompany: StoredCompany,
