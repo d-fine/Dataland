@@ -217,7 +217,7 @@ export default defineComponent({
       await this.updateAnsweredDataRequestsForViewPage();
       switch (requestStatusToPatch) {
         case RequestStatus.Open:
-          this.openSuccessModal("Once data are provided, you \nwill be notified through email.");
+          this.openSuccessModal("Request reopened successfully.");
           return;
         case RequestStatus.Closed:
           this.openSuccessModal("Request closed successfully.");
