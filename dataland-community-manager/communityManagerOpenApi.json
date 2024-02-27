@@ -264,7 +264,7 @@
             }
           },
           {
-            "name": "dataRequestCompanyIdentifierValue",
+            "name": "datalandCompanyId",
             "in": "query",
             "required": false,
             "schema": {
@@ -809,16 +809,6 @@
           }
         }
       },
-      "DataRequestCompanyIdentifierType": {
-        "type": "string",
-        "enum": [
-          "Lei",
-          "Isin",
-          "PermId",
-          "MultipleRegexMatches",
-          "DatalandCompanyId"
-        ]
-      },
       "RequestStatus": {
         "type": "string",
         "enum": [
@@ -830,10 +820,9 @@
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
           "dataRequestId",
           "dataType",
+          "datalandCompanyId",
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
@@ -868,10 +857,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
           },
           "messageHistory": {
@@ -924,8 +910,7 @@
             "uniqueItems": true,
             "type": "array",
             "example": [
-              "DE0005190003",
-              "exampleForAnInvalidIdentifier"
+              "enterValidIdentifiers"
             ],
             "items": {
               "type": "string"
@@ -993,8 +978,7 @@
       "AggregatedDataRequest": {
         "required": [
           "count",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
+          "datalandCompanyId",
           "requestStatus"
         ],
         "type": "object",
@@ -1015,10 +999,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
           },
           "requestStatus": {

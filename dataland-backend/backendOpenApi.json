@@ -6616,23 +6616,6 @@
           }
         }
       },
-      "BaseDataPointBigDecimal": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "BaseDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -6672,60 +6655,6 @@
             "$ref": "#/components/schemas/LksgData"
           }
         }
-      },
-      "ComplaintsRiskPositionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "IdentifiedRisksOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
       },
       "LksgData": {
         "required": [
@@ -6826,30 +6755,6 @@
               }
             ]
           },
-          "hazardousWasteTransportPreventionMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wastePolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "hazardousWasteTransportPreventionOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
           "hazardousWasteDisposal": {
             "nullable": true,
             "allOf": [
@@ -6870,13 +6775,9 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "hazardousWasteDisposalOtherWasteImportDescription": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -6911,33 +6812,13 @@
               }
             ]
           },
-          "persistentOrganicPollutantsUsePreventionMeasures": {
+          "legalRestrictedWasteProcesses": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "persistentOrganicPollutantsUsePolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "persistentOrganicPollutantsUsePreventionOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "persistentOrganicPollutantsUsePreventionOtherMeasuresDescription": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -6949,6 +6830,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "mercuryAndMercuryWasteHandlingPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -6991,34 +6880,6 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "mercuryAndMercuryWasteUsePreventionMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "mercuryAndMercuryWasteHandlingPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "mercuryAndMercuryWasteUsePreventionOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -7087,12 +6948,8 @@
             }
           },
           "numberOfEmployees": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
+            "type": "number",
+            "nullable": true
           },
           "seasonalOrMigrantWorkers": {
             "nullable": true,
@@ -7106,32 +6963,23 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/LksgGeneralMasterdataShareOfTemporaryWorkersOptions"
+                "$ref": "#/components/schemas/ShareOfTemporaryWorkers"
               }
             ]
           },
           "annualTotalRevenue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
+            "type": "number",
+            "nullable": true
+          },
+          "totalRevenueCurrency": {
+            "type": "string",
+            "nullable": true
           },
           "fixedAndWorkingCapital": {
             "type": "number",
             "nullable": true
           }
         }
-      },
-      "LksgGeneralMasterdataShareOfTemporaryWorkersOptions": {
-        "type": "string",
-        "enum": [
-          "Smaller10",
-          "Between10And25",
-          "Between25And50",
-          "Greater50"
-        ]
       },
       "LksgGeneralProductionSpecific": {
         "type": "object",
@@ -7178,10 +7026,6 @@
               }
             ]
           },
-          "numberOfProductionSites": {
-            "type": "number",
-            "nullable": true
-          },
           "listOfProductionSites": {
             "type": "array",
             "nullable": true,
@@ -7193,16 +7037,17 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/LksgGeneralProductionspecificMarketOptions"
+                "$ref": "#/components/schemas/NationalOrInternationalMarket"
               }
             ]
           },
           "specificProcurement": {
-            "type": "array",
             "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/SpecificProcurementOptions"
-            }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -7216,22 +7061,43 @@
               "$ref": "#/components/schemas/LksgProduct"
             }
           },
-          "procurementCategories": {
+          "productsServicesCategoriesPurchased": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/LksgProcurementCategory"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "Products": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "shareOfTotalProcurementInPercent": 0
+              },
+              "Services": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "shareOfTotalProcurementInPercent": 0
+              },
+              "RawMaterials": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "shareOfTotalProcurementInPercent": 0
+              }
+            }
           }
         }
-      },
-      "LksgGeneralProductionspecificMarketOptions": {
-        "type": "string",
-        "enum": [
-          "National",
-          "International",
-          "Both"
-        ]
       },
       "LksgGovernance": {
         "type": "object",
@@ -7273,13 +7139,105 @@
       "LksgGovernanceCertificationsPoliciesAndResponsibilities": {
         "type": "object",
         "properties": {
-          "additionalCertifications": {
+          "sa8000Certification": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
+          },
+          "smetaSocialAuditConcept": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "betterWorkProgramCertificate": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+              }
+            ]
+          },
+          "iso45001Certification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso14001Certification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "emasCertification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso37001Certification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso37301Certification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "riskManagementSystemCertification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "amforiBsciAuditReport": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "responsibleBusinessAssociationCertification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "fairLaborAssociationCertification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "additionalAudits": {
+            "type": "string",
+            "nullable": true
           },
           "codeOfConduct": {
             "nullable": true,
@@ -7370,7 +7328,7 @@
               }
             ]
           },
-          "humanRightsOrEnvironmentalViolations": {
+          "humanRightsViolationS": {
             "nullable": true,
             "allOf": [
               {
@@ -7378,14 +7336,11 @@
               }
             ]
           },
-          "humanRightsOrEnvironmentalViolationsDefinition": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/HumanRightsOrEnvironmentalViolationsDefinitionOptions"
-            }
+          "humanRightsViolations": {
+            "type": "string",
+            "nullable": true
           },
-          "humanRightsOrEnvironmentalViolationsMeasures": {
+          "humanRightsViolationAction": {
             "nullable": true,
             "allOf": [
               {
@@ -7393,7 +7348,7 @@
               }
             ]
           },
-          "humanRightsOrEnvironmentalViolationsMeasuresDefinition": {
+          "humanRightsViolationActionMeasures": {
             "type": "string",
             "nullable": true
           },
@@ -7451,7 +7406,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -7496,19 +7451,8 @@
             ]
           },
           "complaintsNumber": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
-          },
-          "complaintsRiskPosition": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/ComplaintsRiskPositionOptions"
-            }
+            "type": "number",
+            "nullable": true
           },
           "complaintsReason": {
             "type": "string",
@@ -7559,7 +7503,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -7580,11 +7524,8 @@
             ]
           },
           "identifiedRisks": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/IdentifiedRisksOptions"
-            }
+            "type": "string",
+            "nullable": true
           },
           "counteractingMeasures": {
             "nullable": true,
@@ -7603,6 +7544,30 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "environmentalManagementSystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "environmentalManagementSystemInternationalCertification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "environmentalManagementSystemNationalCertification": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           }
@@ -7631,6 +7596,35 @@
           "shareOfTotalProcurementInPercent": {
             "type": "number",
             "nullable": true
+          }
+        },
+        "example": {
+          "Products": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "shareOfTotalProcurementInPercent": 0
+          },
+          "Services": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "shareOfTotalProcurementInPercent": 0
+          },
+          "RawMaterials": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "shareOfTotalProcurementInPercent": 0
           }
         }
       },
@@ -7758,6 +7752,14 @@
       "LksgSocialChildLabor": {
         "type": "object",
         "properties": {
+          "childLaborPreventionPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
           "employeeSUnder18": {
             "nullable": true,
             "allOf": [
@@ -7782,7 +7784,7 @@
               }
             ]
           },
-          "worstFormsOfChildLabor": {
+          "worstFormsOfChildLaborProhibition": {
             "nullable": true,
             "allOf": [
               {
@@ -7790,7 +7792,7 @@
               }
             ]
           },
-          "worstFormsOfChildLaborProhibition": {
+          "worstFormsOfChildLabor": {
             "nullable": true,
             "allOf": [
               {
@@ -7838,7 +7840,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -7850,23 +7852,7 @@
               }
             ]
           },
-          "childLaborPreventionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "additionalChildLaborOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "additionalChildLaborOtherMeasuresDescription": {
+          "additionalChildLaborMeasures": {
             "type": "string",
             "nullable": true
           }
@@ -7875,7 +7861,7 @@
       "LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
         "type": "object",
         "properties": {
-          "harmfulSoilChange": {
+          "harmfulSoilImpact": {
             "nullable": true,
             "allOf": [
               {
@@ -7923,22 +7909,6 @@
               }
             ]
           },
-          "soilProtectionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "soilSpotChecks": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "harmfulWaterPollution": {
             "nullable": true,
             "allOf": [
@@ -7963,22 +7933,6 @@
               }
             ]
           },
-          "waterProtectionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "waterSpotChecks": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "harmfulAirPollution": {
             "nullable": true,
             "allOf": [
@@ -7995,22 +7949,6 @@
               }
             ]
           },
-          "airQualityProtectionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "airQualitySpotChecks": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "harmfulNoiseEmission": {
             "nullable": true,
             "allOf": [
@@ -8019,27 +7957,11 @@
               }
             ]
           },
-          "reductionOfNoiseEmissions": {
+          "reduceNoiseEmissions": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "noiseReductionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "noiseEmissionsSpotChecks": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -8063,19 +7985,11 @@
             "type": "string",
             "nullable": true
           },
-          "waterUseReductionPolicy": {
+          "pipeMaintaining": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "waterConsumptionSpotChecks": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8087,15 +8001,7 @@
               }
             ]
           },
-          "contaminationPreventionMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "contaminationPreventionMeasuresDescription": {
+          "contaminationMeasures": {
             "type": "string",
             "nullable": true
           }
@@ -8112,17 +8018,9 @@
               }
             ]
           },
-          "employeeRepresentation": {
+          "employeeRepresentationInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "freedomOfAssociationDisregardPrevention": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
           },
           "discriminationForTradeUnionMembers": {
             "nullable": true,
@@ -8144,7 +8042,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8152,21 +8050,9 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "freedomOfAssociationOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "freedomOfAssociationOtherMeasuresDescription": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -8189,7 +8075,7 @@
               }
             ]
           },
-          "oshMeasures": {
+          "oshPolicy": {
             "nullable": true,
             "allOf": [
               {
@@ -8197,7 +8083,103 @@
               }
             ]
           },
-          "oshPolicy": {
+          "oshPolicyPersonalProtectiveEquipment": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "oshPolicyMachineSafety": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "oshPolicyDisasterBehavioralResponse": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyAccidentsBehavioralResponse": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyWorkplaceErgonomics": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyAccessToWork": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "oshPolicyFireProtection": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyWorkingHours": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyTrainingAddressed": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshPolicyTraining": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshManagementSystem": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshManagementSystemInternationalCertification": {
             "nullable": true,
             "allOf": [
               {
@@ -8205,11 +8187,27 @@
               }
             ]
           },
-          "oshTraining": {
+          "oshManagementSystemNationalCertification": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "under10WorkplaceAccidents": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "oshTraining": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8220,33 +8218,13 @@
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
-          },
-          "otherOshMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "otherOshMeasuresDescription": {
-            "type": "string",
-            "nullable": true
-          },
-          "under10WorkplaceAccidents": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
           }
         }
       },
       "LksgSocialForcedLaborSlavery": {
         "type": "object",
         "properties": {
-          "forcedLaborAndSlaveryPractices": {
+          "forcedLaborAndSlaveryPrevention": {
             "nullable": true,
             "allOf": [
               {
@@ -8254,9 +8232,17 @@
               }
             ]
           },
-          "forcedLaborAndSlaveryPracticesSpecification": {
+          "forcedLaborAndSlaveryPreventionPractices": {
             "type": "string",
             "nullable": true
+          },
+          "forcedLaborPreventionPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
           },
           "forcedLaborAndSlaveryPreventionMeasures": {
             "nullable": true,
@@ -8302,27 +8288,11 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
-          "forcedLaborPreventionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "forcedLaborAndSlaveryPreventionOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "forcedLaborAndSlaveryPreventionOtherMeasuresDescription": {
+          "forcedLaborAndSlaveryPreventionMeasuresOther": {
             "type": "string",
             "nullable": true
           }
@@ -8332,14 +8302,6 @@
         "type": "object",
         "properties": {
           "unequalTreatmentOfEmployment": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "unequalTreatmentOfEmploymentPreventionMeasures": {
             "nullable": true,
             "allOf": [
               {
@@ -8363,14 +8325,6 @@
               }
             ]
           },
-          "unequalTreatmentPreventionTraining": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "equalOpportunitiesOfficer": {
             "nullable": true,
             "allOf": [
@@ -8379,7 +8333,7 @@
               }
             ]
           },
-          "equalEmploymentPolicy": {
+          "fairAndEthicalRecruitmentPolicy": {
             "nullable": true,
             "allOf": [
               {
@@ -8387,17 +8341,13 @@
               }
             ]
           },
-          "unequalTreatmentPreventionOtherMeasures": {
+          "equalOpportunitiesAndNonDiscriminationPolicy": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
-          },
-          "unequalTreatmentPreventionOtherMeasuresDescription": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -8416,7 +8366,7 @@
             "type": "string",
             "nullable": true
           },
-          "unlawfulEvictionAndTakingOfLandMeasures": {
+          "unlawfulEvictionAndTakingOfLandStrategies": {
             "nullable": true,
             "allOf": [
               {
@@ -8424,39 +8374,7 @@
               }
             ]
           },
-          "modelContractsForLandPurchaseOrLeasing": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "involvementOfLocalsInDecisionMaking": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "governanceOfTenurePolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "unlawfulEvictionAndTakingOfLandOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "unlawfulEvictionAndTakingOfLandOtherMeasuresDescription": {
+          "unlawfulEvictionAndTakingOfLandStrategiesName": {
             "type": "string",
             "nullable": true
           },
@@ -8493,7 +8411,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8501,7 +8419,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8517,19 +8435,11 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+                "$ref": "#/components/schemas/YesNoNa"
               }
             ]
           },
           "useOfPrivatePublicSecurityForcesMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "useOfPrivatePublicSecurityForcesMeasuresDescription": {
             "type": "string",
             "nullable": true
           }
@@ -8538,7 +8448,7 @@
       "LksgSocialWithholdingAdequateWages": {
         "type": "object",
         "properties": {
-          "adequateWageWithholding": {
+          "adequateWage": {
             "nullable": true,
             "allOf": [
               {
@@ -8558,7 +8468,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8566,7 +8476,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -8594,27 +8504,27 @@
               }
             ]
           },
-          "adequateWageOtherMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "adequateWageOtherMeasuresDescription": {
+          "adequateWageMeasures": {
             "type": "string",
             "nullable": true
           }
         }
       },
-      "SpecificProcurementOptions": {
+      "NationalOrInternationalMarket": {
         "type": "string",
         "enum": [
-          "ShortLivedAndChangingBusinessRelationships",
-          "HighPricePressure",
-          "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
-          "NoneOfTheAbove"
+          "National",
+          "International",
+          "Both"
+        ]
+      },
+      "ShareOfTemporaryWorkers": {
+        "type": "string",
+        "enum": [
+          "Smaller10",
+          "Between10And25",
+          "Between25And50",
+          "Greater50"
         ]
       },
       "BaseDataPointString": {
@@ -13878,9 +13788,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
@@ -13888,10 +13795,13 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "permId": {
@@ -13919,10 +13829,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
