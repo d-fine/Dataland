@@ -410,6 +410,13 @@ jobs:
           name: e2eTestReports
           pattern: e2eTestReports-*
           delete-merged: true
+      - name: Merge E2E DB dump Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: e2eTestDatabaseDumps
+          pattern: e2eTestDatabaseDumps-*
+          delete-merged: true
   sonar:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
