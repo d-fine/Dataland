@@ -47,10 +47,6 @@ appear.
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
-  - [] as of 31.01.2024 plugin.org.springframework.boot=3.2.2 will break the CI, 3.2.1 works fine
-  - [] here is the error message for future reference
-    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(10,38): error TS2339: Property 'health' does not exist on type 'ActuatorApi'. 
-    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(11,20): error TS18046: 'healthResponse' is of type 'unknown'.
 - [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
