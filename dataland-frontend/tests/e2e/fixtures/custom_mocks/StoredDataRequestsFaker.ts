@@ -57,7 +57,8 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
  * @returns The request
  */
 export function generateStoredDataRequest(): StoredDataRequest {
-  const messageHistory = generateArray(() => generateStoredDataRequestMessage(), 1);
+  const minimalNumberOfMessageObjects = 1;
+  const messageHistory = generateArray(() => generateStoredDataRequestMessage(), minimalNumberOfMessageObjects);
   const timeOffsetBetweenCreationAndLastModified = 500;
   return {
     dataRequestId: faker.string.uuid(),

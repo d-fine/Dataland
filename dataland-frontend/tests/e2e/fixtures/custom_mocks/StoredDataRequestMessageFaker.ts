@@ -8,8 +8,9 @@ import { generateArray } from "@e2e/fixtures/FixtureUtils";
  * @returns a fake stored data request message object
  */
 export function generateStoredDataRequestMessage(): StoredDataRequestMessageObject {
+  const minimalNumberOfEmailAddressees = 1;
   return {
-    contacts: new Set(generateArray(() => faker.internet.email(), 1)),
+    contacts: new Set(generateArray(() => faker.internet.email(), minimalNumberOfEmailAddressees)),
     message: faker.git.commitMessage(),
     creationTimestamp: generateInt(),
   };
