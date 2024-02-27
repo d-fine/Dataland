@@ -14,51 +14,39 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
   const storedDataRequests = [];
   storedDataRequests.push(generateStoredDataRequest());
   storedDataRequests.push(
-    manipulateFixtureToHaveDataType(
-      manipulateFixtureToHaveCompanyId(
-        manipulateFixtureToHaveReportingPeriod(
-          manipulateFixtureToHaveStatus(generateStoredDataRequest(), RequestStatus.Open),
-          "2021",
-        ),
-        "Mock-Company-Id",
-      ),
+    manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
+      generateStoredDataRequest(),
+      RequestStatus.Open,
+      "2021",
       DataTypeEnum.Lksg,
+      "Mock-Company-Id",
     ),
   );
   storedDataRequests.push(
-    manipulateFixtureToHaveDataType(
-      manipulateFixtureToHaveCompanyId(
-        manipulateFixtureToHaveReportingPeriod(
-          manipulateFixtureToHaveStatus(generateStoredDataRequest(), RequestStatus.Answered),
-          "2022",
-        ),
-        "Mock-Company-Id",
-      ),
+    manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
+      generateStoredDataRequest(),
+      RequestStatus.Answered,
+      "2022",
       DataTypeEnum.Lksg,
+      "Mock-Company-Id",
     ),
   );
   storedDataRequests.push(
-    manipulateFixtureToHaveDataType(
-      manipulateFixtureToHaveCompanyId(
-        manipulateFixtureToHaveReportingPeriod(
-          manipulateFixtureToHaveStatus(generateStoredDataRequest(), RequestStatus.Answered),
-          "2024",
-        ),
-        "Mock-Company-Id",
-      ),
+    manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
+      generateStoredDataRequest(),
+      RequestStatus.Answered,
+      "2024",
       DataTypeEnum.Lksg,
+      "Mock-Company-Id",
     ),
   );
   storedDataRequests.push(
-    manipulateFixtureToHaveDataType(
-      manipulateFixtureToHaveCompanyId(
-        manipulateFixtureToHaveReportingPeriod(
-          manipulateFixtureToHaveStatus(generateStoredDataRequest(), RequestStatus.Answered),
-          "1996",
-        ),
-        "550e8400-e29b-11d4-a716-446655440000",
-      ),
+    manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
+      generateStoredDataRequest(),
+      RequestStatus.Answered,
+      "1996",
       DataTypeEnum.EutaxonomyNonFinancials,
+      "550e8400-e29b-11d4-a716-446655440000",
     ),
   );
   return storedDataRequests;
@@ -83,49 +71,24 @@ export function generateStoredDataRequest(): StoredDataRequest {
   };
 }
 /**
- * Sets the requests status to the desired status
+ * Manipulates the request
  * @param input request to be manipulated
  * @param requestStatus the desired status
+ * @param reportingPeriod the desired reporting period
+ * @param dataType the desired framework
+ * @param companyId the desired company id
  * @returns The manipulated request
  */
-export function manipulateFixtureToHaveStatus(
+export function manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
   input: StoredDataRequest,
-  requestStatus: RequestStatus,
+  requestStatus?: RequestStatus,
+  reportingPeriod?: string,
+  dataType?: DataTypeEnum,
+  companyId?: string,
 ): StoredDataRequest {
-  input.requestStatus = requestStatus;
-  return input;
-}
-/**
- * Sets the requests reporting period to the desired string
- * @param input request to be manipulated
- * @param reportingPeriod new reporting period
- * @returns The manipulated request
- */
-export function manipulateFixtureToHaveReportingPeriod(
-  input: StoredDataRequest,
-  reportingPeriod: string,
-): StoredDataRequest {
-  input.reportingPeriod = reportingPeriod;
-  return input;
-}
-
-/**
- * Sets the requests framework to the desired framework
- * @param input request to be manipulated
- * @param dataType new framework
- * @returns The manipulated request
- */
-export function manipulateFixtureToHaveDataType(input: StoredDataRequest, dataType: DataTypeEnum): StoredDataRequest {
-  input.dataType = dataType;
-  return input;
-}
-/**
- * Sets the requests companyId to the desired string
- * @param input request to be manipulated
- * @param companyId new company id (dataland company id)
- * @returns The manipulated request
- */
-export function manipulateFixtureToHaveCompanyId(input: StoredDataRequest, companyId: string): StoredDataRequest {
-  input.datalandCompanyId = companyId;
+  requestStatus ? (input.requestStatus = requestStatus) : null;
+  reportingPeriod ? (input.reportingPeriod = reportingPeriod) : null;
+  dataType ? (input.dataType = dataType) : null;
+  companyId ? (input.datalandCompanyId = companyId) : null;
   return input;
 }

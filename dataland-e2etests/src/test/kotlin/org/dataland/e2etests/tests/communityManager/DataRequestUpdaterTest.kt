@@ -119,7 +119,6 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch an answered but not owned data request as a premiumUser and assert that it is forbidden`() {
-
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
             mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
@@ -149,7 +148,6 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch your own open data request as a premiumUser and assert that it is forbidden`() {
-
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
             mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
@@ -160,7 +158,6 @@ class DataRequestUpdaterTest {
             reportingPeriods = setOf("2022"),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
@@ -175,18 +172,16 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `patch your own closed data request as a premiumUser and assert that it is forbidden`() {
-
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         generateCompaniesWithOneRandomValueForEachIdentifierType(
             mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
         )
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
+            dataType = SingleDataRequest.DataType.sme,
             reportingPeriods = setOf("2022"),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val dataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
