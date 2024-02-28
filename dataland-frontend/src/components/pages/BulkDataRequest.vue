@@ -26,14 +26,14 @@
                   </template>
 
                   <template v-else>
-                    <template v-if="submittingSucceded">
+                    <template v-if="submittingSucceeded">
                       <em class="material-icons info-icon green-text">check_circle</em>
                       <h1 class="status-text" data-test="requestStatusText">Success</h1>
                     </template>
 
-                    <template v-if="!submittingSucceded">
+                    <template v-if="!submittingSucceeded">
                       <em class="material-icons info-icon red-text">error</em>
-                      <h1 class="status-text" data-test="requestStatusText">Request Unssuccessful</h1>
+                      <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
                     </template>
 
                     <p v-if="message" class="py-3">{{ message }}</p>
@@ -64,7 +64,7 @@
                   </div>
 
                   <div
-                    v-if="submittingSucceded && acceptedCompanyIdentifiers.length"
+                    v-if="submittingSucceeded && acceptedCompanyIdentifiers.length"
                     class="summary-section py-5"
                     data-test="acceptedIdentifiers"
                   >
@@ -80,7 +80,7 @@
                   </div>
 
                   <div
-                    v-if="submittingSucceded && rejectedCompanyIdentifiers.length"
+                    v-if="submittingSucceeded && rejectedCompanyIdentifiers.length"
                     class="summary-section py-5"
                     data-test="rejectedIdentifiers"
                   >
@@ -96,7 +96,7 @@
                   </div>
 
                   <div
-                    v-if="!submittingSucceded"
+                    v-if="!submittingSucceeded"
                     class="summary-section py-5"
                     data-test="selectedIdentifiersUnsuccessfulSubmit"
                   >
@@ -177,7 +177,7 @@
                         placeholder="E.g.: DE-000402625-0, SWE402626, DE-000402627-2, SWE402626,DE-0004026244"
                       />
                       <span class="gray-text font-italic">
-                        Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separted format.
+                        Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separated format.
                       </span>
                     </BasicFormSection>
                   </div>
@@ -223,7 +223,7 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { AxiosError } from "axios";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
-import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from "@clients/communitymanager";
+import { type BulkDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "BulkDataRequest",
@@ -256,7 +256,7 @@ export default defineComponent({
       identifiers: [] as Array<string>,
       acceptedCompanyIdentifiers: [] as Array<string>,
       rejectedCompanyIdentifiers: [] as Array<string>,
-      submittingSucceded: false,
+      submittingSucceeded: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
       message: "",
@@ -285,7 +285,7 @@ export default defineComponent({
     },
     summarySectionReportingPeriodsHeading(): string {
       const len = this.reportingPeriods.filter((reportingPeriod) => reportingPeriod.value).length;
-      return `${len} REPORTING PERDIOD${len > 1 ? "S" : ""}`;
+      return `${len} REPORTING PERIOD${len > 1 ? "S" : ""}`;
     },
     summarySectionFrameworksHeading(): string {
       const len = this.selectedFrameworks.length;
@@ -305,7 +305,7 @@ export default defineComponent({
     /**
      * Creates section title for identifiers
      * @param items string array to calculate size and proper grammar
-     * @param statusText optional text identifiing the status of the heading
+     * @param statusText optional text identifying the status of the heading
      * @returns a formatted heading
      */
     summarySectionIdentifiersHeading(items: string[], statusText = ""): string {
@@ -357,7 +357,7 @@ export default defineComponent({
         this.message = response.data.message;
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
         this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
-        this.submittingSucceded = this.acceptedCompanyIdentifiers.length > 0;
+        this.submittingSucceeded = this.acceptedCompanyIdentifiers.length > 0;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
