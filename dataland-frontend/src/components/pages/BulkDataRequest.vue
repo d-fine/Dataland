@@ -326,9 +326,9 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
-        reportingPeriods: this.selectedReportingPeriods as Set<string>,
-        companyIdentifiers: this.identifiers as Set<string>,
-        dataTypes: this.selectedFrameworks as Set<BulkDataRequestDataTypesEnum>,
+        reportingPeriods: new Set(this.selectedReportingPeriods),
+        companyIdentifiers: new Set(this.identifiers),
+        dataTypes: new Set(this.selectedFrameworks),
       };
     },
     /**
