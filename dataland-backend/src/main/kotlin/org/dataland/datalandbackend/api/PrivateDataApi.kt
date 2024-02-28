@@ -4,9 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.sme.SmeData
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -42,8 +40,10 @@ interface PrivateDataApi {
     )
     fun postSmeJsonAndDocuments(
         @RequestPart
-        companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
+        companyAssociatedSmeData: String,
         @RequestPart documents: Array<MultipartFile>,
     ):
         ResponseEntity<DataMetaInformation>
 }
+
+// TODO nginx beschwert sich noch wenn die pdfs zu groß sind!  dort musst du auch die maxxfile size einstellen
