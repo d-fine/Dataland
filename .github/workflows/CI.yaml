@@ -389,7 +389,7 @@ jobs:
       - uses: actions/download-artifact@v4
         name: PythonUnitTestCoverage
         with:
-          pattern: PythonUnitTestCoverage-*
+          pattern: PythonUnitTestCoverage
           path: python-coverage
           merge-multiple: true
       - uses: actions/download-artifact@v4
@@ -420,6 +420,11 @@ jobs:
           pattern: lcovResults-*
           path: fe-coverage
           merge-multiple: true
+      - name: debug
+        run: |
+          ls -lisa
+          echo Folder
+          ls -lisa /home/runner/work/Dataland/Dataland/fe-coverage/*
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
