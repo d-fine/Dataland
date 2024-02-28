@@ -9,6 +9,7 @@ import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -30,23 +31,11 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
     return timestamp
 }
 
-fun findStoredDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.DataTypes,
-): StoredDataRequest.DataType {
-    return StoredDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
-}
-
-fun findAggregatedDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.DataTypes,
-): AggregatedDataRequest.DataType {
-    return AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
-}
-
 fun findRequestControllerApiDataTypeForFramework(
-    framework: BulkDataRequest.DataTypes,
+    framework: String,
 ): RequestControllerApi.DataTypesGetAggregatedDataRequests {
     return RequestControllerApi.DataTypesGetAggregatedDataRequests.entries.find { dataType ->
-        dataType.value == framework.value
+        dataType.value == framework
     }!!
 }
 
@@ -164,19 +153,19 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 
 fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
-    framework: BulkDataRequest.DataTypes,
+    framework: String,
     reportingPeriod: String,
     dataRequestCompanyIdentifierValue: String?,
 ) {
     assertEquals(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
-            storedDataRequest.dataType == findStoredDataRequestDataTypeForFramework(framework) &&
+            storedDataRequest.dataType == framework &&
                 storedDataRequest.reportingPeriod == reportingPeriod &&
                 storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
         }.size,
         "For dataland company Id $dataRequestCompanyIdentifierValue " +
-            "and the framework ${framework.value} there is not exactly one newly stored request as expected.",
+            "and the framework $framework there is not exactly one newly stored request as expected.",
     )
 }
 
@@ -186,13 +175,13 @@ fun check400ClientExceptionErrorMessage(clientException: ClientException) {
 
 fun causeClientExceptionByBulkDataRequest(
     identifiers: Set<String>,
-    dataTypes: Set<BulkDataRequest.DataTypes>,
+    dataTypes: Set<DataTypeEnum>,
     reportingPeriods: Set<String>,
 ): ClientException {
     val clientException = assertThrows<ClientException> {
         RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER).postBulkDataRequest(
             BulkDataRequest(
-                identifiers, dataTypes, reportingPeriods,
+                identifiers, dataTypes.map { it.value }.toSet(), reportingPeriods,
             ),
         )
     }
@@ -201,7 +190,7 @@ fun causeClientExceptionByBulkDataRequest(
 
 private fun errorMessageForEmptyInputConfigurations(
     identifiers: Set<String>,
-    dataTypes: Set<BulkDataRequest.DataTypes>,
+    dataTypes: Set<DataTypeEnum>,
     reportingPeriods: Set<String>,
 ): String {
     return when {
@@ -229,7 +218,7 @@ private fun errorMessageForEmptyInputConfigurations(
 
 fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
     identifiers: Set<String>,
-    dataTypes: Set<BulkDataRequest.DataTypes>,
+    dataTypes: Set<DataTypeEnum>,
     reportingPeriods: Set<String>,
 ) {
     val logger = LoggerFactory.getLogger(BulkDataRequestsTest::class.java)
@@ -285,34 +274,34 @@ fun checkErrorMessageForAmbivalentIdentifiersInBulkRequest(clientException: Clie
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
-    framework: BulkDataRequest.DataTypes,
+    framework: String,
     reportingPeriod: String,
     identifierValue: String,
     count: Long,
 ) {
     val companyIdForIdentifierValue = getUniqueDatalandCompanyIdForIdentifierValue(identifierValue)
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
-        aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
+        aggregatedDataRequest.dataType == framework &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
             aggregatedDataRequest.datalandCompanyId == companyIdForIdentifierValue
     }
     assertEquals(
         1,
         matchingAggregatedRequests.size,
-        "For the $identifierValue and the framework ${framework.value} " +
+        "For the $identifierValue and the framework $framework " +
             "there is not exactly one aggregated request as expected.",
     )
     assertEquals(
         count,
         matchingAggregatedRequests[0].count,
         "For the aggregated data request with  $identifierValue and the " +
-            "framework ${framework.value} the count is not as expected.",
+            "framework $framework the count is not as expected.",
     )
 }
 
 fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
-    frameworks: Set<BulkDataRequest.DataTypes>,
+    frameworks: Set<String>,
     reportingPeriods: Set<String>,
     identifiers: Set<String>,
     count: Long,

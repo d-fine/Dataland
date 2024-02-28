@@ -4,6 +4,7 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -53,7 +54,7 @@ class BulkDataRequestsTest {
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val identifiers = uniqueIdentifiersMap.values.toSet()
-        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val dataTypes = enumValues<DataTypeEnum>().map { it.value }.toSet()
         val reportingPeriods = setOf("2022", "2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
@@ -86,7 +87,7 @@ class BulkDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(
                 validIdentifiers + invalidIdentifiers,
-                setOf(BulkDataRequest.DataTypes.lksg),
+                setOf(DataTypeEnum.lksg.value),
                 setOf("2023"),
             ),
         )
@@ -109,7 +110,7 @@ class BulkDataRequestsTest {
         val identifiersForBulkRequest = setOf(
             leiForCompany, isinForCompany, identifierValueForUnknownCompany,
         )
-        val frameworksForBulkRequest = listOf(BulkDataRequest.DataTypes.lksg)
+        val frameworksForBulkRequest = listOf(DataTypeEnum.lksg.value)
         val reportingPeriod = "2023"
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
@@ -128,7 +129,7 @@ class BulkDataRequestsTest {
 
     private fun checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
         requestsStoredAfterBulkRequest: List<StoredDataRequest>,
-        framework: BulkDataRequest.DataTypes,
+        framework: String,
         reportingPeriod: String,
         companyId: String,
         identifierValueForUnknownCompany: String,
@@ -148,7 +149,7 @@ class BulkDataRequestsTest {
     }
 
     private fun checkThatAlreadyExistingRequestsAreNeitherStoredForKnownNorForUnknownCompanies(
-        dataTypes: List<BulkDataRequest.DataTypes>,
+        dataTypes: List<String>,
         reportingPeriods: List<String>,
         companyId: String,
         identifierForUnknownCompany: String,
@@ -194,7 +195,7 @@ class BulkDataRequestsTest {
             identifierMapForUnknownCompany
                 .getValue(IdentifierType.lei),
         )
-        val frameworks = listOf(BulkDataRequest.DataTypes.lksg)
+        val frameworks = listOf(DataTypeEnum.lksg.value)
         val reportingPeriods = listOf("2023")
         val firstIdentifiers = setOf(leiForCompany, identifierMapForUnknownCompany.values.toList()[0])
         val secondIdentifiers = setOf(isinForCompany, identifierMapForUnknownCompany.values.toList()[0])
@@ -211,7 +212,7 @@ class BulkDataRequestsTest {
     @Test
     fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
         val validIdentifiers = setOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
-        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val dataTypes = enumValues<DataTypeEnum>().toSet()
         val reportingPeriods = setOf("2023")
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptySet(), reportingPeriods)
@@ -235,7 +236,7 @@ class BulkDataRequestsTest {
             IdentifierType.permId to permId,
             IdentifierType.lei to leiId,
         )
-        val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
+        val frameworks = setOf(DataTypeEnum.lksg)
         val reportingPeriods = setOf("2023")
         val companyOne = CompanyInformation(
             companyName = "companyOne",
