@@ -31,11 +31,11 @@ appear.
   - keycloak:
     - [ ] @zxcvbn-ts/language-en > 2.1.0 and @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images) https://jira.d-fine.dev/browse/DALA-1945
     - [ ] @types/node > 20.10.8 causes issues with vite > 4.5.1 which causes build to fail https://jira.d-fine.dev/browse/DALA-3675
-- [ ] Update e2etests/Dockerfile update breaks the build
+- [ ] Update e2etests/Dockerfile update breaks the build https://jira.d-fine.dev/browse/DALA-2242
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
-- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Postgres can't be upgraded to 16 as existing data is not compatible.
+- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. https://jira.d-fine.dev/browse/DALA-3135
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
 - [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from `config/detekt.yml`, 
       at latest once the refactoring of the APIs is done this must be reevaluated
@@ -157,7 +157,7 @@ check that all ssh-keys are set and erased from people that have left
   disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
 - [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
-  maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed
+  maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
