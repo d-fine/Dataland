@@ -47,11 +47,10 @@ class BulkDataRequestManager(
             }
             acceptedIdentifiers.add(userProvidedIdentifierValue)
             for (framework in bulkDataRequest.dataTypes) {
-                val frameworkString = getDataTypeEnumForFrameworkName(framework)
                 for (reportingPeriod in bulkDataRequest.reportingPeriods) {
                     utils.storeDataRequestEntityIfNotExisting(
                         datalandCompanyId,
-                        frameworkString,
+                        getDataTypeEnumForFrameworkName(framework),
                         reportingPeriod,
                     )
                 }
