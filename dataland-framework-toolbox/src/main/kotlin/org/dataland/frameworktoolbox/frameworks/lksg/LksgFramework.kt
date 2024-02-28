@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.lksg
 
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
@@ -17,7 +17,7 @@ import java.io.File
  * The Lksg Framework
  */
 @Component
-class LksgFramework : InDevelopmentPavedRoadFramework(
+class LksgFramework : PavedRoadFramework(
     identifier = "lksg",
     label = "LkSG",
     explanation = "Lieferkettensorgfaltspflichtengesetz",

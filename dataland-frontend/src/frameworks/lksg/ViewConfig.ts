@@ -169,11 +169,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {};
               return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
                 "Subcontracting Companies Countries",
               );
             },
@@ -852,11 +849,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.highRiskCountriesRawMaterials == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {};
               return formatListOfStringsForDatatable(
-                dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+                dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation,
                 "High Risk Countries Raw Materials Location",
               );
             },
@@ -877,11 +871,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.highRiskCountriesActivity == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {};
               return formatListOfStringsForDatatable(
-                dataset.governance?.generalViolations?.highRiskCountries?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+                dataset.governance?.generalViolations?.highRiskCountries,
                 "High Risk Countries",
               );
             },
@@ -902,11 +893,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.highRiskCountriesProcurement == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {};
               return formatListOfStringsForDatatable(
-                dataset.governance?.generalViolations?.highRiskCountriesProcurementName?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+                dataset.governance?.generalViolations?.highRiskCountriesProcurementName,
                 "High Risk Countries Procurement Name",
               );
             },

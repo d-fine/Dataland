@@ -13,7 +13,6 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
-import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
  * An ISO2 Country Code represents a selection of string-options generated from country Codes. Multiple entries can be
@@ -44,18 +43,15 @@ open class Iso2CountryCodesMultiSelectComponent(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "{\n" +
-                        generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement() +
+                    "{\n return formatListOfStringsForDatatable(" +
+                        getTypescriptFieldAccessor() + ',' +
+                        "'${escapeEcmaScript(label)}'" +
+                        ")" +
                         "}",
                     setOf(
                         TypeScriptImport(
                             "formatListOfStringsForDatatable",
                             "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
                         ),
                     ),
                 ),
@@ -96,13 +92,5 @@ open class Iso2CountryCodesMultiSelectComponent(
                 ),
             ),
         )
-    }
-
-    private fun generateReturnStatement(): String {
-        return "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
-            "   getOriginalNameFromTechnicalName(it, mappings)), " +
-            "'${escapeEcmaScript(label)}'" +
-            ")"
     }
 }
