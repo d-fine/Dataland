@@ -21,13 +21,13 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*'"
   },
   "dependencies": {
-    "@formkit/core": "^1.5.3",
-    "@formkit/themes": "^1.5.3",
-    "@formkit/vue": "^1.5.3",
+    "@formkit/core": "^1.5.9",
+    "@formkit/themes": "^1.5.9",
+    "@formkit/vue": "^1.5.9",
     "@ibm/plex": "^6.4.0",
     "axios": "^1.6.7",
     "currency-codes": "^2.1.0",
-    "i18n-iso-countries": "^7.8.0",
+    "i18n-iso-countries": "^7.10.0",
     "keycloak-js": "^22.0.5",
     "material-icons": "^1.13.12",
     "pinia": "^2.1.7",
