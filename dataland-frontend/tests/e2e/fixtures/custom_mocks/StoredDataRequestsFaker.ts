@@ -88,9 +88,9 @@ export function manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
   dataType?: DataTypeEnum,
   companyId?: string,
 ): StoredDataRequest {
-  input.requestStatus = requestStatus || input.requestStatus;
-  input.reportingPeriod = reportingPeriod || input.reportingPeriod;
-  input.dataType = dataType || input.dataType;
-  input.datalandCompanyId = companyId || input.datalandCompanyId;
+  input.requestStatus = requestStatus ?? input.requestStatus;
+  input.reportingPeriod = reportingPeriod ?? input.reportingPeriod;
+  input.dataType = dataType ?? input.dataType;
+  input.datalandCompanyId = companyId ?? input.datalandCompanyId;
   return input;
 }
