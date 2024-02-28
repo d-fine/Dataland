@@ -16,8 +16,8 @@ https://jira.d-fine.dev/browse/DALA-3137
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors
-- [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
+- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors 
+- [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI https://jira.d-fine.dev/browse/DALA-3676
 - [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
   - frontend:
     - [ ] keycloak-js > 22.0.5
@@ -102,8 +102,6 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
-- [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
