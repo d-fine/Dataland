@@ -221,31 +221,37 @@
         "tags": [
           "sme-data-controller"
         ],
-        "operationId": "postCompanyAssociatedSmeData",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
+        "summary": "a",
+        "description": "b",
+        "operationId": "postSmeJsonAndDocuments",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                "required": [
+                  "companyAssociatedSmeData",
+                  "documents"
+                ],
+                "type": "object",
+                "properties": {
+                  "companyAssociatedSmeData": {
+                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  },
+                  "documents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successfully added data to the data store.",
+            "description": "S.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1765,142 +1771,6 @@
             }
           }
         }
-      }
-    },
-    "/data/sme/{dataId}": {
-      "get": {
-        "tags": [
-          "sme-data-controller"
-        ],
-        "operationId": "getCompanyAssociatedSmeData",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data set.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/sme/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "sme-data-controller"
-        ],
-        "operationId": "getAllCompanySmeData",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
       }
     },
     "/data/sfdr/{dataId}": {
@@ -13659,21 +13529,6 @@
           }
         }
       },
-      "DataAndMetaInformationSmeData": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SmeData"
-          }
-        }
-      },
       "DataAndMetaInformationSfdrData": {
         "required": [
           "data",
@@ -13794,12 +13649,12 @@
           "companyId": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
           },
           "countryCode": {
             "type": "string"
