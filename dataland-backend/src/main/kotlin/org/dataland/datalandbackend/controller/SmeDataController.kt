@@ -26,7 +26,7 @@ class SmeDataController(
     @Autowired var myObjectMapper: ObjectMapper,
 ) : PrivateDataApi {
 
-    // @Operation(operationId = "postCompanyAssociatedSmeData")
+    // @Operation(operationId = "postCompanyAssociatedSmeData") TODO?
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>,
