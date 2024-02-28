@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.enums.p2p
+package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import io.swagger.v3.oas.annotations.media.Schema
 

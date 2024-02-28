@@ -69,7 +69,7 @@ class RequestController(
         userId: String?,
         requestStatus: RequestStatus?,
         reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?,
+        datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>> {
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
@@ -77,7 +77,7 @@ class RequestController(
                 userId,
                 requestStatus,
                 reportingPeriod,
-                dataRequestCompanyIdentifierValue,
+                datalandCompanyId,
             ),
         )
     }

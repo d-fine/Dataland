@@ -190,6 +190,6 @@ interface RequestApi {
         @RequestParam userId: String?,
         @RequestParam requestStatus: RequestStatus?,
         @RequestParam reportingPeriod: String?,
-        @RequestParam dataRequestCompanyIdentifierValue: String?,
+        @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>>
 }
