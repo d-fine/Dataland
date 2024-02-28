@@ -8,7 +8,6 @@ runs:
       uses: actions/download-artifact@v4
       with:
         pattern: dockerImageVersions-*
-        path: dockerImageVersions
         merge-multiple: true
     - name: Make Image Versions Available
       shell: bash

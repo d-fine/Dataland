@@ -406,13 +406,11 @@ jobs:
         name: JaCoCoResultsUnitTests
         with:
           pattern: JaCoCoResultsUnitTests-*
-          path: JaCoCoResultsUnitTests
           merge-multiple: true
       - uses: actions/download-artifact@v4
         name: JaCoCoResultsE2ETest
         with:
           pattern: JaCoCoResultsE2ETest-*
-          path: JaCoCoResultsE2ETest
           merge-multiple: true
       - uses: actions/download-artifact@v4
         name: lcovResults
