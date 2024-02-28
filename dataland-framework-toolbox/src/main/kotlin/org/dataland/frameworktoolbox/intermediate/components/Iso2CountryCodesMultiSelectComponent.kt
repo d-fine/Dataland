@@ -36,23 +36,28 @@ open class Iso2CountryCodesMultiSelectComponent(
             ),
         )
     }
-
+    private val mappings = "const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);"
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "{\n return formatListOfStringsForDatatable(" +
-                        getTypescriptFieldAccessor() + ',' +
-                        "'${escapeEcmaScript(label)}'" +
-                        ")" +
+                    "{\n" +
+                        mappings +
+                        generateReturnStatement() +
                         "}",
                     setOf(
                         TypeScriptImport(
                             "formatListOfStringsForDatatable",
                             "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
                         ),
+                        TypeScriptImport(
+                            "getOriginalNameFromTechnicalName",
+                            "@/components/resources/dataTable/conversion/Utils",
+                        ),
+                        TypeScriptImport("DropdownDatasetIdentifier", "@/utils/PremadeDropdownDatasets"),
+                        TypeScriptImport("getDatasetAsMap", "@/utils/PremadeDropdownDatasets"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -77,7 +82,7 @@ open class Iso2CountryCodesMultiSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[ \"DE\", \"AL\", \"AZ\", \"EN\", \"US\", \"DK\"]"
+        val formattedString = "[ \"DE\", \"AL\", \"AZ\", \"GB\", \"US\", \"DK\"]"
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
@@ -92,5 +97,13 @@ open class Iso2CountryCodesMultiSelectComponent(
                 ),
             ),
         )
+    }
+
+    private fun generateReturnStatement(): String {
+        return "return formatListOfStringsForDatatable(" +
+            "${getTypescriptFieldAccessor()}?.map(it => \n" +
+            "   getOriginalNameFromTechnicalName(it, mappings)), " +
+            "'${escapeEcmaScript(label)}'" +
+            ")"
     }
 }

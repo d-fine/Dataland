@@ -28,6 +28,17 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
 }
 
 /**
+ * Returns country list as a map
+ * @param datasetIdentifier the identifier of the common dataset to retrieve
+ * @returns the generated map
+ */
+export function getDatasetAsMap(datasetIdentifier: DropdownDatasetIdentifier): { [p: string]: string } {
+  const mapOfCountries = new Map<string, string>();
+  getDataset(datasetIdentifier).forEach((element) => mapOfCountries.set(element.value, element.label));
+  return Object.fromEntries(mapOfCountries);
+}
+
+/**
  * Retrieves a dropdown dataset of currency codes
  * @returns a dropdown dataset of currency codes
  */
