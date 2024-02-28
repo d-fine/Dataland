@@ -16,8 +16,7 @@ https://jira.d-fine.dev/browse/DALA-3137
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
-- [ ] kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
+- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors
 - [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
 - [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
   - frontend:
