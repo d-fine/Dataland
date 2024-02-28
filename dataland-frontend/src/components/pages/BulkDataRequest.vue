@@ -224,7 +224,6 @@ import { AxiosError } from "axios";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 import { type BulkDataRequest } from "@clients/communitymanager";
-import { valueOf } from "node";
 
 export default defineComponent({
   name: "BulkDataRequest",
