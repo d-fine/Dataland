@@ -20,18 +20,16 @@ appear.
 - [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
 - [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
   - frontend:
-    - [ ] axios was updated to latest version 1.6.7 in sprint 60; however, it caused issues before when updating to > 1.6.2, so keep an eye on it)
     - [ ] keycloak-js > 22.0.5
     - [ ] primevue > 3.44.0 https://jira.d-fine.dev/browse/DALA-3674
     - [ ] vue > 3.4.5
     - [ ] @vue/tsconfig > 0.1.3 (Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
       project and unresolved imports that are hard to fix))
     - [ ]  cypress > 12.11.0 (Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test
-      `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress:
-      https://github.com/cypress-io/cypress/issues/26902)
+      `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress
+      https://jira.d-fine.dev/browse/DALA-2101
   - keycloak:
-    - [ ] @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images)
-    - [ ] @zxcvbn-ts/language-en > 2.1.0(issues in rebuilding keycloak Docker images)
+    - [ ] @zxcvbn-ts/language-en > 2.1.0 and @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images) https://jira.d-fine.dev/browse/DALA-1945
     - [ ] @types/node > 20.10.8 causes issues with vite > 4.5.1 which causes build to fail https://jira.d-fine.dev/browse/DALA-3675
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
