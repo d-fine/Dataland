@@ -18,6 +18,7 @@ include(
     "dataland-batch-manager",
     "dataland-framework-toolbox",
     "dataland-community-manager",
+    "dataland-email-service",
 )
 
 plugins {
