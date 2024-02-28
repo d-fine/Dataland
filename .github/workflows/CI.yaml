@@ -29,18 +29,6 @@ jobs:
           vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
-  merge-docker-images:
-    runs-on: ubuntu-latest
-    needs:
-      - rebuild-docker-images
-    if: always()
-    steps:
-      - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: dockerImageVersions
-          pattern: dockerImageVersions-*
-          delete-merged: true
   frontend-component-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -242,7 +230,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     needs:
-      - merge-docker-images
+      - rebuild-docker-images
     strategy:
       fail-fast: false
       matrix:
@@ -368,62 +356,13 @@ jobs:
         if: always()
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
-  merge-test-reports:
-    runs-on: ubuntu-latest
-    needs:
-      - gradle-based-tests
-      - framework-toolbox-tests
-      - e2e-tests
-    if: always()
-    steps:
-      - name: Merge Jacoco Unit Test Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: JaCoCoResultsUnitTests
-          pattern: JaCoCoResultsUnitTests-*
-          delete-merged: true
-      - name: Merge Jacoco E2E Test Artifacts
-        uses: actions/upload-artifact/merge@v4
-        if: always()
-        with:
-          name: JaCoCoResultsE2ETest
-          pattern: JaCoCoResultsE2ETest-*
-          delete-merged: true
-      - name: Merge Python Test Artifacts
-        uses: actions/upload-artifact/merge@v4
-        if: always()
-        with:
-          name: PythonE2eTestCoverage
-          pattern: PythonE2eTestCoverage-*
-          delete-merged: true
-      - name: Merge lcovResults Test Artifacts
-        uses: actions/upload-artifact/merge@v4
-        if: always()
-        with:
-          name: lcovResults
-          pattern: lcovResults-*
-          delete-merged: true
-      - name: Merge E2E Test Artifacts
-        uses: actions/upload-artifact/merge@v4
-        if: always()
-        with:
-          name: e2eTestReports
-          pattern: e2eTestReports-*
-          delete-merged: true
-      - name: Merge E2E DB dump Artifacts
-        uses: actions/upload-artifact/merge@v4
-        if: always()
-        with:
-          name: e2eTestDatabaseDumps
-          pattern: e2eTestDatabaseDumps-*
-          delete-merged: true
   sonar:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     needs:
       - frontend-component-tests
       - python-tests
-      - merge-test-reports
+      - e2e-tests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -448,13 +387,15 @@ jobs:
       - uses: actions/download-artifact@v4
         name: PythonUnitTestCoverage
         with:
-          name: PythonUnitTestCoverage
+          pattern: PythonUnitTestCoverage-*
           path: python-coverage
+          merge-multiple: true
       - uses: actions/download-artifact@v4
         name: PythonE2eTestCoverage
         with:
-          name: PythonE2eTestCoverage
+          pattern: PythonE2eTestCoverage-*
           path: python-coverage
+          merge-multiple: true
       - name: Convert Python coverage paths
         if: always()
         run: |
@@ -464,16 +405,21 @@ jobs:
       - uses: actions/download-artifact@v4
         name: JaCoCoResultsUnitTests
         with:
-          name: JaCoCoResultsUnitTests
+          pattern: JaCoCoResultsUnitTests-*
+          path: JaCoCoResultsUnitTests
+          merge-multiple: true
       - uses: actions/download-artifact@v4
         name: JaCoCoResultsE2ETest
         with:
-          name: JaCoCoResultsE2ETest
+          pattern: JaCoCoResultsE2ETest-*
+          path: JaCoCoResultsE2ETest
+          merge-multiple: true
       - uses: actions/download-artifact@v4
         name: lcovResults
         with:
-          name: lcovResults
+          pattern: lcovResults-*
           path: fe-coverage
+          merge-multiple: true
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
@@ -512,7 +458,7 @@ jobs:
           fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
         run: git log --since $(date -d "- 35 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
-  merge-parameter:
+  merge-artefacts:
     runs-on: ubuntu-latest
     needs:
       - sonar
@@ -531,11 +477,60 @@ jobs:
           name: dockerLogs
           pattern: dockerLogs-*
           delete-merged: true
+      - name: Merge Jacoco E2E Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: JaCoCoResultsE2ETest
+          pattern: JaCoCoResultsE2ETest-*
+          delete-merged: true
+      - name: Merge Python Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: PythonE2eTestCoverage
+          pattern: PythonE2eTestCoverage-*
+          delete-merged: true
+      - name: Merge lcovResults Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: lcovResults
+          pattern: lcovResults-*
+          delete-merged: true
+      - name: Merge E2E Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: e2eTestReports
+          pattern: e2eTestReports-*
+          delete-merged: true
+      - name: Merge E2E DB dump Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: e2eTestDatabaseDumps
+          pattern: e2eTestDatabaseDumps-*
+          delete-merged: true
+      - name: Merge Jacoco Unit Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: JaCoCoResultsUnitTests
+          pattern: JaCoCoResultsUnitTests-*
+          delete-merged: true
+      - name: Merge Docker Image Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: dockerImageVersions
+          pattern: dockerImageVersions-*
+          delete-merged: true
   summary:
     runs-on: ubuntu-latest
     if: success()
     needs:
-      - merge-parameter
+      - merge-artefacts
       - manual-maintenance-check
     steps:
       - name: Summary of this workflow's overall outcome

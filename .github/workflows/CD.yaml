@@ -67,7 +67,7 @@ jobs:
   merge-docker-images:
     runs-on: ubuntu-latest
     needs:
-      - rebuild-docker-images
+      - deploy-to-server-with-latest-built-images
     steps:
       - name: Merge Docker Image Artifacts
         uses: actions/upload-artifact/merge@v4
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
-      - merge-docker-images
+      - rebuild-docker-images
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
     steps:
