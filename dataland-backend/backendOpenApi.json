@@ -13788,9 +13788,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
@@ -13799,6 +13796,9 @@
             "nullable": true
           },
           "headquarters": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "countryCode": {
@@ -13829,10 +13829,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

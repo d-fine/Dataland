@@ -1,9 +1,9 @@
 package org.dataland.datalandcommunitymanager.utils
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -24,10 +24,6 @@ class DataRequestProcessingUtils(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
-    private val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
-    private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
-    private val permIdRegex = Regex("^\\d+$")
-
     /**
      * We want to avoid users from using other authentication methods than jwt-authentication, such as
      * api-key-authentication.
@@ -39,39 +35,22 @@ class DataRequestProcessingUtils(
     }
 
     /**
-     * Determines the type corresponding to the value of a provided company identifier
-     * @param identifierValue the identifier value
-     * @return the identifier type
-     */
-    fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
-        val matchingRegexes =
-            listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
-        return when (matchingRegexes.size) {
-            0 -> null
-            1 -> {
-                when {
-                    matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
-                    matchingRegexes[0] == isinRegex -> DataRequestCompanyIdentifierType.Isin
-                    matchingRegexes[0] == permIdRegex -> DataRequestCompanyIdentifierType.PermId
-                    else -> null
-                }
-            }
-
-            else -> DataRequestCompanyIdentifierType.MultipleRegexMatches
-        }
-    }
-
-    /**
      * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
      * @param identifierValue the identifier value
      * @return the company ID or null
      */
     fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
-        var datalandCompanyId: String? = null
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
-        if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
+        val datalandCompanyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+            matchingCompanyIdsAndNamesOnDataland.first().companyId
+        } else if (matchingCompanyIdsAndNamesOnDataland.size > 1) {
+            throw InvalidInputApiException(
+                summary = "No unique identifier. Multiple companies could be found.",
+                message = "Multiple companies have been found for the identifier you specified.",
+            )
+        } else {
+            null
         }
         dataRequestLogger
             .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
@@ -80,30 +59,27 @@ class DataRequestProcessingUtils(
 
     /**
      * Stores a DataRequestEntity from all necessary parameters if this object does not already exist in the database
-     * @param identifierValue the value of the company identifier
-     * @param identifierType the type of the company identifier
+     * @param datalandCompanyId the companyID in dataland
      * @param dataType the enum entry corresponding to the framework
      * @param reportingPeriod the reporting period
      * @param contacts a list of email addresses to inform about the potentially stored data request
      * @param message a message to equip the notification with
      */
     fun storeDataRequestEntityIfNotExisting(
-        identifierValue: String,
-        identifierType: DataRequestCompanyIdentifierType,
+        datalandCompanyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
         contacts: Set<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
-        findAlreadyExistingDataRequestForCurrentUser(identifierValue, dataType, reportingPeriod)?.also {
+        findAlreadyExistingDataRequestForCurrentUser(datalandCompanyId, dataType, reportingPeriod)?.also {
             return it
         }
         val dataRequestEntity = DataRequestEntity(
             DatalandAuthentication.fromContext().userId,
             dataType,
             reportingPeriod,
-            identifierType,
-            identifierValue,
+            datalandCompanyId,
             Instant.now().toEpochMilli(),
         )
         dataRequestRepository.save(dataRequestEntity)
@@ -123,7 +99,7 @@ class DataRequestProcessingUtils(
     ): DataRequestEntity? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
         val foundRequest = dataRequestRepository
-            .findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 requestingUserId, identifierValue, framework.name, reportingPeriod,
             )
         if (foundRequest != null) {

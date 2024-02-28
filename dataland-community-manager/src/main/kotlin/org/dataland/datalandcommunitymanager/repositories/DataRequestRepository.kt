@@ -1,9 +1,9 @@
 package org.dataland.datalandcommunitymanager.repositories
 
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -23,13 +23,14 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
-     * @param dataRequestCompanyIdentifierValue to check for
+     * @param datalandCompanyId to check for
      * @param dataType to check for
+     * @param reportingPeriod
      * @returns a Boolean stating the result of the check
      */
-    fun findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
+    fun findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
         userId: String,
-        dataRequestCompanyIdentifierValue: String,
+        datalandCompanyId: String,
         dataType: String,
         reportingPeriod: String,
     ): DataRequestEntity?
@@ -37,7 +38,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.
      * It also filters these results based on the provided identifier value and frameworks.
-     * @param identifierValue to check for
+     * @param datalandCompanyId to check for
      * @param reportingPeriod to check for
      * @param dataTypes to check for
      * @param status to check for
@@ -47,17 +48,16 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
             "d.dataType, " +
             "d.reportingPeriod, " +
-            "d.dataRequestCompanyIdentifierType, " +
-            "d.dataRequestCompanyIdentifierValue, " +
+            "d.datalandCompanyId, " +
             "d.requestStatus, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
             "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
             "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
-            "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
+            "  AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
             "  AND (:status IS NULL OR d.requestStatus = :status) " +
-            "GROUP BY d.dataType, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
-            "  d.dataRequestCompanyIdentifierValue, d.requestStatus",
+            "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, d.requestStatus",
+
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
@@ -83,8 +83,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.dataRequestCompanyIdentifierValueFilterLength} =0 " +
-            "OR d.dataRequestCompanyIdentifierValue = :#{#searchFilter.dataRequestCompanyIdentifierValueFilter})",
+            "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
+            "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyIdFilter})",
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
@@ -106,7 +106,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /** This method updates the Request Status to Answered for an open request with a specific framework,
      * reporting period as well as company identifier
-     * @param dataRequestCompanyIdentifierValue to check for
+     * @param datalandCompanyId to check for
      * @param reportingPeriod to check for
      * @param dataType to check for
      * @returns the aggregated data requests
@@ -123,10 +123,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
             "AND " +
             "d.reportingPeriod = :#{#reportingPeriod} AND " +
-            "d.dataRequestCompanyIdentifierValue = :#{#dataRequestCompanyIdentifierValue})",
+            "d.datalandCompanyId = :#{#datalandCompanyId})",
     )
     fun updateDataRequestEntitiesFromOpenToAnswered(
-        dataRequestCompanyIdentifierValue: String,
+        datalandCompanyId: String,
         reportingPeriod: String,
         dataType: String,
     )

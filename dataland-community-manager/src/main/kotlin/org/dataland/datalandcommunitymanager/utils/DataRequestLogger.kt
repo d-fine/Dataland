@@ -40,7 +40,7 @@ class DataRequestLogger {
      */
     fun logMessageForReceivingSingleDataRequest(companyIdentifier: String) {
         bulkDataRequestLogger.info(
-            "Received a single data request with companyIdentifier $companyIdentifier by a user. " +
+            "Received a single data request with Identifier $companyIdentifier by a user. " +
                 "-> Processing it",
         )
     }
