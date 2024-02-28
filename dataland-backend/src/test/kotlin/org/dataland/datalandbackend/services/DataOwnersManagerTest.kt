@@ -1,12 +1,13 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandemail.email.EmailSender
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -31,8 +32,8 @@ class DataOwnersManagerTest {
         dataOwnersManager = DataOwnersManager(
             mockDataOwnersRepository,
             mockCompanyRepository,
-            mock(EmailSender::class.java),
-            mock(DataOwnershipRequestEmailBuilder::class.java),
+            mock(CloudEventMessageHandler::class.java),
+            mock(ObjectMapper::class.java),
         )
     }
 

@@ -476,6 +476,20 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  email-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_test:${DATALAND_EMAIL_SERVICE_TEST_VERSION}}
+    networks:
+      - internal
+    expose:
+      - "8080"
+    environment:
+      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      NOTIFICATION_INTERNAL_RECEIVERS_DATA_REQUEST: ${NOTIFICATION_INTERNAL_RECEIVERS_DATA_REQUEST}
+      NOTIFICATION_INTERNAL_CC_DATA_REQUEST: ${NOTIFICATION_INTERNAL_CC_DATA_REQUEST}
+      DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
 networks:
   internal:
   external:
