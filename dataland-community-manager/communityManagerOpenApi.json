@@ -914,7 +914,17 @@
               "sme"
             ],
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
             }
           },
           "reportingPeriods": {
@@ -964,7 +974,17 @@
         "type": "object",
         "properties": {
           "dataType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme",
+              "esg-questionnaire",
+              "heimathafen"
+            ]
           },
           "reportingPeriod": {
             "type": "string"
