@@ -158,7 +158,7 @@
                           >No Frameworks added yet</span
                         >
                         <span class="form-list-item" :key="it" v-for="it in selectedFrameworks">
-                          {{ it }}
+                          {{ humanizeStringOrNumber(it) }}
                           <em @click="removeItem(it)" class="material-icons">close</em>
                         </span>
                       </div>
@@ -224,6 +224,7 @@ import { AxiosError } from "axios";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 import { type BulkDataRequest } from "@clients/communitymanager";
+import { valueOf } from "node";
 
 export default defineComponent({
   name: "BulkDataRequest",
@@ -294,6 +295,7 @@ export default defineComponent({
   },
 
   methods: {
+    humanizeStringOrNumber,
     /**
      * Check whether reporting periods have been selected
      */
@@ -328,7 +330,11 @@ export default defineComponent({
       return {
         reportingPeriods: new Set(this.selectedReportingPeriods),
         companyIdentifiers: new Set(this.identifiers),
-        dataTypes: new Set(this.selectedFrameworks),
+        dataTypes: new Set(
+          this.selectedFrameworks.map((framework: DataTypeEnum) => {
+            return framework.valueOf();
+          }),
+        ),
       };
     },
     /**
@@ -350,6 +356,7 @@ export default defineComponent({
 
       try {
         const bulkDataRequestObject = this.collectDataToSend();
+        console.log(bulkDataRequestObject);
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
