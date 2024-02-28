@@ -327,9 +327,9 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
-        reportingPeriods: new Set(this.selectedReportingPeriods),
-        companyIdentifiers: new Set(this.identifiers),
-        dataTypes: new Set(this.selectedFrameworks as BulkDataRequestDataTypesEnum[]),
+        reportingPeriods: this.selectedReportingPeriods as Set<string>,
+        companyIdentifiers: this.identifiers as Set<string>,
+        dataTypes: this.selectedFrameworks as Set<BulkDataRequestDataTypesEnum>,
       };
     },
     /**
@@ -351,7 +351,6 @@ export default defineComponent({
 
       try {
         const bulkDataRequestObject = this.collectDataToSend();
-        console.log(bulkDataRequestObject); // todo
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
