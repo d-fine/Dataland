@@ -329,11 +329,7 @@ export default defineComponent({
       return {
         reportingPeriods: new Set(this.selectedReportingPeriods),
         companyIdentifiers: new Set(this.identifiers),
-        dataTypes: new Set(
-          this.selectedFrameworks.map((framework: DataTypeEnum) => {
-            return framework.valueOf();
-          }),
-        ),
+        dataTypes: new Set(this.selectedFrameworks),
       };
     },
     /**
@@ -355,7 +351,7 @@ export default defineComponent({
 
       try {
         const bulkDataRequestObject = this.collectDataToSend();
-        console.log(bulkDataRequestObject);
+        console.log(bulkDataRequestObject); // todo
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
@@ -383,7 +379,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum: DataTypeEnum) => {
         return {
           value: dataTypeEnum,
           label: humanizeStringOrNumber(dataTypeEnum),

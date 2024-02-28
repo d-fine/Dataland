@@ -77,7 +77,7 @@ class DataRequestProcessingUtils(
         }
         val dataRequestEntity = DataRequestEntity(
             DatalandAuthentication.fromContext().userId,
-            dataType,
+            dataType.value,
             reportingPeriod,
             datalandCompanyId,
             Instant.now().toEpochMilli(),
@@ -114,7 +114,6 @@ class DataRequestProcessingUtils(
  * @param frameworkName the name of the framework
  * @return the corresponding enum entry
  */
-fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum {
+fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
     return DataTypeEnum.entries.find { it.value == frameworkName }
-        ?: throw InvalidInputApiException("Framework non-existent", "Framework type is non-existent")
 }

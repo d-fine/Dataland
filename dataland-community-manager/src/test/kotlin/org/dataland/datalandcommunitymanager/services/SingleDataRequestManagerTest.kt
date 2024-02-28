@@ -94,7 +94,7 @@ class SingleDataRequestManagerTest {
     fun `validate that an email is sent for a Dataland company ID provided`() {
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
-            dataType = DataTypeEnum.lksg.value,
+            dataType = DataTypeEnum.lksg,
             reportingPeriods = setOf("1969"),
             contacts = setOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",

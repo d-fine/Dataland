@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -64,7 +65,7 @@ class DataRequestQueryManager(
             )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                aggregatedDataRequestEntity.dataType,
+                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.datalandCompanyId,
                 aggregatedDataRequestEntity.requestStatus,
