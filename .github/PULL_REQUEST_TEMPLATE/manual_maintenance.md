@@ -22,7 +22,7 @@ appear.
   - frontend:
     - [ ] axios was updated to latest version 1.6.7 in sprint 60; however, it caused issues before when updating to > 1.6.2, so keep an eye on it)
     - [ ] keycloak-js > 22.0.5
-    - [ ] primevue > 3.44.0
+    - [ ] primevue > 3.44.0 https://jira.d-fine.dev/browse/DALA-3674
     - [ ] vue > 3.4.5
     - [ ] @vue/tsconfig > 0.1.3 (Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
       project and unresolved imports that are hard to fix))
