@@ -82,7 +82,7 @@ class SingleDataRequestEmailSenderTest {
             mockRequesterAuthentication,
             SingleDataRequest(
                 companyIdentifier = properCompanyId,
-                dataType = dataType,
+                dataType = dataType.value,
                 reportingPeriods = setOf(),
                 contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
@@ -99,7 +99,7 @@ class SingleDataRequestEmailSenderTest {
             mockRequesterAuthentication,
             SingleDataRequest(
                 properCompanyId,
-                dataType,
+                dataType.value,
                 reportingPeriods = reportingPeriods,
                 contacts = setOf(),
                 message = defaultMessage,
@@ -116,7 +116,7 @@ class SingleDataRequestEmailSenderTest {
                 mockRequesterAuthentication,
                 SingleDataRequest(
                     properCompanyId,
-                    dataType,
+                    dataType.value,
                     reportingPeriods = reportingPeriods,
                     contacts = contactEmails,
                     message = defaultMessage,
