@@ -50,12 +50,7 @@
               data-test="directSuppliersHeader"
             />
           </div>
-          <FormKit
-            type="group"
-            name="numberOfSuppliersPerCountryCode"
-            v-model="numberOfSuppliersPerCountryCodeValue"
-            label="Suppliers Per Country"
-          >
+          <FormKit type="group" name="numberOfSuppliersPerCountryCode" label="Suppliers Per Country">
             <div v-for="el in selectedCountries" :key="el.label">
               <div class="justify-content-between flex align-items-center" data-test="supplierCountry">
                 <h5>{{ getCountryNameFromCountryCode(el.value) }}</h5>
@@ -106,7 +101,7 @@ export default defineComponent({
   inject: {
     selectedProcurementCategories: {
       from: "selectedProcurementCategories",
-      default: {} as Map<string, LksgProcurementCategory>,
+      default: {} as { [key: string]: LksgProcurementCategory },
     },
   },
   components: {
@@ -126,7 +121,6 @@ export default defineComponent({
       shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
       selectedCountries: [] as { label: string; value: string }[],
-      numberOfSuppliersPerCountryCodeValue: [],
       getCountryNameFromCountryCode,
     };
   },
@@ -142,8 +136,8 @@ export default defineComponent({
      */
     setPreSelectedCountries() {
       return this.allCountries.filter((element) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
-        this.selectedProcurementCategories[this.name]?.numberOfSuppliersPerCountryCodeValue?.hasOwnProperty(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins,
+        Object.keys(this.selectedProcurementCategories?.[this.name]?.numberOfSuppliersPerCountryCode)?.includes(
           element.value,
         ),
       );

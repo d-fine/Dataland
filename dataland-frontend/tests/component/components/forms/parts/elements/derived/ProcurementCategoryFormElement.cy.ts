@@ -8,7 +8,7 @@ describe("Component tests for the CreateLksgDataset that test dependent fields",
           selectedProcurementCategories: {
             Products: {
               procuredProductTypesAndServicesNaceCodes: ["naceCode1"],
-              numberOfSuppliersPerCountryCodeValue: { AL: 4, AU: 2, DE: 6 },
+              numberOfSuppliersPerCountryCode: { AL: 4, AU: 2, DE: 6 },
               shareOfTotalProcurementInPercent: 72,
             },
           },
