@@ -360,9 +360,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     needs:
+      - e2e-tests
+      - gradle-based-tests
       - frontend-component-tests
       - python-tests
-      - e2e-tests
+      - framework-toolbox-tests
     steps:
       - uses: actions/checkout@v4
         with:
