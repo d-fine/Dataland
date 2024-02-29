@@ -70,7 +70,7 @@ class TemplateEmailMessageListener(
                     "There is no builder for TemplateEmailMessages with typ ${templateEmailMessage.emailTemplateType.name}"
                 )
             emailSender.sendEmail(templateEmailBuilder.buildEmail(
-                receiverEmail = "",
+                receiverEmail = templateEmailMessage.receiver,
                 properties = templateEmailMessage.properties
             ))
         }
