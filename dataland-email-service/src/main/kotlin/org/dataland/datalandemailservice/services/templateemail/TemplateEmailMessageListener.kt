@@ -50,11 +50,11 @@ class TemplateEmailMessageListener(
                     ],
                 ),
                 exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
-                key = [RoutingKeyNames.internalEmail],
+                key = [RoutingKeyNames.templateEmail],
             ),
         ],
     )
-    fun sendInternalEmail(
+    fun sendTemplateEmail(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.Type) type: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
