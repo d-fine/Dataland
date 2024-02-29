@@ -4,10 +4,12 @@ import esgQuestionnaireBaseFrameworkDefinition from "@/frameworks/esg-questionna
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from "@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition";
 import heimathafenBaseFrameworkDefinition from "@/frameworks/heimathafen/BaseFrameworkDefinition";
 import sfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
+import smeBaseFrameworkDefinition from "@/frameworks/sme/BaseFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, BaseFrameworkDefinition<object>> = {
   esgQuestionnaire: esgQuestionnaireBaseFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
   heimathafen: heimathafenBaseFrameworkDefinition,
   sfdr: sfdrBaseFrameworkDefinition,
+  sme: smeBaseFrameworkDefinition,
 };

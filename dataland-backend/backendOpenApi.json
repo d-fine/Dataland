@@ -3569,33 +3569,6 @@
           }
         }
       },
-      "Address": {
-        "required": [
-          "city",
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "streetAndHouseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "postalCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "type": "string"
-          }
-        }
-      },
       "CompanyAssociatedDataSmeData": {
         "required": [
           "companyId",
@@ -3615,16 +3588,7 @@
           }
         }
       },
-      "EnergySourceForHeatingAndHotWater": {
-        "type": "string",
-        "enum": [
-          "Oil",
-          "Gas",
-          "Electric",
-          "DistrictHeating"
-        ]
-      },
-      "NaturalHazard": {
+      "NaturalHazardsCoveredOptions": {
         "type": "string",
         "enum": [
           "Hail",
@@ -3635,27 +3599,6 @@
           "Snow"
         ]
       },
-      "PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower": {
-        "type": "string",
-        "enum": [
-          "LessThan25",
-          "Between25And50",
-          "Between50And75",
-          "GreaterThan75"
-        ]
-      },
-      "PercentRangeForInvestmentsInEnergyEfficiency": {
-        "type": "string",
-        "enum": [
-          "LessThan1",
-          "Between1And5",
-          "Between5And10",
-          "Between10And15",
-          "Between15And20",
-          "Between20And25",
-          "GreaterThan25"
-        ]
-      },
       "SmeData": {
         "required": [
           "general"
@@ -3664,14 +3607,6 @@
         "properties": {
           "general": {
             "$ref": "#/components/schemas/SmeGeneral"
-          },
-          "production": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeProduction"
-              }
-            ]
           },
           "power": {
             "nullable": true,
@@ -3700,11 +3635,11 @@
           "basicInformation": {
             "$ref": "#/components/schemas/SmeGeneralBasicInformation"
           },
-          "companyFinancials": {
+          "financialInformation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmeGeneralCompanyFinancials"
+                "$ref": "#/components/schemas/SmeGeneralFinancialInformation"
               }
             ]
           }
@@ -3712,24 +3647,20 @@
       },
       "SmeGeneralBasicInformation": {
         "required": [
-          "addressOfHeadquarters",
           "fiscalYearStart",
           "numberOfEmployees",
-          "sector"
+          "sectors"
         ],
         "type": "object",
         "properties": {
-          "sector": {
+          "sectors": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "addressOfHeadquarters": {
-            "$ref": "#/components/schemas/Address"
-          },
           "numberOfEmployees": {
-            "type": "number"
+            "type": "integer"
           },
           "fiscalYearStart": {
             "type": "string",
@@ -3737,18 +3668,18 @@
           }
         }
       },
-      "SmeGeneralCompanyFinancials": {
+      "SmeGeneralFinancialInformation": {
         "type": "object",
         "properties": {
-          "revenueInEUR": {
+          "revenueInEur": {
             "type": "number",
             "nullable": true
           },
-          "operatingCostInEUR": {
+          "operatingCostInEur": {
             "type": "number",
             "nullable": true
           },
-          "capitalAssetsInEUR": {
+          "capitalAssetsInEur": {
             "type": "number",
             "nullable": true
           }
@@ -3778,7 +3709,7 @@
               }
             ]
           },
-          "amountCoveredByInsuranceAgainstNaturalHazards": {
+          "amountCoveredByInsuranceAgainstNaturalHazardsInEur": {
             "type": "number",
             "nullable": true
           },
@@ -3786,7 +3717,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/NaturalHazard"
+              "$ref": "#/components/schemas/NaturalHazardsCoveredOptions"
             }
           }
         }
@@ -3815,7 +3746,7 @@
       "SmePowerConsumption": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMWh": {
+          "powerConsumptionInMwh": {
             "type": "number",
             "nullable": true
           },
@@ -3827,7 +3758,7 @@
               }
             ]
           },
-          "energyConsumptionHeatingAndHotWaterInMWh": {
+          "energyConsumptionHeatingAndHotWaterInMwh": {
             "type": "number",
             "nullable": true
           },
@@ -3835,111 +3766,62 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EnergySourceForHeatingAndHotWater"
+                "$ref": "#/components/schemas/SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions"
               }
             ]
           },
-          "percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": {
+          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower"
+                "$ref": "#/components/schemas/SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions"
               }
             ]
           }
         }
+      },
+      "SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions": {
+        "type": "string",
+        "enum": [
+          "LessThan25Percent",
+          "Between25And50Percent",
+          "Between50And75Percent",
+          "Over75Percent"
+        ]
+      },
+      "SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions": {
+        "type": "string",
+        "enum": [
+          "Oil",
+          "Gas",
+          "Electric",
+          "DistrictHeating"
+        ]
       },
       "SmePowerInvestments": {
         "type": "object",
         "properties": {
-          "percentageRangeForInvestmentsInEnhancingEnergyEfficiency": {
+          "investmentsInEnhancingEnergyEfficiency": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PercentRangeForInvestmentsInEnergyEfficiency"
+                "$ref": "#/components/schemas/SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions"
               }
             ]
           }
         }
       },
-      "SmeProduct": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "shareOfTotalRevenueInPercent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "SmeProduction": {
-        "type": "object",
-        "properties": {
-          "sites": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeProductionSites"
-              }
-            ]
-          },
-          "products": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeProductionProducts"
-              }
-            ]
-          }
-        }
-      },
-      "SmeProductionProducts": {
-        "type": "object",
-        "properties": {
-          "listOfProducts": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/SmeProduct"
-            }
-          }
-        }
-      },
-      "SmeProductionSite": {
-        "required": [
-          "addressOfProductionSite"
-        ],
-        "type": "object",
-        "properties": {
-          "nameOfProductionSite": {
-            "type": "string",
-            "nullable": true
-          },
-          "addressOfProductionSite": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "shareOfTotalRevenueInPercent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "SmeProductionSites": {
-        "type": "object",
-        "properties": {
-          "listOfProductionSites": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/SmeProductionSite"
-            }
-          }
-        }
+      "SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions": {
+        "type": "string",
+        "enum": [
+          "LessThan1Percent",
+          "Between1And5Percent",
+          "Between5And10Percent",
+          "Between10And15Percent",
+          "Between15And20Percent",
+          "Between20And25Percent",
+          "Over25Percent"
+        ]
       },
       "YesNo": {
         "type": "string",
@@ -6613,6 +6495,33 @@
                 "$ref": "#/components/schemas/P2pCement"
               }
             ]
+          }
+        }
+      },
+      "Address": {
+        "required": [
+          "city",
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "streetAndHouseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string"
           }
         }
       },
@@ -13788,6 +13697,13 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
@@ -13795,18 +13711,11 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
-          "permId": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           }
         }
       },
@@ -13829,10 +13738,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -13894,6 +13803,7 @@
           "sfdr",
           "sme",
           "esg-questionnaire",
+          "sme",
           "heimathafen"
         ]
       },

@@ -1,5 +1,9 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type SmeData } from "@clients/backend";
+import {
+  type SmeData,
+  SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions,
+  SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions,
+} from "@clients/backend";
 import { generateSmeFixtures } from "@e2e/fixtures/frameworks/sme/SmeDataFixtures";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
@@ -11,8 +15,6 @@ import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
   const preparedFixtures = [];
   preparedFixtures.push(manipulateFixtureForYearWithMultipleSectors(generateSmeFixtures(1)[0], "2023"));
-  preparedFixtures.push(manipulateFixtureForMaximumAddress(generateSmeFixtures(1)[0]));
-  preparedFixtures.push(manipulateFixtureForMinimumAddress(generateSmeFixtures(1)[0]));
   return preparedFixtures;
 }
 
@@ -25,52 +27,18 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
 function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
-  input.t.general.basicInformation.sector = generateNaceCodes(2);
+  input.t.general.basicInformation.sectors = generateNaceCodes(2);
   input.t.power ??= {};
   input.t.power.investments ??= {};
-  input.t.power.investments.percentageRangeForInvestmentsInEnhancingEnergyEfficiency = "LessThan1";
+  input.t.power.investments.investmentsInEnhancingEnergyEfficiency =
+    SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions.LessThan1Percent;
   input.t.power.consumption ??= {};
-  input.t.power.consumption.percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration = "LessThan25";
-  input.t.general.companyFinancials = {
-    revenueInEUR: 0,
-    operatingCostInEUR: 1000000,
-    capitalAssetsInEUR: 2000000,
-  };
-  return input;
-}
-
-/**
- * Sets the company name and headquarters address with maximum number of address fields
- * @param input Fixture data to be manipulated
- * @returns the manipulated fixture data
- */
-function manipulateFixtureForMaximumAddress(input: FixtureData<SmeData>): FixtureData<SmeData> {
-  input.companyInformation.companyName = "SME-maximum-address";
-  input.reportingPeriod = "2021";
-  input.t.general.basicInformation.addressOfHeadquarters = {
-    streetAndHouseNumber: "Main Street 12",
-    postalCode: "12345",
-    city: "Nonexistingen",
-    state: "Fiction",
-    country: "Imagination",
-  };
-  return input;
-}
-
-/**
- * Sets the company name and headquarters address with minimum number of address fields
- * @param input Fixture data to be manipulated
- * @returns the manipulated fixture data
- */
-function manipulateFixtureForMinimumAddress(input: FixtureData<SmeData>): FixtureData<SmeData> {
-  input.companyInformation.companyName = "SME-minimum-address";
-  input.reportingPeriod = "2022";
-  input.t.general.basicInformation.addressOfHeadquarters = {
-    streetAndHouseNumber: null,
-    postalCode: null,
-    city: "City 17",
-    state: null,
-    country: "Uninspired",
+  input.t.power.consumption.energyConsumptionCoveredByOwnRenewablePowerGeneration =
+    SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions.LessThan25Percent;
+  input.t.general.financialInformation = {
+    revenueInEur: 2500000,
+    operatingCostInEur: 1000000,
+    capitalAssetsInEur: 10000000,
   };
   return input;
 }

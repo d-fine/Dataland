@@ -4,6 +4,7 @@ import esgQuestionnaireFrontendFrameworkDefinition from "@/frameworks/esg-questi
 import eutaxonomyNonFinancialsFrontendFrameworkDefinition from "@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition";
 import heimathafenFrontendFrameworkDefinition from "@/frameworks/heimathafen/FrontendFrameworkDefinition";
 import sfdrFrontendFrameworkDefinition from "@/frameworks/sfdr/FrontendFrameworkDefinition";
+import smeFrontendFrameworkDefinition from "@/frameworks/sme/FrontendFrameworkDefinition";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<any>> = {
@@ -11,4 +12,5 @@ export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<an
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
   heimathafen: heimathafenFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
+  sme: smeFrontendFrameworkDefinition,
 };
