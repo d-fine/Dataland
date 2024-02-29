@@ -7,6 +7,7 @@ import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTab
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
@@ -135,7 +136,11 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation: "Please provide your company's power consumption in the relevant fiscal year in MWh.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.power?.consumption?.powerConsumptionInMwh, "MWh"),
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.power?.consumption?.powerConsumptionInMwh?.value, "MWh"),
+                "Power consumption in MWh",
+                dataset.power?.consumption?.powerConsumptionInMwh,
+              ),
           },
           {
             type: "cell",

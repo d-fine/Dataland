@@ -146,7 +146,7 @@ export const smeDataModel = [
             description: "Please provide your company's power consumption in the relevant fiscal year in MWh.",
 
             unit: "MWh",
-            component: "NumberFormField",
+            component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
           },

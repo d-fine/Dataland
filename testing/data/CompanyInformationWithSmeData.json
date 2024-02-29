@@ -1,67 +1,172 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "Olson, Schmeler and Tromp",
-			"headquarters": "Highlands Ranch",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"companyName": "Torp, Kovacek and Steuber",
+			"headquarters": "Davisborough",
+			"headquartersPostalCode": "38626",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [
-					"Hf84qoZM2Zw0pJlgkL6h"
-				],
+				"Lei": [],
 				"Isin": [
-					"84KrrTkfJeNC",
-					"MU92O1jNFsLB"
+					"wpT9Qp8VV0hT"
 				],
 				"PermId": [],
-				"Ticker": [
-					"TryEyG3"
-				],
+				"Ticker": [],
 				"Duns": [
-					"LQVeUUeW7"
+					"R2BmtdTsm"
 				],
 				"VatNumber": [
-					"CKtOorED0"
+					"hCfP4hIVE"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"v5B1hlWR43yuiUo"
+				]
 			},
-			"countryCode": "TJ",
-			"companyAlternativeNames": [],
+			"countryCode": "US",
+			"companyAlternativeNames": [
+				"Franey - Emard",
+				"Mitchell - Nader",
+				"Renner, Pollich and Treutel",
+				"Rosenbaum and Sons"
+			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": null,
+			"website": "https://straight-teapot.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sectors": [],
-					"numberOfEmployees": 1751,
-					"fiscalYearStart": "2024-08-12"
+					"sectors": [
+						"16.1",
+						"25.50",
+						"28.4",
+						"58.19",
+						"86.23"
+					],
+					"numberOfEmployees": 3651,
+					"fiscalYearStart": "2024-09-14"
 				},
 				"financialInformation": {
-					"revenueInEur": 33538.77,
-					"operatingCostInEur": 46969.31,
-					"capitalAssetsInEur": 52525.47
+					"revenueInEur": null,
+					"operatingCostInEur": 53013.36,
+					"capitalAssetsInEur": 52592.91
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 50497.77,
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 448,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "calculate virtual alarm",
+						"quality": "NA"
+					},
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 25505.91,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 46448.57,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Parisian - Connelly",
+			"headquarters": "Predovicberg",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"dhnL0FRTW2IeJ7D4JS4Z"
+				],
+				"Isin": [
+					"WwHYb0Nt2ovN",
+					"FoARDZD31EYQ"
+				],
+				"PermId": [],
+				"Ticker": [
+					"78yxmBK"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TV",
+			"companyAlternativeNames": [
+				"Abshire Inc",
+				"Okuneva Inc",
+				"Price - Turner",
+				"Wuckert Inc"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://general-gloom.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"46.47"
+					],
+					"numberOfEmployees": 8234,
+					"fiscalYearStart": "2024-03-27"
+				},
+				"financialInformation": {
+					"revenueInEur": 23311.38,
+					"operatingCostInEur": 23585.28,
+					"capitalAssetsInEur": 27046.44
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 13668.16,
+						"dataSource": {
+							"page": 359,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": "navigate neural circuit",
+						"quality": "Incomplete"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 72444.91,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 33372.13,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 9070.34,
 					"naturalHazardsCovered": [
-						"Avalanche"
+						"Snow",
+						"Wind",
+						"Hail",
+						"Flooding",
+						"EarthQuake"
 					]
 				}
 			}
@@ -70,203 +175,62 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Bechtelar, Hartmann and Orn",
-			"headquarters": "West Demond",
-			"headquartersPostalCode": "19264",
-			"sector": "functionalities",
+			"companyName": "Prohaska, Schimmel and Wolff",
+			"headquarters": "Walshcester",
+			"headquartersPostalCode": null,
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [
-					"NZ9JykKt64FAyxy4wf9E"
-				],
+				"Lei": [],
 				"Isin": [
-					"YhPkLXFFSJ8U",
-					"SFmP9Po4Wtp7"
+					"SRXHzqaxUtyf"
 				],
-				"PermId": [],
+				"PermId": [
+					"bT4gXN99xT"
+				],
 				"Ticker": [
-					"mjpqGfZ"
+					"Vz0pVNd"
 				],
 				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CF",
+			"countryCode": "TF",
 			"companyAlternativeNames": [
-				"Ferry, Sporer and Bauch"
+				"Haag Group",
+				"Schoen, Hintz and Champlin"
 			],
-			"companyLegalForm": null,
-			"website": "https://verifiable-heyday.info/",
+			"companyLegalForm": "Sole Trader",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"13.95",
-						"25.30",
-						"47.43",
-						"47.91"
+						"23.62",
+						"28.13",
+						"86.1",
+						"91.03"
 					],
-					"numberOfEmployees": 2195,
-					"fiscalYearStart": "2025-02-18"
+					"numberOfEmployees": 2808,
+					"fiscalYearStart": "2024-06-17"
 				},
 				"financialInformation": {
-					"revenueInEur": 32739.5,
-					"operatingCostInEur": 529.98,
-					"capitalAssetsInEur": null
+					"revenueInEur": 49038.35,
+					"operatingCostInEur": 7091.16,
+					"capitalAssetsInEur": 49586.46
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": null,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 96058.05,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 64338.23,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Wind",
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Reilly, O'Kon and Wisozk",
-			"headquarters": "Alexandrastead",
-			"headquartersPostalCode": "74289-3676",
-			"sector": "lifetime value",
-			"identifiers": {
-				"Lei": [
-					"eFHDScdcIFxhb5j5b2Dp"
-				],
-				"Isin": [
-					"35BSgRedIpV1",
-					"3uZurw9pGZcL"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "AL",
-			"companyAlternativeNames": [
-				"Larson LLC"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://turbulent-centurion.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [],
-					"numberOfEmployees": 1201,
-					"fiscalYearStart": "2025-01-25"
-				},
-				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 46430.45,
-					"capitalAssetsInEur": 1030.11
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 47472.25,
-					"powerFromRenewableSources": "Yes",
 					"energyConsumptionHeatingAndHotWaterInMwh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 82648.22,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Sporer LLC",
-			"headquarters": "Wymanville",
-			"headquartersPostalCode": null,
-			"sector": "functionalities",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"wMy1mbe1nCC5"
-				],
-				"PermId": [],
-				"Ticker": [
-					"9FF6SkA"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"LSNbRdbtI"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "SJ",
-			"companyAlternativeNames": [
-				"Moore Inc"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://which-advocacy.org/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"17.22",
-						"41.20",
-						"S"
-					],
-					"numberOfEmployees": 8603,
-					"fiscalYearStart": "2024-05-29"
-				},
-				"financialInformation": {
-					"revenueInEur": 31611.26,
-					"operatingCostInEur": 66681.3,
-					"capitalAssetsInEur": 59044.47
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 58166.4,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
@@ -274,6 +238,247 @@
 					"insuranceAgainstNaturalHazards": "No",
 					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
 					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Snow",
+						"Avalanche",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Orn, Wisozk and McGlynn",
+			"headquarters": "East Angusland",
+			"headquartersPostalCode": "24522",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"eXOouDZpydyD"
+				],
+				"PermId": [],
+				"Ticker": [
+					"iT0ZoJo"
+				],
+				"Duns": [
+					"WIQnplryI"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SX",
+			"companyAlternativeNames": [
+				"Casper and Sons"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"66.12"
+					],
+					"numberOfEmployees": 3612,
+					"fiscalYearStart": "2024-07-08"
+				},
+				"financialInformation": {
+					"revenueInEur": 56153.57,
+					"operatingCostInEur": 23710.64,
+					"capitalAssetsInEur": 24470.12
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 329,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "calculate redundant sensor",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Hail",
+						"Flooding",
+						"Avalanche",
+						"Wind"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Abbott - Beer",
+			"headquarters": "Ariannaview",
+			"headquartersPostalCode": "72107-0561",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ArNaRKdTHuCC"
+				],
+				"PermId": [
+					"lSPX7IkNN2"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"94WJkh98x"
+				],
+				"CompanyRegistrationNumber": [
+					"fajvnw61c6hl8Go"
+				]
+			},
+			"countryCode": "NL",
+			"companyAlternativeNames": [
+				"Abernathy and Sons",
+				"Kilback LLC",
+				"Mraz, Mayert and Kris"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://basic-mess.net/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [],
+					"numberOfEmployees": 2634,
+					"fiscalYearStart": "2024-12-06"
+				},
+				"financialInformation": {
+					"revenueInEur": 80253.9,
+					"operatingCostInEur": 41784.93,
+					"capitalAssetsInEur": 38743.71
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 28302.49,
+						"dataSource": null,
+						"comment": "compress mobile capacitor",
+						"quality": "Estimated"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 49046.92,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Parker - Schuppe",
+			"headquarters": "Rauberg",
+			"headquartersPostalCode": null,
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"oSQZfjW1AYO6",
+					"1TGgb08uUMjH"
+				],
+				"PermId": [
+					"ikf0x7pJUi"
+				],
+				"Ticker": [
+					"8dX32Rl"
+				],
+				"Duns": [
+					"p5NEwsgn3"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AD",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"14.19",
+						"28.12",
+						"84",
+						"F"
+					],
+					"numberOfEmployees": 5961,
+					"fiscalYearStart": "2024-03-25"
+				},
+				"financialInformation": {
+					"revenueInEur": 31889.65,
+					"operatingCostInEur": 23197.39,
+					"capitalAssetsInEur": 53230.69
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 85516.13,
+						"dataSource": {
+							"page": 347,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "index 1080p capacitor",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 52738.65,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 18108.93,
+					"naturalHazardsCovered": [
+						"Wind",
 						"Flooding"
 					]
 				}
@@ -283,119 +488,107 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Wunsch, Lueilwitz and Yost",
-			"headquarters": "Bradtkehaven",
-			"headquartersPostalCode": "24458",
-			"sector": "applications",
+			"companyName": "Schamberger LLC",
+			"headquarters": "Rosemead",
+			"headquartersPostalCode": "43859",
+			"sector": "e-business",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"yg2ZcdbcIYCs",
-					"TDkBMYJo29Gz"
+					"LDTSEwv2Q30m"
 				],
 				"PermId": [
-					"iap4HBOsvr"
+					"jb9f8LBxSA"
 				],
-				"Ticker": [
-					"litoOHq"
+				"Ticker": [],
+				"Duns": [
+					"rEoCeO84v"
 				],
-				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"rndfJ8FLKNpK1xF"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CK",
+			"countryCode": "BD",
 			"companyAlternativeNames": [
-				"Braun, Fisher and Gutkowski",
-				"Buckridge, Rau and Bins",
-				"Jacobi, Gutkowski and Torphy",
-				"Von, Bechtelar and Terry"
+				"Johnston, Bernhard and Kshlerin"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://vivacious-quiver.com/",
+			"companyLegalForm": "AG",
+			"website": "https://serpentine-scarification.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"13.93",
-						"35.12",
-						"47.72",
-						"53.1",
-						"87.30"
+						"32.12",
+						"79",
+						"93.1",
+						"D"
 					],
-					"numberOfEmployees": 8388,
-					"fiscalYearStart": "2024-06-17"
+					"numberOfEmployees": 1882,
+					"fiscalYearStart": "2024-07-16"
 				},
 				"financialInformation": {
-					"revenueInEur": 5062.64,
-					"operatingCostInEur": 19032.16,
-					"capitalAssetsInEur": 91681.43
+					"revenueInEur": 46544.44,
+					"operatingCostInEur": 53733.14,
+					"capitalAssetsInEur": 36358.97
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 50887.34,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 31400.96,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 41098.1,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 78471.28,
 					"naturalHazardsCovered": [
-						"Snow",
-						"EarthQuake",
-						"Avalanche",
 						"Flooding",
-						"Hail"
+						"EarthQuake",
+						"Hail",
+						"Wind",
+						"Avalanche",
+						"Snow"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Torphy and Sons",
-			"headquarters": "Huntington Beach",
-			"headquartersPostalCode": "72935",
-			"sector": "interfaces",
+			"companyName": "Lindgren - Sipes",
+			"headquarters": "Fort Danaworth",
+			"headquartersPostalCode": "62971-8398",
+			"sector": "e-markets",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"ghJyw7acaYgcSzBK3LOS"
+				],
 				"Isin": [
-					"LbT3t2Hr5Dit"
+					"FDKQSeQf4M1T",
+					"0BzfuzpzMJkh"
 				],
-				"PermId": [
-					"n3BnSdpJk7"
-				],
-				"Ticker": [
-					"j9mc5qq"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [
-					"QxVJKBubH"
+					"tSnxcsTqe"
 				],
-				"VatNumber": [
-					"5pRW6bwzG"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"2pQOdYkYXpNKXEQ"
+					"puU4Ikn6EbuyuiQ"
 				]
 			},
-			"countryCode": "PW",
+			"countryCode": "GN",
 			"companyAlternativeNames": [
-				"Abernathy, Will and Grimes",
-				"Lueilwitz - O'Keefe",
-				"Monahan, Bechtelar and Legros",
-				"O'Conner Inc"
+				"McLaughlin Inc"
 			],
 			"companyLegalForm": null,
 			"website": null,
@@ -404,37 +597,45 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sectors": [
-						"17.21",
-						"18.11",
-						"35.30"
-					],
-					"numberOfEmployees": 9476,
-					"fiscalYearStart": "2024-04-22"
+					"sectors": [],
+					"numberOfEmployees": 3052,
+					"fiscalYearStart": "2024-03-18"
 				},
 				"financialInformation": {
-					"revenueInEur": 14056.4,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": 31146.51
+					"revenueInEur": 4034.83,
+					"operatingCostInEur": 84318.66,
+					"capitalAssetsInEur": null
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 26282.26,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMwh": {
+						"value": 83687.19,
+						"dataSource": {
+							"page": 986,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "hack 1080p card",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 72989.39,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 75303.05,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 70579.68,
+					"naturalHazardsCovered": [
+						"Flooding"
+					]
 				}
 			}
 		},
@@ -442,78 +643,162 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Cartwright - Renner",
-			"headquarters": "Mount Vernon",
-			"headquartersPostalCode": null,
-			"sector": "applications",
+			"companyName": "Ward - Kulas",
+			"headquarters": "Olsonport",
+			"headquartersPostalCode": "35191-1037",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [
-					"5h35QET1B7bnPdcgSfQ5"
-				],
+				"Lei": [],
 				"Isin": [
-					"kWo5hFpdudSK",
-					"D6cTBYPz5AUO"
+					"12yGC5Yat2vV",
+					"NWYRIReePoVj"
 				],
-				"PermId": [
-					"Exjvf5cRM7"
+				"PermId": [],
+				"Ticker": [
+					"JvhsInb"
 				],
-				"Ticker": [],
-				"Duns": [
-					"HwEMgKFvE"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"KBZZtchrw"
+					"bN9WE6EMg"
 				],
-				"CompanyRegistrationNumber": [
-					"v4GvEFmRsfePuiv"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CX",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://terrible-peace.org/",
+			"countryCode": "UY",
+			"companyAlternativeNames": [
+				"Beier - Renner",
+				"Schinner LLC",
+				"Sporer LLC"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://warmhearted-oregano.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"08",
-						"15.20",
-						"51",
-						"68.20",
-						"86"
+						"01.62",
+						"32.50",
+						"41",
+						"47.22"
 					],
-					"numberOfEmployees": 4588,
-					"fiscalYearStart": "2025-01-17"
+					"numberOfEmployees": 6589,
+					"fiscalYearStart": "2024-07-05"
 				},
 				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 80916.56,
-					"capitalAssetsInEur": 90533.25
+					"revenueInEur": 55232.02,
+					"operatingCostInEur": 53854.78,
+					"capitalAssetsInEur": 6201.98
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 47891.62,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 11485.11,
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": null,
+						"comment": "calculate open-source monitor",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 68204.8,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 41016.25,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 6793.87,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Dicki, Orn and Block",
+			"headquarters": "Bodetown",
+			"headquartersPostalCode": "15150-7542",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"lkCV9OntnEtQ"
+				],
+				"PermId": [
+					"MNVaqu4GMq"
+				],
+				"Ticker": [
+					"pynBNes"
+				],
+				"Duns": [
+					"Cb8FOxDc0"
+				],
+				"VatNumber": [
+					"AGNA4aH0Z"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IE",
+			"companyAlternativeNames": [
+				"Dach LLC",
+				"Greenfelder and Sons",
+				"Krajcik, Schumm and Bernhard",
+				"Shields, Cummerata and Fay"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://fuzzy-leaver.net/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [],
+					"numberOfEmployees": 8314,
+					"fiscalYearStart": "2024-03-01"
+				},
+				"financialInformation": {
+					"revenueInEur": 33952.15,
+					"operatingCostInEur": 98254.59,
+					"capitalAssetsInEur": 89548.36
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 47888.39,
+						"dataSource": {
+							"page": 1002,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "generate auxiliary application",
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 39336.72,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"Wind",
 						"EarthQuake",
-						"Hail"
+						"Hail",
+						"Flooding",
+						"Wind"
 					]
 				}
 			}
@@ -522,33 +807,38 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Kunze, Bergstrom and Heathcote",
-			"headquarters": "Fort Laurencestad",
-			"headquartersPostalCode": "57716",
-			"sector": "content",
+			"companyName": "Crooks LLC",
+			"headquarters": "East Ashly",
+			"headquartersPostalCode": "13918-7809",
+			"sector": "schemas",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"18cDnjduMgpJQ7euDsZu"
+				],
 				"Isin": [
-					"WNZ3xv71vjiU"
+					"uTEgU2ZDowk5",
+					"nGQzTWVF5HcU"
 				],
 				"PermId": [
-					"xEzmBM8ScB"
+					"zTAtuq2NRv"
 				],
-				"Ticker": [],
-				"Duns": [
-					"MTtlFazLk"
+				"Ticker": [
+					"YPNydtd"
 				],
+				"Duns": [],
 				"VatNumber": [
-					"RzBAEVe8G"
+					"Hw0kCTYPB"
 				],
-				"CompanyRegistrationNumber": [
-					"TqKCUAxe3pbnxN8"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TL",
-			"companyAlternativeNames": [],
-			"companyLegalForm": null,
-			"website": "https://jubilant-preservation.name",
+			"countryCode": "MR",
+			"companyAlternativeNames": [
+				"Effertz - Cruickshank",
+				"Gleason Group",
+				"Hahn Inc"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://crazy-earplug.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -556,15 +846,104 @@
 				"basicInformation": {
 					"sectors": [
 						"02.40",
-						"33.1"
+						"23.52",
+						"80.3"
 					],
-					"numberOfEmployees": 8167,
-					"fiscalYearStart": "2024-06-06"
+					"numberOfEmployees": 2380,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"financialInformation": {
-					"revenueInEur": 49775.93,
-					"operatingCostInEur": 52252.2,
-					"capitalAssetsInEur": 28537.16
+					"revenueInEur": 64687.67,
+					"operatingCostInEur": 2972.35,
+					"capitalAssetsInEur": 16747.13
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 74589.16,
+						"dataSource": {
+							"page": 1074,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "hack digital matrix",
+						"quality": "Estimated"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 37892.65,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 84298.26,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Snow",
+						"Hail",
+						"Flooding",
+						"EarthQuake",
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Reynolds, Lockman and Johns",
+			"headquarters": "South Dashawn",
+			"headquartersPostalCode": "72583",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"X3MAtoNEGdLJ",
+					"SbS3OhClQm3Q"
+				],
+				"PermId": [],
+				"Ticker": [
+					"CVobYlK"
+				],
+				"Duns": [
+					"yoBhdWZZj"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"2OqBle6sayVx3Du"
+				]
+			},
+			"countryCode": "MG",
+			"companyAlternativeNames": [
+				"Ratke - Wuckert"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://alienated-riser.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"20.6",
+						"41.10",
+						"56"
+					],
+					"numberOfEmployees": 8687,
+					"fiscalYearStart": "2024-12-13"
+				},
+				"financialInformation": {
+					"revenueInEur": 40680.72,
+					"operatingCostInEur": 60627.9,
+					"capitalAssetsInEur": 22872.03
 				}
 			},
 			"power": {
@@ -572,226 +951,84 @@
 					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 590.39,
+					"powerConsumptionInMwh": {
+						"value": 52508.53,
+						"dataSource": {
+							"page": 629,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "transmit open-source program",
+						"quality": "Incomplete"
+					},
 					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 39609.04,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 60866.8,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Casper, Zieme and Gleichner",
-			"headquarters": "Ocala",
-			"headquartersPostalCode": null,
-			"sector": "solutions",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"2qRt8SOlGSIU"
-				],
-				"PermId": [],
-				"Ticker": [
-					"fb29hSf"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"Ed9tKF2WS"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "GW",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://functional-loneliness.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.27",
-						"10.51",
-						"23.7"
-					],
-					"numberOfEmployees": 4251,
-					"fiscalYearStart": "2025-02-25"
-				},
-				"financialInformation": {
-					"revenueInEur": 27554.92,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": 86603.14
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 16213.88,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 48364.01,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 82649.07,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Avalanche",
-						"Hail",
-						"EarthQuake"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Weber, Will and Koelpin",
-			"headquarters": "East Gretchenview",
-			"headquartersPostalCode": null,
-			"sector": null,
-			"identifiers": {
-				"Lei": [
-					"WGXAI26AjbMf3N3G6bup"
-				],
-				"Isin": [
-					"pC453FxFWqOH"
-				],
-				"PermId": [
-					"GVUDmoLEMZ"
-				],
-				"Ticker": [],
-				"Duns": [
-					"XbYkVxuRB"
-				],
-				"VatNumber": [
-					"sMTkvOfok"
-				],
-				"CompanyRegistrationNumber": [
-					"BOTNXTXuP1XmCil"
-				]
-			},
-			"countryCode": "GB",
-			"companyAlternativeNames": [
-				"Dibbert, Boyle and Kilback",
-				"Rogahn Group"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://husky-pace.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"20.53",
-						"52.21",
-						"58.19",
-						"85.32"
-					],
-					"numberOfEmployees": 4696,
-					"fiscalYearStart": "2025-01-23"
-				},
-				"financialInformation": {
-					"revenueInEur": 36187.47,
-					"operatingCostInEur": 75291.73,
-					"capitalAssetsInEur": 82329.22
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 86916.66,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 27181.39,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 9382,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 65901.16,
 					"naturalHazardsCovered": [
-						"Avalanche",
 						"Snow",
-						"Hail",
 						"EarthQuake",
-						"Flooding",
+						"Hail",
 						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Wisoky - Stamm",
-			"headquarters": "Runtemouth",
-			"headquartersPostalCode": null,
-			"sector": "paradigms",
+			"companyName": "Kling - Hamill",
+			"headquarters": "Kirstenberg",
+			"headquartersPostalCode": "06783-2124",
+			"sector": "solutions",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"lMedzy5LrHTSLL0WaIGI"
+				],
 				"Isin": [
-					"McaDkEpWvAiL"
+					"CNUecEb62vVv"
 				],
 				"PermId": [],
-				"Ticker": [
-					"YILy2Rl"
-				],
-				"Duns": [
-					"HFglOc6YI"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [
-					"dAnqEUXVK"
+					"CFsTr6d3x"
 				],
-				"CompanyRegistrationNumber": [
-					"BCEwwTLkk2VEU6N"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NC",
+			"countryCode": "AO",
 			"companyAlternativeNames": [
-				"Dooley Group",
-				"Flatley Inc",
-				"Kuvalis LLC"
+				"Legros Inc",
+				"Olson Inc",
+				"Ziemann - Nikolaus"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://flickering-roof.org",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"65.20"
+						"43",
+						"46.18",
+						"47.6"
 					],
-					"numberOfEmployees": 1404,
-					"fiscalYearStart": "2024-04-01"
+					"numberOfEmployees": 1241,
+					"fiscalYearStart": "2024-11-02"
 				},
 				"financialInformation": {
-					"revenueInEur": 19432.83,
-					"operatingCostInEur": 85650.26,
-					"capitalAssetsInEur": 32121.51
+					"revenueInEur": null,
+					"operatingCostInEur": 96120.76,
+					"capitalAssetsInEur": 9775.39
 				}
 			},
 			"power": {
@@ -799,91 +1036,195 @@
 					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 9901.3,
+					"powerConsumptionInMwh": {
+						"value": 53065.07,
+						"dataSource": {
+							"page": 221,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 50963.78,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionHeatingAndHotWaterInMwh": 80187.02,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 69006.3,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Snow"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 92466.3,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Sporer Inc",
-			"headquarters": "East Hazle",
-			"headquartersPostalCode": "11657-7136",
-			"sector": "communities",
+			"companyName": "Harber - Labadie",
+			"headquarters": "Lake Deshaunworth",
+			"headquartersPostalCode": "43728",
+			"sector": "infrastructures",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"Dta6hExvVdYIvvdVVR4T"
+				],
 				"Isin": [
-					"jsqc435RjWLp",
-					"zsBvoZzMYzcP"
+					"x8m6DJlgXsjb"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"tS0v8w6"
+				],
+				"Duns": [
+					"9pmliVEOo"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KW",
+			"countryCode": "EE",
 			"companyAlternativeNames": [
-				"Balistreri Group",
-				"Feest - Huel",
-				"Ullrich Group"
+				"Hessel Inc",
+				"Kovacek, Lemke and Strosin",
+				"Lehner, Spencer and Lebsack"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://absolute-blank.org",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://petty-heritage.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"18.13",
-						"21.20",
-						"27.1",
-						"43.9"
+						"71.12"
 					],
-					"numberOfEmployees": 5340,
-					"fiscalYearStart": "2024-09-08"
+					"numberOfEmployees": 1682,
+					"fiscalYearStart": "2024-07-04"
 				},
 				"financialInformation": {
-					"revenueInEur": 69419.37,
-					"operatingCostInEur": 82562.74,
-					"capitalAssetsInEur": 56906.06
+					"revenueInEur": 9636.63,
+					"operatingCostInEur": 83998.5,
+					"capitalAssetsInEur": 17489.99
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 5410.7,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 62863.15,
-					"primaryEnergySourceForHeatingAndHotWater": null,
+					"powerConsumptionInMwh": {
+						"value": 68626.76,
+						"dataSource": {
+							"page": 1159,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "synthesize auxiliary application",
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 33601.37,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 30999.56,
 					"naturalHazardsCovered": [
-						"Snow",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Welch, Walker and Hermiston",
+			"headquarters": "Margretside",
+			"headquartersPostalCode": "91238-0059",
+			"sector": "mindshare",
+			"identifiers": {
+				"Lei": [
+					"wPJTn4rTSE2KJ5BKtTxE"
+				],
+				"Isin": [
+					"R20qznlS3lO5"
+				],
+				"PermId": [
+					"qbcTv2bSF2"
+				],
+				"Ticker": [
+					"LLwIE52"
+				],
+				"Duns": [
+					"b0N3CWA4s"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GN",
+			"companyAlternativeNames": [
+				"O'Keefe Inc",
+				"Wisozk, Emmerich and Bartoletti"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"50.3"
+					],
+					"numberOfEmployees": 9338,
+					"fiscalYearStart": "2024-10-12"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": 54679.23,
+					"capitalAssetsInEur": 36805.58
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 61864.38,
+						"dataSource": {
+							"page": 480,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "copy solid state panel",
+						"quality": "Incomplete"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 23097.3,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 83291.95,
+					"naturalHazardsCovered": [
+						"Wind",
 						"Hail",
+						"Snow",
+						"Avalanche",
 						"Flooding"
 					]
 				}
@@ -893,54 +1234,50 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Runolfsdottir, Jaskolski and Koepp",
-			"headquarters": "Jarrodborough",
-			"headquartersPostalCode": "34819-0301",
-			"sector": "blockchains",
+			"companyName": "Armstrong, Tromp and Schinner",
+			"headquarters": "Fall River",
+			"headquartersPostalCode": "25648-5116",
+			"sector": "platforms",
 			"identifiers": {
-				"Lei": [
-					"YcpdtC2Cm2SuBAnzLTLz"
-				],
+				"Lei": [],
 				"Isin": [
-					"wm34ybHlIsWG",
-					"JaL4XpHf8gfc"
+					"q6mW3Wk7qiYP"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"uebwEoruA"
+				"Ticker": [
+					"z2FsoPp"
 				],
-				"VatNumber": [
-					"x0AiysuwB"
-				],
-				"CompanyRegistrationNumber": [
-					"eXXmzKkpaav2Co3"
-				]
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BF",
+			"countryCode": "TG",
 			"companyAlternativeNames": [
-				"Kuphal Inc",
-				"Lang, Doyle and Lang",
-				"Prohaska - Nolan",
-				"Thiel - Torphy"
+				"Hauck - Gusikowski",
+				"Mertz, Halvorson and Harber",
+				"Schimmel - Rutherford",
+				"Wilkinson, Gulgowski and Predovic"
 			],
-			"companyLegalForm": null,
-			"website": "https://impressive-organizing.name/",
+			"companyLegalForm": "AG",
+			"website": "https://witty-poison.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"01"
+						"10.84",
+						"24.43",
+						"29",
+						"46.3"
 					],
-					"numberOfEmployees": 7910,
-					"fiscalYearStart": "2024-09-11"
+					"numberOfEmployees": 2350,
+					"fiscalYearStart": "2024-06-19"
 				},
 				"financialInformation": {
-					"revenueInEur": 73989.28,
-					"operatingCostInEur": 43350.45,
-					"capitalAssetsInEur": 36683.2
+					"revenueInEur": 9748.71,
+					"operatingCostInEur": 8589.56,
+					"capitalAssetsInEur": 25560.01
 				}
 			},
 			"power": {
@@ -948,69 +1285,81 @@
 					"investmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 4151.75,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+					"powerConsumptionInMwh": {
+						"value": 12667.47,
+						"dataSource": {
+							"page": 596,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "generate cross-platform panel",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 87436.24,
 					"naturalHazardsCovered": [
-						"Snow"
+						"Wind",
+						"Flooding"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Stamm Inc",
-			"headquarters": "New June",
-			"headquartersPostalCode": "51678",
-			"sector": "blockchains",
+			"companyName": "Ortiz, Willms and Cummings",
+			"headquarters": "Port Mosesstead",
+			"headquartersPostalCode": "45506",
+			"sector": "metrics",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"fmHb3spBmGrm",
-					"8XYIVQMU7xgb"
+					"pGKmUa3t9VVs",
+					"zR1vEM2chhyG"
 				],
 				"PermId": [
-					"pIuJyhPZjO"
+					"0BMIsWw962"
 				],
 				"Ticker": [],
-				"Duns": [
-					"C93aOxv1k"
+				"Duns": [],
+				"VatNumber": [
+					"23cOdM54Q"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PM",
+			"countryCode": "BG",
 			"companyAlternativeNames": [
-				"Nader and Sons"
+				"Friesen Inc"
 			],
-			"companyLegalForm": null,
-			"website": "https://outrageous-chrysalis.biz",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://esteemed-atrium.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"19.1",
-						"93.2"
+						"10.39",
+						"47.26",
+						"91.04"
 					],
-					"numberOfEmployees": 3994,
-					"fiscalYearStart": "2024-09-21"
+					"numberOfEmployees": 8744,
+					"fiscalYearStart": "2025-02-22"
 				},
 				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 45028.52,
-					"capitalAssetsInEur": 89714.68
+					"revenueInEur": 89880.93,
+					"operatingCostInEur": 64915.73,
+					"capitalAssetsInEur": 237.04
 				}
 			},
 			"power": {
@@ -1018,18 +1367,205 @@
 					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 64096.23,
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 599,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": null,
+						"quality": "NA"
+					},
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 16932.54,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Wind",
+						"Flooding",
+						"Snow",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schumm - Nitzsche",
+			"headquarters": "Satterfieldburgh",
+			"headquartersPostalCode": "28529-9932",
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [
+					"yOnmpzzQ0CLCQctlRTjm"
+				],
+				"Isin": [
+					"cy6n7ZXOE0zO"
+				],
+				"PermId": [
+					"kUisrUijVP"
+				],
+				"Ticker": [
+					"kVDgIIJ"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"eDttZEtV9"
+				],
+				"CompanyRegistrationNumber": [
+					"y6LE6bCHEuswNF7"
+				]
+			},
+			"countryCode": "RW",
+			"companyAlternativeNames": [
+				"Haley, Aufderhar and Bauch",
+				"Wilderman, Langosh and Douglas"
+			],
+			"companyLegalForm": null,
+			"website": "https://infinite-crust.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"11.05",
+						"32.3",
+						"42.9",
+						"46.15",
+						"77"
+					],
+					"numberOfEmployees": 6226,
+					"fiscalYearStart": "2024-10-07"
+				},
+				"financialInformation": {
+					"revenueInEur": 86095.88,
+					"operatingCostInEur": 23663.47,
+					"capitalAssetsInEur": 99833.5
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 93588,
+						"dataSource": {
+							"page": 1031,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 2705.09,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 60893.86,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 86857.17,
 					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Davis - Murazik",
+			"headquarters": "Tallahassee",
+			"headquartersPostalCode": "20621-4337",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [
+					"hNSOC0qp0SW5ldQRS48i"
+				],
+				"Isin": [
+					"QIFYy5KgAwXV"
+				],
+				"PermId": [],
+				"Ticker": [
+					"lYARycJ"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"607GTYIAy"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GU",
+			"companyAlternativeNames": [
+				"Connelly LLC",
+				"Quigley, Farrell and Lockman"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://cheery-compensation.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"01.45",
+						"26.5",
+						"52",
+						"61.30"
+					],
+					"numberOfEmployees": 1453,
+					"fiscalYearStart": "2025-02-25"
+				},
+				"financialInformation": {
+					"revenueInEur": 97025.33,
+					"operatingCostInEur": 65993.46,
+					"capitalAssetsInEur": 31533.18
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 246,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "generate multi-byte application",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 77188.6,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 25391.08,
+					"naturalHazardsCovered": [
+						"Wind"
+					]
 				}
 			}
 		},
@@ -1037,53 +1573,55 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Parker - Denesik",
-			"headquarters": "West Kadenmouth",
+			"companyName": "Kris and Sons",
+			"headquarters": "Port Elissaton",
 			"headquartersPostalCode": null,
-			"sector": "e-business",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [
-					"R3hya1nJ4aD0FztlZJjV"
+					"nrfz2NvCZjNAVwCtskvb"
 				],
 				"Isin": [
-					"ilASu19OmF5Z",
-					"Hij7HvStrJTQ"
+					"8sXlSOVPFwx9"
 				],
-				"PermId": [],
+				"PermId": [
+					"ZX2nYbZjqW"
+				],
 				"Ticker": [
-					"O06AYs2"
+					"SNAiJqg"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"Duns": [
+					"IEJSjx3dQ"
+				],
+				"VatNumber": [
+					"DhzRVT2yc"
+				],
+				"CompanyRegistrationNumber": [
+					"0nTKKWmIVWg7qgv"
+				]
 			},
-			"countryCode": "ZA",
-			"companyAlternativeNames": [
-				"Bins Inc",
-				"Gislason, Hagenes and Kessler",
-				"Lowe - Cummings"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://wordy-referendum.info/",
+			"countryCode": "YT",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://medical-borrowing.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"01.4",
-						"25.29",
-						"32.40",
-						"74.90",
-						"85.41"
+						"24.31",
+						"33.19",
+						"47.1",
+						"F"
 					],
-					"numberOfEmployees": 1419,
-					"fiscalYearStart": "2024-12-25"
+					"numberOfEmployees": 8585,
+					"fiscalYearStart": "2024-12-20"
 				},
 				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 42042.56,
-					"capitalAssetsInEur": 77955.11
+					"revenueInEur": 77916.72,
+					"operatingCostInEur": 78219.31,
+					"capitalAssetsInEur": 57379.84
 				}
 			},
 			"power": {
@@ -1091,11 +1629,100 @@
 					"investmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 47441.16,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 83077.44,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMwh": {
+						"value": 51347.41,
+						"dataSource": {
+							"page": 1135,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "input open-source hard drive",
+						"quality": "Incomplete"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 94793.65,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 33117.77,
+					"naturalHazardsCovered": [
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Rogahn, Erdman and Reilly",
+			"headquarters": "Cathrinetown",
+			"headquartersPostalCode": null,
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"owS66e5PsLko",
+					"ZYALwfWOI2iY"
+				],
+				"PermId": [
+					"yXJlbxSPoU"
+				],
+				"Ticker": [
+					"mt4wP1U"
+				],
+				"Duns": [
+					"eakVzyrkI"
+				],
+				"VatNumber": [
+					"KnjANDvi2"
+				],
+				"CompanyRegistrationNumber": [
+					"SzkgqTCU7JC1amA"
+				]
+			},
+			"countryCode": "NR",
+			"companyAlternativeNames": [
+				"Bradtke - Carter",
+				"Marvin, Jaskolski and Roberts",
+				"Rowe - Graham",
+				"Wyman - Bauch"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://competent-milestone.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"16.29",
+						"T"
+					],
+					"numberOfEmployees": 7743,
+					"fiscalYearStart": "2025-02-09"
+				},
+				"financialInformation": {
+					"revenueInEur": 3871.16,
+					"operatingCostInEur": 14634.19,
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 40390.07,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
@@ -1103,6 +1730,165 @@
 					"insuranceAgainstNaturalHazards": null,
 					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
 					"naturalHazardsCovered": [
+						"Hail",
+						"Snow"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hahn Group",
+			"headquarters": "Wolffside",
+			"headquartersPostalCode": "69891",
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"3MCL8Uef3WdS",
+					"yu2hBpfcWHAt"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "UM",
+			"companyAlternativeNames": [
+				"Franey Inc"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://standard-deposition.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"01.13",
+						"06",
+						"98"
+					],
+					"numberOfEmployees": 8362,
+					"fiscalYearStart": "2024-10-28"
+				},
+				"financialInformation": {
+					"revenueInEur": 78149.47,
+					"operatingCostInEur": null,
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 22367.2,
+						"dataSource": {
+							"page": 579,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "back up multi-byte sensor",
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 27046.07,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 73233.48,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mann, Jenkins and Lehner",
+			"headquarters": "Rialto",
+			"headquartersPostalCode": "88614-8518",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [
+					"lcMNZtU5F5m97Ov2xcUy"
+				],
+				"Isin": [
+					"ht2epVnr0ExO",
+					"BHNiDDobtAol"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"sGF8ahiqO"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GD",
+			"companyAlternativeNames": [
+				"O'Reilly, Stokes and Hilpert",
+				"Sawayn, Harvey and Krajcik"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://dazzling-situation.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"82.30"
+					],
+					"numberOfEmployees": 9059,
+					"fiscalYearStart": "2024-05-26"
+				},
+				"financialInformation": {
+					"revenueInEur": 18321.56,
+					"operatingCostInEur": 89205.3,
+					"capitalAssetsInEur": 19366.14
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 34344.44,
+						"dataSource": {
+							"page": 757,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "hack digital monitor",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 22028.5,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 65775.16,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Hail",
+						"Flooding",
 						"Avalanche"
 					]
 				}
@@ -1112,305 +1898,79 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Renner, Abernathy and Hauck",
-			"headquarters": "Tonawanda",
-			"headquartersPostalCode": "28490",
-			"sector": "web services",
+			"companyName": "Kreiger, Runte and Orn",
+			"headquarters": "Myriamview",
+			"headquartersPostalCode": "92806",
+			"sector": "content",
 			"identifiers": {
-				"Lei": [
-					"VApI2zH1vaAnrGzYOusm"
-				],
+				"Lei": [],
 				"Isin": [
-					"ZH7mHV4LO0Ad"
+					"mDExsiFcqimZ"
 				],
 				"PermId": [
-					"XNwIz3A0g2"
+					"x1OZBEqJdc"
 				],
-				"Ticker": [
-					"sizeaJh"
-				],
+				"Ticker": [],
 				"Duns": [
-					"AeTFsiahg"
+					"ArVXwr32t"
 				],
 				"VatNumber": [
-					"XWjGm7Xps"
+					"unfye3OHd"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "JP",
+			"countryCode": "GE",
 			"companyAlternativeNames": [
-				"Bednar, Hettinger and Abbott",
-				"Goldner, Jacobson and Stehr"
+				"Christiansen Inc",
+				"Larson, Wolff and Fadel",
+				"Skiles Inc"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://graceful-injustice.com",
+			"companyLegalForm": "GmbH",
+			"website": "https://black-and-white-comparison.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sectors": [
-						"31.0",
-						"46.72",
-						"64.2",
-						"68.32"
-					],
-					"numberOfEmployees": 7901,
-					"fiscalYearStart": "2024-09-15"
+					"sectors": [],
+					"numberOfEmployees": 4449,
+					"fiscalYearStart": "2024-09-12"
 				},
 				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 80603.06,
-					"capitalAssetsInEur": 75322.73
+					"revenueInEur": 66951.88,
+					"operatingCostInEur": null,
+					"capitalAssetsInEur": 73625.86
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 33555.78,
+					"powerConsumptionInMwh": {
+						"value": 23455.66,
+						"dataSource": {
+							"page": 340,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "back up 1080p system",
+						"quality": "Audited"
+					},
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 82709.31,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Snow",
-						"EarthQuake",
-						"Flooding"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Denesik Inc",
-			"headquarters": "Kilbackworth",
-			"headquartersPostalCode": "44529-4328",
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"7JOixsaqWhKx",
-					"n27opvzfStna"
-				],
-				"PermId": [],
-				"Ticker": [
-					"zPZT7Ef"
-				],
-				"Duns": [
-					"sbt5yvSKq"
-				],
-				"VatNumber": [
-					"Z1v6wRvKb"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "PF",
-			"companyAlternativeNames": [
-				"Hauck LLC",
-				"Kemmer - Bednar",
-				"Okuneva Inc",
-				"Sawayn, Langworth and Strosin"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://enraged-sundae.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"18",
-						"20.30",
-						"66.3",
-						"93"
-					],
-					"numberOfEmployees": 1405,
-					"fiscalYearStart": "2024-07-28"
-				},
-				"financialInformation": {
-					"revenueInEur": 89132.62,
-					"operatingCostInEur": 78619.15,
-					"capitalAssetsInEur": 31631.74
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 93557.23,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 1145.92,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 26115.7,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Jenkins - Gutkowski",
-			"headquarters": "Billings",
-			"headquartersPostalCode": null,
-			"sector": "methodologies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"tRxqBrJ3r3Tn",
-					"3gzMVi1689sK"
-				],
-				"PermId": [],
-				"Ticker": [
-					"CXiDRwC"
-				],
-				"Duns": [
-					"oZiQw2RJV"
-				],
-				"VatNumber": [
-					"pjvy8taes"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "IN",
-			"companyAlternativeNames": [
-				"Donnelly Inc",
-				"Watsica - Runte"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://incompatible-wagon.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"87.10"
-					],
-					"numberOfEmployees": 7556,
-					"fiscalYearStart": "2025-01-27"
-				},
-				"financialInformation": {
-					"revenueInEur": 96139.08,
-					"operatingCostInEur": 5307.75,
-					"capitalAssetsInEur": 6383.18
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 86179.31,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 10729.23,
-					"naturalHazardsCovered": [
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Kutch LLC",
-			"headquarters": "Stammboro",
-			"headquartersPostalCode": "75833",
-			"sector": "eyeballs",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"eBBKMQTPeW0a"
-				],
-				"PermId": [
-					"bWgVpPHrez"
-				],
-				"Ticker": [
-					"8hLtb4H"
-				],
-				"Duns": [
-					"iuV0xmaAd"
-				],
-				"VatNumber": [
-					"CkB27M3Fu"
-				],
-				"CompanyRegistrationNumber": [
-					"HCRetTsEDkKLe5X"
-				]
-			},
-			"countryCode": "TM",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://same-assignment.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"03.12",
-						"42",
-						"69.1"
-					],
-					"numberOfEmployees": 8716,
-					"fiscalYearStart": "2024-11-13"
-				},
-				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 21400.65,
-					"capitalAssetsInEur": 85448.79
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 7267.21,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 27354.57,
+					"energyConsumptionHeatingAndHotWaterInMwh": 41318.45,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 71048.51,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 50471.25,
 					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake",
 						"Wind",
+						"Avalanche",
 						"Flooding"
 					]
 				}
@@ -1420,55 +1980,217 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Halvorson - Johnson",
-			"headquarters": "South Wendy",
-			"headquartersPostalCode": "07212",
-			"sector": "solutions",
+			"companyName": "Lebsack, Price and Stiedemann",
+			"headquarters": "Los Angeles",
+			"headquartersPostalCode": "50247",
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"CGui1fJLlbfG3HElqeNn"
+				],
 				"Isin": [
-					"1I2CMiJ1ad8F",
-					"qeRsPb7Od6Rv"
+					"p0egIMDavw1r",
+					"sPWNmu5O4Gyz"
 				],
-				"PermId": [
-					"5Z89KEDIw4"
-				],
+				"PermId": [],
 				"Ticker": [
-					"c6l0ODg"
+					"pl4gzjs"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"0kbJL4yQg"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"XAcrlSNK3VR9D2E"
+					"SjddPGaxbpbaxJk"
 				]
 			},
-			"countryCode": "SG",
+			"countryCode": "JO",
 			"companyAlternativeNames": [
-				"Carroll Inc",
-				"Cummings - Anderson",
-				"O'Keefe - Cummings"
+				"Miller - Fritsch"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://ajar-osprey.biz/",
+			"companyLegalForm": null,
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"10.12",
-						"20.12",
-						"71"
+						"30.99",
+						"46.35"
 					],
-					"numberOfEmployees": 7961,
-					"fiscalYearStart": "2024-10-16"
+					"numberOfEmployees": 136,
+					"fiscalYearStart": "2024-08-21"
 				},
 				"financialInformation": {
-					"revenueInEur": 92664.07,
+					"revenueInEur": 17690.38,
 					"operatingCostInEur": null,
-					"capitalAssetsInEur": 78570.55
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": null,
+						"comment": "navigate wireless interface",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 29088.99,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Avalanche",
+						"EarthQuake",
+						"Hail",
+						"Snow",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Dach, Runte and Hane",
+			"headquarters": "Lillianafort",
+			"headquartersPostalCode": "07906",
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [
+					"R8Y7Pt9877CpIkrAz7lJ"
+				],
+				"Isin": [
+					"wLkYfqCHyD4S"
+				],
+				"PermId": [],
+				"Ticker": [
+					"D6V9xH7"
+				],
+				"Duns": [
+					"E2dyi9QKs"
+				],
+				"VatNumber": [
+					"Uu93qL7wD"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BW",
+			"companyAlternativeNames": [
+				"Beer and Sons",
+				"Hodkiewicz - Hammes",
+				"Watsica - Walker"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://favorite-pitch.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"28.24",
+						"64.9"
+					],
+					"numberOfEmployees": 9349,
+					"fiscalYearStart": "2024-05-15"
+				},
+				"financialInformation": {
+					"revenueInEur": 16489.76,
+					"operatingCostInEur": 64096.58,
+					"capitalAssetsInEur": 35924.76
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 750,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "calculate digital sensor",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 9548.67,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 35897.25,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bashirian, Spinka and Romaguera",
+			"headquarters": "Jarretshire",
+			"headquartersPostalCode": "72526",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"HbG2FBikPonD"
+				],
+				"PermId": [
+					"bby7A2NSMn"
+				],
+				"Ticker": [],
+				"Duns": [
+					"mT8dXFxdl"
+				],
+				"VatNumber": [
+					"KDy5s94I0"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GW",
+			"companyAlternativeNames": [
+				"Kshlerin and Sons",
+				"Parker, Reichert and Ryan",
+				"Steuber - Boyle"
+			],
+			"companyLegalForm": null,
+			"website": "https://plush-left.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"47.74",
+						"81.22",
+						"N"
+					],
+					"numberOfEmployees": 8142,
+					"fiscalYearStart": "2024-04-11"
+				},
+				"financialInformation": {
+					"revenueInEur": 49624.94,
+					"operatingCostInEur": 18397.83,
+					"capitalAssetsInEur": 70943.1
 				}
 			},
 			"power": {
@@ -1476,24 +2198,293 @@
 					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": null,
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 430,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": null,
+						"quality": "NA"
+					},
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 63124.38,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Fadel - Beier",
+			"headquarters": "Chino Hills",
+			"headquartersPostalCode": "63184-6543",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"IMpwop7pRRmP",
+					"lqolYQZk3dRt"
+				],
+				"PermId": [
+					"skb5K25lVg"
+				],
+				"Ticker": [],
+				"Duns": [
+					"oVg0WLLKX"
+				],
+				"VatNumber": [
+					"dUuCXJMWb"
+				],
+				"CompanyRegistrationNumber": [
+					"X1UQ4UZQCZqDeJq"
+				]
+			},
+			"countryCode": "IS",
+			"companyAlternativeNames": [
+				"Connelly, Dibbert and Murphy",
+				"Oberbrunner LLC",
+				"Padberg - Gutmann"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://specific-moonscape.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"29",
+						"45.3",
+						"46.38"
+					],
+					"numberOfEmployees": 6298,
+					"fiscalYearStart": "2024-09-27"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": null,
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 3594.25,
+						"dataSource": {
+							"page": 664,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "calculate virtual system",
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 85056.21,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 21595.68,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Avalanche",
+						"Wind",
+						"Snow",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Berge - Cummings",
+			"headquarters": "North Keeganstead",
+			"headquartersPostalCode": null,
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [
+					"IpFKRCVO8vRvtB2FqgWz"
+				],
+				"Isin": [
+					"Ve0aJBOKSiX8",
+					"cmtNViqIo5TX"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "VA",
+			"companyAlternativeNames": [
+				"Monahan - Sporer"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://spiffy-tomatillo.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"07.29",
+						"26.11",
+						"42.13"
+					],
+					"numberOfEmployees": 3363,
+					"fiscalYearStart": "2025-02-17"
+				},
+				"financialInformation": {
+					"revenueInEur": 26457.37,
+					"operatingCostInEur": 70126.65,
+					"capitalAssetsInEur": 60689.59
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 401,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "bypass 1080p firewall",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 48225.83,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 9172.13,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 89902.09,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Wind",
+						"EarthQuake",
+						"Snow"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bartoletti and Sons",
+			"headquarters": "Cuyahoga Falls",
+			"headquartersPostalCode": null,
+			"sector": "communities",
+			"identifiers": {
+				"Lei": [
+					"UDdM9yBtvmAPwo2Iq5Cs"
+				],
+				"Isin": [
+					"QB2lDLxalNRz",
+					"QiH8IkiE1bMT"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"SK67zogw2"
+				],
+				"VatNumber": [
+					"Bpi4FVDZV"
+				],
+				"CompanyRegistrationNumber": [
+					"fO3UIBvUhEDk3a2"
+				]
+			},
+			"countryCode": "KP",
+			"companyAlternativeNames": [
+				"Bahringer - VonRueden",
+				"Bergnaum - Anderson",
+				"Block - Kuphal",
+				"Wuckert, Berge and Feil"
+			],
+			"companyLegalForm": null,
+			"website": "https://difficult-correspondent.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"66.3",
+						"84.21",
+						"85.52",
+						"94.1"
+					],
+					"numberOfEmployees": 5496,
+					"fiscalYearStart": "2024-09-26"
+				},
+				"financialInformation": {
+					"revenueInEur": 59727.11,
+					"operatingCostInEur": 89432.44,
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 588,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": null,
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 44994.75,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 97712.73,
 					"naturalHazardsCovered": [
 						"Snow",
-						"Wind",
 						"Flooding",
-						"EarthQuake",
-						"Hail",
-						"Avalanche"
+						"Hail"
 					]
 				}
 			}
@@ -1502,188 +2493,47 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Tremblay - Lueilwitz",
-			"headquarters": "Fort Wayne",
-			"headquartersPostalCode": "95734-4448",
-			"sector": "e-markets",
+			"companyName": "Collins, Kuhlman and Moore",
+			"headquarters": "Padbergborough",
+			"headquartersPostalCode": "91999",
+			"sector": "applications",
 			"identifiers": {
-				"Lei": [
-					"3aUtQlC9wh9492b8U1IE"
-				],
+				"Lei": [],
 				"Isin": [
-					"CLyNntQTp2Kq"
+					"anXhp78ogVXs"
 				],
 				"PermId": [],
-				"Ticker": [
-					"aQp3jIu"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"cDhyW7kPHZe6Cj6"
-				]
-			},
-			"countryCode": "CX",
-			"companyAlternativeNames": [
-				"Hirthe - Upton"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://relieved-sunrise.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"21.10",
-						"28.13",
-						"42",
-						"80.3",
-						"82.20"
-					],
-					"numberOfEmployees": 6675,
-					"fiscalYearStart": "2024-12-31"
-				},
-				"financialInformation": {
-					"revenueInEur": 79089.6,
-					"operatingCostInEur": 31462.76,
-					"capitalAssetsInEur": 64779.86
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 82541.89,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 55598.09,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Sawayn - Bauch",
-			"headquarters": "Westworth",
-			"headquartersPostalCode": "27269",
-			"sector": "systems",
-			"identifiers": {
-				"Lei": [
-					"Uq5xbvsadsZshB8cHCN3"
-				],
-				"Isin": [
-					"gGDZtYPHGt35"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "FJ",
-			"companyAlternativeNames": [
-				"Bahringer, Schiller and Durgan",
-				"Cartwright and Sons",
-				"Moen LLC",
-				"Spinka Group"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://ecstatic-alley.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"77.12"
-					],
-					"numberOfEmployees": 8940,
-					"fiscalYearStart": "2024-03-01"
-				},
-				"financialInformation": {
-					"revenueInEur": 93421.64,
-					"operatingCostInEur": 31298.58,
-					"capitalAssetsInEur": 7522.88
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 62945.44,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 92900.06,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Johns, Stark and Cassin",
-			"headquarters": "Garettboro",
-			"headquartersPostalCode": null,
-			"sector": null,
-			"identifiers": {
-				"Lei": [
-					"PpRktV1JMpYWmV9eqXkE"
-				],
-				"Isin": [
-					"ht5o1OdXsNmW",
-					"ge5ygdsf2OnE"
-				],
-				"PermId": [
-					"cIxHCna3ba"
-				],
 				"Ticker": [],
 				"Duns": [
-					"XH4JVrscB"
+					"ujr1RPdpb"
 				],
 				"VatNumber": [
-					"FDS5y9Hqu"
+					"OuVydeAYH"
 				],
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "BH",
 			"companyAlternativeNames": [
-				"Muller - Watsica"
+				"Brown LLC"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://handsome-riser.net",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sectors": [],
-					"numberOfEmployees": 8555,
-					"fiscalYearStart": "2025-02-21"
+					"sectors": [
+						"10.51",
+						"71.12"
+					],
+					"numberOfEmployees": 2011,
+					"fiscalYearStart": "2024-08-18"
 				},
 				"financialInformation": {
-					"revenueInEur": 71243.15,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": 49627.65
+					"revenueInEur": 96768.01,
+					"operatingCostInEur": 11427.82,
+					"capitalAssetsInEur": null
 				}
 			},
 			"power": {
@@ -1691,21 +2541,1096 @@
 					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 85903.66,
+					"powerConsumptionInMwh": {
+						"value": 5532.5,
+						"dataSource": {
+							"page": 423,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 73109.68,
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 16047.9,
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Snow",
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Nitzsche, Kutch and Abbott",
+			"headquarters": "Royal Oak",
+			"headquartersPostalCode": "53991",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"pPh2sHHf0RMD"
+				],
+				"PermId": [
+					"0Y8D6ejCOI"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"qQ7Ad8kNB"
+				],
+				"CompanyRegistrationNumber": [
+					"i06voWIvuq9dOpH"
+				]
+			},
+			"countryCode": "KH",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://trim-pecan.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"13.10",
+						"25.21",
+						"38",
+						"75.0"
+					],
+					"numberOfEmployees": 9570,
+					"fiscalYearStart": "2024-07-28"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": 61847.95,
+					"capitalAssetsInEur": 38959.65
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 59362.12,
+						"dataSource": {
+							"page": 1010,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 67886.69,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Snow",
+						"EarthQuake",
+						"Avalanche",
+						"Wind"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Huel Inc",
+			"headquarters": "Noemyville",
+			"headquartersPostalCode": null,
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"nSKVVVqrkDHq",
+					"GWm60Tbt2Lvx"
+				],
+				"PermId": [
+					"BonaZ7hWB2"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"acjnzKfvi"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "EH",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://beautiful-interloper.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"46.34",
+						"47",
+						"66.30"
+					],
+					"numberOfEmployees": 1497,
+					"fiscalYearStart": "2024-11-20"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": 54046.54,
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 33041.7,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43276,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Flooding",
+						"Hail",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Cummerata - Dooley",
+			"headquarters": "Vonbury",
+			"headquartersPostalCode": "21545",
+			"sector": "eyeballs",
+			"identifiers": {
+				"Lei": [
+					"bo4qLLB5425plnTtCk9o"
+				],
+				"Isin": [
+					"hlsWABkVNqdS"
+				],
+				"PermId": [
+					"zMYup1niLr"
+				],
+				"Ticker": [
+					"0SB4zgC"
+				],
+				"Duns": [
+					"mDjQiBpsr"
+				],
+				"VatNumber": [
+					"gmp0dkFNB"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SI",
+			"companyAlternativeNames": [
+				"Mueller Group",
+				"Shields - Turcotte"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://deep-surge.net/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"63.9",
+						"87"
+					],
+					"numberOfEmployees": 2746,
+					"fiscalYearStart": "2024-07-24"
+				},
+				"financialInformation": {
+					"revenueInEur": 54437.63,
+					"operatingCostInEur": 74073.23,
+					"capitalAssetsInEur": 45700.97
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 62622.7,
+						"dataSource": {
+							"page": 132,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "connect redundant panel",
+						"quality": "Estimated"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 68413.41,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 53300.37,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Hail",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Vandervort - Heaney",
+			"headquarters": "Port Justushaven",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"rfkrdAXKlM2Y",
+					"fh3OOhnyEaUp"
+				],
+				"PermId": [
+					"TVNkDd9tSe"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"F0PiQ9WKmeuMoxl"
+				]
+			},
+			"countryCode": "PM",
+			"companyAlternativeNames": [
+				"Dicki - Cremin",
+				"Krajcik Group"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"10.61",
+						"58.1",
+						"72.1"
+					],
+					"numberOfEmployees": 8736,
+					"fiscalYearStart": "2024-07-14"
+				},
+				"financialInformation": {
+					"revenueInEur": 69780.29,
+					"operatingCostInEur": 69545.89,
+					"capitalAssetsInEur": 15749.51
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 88808.76,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schmitt - Schowalter",
+			"headquarters": "New Kolbyview",
+			"headquartersPostalCode": "82933",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"zOiaexGz4gBPN58CI3W5"
+				],
+				"Isin": [
+					"022g08fwqG16",
+					"v0Rolux4qxLS"
+				],
+				"PermId": [],
+				"Ticker": [
+					"KviKho8"
+				],
+				"Duns": [
+					"SBWGHcWW8"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PW",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://youthful-infusion.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"33",
+						"35.23",
+						"46.35",
+						"91.03"
+					],
+					"numberOfEmployees": 5573,
+					"fiscalYearStart": "2024-07-02"
+				},
+				"financialInformation": {
+					"revenueInEur": 17439.73,
+					"operatingCostInEur": 1752.48,
+					"capitalAssetsInEur": 17316.72
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 99090.31,
+						"dataSource": {
+							"page": 165,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": null,
+						"quality": "Incomplete"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 14551.44,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 91329.62,
+					"naturalHazardsCovered": [
+						"Hail",
+						"EarthQuake",
+						"Snow",
+						"Avalanche",
+						"Wind"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "O'Keefe LLC",
+			"headquarters": "Calebstead",
+			"headquartersPostalCode": "43827-3506",
+			"sector": "bandwidth",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"76z6hhwxG8mA",
+					"Z7LiHAFXzGxZ"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"EfzxxrEjC"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CM",
+			"companyAlternativeNames": [
+				"Lindgren and Sons"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"01.15",
+						"11.02",
+						"25.29",
+						"28.49",
+						"77.12"
+					],
+					"numberOfEmployees": 5597,
+					"fiscalYearStart": "2025-02-02"
+				},
+				"financialInformation": {
+					"revenueInEur": 70510.92,
+					"operatingCostInEur": 71669.96,
+					"capitalAssetsInEur": 75631.26
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 1061,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "back up online transmitter",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 12261.86,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 38620.94,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Avalanche",
+						"EarthQuake",
+						"Snow",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "VonRueden, Jast and Romaguera",
+			"headquarters": "Fort Tomas",
+			"headquartersPostalCode": "41882",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"JX8tO19mxrG6a0sUsYoO"
+				],
+				"Isin": [
+					"ITDdDgk0liP2"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"tmP1Dfh8r"
+				],
+				"VatNumber": [
+					"PgFM1SJy0"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AG",
+			"companyAlternativeNames": [
+				"O'Hara - Blanda",
+				"Skiles - Jones"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"10.32",
+						"46.61",
+						"91.04",
+						"96.0"
+					],
+					"numberOfEmployees": 2281,
+					"fiscalYearStart": "2024-05-15"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": null,
+					"capitalAssetsInEur": 14196.97
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 96455.32,
+						"dataSource": null,
+						"comment": "input solid state hard drive",
+						"quality": "Estimated"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 86885.83,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 31825.21,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Flooding",
+						"EarthQuake",
+						"Snow",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Larkin, Wolf and Conroy",
+			"headquarters": "Bradtkefurt",
+			"headquartersPostalCode": "21001-7546",
+			"sector": "solutions",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"UhUr9CwnTPri",
+					"dWwllpe83xQq"
+				],
+				"PermId": [],
+				"Ticker": [
+					"mMLvdYx"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AI",
+			"companyAlternativeNames": [
+				"Borer - Gibson"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://tattered-soil.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"11.05",
+						"13.95"
+					],
+					"numberOfEmployees": 3470,
+					"fiscalYearStart": "2024-11-14"
+				},
+				"financialInformation": {
+					"revenueInEur": 30219.42,
+					"operatingCostInEur": 66513.75,
+					"capitalAssetsInEur": 69409.65
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 77472.91,
+						"dataSource": {
+							"page": 607,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "connect 1080p circuit",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 12718.77,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 94224.37,
+					"naturalHazardsCovered": [
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Buckridge - Koch",
+			"headquarters": "Ratkecester",
+			"headquartersPostalCode": "22129",
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Dy4Avo1AeA5c",
+					"nfuIDlYiC7C6"
+				],
+				"PermId": [
+					"qlBfpTn40B"
+				],
+				"Ticker": [
+					"79b2Jvs"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"wpgqTnOVTGKENR9"
+				]
+			},
+			"countryCode": "MF",
+			"companyAlternativeNames": [
+				"Bode, Hilll and Deckow",
+				"Bruen, Leannon and Hand",
+				"Wintheiser Group"
+			],
+			"companyLegalForm": null,
+			"website": "https://perfect-accuracy.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"78.10"
+					],
+					"numberOfEmployees": 1754,
+					"fiscalYearStart": "2024-05-21"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": null,
+					"capitalAssetsInEur": 55159.14
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": null,
+						"comment": null,
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 41554.44,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 14442.82,
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Avalanche",
+						"Snow",
+						"EarthQuake",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Abernathy, Walter and Abernathy",
+			"headquarters": "South Anthony",
+			"headquartersPostalCode": "61086",
+			"sector": "models",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ImQrT0Q2d9RY",
+					"oZrZrp4IJTWX"
+				],
+				"PermId": [
+					"mgFzs22HRW"
+				],
+				"Ticker": [
+					"mF7gIPu"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"HNZMkrA2e"
+				],
+				"CompanyRegistrationNumber": [
+					"k22ClpgeP5sNZYH"
+				]
+			},
+			"countryCode": "BE",
+			"companyAlternativeNames": [
+				"Von, Schuster and Will"
+			],
+			"companyLegalForm": null,
+			"website": "https://unfortunate-cuisine.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"20.16",
+						"26.1",
+						"47.62",
+						"80.2"
+					],
+					"numberOfEmployees": 4236,
+					"fiscalYearStart": "2024-10-05"
+				},
+				"financialInformation": {
+					"revenueInEur": 99110.21,
+					"operatingCostInEur": 33688.87,
+					"capitalAssetsInEur": 88861.01
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 57546.15,
+						"dataSource": {
+							"page": 367,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "parse primary microchip",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 56529.85,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Avalanche",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Conn, Mraz and Lemke",
+			"headquarters": "Cummerataburgh",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"RjOahiUpGY5b",
+					"D7XZZVrsqHSI"
+				],
+				"PermId": [],
+				"Ticker": [
+					"uY9BoLG"
+				],
+				"Duns": [
+					"iaE4b7W9P"
+				],
+				"VatNumber": [
+					"eJNoIboYu"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PS",
+			"companyAlternativeNames": [
+				"Dooley, Frami and Cassin",
+				"Kling - Heller",
+				"Kuhic - Brakus",
+				"Sipes, Howell and Volkman"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [],
+					"numberOfEmployees": 5505,
+					"fiscalYearStart": "2024-07-12"
+				},
+				"financialInformation": {
+					"revenueInEur": 41250.21,
+					"operatingCostInEur": 29517.8,
+					"capitalAssetsInEur": 23357.29
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 7338.35,
+						"dataSource": {
+							"page": 209,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 89108.8,
+					"naturalHazardsCovered": [
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Rohan - Barrows",
+			"headquarters": "Hegmanncester",
+			"headquartersPostalCode": "44963-1753",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [
+					"nHTI4TrNdMFWLWWNyKup"
+				],
+				"Isin": [
+					"k7FX5v5Hsk49"
+				],
+				"PermId": [
+					"Re3b5UmyGl"
+				],
+				"Ticker": [
+					"KFh9OLX"
+				],
+				"Duns": [
+					"uTMKyuiKN"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"EgKKTHcqnFTcW1X"
+				]
+			},
+			"countryCode": "CU",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://rowdy-lunchroom.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"28.29",
+						"53.20"
+					],
+					"numberOfEmployees": 7835,
+					"fiscalYearStart": "2024-04-25"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": 50873.86,
+					"capitalAssetsInEur": 80237.46
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 86590.77,
+						"dataSource": {
+							"page": 74,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "navigate 1080p driver",
+						"quality": "Estimated"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 17312.72,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mann - Jacobi",
+			"headquarters": "Pourosland",
+			"headquartersPostalCode": "83587-2536",
+			"sector": "infrastructures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"mxx4AxKBMkyC"
+				],
+				"PermId": [
+					"GpoyFFRts5"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"2mBt2p14Xf9kEMD"
+				]
+			},
+			"countryCode": "TN",
+			"companyAlternativeNames": [
+				"Kunze - Nicolas",
+				"Swift Group"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://shameful-intestine.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"10.72",
+						"42.21",
+						"47.1",
+						"82.19"
+					],
+					"numberOfEmployees": 7737,
+					"fiscalYearStart": "2024-06-20"
+				},
+				"financialInformation": {
+					"revenueInEur": 23142.14,
+					"operatingCostInEur": 48217.7,
+					"capitalAssetsInEur": null
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 74781.7,
+						"dataSource": {
+							"page": 72,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 68122.69,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
 					"naturalHazardsCovered": [
 						"Snow",
-						"Hail",
 						"Wind",
+						"EarthQuake",
+						"Hail",
 						"Flooding",
 						"Avalanche"
 					]
@@ -1716,1681 +3641,19 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Fritsch Inc",
-			"headquarters": "Nyasiaview",
-			"headquartersPostalCode": "61593",
-			"sector": "e-business",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"AnDdIvPYe0qo"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"BS8HCFfl6"
-				],
-				"CompanyRegistrationNumber": [
-					"X5Z28RJeSSfdKeo"
-				]
-			},
-			"countryCode": "SG",
-			"companyAlternativeNames": [
-				"Bernier, Hammes and Goyette",
-				"Erdman - Parisian",
-				"Stehr, Bode and Bartoletti"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://organic-contractor.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.47",
-						"29.3",
-						"45.20",
-						"96.02"
-					],
-					"numberOfEmployees": 2818,
-					"fiscalYearStart": "2024-10-27"
-				},
-				"financialInformation": {
-					"revenueInEur": 77949.04,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": 86280.65
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 86628.61,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 62376.9,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"Snow",
-						"EarthQuake",
-						"Avalanche",
-						"Wind"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Lindgren - Torp",
-			"headquarters": "Monroe",
-			"headquartersPostalCode": "86502",
-			"sector": "platforms",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"wZNR9eYKMT5a",
-					"WlZORain0mJD"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"SgmqISpjM"
-				],
-				"CompanyRegistrationNumber": [
-					"HXGBDHCcAIiQUfi"
-				]
-			},
-			"countryCode": "AD",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://bare-roster.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.4",
-						"13.10",
-						"23.99",
-						"95.2"
-					],
-					"numberOfEmployees": 4679,
-					"fiscalYearStart": "2024-10-17"
-				},
-				"financialInformation": {
-					"revenueInEur": 21401.3,
-					"operatingCostInEur": 51265.05,
-					"capitalAssetsInEur": 48790.96
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 23667.57,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 26699.84,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 14548.65,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Avalanche",
-						"Wind",
-						"Hail",
-						"Snow",
-						"Flooding"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Ziemann, Murazik and Kunze",
-			"headquarters": "North Yoshikoville",
-			"headquartersPostalCode": "88481",
-			"sector": "infrastructures",
-			"identifiers": {
-				"Lei": [
-					"3ADHv5370PzKNUW6lt6R"
-				],
-				"Isin": [
-					"joI2ya9FSLOl"
-				],
-				"PermId": [],
-				"Ticker": [
-					"F2JNvU2"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"hBtdgMVk6mWYZMP"
-				]
-			},
-			"countryCode": "TJ",
-			"companyAlternativeNames": [
-				"Harvey LLC",
-				"Kuhlman, Hilpert and Towne",
-				"Wilderman, King and Stiedemann"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://darling-weasel.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"26.60",
-						"26.7",
-						"35"
-					],
-					"numberOfEmployees": 8165,
-					"fiscalYearStart": "2024-09-22"
-				},
-				"financialInformation": {
-					"revenueInEur": 44431.43,
-					"operatingCostInEur": 12923.54,
-					"capitalAssetsInEur": 45916.62
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 48759.36,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Avalanche",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Klein - Kessler",
-			"headquarters": "East Myles",
+			"companyName": "Sawayn LLC",
+			"headquarters": "Chaunceyview",
 			"headquartersPostalCode": null,
-			"sector": "eyeballs",
-			"identifiers": {
-				"Lei": [
-					"6H9Ld1l98UQju2vq9yjQ"
-				],
-				"Isin": [
-					"hmk1oHnXBTln"
-				],
-				"PermId": [],
-				"Ticker": [
-					"8YLtSal"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"dqSSHHGxUD5fyaT"
-				]
-			},
-			"countryCode": "SA",
-			"companyAlternativeNames": [
-				"DuBuque LLC"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://new-discipline.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.29",
-						"96.09"
-					],
-					"numberOfEmployees": 1907,
-					"fiscalYearStart": "2024-05-29"
-				},
-				"financialInformation": {
-					"revenueInEur": 63238.05,
-					"operatingCostInEur": 90060.41,
-					"capitalAssetsInEur": 40641.79
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 19345.67,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88327.18,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding",
-						"Snow",
-						"Wind"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Lowe - Johnson",
-			"headquarters": "Niagara Falls",
-			"headquartersPostalCode": "51619-8636",
-			"sector": "action-items",
+			"sector": "architectures",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"Q9sH3gxbrGUk"
-				],
-				"PermId": [],
-				"Ticker": [
-					"mZhSm2Y"
-				],
-				"Duns": [
-					"oysP08R1h"
-				],
-				"VatNumber": [
-					"XYdYI4qLE"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BQ",
-			"companyAlternativeNames": [
-				"Cremin Inc"
-			],
-			"companyLegalForm": null,
-			"website": "https://harmonious-bucket.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"21.10",
-						"46.36",
-						"46.47",
-						"93.12",
-						"A"
-					],
-					"numberOfEmployees": 7580,
-					"fiscalYearStart": "2024-10-19"
-				},
-				"financialInformation": {
-					"revenueInEur": 4789.75,
-					"operatingCostInEur": 97650.75,
-					"capitalAssetsInEur": null
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 94940.04,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 92077.8,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Avalanche",
-						"Hail",
-						"Wind",
-						"Flooding",
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Grimes Inc",
-			"headquarters": "North Gus",
-			"headquartersPostalCode": "80642",
-			"sector": "eyeballs",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"L7OvuN3HMt4b",
-					"2pDk4HpZSdWW"
+					"iJyewPExLEfB",
+					"JuyNe9DfF4OV"
 				],
 				"PermId": [
-					"Er9OU2VndB"
+					"dUyxTpbZNC"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"HQRyQed2d"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MW",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://wild-ladder.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"26.30",
-						"26.7",
-						"30.9"
-					],
-					"numberOfEmployees": 628,
-					"fiscalYearStart": "2024-07-12"
-				},
-				"financialInformation": {
-					"revenueInEur": 24461.47,
-					"operatingCostInEur": 75169.52,
-					"capitalAssetsInEur": 76540.97
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 36997.13,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 67179.61,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 98791.54,
-					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake",
-						"Snow",
-						"Flooding",
-						"Wind"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "O'Hara - Emard",
-			"headquarters": "Alviscester",
-			"headquartersPostalCode": "49765",
-			"sector": null,
-			"identifiers": {
-				"Lei": [
-					"HdjpwVzIdUdnYDsThcM5"
-				],
-				"Isin": [
-					"peD0IzDrDQMM",
-					"CLlB6MPh5RfR"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"Iu80oKohJ"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "RW",
-			"companyAlternativeNames": [
-				"Carter, Runte and Jerde",
-				"Heaney, Klein and Mann",
-				"Howe, Dickens and Dibbert",
-				"Upton LLC"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://ethical-knickers.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"09",
-						"28.96",
-						"84.1"
-					],
-					"numberOfEmployees": 294,
-					"fiscalYearStart": "2024-09-25"
-				},
-				"financialInformation": {
-					"revenueInEur": 79184,
-					"operatingCostInEur": 81456.53,
-					"capitalAssetsInEur": 60579.57
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 95836.37,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 52209.48,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 82260.19,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hagenes - Sanford",
-			"headquarters": "Murlcester",
-			"headquartersPostalCode": "16305",
-			"sector": "action-items",
-			"identifiers": {
-				"Lei": [
-					"AdOASpG8ZvfmGCiYliQx"
-				],
-				"Isin": [
-					"cvxoV0QHvwS9"
-				],
-				"PermId": [
-					"P7d7MeCp40"
-				],
-				"Ticker": [],
-				"Duns": [
-					"zmAe1PpFs"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"k2LAXHQizDDeJ9p"
-				]
-			},
-			"countryCode": "QA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://infamous-hospitalization.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"17.11",
-						"92.0"
-					],
-					"numberOfEmployees": 7927,
-					"fiscalYearStart": "2024-10-19"
-				},
-				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 90976.57,
-					"capitalAssetsInEur": 12149.69
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 7022.29,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 28126.29,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 59956.85,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"EarthQuake",
-						"Snow",
-						"Wind",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Senger LLC",
-			"headquarters": "Martinestad",
-			"headquartersPostalCode": "69874-0322",
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"ivRwnrB7cgpk",
-					"DjbRz1CHHaVR"
-				],
-				"PermId": [],
-				"Ticker": [
-					"V7vKlpp"
-				],
-				"Duns": [
-					"hTKEp2VK2"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"KJ87cWpcitrdxCv"
-				]
-			},
-			"countryCode": "GA",
-			"companyAlternativeNames": [
-				"Hansen, Casper and Hirthe",
-				"Stoltenberg and Sons"
-			],
-			"companyLegalForm": null,
-			"website": "https://jittery-hardboard.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.5",
-						"16.22",
-						"59.12",
-						"64.1"
-					],
-					"numberOfEmployees": 6785,
-					"fiscalYearStart": "2024-08-28"
-				},
-				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 59350.43,
-					"capitalAssetsInEur": 19097.62
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 11216.82,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 23492.87,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 60236.33,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"Wind",
-						"Hail",
-						"EarthQuake"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Mann Group",
-			"headquarters": "Walterport",
-			"headquartersPostalCode": null,
-			"sector": "bandwidth",
-			"identifiers": {
-				"Lei": [
-					"coYI2cRg9TqiGdkxfEAA"
-				],
-				"Isin": [
-					"xQCc0M9AwsA3",
-					"86YoRvHZMCPR"
-				],
-				"PermId": [
-					"cDT3mJbsup"
-				],
-				"Ticker": [
-					"lC42IG3"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"HRIBcs3H6hYK8rV"
-				]
-			},
-			"countryCode": "GS",
-			"companyAlternativeNames": [
-				"Legros and Sons"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://pretty-net.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.14",
-						"01.5",
-						"68.1",
-						"90.02",
-						"91.02"
-					],
-					"numberOfEmployees": 2980,
-					"fiscalYearStart": "2025-02-14"
-				},
-				"financialInformation": {
-					"revenueInEur": 43719.93,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": 44748.68
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 62782.56,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88330.55,
-					"naturalHazardsCovered": [
-						"Snow",
-						"EarthQuake",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Ankunding LLC",
-			"headquarters": "Port Jerad",
-			"headquartersPostalCode": "42949",
-			"sector": "technologies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"MoEEVFzaDgbM",
-					"0BHSWw71Qo6C"
-				],
-				"PermId": [
-					"bbLNiNE2Po"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"mb0UksAmKJEwN09"
-				]
-			},
-			"countryCode": "MZ",
-			"companyAlternativeNames": [
-				"Schmidt - Schultz",
-				"Toy, Connelly and Connelly"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://qualified-lemonade.biz/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.64",
-						"02.10",
-						"38.31",
-						"95.2",
-						"F"
-					],
-					"numberOfEmployees": 9171,
-					"fiscalYearStart": "2024-03-24"
-				},
-				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 40197,
-					"capitalAssetsInEur": 27566.42
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 68572.02,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 58738.45,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 49494.47,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Pfannerstill, Gleason and Kiehn",
-			"headquarters": "South Careyport",
-			"headquartersPostalCode": "05351-9468",
-			"sector": null,
-			"identifiers": {
-				"Lei": [
-					"zc4yYSZASEyGEn9ij7Jm"
-				],
-				"Isin": [
-					"PE09dO9gpR3M"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"DvmPiSG8z"
-				],
-				"VatNumber": [
-					"umPqwkLjo"
-				],
-				"CompanyRegistrationNumber": [
-					"QLa1mhwemsmQ9Os"
-				]
-			},
-			"countryCode": "BQ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://yummy-scallion.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [],
-					"numberOfEmployees": 2246,
-					"fiscalYearStart": "2024-03-22"
-				},
-				"financialInformation": {
-					"revenueInEur": 64359.83,
-					"operatingCostInEur": 73582.18,
-					"capitalAssetsInEur": 9285
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 90462.4,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 31997.59,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 4726.84,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Snow",
-						"Wind",
-						"Flooding",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Schmidt, Carter and Bradtke",
-			"headquarters": "South Jamie",
-			"headquartersPostalCode": "27535-1409",
-			"sector": "systems",
-			"identifiers": {
-				"Lei": [
-					"QABvmyukltVgUuwafMIr"
-				],
-				"Isin": [
-					"QRM93nfNkHA0",
-					"Uiuno4vLpaai"
-				],
-				"PermId": [
-					"id9tiBdTio"
-				],
-				"Ticker": [],
-				"Duns": [
-					"F4JkYssNN"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "HM",
-			"companyAlternativeNames": [
-				"Beatty, Harber and Turcotte"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://dreary-shoot.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"18",
-						"47.21",
-						"52.22",
-						"72.2"
-					],
-					"numberOfEmployees": 3201,
-					"fiscalYearStart": "2025-01-23"
-				},
-				"financialInformation": {
-					"revenueInEur": 42788.9,
-					"operatingCostInEur": 13578.24,
-					"capitalAssetsInEur": 67052.19
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 74919.84,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 77671.96,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding",
-						"EarthQuake",
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hermann - Roberts",
-			"headquarters": "West Moses",
-			"headquartersPostalCode": "05649-6977",
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"akj5P1BaOTgu"
-				],
-				"PermId": [],
-				"Ticker": [
-					"K2X5f3q"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"7tuaSvSnk"
-				],
-				"CompanyRegistrationNumber": [
-					"uAOTHariUxy0KTj"
-				]
-			},
-			"countryCode": "KH",
-			"companyAlternativeNames": [
-				"Stroman - Hermann"
-			],
-			"companyLegalForm": "GmbH",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"33.2",
-						"52.21"
-					],
-					"numberOfEmployees": 8824,
-					"fiscalYearStart": "2024-07-01"
-				},
-				"financialInformation": {
-					"revenueInEur": 98245.93,
-					"operatingCostInEur": 19147.7,
-					"capitalAssetsInEur": 45062.29
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 10.25,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 50336.75,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 53874.19,
-					"naturalHazardsCovered": [
-						"Snow"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Cole - Heidenreich",
-			"headquarters": "Caleighboro",
-			"headquartersPostalCode": null,
-			"sector": "applications",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"vpxIv8QZtwJE",
-					"psfdjS9uQlYZ"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "VG",
-			"companyAlternativeNames": [],
-			"companyLegalForm": null,
-			"website": "https://emotional-giggle.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.16",
-						"12.00",
-						"26.11",
-						"29.2",
-						"32.11"
-					],
-					"numberOfEmployees": 1964,
-					"fiscalYearStart": "2024-10-21"
-				},
-				"financialInformation": {
-					"revenueInEur": 35264.88,
-					"operatingCostInEur": 47344.98,
-					"capitalAssetsInEur": 84412.12
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 4227.85,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 37017.72,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 54792.74,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind",
-						"Snow",
-						"Flooding",
-						"EarthQuake"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hackett Group",
-			"headquarters": "Carminemouth",
-			"headquartersPostalCode": "26330",
-			"sector": "partnerships",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"K3b1JW8lpKyE",
-					"UyKvrb8qemOp"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"qZ3uCAada"
-				],
-				"VatNumber": [
-					"W4zQX70C7"
-				],
-				"CompanyRegistrationNumber": [
-					"DZmrkAQNTl7dlE7"
-				]
-			},
-			"countryCode": "AT",
-			"companyAlternativeNames": [
-				"Halvorson, Donnelly and Von",
-				"Larson - Torp"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://ready-tour.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"20.11"
-					],
-					"numberOfEmployees": 3122,
-					"fiscalYearStart": "2024-04-12"
-				},
-				"financialInformation": {
-					"revenueInEur": 97936.67,
-					"operatingCostInEur": 33396.09,
-					"capitalAssetsInEur": 52779.39
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 58756.47,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Avalanche"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Ziemann - Leuschke",
-			"headquarters": "Herminaport",
-			"headquartersPostalCode": "55450",
-			"sector": "relationships",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"lIrDOhAEGtzO"
-				],
-				"PermId": [
-					"nqZDuXmvjc"
-				],
-				"Ticker": [
-					"6lRAq3D"
-				],
-				"Duns": [
-					"MyEfCRMW5"
-				],
-				"VatNumber": [
-					"J4gB1WDsb"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "UG",
-			"companyAlternativeNames": [
-				"Funk and Sons",
-				"Hettinger - Considine",
-				"Huel - Pouros",
-				"Maggio, Kiehn and Osinski"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"07.10"
-					],
-					"numberOfEmployees": 640,
-					"fiscalYearStart": "2025-02-17"
-				},
-				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": 42864.44,
-					"capitalAssetsInEur": 626.52
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 90931,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 45022.9,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Hail",
-						"Snow",
-						"Flooding",
-						"EarthQuake",
-						"Avalanche"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hauck LLC",
-			"headquarters": "Melbourne",
-			"headquartersPostalCode": "92018",
-			"sector": null,
-			"identifiers": {
-				"Lei": [
-					"p1125SeUEzrDBTDzDm97"
-				],
-				"Isin": [
-					"THqUEkYjhKsu",
-					"d2XilbhIo4lJ"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"3cO3OF9VR"
-				],
-				"VatNumber": [
-					"4FDQC9Agp"
-				],
-				"CompanyRegistrationNumber": [
-					"5V2vdl7nBreFSGP"
-				]
-			},
-			"countryCode": "DK",
-			"companyAlternativeNames": [
-				"Brekke, Gottlieb and Senger",
-				"West and Sons",
-				"Ziemann - Glover"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://solid-wheat.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [],
-					"numberOfEmployees": 174,
-					"fiscalYearStart": "2024-11-21"
-				},
-				"financialInformation": {
-					"revenueInEur": 89640.56,
-					"operatingCostInEur": 20860.58,
-					"capitalAssetsInEur": 69682.2
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 66107.08,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 86843.27,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 45672.56,
-					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Cronin Group",
-			"headquarters": "Tampa",
-			"headquartersPostalCode": "08361",
-			"sector": "applications",
-			"identifiers": {
-				"Lei": [
-					"GkeGOmaexdwOmogQZn00"
-				],
-				"Isin": [
-					"EdQYL2Zu0xT1",
-					"C2YIzJEcKiC1"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"uFptzsOOr"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MO",
-			"companyAlternativeNames": [
-				"Franey, Gleichner and Roob",
-				"Wiegand LLC"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://prudent-standoff.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"05.20",
-						"28",
-						"32",
-						"53.20"
-					],
-					"numberOfEmployees": 2688,
-					"fiscalYearStart": "2024-07-05"
-				},
-				"financialInformation": {
-					"revenueInEur": 77768.42,
-					"operatingCostInEur": 80882.49,
-					"capitalAssetsInEur": 43990.12
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between20And25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 16064.36,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 3926.43,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Sauer, Stoltenberg and Jast",
-			"headquarters": "Heidenreichbury",
-			"headquartersPostalCode": "51015",
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"sIdNbaVJ6K6I",
-					"BqKgZHlKkjeo"
-				],
-				"PermId": [],
-				"Ticker": [
-					"r5BWFUl"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "PS",
-			"companyAlternativeNames": [
-				"Ankunding - Crist"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://any-pilgrim.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01",
-						"63.11",
-						"66.1",
-						"86.21"
-					],
-					"numberOfEmployees": 4014,
-					"fiscalYearStart": "2024-06-19"
-				},
-				"financialInformation": {
-					"revenueInEur": 95220.55,
-					"operatingCostInEur": 21652.73,
-					"capitalAssetsInEur": 12589.47
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 71948.71,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 28892.72,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Hail",
-						"Avalanche"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Lebsack LLC",
-			"headquarters": "North Clotilde",
-			"headquartersPostalCode": "24364",
-			"sector": "synergies",
-			"identifiers": {
-				"Lei": [
-					"jAKmIlhqTKUJzKG2sfcw"
-				],
-				"Isin": [
-					"5FFzCwpU6mfO",
-					"ITbBFnsLtEGK"
-				],
-				"PermId": [
-					"RNaIj6yYVI"
-				],
-				"Ticker": [],
-				"Duns": [
-					"i6gfebVLy"
-				],
-				"VatNumber": [
-					"JUP862ikc"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MZ",
-			"companyAlternativeNames": [
-				"Grady - O'Connell",
-				"Legros LLC",
-				"Shanahan, Connelly and Bergstrom"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://graceful-seal.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"01.11",
-						"10.31",
-						"10.9",
-						"23.3",
-						"46.39"
-					],
-					"numberOfEmployees": 7562,
-					"fiscalYearStart": "2024-06-26"
-				},
-				"financialInformation": {
-					"revenueInEur": 99801.88,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": null
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 23696.97,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43807.26,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Wind",
-						"EarthQuake",
-						"Snow",
-						"Avalanche"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Treutel, Bahringer and Grady",
-			"headquarters": "New Malachicester",
-			"headquartersPostalCode": "94019",
-			"sector": "e-commerce",
-			"identifiers": {
-				"Lei": [
-					"0eVWl54Sa0kFIggAaQHt"
-				],
-				"Isin": [
-					"lfwr5gF0lwRH",
-					"D0Rq1IkIKIPi"
-				],
-				"PermId": [
-					"38CDrAF95I"
-				],
-				"Ticker": [
-					"Yrpjatt"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "HN",
-			"companyAlternativeNames": [
-				"Barrows - Parker",
-				"Hammes, Bernhard and Krajcik",
-				"Hodkiewicz - Hamill",
-				"Pacocha and Sons"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://acclaimed-senator.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"13.1",
-						"77.4"
-					],
-					"numberOfEmployees": 9648,
-					"fiscalYearStart": "2024-04-13"
-				},
-				"financialInformation": {
-					"revenueInEur": 99483.1,
-					"operatingCostInEur": 34266.19,
-					"capitalAssetsInEur": 93703.59
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 97652.62,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMwh": 32373.91,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 26541.37,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"EarthQuake",
-						"Avalanche",
-						"Wind",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hills and Sons",
-			"headquarters": "Tracy",
-			"headquartersPostalCode": "43496",
-			"sector": null,
-			"identifiers": {
-				"Lei": [
-					"fDat9emBuNFNd62pFCEv"
-				],
-				"Isin": [
-					"5PE3dOaPNGFc"
-				],
-				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
@@ -3398,28 +3661,25 @@
 			},
 			"countryCode": "DO",
 			"companyAlternativeNames": [
-				"Bergnaum - Schroeder",
-				"Howe - Hegmann",
-				"Lesch - Tromp",
-				"Macejkovic - Barton"
+				"Corkery - Beer",
+				"Gutmann, Jacobson and Crona",
+				"Marvin and Sons"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://foolish-metronome.com/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://focused-fashion.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sectors": [
-						"S"
-					],
-					"numberOfEmployees": 4670,
-					"fiscalYearStart": "2024-08-22"
+					"sectors": [],
+					"numberOfEmployees": 685,
+					"fiscalYearStart": "2024-03-01"
 				},
 				"financialInformation": {
-					"revenueInEur": 78819.1,
-					"operatingCostInEur": 74284.85,
-					"capitalAssetsInEur": 66304.54
+					"revenueInEur": 70595.98,
+					"operatingCostInEur": 62533.57,
+					"capitalAssetsInEur": 64027.75
 				}
 			},
 			"power": {
@@ -3427,21 +3687,199 @@
 					"investmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 66241.93,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 7881.21,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 336,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": null,
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": null,
+					"naturalHazardsCovered": [
+						"Hail",
+						"Snow",
+						"Wind",
+						"Flooding",
+						"Avalanche",
+						"EarthQuake"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Greenfelder and Sons",
+			"headquarters": "Yeseniaville",
+			"headquartersPostalCode": "50635",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qBA8Wg3X2k76",
+					"NqvTgwk9694h"
+				],
+				"PermId": [],
+				"Ticker": [
+					"jD6eecD"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NP",
+			"companyAlternativeNames": [
+				"Ankunding - Mraz",
+				"Gutmann - Hayes",
+				"Upton and Sons"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"13.9",
+						"17.24",
+						"45.40",
+						"47.78",
+						"94.12"
+					],
+					"numberOfEmployees": 668,
+					"fiscalYearStart": "2024-07-03"
+				},
+				"financialInformation": {
+					"revenueInEur": 22245.44,
+					"operatingCostInEur": 11471.09,
+					"capitalAssetsInEur": 25657.24
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 34560.26,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 23967.54,
+					"naturalHazardsCovered": [
+						"Flooding",
+						"EarthQuake",
+						"Avalanche",
+						"Snow",
+						"Wind",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bednar Inc",
+			"headquarters": "Conway",
+			"headquartersPostalCode": "66784",
+			"sector": "supply-chains",
+			"identifiers": {
+				"Lei": [
+					"xhaxcKBxHBns3boXIbMG"
+				],
+				"Isin": [
+					"JurBEQQTAhgf",
+					"6daYN0nrCfZe"
+				],
+				"PermId": [
+					"FcDZC9NpHO"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"4lSuUlNyw"
+				],
+				"CompanyRegistrationNumber": [
+					"DvpDTNF0qImy94i"
+				]
+			},
+			"countryCode": "IO",
+			"companyAlternativeNames": [
+				"Bins, Bartoletti and Wyman",
+				"Heller, Casper and Hyatt"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"21.10",
+						"88.10"
+					],
+					"numberOfEmployees": 9798,
+					"fiscalYearStart": "2024-04-24"
+				},
+				"financialInformation": {
+					"revenueInEur": 62067.02,
+					"operatingCostInEur": null,
+					"capitalAssetsInEur": 27847.49
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 25214.38,
+						"dataSource": {
+							"page": 1111,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "transmit mobile panel",
+						"quality": "Reported"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 99983.58,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 75291.78,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 14103.84,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow",
 						"Avalanche",
+						"Snow",
+						"Flooding",
 						"Hail",
 						"Wind",
 						"EarthQuake"
@@ -3453,278 +3891,48 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Wuckert, Gutkowski and Wunsch",
-			"headquarters": "Fort Scothaven",
-			"headquartersPostalCode": "45461",
-			"sector": "mindshare",
+			"companyName": "Koss LLC",
+			"headquarters": "VonRuedenstead",
+			"headquartersPostalCode": "21626",
+			"sector": "users",
 			"identifiers": {
 				"Lei": [
-					"fqAeMwpUizp1vgskdLlD"
+					"6fkUNkHSCWvgqlMeX9Yn"
 				],
 				"Isin": [
-					"dLmbMSDO4Kwi"
+					"BVVdm48KDQZ9"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"iPO4BY4iJ"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"iIdmHPPGDRRfYZF"
-				]
-			},
-			"countryCode": "MY",
-			"companyAlternativeNames": [
-				"Jakubowski Inc",
-				"Wintheiser - Johnston"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://monstrous-sonata.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"23.1",
-						"25",
-						"77.39",
-						"95.29"
-					],
-					"numberOfEmployees": 1663,
-					"fiscalYearStart": "2025-01-20"
-				},
-				"financialInformation": {
-					"revenueInEur": 31782,
-					"operatingCostInEur": 12320.19,
-					"capitalAssetsInEur": null
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 95602.53,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 75097.78,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 77730.97,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Snow",
-						"EarthQuake",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Johnson, Wunsch and Stamm",
-			"headquarters": "Clifton",
-			"headquartersPostalCode": "06622",
-			"sector": "lifetime value",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"JptjvpkEnbDb",
-					"JjbcpQ5KoEe8"
-				],
-				"PermId": [
-					"q7kSyMAOpd"
-				],
 				"Ticker": [
-					"XMnnuOt"
+					"ZraqbCT"
 				],
-				"Duns": [
-					"1bg81W73U"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BE",
-			"companyAlternativeNames": [
-				"Kemmer - Gulgowski",
-				"Maggio - Ziemann",
-				"Stiedemann - Ritchie"
-			],
-			"companyLegalForm": null,
-			"website": "https://little-glow.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"12",
-						"63.9",
-						"94.91"
-					],
-					"numberOfEmployees": 1343,
-					"fiscalYearStart": "2024-07-10"
-				},
-				"financialInformation": {
-					"revenueInEur": 77275.56,
-					"operatingCostInEur": 31401.89,
-					"capitalAssetsInEur": null
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 81131.39,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 1101.99,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 10780.94,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Legros, Bauch and Koch",
-			"headquarters": "Jaceyton",
-			"headquartersPostalCode": "56692",
-			"sector": "markets",
-			"identifiers": {
-				"Lei": [
-					"sgS1ALnzjv3ppHBrFSiP"
-				],
-				"Isin": [
-					"t2Ns67krFiC3",
-					"0N6cfUAXUxt6"
-				],
-				"PermId": [
-					"N99iugKtvQ"
-				],
-				"Ticker": [
-					"w0f9xtw"
-				],
-				"Duns": [
-					"lIkfYKBxk"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"8aix0xCkb"
+					"Tioq1uONK"
 				],
 				"CompanyRegistrationNumber": [
-					"x8RVNfmiPAhqbAC"
+					"2JmiXs9WxKhLEBo"
 				]
 			},
-			"countryCode": "FJ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://fragrant-blowgun.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sectors": [
-						"41.1"
-					],
-					"numberOfEmployees": 3121,
-					"fiscalYearStart": "2024-08-19"
-				},
-				"financialInformation": {
-					"revenueInEur": 50527.26,
-					"operatingCostInEur": 1445.27,
-					"capitalAssetsInEur": null
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": 19991.23,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 1098.59,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 2530.34,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Jacobi Inc",
-			"headquarters": "North Chanel",
-			"headquartersPostalCode": "52204",
-			"sector": "solutions",
-			"identifiers": {
-				"Lei": [
-					"BdTMmvluw6xeCyQxRDnS"
-				],
-				"Isin": [
-					"IJCWb3uP20zv"
-				],
-				"PermId": [
-					"3ELOxE11IB"
-				],
-				"Ticker": [],
-				"Duns": [
-					"0MWOIazlP"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"1SC9cnok594zP0p"
-				]
-			},
-			"countryCode": "JE",
+			"countryCode": "CY",
 			"companyAlternativeNames": [
-				"Smitham, Shanahan and Kuphal"
+				"Gutkowski Inc"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://kaleidoscopic-acrylic.biz/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://afraid-phosphate.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sectors": [
-						"08.91",
-						"43.91",
-						"60.1"
-					],
-					"numberOfEmployees": 5787,
-					"fiscalYearStart": "2024-11-29"
+					"sectors": [],
+					"numberOfEmployees": 4326,
+					"fiscalYearStart": "2024-09-15"
 				},
 				"financialInformation": {
-					"revenueInEur": null,
-					"operatingCostInEur": null,
-					"capitalAssetsInEur": null
+					"revenueInEur": 98523.31,
+					"operatingCostInEur": 54962.59,
+					"capitalAssetsInEur": 86254.47
 				}
 			},
 			"power": {
@@ -3732,24 +3940,184 @@
 					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 9278.97,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 23969.11,
+					"powerConsumptionInMwh": {
+						"value": null,
+						"dataSource": {
+							"page": 1190,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "back up optical driver",
+						"quality": "NA"
+					},
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 59626.48,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 44466.34,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 36823.75,
 					"naturalHazardsCovered": [
-						"Flooding",
+						"EarthQuake",
+						"Snow",
 						"Hail"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kunze, Reynolds and Gorczany",
+			"headquarters": "Victorville",
+			"headquartersPostalCode": "23522-0333",
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"D0p2pzVq90mZTUEt5E1V"
+				],
+				"Isin": [
+					"JeqEmvMUZhTX",
+					"cXiZMurr1fZP"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"xN8FE1MZQ"
+				],
+				"CompanyRegistrationNumber": [
+					"E3w9lRSV5veszHH"
+				]
+			},
+			"countryCode": "GL",
+			"companyAlternativeNames": [
+				"Gerhold, Stokes and Baumbach"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://stained-pathogenesis.info/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"01.46",
+						"35.1",
+						"47.52",
+						"85.31"
+					],
+					"numberOfEmployees": 5195,
+					"fiscalYearStart": "2024-09-20"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": 63332.18,
+					"capitalAssetsInEur": 16927.5
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 86983.87,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 19661.97,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Flooding",
+						"Snow"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mosciski and Sons",
+			"headquarters": "Anabury",
+			"headquartersPostalCode": "83261",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [
+					"7HD4r8K7Gy7NoBhEJsOz"
+				],
+				"Isin": [
+					"b32kjLVHwiAN"
+				],
+				"PermId": [],
+				"Ticker": [
+					"RsT8tTb"
+				],
+				"Duns": [
+					"wRnDR5bHR"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"fHxMktOZMTZ6R3p"
+				]
+			},
+			"countryCode": "GS",
+			"companyAlternativeNames": [
+				"Marvin, Baumbach and Walsh",
+				"Willms - Littel"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://stimulating-chopstick.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sectors": [
+						"28.1",
+						"32.20",
+						"56.29"
+					],
+					"numberOfEmployees": 3004,
+					"fiscalYearStart": "2024-08-19"
+				},
+				"financialInformation": {
+					"revenueInEur": null,
+					"operatingCostInEur": 61926.67,
+					"capitalAssetsInEur": 15841.17
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 73314.27,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 13189.13,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
 	}
 ]

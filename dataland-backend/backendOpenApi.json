@@ -3588,6 +3588,57 @@
           }
         }
       },
+      "ExtendedDataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "tagName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
+          }
+        }
+      },
       "NaturalHazardsCoveredOptions": {
         "type": "string",
         "enum": [
@@ -3597,6 +3648,16 @@
           "EarthQuake",
           "Avalanche",
           "Snow"
+        ]
+      },
+      "QualityOptions": {
+        "type": "string",
+        "enum": [
+          "Audited",
+          "Reported",
+          "Estimated",
+          "Incomplete",
+          "NA"
         ]
       },
       "SmeData": {
@@ -3747,8 +3808,12 @@
         "type": "object",
         "properties": {
           "powerConsumptionInMwh": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           },
           "powerFromRenewableSources": {
             "nullable": true,
@@ -3916,33 +3981,6 @@
           }
         }
       },
-      "ExtendedDataPointBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "ExtendedDataPointBigInteger": {
         "required": [
           "quality"
@@ -4000,40 +4038,6 @@
             ]
           }
         }
-      },
-      "ExtendedDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "tagName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
-      },
-      "QualityOptions": {
-        "type": "string",
-        "enum": [
-          "Audited",
-          "Reported",
-          "Estimated",
-          "Incomplete",
-          "NA"
-        ]
       },
       "SfdrData": {
         "required": [
@@ -13697,25 +13701,25 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "permId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

@@ -51,7 +51,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
         ),
       },
       consumption: {
-        powerConsumptionInMwh: dataGenerator.randomFloat(),
+        powerConsumptionInMwh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         powerFromRenewableSources: dataGenerator.randomYesNo(),
         energyConsumptionHeatingAndHotWaterInMwh: dataGenerator.randomFloat(),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.valueOrNull(

@@ -2,45 +2,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Wyoming",
-			"headquartersPostalCode": "09193-2828",
-			"sector": null,
+			"headquarters": "Bergeberg",
+			"headquartersPostalCode": null,
+			"sector": "functionalities",
 			"identifiers": {
-				"Lei": [
-					"P8R5gPbOpErIgDGLBavs"
-				],
+				"Lei": [],
 				"Isin": [
-					"L68C8D1k6mXs",
-					"SlQOy8E0bT34"
+					"4Hk0xVwDqNyK"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"PermId": [
+					"s7IQHkio0N"
+				],
+				"Ticker": [
+					"AuuGsvZ"
+				],
+				"Duns": [
+					"D6d9vl5u5"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"sC9wPTLcSiksj9F"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CN",
+			"countryCode": "TR",
 			"companyAlternativeNames": [
-				"Sauer - Lockman"
+				"Reichel LLC",
+				"Spencer - Bahringer"
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://hurtful-proximity.info/",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sectors": [
-						"13",
-						"32.12",
-						"38.21",
-						"43.1",
-						"95.29"
+						"20.15",
+						"35.2",
+						"56.10"
 					],
-					"numberOfEmployees": 1238,
-					"fiscalYearStart": "2025-01-24"
+					"numberOfEmployees": 9928,
+					"fiscalYearStart": "2025-02-04"
 				},
 				"financialInformation": {
 					"revenueInEur": 2500000,
@@ -53,18 +53,32 @@
 					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMwh": {
+						"value": 71129.02,
+						"dataSource": {
+							"page": 647,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "input bluetooth hard drive",
+						"quality": "Estimated"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 64283.66,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 2728.36,
-					"naturalHazardsCovered": null
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 17762.46,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Hail",
+						"Snow"
+					]
 				}
 			}
 		},
