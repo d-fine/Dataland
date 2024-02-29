@@ -9,6 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -60,8 +61,8 @@ class DataRequestEmailMessageSender(
                     mapOf(
                         "Environment" to proxyPrimaryUrl,
                         "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
-                        "Reporting Periods" to bulkDataRequest.reportingPeriods.joinToString(", "),
-                        "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", "),
+                        "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
+                        "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
                         "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
                     ),
                 ),
@@ -97,8 +98,8 @@ class DataRequestEmailMessageSender(
                     mapOf(
                         "Environment" to proxyPrimaryUrl,
                         "User" to buildUserInfo(userAuthentication),
-                        "Data Type" to dataType.name,
-                        "Reporting Periods" to reportingPeriods.joinToString(", "),
+                        "Data Type" to dataType.value,
+                        "Reporting Periods" to formatReportingPeriods(reportingPeriods),
                         "Dataland Company ID" to datalandCompanyId,
                         "Company Name" to companyName,
                     ),
@@ -110,4 +111,46 @@ class DataRequestEmailMessageSender(
             RoutingKeyNames.internalEmail,
         )
     }
+
+    /**
+     * Function that generates the message object for single data request mails
+     */
+    fun buildSingleDataRequestExternalMessage(
+        receiver: String,
+        userAuthentication: DatalandJwtAuthentication,
+        datalandCompanyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriods: Set<String>,
+        contactMessage: String?,
+    ) {
+        val correlationId = UUID.randomUUID().toString()
+        val companyName = companyApi.getCompanyInfo(datalandCompanyId).companyName
+        logger.info(
+            "User with Id ${userAuthentication.userId} has submitted a single data request for company with" +
+                " Id $datalandCompanyId and correlationId $correlationId",
+        )
+        val properties = mapOf(
+            "companyId" to datalandCompanyId,
+            "companyName" to companyName,
+            "requesterEmail" to userAuthentication.username,
+            "dataType" to dataType.value,
+            "reportingPeriods" to formatReportingPeriods(reportingPeriods),
+            "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
+        )
+        val message = TemplateEmailMessage(
+            emailTemplateType = TemplateEmailMessage.Type.DataRequestedClaimOwnership,
+            receiver = receiver,
+            properties = properties,
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(message),
+            MessageType.SendTemplateEmail,
+            correlationId,
+            ExchangeName.SendEmail,
+            RoutingKeyNames.templateEmail,
+        )
+    }
+
+    private fun formatReportingPeriods(reportingPeriods: Set<String>) =
+        reportingPeriods.toList().sorted().joinToString(", ")
 }

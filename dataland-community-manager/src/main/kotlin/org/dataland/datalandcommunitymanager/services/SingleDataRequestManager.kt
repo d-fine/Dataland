@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
-    @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
+    @Autowired private val dataRequestEmailMessageSender: DataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -57,12 +57,61 @@ class SingleDataRequestManager(
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             singleDataRequest, datalandCompanyId,
         )
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+        sendSingleDataRequestEmailMessages(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
             datalandCompanyId,
         )
         return storedDataRequests
+    }
+
+    private fun sendSingleDataRequestEmailMessages(
+        userAuthentication: DatalandJwtAuthentication,
+        singleDataRequest: SingleDataRequest,
+        datalandCompanyId: String,
+    ) {
+        if (singleDataRequest.reportingPeriods.isEmpty()) return
+        if (
+            singleDataRequest.contacts.isNullOrEmpty()
+        ) {
+            sendInternalEmail(
+                userAuthentication = userAuthentication,
+                singleDataRequest = singleDataRequest,
+                datalandCompanyId = datalandCompanyId,
+            )
+            return
+        }
+        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, datalandCompanyId)
+    }
+
+    private fun sendEmailToSpecifiedContacts(
+        userAuthentication: DatalandJwtAuthentication,
+        singleDataRequest: SingleDataRequest,
+        datalandCompanyId: String,
+    ) {
+        singleDataRequest.contacts?.forEach { contactEmail ->
+            dataRequestEmailMessageSender.buildSingleDataRequestExternalMessage(
+                receiver = contactEmail,
+                userAuthentication = userAuthentication,
+                datalandCompanyId = datalandCompanyId,
+                dataType = singleDataRequest.dataType,
+                reportingPeriods = singleDataRequest.reportingPeriods,
+                contactMessage = singleDataRequest.message,
+            )
+        }
+    }
+
+    private fun sendInternalEmail(
+        userAuthentication: DatalandJwtAuthentication,
+        datalandCompanyId: String,
+        singleDataRequest: SingleDataRequest,
+    ) {
+        dataRequestEmailMessageSender.buildSingleDataRequestInternalMessage(
+            userAuthentication = userAuthentication,
+            datalandCompanyId,
+            dataType = singleDataRequest.dataType,
+            reportingPeriods = singleDataRequest.reportingPeriods,
+        )
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
