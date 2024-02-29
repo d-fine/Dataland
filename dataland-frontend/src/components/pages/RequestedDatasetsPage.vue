@@ -272,39 +272,6 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-      for (let i = 0; i < 40; i++) {
-        this.storedDataRequests.push({
-          dataRequestId: "abcd" + i,
-          datalandCompanyId: "company" + i,
-          dataType: "lksg",
-          reportingPeriod: "2021",
-          creationTimestamp: 1709204495770,
-          lastModifiedDate: 1709204495770,
-          requestStatus: "Open",
-        } as StoredDataRequest);
-      }
-      for (let i = 0; i < 40; i++) {
-        this.storedDataRequests.push({
-          dataRequestId: "abcde" + i,
-          datalandCompanyId: "companyXX" + i,
-          dataType: "sme",
-          reportingPeriod: "2020",
-          creationTimestamp: 1709204495770,
-          lastModifiedDate: 1709204495770,
-          requestStatus: "Answered",
-        } as StoredDataRequest);
-      }
-      for (let i = 0; i < 40; i++) {
-        this.storedDataRequests.push({
-          dataRequestId: "abcde" + i,
-          datalandCompanyId: "comp" + i,
-          dataType: "heimathafen",
-          reportingPeriod: "2099",
-          creationTimestamp: 1709204495770,
-          lastModifiedDate: 1709204495770,
-          requestStatus: "Closed",
-        } as StoredDataRequest);
-      }
       this.waitingForData = false;
       this.storedDataRequests.forEach((dataRequest) =>
         this.updateCompanyIdToCompanyNameMap(dataRequest.datalandCompanyId),
@@ -315,9 +282,16 @@ export default defineComponent({
      * @param event contains column to sort and sortOrder
      */
     onSort(event: DataTableSortEvent) {
+      console.log(event);
       const sortField = event.sortField;
       const sortOrder = event.sortOrder || 1;
       this.storedDataRequests.sort((a, b) => {
+        if (sortField == "datalandCompanyId") {
+          return (
+            (this.getCompanyNameById(a.datalandCompanyId) < this.getCompanyNameById(b.datalandCompanyId) ? -1 : 1) *
+            sortOrder
+          );
+        }
         const aValue = a[sortField];
         const bValue = b[sortField];
         return (aValue < bValue ? -1 : 1) * sortOrder;
@@ -355,9 +329,9 @@ export default defineComponent({
      * @param companyId dataland companyId
      * @returns checks if given companyName contains searchbar text
      */
-    filterSearchInput(companyId: string) {
+    filterSearchInput(companyId: string | undefined) {
       if (companyId == undefined) {
-        return true;
+        companyId = "";
       }
       const lowerCaseCompanyName = (this.getCompanyNameById(companyId) || "").toLowerCase();
       const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
@@ -426,7 +400,8 @@ export default defineComponent({
      * @param companyId dataland companyId
      * @returns companyName or companyId if there is no companyName
      */
-    getCompanyNameById(companyId: string) {
+    getCompanyNameById(companyId: string | undefined) {
+      if (companyId == undefined) return "";
       if (this.companyIdToCompanyName.has(companyId)) {
         return this.companyIdToCompanyName.get(companyId);
       } else {
@@ -438,7 +413,10 @@ export default defineComponent({
      * Updates the companyIdToCompanyName Map
      * @param companyId dataland companyId
      */
-    async updateCompanyIdToCompanyNameMap(companyId: string) {
+    async updateCompanyIdToCompanyNameMap(companyId: string | undefined) {
+      if (companyId == undefined) {
+        return;
+      }
       if (!this.companyIdToCompanyName.has(companyId) && this.getKeycloakPromise) {
         let companyInfo;
         try {
