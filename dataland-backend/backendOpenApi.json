@@ -13891,10 +13891,6 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
@@ -13904,10 +13900,14 @@
           "headquarters": {
             "type": "string"
           },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "countryCode": {
             "type": "string"
           },
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
           }

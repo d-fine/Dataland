@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.frameworks.lksg.custom
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -46,10 +47,11 @@ class LksgValueWithCurrencyComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        /* do nothing because:
-        1) UploadConfig-generation is deactivated anyway for eu-taxo-non-financials
-        2) We don't have a form-field-component for AmountWithCurrency alone
-         */
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        uploadCategoryBuilder.addStandardUploadConfigCell(
+            component = this,
+            uploadComponentName = "ValueWithCurrencyFormField",
+        )
         return
     }
 
