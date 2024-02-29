@@ -17,7 +17,7 @@ import {
   formatLksgProductionSitesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
+import { formatValueWithCurrency } from "@/utils/Formatter";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -118,7 +118,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total revenue per annum",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(dataset.general?.masterData?.annualTotalRevenue, "Annual Total Revenue"),
+              formatStringForDatatable(formatValueWithCurrency(dataset.general?.masterData?.annualTotalRevenue)),
           },
           {
             type: "cell",

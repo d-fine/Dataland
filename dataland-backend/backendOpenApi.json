@@ -7114,7 +7114,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
+                "$ref": "#/components/schemas/ValueWithCurrency"
               }
             ]
           },
@@ -8616,6 +8616,19 @@
           "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
           "NoneOfTheAbove"
         ]
+      },
+      "ValueWithCurrency": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "BaseDataPointString": {
         "type": "object",
@@ -13878,6 +13891,10 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -13887,14 +13904,10 @@
           "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "countryCode": {
             "type": "string"
           },
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
           }

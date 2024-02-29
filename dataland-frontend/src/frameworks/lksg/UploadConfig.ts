@@ -107,15 +107,6 @@ export const lksgDataModel = [
             showIf: (dataset: LksgData): boolean => dataset.general?.masterData?.seasonalOrMigrantWorkers == "Yes",
           },
           {
-            name: "annualTotalRevenue",
-            label: "Annual Total Revenue",
-            description: "Total revenue per annum",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: "fixedAndWorkingCapital",
             label: "Fixed and Working Capital",
             description:

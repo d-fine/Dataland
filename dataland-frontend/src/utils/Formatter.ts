@@ -1,4 +1,4 @@
-import { type AmountWithCurrency } from "@clients/backend";
+import { type AmountWithCurrency, type ValueWithCurrency } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 
 /**
@@ -48,4 +48,21 @@ export function formatNumberToReadableFormat(value: number | undefined | null): 
   return value.toLocaleString("en-GB", {
     maximumFractionDigits: 2,
   });
+}
+/**
+ * Formats an ValueWithCurrency object by concatenating the amount and the currency.
+ * @param valueWithCurrency the object that holds the amount and currency
+ * @returns the resulting string from the concatenation
+ */
+export function formatValueWithCurrency(valueWithCurrency: ValueWithCurrency | null | undefined): string {
+  if (valueWithCurrency?.value == undefined) {
+    return "";
+  }
+  if (valueWithCurrency?.value === 0) {
+    return `0 ${(valueWithCurrency?.currency ?? "").trim()}`;
+  }
+  return `${valueWithCurrency.value.toLocaleString("en-GB", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}${valueWithCurrency.currency ? " " + valueWithCurrency.currency : ""}`;
 }
