@@ -28,7 +28,7 @@ class TemplateEmailMessageListener(
     @Autowired private val emailSender: EmailSender,
     @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val templateEmailBuilders: List<TemplateEmailBuilderBase>,
+    @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
 ) {
     private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
@@ -60,24 +60,28 @@ class TemplateEmailMessageListener(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
     ) {
         messageQueueUtils.validateMessageType(type, MessageType.SendTemplateEmail)
-        val templateEmailMessage = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
+        val message = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
         logger.info(
-            "Received template email message of type ${templateEmailMessage.emailTemplateType.name} " +
+            "Received template email message of type ${message.emailTemplateType.name} " +
                 "with correlationId $correlationId.",
         )
         messageQueueUtils.rejectMessageOnException {
-            val templateEmailBuilder = templateEmailBuilders
-                .find { it.builderForType == templateEmailMessage.emailTemplateType }
-                ?: throw IllegalArgumentException(
-                    "There is no builder for TemplateEmailMessages" +
-                        " with type ${templateEmailMessage.emailTemplateType.name}",
-                )
+            val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.sendEmail(
-                templateEmailBuilder.buildEmail(
-                    receiverEmail = templateEmailMessage.receiver,
-                    properties = templateEmailMessage.properties,
+                templateEmailFactory.buildEmail(
+                    receiverEmail = message.receiver,
+                    properties = message.properties,
                 ),
             )
         }
+    }
+
+    private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory {
+        return templateEmailFactories
+            .find { it.builderForType == message.emailTemplateType }
+            ?: throw IllegalArgumentException(
+                "There is no builder for TemplateEmailMessages" +
+                    " with type ${message.emailTemplateType.name}",
+            )
     }
 }

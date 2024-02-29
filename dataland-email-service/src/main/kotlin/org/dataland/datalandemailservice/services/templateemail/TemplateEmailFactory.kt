@@ -11,7 +11,7 @@ import java.io.StringWriter
 /**
  * Base factory class for internal emails
  */
-abstract class TemplateEmailBuilderBase(
+abstract class TemplateEmailFactory(
     protected val proxyPrimaryUrl: String,
     senderEmail: String,
     senderName: String,
