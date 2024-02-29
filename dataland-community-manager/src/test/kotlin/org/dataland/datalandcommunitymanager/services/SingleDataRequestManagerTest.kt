@@ -27,7 +27,7 @@ import java.util.UUID
 class SingleDataRequestManagerTest {
 
     private lateinit var singleDataRequestManagerMock: SingleDataRequestManager
-    private lateinit var singleDataRequestEmailSenderMock: SingleDataRequestEmailSender
+    private lateinit var dataRequestEmailMessageSenderMock: DataRequestEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var utilsMock: DataRequestProcessingUtils
 
@@ -35,13 +35,13 @@ class SingleDataRequestManagerTest {
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
-        singleDataRequestEmailSenderMock = mock(SingleDataRequestEmailSender::class.java)
+        dataRequestEmailMessageSenderMock = mock(DataRequestEmailMessageSender::class.java)
         utilsMock = mockDataRequestProcessingUtils()
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             companyApi = mockCompanyApi,
-            singleDataRequestEmailSender = singleDataRequestEmailSenderMock,
+            dataRequestEmailMessageSender = dataRequestEmailMessageSenderMock,
             utils = utilsMock,
         )
         `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
@@ -69,9 +69,9 @@ class SingleDataRequestManagerTest {
             utilsMock.storeDataRequestEntityIfNotExisting(
                 anyString(),
                 any() ?: DataTypeEnum.lksg,
-                any() ?: "2023",
-                any(),
                 anyString(),
+                any(),
+                any(),
             ),
         ).thenAnswer {
             DataRequestEntity(
@@ -87,27 +87,72 @@ class SingleDataRequestManagerTest {
 
             )
         }
+        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
+            .thenReturn(companyIdRegexSafeCompanyId)
         return utilsMock
     }
 
     @Test
-    fun `validate that an email is sent for a Dataland company ID provided`() {
+    fun `validate that an internal email message is sent if one contact is provided`() {
+        testWhichEmailMessageIsSentFor(
+            setOf("contact@othercompany.com"),
+            "You forgot to upload data about the moon landing.",
+            0,
+            1,
+        )
+    }
+
+    @Test
+    fun `validate that two internal email messages are sent if one contact is provided`() {
+        testWhichEmailMessageIsSentFor(
+            setOf("contact@othercompany.com", "someoneelse@othercompany.com"),
+            "You forgot to upload data about the moon landing.",
+            0,
+            2,
+        )
+    }
+
+    @Test
+    fun `validate that an internal email message is sent if no contact is provided as null`() {
+        testWhichEmailMessageIsSentFor(null, null, 1, 0)
+    }
+
+    @Test
+    fun `validate that an internal email message is sent if no contact is provided as empty set`() {
+        testWhichEmailMessageIsSentFor(setOf(), null, 1, 0)
+    }
+
+    private fun testWhichEmailMessageIsSentFor(
+        contacts: Set<String>?,
+        message: String?,
+        expectedInternalMessagesSent: Int,
+        expectedExternalMessagesSent: Int,
+    ) {
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
             dataType = DataTypeEnum.lksg,
             reportingPeriods = setOf("1969"),
-            contacts = setOf("contact@othercompany.com"),
-            message = "You forgot to upload data about the moon landing.",
+            contacts = contacts,
+            message = message,
         )
-        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
-            .thenReturn(companyIdRegexSafeCompanyId)
         singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
-        verify(singleDataRequestEmailSenderMock, times(1)).sendSingleDataRequestEmails(
-            authenticationMock,
-            request,
-            companyIdRegexSafeCompanyId,
-        )
+        verify(dataRequestEmailMessageSenderMock, times(expectedExternalMessagesSent))
+            .buildSingleDataRequestExternalMessage(
+                anyString(),
+                any() ?: authenticationMock,
+                anyString(),
+                any() ?: request.dataType,
+                any() ?: request.reportingPeriods,
+                any(),
+            )
+        verify(dataRequestEmailMessageSenderMock, times(expectedInternalMessagesSent))
+            .buildSingleDataRequestInternalMessage(
+                any() ?: authenticationMock,
+                anyString(),
+                any() ?: request.dataType,
+                any() ?: request.reportingPeriods,
+            )
     }
 }
