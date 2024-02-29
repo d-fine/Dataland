@@ -5,6 +5,7 @@ package org.dataland.datalandmessagequeueutils.messages
  */
 data class TemplateEmailMessage(
     val emailTemplateType: Type,
+    val receiver: String,
     val properties: Map<String, String?>,
 ) {
     /**
