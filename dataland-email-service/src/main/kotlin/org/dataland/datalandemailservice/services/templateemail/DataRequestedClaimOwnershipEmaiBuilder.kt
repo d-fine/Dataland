@@ -4,6 +4,9 @@ import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
+/**
+ *
+ */
 @Component
 class DataRequestedClaimOwnershipEmaiBuilder(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
@@ -24,8 +27,10 @@ class DataRequestedClaimOwnershipEmaiBuilder(
     }
 
     override val builderForType = TemplateEmailMessage.Type.DataRequestedClaimOwnership
-    override val requiredProperties = setOf(keys.companyId, keys.companyName,
-        keys.requesterEmail, keys.dataType, keys.reportingPeriods)
+    override val requiredProperties = setOf(
+        keys.companyId, keys.companyName,
+        keys.requesterEmail, keys.dataType, keys.reportingPeriods,
+    )
     override val optionalProperties = setOf(keys.message)
 
     override val templateFile = "/claim_ownership.html.ftl"
@@ -37,7 +42,7 @@ class DataRequestedClaimOwnershipEmaiBuilder(
             .append("Greetings!\n\nYou have been invited to provide data on Dataland.\n")
             .append("People are interested in ${properties[keys.dataType]} data")
             .append(
-                " from ${properties[keys.companyName]}  for the year${if (hasMultipleReportingPeriods) "s" else ""}"
+                " from ${properties[keys.companyName]}  for the year${if (hasMultipleReportingPeriods) "s" else ""}",
             )
             .append(" ${properties[keys.reportingPeriods]}.\n")
             .also {

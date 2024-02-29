@@ -61,18 +61,23 @@ class TemplateEmailMessageListener(
     ) {
         messageQueueUtils.validateMessageType(type, MessageType.SendTemplateEmail)
         val templateEmailMessage = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
-        logger.info("Received template email message of type ${templateEmailMessage.emailTemplateType.name} " +
-            "with correlationId $correlationId.")
+        logger.info(
+            "Received template email message of type ${templateEmailMessage.emailTemplateType.name} " +
+                "with correlationId $correlationId.",
+        )
         messageQueueUtils.rejectMessageOnException {
             val templateEmailBuilder = templateEmailBuilders
-                .find { it.builderForType == templateEmailMessage.emailTemplateType}
+                .find { it.builderForType == templateEmailMessage.emailTemplateType }
                 ?: throw IllegalArgumentException(
-                    "There is no builder for TemplateEmailMessages with typ ${templateEmailMessage.emailTemplateType.name}"
+                    "There is no builder for TemplateEmailMessages" +
+                        " with type ${templateEmailMessage.emailTemplateType.name}",
                 )
-            emailSender.sendEmail(templateEmailBuilder.buildEmail(
-                receiverEmail = templateEmailMessage.receiver,
-                properties = templateEmailMessage.properties
-            ))
+            emailSender.sendEmail(
+                templateEmailBuilder.buildEmail(
+                    receiverEmail = templateEmailMessage.receiver,
+                    properties = templateEmailMessage.properties,
+                ),
+            )
         }
     }
 }

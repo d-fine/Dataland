@@ -32,7 +32,7 @@ abstract class TemplateEmailBuilderBase(
      */
     fun buildEmail(
         receiverEmail: String,
-        properties: Map<String, String?>
+        properties: Map<String, String?>,
     ): Email {
         validateProperties(properties)
         val content = EmailContent(
@@ -48,21 +48,26 @@ abstract class TemplateEmailBuilderBase(
         )
     }
 
-
     private fun validateProperties(properties: Map<String, String?>) {
-        val allPossibleProperties = requiredProperties + optionalProperties
+        validateRequiredPropertiesAreProvided(properties)
+        validateNoUnknownPropertiesAreProvided(properties)
+    }
 
+    private fun validateNoUnknownPropertiesAreProvided(properties: Map<String, String?>) {
+        val allPossibleProperties = requiredProperties + optionalProperties
+        if (!allPossibleProperties.containsAll(properties.keys.toSet())) {
+            throw IllegalArgumentException("Unknown property specified")
+        }
+    }
+
+    private fun validateRequiredPropertiesAreProvided(properties: Map<String, String?>) {
         requiredProperties.forEach {
-            if(!properties.keys.contains(it)) {
-                throw IllegalArgumentException("Required key \"$it\" missing in message.properties")
+            if (!properties.keys.contains(it)) {
+                throw IllegalArgumentException("Required key \"$it\" missing in properties")
             }
-            if(properties.getValue(it).isNullOrBlank()) {
+            if (properties.getValue(it).isNullOrBlank()) {
                 throw IllegalArgumentException("A non-blank value is required for the key \"$it\".")
             }
-        }
-
-        if(!allPossibleProperties.containsAll(properties.keys.toSet())) {
-            throw IllegalArgumentException("")
         }
     }
 
