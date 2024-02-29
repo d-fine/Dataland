@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service
 class SingleDataRequestEmailSender(
     @Autowired private val emailSender: EmailSender,
     @Autowired private val singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder,
-    @Autowired private val singleDataRequestInternalEmailBuilder: SingleDataRequestInternalEmailBuilder,
+    @Autowired private val dataRequestEmailMessageBuilder: DataRequestEmailMessageSender,
 ) {
+
     /**
      * Sends emails to the proper recepients,
      * i.e. to the provided contacts and the data owners of the specified companies
@@ -67,13 +68,11 @@ class SingleDataRequestEmailSender(
         datalandCompanyId: String,
         singleDataRequest: SingleDataRequest,
     ) {
-        emailSender.sendEmail(
-            singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
-                userAuthentication = userAuthentication,
-                datalandCompanyId,
-                dataType = singleDataRequest.dataType,
-                reportingPeriods = singleDataRequest.reportingPeriods,
-            ),
+        dataRequestEmailMessageBuilder.buildSingleDataRequestInternalMessage(
+            userAuthentication = userAuthentication,
+            datalandCompanyId,
+            dataType = singleDataRequest.dataType,
+            reportingPeriods = singleDataRequest.reportingPeriods,
         )
     }
 }

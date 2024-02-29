@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+/**
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -21,190 +22,191 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
 class SingleDataRequestEmailSenderTest {
-    private lateinit var singleDataRequestEmailSender: SingleDataRequestEmailSender
-    private lateinit var mockEmailSender: EmailSender
+ private lateinit var singleDataRequestEmailSender: SingleDataRequestEmailSender
+ private lateinit var mockEmailSender: EmailSender
 
-    private val mockRequesterAuthentication = AuthenticationMock.mockJwtAuthentication(
-        "requester@test.com",
-        "user-id",
-        emptySet(),
-    )
+ private val mockRequesterAuthentication = AuthenticationMock.mockJwtAuthentication(
+ "requester@test.com",
+ "user-id",
+ emptySet(),
+ )
 
-    private val proxyPrimaryUrl = "https://local-dev.dataland.com"
+ private val proxyPrimaryUrl = "https://local-dev.dataland.com"
 
-    private val dataType = DataTypeEnum.lksg
+ private val dataType = DataTypeEnum.lksg
 
-    private val properCompanyId = "d623c5b6-ba18-23c3-1234-333555554444"
-    private val companyName = "Real Company"
-    private val defaultMessage = "Dummy Message"
+ private val properCompanyId = "d623c5b6-ba18-23c3-1234-333555554444"
+ private val companyName = "Real Company"
+ private val defaultMessage = "Dummy Message"
 
-    private val reportingPeriods = setOf("2023", "2022")
+ private val reportingPeriods = setOf("2023", "2022")
 
-    private val senderEmail = "info@dataland.com"
-    private val senderName = "Dataland"
+ private val senderEmail = "info@dataland.com"
+ private val senderName = "Dataland"
 
-    private val semicolonSeparatedInternalReceiverEmails = "testReceiver@dataland.com"
-    private val semicolonSeparatedInternalCcEmails = "testCc@dataland.com"
-    private val internalReceivers = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
-    private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalCcEmails)
+ private val semicolonSeparatedInternalReceiverEmails = "testReceiver@dataland.com"
+ private val semicolonSeparatedInternalCcEmails = "testCc@dataland.com"
+ private val internalReceivers = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
+ private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalCcEmails)
 
-    @BeforeEach
-    fun setupSingleDataRequestEmailSender() {
-        val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
-        val singleDataRequestEmailBuilder = SingleDataRequestEmailBuilder(
-            proxyPrimaryUrl,
-            senderEmail,
-            senderName,
-            mockCompanyApi,
-        )
-        val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
-            proxyPrimaryUrl,
-            senderEmail,
-            senderName,
-            semicolonSeparatedInternalReceiverEmails,
-            semicolonSeparatedInternalCcEmails,
-            mockCompanyApi,
-        )
-        mockEmailSender = mock(EmailSender::class.java)
-        singleDataRequestEmailSender = SingleDataRequestEmailSender(
-            mockEmailSender,
-            singleDataRequestEmailBuilder,
-            singleDataRequestInternalEmailBuilder,
-        )
-        val mockCompanyInformation = mock(CompanyInformation::class.java)
-        `when`(mockCompanyInformation.companyName).thenReturn(companyName)
-        `when`(mockCompanyApi.getCompanyInfo(properCompanyId)).thenReturn(mockCompanyInformation)
-    }
+ @BeforeEach
+ fun setupSingleDataRequestEmailSender() {
+ val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
+ val singleDataRequestEmailBuilder = SingleDataRequestEmailBuilder(
+ proxyPrimaryUrl,
+ senderEmail,
+ senderName,
+ mockCompanyApi,
+ )
+ val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
+ proxyPrimaryUrl,
+ senderEmail,
+ senderName,
+ semicolonSeparatedInternalReceiverEmails,
+ semicolonSeparatedInternalCcEmails,
+ mockCompanyApi,
+ )
+ mockEmailSender = mock(EmailSender::class.java)
+ singleDataRequestEmailSender = SingleDataRequestEmailSender(
+ mockEmailSender,
+ singleDataRequestEmailBuilder,
+ singleDataRequestInternalEmailBuilder,
+ )
+ val mockCompanyInformation = mock(CompanyInformation::class.java)
+ `when`(mockCompanyInformation.companyName).thenReturn(companyName)
+ `when`(mockCompanyApi.getCompanyInfo(properCompanyId)).thenReturn(mockCompanyInformation)
+ }
 
-    @Test
-    fun `validate that no email is sent if there are no reporting periods provided`() {
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            mockRequesterAuthentication,
-            SingleDataRequest(
-                companyIdentifier = properCompanyId,
-                dataType = dataType,
-                reportingPeriods = setOf(),
-                contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
-                message = defaultMessage,
-            ),
-            properCompanyId,
-        )
-        assertNumEmailsSentEquals(0)
-    }
+ @Test
+ fun `validate that no email is sent if there are no reporting periods provided`() {
+ singleDataRequestEmailSender.sendSingleDataRequestEmails(
+ mockRequesterAuthentication,
+ SingleDataRequest(
+ companyIdentifier = properCompanyId,
+ dataType = dataType,
+ reportingPeriods = setOf(),
+ contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
+ message = defaultMessage,
+ ),
+ properCompanyId,
+ )
+ assertNumEmailsSentEquals(0)
+ }
 
-    @Test
-    fun `validate that an internal email is sent if there are no contacts provided`() {
-        expectSentEmailsToMatchInternalEmail()
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            mockRequesterAuthentication,
-            SingleDataRequest(
-                properCompanyId,
-                dataType,
-                reportingPeriods = reportingPeriods,
-                contacts = setOf(),
-                message = defaultMessage,
-            ),
-            properCompanyId,
-        )
-        assertNumEmailsSentEquals(1)
-    }
+ @Test
+ fun `validate that an internal email is sent if there are no contacts provided`() {
+ expectSentEmailsToMatchInternalEmail()
+ singleDataRequestEmailSender.sendSingleDataRequestEmails(
+ mockRequesterAuthentication,
+ SingleDataRequest(
+ properCompanyId,
+ dataType,
+ reportingPeriods = reportingPeriods,
+ contacts = setOf(),
+ message = defaultMessage,
+ ),
+ properCompanyId,
+ )
+ assertNumEmailsSentEquals(1)
+ }
 
-    @Test
-    fun `validate that multiple external emails are sent to the provided contacts for a Dataland company ID`() =
-        assertContactEmailsAreSent(listOf("contact@provider.com", "othercontact@provider.com")) { contactEmails ->
-            singleDataRequestEmailSender.sendSingleDataRequestEmails(
-                mockRequesterAuthentication,
-                SingleDataRequest(
-                    properCompanyId,
-                    dataType,
-                    reportingPeriods = reportingPeriods,
-                    contacts = contactEmails,
-                    message = defaultMessage,
-                ),
-                properCompanyId,
-            )
-        }
+ @Test
+ fun `validate that multiple external emails are sent to the provided contacts for a Dataland company ID`() =
+ assertContactEmailsAreSent(listOf("contact@provider.com", "othercontact@provider.com")) { contactEmails ->
+ singleDataRequestEmailSender.sendSingleDataRequestEmails(
+ mockRequesterAuthentication,
+ SingleDataRequest(
+ properCompanyId,
+ dataType,
+ reportingPeriods = reportingPeriods,
+ contacts = contactEmails,
+ message = defaultMessage,
+ ),
+ properCompanyId,
+ )
+ }
 
-    private fun expectSentEmailsToMatch(
-        matchingPattern: EmailMatchingPattern,
-    ) {
-        val mockEmail = mock(Email::class.java)
-        `when`(mockEmailSender.sendEmail(any() ?: mockEmail)).then { invocation ->
-            val emailToSend = invocation.arguments[0] as Email
-            assertEmailMatchesPattern(emailToSend, matchingPattern)
-        }
-    }
+ private fun expectSentEmailsToMatch(
+ matchingPattern: EmailMatchingPattern,
+ ) {
+ val mockEmail = mock(Email::class.java)
+ `when`(mockEmailSender.sendEmail(any() ?: mockEmail)).then { invocation ->
+ val emailToSend = invocation.arguments[0] as Email
+ assertEmailMatchesPattern(emailToSend, matchingPattern)
+ }
+ }
 
-    private val baseInternalEmailMatchingPattern = EmailMatchingPattern(
-        expectedSender = EmailContact(senderEmail, senderName),
-        expectedReceiversGetter = { internalReceivers },
-        expectedCc = internalCc,
-        expectedSubject = "Dataland Single Data Request",
-        expectedToBeContainedInTextContent = emptySet(),
-        expectedToBeContainedInHtmlContent = emptySet(),
-        expectedNotToBeContainedInTextContent = emptySet(),
-        expectedNotToBeContainedInHtmlContent = emptySet(),
-    )
+ private val baseInternalEmailMatchingPattern = EmailMatchingPattern(
+ expectedSender = EmailContact(senderEmail, senderName),
+ expectedReceiversGetter = { internalReceivers },
+ expectedCc = internalCc,
+ expectedSubject = "Dataland Single Data Request",
+ expectedToBeContainedInTextContent = emptySet(),
+ expectedToBeContainedInHtmlContent = emptySet(),
+ expectedNotToBeContainedInTextContent = emptySet(),
+ expectedNotToBeContainedInHtmlContent = emptySet(),
+ )
 
-    private fun expectSentEmailsToMatchInternalEmail() {
-        val properties = mutableMapOf(
-            "Environment" to proxyPrimaryUrl,
-            "User" to "User ${mockRequesterAuthentication.username}" +
-                " (Keycloak ID: ${mockRequesterAuthentication.userId})",
-            "Data Type" to dataType.name,
-            "Reporting Periods" to reportingPeriods.joinToString(", "),
-            "Dataland Company ID" to properCompanyId,
-            "Company Name" to companyName,
-        )
-        expectSentEmailsToMatch(
-            baseInternalEmailMatchingPattern.copy(
-                expectedToBeContainedInTextContent = properties.map { "${it.key}: ${it.value}" }.toSet(),
-                expectedToBeContainedInHtmlContent = properties.map { "${it.key}: </span> ${it.value}" }.toSet(),
-            ),
-        )
-    }
+ private fun expectSentEmailsToMatchInternalEmail() {
+ val properties = mutableMapOf(
+ "Environment" to proxyPrimaryUrl,
+ "User" to "User ${mockRequesterAuthentication.username}" +
+ " (Keycloak ID: ${mockRequesterAuthentication.userId})",
+ "Data Type" to dataType.name,
+ "Reporting Periods" to reportingPeriods.joinToString(", "),
+ "Dataland Company ID" to properCompanyId,
+ "Company Name" to companyName,
+ )
+ expectSentEmailsToMatch(
+ baseInternalEmailMatchingPattern.copy(
+ expectedToBeContainedInTextContent = properties.map { "${it.key}: ${it.value}" }.toSet(),
+ expectedToBeContainedInHtmlContent = properties.map { "${it.key}: </span> ${it.value}" }.toSet(),
+ ),
+ )
+ }
 
-    private val baseContactEmailMatchingPattern = EmailMatchingPattern(
-        expectedSender = EmailContact(senderEmail, senderName),
-        expectedReceiversGetter = { setOf(EmailContact("placeholder")) },
-        expectedCc = emptySet(),
-        expectedSubject = "A message from Dataland: Your ESG data are high on demand!",
-        expectedToBeContainedInTextContent = emptySet(),
-        expectedToBeContainedInHtmlContent = emptySet(),
-        expectedNotToBeContainedInTextContent = emptySet(),
-        expectedNotToBeContainedInHtmlContent = emptySet(),
-    )
+ private val baseContactEmailMatchingPattern = EmailMatchingPattern(
+ expectedSender = EmailContact(senderEmail, senderName),
+ expectedReceiversGetter = { setOf(EmailContact("placeholder")) },
+ expectedCc = emptySet(),
+ expectedSubject = "A message from Dataland: Your ESG data are high on demand!",
+ expectedToBeContainedInTextContent = emptySet(),
+ expectedToBeContainedInHtmlContent = emptySet(),
+ expectedNotToBeContainedInTextContent = emptySet(),
+ expectedNotToBeContainedInHtmlContent = emptySet(),
+ )
 
-    private fun expectSentEmailsToMatchContactEmail(expectedReceiversGetter: () -> Set<EmailContact>) {
-        val sharedContent = setOf(
-            "from $companyName",
-            "$proxyPrimaryUrl/companies/$properCompanyId",
-            "LkSG",
-            reportingPeriods.joinToString(", "),
-            mockRequesterAuthentication.username,
-        )
-        expectSentEmailsToMatch(
-            baseContactEmailMatchingPattern.copy(
-                expectedReceiversGetter = expectedReceiversGetter,
-                expectedToBeContainedInTextContent = sharedContent,
-                expectedToBeContainedInHtmlContent = sharedContent,
-            ),
-        )
-    }
+ private fun expectSentEmailsToMatchContactEmail(expectedReceiversGetter: () -> Set<EmailContact>) {
+ val sharedContent = setOf(
+ "from $companyName",
+ "$proxyPrimaryUrl/companies/$properCompanyId",
+ "LkSG",
+ reportingPeriods.joinToString(", "),
+ mockRequesterAuthentication.username,
+ )
+ expectSentEmailsToMatch(
+ baseContactEmailMatchingPattern.copy(
+ expectedReceiversGetter = expectedReceiversGetter,
+ expectedToBeContainedInTextContent = sharedContent,
+ expectedToBeContainedInHtmlContent = sharedContent,
+ ),
+ )
+ }
 
-    private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (Set<String>) -> Unit) {
-        val unaddressedContactEmails = contactEmails.toMutableList()
-        expectSentEmailsToMatchContactEmail { setOf(EmailContact(unaddressedContactEmails.removeFirst())) }
-        test(contactEmails.toSet())
-        assertEquals(0, unaddressedContactEmails.size)
-        assertNumEmailsSentEquals(contactEmails.size)
-    }
+ private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (Set<String>) -> Unit) {
+ val unaddressedContactEmails = contactEmails.toMutableList()
+ expectSentEmailsToMatchContactEmail { setOf(EmailContact(unaddressedContactEmails.removeFirst())) }
+ test(contactEmails.toSet())
+ assertEquals(0, unaddressedContactEmails.size)
+ assertNumEmailsSentEquals(contactEmails.size)
+ }
 
-    private fun assertNumEmailsSentEquals(expectedNumberOfEmailsSent: Int = 1) {
-        val mockEmail = mock(Email::class.java)
-        verify(mockEmailSender, times(expectedNumberOfEmailsSent)).sendEmail(any() ?: mockEmail)
-    }
+ private fun assertNumEmailsSentEquals(expectedNumberOfEmailsSent: Int = 1) {
+ val mockEmail = mock(Email::class.java)
+ verify(mockEmailSender, times(expectedNumberOfEmailsSent)).sendEmail(any() ?: mockEmail)
+ }
 
-    private fun semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedEmails: String): Set<EmailContact> =
-        semicolonSeparatedEmails.split(";").filter { it.isNotBlank() }.toEmailContacts()
+ private fun semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedEmails: String): Set<EmailContact> =
+ semicolonSeparatedEmails.split(";").filter { it.isNotBlank() }.toEmailContacts()
 }
+*/

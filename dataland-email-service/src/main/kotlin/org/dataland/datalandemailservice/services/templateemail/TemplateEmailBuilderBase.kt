@@ -8,6 +8,9 @@ import org.dataland.datalandemailservice.email.FreeMarker
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import java.io.StringWriter
 
+/**
+ * Base factory class for internal emails
+ */
 abstract class TemplateEmailBuilderBase(
     protected val proxyPrimaryUrl: String,
     senderEmail: String,

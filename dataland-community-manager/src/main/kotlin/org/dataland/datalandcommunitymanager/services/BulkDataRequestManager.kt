@@ -7,7 +7,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,8 +20,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
-    @Autowired private val emailSender: EmailSender,
+    @Autowired private val emailMessageBuilder: DataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
@@ -144,12 +142,11 @@ class BulkDataRequestManager(
         acceptedCompanyIdentifiers: List<String>,
         bulkDataRequestId: String,
     ) {
-        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
+        emailMessageBuilder.buildBulkDataRequestInternalMessage(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
-        emailSender.sendEmail(emailToSend)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {

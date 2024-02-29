@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
- *
+ * Generate an emails when data is requested and ownership is claimed
  */
 @Component
 class DataRequestedClaimOwnershipEmaiBuilder(
