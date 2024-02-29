@@ -32,7 +32,7 @@ class InternalEmailBuilder(
             subject = internalEmailMessage.subject,
             textTitle = internalEmailMessage.textTitle,
             properties = internalEmailMessage.properties + mapOf("Environment" to proxyPrimaryUrl),
-            htmlTitle = internalEmailMessage.htmlTitle + "blablabla",
+            htmlTitle = internalEmailMessage.htmlTitle,
         )
     }
 }
