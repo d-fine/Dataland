@@ -1,129 +1,140 @@
-<!-- todo: unnötige imports, componenten etc entfernen -->
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="paper-section flex">
-      <DatasetsTabMenu :initial-tab-index="3">
-        <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-          <div id="searchBarAndFiltersContainer" class="w-full bg-white" ref="searchBarAndFiltersContainer">
-            <span class="w-12 p-input-icon-left p-input-icon-right">
+    <DatasetsTabMenu :initial-tab-index="3">
+      <TheContent class="min-h-screen paper-section relative">
+        <div
+          id="searchBarAndFiltersContainer"
+          class="w-full bg-white pt-4 justify-between"
+          ref="searchBarAndFiltersContainer"
+        >
+          <span class="align-content-start flex items-center justify-start">
+            <span class="w-3 p-input-icon-left" style="margin: 15px">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-              <InputText
-                v-model="searchBarInput"
-                placeholder="Search requests by company name"
-                class="w-12 pl-6 pr-6"
-              />
-              <i v-if="waitingForSearchResults" class="pi pi-spin pi-spinner right-0 mr-3" aria-hidden="true"></i>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworksInt"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
-                class="ml-3"
-              />
+              <InputText v-model="searchBarInput" placeholder="Search by company name" class="w-12 pl-6 pr-6" />
+              <i v-if="waitingForSearchResults" class="pi pi-search pl-3 pr-3" aria-hidden="true"></i>
             </span>
-          </div>
-          <div class="col-12 text-left p-3">
-            <div class="card">
-              <DataTable
-                :value="displayedData"
-                class="table-cursor"
-                id="qa-data-result"
-                :rowHover="true"
-                data-test="qa-review-section"
-                paginator
-                paginator-position="bottom"
-                :rows="datasetsPerPage"
-                lazy
-                :total-records="storedDataRequest.length"
-                @page="onPage($event)"
-                @sort="onSort($event)"
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              ref="frameworkFilter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              filter-id="framework-filter"
+              filter-placeholder="Search frameworks"
+              class="ml-3"
+              style="margin: 15px"
+            />
+            <div class="flex align-items-center">
+              <span
+                style="margin: 15px"
+                class="ml-3 cursor-pointer text-primary font-semibold d-letters"
+                @click="resetFilters"
+                >RESET</span
               >
-                <Column
-                  header="COMPANY"
-                  class="d-bg-white w-2 qa-review-id"
-                  field="dataRequestCompanyIdentifierValue"
-                  :sortable="true"
-                >
-                  <template #body="slotProps">
-                    {{ slotProps.data.dataRequestCompanyIdentifierValue }}
-                  </template>
-                </Column>
-                <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework" :sortable="true" field="dataType">
-                  <template #body="slotProps">
-                    {{ humanizeString(slotProps.data.dataType) }}
-                  </template>
-                </Column>
-                <Column
-                  header="YEAR"
-                  class="d-bg-white w-2 qa-review-company-name"
-                  field="reportingPeriod"
-                  :sortable="true"
-                >
-                  <template #body="slotProps">
-                    {{ slotProps.data.reportingPeriod }}
-                  </template>
-                </Column>
-                <Column
-                  header="REQUESTED DATE"
-                  class="d-bg-white w-2 qa-review-reporting-period"
-                  field="creationTimestamp"
-                  :sortable="true"
-                >
-                  <template #body="slotProps">
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                  </template>
-                </Column>
-                <Column
-                  header="LAST UPDATED"
-                  class="d-bg-white w-2 qa-review-submission-date"
-                  :sortable="true"
-                  field="lastModifiedDate"
-                >
-                  <template #body="slotProps">
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
-                  </template>
-                </Column>
-                <Column
-                  header="STATUS"
-                  class="d-bg-white w-2 qa-review-submission-date"
-                  :sortable="true"
-                  field="requestStatus"
-                >
-                  <template #body="slotProps">
-                    <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ slotProps.data.requestStatus }}
-                    </div>
-                  </template>
-                </Column>
-                <Column field="resolve" header="" class="w-2 d-bg-white qa-review-button">
-                  <template #body="slotProps">
-                    <div
-                      v-if="slotProps.data.requestStatus == RequestStatus.Answered"
-                      class="text-right text-primary no-underline font-bold"
-                    >
-                      <span
-                        @click="
-                          () =>
-                            goToResolveDataRequestViewPage(
-                              slotProps.data.dataRequestCompanyIdentifierType,
-                              slotProps.data.dataType,
-                            )
-                        "
-                        >RESOLVE</span
-                      >
-                      <span class="ml-3">></span>
-                    </div>
-                  </template>
-                </Column>
-              </DataTable>
             </div>
+          </span>
+        </div>
+        <div class="col-12 text-left p-3">
+          <div class="card">
+            <DataTable
+              :value="displayedData"
+              class="table-cursor"
+              id="qa-data-result"
+              :rowHover="true"
+              data-test="qa-review-section"
+              paginator
+              paginator-position="bottom"
+              :rows="datasetsPerPage"
+              lazy
+              :total-records="numberOfFilteredRequests"
+              @page="onPage($event)"
+              @sort="onSort($event)"
+            >
+              <Column header="COMPANY" class="d-bg-white w-2 qa-review-id" field="datalandCompanyId" :sortable="true">
+                <template #body="slotProps">
+                  {{ getCompanyNameById(slotProps.data.datalandCompanyId) }}
+                </template>
+              </Column>
+              <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework" :sortable="true" field="dataType">
+                <template #body="slotProps">
+                  {{ humanizeString(slotProps.data.dataType) }}
+                </template>
+              </Column>
+              <Column
+                header="YEAR"
+                class="d-bg-white w-2 qa-review-company-name"
+                field="reportingPeriod"
+                :sortable="true"
+              >
+                <template #body="slotProps">
+                  {{ slotProps.data.reportingPeriod }}
+                </template>
+              </Column>
+              <Column
+                header="REQUESTED DATE"
+                class="d-bg-white w-2 qa-review-reporting-period"
+                field="creationTimestamp"
+                :sortable="true"
+              >
+                <template #body="slotProps">
+                  <div>
+                    {{ convertDateStringToDate(convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp)) }}
+                  </div>
+                  <div style="color: gray; font-size: smaller; line-height: 0.5">
+                    <br />
+                    {{ convertDateStringToTime(convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp)) }}
+                  </div></template
+                >
+              </Column>
+              <Column
+                header="LAST UPDATED"
+                class="d-bg-white w-2 qa-review-submission-date"
+                :sortable="true"
+                field="lastModifiedDate"
+              >
+                <template #body="slotProps"
+                  ><div>
+                    {{ convertDateStringToDate(convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate)) }}
+                  </div>
+                  <div style="color: gray; font-size: smaller; line-height: 0.5">
+                    <br />
+                    {{ convertDateStringToTime(convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate)) }}
+                  </div>
+                </template>
+              </Column>
+              <Column
+                header="STATUS"
+                class="d-bg-white w-2 qa-review-submission-date"
+                :sortable="true"
+                field="requestStatus"
+              >
+                <template #body="slotProps">
+                  <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
+                    {{ slotProps.data.requestStatus }}
+                  </div>
+                </template>
+              </Column>
+              <Column field="resolve" header="" class="w-2 d-bg-white qa-review-button">
+                <template #body="slotProps">
+                  <div
+                    v-if="slotProps.data.requestStatus == RequestStatus.Answered"
+                    class="text-right text-primary no-underline font-bold"
+                  >
+                    <span
+                      @click="
+                        () => goToResolveDataRequestViewPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)
+                      "
+                      >RESOLVE</span
+                    >
+                    <span class="ml-3">></span>
+                  </div>
+                </template>
+              </Column>
+            </DataTable>
           </div>
-        </AuthorizationWrapper>
-      </DatasetsTabMenu>
-    </TheContent>
+        </div>
+      </TheContent>
+    </DatasetsTabMenu>
     <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
@@ -137,24 +148,19 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
-import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import {
-  type DataRequestCompanyIdentifierType,
-  RequestStatus,
-  type StoredDataRequest,
-} from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import { type DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import type { FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 
 export default defineComponent({
   name: "RequestedDatasetsPage",
@@ -162,24 +168,11 @@ export default defineComponent({
     RequestStatus() {
       return RequestStatus;
     },
-    selectedFrameworksInt: {
-      get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((frameworkSelectableItem) =>
-          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType),
-        );
-      },
-      set(newValue: Array<FrameworkSelectableItem>) {
-        this.$emit(
-          "update:selectedFrameworks",
-          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType),
-        );
-      },
-    },
   },
   components: {
+    AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
-    AuthorizationWrapper,
     TheFooter,
     TheContent,
     TheHeader,
@@ -187,13 +180,7 @@ export default defineComponent({
     Column,
     InputText,
   },
-  emits: ["update:selectedFrameworks"],
-  props: {
-    selectedFrameworks: {
-      type: Array as () => Array<DataTypeEnum>,
-      default: () => [],
-    },
-  },
+
   setup() {
     return {
       frameworkFilter: ref(),
@@ -208,24 +195,32 @@ export default defineComponent({
     const footerContent = footerPage?.sections;
     return {
       waitingForData: true,
-      KEYCLOAK_ROLE_REVIEWER,
       currentPage: 0,
-      storedDataRequest: [] as StoredDataRequest[],
+      storedDataRequests: [] as StoredDataRequest[],
       displayedData: [] as StoredDataRequest[],
       footerContent,
       waitingForSearchResults: true,
       searchBarInput: "",
       searchBarInputFilter: "",
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
+      selectedFrameworks: [] as Array<FrameworkSelectableItem>,
+      numberOfFilteredRequests: 0,
+      companyIdToCompanyName: new Map<string, string>(),
     };
   },
   mounted() {
-    this.retrieveAvailableFrameworks();
-    this.getStoredRequestData().catch((error) => console.log(error));
+    this.availableFrameworks = this.retrieveAvailableFrameworks();
+    this.getStoredRequestDataList().catch((error) => console.log(error));
+    this.resetFilters();
     this.updateCurrentDisplayedData();
-    console.log(this.availableFrameworks);
   },
   watch: {
+    selectedFrameworks() {
+      this.updateCurrentDisplayedData();
+    },
+    waitingForData() {
+      this.updateCurrentDisplayedData();
+    },
     searchBarInput(newSearch: string) {
       this.searchBarInputFilter = newSearch;
       this.updateCurrentDisplayedData();
@@ -236,18 +231,20 @@ export default defineComponent({
     humanizeString: humanizeStringOrNumber,
     /**
      * Navigates to the company cockpit view page
-     * @param event the row click event
-     * @param companyId
-     * @param framework
+     * @param companyId Dataland companyId
+     * @param framework Dataland framework
      * @returns the promise of the router push action
      */
-    goToResolveDataRequestViewPage(companyId: DataRequestCompanyIdentifierType, framework: DataTypeEnum) {
+    goToResolveDataRequestViewPage(companyId: string, framework: DataTypeEnum) {
       const qaUri = `/companies/${companyId}/frameworks/${framework}`;
       return this.$router.push(qaUri);
     },
-
-    retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+    /**
+     * Gets list with all available frameworks
+     * @returns array of frameworkSelectableItem
+     */
+    retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
+      return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
         const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {
@@ -260,56 +257,79 @@ export default defineComponent({
         };
       });
     },
-    async getStoredRequestData() {
+    /**
+     * Gets list of storedDataRequests
+     */
+    async getStoredRequestDataList() {
+      this.waitingForData = true;
+      this.storedDataRequests = [];
       try {
-        this.waitingForData = true;
-        this.storedDataRequest = [];
         if (this.getKeycloakPromise) {
-          this.storedDataRequest = (
+          this.storedDataRequests = (
             await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequestsForUser()
           ).data;
         }
       } catch (error) {
         console.error(error);
       }
-
-      this.storedDataRequest = [];
-      for (let i = 0; i < 20; i++) {
-        this.storedDataRequest.push({
+      for (let i = 0; i < 40; i++) {
+        this.storedDataRequests.push({
           dataRequestId: "abcd" + i,
-          dataRequestCompanyIdentifierValue: "company" + i,
+          datalandCompanyId: "company" + i,
           dataType: "lksg",
           reportingPeriod: "2021",
-          creationTimestamp: 10 + i,
-          lastModifiedDate: 11 + i,
+          creationTimestamp: 1709204495770,
+          lastModifiedDate: 1709204495770,
           requestStatus: "Open",
         } as StoredDataRequest);
       }
-      for (let i = 0; i < 20; i++) {
-        this.storedDataRequest.push({
+      for (let i = 0; i < 40; i++) {
+        this.storedDataRequests.push({
           dataRequestId: "abcde" + i,
-          dataRequestCompanyIdentifierValue: "companyXX" + i,
+          datalandCompanyId: "companyXX" + i,
           dataType: "sme",
           reportingPeriod: "2020",
-          creationTimestamp: 10 + i,
-          lastModifiedDate: 11 + i,
+          creationTimestamp: 1709204495770,
+          lastModifiedDate: 1709204495770,
           requestStatus: "Answered",
         } as StoredDataRequest);
       }
+      for (let i = 0; i < 40; i++) {
+        this.storedDataRequests.push({
+          dataRequestId: "abcde" + i,
+          datalandCompanyId: "comp" + i,
+          dataType: "heimathafen",
+          reportingPeriod: "2099",
+          creationTimestamp: 1709204495770,
+          lastModifiedDate: 1709204495770,
+          requestStatus: "Closed",
+        } as StoredDataRequest);
+      }
       this.waitingForData = false;
-      this.waitingForSearchResults = false;
+      this.storedDataRequests.forEach((dataRequest) =>
+        this.updateCompanyIdToCompanyNameMap(dataRequest.datalandCompanyId),
+      );
     },
+    /**
+     * Sorts the list of storedDataRequests
+     * @param event contains column to sort and sortOrder
+     */
     onSort(event: DataTableSortEvent) {
       const sortField = event.sortField;
-      const sortOrder = event.sortOrder;
-      this.storedDataRequest.sort((a, b) => {
+      const sortOrder = event.sortOrder || 1;
+      this.storedDataRequests.sort((a, b) => {
         const aValue = a[sortField];
         const bValue = b[sortField];
         return (aValue < bValue ? -1 : 1) * sortOrder;
       });
       this.updateCurrentDisplayedData();
     },
-    badgeClass(requestStatus: RequestStatus) {
+    /**
+     * Defines the color of p-badge
+     * @param requestStatus status of a request
+     * @returns p-badge class
+     */
+    badgeClass(requestStatus: RequestStatus): string {
       switch (requestStatus) {
         case "Answered":
           return "p-badge badge-blue outline rounded";
@@ -319,22 +339,45 @@ export default defineComponent({
           return "p-badge badge-light-green outline rounded";
       }
     },
-    filterFramework(dataRequest: StoredDataRequest) {
-      return true;
-    },
-    filterSearchInput(companyName: string) {
-      const lowerCaseSearchString = this.searchBarInput.toLowerCase();
-      if (companyName.toLowerCase().includes(lowerCaseSearchString)) {
-        return true;
-      } else {
-        return false;
+    /**
+     * Filterfunction for frameworks
+     * @param framework dataland framework
+     * @returns checks if given framework is selected
+     */
+    filterFramework(framework: DataTypeEnum) {
+      for (let i = 0; i < this.selectedFrameworks.length; i++) {
+        if (framework == this.selectedFrameworks[i].frameworkDataType) return true;
       }
+      return false;
     },
+    /**
+     * Filterfunction for searchbar
+     * @param companyId dataland companyId
+     * @returns checks if given companyName contains searchbar text
+     */
+    filterSearchInput(companyId: string) {
+      if (companyId == undefined) {
+        return true;
+      }
+      const lowerCaseCompanyName = (this.getCompanyNameById(companyId) || "").toLowerCase();
+      const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
+      return lowerCaseCompanyName.includes(lowerCaseSearchString);
+    },
+    /**
+     * Resets selected frameworks
+     */
+    resetFilters() {
+      this.selectedFrameworks = this.availableFrameworks;
+    },
+    /**
+     * Updates the displayedData
+     */
     updateCurrentDisplayedData() {
       this.waitingForSearchResults = true;
-      this.displayedData = this.storedDataRequest
-        .filter((dataRequest) => this.filterSearchInput(dataRequest.dataRequestCompanyIdentifierValue)) //todo Map companie Id to Human readible
-        .filter((dataRequest) => this.filterFramework(dataRequest)); //todo
+      this.displayedData = this.storedDataRequests
+        .filter((dataRequest) => this.filterSearchInput(dataRequest.datalandCompanyId))
+        .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+      this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
         this.datasetsPerPage * this.currentPage,
         this.datasetsPerPage * (1 + this.currentPage),
@@ -352,6 +395,66 @@ export default defineComponent({
     onPage(event: DataTablePageEvent) {
       this.currentPage = event.page;
       this.updateCurrentDisplayedData();
+    },
+    /**
+     * Converts dateString to date
+     * @param dateString DayOfTheWeek, DD Mon YYYY, HH:MM
+     * @returns string representing a date (DD.MM.YYYY)
+     */
+    convertDateStringToDate(dateString: string) {
+      const parsedDate = new Date(dateString);
+
+      const day = parsedDate.getDate();
+      const month = parsedDate.getMonth() + 1;
+      const year = parsedDate.getFullYear();
+
+      const paddedDay = day < 10 ? "0" + day : day;
+      const paddedMonth = month < 10 ? "0" + month : month;
+
+      return `${paddedDay}.${paddedMonth}.${year}`;
+    },
+    /**
+     * Converts dateString to time
+     * @param dateString DayOfTheWeek, DD Mon YYYY, HH:MM
+     * @returns string representing a time (HH:MM)
+     */
+    convertDateStringToTime(dateString: string) {
+      return dateString.split(",")[2].trim();
+    },
+    /**
+     * Gets the CompanyName by Id
+     * @param companyId dataland companyId
+     * @returns companyName or companyId if there is no companyName
+     */
+    getCompanyNameById(companyId: string) {
+      if (this.companyIdToCompanyName.has(companyId)) {
+        return this.companyIdToCompanyName.get(companyId);
+      } else {
+        void this.updateCompanyIdToCompanyNameMap(companyId);
+      }
+      return companyId;
+    },
+    /**
+     * Updates the companyIdToCompanyName Map
+     * @param companyId dataland companyId
+     */
+    async updateCompanyIdToCompanyNameMap(companyId: string) {
+      if (!this.companyIdToCompanyName.has(companyId) && this.getKeycloakPromise) {
+        let companyInfo;
+        try {
+          companyInfo = (
+            await new ApiClientProvider(this.getKeycloakPromise()).backendClients.companyDataController.getCompanyInfo(
+              companyId,
+            )
+          ).data;
+        } catch (e) {
+          console.log(e);
+          return;
+        }
+        if (companyInfo !== undefined) {
+          this.companyIdToCompanyName.set(companyId, companyInfo.companyName);
+        }
+      }
     },
   },
 });
