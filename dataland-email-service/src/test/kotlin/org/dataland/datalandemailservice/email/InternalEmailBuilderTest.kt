@@ -13,14 +13,15 @@ class InternalEmailBuilderTest {
     private val receiverEmails = listOf("receiver1@dataland.com", "receiver2@dataland.com")
     private val ccEmails = listOf("cc1@dataland.com")
     private val environment = "test.dataland.com"
+    private val originalProperty = "something"
 
     @Test
-    fun `validate that the the internal email builder adds the environment`() {
+    fun `validate that the the internal email builder adds the environment property`() {
         val message = InternalEmailMessage(
             subject = "SUBJECT",
             textTitle = "Text Title",
             htmlTitle = "HTML Title",
-            properties = mapOf(),
+            properties = mapOf("Original" to originalProperty),
         )
         val email = InternalEmailBuilder(
             proxyPrimaryUrl = environment,
@@ -36,5 +37,6 @@ class InternalEmailBuilderTest {
             email,
         )
         assertTrue(email.content.textContent.contains("Environment: $environment"))
+        assertTrue(email.content.textContent.contains("Original: $originalProperty"))
     }
 }
