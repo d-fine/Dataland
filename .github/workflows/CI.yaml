@@ -420,11 +420,6 @@ jobs:
           pattern: lcovResults-*
           path: fe-coverage
           merge-multiple: true
-      - name: debug
-        run: |
-          ls -lisa
-          echo Folder
-          ls -lisa /home/runner/work/Dataland/Dataland/fe-coverage/*
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
