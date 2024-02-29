@@ -1,10 +1,6 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
-import {
-  type LksgProcurementCategory,
-  type LksgProductionSite,
-  ValueWithCurrency
-} from "@clients/backend";
+import { type LksgProcurementCategory, type LksgProductionSite, type ValueWithCurrency } from "@clients/backend";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
