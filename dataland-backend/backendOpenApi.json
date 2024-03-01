@@ -7119,8 +7119,12 @@
             ]
           },
           "fixedAndWorkingCapital": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ValueWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -13891,25 +13895,25 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
-          },
-          "permId": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

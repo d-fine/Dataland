@@ -33,6 +33,6 @@ data class LksgGeneralMasterData(
 
     val annualTotalRevenue: ValueWithCurrency? = null,
 
-    val fixedAndWorkingCapital: BigDecimal? = null,
+    val fixedAndWorkingCapital: ValueWithCurrency? = null,
 
 )

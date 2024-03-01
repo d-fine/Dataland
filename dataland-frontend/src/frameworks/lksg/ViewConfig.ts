@@ -127,7 +127,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               "Combined fixed and working capital (only for own operations) in same currency than total revenue",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.masterData?.fixedAndWorkingCapital, ""),
+              formatStringForDatatable(formatValueWithCurrency(dataset.general?.masterData?.fixedAndWorkingCapital)),
           },
         ],
       },

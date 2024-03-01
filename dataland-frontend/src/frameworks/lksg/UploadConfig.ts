@@ -121,7 +121,7 @@ export const lksgDataModel = [
             description:
               "Combined fixed and working capital (only for own operations) in same currency than total revenue",
 
-            component: "NumberFormField",
+            component: "ValueWithCurrencyFormField",
             required: false,
             showIf: (): boolean => true,
           },
