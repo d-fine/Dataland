@@ -70,31 +70,22 @@ describe(
             });
           });
 
-          it(
-            "Checks that all the uploaded company ids and data ids can be retrieved",
-            {
-              retries: {
-                runMode: 5,
-                openMode: 5,
-              },
-            },
-            () => {
-              const expectedNumberOfCompanies = fixtureData.length;
-              cy.getKeycloakToken(admin_name, admin_pw)
-                .then((token) =>
-                  wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
-                )
-                .then((response) => {
-                  assert(
-                    response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                      response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                    `Found ${response.numberOfCompaniesForDataType} companies having 
+          it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+            const expectedNumberOfCompanies = fixtureData.length;
+            cy.getKeycloakToken(admin_name, admin_pw)
+              .then((token) =>
+                wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
+              )
+              .then((response) => {
+                assert(
+                  response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+                    response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+                  `Found ${response.numberOfCompaniesForDataType} companies having 
             ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
             but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
-                  );
-                });
-            },
-          );
+                );
+              });
+          });
         },
       );
     }
