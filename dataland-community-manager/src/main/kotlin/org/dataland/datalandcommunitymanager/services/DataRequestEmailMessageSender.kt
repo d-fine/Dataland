@@ -14,7 +14,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -23,7 +22,6 @@ import java.util.*
  */
 @Component
 class DataRequestEmailMessageSender(
-    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired val companyApi: CompanyDataControllerApi,
@@ -59,7 +57,6 @@ class DataRequestEmailMessageSender(
                     "A bulk data request has been submitted",
                     "Bulk Data Request",
                     mapOf(
-                        "Environment" to proxyPrimaryUrl,
                         "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
                         "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
                         "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
@@ -96,7 +93,6 @@ class DataRequestEmailMessageSender(
                     "A single data request has been submitted",
                     "Single Data Request",
                     mapOf(
-                        "Environment" to proxyPrimaryUrl,
                         "User" to buildUserInfo(userAuthentication),
                         "Data Type" to dataType.value,
                         "Reporting Periods" to formatReportingPeriods(reportingPeriods),

@@ -31,7 +31,7 @@ class InternalEmailBuilder(
         return buildPropertyStyleEmail(
             subject = internalEmailMessage.subject,
             textTitle = internalEmailMessage.textTitle,
-            properties = internalEmailMessage.properties + mapOf("Environment" to proxyPrimaryUrl),
+            properties = mapOf("Environment" to proxyPrimaryUrl) + internalEmailMessage.properties,
             htmlTitle = internalEmailMessage.htmlTitle,
         )
     }
