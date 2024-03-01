@@ -11,7 +11,12 @@
           <span class="align-content-start flex items-center justify-start">
             <span class="w-3 p-input-icon-left" style="margin: 15px">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-              <InputText v-model="searchBarInput" placeholder="Search by company name" class="w-12 pl-6 pr-6" />
+              <InputText
+                data-test="requested-Datasets-searchbar"
+                v-model="searchBarInput"
+                placeholder="Search by company name"
+                class="w-12 pl-6 pr-6"
+              />
               <i v-if="waitingForSearchResults" class="pi pi-search pl-3 pr-3" aria-hidden="true"></i>
             </span>
             <FrameworkDataSearchDropdownFilter
@@ -19,6 +24,7 @@
               ref="frameworkFilter"
               :available-items="availableFrameworks"
               filter-name="Framework"
+              data-test="requested-Datasets-frameworks"
               filter-id="framework-filter"
               filter-placeholder="Search frameworks"
               class="ml-3"
@@ -41,7 +47,7 @@
               class="table-cursor"
               id="qa-data-result"
               :rowHover="true"
-              data-test="qa-review-section"
+              data-test="requested-Datasets-table"
               paginator
               paginator-position="bottom"
               :rows="datasetsPerPage"
@@ -121,6 +127,7 @@
                     class="text-right text-primary no-underline font-bold"
                   >
                     <span
+                      data-test="requested-Datasets-Resolve"
                       @click="
                         () => goToResolveDataRequestViewPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)
                       "
