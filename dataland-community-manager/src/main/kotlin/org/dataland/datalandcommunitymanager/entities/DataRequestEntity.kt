@@ -7,11 +7,9 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import java.util.*
 
 /**
@@ -44,7 +42,7 @@ data class DataRequestEntity(
 ) {
     constructor(
         userId: String,
-        dataType: DataTypeEnum,
+        dataType: String,
         reportingPeriod: String,
         datalandCompanyId: String,
         creationTimestamp: Long,
@@ -52,7 +50,7 @@ data class DataRequestEntity(
         dataRequestId = UUID.randomUUID().toString(),
         userId = userId,
         creationTimestamp = creationTimestamp,
-        dataType = dataType.value,
+        dataType = dataType,
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
         messageHistory = listOf(),
@@ -80,7 +78,7 @@ data class DataRequestEntity(
         dataRequestId = dataRequestId,
         userId = userId,
         creationTimestamp = creationTimestamp,
-        dataType = getDataTypeEnumForFrameworkName(dataType)!!,
+        dataType = dataType,
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
         messageHistory = messageHistory
