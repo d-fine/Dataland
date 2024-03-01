@@ -14,7 +14,8 @@ describeIf(
     /**
      * This method verifies that the summary panel is presented as expected
      */
-    function checkFrameworks() : void {
+    function checkFrameworks(): void {
+      // eslint-disable-next-line prettier/prettier
       ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
         cy.get(frameworkSummaryPanelSelector).should("exist");
