@@ -24,7 +24,7 @@ open class Iso2CountryCodesMultiSelectComponent(
 ) : ComponentBase(identifier, parent, "List") {
 
     var options: Set<SelectionOption> = mutableSetOf()
-
+    var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -56,8 +56,8 @@ open class Iso2CountryCodesMultiSelectComponent(
                             "getOriginalNameFromTechnicalName",
                             "@/components/resources/dataTable/conversion/Utils",
                         ),
-                        TypeScriptImport("DropdownDatasetIdentifier", "@/utils/PremadeDropdownDatasets"),
-                        TypeScriptImport("getDatasetAsMap", "@/utils/PremadeDropdownDatasets"),
+                        TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
+                        TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -72,8 +72,8 @@ open class Iso2CountryCodesMultiSelectComponent(
                 body = "getDataset(DropdownDatasetIdentifier.CountryCodesIso2)",
                 imports =
                 setOf(
-                    TypeScriptImport("DropdownDatasetIdentifier", "@/utils/PremadeDropdownDatasets"),
-                    TypeScriptImport("getDataset", "@/utils/PremadeDropdownDatasets"),
+                    TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
+                    TypeScriptImport("getDataset", filePathOfPremadeDropdownDatasets),
                 ),
             ),
             component = this,
