@@ -7,44 +7,17 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
-### Notes from Dec, 15 2023
-Some tests are failing locally due to the cookie banner. A description is given in
-https://jira.d-fine.dev/browse/DALA-3137
-
 ### Skipped updates
 
-The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
-appear.
+See the list of known issue on the internal wiki https://github.com/d-fine/DatalandInternal/wiki/Problematic-updates
+If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog 
 
-- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors 
-- [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI https://jira.d-fine.dev/browse/DALA-3676
-- [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
-  - frontend:
-    - [ ] keycloak-js > 22.0.5
-    - [ ] primevue > 3.44.0 https://jira.d-fine.dev/browse/DALA-3674
-    - [ ] vue > 3.4.5
-    - [ ] @vue/tsconfig > 0.1.3 (Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
-      project and unresolved imports that are hard to fix))
-    - [ ]  cypress > 12.11.0 (Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test
-      `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress
-      https://jira.d-fine.dev/browse/DALA-2101
-  - keycloak:
-    - [ ] @zxcvbn-ts/language-en > 2.1.0 and @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images) https://jira.d-fine.dev/browse/DALA-1945
-    - [ ] @types/node > 20.10.8 causes issues with vite > 4.5.1 which causes build to fail https://jira.d-fine.dev/browse/DALA-3675
-- [ ] Update e2etests/Dockerfile update breaks the build https://jira.d-fine.dev/browse/DALA-2242
-- [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
-  https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
-  https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
-- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. https://jira.d-fine.dev/browse/DALA-3135
-- [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
-- [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from `config/detekt.yml`, 
-      at latest once the refactoring of the APIs is done this must be reevaluated
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
-- [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 
@@ -118,6 +91,8 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] test.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
+
+Start with one of the dev servers, deploy to it after the update and check if everything is fine.
 
 ### ssh-keys maintenance
 

@@ -11,7 +11,9 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   () => {
-
+    /**
+     * This method verifies that the summary panel is presented as expected
+     */
     function checkFrameworks(){
       ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
