@@ -11,7 +11,7 @@ import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
-const chunkSize = 15;
+const chunkSize = 5;
 
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
