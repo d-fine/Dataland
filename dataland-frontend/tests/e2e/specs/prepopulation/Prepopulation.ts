@@ -11,7 +11,7 @@ import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
-const chunkSize = 5;
+const chunkSize = 15;
 
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
@@ -70,31 +70,22 @@ describe(
             });
           });
 
-          it(
-            "Checks that all the uploaded company ids and data ids can be retrieved",
-            {
-              retries: {
-                runMode: 5,
-                openMode: 5,
-              },
-            },
-            () => {
-              const expectedNumberOfCompanies = fixtureData.length;
-              cy.getKeycloakToken(admin_name, admin_pw)
-                .then((token) =>
-                  wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
-                )
-                .then((response) => {
-                  assert(
-                    response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                      response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                    `Found ${response.numberOfCompaniesForDataType} companies having 
+          it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+            const expectedNumberOfCompanies = fixtureData.length;
+            cy.getKeycloakToken(admin_name, admin_pw)
+              .then((token) =>
+                wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
+              )
+              .then((response) => {
+                assert(
+                  response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+                    response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+                  `Found ${response.numberOfCompaniesForDataType} companies having 
             ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
             but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
-                  );
-                });
-            },
-          );
+                );
+              });
+          });
         },
       );
     }
