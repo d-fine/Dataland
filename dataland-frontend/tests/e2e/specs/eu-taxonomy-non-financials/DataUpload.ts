@@ -1,3 +1,4 @@
+// @ts-ignore typescript:S2004
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
@@ -156,10 +157,9 @@ describeIf(
               }
             }).as("submitData");
             cy.get('button[data-test="submitButton"]').click();
-            /* eslint-disable prettier/prettier */
-            cy.wait(`@submitData`, { timeout: Cypress.env("long_timeout_in_ms") as number })
-                .then(() => validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash));
-            /* eslint-enable prettier/prettier */
+            cy.wait(`@submitData`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+              validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
+            });
             cy.url().should("eq", getBaseUrl() + "/datasets");
             cy.get('[data-test="datasets-table"]').should("be.visible");
 
