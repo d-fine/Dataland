@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 /**
  * --- API model ---
  * Contains info about an extended stored data request on Dataland.
@@ -14,14 +13,14 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * @param messageHistory a list of all message objects which were created during the life cycle
  * @param requestStatus the current status of the data request
  */
-data class ExtendedStoredDataRequest (
+data class ExtendedStoredDataRequest(
     val dataRequestId: String,
 
     val userId: String,
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum,
+    val dataType: String,
 
     val reportingPeriod: String,
 
@@ -34,9 +33,9 @@ data class ExtendedStoredDataRequest (
     val lastModifiedDate: Long,
 
     val requestStatus: RequestStatus,
-){
-    constructor(storedDataRequest: StoredDataRequest, companyName: String):this(
-        storedDataRequest.dataRequestId,storedDataRequest.userId,storedDataRequest.creationTimestamp,storedDataRequest.dataType,storedDataRequest.reportingPeriod,storedDataRequest.datalandCompanyId, companyName, storedDataRequest.messageHistory, storedDataRequest.lastModifiedDate, storedDataRequest.requestStatus){
-
+) {
+    constructor(storedDataRequest: StoredDataRequest, companyName: String) : this(
+        storedDataRequest.dataRequestId, storedDataRequest.userId, storedDataRequest.creationTimestamp, storedDataRequest.dataType, storedDataRequest.reportingPeriod, storedDataRequest.datalandCompanyId, companyName, storedDataRequest.messageHistory, storedDataRequest.lastModifiedDate, storedDataRequest.requestStatus,
+    ) {
     }
 }
