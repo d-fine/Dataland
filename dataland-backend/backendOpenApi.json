@@ -13701,13 +13701,7 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
-            "type": "string"
-          },
-          "countryCode": {
             "type": "string"
           },
           "headquarters": {
@@ -13716,6 +13710,12 @@
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           },
           "permId": {
             "type": "string",
@@ -13742,10 +13742,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -13803,11 +13803,10 @@
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
+          "sme",
           "p2p",
           "sfdr",
-          "sme",
           "esg-questionnaire",
-          "sme",
           "heimathafen"
         ]
       },
