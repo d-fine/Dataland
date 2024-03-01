@@ -5,10 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
-import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.group.*
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.springframework.stereotype.Component
 import java.io.File
@@ -27,18 +24,18 @@ class LksgFramework : PavedRoadFramework(
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)
-        framework.root.getOrNull<ComponentGroup>("general")
-            ?.getOrNull<ComponentGroup>("masterData")?.let { parent ->
+        framework.root.get<ComponentGroup>("general")
+            .get<ComponentGroup>("masterData").let { parent ->
                 editShareOfTemporaryWorkersOptions(parent)
             }
-        val governanceComponent = framework.root.getOrNull<ComponentGroup>("governance")
-        governanceComponent?.getOrNull<ComponentGroup>("riskManagementOwnOperations")?.let { parent ->
+        val governanceComponent = framework.root.get<ComponentGroup>("governance")
+        governanceComponent.get<ComponentGroup>("riskManagementOwnOperations").let { parent ->
             writeLksgRiskPositions(parent, "identifiedRisks")
         }
-        governanceComponent?.getOrNull<ComponentGroup>("grievanceMechanismOwnOperations")?.let { parent ->
+        governanceComponent.get<ComponentGroup>("grievanceMechanismOwnOperations").let { parent ->
             writeLksgRiskPositions(parent, "complaintsRiskPosition")
         }
-        governanceComponent?.getOrNull<ComponentGroup>("generalViolations")?.let { parent ->
+        governanceComponent.get<ComponentGroup>("generalViolations").let { parent ->
             writeLksgRiskPositions(parent, "humanRightsOrEnvironmentalViolationsDefinition")
         }
     }
