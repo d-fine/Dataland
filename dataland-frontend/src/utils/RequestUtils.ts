@@ -1,5 +1,5 @@
 import type Keycloak from "keycloak-js";
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { type ExtendedStoredDataRequest, RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type DataTypeEnum } from "@clients/backend";
 
@@ -16,11 +16,13 @@ export async function getAnsweredDataRequestsForViewPage(
   framework: DataTypeEnum,
   reportingPeriods: string[],
   keycloakPromiseGetter?: () => Promise<Keycloak>,
-): Promise<StoredDataRequest[]> {
+): Promise<ExtendedStoredDataRequest[]> {
   try {
     if (keycloakPromiseGetter) {
       return (
-        await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.getDataRequestsForUser()
+        await new ApiClientProvider(
+          keycloakPromiseGetter(),
+        ).apiClients.requestController.getDataRequestsForRequestingUser()
       ).data.filter(
         (dataRequest) =>
           dataRequest.dataType == framework &&
