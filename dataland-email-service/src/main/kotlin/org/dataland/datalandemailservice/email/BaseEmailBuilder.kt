@@ -1,5 +1,6 @@
 package org.dataland.datalandemailservice.email
 
+import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.slf4j.LoggerFactory
 import kotlin.system.exitProcess
 
