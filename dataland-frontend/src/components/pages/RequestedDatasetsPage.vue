@@ -280,7 +280,7 @@ export default defineComponent({
      * @param event contains column to sort and sortOrder
      */
     onSort(event: DataTableSortEvent) {
-      const sortField = event.sortField;
+      const sortField = event.sortField as keyof ExtendedStoredDataRequest;
       const sortOrder = event.sortOrder || 1;
       this.storedDataRequests.sort((a, b) => {
         const aValue = a[sortField];
