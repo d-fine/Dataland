@@ -164,7 +164,11 @@ interface RequestApi {
         value = ["/{dataRequestId}/requestStatus"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') " +
+            "or (@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) " +
+            "and @SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus))",
+    )
     fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus,
