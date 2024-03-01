@@ -1,5 +1,6 @@
 import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
+import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
 import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -9,7 +10,6 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
-import { type SingleDataRequest } from "@clients/communitymanager";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -24,27 +24,36 @@ describeIf(
 
     /**
      * Uploads a company with lksg data
+     * @param reportingPeriod the year for which the data is uploaded
      */
-    function uploadCompanyWithData(): void {
+    function uploadCompanyWithData(reportingPeriod: string): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
-          async (storedCompany) => {
-            testStoredCompany = storedCompany;
-            return uploadFrameworkData(
-              DataTypeEnum.Lksg,
-              token,
-              storedCompany.companyId,
-              "2015",
-              getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
-            );
-          },
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          testStoredCompany = storedCompany;
+          return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
+        });
+      });
+    }
+    /**
+     * Sets the status of a single data request from open to answered
+     * @param companyId id of the company
+     * @param reportingPeriod the year for which the framework is uploaded
+     */
+    function uploadFrameworkDataForCompany(companyId: string, reportingPeriod: string): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadFrameworkData(
+          DataTypeEnum.Lksg,
+          token,
+          companyId,
+          reportingPeriod,
+          getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
         );
       });
     }
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        uploadCompanyWithData();
+        uploadCompanyWithData("2020");
       });
     });
     beforeEach(() => {
@@ -69,13 +78,13 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseReportingPeriod("2023");
       checkDropdownLabels();
       singleDataRequestPage.chooseFrameworkLksg();
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
       cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
-      submit();
+      clickSubmitButton();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
       });
@@ -89,9 +98,9 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseReportingPeriod("2023");
       singleDataRequestPage.chooseFrameworkLksg();
-      submit();
+      clickSubmitButton();
       cy.get("[data-test=submittedDiv]").should("exist");
       cy.get("[data-test=requestStatusText]").should(
         "contain.text",
@@ -123,7 +132,7 @@ describeIf(
     /**
      * Clicks submit button
      */
-    function submit(): void {
+    function clickSubmitButton(): void {
       cy.get("button[type='submit']").should("exist").click();
     }
 
@@ -141,7 +150,7 @@ describeIf(
      * Checks basic validation
      */
     function checkValidation(): void {
-      submit();
+      clickSubmitButton();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
         .should("contain.text", "Select at least one reporting period to submit your request.");
