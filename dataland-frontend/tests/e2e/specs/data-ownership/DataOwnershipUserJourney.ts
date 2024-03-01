@@ -14,13 +14,11 @@ describeIf(
     /**
      * This method verifies that the summary panel is presented as expected
      */
-    function checkFrameworks(){
+    function checkFrameworks() : void {
       ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
         cy.get(frameworkSummaryPanelSelector).should("exist");
-        cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-            "exist",
-        );
+        cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
       });
     }
     it("Upload a company, set a user as the data owner and then verify that the upload pages are displayed for that user", () => {
