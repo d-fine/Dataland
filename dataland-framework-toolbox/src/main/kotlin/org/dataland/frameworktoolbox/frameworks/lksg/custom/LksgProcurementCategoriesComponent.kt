@@ -74,9 +74,9 @@ class LksgProcurementCategoriesComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         val fixtureExperssion = if (isNullable) {
-            "dataGenerator.generateProcurementCategories()"
+            "dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories())"
         } else {
-            "dataGenerator.generateProcurementCategories(0)"
+            "dataGenerator.generateProcurementCategories()"
         }
         sectionBuilder.addAtomicExpression(
             identifier,
