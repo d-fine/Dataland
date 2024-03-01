@@ -1,4 +1,3 @@
-// @ts-ignore typescript:S2004
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
@@ -157,6 +156,7 @@ describeIf(
               }
             }).as("submitData");
             cy.get('button[data-test="submitButton"]').click();
+            // @ts-ignore typescript:S2004
             cy.wait(`@submitData`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
               validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
             });
