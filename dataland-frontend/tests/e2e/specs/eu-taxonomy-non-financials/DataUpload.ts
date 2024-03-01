@@ -156,7 +156,6 @@ describeIf(
               }
             }).as("submitData");
             cy.get('button[data-test="submitButton"]').click();
-            // @ts-expect-error: Nesting unavoidable
             cy.wait(`@submitData`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
               validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
             });
