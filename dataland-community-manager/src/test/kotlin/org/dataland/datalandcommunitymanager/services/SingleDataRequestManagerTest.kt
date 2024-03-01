@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -27,7 +28,7 @@ import java.util.UUID
 class SingleDataRequestManagerTest {
 
     private lateinit var singleDataRequestManagerMock: SingleDataRequestManager
-    private lateinit var dataRequestEmailMessageSenderMock: DataRequestEmailMessageSender
+    private lateinit var singleDataRequestEmailMessageSenderMock: SingleDataRequestEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var utilsMock: DataRequestProcessingUtils
 
@@ -35,13 +36,13 @@ class SingleDataRequestManagerTest {
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
-        dataRequestEmailMessageSenderMock = mock(DataRequestEmailMessageSender::class.java)
+        singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = mockDataRequestProcessingUtils()
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             companyApi = mockCompanyApi,
-            dataRequestEmailMessageSender = dataRequestEmailMessageSenderMock,
+            singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
         )
         `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
@@ -138,8 +139,8 @@ class SingleDataRequestManagerTest {
         singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
-        verify(dataRequestEmailMessageSenderMock, times(expectedExternalMessagesSent))
-            .buildSingleDataRequestExternalMessage(
+        verify(singleDataRequestEmailMessageSenderMock, times(expectedExternalMessagesSent))
+            .sendSingleDataRequestExternalMessage(
                 anyString(),
                 any() ?: authenticationMock,
                 anyString(),
@@ -147,8 +148,8 @@ class SingleDataRequestManagerTest {
                 any() ?: request.reportingPeriods,
                 any(),
             )
-        verify(dataRequestEmailMessageSenderMock, times(expectedInternalMessagesSent))
-            .buildSingleDataRequestInternalMessage(
+        verify(singleDataRequestEmailMessageSenderMock, times(expectedInternalMessagesSent))
+            .sendSingleDataRequestInternalMessage(
                 any() ?: authenticationMock,
                 anyString(),
                 any() ?: request.dataType,

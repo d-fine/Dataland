@@ -5,6 +5,7 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -20,7 +21,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailMessageBuilder: DataRequestEmailMessageSender,
+    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
@@ -158,7 +159,7 @@ class BulkDataRequestManager(
         acceptedDatalandCompanyIds: List<String>,
         bulkDataRequestId: String,
     ) {
-        emailMessageBuilder.buildBulkDataRequestInternalMessage(
+        emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
             acceptedDatalandCompanyIds,
         )

@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
-    @Autowired private val dataRequestEmailMessageSender: DataRequestEmailMessageSender,
+    @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -90,7 +91,7 @@ class SingleDataRequestManager(
         datalandCompanyId: String,
     ) {
         singleDataRequest.contacts?.forEach { contactEmail ->
-            dataRequestEmailMessageSender.buildSingleDataRequestExternalMessage(
+            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
                 receiver = contactEmail,
                 userAuthentication = userAuthentication,
                 datalandCompanyId = datalandCompanyId,
@@ -106,7 +107,7 @@ class SingleDataRequestManager(
         datalandCompanyId: String,
         singleDataRequest: SingleDataRequest,
     ) {
-        dataRequestEmailMessageSender.buildSingleDataRequestInternalMessage(
+        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
             userAuthentication = userAuthentication,
             datalandCompanyId,
             dataType = singleDataRequest.dataType,

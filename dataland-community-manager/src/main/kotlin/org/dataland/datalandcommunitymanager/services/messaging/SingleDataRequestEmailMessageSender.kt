@@ -1,16 +1,14 @@
-package org.dataland.datalandcommunitymanager.services
+package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,60 +19,17 @@ import java.util.*
  * A class that manages generating emails messages for bulk and single data requests
  */
 @Component
-class DataRequestEmailMessageSender(
+class SingleDataRequestEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired val companyApi: CompanyDataControllerApi,
-) {
-    private val logger = LoggerFactory.getLogger(DataRequestEmailMessageSender::class.java)
-
-    /**
-     * Builds a user information string from a DatalandAuthentication
-     * @param userAuthentication DatalandAuthentication as base for the info string
-     * @return the user info string
-     */
-    fun buildUserInfo(
-        userAuthentication: DatalandJwtAuthentication,
-    ): String {
-        return "User ${userAuthentication.username} (Keycloak ID: ${userAuthentication.userId})"
-    }
-
-    /**
-     * Function that generates the message object for bulk data request mails
-     */
-    fun buildBulkDataRequestInternalMessage(
-        bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdentifiers: List<String>,
-    ) {
-        val correlationId = UUID.randomUUID().toString()
-        logger.info(
-            "A bulk data request with correlationId $correlationId has been submitted",
-        )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(
-                InternalEmailMessage(
-                    "Dataland Bulk Data Request",
-                    "A bulk data request has been submitted",
-                    "Bulk Data Request",
-                    mapOf(
-                        "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
-                        "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
-                        "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
-                        "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
-                    ),
-                ),
-            ),
-            MessageType.SendInternalEmail,
-            correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
-        )
-    }
+) : DataRequestEmailMessageSenderBase() {
+    private val logger = LoggerFactory.getLogger(SingleDataRequestEmailMessageSender::class.java)
 
     /**
      * Function that generates the message object for single data request mails
      */
-    fun buildSingleDataRequestInternalMessage(
+    fun sendSingleDataRequestInternalMessage(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
         dataType: DataTypeEnum,
@@ -111,7 +66,7 @@ class DataRequestEmailMessageSender(
     /**
      * Function that generates the message object for single data request mails
      */
-    fun buildSingleDataRequestExternalMessage(
+    fun sendSingleDataRequestExternalMessage(
         receiver: String,
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
@@ -146,7 +101,4 @@ class DataRequestEmailMessageSender(
             RoutingKeyNames.templateEmail,
         )
     }
-
-    private fun formatReportingPeriods(reportingPeriods: Set<String>) =
-        reportingPeriods.toList().sorted().joinToString(", ")
 }
