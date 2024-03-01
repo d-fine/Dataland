@@ -57,3 +57,16 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
   });
   return countryCodeDataset;
 }
+
+export enum ReportingPeriodTableActions {
+  EditDataset = "editDataset",
+  CloseRequest = "closeRequest",
+  ReopenRequest = "reOpenRequest",
+}
+export interface ReportingPeriodTableEntry {
+  reportingPeriod: string;
+  editUrl: string;
+  dataRequestId?: string;
+  actionOnClick?: ReportingPeriodTableActions;
+  isClickable: boolean;
+}
