@@ -13788,7 +13788,13 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "sector": {
@@ -13796,12 +13802,6 @@
             "nullable": true
           },
           "headquarters": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "countryCode": {
             "type": "string"
           },
           "permId": {
@@ -13829,10 +13829,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

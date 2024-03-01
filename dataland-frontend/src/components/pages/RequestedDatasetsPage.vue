@@ -50,9 +50,9 @@
               @page="onPage($event)"
               @sort="onSort($event)"
             >
-              <Column header="COMPANY" class="d-bg-white w-2 qa-review-id" field="datalandCompanyId" :sortable="true">
+              <Column header="COMPANY" class="d-bg-white w-2 qa-review-id" field="companyName" :sortable="true">
                 <template #body="slotProps">
-                  {{ getCompanyNameById(slotProps.data.datalandCompanyId) }}
+                  {{ slotProps.data.companyName }}
                 </template>
               </Column>
               <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework" :sortable="true" field="dataType">
@@ -153,7 +153,7 @@ import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
 import { type DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
@@ -196,8 +196,8 @@ export default defineComponent({
     return {
       waitingForData: true,
       currentPage: 0,
-      storedDataRequests: [] as StoredDataRequest[],
-      displayedData: [] as StoredDataRequest[],
+      storedDataRequests: [] as ExtendedStoredDataRequest[],
+      displayedData: [] as ExtendedStoredDataRequest[],
       footerContent,
       waitingForSearchResults: true,
       searchBarInput: "",
@@ -205,7 +205,6 @@ export default defineComponent({
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       numberOfFilteredRequests: 0,
-      companyIdToCompanyName: new Map<string, string>(),
     };
   },
   mounted() {
@@ -266,32 +265,24 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           this.storedDataRequests = (
-            await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequestsForUser()
+            await new ApiClientProvider(
+              this.getKeycloakPromise(),
+            ).apiClients.requestController.getDataRequestsForRequestingUser()
           ).data;
         }
       } catch (error) {
         console.error(error);
       }
       this.waitingForData = false;
-      this.storedDataRequests.forEach((dataRequest) =>
-        this.updateCompanyIdToCompanyNameMap(dataRequest.datalandCompanyId),
-      );
     },
     /**
      * Sorts the list of storedDataRequests
      * @param event contains column to sort and sortOrder
      */
     onSort(event: DataTableSortEvent) {
-      console.log(event);
       const sortField = event.sortField;
       const sortOrder = event.sortOrder || 1;
       this.storedDataRequests.sort((a, b) => {
-        if (sortField == "datalandCompanyId") {
-          return (
-            (this.getCompanyNameById(a.datalandCompanyId) < this.getCompanyNameById(b.datalandCompanyId) ? -1 : 1) *
-            sortOrder
-          );
-        }
         const aValue = a[sortField];
         const bValue = b[sortField];
         return (aValue < bValue ? -1 : 1) * sortOrder;
@@ -326,14 +317,14 @@ export default defineComponent({
     },
     /**
      * Filterfunction for searchbar
-     * @param companyId dataland companyId
+     * @param companyName dataland companyName
      * @returns checks if given companyName contains searchbar text
      */
-    filterSearchInput(companyId: string | undefined) {
-      if (companyId == undefined) {
-        companyId = "";
+    filterSearchInput(companyName: string) {
+      if (companyName == undefined) {
+        companyName = "";
       }
-      const lowerCaseCompanyName = (this.getCompanyNameById(companyId) || "").toLowerCase();
+      const lowerCaseCompanyName = (companyName || "").toLowerCase();
       const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
       return lowerCaseCompanyName.includes(lowerCaseSearchString);
     },
@@ -349,7 +340,7 @@ export default defineComponent({
     updateCurrentDisplayedData() {
       this.waitingForSearchResults = true;
       this.displayedData = this.storedDataRequests
-        .filter((dataRequest) => this.filterSearchInput(dataRequest.datalandCompanyId))
+        .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
         .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
@@ -394,45 +385,6 @@ export default defineComponent({
      */
     convertDateStringToTime(dateString: string) {
       return dateString.split(",")[2].trim();
-    },
-    /**
-     * Gets the CompanyName by Id
-     * @param companyId dataland companyId
-     * @returns companyName or companyId if there is no companyName
-     */
-    getCompanyNameById(companyId: string | undefined) {
-      if (companyId == undefined) return "";
-      if (this.companyIdToCompanyName.has(companyId)) {
-        return this.companyIdToCompanyName.get(companyId);
-      } else {
-        void this.updateCompanyIdToCompanyNameMap(companyId);
-      }
-      return companyId;
-    },
-    /**
-     * Updates the companyIdToCompanyName Map
-     * @param companyId dataland companyId
-     */
-    async updateCompanyIdToCompanyNameMap(companyId: string | undefined) {
-      if (companyId == undefined) {
-        return;
-      }
-      if (!this.companyIdToCompanyName.has(companyId) && this.getKeycloakPromise) {
-        let companyInfo;
-        try {
-          companyInfo = (
-            await new ApiClientProvider(this.getKeycloakPromise()).backendClients.companyDataController.getCompanyInfo(
-              companyId,
-            )
-          ).data;
-        } catch (e) {
-          console.log(e);
-          return;
-        }
-        if (companyInfo !== undefined) {
-          this.companyIdToCompanyName.set(companyId, companyInfo.companyName);
-        }
-      }
     },
   },
 });

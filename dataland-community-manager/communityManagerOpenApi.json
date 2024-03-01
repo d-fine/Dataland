@@ -385,7 +385,7 @@
         ],
         "summary": "Get all stored data requests of the user making the request.",
         "description": "Gets all the stored data request created by the user who is making the request.",
-        "operationId": "getDataRequestsForUser",
+        "operationId": "getDataRequestsForRequestingUser",
         "responses": {
           "200": {
             "description": "Successfully retrieved data requests for the user.",
@@ -394,7 +394,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredDataRequest"
+                    "$ref": "#/components/schemas/ExtendedStoredDataRequest"
                   }
                 }
               }
@@ -972,6 +972,68 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "ExtendedStoredDataRequest": {
+        "required": [
+          "companyName",
+          "creationTimestamp",
+          "dataRequestId",
+          "dataType",
+          "datalandCompanyId",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataRequestId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme",
+              "esg-questionnaire",
+              "heimathafen"
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
           }
         }
       },
