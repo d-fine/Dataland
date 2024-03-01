@@ -30,12 +30,6 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
     return timestamp
 }
 
-fun findStoredDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.DataTypes,
-): StoredDataRequest.DataType {
-    return StoredDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
-}
-
 fun findAggregatedDataRequestDataTypeForFramework(
     framework: BulkDataRequest.DataTypes,
 ): AggregatedDataRequest.DataType {
@@ -171,7 +165,7 @@ fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     assertEquals(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
-            storedDataRequest.dataType == findStoredDataRequestDataTypeForFramework(framework) &&
+            storedDataRequest.dataType == framework.value &&
                 storedDataRequest.reportingPeriod == reportingPeriod &&
                 storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
         }.size,
