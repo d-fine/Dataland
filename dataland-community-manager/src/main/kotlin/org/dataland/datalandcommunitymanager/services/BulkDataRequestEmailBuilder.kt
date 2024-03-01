@@ -41,7 +41,7 @@ class BulkDataRequestEmailBuilder(
      */
     fun buildBulkDataRequestEmail(
         bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdentifiers: List<String>,
+        acceptedDatalandCompanyIds: List<String>,
     ): Email {
         return buildPropertyStyleEmail(
             "Dataland Bulk Data Request",
@@ -52,7 +52,7 @@ class BulkDataRequestEmailBuilder(
                 "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
                 "Reporting Periods" to bulkDataRequest.reportingPeriods.joinToString(", "),
                 "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", "),
-                "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
+                "Accepted Companies (Dataland IDs)" to acceptedDatalandCompanyIds.joinToString(", "),
             ),
         )
     }

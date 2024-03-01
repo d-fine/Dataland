@@ -77,7 +77,7 @@ class DataRequestProcessingUtils(
         }
         val dataRequestEntity = DataRequestEntity(
             DatalandAuthentication.fromContext().userId,
-            dataType,
+            dataType.value,
             reportingPeriod,
             datalandCompanyId,
             Instant.now().toEpochMilli(),

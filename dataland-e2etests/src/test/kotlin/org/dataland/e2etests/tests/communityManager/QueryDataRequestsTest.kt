@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.PREMIUM_USER_ID
@@ -75,7 +75,7 @@ class QueryDataRequestsTest {
             dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
         )
         assertTrue(lksgDataRequests.isNotEmpty())
-        assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
+        assertTrue(lksgDataRequests.all { it.dataType == DataTypeEnum.lksg.value })
     }
 
     @Test
