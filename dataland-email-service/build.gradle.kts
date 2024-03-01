@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.slf4j.api)
     // toDo Healthcheck
     implementation(Spring.boot.web)
-    // implementation(Spring.boot.actuator)
+    implementation(Spring.boot.actuator)
     // implementation(Spring.boot.validation)
     implementation(Spring.boot.amqp)
     kapt(Spring.boot.configurationProcessor)
