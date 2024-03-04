@@ -138,9 +138,7 @@
                   >
                     <span
                       data-test="requested-Datasets-Resolve"
-                      @click="
-                        () => goToResolveDataRequestViewPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)
-                      "
+                      @click="goToResolveDataRequestViewPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
                       >RESOLVE</span
                     >
                     <span class="ml-3">></span>
