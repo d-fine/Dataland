@@ -52,8 +52,8 @@ def get_sme_data_mock(
         data=SmeData.from_dict({
             "general": {
                 "basicInformation": {
+                    "reportingDate": "2021",
                     "sector": ["dummy"],
-                    "addressOfHeadquarters": {"city": "something", "country": "else"},
                     "numberOfEmployees": 42,
                     "fiscalYearStart": "2024-01-01",
                 }
