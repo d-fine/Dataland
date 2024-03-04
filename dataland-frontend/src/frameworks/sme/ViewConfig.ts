@@ -152,7 +152,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
           },
           {
             type: "cell",
-            label: "power from renewable sources",
+            label: "Power from renewable sources",
             explanation:
               "Please provide information whether your company has been primarily using power from renewable sources in the relevant fiscal year.",
             shouldDisplay: (): boolean => true,

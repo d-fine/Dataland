@@ -171,7 +171,7 @@ export const smeDataModel = [
           },
           {
             name: "powerFromRenewableSources",
-            label: "power from renewable sources",
+            label: "Power from renewable sources",
             description:
               "Please provide information whether your company has been primarily using power from renewable sources in the relevant fiscal year.",
 
