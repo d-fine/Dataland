@@ -220,7 +220,7 @@ export class Generator {
   }
   /**
    * Generates a random value and currency
-   * @returns an ValueWithCurrency object
+   * @returns an AmountWithCurrency object
    */
   generateAmountWithCurrency(): AmountWithCurrency {
     return {
