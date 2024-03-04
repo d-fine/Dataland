@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
@@ -65,15 +66,15 @@ class DataRequestProcessingUtils(
      * @param contacts a list of email addresses to inform about the potentially stored data request
      * @param message a message to equip the notification with
      */
-    fun storeDataRequestEntityIfNotExisting(
+    fun storeOpenDataRequestEntityIfNotExisting(
         datalandCompanyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
         contacts: Set<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
-        findAlreadyExistingDataRequestForCurrentUser(datalandCompanyId, dataType, reportingPeriod)?.also {
-            return it
+        findAlreadyExistingDataRequestForCurrentUser(datalandCompanyId, dataType, reportingPeriod, RequestStatus.Open)?.also {
+            return it.first()
         }
         val dataRequestEntity = DataRequestEntity(
             DatalandAuthentication.fromContext().userId,
@@ -82,6 +83,7 @@ class DataRequestProcessingUtils(
             datalandCompanyId,
             Instant.now().toEpochMilli(),
         )
+        dataRequestEntity.requestStatus = RequestStatus.Open
         dataRequestRepository.save(dataRequestEntity)
         if (!contacts.isNullOrEmpty()) {
             val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
@@ -96,14 +98,20 @@ class DataRequestProcessingUtils(
         identifierValue: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
-    ): DataRequestEntity? {
+        requestStatus: RequestStatus,
+    ): List<DataRequestEntity>? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
         val foundRequest = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                requestingUserId, identifierValue, framework.name, reportingPeriod,
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriodAndRequestStatus(
+                requestingUserId, identifierValue, framework.name, reportingPeriod, requestStatus,
             )
         if (foundRequest != null) {
-            dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(identifierValue, framework)
+            dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
+                identifierValue,
+                framework,
+                reportingPeriod,
+                requestStatus,
+            )
         }
         return foundRequest
     }

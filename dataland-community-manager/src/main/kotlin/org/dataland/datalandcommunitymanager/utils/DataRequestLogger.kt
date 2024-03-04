@@ -29,13 +29,6 @@ class DataRequestLogger {
     }
 
     /**
-     * Logs an appropriate message when a bulk data request has happened.
-     */
-    fun logMessageForSingleDataRequestReceived() {
-        singleDataRequestLogger.info("Received a single data request from a user.")
-    }
-
-    /**
      * Logs an appropriate message when a single data request has happened.
      */
     fun logMessageForReceivingSingleDataRequest(companyIdentifier: String) {
@@ -70,10 +63,13 @@ class DataRequestLogger {
     fun logMessageForCheckingIfDataRequestAlreadyExists(
         identifierValue: String,
         framework: DataTypeEnum,
+        reportingPeriod: String,
+        requestStatus: RequestStatus,
     ) {
         bulkDataRequestLogger.info(
             "The following data request already exists for the requesting user and therefore " +
-                "is not being recreated: (identifierValue: $identifierValue, framework: $framework)",
+                "is not being recreated: (identifierValue: $identifierValue, framework: $framework, " +
+                "reportingPeriod: $reportingPeriod, requestStatus: $requestStatus)",
         )
     }
 

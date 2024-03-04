@@ -94,7 +94,7 @@ class SingleDataRequestManager(
         datalandCompanyId: String,
     ): List<StoredDataRequest> {
         return singleDataRequest.reportingPeriods.map { reportingPeriod ->
-            utils.storeDataRequestEntityIfNotExisting(
+            utils.storeOpenDataRequestEntityIfNotExisting(
                 datalandCompanyId,
                 singleDataRequest.dataType,
                 reportingPeriod,

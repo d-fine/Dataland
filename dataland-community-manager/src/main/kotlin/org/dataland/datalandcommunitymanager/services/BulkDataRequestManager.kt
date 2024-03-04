@@ -69,7 +69,7 @@ class BulkDataRequestManager(
     ) {
         for (framework in dataTypes) {
             for (reportingPeriod in reportingPeriods) {
-                utils.storeDataRequestEntityIfNotExisting(
+                utils.storeOpenDataRequestEntityIfNotExisting(
                     datalandCompanyId,
                     framework,
                     reportingPeriod,
