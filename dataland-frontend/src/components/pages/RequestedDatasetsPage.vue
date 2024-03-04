@@ -226,7 +226,6 @@ export default defineComponent({
     this.availableFrameworks = this.retrieveAvailableFrameworks();
     this.getStoredRequestDataList().catch((error) => console.log(error));
     this.resetFilters();
-    this.updateCurrentDisplayedData();
   },
   watch: {
     selectedFrameworks() {
@@ -295,11 +294,11 @@ export default defineComponent({
      */
     getFrameworkTitle(framework: DataTypeEnum) {
       switch (framework) {
-        case "eutaxonomy-financials":
+        case DataTypeEnum.EutaxonomyFinancials:
           return "EU Taxonomy";
-        case "eutaxonomy-non-financials":
+        case DataTypeEnum.EutaxonomyNonFinancials:
           return "EU Taxonomy";
-        case "p2p":
+        case DataTypeEnum.P2p:
           return "WWF";
         default:
           return humanizeStringOrNumber(framework);
