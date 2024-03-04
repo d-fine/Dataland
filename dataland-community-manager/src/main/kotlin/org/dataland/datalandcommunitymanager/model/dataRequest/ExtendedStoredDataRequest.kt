@@ -45,6 +45,5 @@ data class ExtendedStoredDataRequest(
         storedDataRequest.messageHistory,
         storedDataRequest.lastModifiedDate,
         storedDataRequest.requestStatus,
-    ) {
-    }
+    )
 }

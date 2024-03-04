@@ -36,7 +36,7 @@ class DataRequestQueryManager(
         val retrievedStoredDataRequestEntitiesForUser =
             dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
         val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            getExtendedStoredDataRequestByDataRequestEntity(dataRequestEntity)
+            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return extendedStoredDataRequests
@@ -46,9 +46,9 @@ class DataRequestQueryManager(
      * @param dataRequestEntity dataland data request entity
      * @returns extended stored data request
      */
-    fun getExtendedStoredDataRequestByDataRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
-        val companyName = companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId).companyInformation.companyName
-        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyName)
+    fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
+        val company = companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId)
+        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), company.companyInformation.companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.
