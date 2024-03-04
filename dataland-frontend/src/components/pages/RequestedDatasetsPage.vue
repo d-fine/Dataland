@@ -380,10 +380,7 @@ export default defineComponent({
      * @returns checks if given companyName contains searchbar text
      */
     filterSearchInput(companyName: string) {
-      if (companyName == undefined) {
-        companyName = "";
-      }
-      const lowerCaseCompanyName = (companyName || "").toLowerCase();
+      const lowerCaseCompanyName = (companyName ?? "").toLowerCase();
       const lowerCaseSearchString = this.searchBarInputFilter.toLowerCase();
       return lowerCaseCompanyName.includes(lowerCaseSearchString);
     },
