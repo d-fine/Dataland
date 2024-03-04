@@ -7,9 +7,10 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
-### Skipped updates
+### Problematic updates
 
 See the list of known issue on the internal wiki https://github.com/d-fine/DatalandInternal/wiki/Problematic-updates
+Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem
 If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog 
 
 ### Gradle update
