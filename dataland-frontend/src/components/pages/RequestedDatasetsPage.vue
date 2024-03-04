@@ -94,11 +94,11 @@
               >
                 <template #body="slotProps">
                   <div>
-                    {{ convertDateStringToDate(convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp)) }}
+                    {{ convertDateStringToDate(slotProps.data.creationTimestamp) }}
                   </div>
                   <div style="color: gray; font-size: smaller; line-height: 0.5">
                     <br />
-                    {{ convertDateStringToTime(convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp)) }}
+                    {{ convertDateStringToTime(slotProps.data.creationTimestamp) }}
                   </div></template
                 >
               </Column>
@@ -110,11 +110,11 @@
               >
                 <template #body="slotProps"
                   ><div>
-                    {{ convertDateStringToDate(convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate)) }}
+                    {{ convertDateStringToDate(slotProps.data.lastModifiedDate) }}
                   </div>
                   <div style="color: gray; font-size: smaller; line-height: 0.5">
                     <br />
-                    {{ convertDateStringToTime(convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate)) }}
+                    {{ convertDateStringToTime(slotProps.data.lastModifiedDate) }}
                   </div>
                 </template>
               </Column>
@@ -241,7 +241,6 @@ export default defineComponent({
     },
   },
   methods: {
-    convertUnixTimeInMsToDateString,
     /**
      * Navigates to the company cockpit view page
      * @param companyId Dataland companyId
@@ -423,11 +422,11 @@ export default defineComponent({
     },
     /**
      * Converts dateString to date
-     * @param dateString DayOfTheWeek, DD Mon YYYY, HH:MM
+     * @param date unix time
      * @returns string representing a date (DD.MM.YYYY)
      */
-    convertDateStringToDate(dateString: string) {
-      const parsedDate = new Date(dateString);
+    convertDateStringToDate(date: number) {
+      const parsedDate = new Date(convertUnixTimeInMsToDateString(date));
 
       const day = parsedDate.getDate();
       const month = parsedDate.getMonth() + 1;
@@ -440,10 +439,11 @@ export default defineComponent({
     },
     /**
      * Converts dateString to time
-     * @param dateString DayOfTheWeek, DD Mon YYYY, HH:MM
+     * @param date unix time
      * @returns string representing a time (HH:MM)
      */
-    convertDateStringToTime(dateString: string) {
+    convertDateStringToTime(date: number) {
+      const dateString = convertUnixTimeInMsToDateString(date);
       return dateString.split(",")[2].trim();
     },
   },
