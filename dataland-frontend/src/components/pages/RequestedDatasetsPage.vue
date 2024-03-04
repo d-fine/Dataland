@@ -63,7 +63,16 @@
               </Column>
               <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework" :sortable="true" field="dataType">
                 <template #body="slotProps">
-                  {{ humanizeString(slotProps.data.dataType) }}
+                  <div>
+                    {{ getFrameworkTitle(slotProps.data.dataType) }}
+                  </div>
+                  <div
+                    v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                  >
+                    <br />
+                    {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+                  </div>
                 </template>
               </Column>
               <Column
@@ -161,7 +170,7 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import { type DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import type { FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
@@ -234,7 +243,6 @@ export default defineComponent({
   },
   methods: {
     convertUnixTimeInMsToDateString,
-    humanizeString: humanizeStringOrNumber,
     /**
      * Navigates to the company cockpit view page
      * @param companyId Dataland companyId
@@ -281,6 +289,52 @@ export default defineComponent({
         console.error(error);
       }
       this.waitingForData = false;
+    },
+    /**
+     * Return the title of a framework
+     * @param framework dataland framework
+     * @returns title of framework
+     */
+    getFrameworkTitle(framework: DataTypeEnum) {
+      switch (framework) {
+        case "eutaxonomy-financials":
+          return "EU Taxonomy";
+        case "eutaxonomy-non-financials":
+          return "EU Taxonomy";
+        case "p2p":
+          return "WWF";
+        default:
+          return humanizeStringOrNumber(framework);
+      }
+    },
+    /**
+     * Return the subtitle of a framework
+     * @param framework dataland framework
+     * @returns subtitle of framework
+     */
+    getFrameworkSubtitle(framework: DataTypeEnum) {
+      switch (framework) {
+        case "eutaxonomy-financials":
+          return "for financial companies";
+        case "eutaxonomy-non-financials":
+          return "for non-financial companies";
+        case "p2p":
+          return "Pathway to Paris";
+        default:
+          return "";
+      }
+    },
+    /**
+     * Checks the existence of subtitle for framework
+     * @param framework dataland framework
+     * @returns boolean if framework has subtitle
+     */
+    frameworkHasSubTitle(framework: DataTypeEnum) {
+      return (
+        framework == DataTypeEnum.P2p ||
+        framework == DataTypeEnum.EutaxonomyFinancials ||
+        framework == DataTypeEnum.EutaxonomyNonFinancials
+      );
     },
     /**
      * Sorts the list of storedDataRequests
@@ -397,8 +451,4 @@ export default defineComponent({
 });
 </script>
 
-<style>
-#qa-data-result tr:hover {
-  cursor: pointer;
-}
-</style>
+<style></style>
