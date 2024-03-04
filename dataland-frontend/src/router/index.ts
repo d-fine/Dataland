@@ -101,7 +101,7 @@ const routes = [
   },
   {
     path: "/requestedDatasets",
-    name: "Dataset Overview",
+    name: "Requested Datasets Overview",
     component: RequestedDatasetsPage,
   },
   {
