@@ -220,6 +220,8 @@ export default defineComponent({
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       numberOfFilteredRequests: 0,
+      sortField: "lastModifiedDate" as keyof ExtendedStoredDataRequest,
+      sortOrder: 1,
     };
   },
   mounted() {
@@ -343,13 +345,9 @@ export default defineComponent({
      * @param event contains column to sort and sortOrder
      */
     onSort(event: DataTableSortEvent) {
-      const sortField = event.sortField as keyof ExtendedStoredDataRequest;
-      const sortOrder = event.sortOrder ?? 1;
-      this.storedDataRequests.sort((a, b) => {
-        const aValue = a[sortField];
-        const bValue = b[sortField];
-        return (aValue < bValue ? -1 : 1) * sortOrder;
-      });
+      this.sortField = event.sortField as keyof ExtendedStoredDataRequest;
+      this.sortOrder = event.sortOrder ?? 1;
+      console.log(this.sortField);
       this.updateCurrentDisplayedData();
     },
     /**
@@ -393,6 +391,7 @@ export default defineComponent({
      */
     resetFilters() {
       this.selectedFrameworks = this.availableFrameworks;
+      this.searchBarInput = "";
     },
     /**
      * Updates the displayedData
@@ -402,6 +401,7 @@ export default defineComponent({
       this.displayedData = this.storedDataRequests
         .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
         .filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+      this.sortDisplayedData();
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
         this.datasetsPerPage * this.currentPage,
@@ -411,6 +411,35 @@ export default defineComponent({
       window.scrollTo({
         top: 0,
         behavior: "smooth",
+      });
+    },
+    /**
+     * Sorts the displayedData by current sortField, request status, last modified, company name
+     */
+    sortDisplayedData() {
+      this.displayedData.sort((a, b) => {
+        const aValue = a[this.sortField];
+        const bValue = b[this.sortField];
+
+        if (aValue < bValue) return -1 * this.sortOrder;
+        if (aValue > bValue) return this.sortOrder;
+
+        if (
+          (a.requestStatus == RequestStatus.Answered && !(b.requestStatus != RequestStatus.Answered)) ||
+          (a.requestStatus == RequestStatus.Open && b.requestStatus == RequestStatus.Closed)
+        )
+          return -1;
+        if (
+          (b.requestStatus == RequestStatus.Answered && !(a.requestStatus != RequestStatus.Answered)) ||
+          (b.requestStatus == RequestStatus.Open && a.requestStatus == RequestStatus.Closed)
+        )
+          return 1;
+
+        if (a.lastModifiedDate < b.lastModifiedDate) return -1;
+        if (a.lastModifiedDate > b.lastModifiedDate) return 1;
+
+        if (a.companyName < b.companyName) return -1;
+        else return 1;
       });
     },
     /**
