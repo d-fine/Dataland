@@ -50,7 +50,7 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check static layout of the search page", function () {
     const placeholder = "Search by company name";
     const inputValue = "A company name";
-    const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED DATE", "LAST UPDATED", "STATUS"];
+    const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED", "LAST UPDATED", "STATUS"];
 
     cy.intercept("**community/requests/user", {
       body: [],

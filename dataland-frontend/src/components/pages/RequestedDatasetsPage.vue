@@ -88,7 +88,7 @@
                   </template>
                 </Column>
                 <Column
-                  header="REQUESTED DATE"
+                  header="REQUESTED"
                   class="d-bg-white w-2 qa-review-reporting-period"
                   field="creationTimestamp"
                   :sortable="true"

@@ -42,13 +42,13 @@ class DataRequestQueryManager(
         return extendedStoredDataRequests
     }
 
-    /** This method retrieves an exdended stored data request based on a data request entity
+    /** This method retrieves an extended stored data request based on a data request entity
      * @param dataRequestEntity dataland data request entity
      * @returns extended stored data request
      */
     fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
-        val comp = companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), comp.companyInformation.companyName)
+        val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
+        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyInformation.companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.

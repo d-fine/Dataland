@@ -100,7 +100,7 @@ const routes = [
     component: DatasetOverview,
   },
   {
-    path: "/requestedDatasets",
+    path: "/requests",
     name: "Requested Datasets Overview",
     component: RequestedDatasetsPage,
   },

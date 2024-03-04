@@ -54,7 +54,7 @@ export default defineComponent({
       },
       {
         label: "DATA REQUESTS",
-        route: "/requestedDatasets",
+        route: "/requests",
         isVisible: true,
       },
     ] as Tab[],
