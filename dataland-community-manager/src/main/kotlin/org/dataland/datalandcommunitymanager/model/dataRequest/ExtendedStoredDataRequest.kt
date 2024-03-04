@@ -35,7 +35,16 @@ data class ExtendedStoredDataRequest(
     val requestStatus: RequestStatus,
 ) {
     constructor(storedDataRequest: StoredDataRequest, companyName: String) : this(
-        storedDataRequest.dataRequestId, storedDataRequest.userId, storedDataRequest.creationTimestamp, storedDataRequest.dataType, storedDataRequest.reportingPeriod, storedDataRequest.datalandCompanyId, companyName, storedDataRequest.messageHistory, storedDataRequest.lastModifiedDate, storedDataRequest.requestStatus,
+        storedDataRequest.dataRequestId,
+        storedDataRequest.userId,
+        storedDataRequest.creationTimestamp,
+        storedDataRequest.dataType,
+        storedDataRequest.reportingPeriod,
+        storedDataRequest.datalandCompanyId,
+        companyName,
+        storedDataRequest.messageHistory,
+        storedDataRequest.lastModifiedDate,
+        storedDataRequest.requestStatus,
     ) {
     }
 }

@@ -34,11 +34,17 @@ class DataRequestQueryManager(
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedStoredDataRequestEntitiesForUser =
             dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
-        val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId).companyInformation.companyName)
+        val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
+            ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), getCompnayNameByCompanyId(dataRequestEntity.datalandCompanyId))
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-        return retrievedStoredDataRequestsForUser
+        return extendedStoredDataRequests
+    }
+    /** This method retrieves the company name for a given CompanyId
+     * @returns the company name
+     */
+    fun getCompnayNameByCompanyId(datalandCompanyId: String): String{
+        return companyDataControllerApi.getCompanyById(datalandCompanyId).companyInformation.companyName
     }
 
     /** This method triggers a query to get aggregated data requests.

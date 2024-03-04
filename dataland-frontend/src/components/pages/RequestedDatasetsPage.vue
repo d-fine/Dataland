@@ -288,7 +288,7 @@ export default defineComponent({
      */
     onSort(event: DataTableSortEvent) {
       const sortField = event.sortField as keyof ExtendedStoredDataRequest;
-      const sortOrder = event.sortOrder || 1;
+      const sortOrder = event.sortOrder ?? 1;
       this.storedDataRequests.sort((a, b) => {
         const aValue = a[sortField];
         const bValue = b[sortField];
@@ -317,8 +317,8 @@ export default defineComponent({
      * @returns checks if given framework is selected
      */
     filterFramework(framework: DataTypeEnum) {
-      for (let i = 0; i < this.selectedFrameworks.length; i++) {
-        if (framework == this.selectedFrameworks[i].frameworkDataType) return true;
+      for (const selectedFramework of this.selectedFrameworks) {
+        if (framework == selectedFramework.frameworkDataType) return true;
       }
       return false;
     },

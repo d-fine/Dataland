@@ -1,5 +1,5 @@
 import type Keycloak from "keycloak-js";
-import { type ExtendedStoredDataRequest, RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type DataTypeEnum } from "@clients/backend";
 
