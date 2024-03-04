@@ -7,7 +7,7 @@
         </div>
         <div class="col-4">
           <NumberFormField
-            :name="'value'"
+            :name="'amount'"
             :validation-label="validationLabel"
             :validation="validation"
             :unit="unit"
