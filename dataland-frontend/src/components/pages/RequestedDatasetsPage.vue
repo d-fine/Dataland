@@ -32,6 +32,7 @@
             />
             <div class="flex align-items-center">
               <span
+                data-test="reset-filter"
                 style="margin: 15px"
                 class="ml-3 cursor-pointer text-primary font-semibold d-letters"
                 @click="resetFilters"
@@ -45,7 +46,6 @@
             <DataTable
               :value="displayedData"
               class="table-cursor"
-              id="qa-data-result"
               :rowHover="true"
               data-test="requested-Datasets-table"
               paginator
@@ -67,6 +67,7 @@
                     {{ getFrameworkTitle(slotProps.data.dataType) }}
                   </div>
                   <div
+                    data-test="framework-subtitle"
                     v-if="frameworkHasSubTitle(slotProps.data.dataType)"
                     style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
                   >
@@ -319,7 +320,7 @@ export default defineComponent({
         case "eutaxonomy-non-financials":
           return "for non-financial companies";
         case "p2p":
-          return "Pathway to Paris";
+          return "Pathways to Paris";
         default:
           return "";
       }

@@ -29,7 +29,17 @@ before(function () {
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
     companyName: "companyNotAnswered",
-    dataType: DataTypeEnum.EsgQuestionnaire,
+    dataType: DataTypeEnum.EutaxonomyFinancials,
+    reportingPeriod: "2021",
+    creationTimestamp: 1709204495770,
+    lastModifiedDate: 1709204495770,
+    requestStatus: RequestStatus.Closed,
+  } as ExtendedStoredDataRequest);
+  mockDataRequests.push({
+    dataRequestId: "dummyId",
+    datalandCompanyId: "compC",
+    companyName: "companyNotAnswered",
+    dataType: DataTypeEnum.EutaxonomyNonFinancials,
     reportingPeriod: "2021",
     creationTimestamp: 1709204495770,
     lastModifiedDate: 1709204495770,
@@ -103,6 +113,34 @@ describe("Component tests for the data requests search page", function (): void 
         .type("companyAnswered");
       cy.get('[data-test="requested-Datasets-Resolve"]').should("exist").should("be.visible").click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/companies/compA/frameworks/p2p");
+    });
+  });
+  it("Check filter functionality and reset button", function (): void {
+    const expectedFrameworks = [
+      "WWF",
+      "SME",
+      "EU Taxonomy",
+      "Pathways to Paris",
+      "for financial companies",
+      "for non-financial companies",
+    ];
+    cy.intercept("**community/requests/user", {
+      body: mockDataRequests,
+      status: 200,
+    }).as("UserRequests");
+    cy.mountWithPlugins(RequestedDatasetsPage, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      void mounted.wrapper.setData({
+        selectedFrameworks: [],
+      });
+      expectedFrameworks.forEach((value) => {
+        cy.get(`table tbody:contains(${value})`).should("not.exist");
+      });
+      cy.get("[data-test=reset-filter]").should("exist").click();
+      expectedFrameworks.forEach((value) => {
+        cy.get(`table tbody:contains(${value})`).should("exist");
+      });
     });
   });
 });
