@@ -18,7 +18,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compO",
-    companyName: "companyNotAnswered",
+    companyName: "companyNotAnswered1",
     dataType: DataTypeEnum.Sme,
     reportingPeriod: "2022",
     creationTimestamp: 1709204495770,
@@ -28,7 +28,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "companyNotAnswered",
+    companyName: "companyNotAnswered2",
     dataType: DataTypeEnum.EutaxonomyFinancials,
     reportingPeriod: "2021",
     creationTimestamp: 1709204495770,
@@ -38,7 +38,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "companyNotAnswered",
+    companyName: "companyNotAnswered3",
     dataType: DataTypeEnum.EutaxonomyNonFinancials,
     reportingPeriod: "2021",
     creationTimestamp: 1709204495770,
@@ -74,7 +74,7 @@ describe("Component tests for the data requests search page", function (): void 
     cy.get('[data-test="requested-Datasets-frameworks"]').should("exist");
   });
   it("Check the content of the data table", function (): void {
-    const expectedCompanys = ["companyAnswered", "companyNotAnswered"];
+    const expectedCompanys = ["companyAnswered", "companyNotAnswered1", "companyNotAnswered2"];
     const expectedYears = ["2020", "2021", "2022"];
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
