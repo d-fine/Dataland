@@ -25,6 +25,7 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
+  // TODO param unnecessary
   input.companyInformation.companyName = "SME-year-" + year;
   input.reportingPeriod = year;
   input.t.general.basicInformation.sectors = generateNaceCodes(2);
