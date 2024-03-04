@@ -134,7 +134,7 @@ check that all ssh-keys are set and erased from people that have left
 ## Check RabbitMQ dead letter queue and disk space
 
 - [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
-  disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space
+  disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
 - [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
