@@ -67,9 +67,11 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
+    const reportingPeriod = preparedFixture.reportingPeriod;
     getCellValueContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
+    cy.get(`span.p-column-title`).should("contain.text", reportingPeriod.substring(0, 4));
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
     getCellValueContainer("List Of Production Sites").contains("a").should("be.visible").click();
     lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
