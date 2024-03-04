@@ -40,11 +40,12 @@ class DataRequestQueryManager(
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return extendedStoredDataRequests
     }
+
     /** This method retrieves the company name for a given companyId
      * @param datalandCompanyId the dataland companyId
      * @returns the company name
      */
-    fun getCompnayNameByCompanyId(datalandCompanyId: String): String{
+    fun getCompnayNameByCompanyId(datalandCompanyId: String): String {
         return companyDataControllerApi.getCompanyById(datalandCompanyId).companyInformation.companyName
     }
 
