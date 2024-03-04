@@ -47,8 +47,8 @@ class DataRequestQueryManager(
      * @returns extended stored data request
      */
     fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
-        val company = companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), company.companyInformation.companyName)
+        val comp = companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId)
+        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), comp.companyInformation.companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.
