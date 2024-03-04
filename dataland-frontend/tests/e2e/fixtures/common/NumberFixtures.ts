@@ -8,7 +8,7 @@ import { faker } from "@faker-js/faker";
  * @returns a random number in [min, max]
  */
 export function generateFloat(min = 0, max = 1e5, precision = 1e-2): number {
-  return faker.number.float({ min: min, max: max, precision: precision });
+  return faker.number.float({ min: min, max: max, multipleOf: precision });
 }
 
 /**
