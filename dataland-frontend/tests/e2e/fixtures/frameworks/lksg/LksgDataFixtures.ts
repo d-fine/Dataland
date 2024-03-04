@@ -43,8 +43,8 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         shareOfTemporaryWorkers: dataGenerator.valueOrNull(
           pickOneElement(Object.values(LksgGeneralMasterdataShareOfTemporaryWorkersOptions)),
         ),
-        annualTotalRevenue: dataGenerator.valueOrNull(dataGenerator.generateValueWithCurrency()),
-        fixedAndWorkingCapital: dataGenerator.valueOrNull(dataGenerator.generateValueWithCurrency()),
+        annualTotalRevenue: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
+        fixedAndWorkingCapital: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       productionSpecific: {
         manufacturingCompany: dataGenerator.randomYesNo(),

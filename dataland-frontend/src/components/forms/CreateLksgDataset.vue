@@ -139,7 +139,7 @@ import { getFilledKpis } from "@/utils/DataPoint";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import ValueWithCurrencyFormField from "@/components/forms/parts/fields/ValueWithCurrencyFormField.vue";
+import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -174,7 +174,7 @@ export default defineComponent({
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
     CurrencyDataPointFormField,
-    ValueWithCurrencyFormField,
+    AmountWithCurrencyFormField,
     YesNoFormField,
     YesNoNaFormField,
     YesNoBaseDataPointFormField,

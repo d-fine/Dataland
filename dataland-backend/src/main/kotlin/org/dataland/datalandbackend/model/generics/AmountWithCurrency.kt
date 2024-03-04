@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom
+package org.dataland.datalandbackend.model.generics
 
 import java.math.BigDecimal
 

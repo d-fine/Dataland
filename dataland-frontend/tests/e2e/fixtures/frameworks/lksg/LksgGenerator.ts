@@ -1,11 +1,10 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
-import { type LksgProcurementCategory, type LksgProductionSite, type ValueWithCurrency } from "@clients/backend";
+import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/backend";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -64,15 +63,5 @@ export class LksgGenerator extends Generator {
    */
   guaranteedListOfGoodsOrServices(): string[] {
     return this.guaranteedArray(() => faker.commerce.productName(), 1);
-  }
-  /**
-   * Generates a random value and currency
-   * @returns an ValueWithCurrency object
-   */
-  generateValueWithCurrency(): ValueWithCurrency {
-    return {
-      value: this.randomCurrencyValue(),
-      currency: this.valueOrNull(generateCurrencyCode()),
-    };
   }
 }

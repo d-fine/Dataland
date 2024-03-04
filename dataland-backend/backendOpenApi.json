@@ -6616,6 +6616,19 @@
           }
         }
       },
+      "AmountWithCurrency": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "BaseDataPointBigDecimal": {
         "type": "object",
         "properties": {
@@ -7114,7 +7127,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ValueWithCurrency"
+                "$ref": "#/components/schemas/AmountWithCurrency"
               }
             ]
           },
@@ -7122,7 +7135,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ValueWithCurrency"
+                "$ref": "#/components/schemas/AmountWithCurrency"
               }
             ]
           }
@@ -7225,7 +7238,36 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/LksgProcurementCategory"
             },
-            "nullable": true
+            "nullable": true,
+            "example": {
+              "Products": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "shareOfTotalProcurementInPercent": 0
+              },
+              "Services": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "shareOfTotalProcurementInPercent": 0
+              },
+              "RawMaterials": {
+                "procuredProductTypesAndServicesNaceCodes": [
+                  "string"
+                ],
+                "numberOfSuppliersPerCountryCode": {
+                  "GB": 2
+                },
+                "shareOfTotalProcurementInPercent": 0
+              }
+            }
           }
         }
       },
@@ -7635,6 +7677,35 @@
           "shareOfTotalProcurementInPercent": {
             "type": "number",
             "nullable": true
+          }
+        },
+        "example": {
+          "Products": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "shareOfTotalProcurementInPercent": 0
+          },
+          "Services": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "shareOfTotalProcurementInPercent": 0
+          },
+          "RawMaterials": {
+            "procuredProductTypesAndServicesNaceCodes": [
+              "string"
+            ],
+            "numberOfSuppliersPerCountryCode": {
+              "GB": 2
+            },
+            "shareOfTotalProcurementInPercent": 0
           }
         }
       },
@@ -8620,19 +8691,6 @@
           "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
           "NoneOfTheAbove"
         ]
-      },
-      "ValueWithCurrency": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
-          }
-        }
       },
       "BaseDataPointString": {
         "type": "object",
@@ -10700,19 +10758,6 @@
           "LibrariesArchivesMuseumsAndCulturalActivities",
           "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
         ]
-      },
-      "AmountWithCurrency": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
-          }
-        }
       },
       "AssuranceDataPoint": {
         "required": [
@@ -13895,6 +13940,10 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -13910,10 +13959,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "permId": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

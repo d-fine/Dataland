@@ -2,9 +2,9 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.general.masterData
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.lksg.custom.ValueWithCurrency
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.generics.AmountWithCurrency
 import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -31,8 +31,8 @@ data class LksgGeneralMasterData(
 
     val shareOfTemporaryWorkers: LksgGeneralMasterdataShareOfTemporaryWorkersOptions? = null,
 
-    val annualTotalRevenue: ValueWithCurrency? = null,
+    val annualTotalRevenue: AmountWithCurrency? = null,
 
-    val fixedAndWorkingCapital: ValueWithCurrency? = null,
+    val fixedAndWorkingCapital: AmountWithCurrency? = null,
 
 )

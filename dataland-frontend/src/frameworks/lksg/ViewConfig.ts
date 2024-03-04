@@ -17,7 +17,7 @@ import {
   formatLksgProductionSitesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-import { formatValueWithCurrency } from "@/utils/Formatter";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -118,7 +118,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total revenue per annum",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatValueWithCurrency(dataset.general?.masterData?.annualTotalRevenue)),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.annualTotalRevenue)),
           },
           {
             type: "cell",
@@ -127,7 +127,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               "Combined fixed and working capital (only for own operations) in same currency than total revenue",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatValueWithCurrency(dataset.general?.masterData?.fixedAndWorkingCapital)),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.fixedAndWorkingCapital)),
           },
         ],
       },

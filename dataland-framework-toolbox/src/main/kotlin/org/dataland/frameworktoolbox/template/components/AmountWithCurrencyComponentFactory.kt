@@ -1,23 +1,22 @@
-package org.dataland.frameworktoolbox.frameworks.lksg.custom
+package org.dataland.frameworktoolbox.template.components
 
+import org.dataland.frameworktoolbox.intermediate.components.AmountWithCurrencyComponent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
-import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
-import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Generates LksgValueWithCurrency from rows with the component "Custom LksgValueWithCurrencyComponent"
+ * Generates AmountWithCurrency from rows with the component "AmountWithCurrencyComponent"
  */
 @Component
-class LksgValueWithCurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class AmountWithCurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "LksgValueWithCurrencyComponent"
+        row.component.trim() == "AmountWithCurrencyComponent"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -27,7 +26,7 @@ class LksgValueWithCurrencyComponentFactory(@Autowired val templateDiagnostic: T
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<LksgValueWithCurrencyComponent>(
+        return componentGroup.create<AmountWithCurrencyComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

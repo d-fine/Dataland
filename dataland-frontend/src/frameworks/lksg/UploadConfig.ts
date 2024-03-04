@@ -111,7 +111,7 @@ export const lksgDataModel = [
             label: "Annual Total Revenue",
             description: "Total revenue per annum",
 
-            component: "ValueWithCurrencyFormField",
+            component: "AmountWithCurrencyFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -121,7 +121,7 @@ export const lksgDataModel = [
             description:
               "Combined fixed and working capital (only for own operations) in same currency than total revenue",
 
-            component: "ValueWithCurrencyFormField",
+            component: "AmountWithCurrencyFormField",
             required: false,
             showIf: (): boolean => true,
           },

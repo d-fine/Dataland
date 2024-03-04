@@ -21,7 +21,7 @@
             placeholder="Currency"
             :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
             outer-class="long"
-            data-test="ValueWithCurrencyFormField-currency"
+            data-test="AmountWithCurrencyFormField-currency"
           />
         </div>
       </div>
@@ -38,7 +38,7 @@ import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDa
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 
 export default defineComponent({
-  name: "ValueWithCurrencyFormField",
+  name: "AmountWithCurrencyFormField",
   computed: {
     DropdownDatasetIdentifier() {
       return DropdownDatasetIdentifier;

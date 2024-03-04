@@ -1,10 +1,6 @@
-package org.dataland.frameworktoolbox.frameworks.lksg.custom
+package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
-import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -14,15 +10,14 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the Lksg-Specific "ValueWithCurrency" component
+ * Represents the "AmountWithCurrency" component
  */
-class LksgValueWithCurrencyComponent(
+class AmountWithCurrencyComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(
     identifier, parent,
-    "org.dataland.datalandbackend.frameworks.lksg.custom" +
-        ".ValueWithCurrency",
+    "org.dataland.datalandbackend.model.generics.AmountWithCurrency",
 ) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
@@ -30,7 +25,7 @@ class LksgValueWithCurrencyComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatStringForDatatable(\n" +
-                    "formatValueWithCurrency(${getTypescriptFieldAccessor()})\n" +
+                    "formatAmountWithCurrency(${getTypescriptFieldAccessor()})\n" +
                     ")",
                 setOf(
                     TypeScriptImport(
@@ -38,7 +33,7 @@ class LksgValueWithCurrencyComponent(
                         "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
                     ),
                     TypeScriptImport(
-                        "formatValueWithCurrency",
+                        "formatAmountWithCurrency",
                         "@/utils/Formatter",
                     ),
                 ),
@@ -50,18 +45,18 @@ class LksgValueWithCurrencyComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "ValueWithCurrencyFormField",
+            uploadComponentName = "AmountWithCurrencyFormField",
         )
         return
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val guaranteedValueWithCurrencyGenerator = "dataGenerator.generateValueWithCurrency()"
+        val guaranteedAmountWithCurrencyGenerator = "dataGenerator.generateAmountWithCurrency()"
         val fixtureExpression = if (isNullable) {
-            "dataGenerator.valueOrNull($guaranteedValueWithCurrencyGenerator)"
+            "dataGenerator.valueOrNull($guaranteedAmountWithCurrencyGenerator)"
         } else {
-            guaranteedValueWithCurrencyGenerator
+            guaranteedAmountWithCurrencyGenerator
         }
         sectionBuilder.addAtomicExpression(
             identifier,
