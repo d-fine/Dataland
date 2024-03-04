@@ -83,6 +83,12 @@ Update versions in the following dockerfiles
 
 ## Server updates
 
+Note: First manually create backups of the servers with a short retention duration.
+Then start the update with one of the dev servers and deploy to it after the update.
+If everything was fine, proceed with other servers. Double check for Prod.
+
+Note: currently there seems to be an issue with the docker-compose plugin
+
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 
 - [ ] dev1.dataland.com
@@ -91,8 +97,6 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] test.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
-
-Start with one of the dev servers, deploy to it after the update and check if everything is fine.
 
 ### ssh-keys maintenance
 
