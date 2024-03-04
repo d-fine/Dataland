@@ -34,9 +34,11 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
   return {
     general: {
       basicInformation: {
+        reportingDate: dataGenerator.guaranteedFutureDate(),
         sectors: generateNaceCodes(),
         numberOfEmployees: dataGenerator.guaranteedInt(),
         fiscalYearStart: dataGenerator.guaranteedFutureDate(),
+        referencedReports: dataGenerator.reports,
       },
       financialInformation: {
         revenueInEur: dataGenerator.randomFloat(),

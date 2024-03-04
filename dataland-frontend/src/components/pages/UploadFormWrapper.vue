@@ -29,6 +29,7 @@ import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 import CreateEuTaxonomyNonFinancials from "@/components/forms/CreateEuTaxonomyNonFinancials.vue";
+import CreateSmeDataset from "@/components/forms/CreateSmeDataset.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
@@ -86,6 +87,8 @@ export default defineComponent({
           return CreateHeimathafenDataset;
         case `${DataTypeEnum.EsgQuestionnaire}`:
           return CreateEsgQuestionnaireDataset;
+        case `${DataTypeEnum.Sme}`:
+          return CreateSmeDataset;
         default:
           return null;
       }

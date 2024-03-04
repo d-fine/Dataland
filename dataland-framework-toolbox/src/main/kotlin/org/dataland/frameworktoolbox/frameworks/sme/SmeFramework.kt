@@ -13,5 +13,5 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
     label = "SME",
     explanation = "Small and medium-sized enterprises questionnaire",
     File("./dataland-framework-toolbox/inputs/sme/sme.xlsx"),
-    order = 6,
-) // TODO add document support for power consumption
+    order = 4,
+)

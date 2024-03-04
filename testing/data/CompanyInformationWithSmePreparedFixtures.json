@@ -2,45 +2,79 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Bergeberg",
-			"headquartersPostalCode": null,
-			"sector": "functionalities",
+			"headquarters": "Grahamview",
+			"headquartersPostalCode": "61151",
+			"sector": "action-items",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"PDa1Qx5kV793Tg1KLkeN"
+				],
 				"Isin": [
-					"4Hk0xVwDqNyK"
+					"ri7JBnTnHvaY",
+					"4rY5BiGqTvxB"
 				],
 				"PermId": [
-					"s7IQHkio0N"
+					"7Hl4qulvnp"
 				],
-				"Ticker": [
-					"AuuGsvZ"
-				],
+				"Ticker": [],
 				"Duns": [
-					"D6d9vl5u5"
+					"9KXPxT6tP"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"8MnpVGEnn"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TR",
+			"countryCode": "BR",
 			"companyAlternativeNames": [
-				"Reichel LLC",
-				"Spencer - Bahringer"
+				"Leuschke LLC",
+				"Schmeler - Cole",
+				"Zboncak, Quigley and Ernser"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"companyLegalForm": null,
 			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
+					"reportingDate": "2024-12-12",
 					"sectors": [
-						"20.15",
-						"35.2",
-						"56.10"
+						"20.30",
+						"23.6"
 					],
-					"numberOfEmployees": 9928,
-					"fiscalYearStart": "2025-02-04"
+					"numberOfEmployees": 2260,
+					"fiscalYearStart": "2025-02-07",
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-12-17",
+							"currency": "TWD"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-06-26",
+							"currency": "MGA"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-09-13",
+							"currency": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-06-08",
+							"currency": "SZL"
+						}
+					}
 				},
 				"financialInformation": {
 					"revenueInEur": 2500000,
@@ -54,30 +88,31 @@
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 71129.02,
+						"value": null,
 						"dataSource": {
-							"page": 647,
-							"fileName": "SustainabilityReport",
+							"page": 1143,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
+							"tagName": "channels"
 						},
-						"comment": "input bluetooth hard drive",
-						"quality": "Estimated"
+						"comment": null,
+						"quality": "NA"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 64283.66,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMwh": 45588.01,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 17762.46,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 60583.98,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail",
-						"Snow"
+						"Flooding",
+						"Wind",
+						"Snow",
+						"Avalanche"
 					]
 				}
 			}

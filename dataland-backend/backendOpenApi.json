@@ -3710,10 +3710,15 @@
         "required": [
           "fiscalYearStart",
           "numberOfEmployees",
+          "reportingDate",
           "sectors"
         ],
         "type": "object",
         "properties": {
+          "reportingDate": {
+            "type": "string",
+            "format": "date"
+          },
           "sectors": {
             "type": "array",
             "items": {
@@ -3726,6 +3731,19 @@
           "fiscalYearStart": {
             "type": "string",
             "format": "date"
+          },
+          "referencedReports": {
+            "type": "object",
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           }
         }
       },
@@ -13701,12 +13719,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -13714,7 +13726,13 @@
           "countryCode": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "permId": {
@@ -13742,10 +13760,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

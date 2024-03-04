@@ -24,6 +24,14 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
         children: [
           {
             type: "cell",
+            label: "Reporting Date",
+            explanation: "Please select a date on which the specified values can be considered valid.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.basicInformation?.reportingDate),
+          },
+          {
+            type: "cell",
             label: "Sectors",
             explanation:
               "Please select the industry sector in which your company was mainly active in the relevant fiscal year.",
@@ -104,13 +112,13 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                LessThan1Percent: "less than 1 percent",
-                Between1And5Percent: "between 1 and 5 percent",
-                Between5And10Percent: "between 5 and 10 percent",
-                Between10And15Percent: "between 10 and 15 percent",
-                Between15And20Percent: "between 15 and 20 percent",
-                Between20And25Percent: "between 20 and 25 percent",
-                Over25Percent: "over 25 percent",
+                LessThan1Percent: "Less than 1 percent",
+                Between1And5Percent: "Between 1 and 5 percent",
+                Between5And10Percent: "Between 5 and 10 percent",
+                Between10And15Percent: "Between 10 and 15 percent",
+                Between15And20Percent: "Between 15 and 20 percent",
+                Between20And25Percent: "Between 20 and 25 percent",
+                Over25Percent: "Over 25 percent",
               };
               return formatStringForDatatable(
                 dataset.power?.investments?.investmentsInEnhancingEnergyEfficiency
@@ -191,10 +199,10 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                LessThan25Percent: "less than 25 percent",
-                Between25And50Percent: "between 25 and 50 percent",
-                Between50And75Percent: "between 50 and 75 percent",
-                Over75Percent: "over 75 percent",
+                LessThan25Percent: "Less than 25 percent",
+                Between25And50Percent: "Between 25 and 50 percent",
+                Between50And75Percent: "Between 50 and 75 percent",
+                Over75Percent: "Over 75 percent",
               };
               return formatStringForDatatable(
                 dataset.power?.consumption?.energyConsumptionCoveredByOwnRenewablePowerGeneration
