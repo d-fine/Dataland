@@ -53,7 +53,7 @@ def get_sme_data_mock(
             "general": {
                 "basicInformation": {
                     "reportingDate": "2021",
-                    "sector": ["dummy"],
+                    "sectors": ["dummy"],
                     "numberOfEmployees": 42,
                     "fiscalYearStart": "2024-01-01",
                 }
