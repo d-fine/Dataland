@@ -76,7 +76,7 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual("data-id", data_resource.id)
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
         self.assertIsInstance(data_resource.data, SmeData)
-        self.assertEqual("dummy", data_resource.data.general.basic_information.sector[0])
+        self.assertEqual("dummy", data_resource.data.general.basic_information.sectors[0])
 
     def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()
