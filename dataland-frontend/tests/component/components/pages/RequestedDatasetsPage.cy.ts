@@ -50,7 +50,7 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check static layout of the search page", function () {
     const placeholder = "Search by company name";
     const inputValue = "A company name";
-    const expectedHeaders = ["COMPANY", "YEAR", "FRAMEWORK", "REQUESTED DATE", "LAST UPDATED", "STATUS"];
+    const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED DATE", "LAST UPDATED", "STATUS"];
 
     cy.intercept("**community/requests/user", {
       body: [],
@@ -76,7 +76,7 @@ describe("Component tests for the data requests search page", function (): void 
 
   it("Check the content of the data table", function (): void {
     const expectedCompanys = ["companyAnswered", "companyNotAnswered1", "companyNotAnswered2"];
-    const expectedYears = ["2020", "2021", "2022"];
+    const expectedReportingPeriods = ["2020", "2021", "2022"];
 
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
@@ -91,7 +91,7 @@ describe("Component tests for the data requests search page", function (): void 
       cy.get('[data-test="requested-Datasets-table"]').find("tr").find("td").contains(value).should("exist");
     });
     cy.get('[data-test="requested-Datasets-table"]').find("tr").find("td").contains("DummyName").should("not.exist");
-    expectedYears.forEach((value) => {
+    expectedReportingPeriods.forEach((value) => {
       cy.get('[data-test="requested-Datasets-table"]').find("tr").find("td").contains(value).should("exist");
     });
     cy.get('[data-test="requested-Datasets-table"]').find("tr").find("td").contains("2019").should("not.exist");
