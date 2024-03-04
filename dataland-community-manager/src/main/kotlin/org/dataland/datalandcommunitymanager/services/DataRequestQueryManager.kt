@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
@@ -35,18 +36,19 @@ class DataRequestQueryManager(
         val retrievedStoredDataRequestEntitiesForUser =
             dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
         val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), getCompnayNameByCompanyId(dataRequestEntity.datalandCompanyId))
+            getExtendedStoredDataRequestByDataRequestEntity(dataRequestEntity)
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return extendedStoredDataRequests
     }
 
-    /** This method retrieves the company name for a given companyId
-     * @param datalandCompanyId the dataland companyId
-     * @returns the company name
+    /** This method retrieves an exdended stored data request based on a data request entity
+     * @param dataRequestEntity dataland data request entity
+     * @returns extended stored data request
      */
-    fun getCompnayNameByCompanyId(datalandCompanyId: String): String {
-        return companyDataControllerApi.getCompanyById(datalandCompanyId).companyInformation.companyName
+    fun getExtendedStoredDataRequestByDataRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
+        val companyName = companyDataControllerApi.getCompanyById(dataRequestEntity.datalandCompanyId).companyInformation.companyName
+        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.
