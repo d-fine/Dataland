@@ -300,6 +300,8 @@ export default defineComponent({
           return "EU Taxonomy";
         case DataTypeEnum.P2p:
           return "WWF";
+        case DataTypeEnum.EsgQuestionnaire:
+          return "ESG Questionnaire";
         default:
           return humanizeStringOrNumber(framework);
       }
@@ -311,12 +313,14 @@ export default defineComponent({
      */
     getFrameworkSubtitle(framework: DataTypeEnum) {
       switch (framework) {
-        case "eutaxonomy-financials":
+        case DataTypeEnum.EutaxonomyFinancials:
           return "for financial companies";
-        case "eutaxonomy-non-financials":
+        case DataTypeEnum.EutaxonomyNonFinancials:
           return "for non-financial companies";
-        case "p2p":
+        case DataTypeEnum.P2p:
           return "Pathways to Paris";
+        case DataTypeEnum.EsgQuestionnaire:
+          return "für Corporate Schuldscheindarlehen";
         default:
           return "";
       }
@@ -330,7 +334,8 @@ export default defineComponent({
       return (
         framework == DataTypeEnum.P2p ||
         framework == DataTypeEnum.EutaxonomyFinancials ||
-        framework == DataTypeEnum.EutaxonomyNonFinancials
+        framework == DataTypeEnum.EutaxonomyNonFinancials ||
+        framework == DataTypeEnum.EsgQuestionnaire
       );
     },
     /**
