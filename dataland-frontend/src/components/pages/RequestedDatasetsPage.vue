@@ -426,7 +426,7 @@ export default defineComponent({
      * @returns string representing a date (DD.MM.YYYY)
      */
     convertDateStringToDate(date: number) {
-      const parsedDate = new Date(convertUnixTimeInMsToDateString(date));
+      const parsedDate = new Date(date);
 
       const day = parsedDate.getDate();
       const month = parsedDate.getMonth() + 1;
