@@ -48,6 +48,10 @@ before(function () {
 });
 describe("Component tests for the data requests search page", function (): void {
   it("Check static layout of the search page", function () {
+    const placeholder = "Search by company name";
+    const inputValue = "A company name";
+    const expectedHeaders = ["COMPANY", "YEAR", "FRAMEWORK", "REQUESTED DATE", "LAST UPDATED", "STATUS"];
+
     cy.intercept("**community/requests/user", {
       body: [],
       status: 200,
@@ -55,15 +59,11 @@ describe("Component tests for the data requests search page", function (): void 
     cy.mountWithPlugins(RequestedDatasetsPage, {
       keycloak: minimalKeycloakMock({}),
     });
-    const placeholder = "Search by company name";
-    const inputValue = "A company name";
-    const expectedHeaders = ["COMPANY", "YEAR", "FRAMEWORK", "REQUESTED DATE", "LAST UPDATED", "STATUS"];
-    cy.get('[data-test="requested-Datasets-table"]').should("exist");
 
+    cy.get('[data-test="requested-Datasets-table"]').should("exist");
     expectedHeaders.forEach((value) => {
       cy.get(`table th:contains(${value})`).should("exist");
     });
-
     cy.get('[data-test="requested-Datasets-searchbar"]')
       .should("exist")
       .should("not.be.disabled")
@@ -73,16 +73,20 @@ describe("Component tests for the data requests search page", function (): void 
       .should("contain", placeholder);
     cy.get('[data-test="requested-Datasets-frameworks"]').should("exist");
   });
+
   it("Check the content of the data table", function (): void {
     const expectedCompanys = ["companyAnswered", "companyNotAnswered1", "companyNotAnswered2"];
     const expectedYears = ["2020", "2021", "2022"];
+
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
       status: 200,
     }).as("UserRequests");
+
     cy.mountWithPlugins(RequestedDatasetsPage, {
       keycloak: minimalKeycloakMock({}),
     });
+
     expectedCompanys.forEach((value) => {
       cy.get('[data-test="requested-Datasets-table"]').find("tr").find("td").contains(value).should("exist");
     });
@@ -92,11 +96,13 @@ describe("Component tests for the data requests search page", function (): void 
     });
     cy.get('[data-test="requested-Datasets-table"]').find("tr").find("td").contains("2019").should("not.exist");
   });
+
   it("Check existence and functionality of searchbar and resolve button", function (): void {
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
       status: 200,
     }).as("UserRequests");
+
     cy.mountWithPlugins(RequestedDatasetsPage, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
@@ -115,6 +121,7 @@ describe("Component tests for the data requests search page", function (): void 
       cy.wrap(mounted.component).its("$route.path").should("eq", "/companies/compA/frameworks/p2p");
     });
   });
+
   it("Check filter functionality and reset button", function (): void {
     const expectedFrameworks = [
       "WWF",
@@ -124,10 +131,12 @@ describe("Component tests for the data requests search page", function (): void 
       "for financial companies",
       "for non-financial companies",
     ];
+
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
       status: 200,
     }).as("UserRequests");
+
     cy.mountWithPlugins(RequestedDatasetsPage, {
       keycloak: minimalKeycloakMock({}),
     }).then((mounted) => {
@@ -141,6 +150,7 @@ describe("Component tests for the data requests search page", function (): void 
       expectedFrameworks.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should("exist");
       });
+      cy.get(`table tbody:contains("SFDR")`).should("not.exist");
     });
   });
 });
