@@ -270,16 +270,16 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     goToResolveDataRequestViewPage(companyId: string, framework: DataTypeEnum) {
-      const qaUri = `/companies/${companyId}/frameworks/${framework}`;
-      return this.$router.push(qaUri);
+      const url = `/companies/${companyId}/frameworks/${framework}`;
+      return this.$router.push(url);
     },
     /**
      * Navigates to the bulk data request page
      * @returns the promise of the router push action
      */
     goToBulkDataRequestPage() {
-      const qaUri = `/bulkdatarequest`;
-      return this.$router.push(qaUri);
+      const url = `/bulkdatarequest`;
+      return this.$router.push(url);
     },
 
     /**
