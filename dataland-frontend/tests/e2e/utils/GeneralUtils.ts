@@ -1,6 +1,5 @@
 import { type CompanyInformation, type DataTypeEnum } from "@clients/backend";
 import { type CyHttpMessages, type Interception } from "cypress/types/net-stubbing";
-import Chainable = Cypress.Chainable;
 import { getKeycloakToken } from "./Auth";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "./Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
@@ -15,7 +14,7 @@ import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
 export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum,
-): Chainable<Interception> {
+): Cypress.Chainable<Interception> {
   const getRequestAlias = "fetchDataForPrefill";
   cy.intercept({
     method: "GET",
