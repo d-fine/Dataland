@@ -18,7 +18,6 @@
                   placeholder="Search by company name"
                   class="w-12 pl-6 pr-6"
                 />
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true"></i>
               </span>
               <FrameworkDataSearchDropdownFilter
                 v-model="selectedFrameworks"
