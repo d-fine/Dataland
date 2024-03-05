@@ -140,9 +140,7 @@
                       <span
                         style="cursor: pointer"
                         data-test="requested-Datasets-Resolve"
-                        @click="
-                          goToResolveDataRequestViewPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)
-                        "
+                        @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
                         >RESOLVE</span
                       >
                       <span class="ml-3">></span>
@@ -264,12 +262,12 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Navigates to the company cockpit view page
+     * Navigates to the company view page
      * @param companyId Dataland companyId
      * @param framework Dataland framework
      * @returns the promise of the router push action
      */
-    goToResolveDataRequestViewPage(companyId: string, framework: DataTypeEnum) {
+    goToResolveDataRequestPage(companyId: string, framework: DataTypeEnum) {
       const url = `/companies/${companyId}/frameworks/${framework}`;
       return this.$router.push(url);
     },
