@@ -128,7 +128,7 @@ describe("Component tests for the data requests search page", function (): void 
   });
 
   it("Check the content of the data table", function (): void {
-    const expectedCompanys = ["companyAnswered", "companyNotAnswered1", "companyNotAnswered2"];
+    const expectedCompanys = ["companyAnswered", "companyNotAnswered1", "acompany", "zcompany"];
     const expectedReportingPeriods = ["2020", "2021", "2022"];
 
     cy.intercept("**community/requests/user", {
