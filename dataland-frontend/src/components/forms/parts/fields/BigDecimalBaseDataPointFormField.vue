@@ -7,7 +7,7 @@
         :validation-label="validationLabel"
         :validation="validation"
         :unit="unit"
-        input-class="formkit-outer col-4 pr-0"
+        input-class="col-4 pr-0"
       />
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
