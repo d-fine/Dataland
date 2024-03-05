@@ -8,9 +8,8 @@
             :validation="validation"
             :unit="unit"
             input-class="formkit-outer col-4 pr-0"
-            @update:currentValue="updateShowButton($event)"/>
+            />
     <UploadDocumentsForm
-      v-if="showUploadButton"
       @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
       ref="uploadDocumentsForm"
       name="name"
@@ -46,12 +45,6 @@ export default defineComponent({
     },
     currentValue: String,
   },
-  inject: {
-    injectlistOfFilledKpis: {
-      from: "listOfFilledKpis",
-      default: [] as Array<string>,
-    },
-  },
   data() {
     return {
       referencedDocument: undefined as DocumentToUpload | undefined,
@@ -60,7 +53,6 @@ export default defineComponent({
       fileNamesForPrefill: [] as string[],
       isMounted: false,
       isValidFileName: isValidFileName,
-      showButton: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
     };
   },
   emits: ["fieldSpecificDocumentsUpdated"],
@@ -75,11 +67,6 @@ export default defineComponent({
       if (this.isMounted) {
         this.updateFileUploadFiles();
       }
-    },
-  },
-  computed: {
-    showUploadButton(): boolean {
-      return this.showButton;
     },
   },
   methods: {
@@ -102,13 +89,6 @@ export default defineComponent({
       if (this.documentName !== undefined && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
       }
-    },
-    /**
-     * Updates the boolean to controll if the upload documents component should be shown or not
-     * @param input input event of the corresponding input form field
-     */
-    updateShowButton(input: string) {
-      this.showButton = !!input;
     },
   },
 });
