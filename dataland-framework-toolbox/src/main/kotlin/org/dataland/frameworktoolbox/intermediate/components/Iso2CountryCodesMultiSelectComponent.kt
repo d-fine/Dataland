@@ -21,7 +21,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 open class Iso2CountryCodesMultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "List") {
+) : ComponentBase(identifier, parent, "Set") {
 
     var options: Set<SelectionOption> = mutableSetOf()
     var filePathOfPremadeDropdownDatasets: String = "@/utils/PremadeDropdownDatasets"
@@ -30,7 +30,7 @@ open class Iso2CountryCodesMultiSelectComponent(
         dataClassBuilder.addProperty(
             this.identifier,
             TypeReference(
-                "List",
+                "Set",
                 isNullable,
                 listOf(TypeReference("String", false)),
             ),
@@ -87,7 +87,8 @@ open class Iso2CountryCodesMultiSelectComponent(
             identifier,
             documentSupport.getFixtureExpression(
                 fixtureExpression = "pickSubsetOfElements($formattedString)",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
+                nullableFixtureExpression = "dataGenerator.valueOrNull( " +
+                    "new Set(pickSubsetOfElements($formattedString)))",
                 nullable = isNullable,
             ),
             imports = setOf(
@@ -101,7 +102,7 @@ open class Iso2CountryCodesMultiSelectComponent(
 
     private fun generateReturnStatement(): String {
         return "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
+            "Array.from(${getTypescriptFieldAccessor()}?? [])?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
             ")"

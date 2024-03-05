@@ -7174,6 +7174,7 @@
             ]
           },
           "subcontractingCompaniesCountries": {
+            "uniqueItems": true,
             "type": "array",
             "nullable": true,
             "items": {
@@ -7452,6 +7453,7 @@
             ]
           },
           "highRiskCountriesRawMaterialsLocation": {
+            "uniqueItems": true,
             "type": "array",
             "nullable": true,
             "items": {
@@ -7467,6 +7469,7 @@
             ]
           },
           "highRiskCountries": {
+            "uniqueItems": true,
             "type": "array",
             "nullable": true,
             "items": {
@@ -7482,6 +7485,7 @@
             ]
           },
           "highRiskCountriesProcurementName": {
+            "uniqueItems": true,
             "type": "array",
             "nullable": true,
             "items": {
@@ -13950,14 +13954,14 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
           "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           }
         }
