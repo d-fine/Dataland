@@ -3,7 +3,7 @@
     <TheHeader />
     <DatasetsTabMenu :initial-tab-index="3">
       <TheContent class="min-h-screen paper-section relative">
-        <div v-if="!waitingForData && storedDataRequests.length > 0">
+        <div v-if="waitingForData || storedDataRequests.length > 0">
           <div
             id="searchBarAndFiltersContainer"
             class="w-full bg-white pt-4 justify-between"
@@ -47,6 +47,7 @@
                 :value="displayedData"
                 class="table-cursor"
                 :rowHover="true"
+                :loading="waitingForData"
                 data-test="requested-Datasets-table"
                 paginator
                 paginator-position="bottom"
