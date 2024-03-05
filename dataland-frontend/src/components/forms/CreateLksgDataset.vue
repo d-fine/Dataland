@@ -140,6 +140,7 @@ import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRe
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
+import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -180,6 +181,7 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    BigDecimalBaseDataPointFormField,
   },
   emits: ["datasetCreated"],
   data() {
