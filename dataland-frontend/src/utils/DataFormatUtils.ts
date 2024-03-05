@@ -45,7 +45,7 @@ export function convertUnixTimeInMsToDateWithOutTimeString(unixTimeInMs: number)
 /**
  * Converts unix time in ms to a time
  * @param unixTimeInMs unix time in ms
- * @returns string representing a time (HH:MM)
+ * @returns string representing a time (hh:mm:ss)
  */
 export function convertUnixTimeInMsToTimeString(unixTimeInMs: number): string {
   return new Date(unixTimeInMs).toLocaleTimeString();
