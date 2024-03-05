@@ -30,7 +30,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "z-company with high values to check for sorting",
+    companyName: "z-company-that-will-always-be-sorted-to-bottom",
     dataType: DataTypeEnum.EutaxonomyFinancials,
     reportingPeriod: "3021",
     creationTimestamp: 1809204495770,
@@ -50,7 +50,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "a-company with low values to check for sorting",
+    companyName: "a-company-that-will-always-be-sorted-to-top",
     dataType: DataTypeEnum.EsgQuestionnaire,
     reportingPeriod: "1021",
     creationTimestamp: 1609204495770,
@@ -73,7 +73,7 @@ describe("Component tests for the data requests search page", function (): void 
       cy.get('[data-test="requested-Datasets-table"]')
         .find("tr")
         .find("td")
-        .contains("a-company with low values to check for sorting")
+        .contains("a-company-that-will-always-be-sorted-to-top")
         .parent()
         .invoke("index")
         .should("eq", 0);
@@ -81,7 +81,7 @@ describe("Component tests for the data requests search page", function (): void 
       cy.get('[data-test="requested-Datasets-table"]')
         .find("tr")
         .find("td")
-        .contains("z-company with high values to check for sorting")
+        .contains("z-company-that-will-always-be-sorted-to-bottom")
         .parent()
         .invoke("index")
         .should("eq", 0);
@@ -132,8 +132,8 @@ describe("Component tests for the data requests search page", function (): void 
     const expectedCompanys = [
       "companyAnswered",
       "companyNotAnswered1",
-      "z-company with high values to check for sorting",
-      "a-company with low values to check for sorting",
+      "z-company-that-will-always-be-sorted-to-bottom",
+      "a-company-that-will-always-be-sorted-to-top",
     ];
     const expectedReportingPeriods = ["2020", "2021", "2022"];
 
