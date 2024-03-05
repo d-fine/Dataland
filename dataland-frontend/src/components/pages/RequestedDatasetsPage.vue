@@ -155,7 +155,7 @@
         </div>
         <div v-if="!waitingForData && storedDataRequests.length == 0">
           <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">You have't requested data yet.</p>
+            <p class="font-medium text-xl">You have not requested data yet.</p>
             <p class="font-medium text-xl">Request data to see your requests here.</p>
             <a @click="goToBulkDataRequestViewPage()" class="no-underline" data-test="bulkDataRequestButton">
               <button
