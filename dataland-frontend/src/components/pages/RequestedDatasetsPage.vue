@@ -465,8 +465,8 @@ export default defineComponent({
         )
           return 1;
 
-        if (a.lastModifiedDate < b.lastModifiedDate) return -1;
-        if (a.lastModifiedDate > b.lastModifiedDate) return 1;
+        if (a.lastModifiedDate < b.lastModifiedDate) return 1;
+        if (a.lastModifiedDate > b.lastModifiedDate) return -1;
 
         if (a.companyName < b.companyName) return -1;
         else return 1;
