@@ -28,7 +28,7 @@
     "axios": "^1.6.7",
     "currency-codes": "^2.1.0",
     "i18n-iso-countries": "^7.10.1",
-    "keycloak-js": "^24.0.1",
+    "keycloak-js": "^22.0.1",
     "material-icons": "^1.13.12",
     "pinia": "^2.1.7",
     "pinia-shared-state": "^0.5.1",
