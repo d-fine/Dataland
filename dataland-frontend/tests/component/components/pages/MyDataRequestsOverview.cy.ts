@@ -8,7 +8,6 @@ const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED"
 
 before(function () {
   mockDataRequests.push({
-    dataRequestId: "dummyId",
     datalandCompanyId: "compA",
     companyName: "companyAnswered",
     dataType: DataTypeEnum.P2p,
@@ -18,9 +17,7 @@ before(function () {
     requestStatus: RequestStatus.Answered,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
-    dataRequestId: "dummyId",
-    datalandCompanyId: "compO",
-    companyName: "companyNotAnswered1",
+    companyName: "companyNotAnsweredSME",
     dataType: DataTypeEnum.Sme,
     reportingPeriod: "2022",
     creationTimestamp: 1709204495770,
@@ -28,8 +25,6 @@ before(function () {
     requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
-    dataRequestId: "dummyId",
-    datalandCompanyId: "compC",
     companyName: "z-company-that-will-always-be-sorted-to-bottom",
     dataType: DataTypeEnum.EutaxonomyFinancials,
     reportingPeriod: "3021",
@@ -38,9 +33,7 @@ before(function () {
     requestStatus: RequestStatus.Closed,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
-    dataRequestId: "dummyId",
-    datalandCompanyId: "compC",
-    companyName: "companyNotAnswered3",
+    companyName: "companyNotAnsweredEU",
     dataType: DataTypeEnum.EutaxonomyNonFinancials,
     reportingPeriod: "2021",
     creationTimestamp: 1709204495770,
@@ -48,8 +41,6 @@ before(function () {
     requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
-    dataRequestId: "dummyId",
-    datalandCompanyId: "compC",
     companyName: "a-company-that-will-always-be-sorted-to-top",
     dataType: DataTypeEnum.EsgQuestionnaire,
     reportingPeriod: "1021",
@@ -131,7 +122,8 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check the content of the data table", function (): void {
     const expectedCompanys = [
       "companyAnswered",
-      "companyNotAnswered1",
+      "companyNotAnsweredSME",
+      "companyNotAnsweredEU",
       "z-company-that-will-always-be-sorted-to-bottom",
       "a-company-that-will-always-be-sorted-to-top",
     ];
