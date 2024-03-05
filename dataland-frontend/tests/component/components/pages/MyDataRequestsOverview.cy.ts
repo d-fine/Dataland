@@ -30,11 +30,11 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "companyNotAnswered2",
+    companyName: "zcompany",
     dataType: DataTypeEnum.EutaxonomyFinancials,
-    reportingPeriod: "2021",
-    creationTimestamp: 1709204495770,
-    lastModifiedDate: 1709204495770,
+    reportingPeriod: "3021",
+    creationTimestamp: 1809204495770,
+    lastModifiedDate: 1609204495770,
     requestStatus: RequestStatus.Closed,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
@@ -45,17 +45,17 @@ before(function () {
     reportingPeriod: "2021",
     creationTimestamp: 1709204495770,
     lastModifiedDate: 1709204495770,
-    requestStatus: RequestStatus.Closed,
+    requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "companyNotAnswered3",
+    companyName: "acompany",
     dataType: DataTypeEnum.EsgQuestionnaire,
-    reportingPeriod: "2021",
-    creationTimestamp: 1709204495770,
-    lastModifiedDate: 1709204495770,
-    requestStatus: RequestStatus.Open,
+    reportingPeriod: "1021",
+    creationTimestamp: 1609204495770,
+    lastModifiedDate: 1809204495770,
+    requestStatus: RequestStatus.Answered,
   } as ExtendedStoredDataRequest);
 });
 describe("Component tests for the data requests search page", function (): void {
@@ -67,9 +67,23 @@ describe("Component tests for the data requests search page", function (): void 
     cy.mountWithPlugins(RequestedDatasetsPage, {
       keycloak: minimalKeycloakMock({}),
     });
-    expectedHeaders.forEach((value) => {
+    const sortingColumHeader = ["COMPANY", "REPORTING PERIOD", "REQUESTED", "STATUS"];
+    sortingColumHeader.forEach((value) => {
       cy.get(`table th:contains(${value})`).should("exist").click();
-      console.log(cy.get('[data-test="requested-Datasets-table"]').first());
+      cy.get('[data-test="requested-Datasets-table"]')
+        .find("tr")
+        .find("td")
+        .contains("acompany")
+        .parents()
+        .invoke("index")
+        .should("eq", 0);
+      cy.get('[data-test="requested-Datasets-table"]')
+        .find("tr")
+        .find("td")
+        .contains("zcompany")
+        .parent()
+        .invoke("index")
+        .should("eq", 4);
     });
   });
 
