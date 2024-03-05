@@ -47,13 +47,27 @@ before(function () {
   } as ExtendedStoredDataRequest);
 });
 describe("Component tests for the data requests search page", function (): void {
+  it("Check page when there are no requested datasets", function (): void {
+    cy.intercept("**community/requests/user", {
+      body: [],
+      status: 200,
+    }).as("UserRequests");
+    cy.mountWithPlugins(RequestedDatasetsPage, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      cy.get('[data-test="requested-Datasets-table"]').should("not.exist");
+      cy.get('[data-test="bulkDataRequestButton"]').should("exist").should("be.visible").click();
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/bulkdatarequest");
+    });
+  });
+
   it("Check static layout of the search page", function () {
     const placeholder = "Search by company name";
     const inputValue = "A company name";
     const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED", "LAST UPDATED", "STATUS"];
 
     cy.intercept("**community/requests/user", {
-      body: [],
+      body: mockDataRequests,
       status: 200,
     }).as("UserRequests");
     cy.mountWithPlugins(RequestedDatasetsPage, {

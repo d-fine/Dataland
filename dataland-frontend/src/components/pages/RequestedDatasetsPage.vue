@@ -157,7 +157,7 @@
           <div class="d-center-div text-center px-7 py-4">
             <p class="font-medium text-xl">You have't requested data yet.</p>
             <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <a href="/bulkdatarequest" class="no-underline" data-test="bulkDataRequestButton">
+            <a @click="goToBulkDataRequestViewPage()" class="no-underline" data-test="bulkDataRequestButton">
               <button
                 class="p-button p-component uppercase p-button p-button-sm mr-3"
                 type="button"
@@ -273,6 +273,15 @@ export default defineComponent({
       const qaUri = `/companies/${companyId}/frameworks/${framework}`;
       return this.$router.push(qaUri);
     },
+    /**
+     * Navigates to the bulk data request view page
+     * @returns the promise of the router push action
+     */
+    goToBulkDataRequestViewPage() {
+      const qaUri = `/bulkdatarequest`;
+      return this.$router.push(qaUri);
+    },
+
     /**
      * Gets list with all available frameworks
      * @returns array of frameworkSelectableItem
