@@ -455,12 +455,12 @@ export default defineComponent({
         if (aValue > bValue) return this.sortOrder;
 
         if (
-          (a.requestStatus == RequestStatus.Answered && !(b.requestStatus != RequestStatus.Answered)) ||
+          (a.requestStatus == RequestStatus.Answered && b.requestStatus != RequestStatus.Answered) ||
           (a.requestStatus == RequestStatus.Open && b.requestStatus == RequestStatus.Closed)
         )
           return -1;
         if (
-          (b.requestStatus == RequestStatus.Answered && !(a.requestStatus != RequestStatus.Answered)) ||
+          (b.requestStatus == RequestStatus.Answered && a.requestStatus != RequestStatus.Answered) ||
           (b.requestStatus == RequestStatus.Open && a.requestStatus == RequestStatus.Closed)
         )
           return 1;
