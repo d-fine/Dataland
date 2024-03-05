@@ -416,7 +416,7 @@ export default defineComponent({
       return lowerCaseCompanyName.includes(lowerCaseSearchString);
     },
     /**
-     * Resets selected frameworks
+     * Resets selected frameworks and searchBarInput
      */
     resetFilters() {
       this.selectedFrameworks = this.availableFrameworks;
