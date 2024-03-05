@@ -56,12 +56,12 @@
                 @page="onPage($event)"
                 @sort="onSort($event)"
               >
-                <Column header="COMPANY" class="d-bg-white w-2 qa-review-id" field="companyName" :sortable="true">
+                <Column header="COMPANY" field="companyName" :sortable="true">
                   <template #body="slotProps">
                     {{ slotProps.data.companyName }}
                   </template>
                 </Column>
-                <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework" :sortable="true" field="dataType">
+                <Column header="FRAMEWORK" :sortable="true" field="dataType">
                   <template #body="slotProps">
                     <div>
                       {{ getFrameworkTitle(slotProps.data.dataType) }}
@@ -76,22 +76,12 @@
                     </div>
                   </template>
                 </Column>
-                <Column
-                  header="REPORTING PERIOD"
-                  class="d-bg-white w-2 qa-review-company-name"
-                  field="reportingPeriod"
-                  :sortable="true"
-                >
+                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
                   <template #body="slotProps">
                     {{ slotProps.data.reportingPeriod }}
                   </template>
                 </Column>
-                <Column
-                  header="REQUESTED"
-                  class="d-bg-white w-2 qa-review-reporting-period"
-                  field="creationTimestamp"
-                  :sortable="true"
-                >
+                <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
                   <template #body="slotProps">
                     <div>
                       {{ convertUnixTimeInMsToDateWithOutTimeString(slotProps.data.creationTimestamp) }}
@@ -102,12 +92,7 @@
                     </div></template
                   >
                 </Column>
-                <Column
-                  header="LAST UPDATED"
-                  class="d-bg-white w-2 qa-review-submission-date"
-                  :sortable="true"
-                  field="lastModifiedDate"
-                >
+                <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
                   <template #body="slotProps"
                     ><div>
                       {{ convertUnixTimeInMsToDateWithOutTimeString(slotProps.data.lastModifiedDate) }}
@@ -118,19 +103,14 @@
                     </div>
                   </template>
                 </Column>
-                <Column
-                  header="STATUS"
-                  class="d-bg-white w-2 qa-review-submission-date"
-                  :sortable="true"
-                  field="requestStatus"
-                >
+                <Column header="STATUS" :sortable="true" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
                       {{ slotProps.data.requestStatus }}
                     </div>
                   </template>
                 </Column>
-                <Column field="resolve" header="" class="w-2 d-bg-white qa-review-button">
+                <Column field="resolve" header="">
                   <template #body="slotProps">
                     <div
                       v-if="slotProps.data.requestStatus == RequestStatus.Answered"
@@ -456,11 +436,11 @@ export default defineComponent({
       if (a.requestStatus != b.requestStatus)
         return this.customCompareForRequestStatus(a.requestStatus, b.requestStatus);
 
-      if (a.lastModifiedDate < b.lastModifiedDate) return 1;
-      if (a.lastModifiedDate > b.lastModifiedDate) return -1;
+      if (a.lastModifiedDate < b.lastModifiedDate) return this.sortOrder;
+      if (a.lastModifiedDate > b.lastModifiedDate) return -1 * this.sortOrder;
 
-      if (a.companyName < b.companyName) return -1;
-      else return 1;
+      if (a.companyName < b.companyName) return -1 * this.sortOrder;
+      else return this.sortOrder;
     },
     /**
      * Compares two request status
@@ -469,8 +449,9 @@ export default defineComponent({
      * @returns result of the comparison
      */
     customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
-      if (a == RequestStatus.Answered || (a == RequestStatus.Open && b == RequestStatus.Closed)) return -1;
-      return 1;
+      if (a == RequestStatus.Answered || (a == RequestStatus.Open && b == RequestStatus.Closed))
+        return -1 * this.sortOrder;
+      return this.sortOrder;
     },
     /**
      * Updates the data for the current page
