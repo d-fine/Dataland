@@ -218,7 +218,7 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       numberOfFilteredRequests: 0,
       sortField: "requestStatus" as keyof ExtendedStoredDataRequest,
-      sortOrder: -1,
+      sortOrder: 1,
     };
   },
   mounted() {
