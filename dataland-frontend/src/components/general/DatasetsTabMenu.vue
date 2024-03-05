@@ -53,7 +53,7 @@ export default defineComponent({
         isVisible: true,
       },
       {
-        label: "DATA REQUESTS",
+        label: "MY DATA REQUESTS",
         route: "/requests",
         isVisible: true,
       },
