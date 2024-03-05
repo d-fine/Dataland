@@ -1,18 +1,14 @@
 <template>
+    <div class="form-field">
   <UploadFormHeader v-if="label" :label="label" :description="description" :is-required="required" />
   <FormKit type="group" :name="name">
-    <FormKit
-      type="text"
-      name="value"
-      :unit="unit"
-      :value="currentValue"
-      :validation-label="validationLabel ?? label"
-      :validation="`number|${validation}`"
-      :placeholder="unit ? `Value in ${unit}` : 'Value'"
-      :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
-      :outer-class="inputClass"
-      @input="updateShowButton($event)"
-    />
+    <NumberFormField
+            :name="'value'"
+            :validation-label="validationLabel"
+            :validation="validation"
+            :unit="unit"
+            input-class="formkit-outer col-4 pr-0"
+            @update:currentValue="updateShowButton($event)"/>
     <UploadDocumentsForm
       v-if="showUploadButton"
       @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
@@ -27,6 +23,7 @@
       <FormKit type="hidden" name="fileReference" v-model="documentReference" />
     </FormKit>
   </FormKit>
+    </div>
 </template>
 
 <script lang="ts">
@@ -36,10 +33,11 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { isValidFileName } from "@/utils/DataSource";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 
 export default defineComponent({
   name: "BigDecimalBaseDataPointFormField",
-  components: { UploadFormHeader, UploadDocumentsForm },
+  components: {NumberFormField, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
