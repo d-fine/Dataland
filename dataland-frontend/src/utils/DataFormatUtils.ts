@@ -30,7 +30,7 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
 }
 
 /**
- * Converts unix time in ms to date
+ * Converts unix time in ms to date without time
  * @param unixTimeInMs unix time in ms
  * @returns string representing a date (DD.MM.YYYY)
  */

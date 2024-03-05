@@ -263,7 +263,6 @@ export default defineComponent({
   methods: {
     convertUnixTimeInMsToDateWithOutTimeString,
     convertUnixTimeInMsToTimeString,
-    convertUnixTimeInMsToToDateString: convertUnixTimeInMsToDateWithOutTimeString,
     /**
      * Navigates to the company view page
      * @param companyId Dataland companyId
