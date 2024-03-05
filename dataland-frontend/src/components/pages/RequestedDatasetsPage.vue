@@ -377,7 +377,6 @@ export default defineComponent({
     onSort(event: DataTableSortEvent) {
       this.sortField = event.sortField as keyof ExtendedStoredDataRequest;
       this.sortOrder = event.sortOrder ?? 1;
-      console.log(this.sortField);
       this.updateCurrentDisplayedData();
     },
     /**
