@@ -15,6 +15,7 @@
       :file-reference="dataPointProperties.dataSource.fileReference"
       show-icon
     />
+    <div v-else><slot></slot></div>
   </div>
 </template>
 

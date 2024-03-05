@@ -65,7 +65,7 @@ export const lksgDataModel = [
             label: "Number of Employees",
             description: "Total number of employees (including temporary workers with assignment duration >6 months)",
 
-            component: "BaseDataPointFormField",
+            component: "BigDecimalBaseDataPointFormField",
             required: false,
             showIf: (): boolean => true,
             validation: "min:0",
@@ -494,7 +494,7 @@ export const lksgDataModel = [
             label: "Complaints Number",
             description: "How many complaints have been received (for the reported fiscal year)?",
 
-            component: "BaseDataPointFormField",
+            component: "BigDecimalBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",

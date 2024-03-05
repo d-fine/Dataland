@@ -35,7 +35,7 @@ open class DecimalComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         val uploadComponent = when (documentSupport) {
             is NoDocumentSupport -> "NumberFormField"
-            is SimpleDocumentSupport -> "BaseDataPointFormField"
+            is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
             is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
             else -> throw IllegalArgumentException(
                 "Upload-page generation for this component " +
