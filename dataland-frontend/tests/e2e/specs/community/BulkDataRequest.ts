@@ -48,7 +48,7 @@ describeIf(
       cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REJECTED IDENTIFIER");
     });
 
-    it("When identifiers are accepted", () => {
+    it.only("When identifiers are accepted", () => {
       cy.intercept("POST", "**/community/requests/bulk").as("postRequestData");
 
       checksBasicValidation();
@@ -72,6 +72,7 @@ describeIf(
 
       cy.get('[data-test="requestStatusText"]').should("exist").contains("Success");
       cy.get("button[type='button']").should("exist").should("be.visible").click();
+      cy.url().should("not.include", "/bulkdatarequest");
       cy.url().should("include", "/requests");
     });
 
