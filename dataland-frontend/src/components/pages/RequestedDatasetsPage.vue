@@ -36,7 +36,7 @@
                   data-test="reset-filter"
                   style="margin: 15px"
                   class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFiltersAndSearchBar"
+                  @click="resetFilterAndSearchBar"
                   >RESET</span
                 >
               </div>
@@ -248,7 +248,7 @@ export default defineComponent({
   mounted() {
     this.availableFrameworks = this.retrieveAvailableFrameworks();
     this.getStoredRequestDataList().catch((error) => console.log(error));
-    this.resetFiltersAndSearchBar();
+    this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
@@ -418,7 +418,7 @@ export default defineComponent({
     /**
      * Resets selected frameworks and searchBarInput
      */
-    resetFiltersAndSearchBar() {
+    resetFilterAndSearchBar() {
       this.selectedFrameworks = this.availableFrameworks;
       this.searchBarInput = "";
     },
