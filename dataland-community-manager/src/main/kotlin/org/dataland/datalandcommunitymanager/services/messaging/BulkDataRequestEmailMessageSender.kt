@@ -35,20 +35,20 @@ class BulkDataRequestEmailMessageSender(
         logger.info(
             "A bulk data request with correlationId $correlationId has been submitted",
         )
+        val properties = mapOf(
+            "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
+            "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
+            "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
+            "Accepted Companies (Dataland ID)" to acceptedCompanyIdentifiers.joinToString(", "),
+        )
+        val message = InternalEmailMessage(
+            "Dataland Bulk Data Request",
+            "A bulk data request has been submitted",
+            "Bulk Data Request",
+            properties,
+        )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(
-                InternalEmailMessage(
-                    "Dataland Bulk Data Request",
-                    "A bulk data request has been submitted",
-                    "Bulk Data Request",
-                    mapOf(
-                        "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
-                        "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
-                        "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
-                        "Accepted Companies (Dataland ID)" to acceptedCompanyIdentifiers.joinToString(", "),
-                    ),
-                ),
-            ),
+            objectMapper.writeValueAsString(message),
             MessageType.SendInternalEmail,
             correlationId,
             ExchangeName.SendEmail,
