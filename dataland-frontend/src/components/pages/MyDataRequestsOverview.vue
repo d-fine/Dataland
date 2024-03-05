@@ -85,22 +85,14 @@
                 <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
                   <template #body="slotProps">
                     <div>
-                      {{ convertUnixTimeInMsToDateWithOutTimeString(slotProps.data.creationTimestamp) }}
-                    </div>
-                    <div style="color: gray; font-size: smaller; line-height: 0.5">
-                      <br />
-                      {{ convertUnixTimeInMsToTimeString(slotProps.data.creationTimestamp) }}
+                      {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
                     </div></template
                   >
                 </Column>
                 <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
                   <template #body="slotProps"
                     ><div>
-                      {{ convertUnixTimeInMsToDateWithOutTimeString(slotProps.data.lastModifiedDate) }}
-                    </div>
-                    <div style="color: gray; font-size: smaller; line-height: 0.5">
-                      <br />
-                      {{ convertUnixTimeInMsToTimeString(slotProps.data.lastModifiedDate) }}
+                      {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
                     </div>
                   </template>
                 </Column>
@@ -166,7 +158,7 @@ import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "pri
 import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import { convertUnixTimeInMsToDateWithOutTimeString, convertUnixTimeInMsToTimeString } from "@/utils/DataFormatUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
 import { DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
@@ -240,8 +232,7 @@ export default defineComponent({
     },
   },
   methods: {
-    convertUnixTimeInMsToTimeString,
-    convertUnixTimeInMsToDateWithOutTimeString,
+    convertUnixTimeInMsToDateString,
     /**
      * Navigates to the company view page
      * @param companyId Dataland companyId

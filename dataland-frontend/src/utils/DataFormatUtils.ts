@@ -30,28 +30,6 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
 }
 
 /**
- * Converts unix time in ms to date without time
- * @param unixTimeInMs unix time in ms
- * @returns string representing a date (DD/MM/YYYY)
- */
-export function convertUnixTimeInMsToDateWithOutTimeString(unixTimeInMs: number): string {
-  const dateOptions = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  } as Intl.DateTimeFormatOptions;
-  return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateOptions);
-}
-/**
- * Converts unix time in ms to a time
- * @param unixTimeInMs unix time in ms
- * @returns string representing a time (hh:mm:ss)
- */
-export function convertUnixTimeInMsToTimeString(unixTimeInMs: number): string {
-  return new Date(unixTimeInMs).toLocaleTimeString();
-}
-
-/**
  * Calculates an expiry date in the future based on the number of valid days from now
  * @param expiryTimeDays the time in days to move into the future
  * @returns the resulting expiry date in the future in the format of "Wed, 25 Jan 2023, 10:38"
