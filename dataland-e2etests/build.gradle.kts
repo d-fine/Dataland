@@ -53,7 +53,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )
@@ -74,7 +74,7 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     )
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )
@@ -91,7 +91,7 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "jav21",
             "useTags" to "true",
         ),
     )
@@ -108,7 +108,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
 
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )
@@ -130,7 +130,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )
