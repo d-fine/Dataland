@@ -842,17 +842,7 @@
             "format": "int64"
           },
           "dataType": {
-            "type": "string",
-            "enum": [
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "lksg",
-              "sme",
-              "p2p",
-              "sfdr",
-              "esg-questionnaire",
-              "heimathafen"
-            ]
+            "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
