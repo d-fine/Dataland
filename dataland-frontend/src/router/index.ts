@@ -18,7 +18,7 @@ const BulkDataRequest = (): Promise<RouteComponent> => import("@/components/page
 const SingleDataRequest = (): Promise<RouteComponent> => import("@/components/pages/SingleDataRequest.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
-const RequestedDatasetsPage = (): Promise<RouteComponent> => import("@/components/pages/MyDataRequestsOverview.vue");
+const MyDataRequestsOverview = (): Promise<RouteComponent> => import("@/components/pages/MyDataRequestsOverview.vue");
 const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
@@ -101,8 +101,8 @@ const routes = [
   },
   {
     path: "/requests",
-    name: "Requested Datasets Overview",
-    component: RequestedDatasetsPage,
+    name: "MyDataRequestsOverview",
+    component: MyDataRequestsOverview,
   },
   {
     path: "/bulkdatarequest",

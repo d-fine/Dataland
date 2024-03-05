@@ -37,10 +37,18 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
 export function convertUnixTimeInMsToDateWithOutTimeString(unixTimeInMs: number): string {
   const dateOptions = {
     year: "numeric",
-    month: "numeric",
-    day: "numeric",
+    month: "2-digit",
+    day: "2-digit",
   } as Intl.DateTimeFormatOptions;
   return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateOptions);
+}
+/**
+ * Converts unix time in ms to a time
+ * @param unixTimeInMs unix time in ms
+ * @returns string representing a time (HH:MM)
+ */
+export function convertUnixTimeInMsToTimeString(unixTimeInMs: number): string {
+  return new Date(unixTimeInMs).toLocaleTimeString();
 }
 
 /**

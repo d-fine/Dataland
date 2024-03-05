@@ -98,7 +98,7 @@
                     </div>
                     <div style="color: gray; font-size: smaller; line-height: 0.5">
                       <br />
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp).split(",")[2].trim() }}
+                      {{ convertUnixTimeInMsToTimeString(slotProps.data.creationTimestamp) }}
                     </div></template
                   >
                 </Column>
@@ -114,7 +114,7 @@
                     </div>
                     <div style="color: gray; font-size: smaller; line-height: 0.5">
                       <br />
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate).split(",")[2].trim() }}
+                      {{ convertUnixTimeInMsToTimeString(slotProps.data.lastModifiedDate) }}
                     </div>
                   </template>
                 </Column>
@@ -185,7 +185,7 @@ import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "pri
 import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import { convertUnixTimeInMsToDateWithOutTimeString, convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import { convertUnixTimeInMsToDateWithOutTimeString, convertUnixTimeInMsToTimeString } from "@/utils/DataFormatUtils";
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
 import { DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
@@ -259,7 +259,7 @@ export default defineComponent({
     },
   },
   methods: {
-    convertUnixTimeInMsToDateString,
+    convertUnixTimeInMsToTimeString,
     convertUnixTimeInMsToDateWithOutTimeString,
     /**
      * Navigates to the company view page
