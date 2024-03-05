@@ -247,7 +247,7 @@ export default defineComponent({
   },
   mounted() {
     this.availableFrameworks = this.retrieveAvailableFrameworks();
-    this.getStoredRequestDataList().catch((error) => console.log(error));
+    this.getStoredRequestDataList().catch((error) => console.error(error));
     this.resetFilterAndSearchBar();
   },
   watch: {
