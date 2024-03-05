@@ -272,7 +272,6 @@ export default defineComponent({
         return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
       }),
       referencedReportsForPrefill: computed(() => {
-        // TODO find out where needed
         return this.referencedReportsForPrefill;
       }),
       listOfFilledKpis: computed(() => {

@@ -7,6 +7,7 @@ import {
   DataTypeEnum,
   SmeDataControllerApi,
   type SmeData,
+  type StoredCompany,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
@@ -28,60 +29,69 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function (): void {
-    beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+    let tokenForAdminUser: string;
+    let storedTestCompany: StoredCompany;
+    let dataMetaInfoOfTestDataset: DataMetaInformation;
+    before(() => {
+      const uniqueCompanyMarker = Date.now().toString();
+      const testCompanyName = "Company-Created-In-Sme-Blanket-Test-" + uniqueCompanyMarker;
+      getKeycloakToken(admin_name, admin_pw)
+        .then((token: string) => {
+          tokenForAdminUser = token;
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+        })
+        .then((storedCompany) => {
+          storedTestCompany = storedCompany;
+          return uploadFrameworkData(
+            DataTypeEnum.Sme,
+            tokenForAdminUser,
+            storedCompany.companyId,
+            "2021",
+            smeFixtureForTest.t,
+          );
+        })
+        .then((dataMetaInfo) => {
+          dataMetaInfoOfTestDataset = dataMetaInfo;
+        });
     });
 
     it(
       "Create a company and a Sme dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
-        const uniqueCompanyMarker = Date.now().toString();
-        const testCompanyName = "Company-Created-In-Sme-Blanket-Test-" + uniqueCompanyMarker;
-        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkData(
-              DataTypeEnum.Sme,
-              token,
-              storedCompany.companyId,
-              "2021",
-              smeFixtureForTest.t,
-            ).then((dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId + "/info").as("getCompanyInformation");
-              cy.visitAndCheckAppMount(
-                "/companies/" +
-                  storedCompany.companyId +
-                  "/frameworks/" +
-                  DataTypeEnum.Sme +
-                  "/upload?templateDataId=" +
-                  dataMetaInformation.dataId,
-              );
-              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-              cy.get("h1").should("contain", testCompanyName);
-              cy.intercept({
-                url: `**/api/data/${DataTypeEnum.Sme}`,
-                times: 1,
-              }).as("postCompanyAssociatedData");
-              submitButton.clickButton();
-              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
-                (postInterception) => {
-                  cy.url().should("eq", getBaseUrl() + "/datasets");
-                  const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new SmeDataControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosGetResponse) => {
-                      const frontendSubmittedSmeDataset = axiosGetResponse.data.data;
-                      frontendSubmittedSmeDataset.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
-                      compareObjectKeysAndValuesDeep(
-                        smeFixtureForTest.t as unknown as Record<string, object>,
-                        frontendSubmittedSmeDataset as unknown as Record<string, object>,
-                      );
-                    });
-                },
-              );
-            });
+        cy.ensureLoggedIn(admin_name, admin_pw);
+        cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
+        cy.visitAndCheckAppMount(
+          "/companies/" +
+            storedTestCompany.companyId +
+            "/frameworks/" +
+            DataTypeEnum.Sme +
+            "/upload?templateDataId=" +
+            dataMetaInfoOfTestDataset.dataId,
+        );
+        cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+        cy.get("h1").should("contain", storedTestCompany.companyInformation.companyName);
+        cy.intercept({
+          url: `**/api/data/${DataTypeEnum.Sme}`,
+          times: 1,
+        }).as("postCompanyAssociatedData");
+        submitButton.clickButton();
+        cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+          .then((postInterception) => {
+            cy.url().should("eq", getBaseUrl() + "/datasets");
+            const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
+            return new SmeDataControllerApi(
+              new Configuration({ accessToken: tokenForAdminUser }),
+            ).getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId);
+          })
+          .then((axiosGetResponse) => {
+            const frontendSubmittedSmeDataset = axiosGetResponse.data.data;
+            frontendSubmittedSmeDataset.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
+            compareObjectKeysAndValuesDeep(
+              smeFixtureForTest.t as unknown as Record<string, object>,
+              frontendSubmittedSmeDataset as unknown as Record<string, object>,
+            );
           });
-        });
       },
     );
   },
