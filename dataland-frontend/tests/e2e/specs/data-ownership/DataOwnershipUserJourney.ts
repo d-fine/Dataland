@@ -12,7 +12,7 @@ describeIf(
   },
   () => {
     /**
-     * This method verifies that the summary panel is presented as expected
+     * This method verifies that the summary panel for each framework is presented as expected
      */
     function checkFrameworks(): void {
       // eslint-disable-next-line prettier/prettier

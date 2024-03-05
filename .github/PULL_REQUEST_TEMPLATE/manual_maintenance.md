@@ -65,6 +65,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-internal-storage/Dockerfile`
