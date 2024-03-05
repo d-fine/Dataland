@@ -88,7 +88,7 @@ describeIf(
         .get('[data-test="identifiersHeading"')
         .contains("SELECTED IDENTIFIERS");
 
-      cy.get('[data-test="requestStatusText"]').should("exist").contains("Request Unssuccessful");
+      cy.get('[data-test="requestStatusText"]').should("exist").contains("Request Unsuccessful");
     });
 
     /**

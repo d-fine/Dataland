@@ -1,8 +1,12 @@
 import CompanyCockpitPage from "@/components/pages/CompanyCockpitPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type AggregatedFrameworkDataSummary, type CompanyInformation, type SmeData } from "@clients/backend";
+import {
+  type AggregatedFrameworkDataSummary,
+  type CompanyInformation,
+  type SmeData,
+  DataTypeEnum,
+} from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
 import type * as Cypress from "cypress";
 import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
@@ -10,10 +14,7 @@ import { computed } from "vue";
 
 describe("Component test for the company cockpit", () => {
   let companyInformationForTest: CompanyInformation;
-  let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<
-    AggregatedDataRequestDataTypeEnum,
-    AggregatedFrameworkDataSummary
-  >;
+  let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
 
   before(function () {
@@ -23,7 +24,7 @@ describe("Component test for the company cockpit", () => {
     });
     cy.fixture("MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock").then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
-        AggregatedDataRequestDataTypeEnum,
+        DataTypeEnum,
         AggregatedFrameworkDataSummary
       >;
     });
