@@ -441,7 +441,7 @@ export default defineComponent({
       });
     },
     /**
-     * Compares the extended stored data requests (sort field, request status, last modified, company name)
+     * Compares two extended stored data requests (sort field, request status, last modified, company name)
      * @param a ExtendedStoredDataRequest to sort
      * @param b ExtendedStoredDataRequest to sort
      * @returns result of the comparison
@@ -450,27 +450,29 @@ export default defineComponent({
       const aValue = a[this.sortField];
       const bValue = b[this.sortField];
 
-      if (this.sortField != ("requestStatus" as keyof ExtendedStoredDataRequest) && aValue < bValue)
-        return -1 * this.sortOrder;
-      if (this.sortField != ("requestStatus" as keyof ExtendedStoredDataRequest) && aValue > bValue)
-        return this.sortOrder;
+      if (this.sortField != ("requestStatus" as keyof ExtendedStoredDataRequest)) {
+        if (aValue < bValue) return -1 * this.sortOrder;
+        if (aValue > bValue) return this.sortOrder;
+      }
 
-      if (
-        (a.requestStatus == RequestStatus.Answered && b.requestStatus != RequestStatus.Answered) ||
-        (a.requestStatus == RequestStatus.Open && b.requestStatus == RequestStatus.Closed)
-      )
-        return -1;
-      if (
-        (b.requestStatus == RequestStatus.Answered && a.requestStatus != RequestStatus.Answered) ||
-        (b.requestStatus == RequestStatus.Open && a.requestStatus == RequestStatus.Closed)
-      )
-        return 1;
+      if (a.requestStatus != b.requestStatus)
+        return this.customCompareForRequestStatus(a.requestStatus, b.requestStatus);
 
       if (a.lastModifiedDate < b.lastModifiedDate) return 1;
       if (a.lastModifiedDate > b.lastModifiedDate) return -1;
 
       if (a.companyName < b.companyName) return -1;
       else return 1;
+    },
+    /**
+     * Compares two request status
+     * @param a RequestStatus to compare
+     * @param b RequestStatus to compare
+     * @returns result of the comparison
+     */
+    customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
+      if (a == RequestStatus.Answered || (a == RequestStatus.Open && b == RequestStatus.Closed)) return -1;
+      return 1;
     },
     /**
      * Updates the data for the current page
