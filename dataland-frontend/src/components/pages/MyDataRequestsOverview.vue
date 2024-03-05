@@ -95,11 +95,11 @@
                 >
                   <template #body="slotProps">
                     <div>
-                      {{ convertDateStringToDate(slotProps.data.creationTimestamp) }}
+                      {{ convertUnixTimeInMsToToDateString(slotProps.data.creationTimestamp) }}
                     </div>
                     <div style="color: gray; font-size: smaller; line-height: 0.5">
                       <br />
-                      {{ convertDateStringToTime(slotProps.data.creationTimestamp) }}
+                      {{ convertUnixTimeInMsToTimeString(slotProps.data.creationTimestamp) }}
                     </div></template
                   >
                 </Column>
@@ -111,11 +111,11 @@
                 >
                   <template #body="slotProps"
                     ><div>
-                      {{ convertDateStringToDate(slotProps.data.lastModifiedDate) }}
+                      {{ convertUnixTimeInMsToToDateString(slotProps.data.lastModifiedDate) }}
                     </div>
                     <div style="color: gray; font-size: smaller; line-height: 0.5">
                       <br />
-                      {{ convertDateStringToTime(slotProps.data.lastModifiedDate) }}
+                      {{ convertUnixTimeInMsToTimeString(slotProps.data.lastModifiedDate) }}
                     </div>
                   </template>
                 </Column>
@@ -157,7 +157,7 @@
           <div class="d-center-div text-center px-7 py-4">
             <p class="font-medium text-xl">You have not requested data yet.</p>
             <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <a @click="goToBulkDataRequestViewPage()" class="no-underline" data-test="bulkDataRequestButton">
+            <a @click="goToBulkDataRequestPage()" class="no-underline" data-test="bulkDataRequestButton">
               <button
                 class="p-button p-component uppercase p-button p-button-sm mr-3"
                 type="button"
@@ -274,10 +274,10 @@ export default defineComponent({
       return this.$router.push(qaUri);
     },
     /**
-     * Navigates to the bulk data request view page
+     * Navigates to the bulk data request page
      * @returns the promise of the router push action
      */
-    goToBulkDataRequestViewPage() {
+    goToBulkDataRequestPage() {
       const qaUri = `/bulkdatarequest`;
       return this.$router.push(qaUri);
     },
@@ -487,7 +487,7 @@ export default defineComponent({
      * @param date unix time
      * @returns string representing a date (DD.MM.YYYY)
      */
-    convertDateStringToDate(date: number) {
+    convertUnixTimeInMsToToDateString(date: number) {
       const parsedDate = new Date(date);
 
       const day = parsedDate.getDate();
@@ -504,7 +504,7 @@ export default defineComponent({
      * @param date unix time
      * @returns string representing a time (HH:MM)
      */
-    convertDateStringToTime(date: number) {
+    convertUnixTimeInMsToTimeString(date: number) {
       const dateString = convertUnixTimeInMsToDateString(date);
       return dateString.split(",")[2].trim();
     },
