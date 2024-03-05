@@ -70,12 +70,12 @@ describeIf(
                   return new SmeDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
-                      const frontendSubmittedSmeDataset = axiosGetResponse.data.data as unknown as Record<
-                        string,
-                        object
-                      >;
-                      const originallyUploadedSmeDataset = smeFixtureForTest.t as unknown as Record<string, object>;
-                      compareObjectKeysAndValuesDeep(originallyUploadedSmeDataset, frontendSubmittedSmeDataset);
+                      const frontendSubmittedSmeDataset = axiosGetResponse.data.data;
+                      frontendSubmittedSmeDataset.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
+                      compareObjectKeysAndValuesDeep(
+                        smeFixtureForTest.t as unknown as Record<string, object>,
+                        frontendSubmittedSmeDataset as unknown as Record<string, object>,
+                      );
                     });
                 },
               );

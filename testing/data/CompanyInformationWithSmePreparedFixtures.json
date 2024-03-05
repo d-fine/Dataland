@@ -2,63 +2,57 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Cecilechester",
-			"headquartersPostalCode": "79433-4722",
-			"sector": "markets",
+			"headquarters": "Las Cruces",
+			"headquartersPostalCode": "21870",
+			"sector": "ROI",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"1GFvHa9dSVch8KwYBkGs"
+				],
 				"Isin": [
-					"JzYHzlwFRwd1"
+					"YR88xB9Sr4Qc"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"5HVlqIBeDA9zdqR"
-				]
+				"Ticker": [
+					"uC497R3"
+				],
+				"Duns": [
+					"biyUhnen6"
+				],
+				"VatNumber": [
+					"BJBolsXG3"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LT",
+			"countryCode": "BW",
 			"companyAlternativeNames": [
-				"Reilly, Stark and Aufderhar",
-				"Schneider, Rath and Grant"
+				"Ferry Inc",
+				"Kuphal, Becker and Maggio",
+				"Rutherford Inc"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://blissful-gate.info",
+			"companyLegalForm": null,
+			"website": "https://eager-top.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-22",
+					"reportingDate": "2024-06-29",
 					"sectors": [
-						"28.99",
-						"46.21",
-						"79.12"
+						"10.13",
+						"10.61",
+						"53.1",
+						"79.9"
 					],
-					"numberOfEmployees": 2102,
-					"fiscalYearStart": "2024-10-17",
+					"numberOfEmployees": 324,
+					"fiscalYearStart": "2024-04-26",
 					"referencedReports": {
-						"SustainabilityReport": {
+						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-04",
-							"currency": null
-						},
-						"AnnualReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-07-02",
-							"currency": "LYD"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-11-13",
-							"currency": "CVE"
+							"reportDate": null,
+							"currency": "MAD"
 						}
 					}
 				},
@@ -73,28 +67,21 @@
 					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": {
-						"value": 33143.63,
-						"dataSource": {
-							"page": 1177,
-							"fileName": "AnnualReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
-						},
-						"comment": "copy redundant program",
-						"quality": "Incomplete"
-					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 35416.41,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMwh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 96990.65,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 85145.51,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 59196.35,
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Wind"
+					]
 				}
 			}
 		},
@@ -103,97 +90,102 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Stamford",
-			"headquartersPostalCode": "54571",
-			"sector": "relationships",
+			"headquarters": "Lake Evalynhaven",
+			"headquartersPostalCode": "03653",
+			"sector": "platforms",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"bx7AnMNatRZOsXyD0cc5"
+				],
 				"Isin": [
-					"ngB3g5LHjDJT"
+					"9bE4GREE6Nw8"
 				],
 				"PermId": [
-					"T35JoxbsST"
+					"VnaDlIBLEQ"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"dIU6D7W"
+				],
 				"Duns": [
-					"tXQGzuojO"
+					"R1lcEdbmp"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"3u4NPadP5AtWPlt"
+				]
 			},
-			"countryCode": "NF",
+			"countryCode": "BT",
 			"companyAlternativeNames": [
-				"Gleichner, Douglas and Kulas"
+				"Langworth, Parisian and Davis",
+				"O'Keefe, Witting and Krajcik",
+				"Powlowski - Weimann"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://jumbo-criminal.info/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://empty-fawn.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-04",
+					"reportingDate": "2024-11-03",
 					"sectors": [
-						"23.43",
-						"43.11",
-						"46.16",
-						"66.19",
-						"80.1"
+						"47.91",
+						"55.10",
+						"64.9",
+						"85.3"
 					],
-					"numberOfEmployees": 2141,
-					"fiscalYearStart": "2024-08-27",
+					"numberOfEmployees": 3139,
+					"fiscalYearStart": "2024-09-01",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-06-26",
-							"currency": "EGP"
+							"isGroupLevel": "No",
+							"reportDate": "2023-06-04",
+							"currency": "MZN"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 63114.8,
-					"operatingCostInEur": 16569.58,
-					"capitalAssetsInEur": 67558.64
+					"revenueInEur": 29342.16,
+					"operatingCostInEur": 39907.21,
+					"capitalAssetsInEur": 81913.99
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 71367.98,
+						"value": 19399.51,
 						"dataSource": {
-							"page": 716,
+							"page": 491,
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "platforms"
 						},
-						"comment": "connect open-source array",
+						"comment": "program wireless interface",
 						"quality": "Audited"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 16996.51,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 36002.64,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 89494.37,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 35858.86,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"Snow",
 						"EarthQuake",
-						"Wind",
-						"Flooding"
+						"Snow"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]

@@ -52,5 +52,6 @@ function manipulateFixtureForSpecificTest(input: FixtureData<SmeData>): FixtureD
  */
 function manipulateFixtureForNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
+  input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
   return input;
 }
