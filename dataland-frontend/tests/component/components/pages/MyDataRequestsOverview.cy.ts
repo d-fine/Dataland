@@ -30,7 +30,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "zcompany",
+    companyName: "z-company with high values to check for sorting",
     dataType: DataTypeEnum.EutaxonomyFinancials,
     reportingPeriod: "3021",
     creationTimestamp: 1809204495770,
@@ -50,7 +50,7 @@ before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
     datalandCompanyId: "compC",
-    companyName: "acompany",
+    companyName: "a-company with low values to check for sorting",
     dataType: DataTypeEnum.EsgQuestionnaire,
     reportingPeriod: "1021",
     creationTimestamp: 1609204495770,
@@ -73,15 +73,15 @@ describe("Component tests for the data requests search page", function (): void 
       cy.get('[data-test="requested-Datasets-table"]')
         .find("tr")
         .find("td")
-        .contains("acompany")
-        .parents()
+        .contains("a-company with low values to check for sorting")
+        .parent()
         .invoke("index")
         .should("eq", 0);
       cy.get(`table th:contains(${value})`).should("exist").click();
       cy.get('[data-test="requested-Datasets-table"]')
         .find("tr")
         .find("td")
-        .contains("zcompany")
+        .contains("z-company with high values to check for sorting")
         .parent()
         .invoke("index")
         .should("eq", 0);
@@ -129,7 +129,12 @@ describe("Component tests for the data requests search page", function (): void 
   });
 
   it("Check the content of the data table", function (): void {
-    const expectedCompanys = ["companyAnswered", "companyNotAnswered1", "acompany", "zcompany"];
+    const expectedCompanys = [
+      "companyAnswered",
+      "companyNotAnswered1",
+      "z-company with high values to check for sorting",
+      "a-company with low values to check for sorting",
+    ];
     const expectedReportingPeriods = ["2020", "2021", "2022"];
 
     cy.intercept("**community/requests/user", {
