@@ -30,6 +30,32 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
 }
 
 /**
+ * Converts unix time in ms to date
+ * @param unixTimeInMs unix time in ms
+ * @returns string representing a date (DD.MM.YYYY)
+ */
+export function convertUnixTimeInMsToDateWithOutTimeString(unixTimeInMs: number): string {
+  const parsedDate = new Date(unixTimeInMs);
+
+  const day = parsedDate.getDate();
+  const month = parsedDate.getMonth() + 1;
+  const year = parsedDate.getFullYear();
+
+  const paddedDay = day < 10 ? "0" + day : day;
+  const paddedMonth = month < 10 ? "0" + month : month;
+
+  return `${paddedDay}.${paddedMonth}.${year}`;
+}
+/**
+ * Converts unix time in ms to time
+ * @param unixTimeInMs unix time in ms
+ * @returns string representing a time (HH:MM)
+ */
+export function convertUnixTimeInMsToTimeString(unixTimeInMs: number): string {
+  const dateString = convertUnixTimeInMsToDateString(unixTimeInMs);
+  return dateString.split(",")[2].trim();
+}
+/**
  * Calculates an expiry date in the future based on the number of valid days from now
  * @param expiryTimeDays the time in days to move into the future
  * @returns the resulting expiry date in the future in the format of "Wed, 25 Jan 2023, 10:38"

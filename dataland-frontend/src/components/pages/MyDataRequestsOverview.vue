@@ -95,7 +95,7 @@
                 >
                   <template #body="slotProps">
                     <div>
-                      {{ convertUnixTimeInMsToToDateString(slotProps.data.creationTimestamp) }}
+                      {{ convertUnixTimeInMsToDateWithOutTimeString(slotProps.data.creationTimestamp) }}
                     </div>
                     <div style="color: gray; font-size: smaller; line-height: 0.5">
                       <br />
@@ -111,7 +111,7 @@
                 >
                   <template #body="slotProps"
                     ><div>
-                      {{ convertUnixTimeInMsToToDateString(slotProps.data.lastModifiedDate) }}
+                      {{ convertUnixTimeInMsToDateWithOutTimeString(slotProps.data.lastModifiedDate) }}
                     </div>
                     <div style="color: gray; font-size: smaller; line-height: 0.5">
                       <br />
@@ -186,7 +186,7 @@ import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "pri
 import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import { convertUnixTimeInMsToTimeString, convertUnixTimeInMsToDateWithOutTimeString } from "@/utils/DataFormatUtils";
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
 import { DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
@@ -261,6 +261,9 @@ export default defineComponent({
     },
   },
   methods: {
+    convertUnixTimeInMsToDateWithOutTimeString,
+    convertUnixTimeInMsToTimeString,
+    convertUnixTimeInMsToToDateString: convertUnixTimeInMsToDateWithOutTimeString,
     /**
      * Navigates to the company view page
      * @param companyId Dataland companyId
@@ -481,32 +484,6 @@ export default defineComponent({
     onPage(event: DataTablePageEvent) {
       this.currentPage = event.page;
       this.updateCurrentDisplayedData();
-    },
-    /**
-     * Converts dateString to date
-     * @param date unix time
-     * @returns string representing a date (DD.MM.YYYY)
-     */
-    convertUnixTimeInMsToToDateString(date: number) {
-      const parsedDate = new Date(date);
-
-      const day = parsedDate.getDate();
-      const month = parsedDate.getMonth() + 1;
-      const year = parsedDate.getFullYear();
-
-      const paddedDay = day < 10 ? "0" + day : day;
-      const paddedMonth = month < 10 ? "0" + month : month;
-
-      return `${paddedDay}.${paddedMonth}.${year}`;
-    },
-    /**
-     * Converts dateString to time
-     * @param date unix time
-     * @returns string representing a time (HH:MM)
-     */
-    convertUnixTimeInMsToTimeString(date: number) {
-      const dateString = convertUnixTimeInMsToDateString(date);
-      return dateString.split(",")[2].trim();
     },
   },
 });
