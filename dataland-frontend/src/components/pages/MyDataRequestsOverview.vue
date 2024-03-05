@@ -45,7 +45,6 @@
             <div class="card">
               <DataTable
                 :value="displayedData"
-                class="table-cursor"
                 :rowHover="true"
                 :loading="waitingForData"
                 data-test="requested-Datasets-table"
