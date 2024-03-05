@@ -1,28 +1,28 @@
 <template>
-    <div class="form-field">
-  <UploadFormHeader v-if="label" :label="label" :description="description" :is-required="required" />
-  <FormKit type="group" :name="name">
-    <NumberFormField
-            :name="'value'"
-            :validation-label="validationLabel"
-            :validation="validation"
-            :unit="unit"
-            input-class="formkit-outer col-4 pr-0"
-            />
-    <UploadDocumentsForm
-      @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
-      ref="uploadDocumentsForm"
-      name="name"
-      :more-than-one-document-allowed="false"
-      :file-names-for-prefill="fileNamesForPrefill"
-    />
+  <div class="form-field">
+    <UploadFormHeader v-if="label" :label="label" :description="description" :is-required="required" />
+    <FormKit type="group" :name="name">
+      <NumberFormField
+        :name="'value'"
+        :validation-label="validationLabel"
+        :validation="validation"
+        :unit="unit"
+        input-class="formkit-outer col-4 pr-0"
+      />
+      <UploadDocumentsForm
+        @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
+        ref="uploadDocumentsForm"
+        name="name"
+        :more-than-one-document-allowed="false"
+        :file-names-for-prefill="fileNamesForPrefill"
+      />
 
-    <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
-      <FormKit type="hidden" name="fileName" v-model="documentName" />
-      <FormKit type="hidden" name="fileReference" v-model="documentReference" />
+      <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
+        <FormKit type="hidden" name="fileName" v-model="documentName" />
+        <FormKit type="hidden" name="fileReference" v-model="documentReference" />
+      </FormKit>
     </FormKit>
-  </FormKit>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -36,14 +36,13 @@ import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue
 
 export default defineComponent({
   name: "BigDecimalBaseDataPointFormField",
-  components: {NumberFormField, UploadFormHeader, UploadDocumentsForm },
+  components: { NumberFormField, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
     unit: {
       type: String,
     },
-    currentValue: String,
   },
   data() {
     return {
