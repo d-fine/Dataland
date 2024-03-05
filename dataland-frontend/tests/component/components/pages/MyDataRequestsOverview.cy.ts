@@ -1,5 +1,5 @@
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import RequestedDatasetsPage from "@components/pages/MyDataRequestsOverview.vue";
+import RequestedDatasetsPage from "@/components/pages/MyDataRequestsOverview.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { DataTypeEnum } from "@clients/backend";
 
