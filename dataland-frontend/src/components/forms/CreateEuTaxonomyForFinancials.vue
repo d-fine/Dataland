@@ -58,7 +58,7 @@
                   ref="UploadReports"
                   :isMountedForEuTaxoFinancialsUploadPage="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports ?? undefined"
-                  @reportsUpdated="updateDocumentsList"
+                  @reportsUpdated="updateReportsSelection"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -440,7 +440,7 @@ export default defineComponent({
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
       isValidFileName: isValidFileName,
-      documents: new Map() as Map<string, DocumentToUpload>,
+      documentsToUpload: [] as DocumentToUpload[],
     };
   },
   mounted() {
@@ -650,7 +650,7 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
         );
-        await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+        await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
@@ -699,14 +699,15 @@ export default defineComponent({
       this.postEuTaxonomyDataForFinancialsProcessed = true;
     },
     /**
-     * Updates the list of documents that are to be uploaded
-     * @param reportsNamesAndReferences repots names and references
-     * @param reportsToUpload reports to upload
+     * Sets the object containing the names of all stored and to-be-uploaded reports as keys, and their respective
+     * fileReferences as values, and then sets the selection of reports that are to be uploaded.
+     * @param reportsNamesAndReferences contains the names of all stored and to-be-uploaded reports as keys,
+     * and their respective fileReferences as values
+     * @param reportsToUpload contains the actual selection of reports that are to be uploaded
      */
-    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+    updateReportsSelection(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.documents = new Map();
-      reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
+      this.documentsToUpload = [...reportsToUpload];
     },
   },
 });
