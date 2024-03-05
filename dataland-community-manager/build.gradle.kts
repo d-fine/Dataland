@@ -25,7 +25,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
@@ -95,7 +95,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     configOptions.set(
         mapOf(
             "serializationLibrary" to "jackson",
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )
