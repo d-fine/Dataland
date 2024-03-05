@@ -1,9 +1,11 @@
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import RequestedDatasetsPage from "../../../../src/components/pages/MyDataRequestsOverview.vue";
+import RequestedDatasetsPage from "@components/pages/MyDataRequestsOverview.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { DataTypeEnum } from "@clients/backend";
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
+const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED", "LAST UPDATED", "STATUS"];
+
 before(function () {
   mockDataRequests.push({
     dataRequestId: "dummyId",
@@ -45,8 +47,32 @@ before(function () {
     lastModifiedDate: 1709204495770,
     requestStatus: RequestStatus.Closed,
   } as ExtendedStoredDataRequest);
+  mockDataRequests.push({
+    dataRequestId: "dummyId",
+    datalandCompanyId: "compC",
+    companyName: "companyNotAnswered3",
+    dataType: DataTypeEnum.EsgQuestionnaire,
+    reportingPeriod: "2021",
+    creationTimestamp: 1709204495770,
+    lastModifiedDate: 1709204495770,
+    requestStatus: RequestStatus.Open,
+  } as ExtendedStoredDataRequest);
 });
 describe("Component tests for the data requests search page", function (): void {
+  it("Check sorting", function (): void {
+    cy.intercept("**community/requests/user", {
+      body: mockDataRequests,
+      status: 200,
+    }).as("UserRequests");
+    cy.mountWithPlugins(RequestedDatasetsPage, {
+      keycloak: minimalKeycloakMock({}),
+    });
+    expectedHeaders.forEach((value) => {
+      cy.get(`table th:contains(${value})`).should("exist").click();
+      console.log(cy.get('[data-test="requested-Datasets-table"]').first());
+    });
+  });
+
   it("Check page when there are no requested datasets", function (): void {
     cy.intercept("**community/requests/user", {
       body: [],
@@ -64,7 +90,6 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check static layout of the search page", function () {
     const placeholder = "Search by company name";
     const inputValue = "A company name";
-    const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED", "LAST UPDATED", "STATUS"];
 
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
@@ -144,6 +169,8 @@ describe("Component tests for the data requests search page", function (): void 
       "Pathways to Paris",
       "for financial companies",
       "for non-financial companies",
+      "ESG Questionnaire",
+      "für Corporate Schuldscheindarlehen",
     ];
 
     cy.intercept("**community/requests/user", {
