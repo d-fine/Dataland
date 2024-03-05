@@ -2,76 +2,63 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Shanabury",
-			"headquartersPostalCode": "59939",
-			"sector": "models",
+			"headquarters": "Cecilechester",
+			"headquartersPostalCode": "79433-4722",
+			"sector": "markets",
 			"identifiers": {
-				"Lei": [
-					"0sV9MN1KFTqxXAlj753W"
-				],
+				"Lei": [],
 				"Isin": [
-					"HBG7ufGdaSf5"
+					"JzYHzlwFRwd1"
 				],
-				"PermId": [
-					"CXjK0qjRVr"
-				],
-				"Ticker": [
-					"MFDDM7F"
-				],
-				"Duns": [
-					"kDulHzkFh"
-				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"tMMU6gIqocyVyCG"
+					"5HVlqIBeDA9zdqR"
 				]
 			},
-			"countryCode": "SL",
+			"countryCode": "LT",
 			"companyAlternativeNames": [
-				"Mante LLC"
+				"Reilly, Stark and Aufderhar",
+				"Schneider, Rath and Grant"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": null,
+			"companyLegalForm": "AG",
+			"website": "https://blissful-gate.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-15",
+					"reportingDate": "2024-07-22",
 					"sectors": [
+						"28.99",
 						"46.21",
-						"64.20"
+						"79.12"
 					],
-					"numberOfEmployees": 3429,
-					"fiscalYearStart": "2024-06-02",
+					"numberOfEmployees": 2102,
+					"fiscalYearStart": "2024-10-17",
 					"referencedReports": {
-						"IntegratedReport": {
+						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
-							"isGroupLevel": null,
-							"reportDate": null,
-							"currency": "JPY"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-06-06",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-12-04",
 							"currency": null
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-06-29",
-							"currency": "BBD"
+							"isGroupLevel": "No",
+							"reportDate": "2023-07-02",
+							"currency": "LYD"
 						},
-						"SustainabilityReport": {
+						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": null,
-							"reportDate": "2023-11-19",
-							"currency": "MDL"
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-13",
+							"currency": "CVE"
 						}
 					}
 				},
@@ -87,27 +74,126 @@
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 48407.73,
-						"dataSource": null,
-						"comment": "program virtual monitor",
-						"quality": "Estimated"
+						"value": 33143.63,
+						"dataSource": {
+							"page": 1177,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "copy redundant program",
+						"quality": "Incomplete"
 					},
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 86224.36,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionHeatingAndHotWaterInMwh": 35416.41,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 83770.46,
-					"naturalHazardsCovered": [
-						"EarthQuake"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 85145.51,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
 		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Sme-dataset-with-no-null-fields",
+			"headquarters": "Stamford",
+			"headquartersPostalCode": "54571",
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ngB3g5LHjDJT"
+				],
+				"PermId": [
+					"T35JoxbsST"
+				],
+				"Ticker": [],
+				"Duns": [
+					"tXQGzuojO"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NF",
+			"companyAlternativeNames": [
+				"Gleichner, Douglas and Kulas"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://jumbo-criminal.info/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"reportingDate": "2024-05-04",
+					"sectors": [
+						"23.43",
+						"43.11",
+						"46.16",
+						"66.19",
+						"80.1"
+					],
+					"numberOfEmployees": 2141,
+					"fiscalYearStart": "2024-08-27",
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-06-26",
+							"currency": "EGP"
+						}
+					}
+				},
+				"financialInformation": {
+					"revenueInEur": 63114.8,
+					"operatingCostInEur": 16569.58,
+					"capitalAssetsInEur": 67558.64
+				}
+			},
+			"power": {
+				"investments": {
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+				},
+				"consumption": {
+					"powerConsumptionInMwh": {
+						"value": 71367.98,
+						"dataSource": {
+							"page": 716,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "connect open-source array",
+						"quality": "Audited"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 16996.51,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 89494.37,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Snow",
+						"EarthQuake",
+						"Wind",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2022"
 	}
 ]

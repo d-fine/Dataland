@@ -14,20 +14,21 @@ import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
  */
 export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForYearWithMultipleSectors(generateSmeFixtures(1)[0], "2023"));
+  preparedFixtures.push(manipulateFixtureForSpecificTest(generateSmeFixtures(1)[0]));
+  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSmeFixtures(1, 0)[0]));
   return preparedFixtures;
 }
 
 /**
- * Sets the company name, reporting period and some data in the fixture data to specific values needed for tests.
+ * Sets the company name, reporting period and some data in the fixture data to specific values needed for a specific
+ * test.
  * @param input Fixture data to be manipulated
- * @param year the year as a number
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>, year: string): FixtureData<SmeData> {
-  // TODO param unnecessary
-  input.companyInformation.companyName = "SME-year-" + year;
-  input.reportingPeriod = year;
+function manipulateFixtureForSpecificTest(input: FixtureData<SmeData>): FixtureData<SmeData> {
+  const reportingPeriod = "2023";
+  input.companyInformation.companyName = "SME-year-" + reportingPeriod;
+  input.reportingPeriod = reportingPeriod;
   input.t.general.basicInformation.sectors = generateNaceCodes(2);
   input.t.power ??= {};
   input.t.power.investments ??= {};
@@ -41,5 +42,15 @@ function manipulateFixtureForYearWithMultipleSectors(input: FixtureData<SmeData>
     operatingCostInEur: 1000000,
     capitalAssetsInEur: 10000000,
   };
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
+  input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
   return input;
 }
