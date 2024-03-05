@@ -77,13 +77,14 @@ describe("Component tests for the data requests search page", function (): void 
         .parents()
         .invoke("index")
         .should("eq", 0);
+      cy.get(`table th:contains(${value})`).should("exist").click();
       cy.get('[data-test="requested-Datasets-table"]')
         .find("tr")
         .find("td")
         .contains("zcompany")
         .parent()
         .invoke("index")
-        .should("eq", 4);
+        .should("eq", 0);
     });
   });
 
