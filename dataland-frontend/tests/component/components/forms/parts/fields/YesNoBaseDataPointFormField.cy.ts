@@ -36,7 +36,7 @@ describe("test YesNoBaseDataPointFormField for entries", () => {
         companyID: "company-id",
       },
     }).then(() => {
-      cy.get("button[data-test='files-to-upload-remove']")
+      cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']")
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
