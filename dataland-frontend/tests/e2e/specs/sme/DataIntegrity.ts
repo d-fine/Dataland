@@ -16,11 +16,36 @@ import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 let smeFixtureForTest: FixtureData<SmeData>;
+
+let tokenForAdminUser: string;
+let storedTestCompany: StoredCompany;
+let dataMetaInfoOfTestDataset: DataMetaInformation;
 before(function () {
   cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
     const preparedFixturesSme = jsonContent as Array<FixtureData<SmeData>>;
     smeFixtureForTest = getPreparedFixture("Sme-dataset-with-no-null-fields", preparedFixturesSme);
   });
+
+  const uniqueCompanyMarker = Date.now().toString();
+  const testCompanyName = "Company-Created-In-Sme-Blanket-Test-" + uniqueCompanyMarker;
+  getKeycloakToken(admin_name, admin_pw)
+    .then((token: string) => {
+      tokenForAdminUser = token;
+      return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+    })
+    .then((storedCompany) => {
+      storedTestCompany = storedCompany;
+      return uploadFrameworkData(
+        DataTypeEnum.Sme,
+        tokenForAdminUser,
+        storedCompany.companyId,
+        "2021",
+        smeFixtureForTest.t,
+      );
+    })
+    .then((dataMetaInfo) => {
+      dataMetaInfoOfTestDataset = dataMetaInfo;
+    });
 });
 
 describeIf(
@@ -29,32 +54,6 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function (): void {
-    let tokenForAdminUser: string;
-    let storedTestCompany: StoredCompany;
-    let dataMetaInfoOfTestDataset: DataMetaInformation;
-    before(() => {
-      const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-Sme-Blanket-Test-" + uniqueCompanyMarker;
-      getKeycloakToken(admin_name, admin_pw)
-        .then((token: string) => {
-          tokenForAdminUser = token;
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
-        })
-        .then((storedCompany) => {
-          storedTestCompany = storedCompany;
-          return uploadFrameworkData(
-            DataTypeEnum.Sme,
-            tokenForAdminUser,
-            storedCompany.companyId,
-            "2021",
-            smeFixtureForTest.t,
-          );
-        })
-        .then((dataMetaInfo) => {
-          dataMetaInfoOfTestDataset = dataMetaInfo;
-        });
-    });
-
     it(
       "Create a company and a Sme dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
@@ -79,8 +78,8 @@ describeIf(
         cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
           .then((postResponseInterception) => {
             cy.url().should("eq", getBaseUrl() + "/datasets");
-            const dataMetaInformationOfReuploadedDataset =
-                postResponseInterception.response?.body as DataMetaInformation;
+            const dataMetaInformationOfReuploadedDataset = postResponseInterception.response
+              ?.body as DataMetaInformation;
             return new SmeDataControllerApi(
               new Configuration({ accessToken: tokenForAdminUser }),
             ).getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId);
