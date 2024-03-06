@@ -22,7 +22,7 @@ plugins {
     kotlin("kapt")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 dependencies {
     // toDo erste line checken, ob diese im späteren Verlauf gebraucht wird

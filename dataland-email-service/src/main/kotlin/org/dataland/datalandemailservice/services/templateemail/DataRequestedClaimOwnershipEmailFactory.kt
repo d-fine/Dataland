@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
  * Generate an emails when data is requested and ownership is claimed
  */
 @Component
-class DataRequestedClaimOwnershipEmaiFactory(
+class DataRequestedClaimOwnershipEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
