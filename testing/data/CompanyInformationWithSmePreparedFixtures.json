@@ -2,112 +2,110 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Rhiannon",
-			"headquartersPostalCode": "52237",
-			"sector": "functionalities",
+			"headquarters": "Rauboro",
+			"headquartersPostalCode": "63395-3744",
+			"sector": "communities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"Ry7Ld5NIj3oMNnxoMub8"
+				],
 				"Isin": [
-					"RYBrVHZVjVzk"
+					"nU43UqBzw2K5",
+					"sw23nPMDtVBw"
 				],
 				"PermId": [
-					"s1yz1rnuwk"
+					"n5APzjYxps"
 				],
 				"Ticker": [
-					"EnpKqGD"
+					"sB2qf5P"
 				],
-				"Duns": [],
+				"Duns": [
+					"ebyelOYRI"
+				],
 				"VatNumber": [
-					"IN8dGO3bZ"
+					"3JASocVDZ"
 				],
 				"CompanyRegistrationNumber": [
-					"bEoutZBttLVPGzD"
+					"ZapnBdDHWb0RSk2"
 				]
 			},
-			"countryCode": "IR",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"countryCode": "IO",
+			"companyAlternativeNames": [
+				"McLaughlin - Mante",
+				"Simonis, Waelchi and Abernathy"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://left-professional.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-03-14",
-					"sectors": [],
-					"numberOfEmployees": 2246,
-					"fiscalYearStart": "2024-06-19",
+					"reportingDate": "2024-05-19",
+					"sectors": [
+						"06.1",
+						"24.52"
+					],
+					"numberOfEmployees": 1951,
+					"fiscalYearStart": "2024-06-11",
 					"referencedReports": {
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-10-27",
-							"currency": "BND"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-17",
-							"currency": "DOP"
-						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-25",
-							"currency": "ANG"
+							"reportDate": "2023-07-21",
+							"currency": "CAD"
 						},
-						"AnnualReport": {
+						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
+							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-10-22",
-							"currency": "CVE"
+							"reportDate": "2024-01-05",
+							"currency": "MVR"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 14339.16,
-					"operatingCostInEur": 90291.71,
-					"capitalAssetsInEur": 88668.21
+					"revenueInEur": 87126.42,
+					"operatingCostInEur": 85375.89,
+					"capitalAssetsInEur": 24714.35
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 78411.33,
+						"value": 68304.55,
 						"dataSource": {
-							"page": 228,
-							"fileName": "IntegratedReport",
+							"page": 1008,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "users"
 						},
-						"comment": "calculate auxiliary program",
-						"quality": "Estimated"
+						"comment": "parse 1080p system",
+						"quality": "Incomplete"
 					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 42911.72,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 95204.62,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 48110.06,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88457.93,
 					"naturalHazardsCovered": [
-						"Flooding",
+						"EarthQuake",
+						"Hail",
 						"Snow",
 						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]
