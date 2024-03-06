@@ -13,6 +13,6 @@ data class TemplateEmailMessage(
      */
     enum class Type {
         DataRequestedClaimOwnership,
-        DataRequestedAnswered
+        DataRequestedAnswered,
     }
 }

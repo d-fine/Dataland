@@ -39,7 +39,7 @@ class DataRequestUpdater(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -69,7 +69,7 @@ class DataRequestUpdater(
     fun changeRequestStatusAfterUpload(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId : String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
@@ -85,17 +85,20 @@ class DataRequestUpdater(
         messageUtils.rejectMessageOnException {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             val companyName = companyDataControllerApi.getCompanyInfo(metaData.companyId).companyName
-            val dataRequestEntities= dataRequestRepository.searchDataRequestEntity(GetDataRequestsSearchFilter(
-                metaData.dataType.value, "",RequestStatus.Open, metaData.reportingPeriod,metaData.companyId))
+            val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
+                GetDataRequestsSearchFilter(
+                    metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                ),
+            )
             dataRequestEntities.forEach {
                 val properties = mapOf(
                     "companyId" to metaData.companyId,
                     "companyName" to companyName,
                     "dataType" to metaData.dataType.value,
                     "reportingPeriods" to metaData.reportingPeriod,
-                    "creationTimeStamp" to Date(it.creationTimestamp).toString()
+                    "creationTimeStamp" to Date(it.creationTimestamp).toString(),
                 )
-                //todo receiver from userId
+                // todo receiver from userId
                 val message = TemplateEmailMessage(
                     emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
                     receiver = "johannes.haerkoetter@d-fine.com",
@@ -107,7 +110,8 @@ class DataRequestUpdater(
                     correlationId,
                     ExchangeName.SendEmail,
                     RoutingKeyNames.templateEmail,
-                ) }
+                )
+            }
             dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
                 metaData.companyId,
                 metaData.reportingPeriod,

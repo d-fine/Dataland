@@ -39,7 +39,11 @@ class DataRequestAlterationManager(
      * @return the updated data request object
      */
     @Transactional
-    fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus, @Header(MessageHeaderKey.Type) type: String, @Header(MessageHeaderKey.CorrelationId) correlationId : String
+    fun patchDataRequestStatus(
+        dataRequestId: String,
+        requestStatus: RequestStatus,
+        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
     ): StoredDataRequest {
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
@@ -49,14 +53,14 @@ class DataRequestAlterationManager(
         dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
         dataRequestRepository.save(dataRequestEntity)
 
-        //todo userId to email
+        // todo userId to email
         val companyName = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId).companyName
         val properties = mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to Date(dataRequestEntity.creationTimestamp).toString()
+            "creationTimestamp" to Date(dataRequestEntity.creationTimestamp).toString(),
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
