@@ -24,7 +24,6 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { DataTypeEnum } from "@clients/backend";
 
 import CreateEsgQuestionnaireDataset from "@/components/forms/CreateEsgQuestionnaireDataset.vue";
-import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
@@ -42,6 +41,7 @@ import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import CreateHeimathafenDataset from "@/components/forms/CreateHeimathafenDataset.vue";
+import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
@@ -76,10 +76,10 @@ export default defineComponent({
           return CreateEuTaxonomyNonFinancials;
         case `${DataTypeEnum.EutaxonomyFinancials}`:
           return CreateEuTaxonomyForFinancials;
-        case `${DataTypeEnum.Lksg}`:
-          return CreateLksgDataset;
         case `${DataTypeEnum.P2p}`:
           return CreateP2pDataset;
+        case `${DataTypeEnum.Lksg}`:
+          return CreateLksgDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
         case `${DataTypeEnum.Heimathafen}`:

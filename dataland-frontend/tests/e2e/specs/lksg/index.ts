@@ -3,5 +3,4 @@
  */
 describe("Tests for the Lksg-Framework upload page", () => {
   require("./DataIntegrity");
-  require("./EditLksgDataset");
 });

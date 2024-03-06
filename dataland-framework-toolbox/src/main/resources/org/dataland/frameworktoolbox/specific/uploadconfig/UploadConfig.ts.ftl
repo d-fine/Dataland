@@ -1,13 +1,7 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { ${frameworkBaseNameInCamelCase?cap_first}Data } from "@clients/backend";
-<#list uploadConfig as element><@cats element/></#list><#macro subcats items>
-<#list items as element><@loopSubcats element/></#list>
-</#macro><#macro loop items><#list items as element><@loopOptions element/></#list></#macro>
-<#macro cats categoryConfig><@subcats categoryConfig.children/></#macro>
-<#macro loopSubcats subcategoryConfig><#if subcategoryConfig.children??><@loop subcategoryConfig.children/></#if></#macro>
-<#macro loopOptions fieldConfig><#if fieldConfig.frameworkUploadOptions?? && fieldConfig.frameworkUploadOptions.imports??><#list fieldConfig.frameworkUploadOptions.imports?sequence as imp>
-${imp};
-</#list></#if></#macro>
+<#list imports as import>import {<#list import.members as member>${member}<#sep>, </#sep></#list>} from "${import.file}";
+</#list>
 
 export const ${frameworkBaseNameInCamelCase}DataModel = [<@loopCategories uploadConfig/>] as Category[];
 
