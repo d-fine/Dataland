@@ -295,13 +295,7 @@ describeIf(
             );
           })
           .then(() => {
-            return uploadFrameworkData(
-              DataTypeEnum.Sme,
-              token,
-              companyIdOfAlpha,
-              "2015",
-              getPreparedFixture("SME-year-2023", smePreparedFixtures).t,
-            );
+            return uploadFrameworkData(DataTypeEnum.Sme, token, companyIdOfAlpha, "2015", smeFixtures[0].t);
           });
       });
     }
@@ -324,19 +318,13 @@ describeIf(
             );
           })
           .then(async () => {
-            return uploadFrameworkData(
-              DataTypeEnum.Sme,
-              token,
-              companyIdOfBeta,
-              "2014",
-              getPreparedFixture("SME-year-2023", smePreparedFixtures).t,
-            );
+            return uploadFrameworkData(DataTypeEnum.Sme, token, companyIdOfBeta, "2014", smeFixtures[1].t);
           });
       });
     }
 
     let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-    let smePreparedFixtures: Array<FixtureData<SmeData>>;
+    let smeFixtures: Array<FixtureData<SmeData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
@@ -344,8 +332,8 @@ describeIf(
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
-      cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
-        smePreparedFixtures = jsonContent as Array<FixtureData<SmeData>>;
+      cy.fixture("CompanyInformationWithSmeDataFixtures").then(function (jsonContent) {
+        smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
       });
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
