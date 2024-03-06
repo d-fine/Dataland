@@ -332,7 +332,7 @@ describeIf(
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
-      cy.fixture("CompanyInformationWithSmeDataFixtures").then(function (jsonContent) {
+      cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
         smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
       });
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
