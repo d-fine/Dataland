@@ -202,8 +202,10 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                 frameworkUploadOptions = FrameworkUploadOptions(
                     body = "getActivityNamesAsDropdownOptions()",
                     imports = setOf(
-                        "import { getActivityNamesAsDropdownOptions } from " +
-                            "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\"",
+                        TypeScriptImport(
+                            "getActivityNamesAsDropdownOptions",
+                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
+                        ),
                     ),
                 ),
                 component = component,

@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -34,6 +35,7 @@ open class DecimalComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         val uploadComponent = when (documentSupport) {
             is NoDocumentSupport -> "NumberFormField"
+            is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
             is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
             else -> throw IllegalArgumentException(
                 "Upload-page generation for this component " +

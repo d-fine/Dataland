@@ -149,7 +149,6 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       };
       const dataset = { data: datapoint };
       const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
-      console.log(value);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
