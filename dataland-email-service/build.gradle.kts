@@ -1,4 +1,4 @@
-// dataland-community-manager
+// dataland-email-service
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
@@ -25,7 +25,6 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 dependencies {
-    // toDo erste line checken, ob diese im späteren Verlauf gebraucht wird
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.moshi.kotlin)
@@ -36,16 +35,12 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
-    // toDo Healthcheck
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
-    // implementation(Spring.boot.validation)
     implementation(Spring.boot.amqp)
     kapt(Spring.boot.configurationProcessor)
-    // implementation(Spring.boot.security)
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
-    // testImplementation(Spring.security.spring_security_test)
     implementation(libs.mailjet.client)
     implementation(libs.jackson.kotlin)
     implementation(libs.freemarker)
