@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.email
+package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
