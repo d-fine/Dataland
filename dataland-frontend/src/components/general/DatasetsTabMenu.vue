@@ -52,6 +52,11 @@ export default defineComponent({
         route: "/qualityassurance",
         isVisible: true,
       },
+      {
+        label: "MY DATA REQUESTS",
+        route: "/requests",
+        isVisible: true,
+      },
     ] as Tab[],
   }),
   setup() {

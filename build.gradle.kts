@@ -5,7 +5,7 @@ val ktlintVersion: String by project
 val githubUser: String by project
 val githubToken: String by project
 
-val jvmVersion = JavaVersion.VERSION_17
+val jvmVersion = JavaVersion.VERSION_21
 
 allprojects {
     repositories {

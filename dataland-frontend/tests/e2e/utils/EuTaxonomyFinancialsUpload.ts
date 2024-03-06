@@ -8,13 +8,12 @@ import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsFo
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type CyHttpMessages } from "cypress/types/net-stubbing";
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from "./GeneralUtils";
-import Chainable = Cypress.Chainable;
 
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
-export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable<
+export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.Chainable<
   FixtureData<EuTaxonomyDataForFinancials>
 > {
   return cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
