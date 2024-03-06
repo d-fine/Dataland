@@ -60,7 +60,7 @@ describeIf(
      * @param keycloakToken token given by keycloak after logging in
      * @param frontendDocumentHash calculated hash of the document
      */
-    function validateFrontendAndBackendDocumentHashesCoincede(
+    function validateFrontendAndBackendDocumentHashesCoincide(
       keycloakToken: string,
       frontendDocumentHash: string,
     ): void {
@@ -157,7 +157,7 @@ describeIf(
             }).as("submitData");
             cy.get('button[data-test="submitButton"]').click();
             cy.wait(`@submitData`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-              validateFrontendAndBackendDocumentHashesCoincede(token, frontendDocumentHash);
+              validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
             });
             cy.url().should("eq", getBaseUrl() + "/datasets");
             cy.get('[data-test="datasets-table"]').should("be.visible");

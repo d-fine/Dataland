@@ -41,21 +41,21 @@ class SingleDataRequestEmailMessageSender(
             "User with Id ${userAuthentication.userId} has submitted a single data request for company with" +
                 " Id $datalandCompanyId and correlationId $correlationId",
         )
+        val properties = mapOf(
+            "User" to buildUserInfo(userAuthentication),
+            "Data Type" to dataType.value,
+            "Reporting Periods" to formatReportingPeriods(reportingPeriods),
+            "Dataland Company ID" to datalandCompanyId,
+            "Company Name" to companyName,
+        )
+        val message = InternalEmailMessage(
+            "Dataland Single Data Request",
+            "A single data request has been submitted",
+            "Single Data Request",
+            properties,
+        )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(
-                InternalEmailMessage(
-                    "Dataland Single Data Request",
-                    "A single data request has been submitted",
-                    "Single Data Request",
-                    mapOf(
-                        "User" to buildUserInfo(userAuthentication),
-                        "Data Type" to dataType.value,
-                        "Reporting Periods" to formatReportingPeriods(reportingPeriods),
-                        "Dataland Company ID" to datalandCompanyId,
-                        "Company Name" to companyName,
-                    ),
-                ),
-            ),
+            objectMapper.writeValueAsString(message),
             MessageType.SendInternalEmail,
             correlationId,
             ExchangeName.SendEmail,
