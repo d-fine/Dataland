@@ -66,7 +66,7 @@
                     <td style="height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>Reporting period(s)</td>
+                    <td>Reporting period</td>
                 </tr>
                 <tr>
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
@@ -126,6 +126,9 @@
         <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
     </tr>
     <tr>
+        <td colspan="3" style="height: 20px">&nbsp;</td>
+    </tr>
+    <tr>
         <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
     </tr>
     <tr>
@@ -133,9 +136,6 @@
             your data request will be set to closed automatically
             in <b> <#if closedIn??> ${closedIn} <#else> some days</#if> </b>.</td>
 
-    </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
