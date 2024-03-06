@@ -16,7 +16,7 @@ data class LksgGeneralProductionSpecific(
 
     val productionViaSubcontracting: YesNo? = null,
 
-    val subcontractingCompaniesCountries: Set<String>? = null,
+    val subcontractingCompaniesCountries: List<String>? = null,
 
     val subcontractingCompaniesIndustries: List<String>? = null,
 

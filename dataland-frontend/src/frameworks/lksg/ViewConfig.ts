@@ -172,7 +172,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
               return formatListOfStringsForDatatable(
-                Array.from(dataset.general?.productionSpecific?.subcontractingCompaniesCountries ?? [])?.map((it) =>
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings),
                 ),
                 "Subcontracting Companies Countries",
@@ -855,8 +855,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
               return formatListOfStringsForDatatable(
-                Array.from(dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation ?? [])?.map(
-                  (it) => getOriginalNameFromTechnicalName(it, mappings),
+                dataset.governance?.generalViolations?.highRiskCountriesRawMaterialsLocation?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
                 ),
                 "High Risk Countries Raw Materials Location",
               );
@@ -880,7 +880,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
               return formatListOfStringsForDatatable(
-                Array.from(dataset.governance?.generalViolations?.highRiskCountries ?? [])?.map((it) =>
+                dataset.governance?.generalViolations?.highRiskCountries?.map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings),
                 ),
                 "High Risk Countries",
@@ -905,7 +905,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
               return formatListOfStringsForDatatable(
-                Array.from(dataset.governance?.generalViolations?.highRiskCountriesProcurementName ?? [])?.map((it) =>
+                dataset.governance?.generalViolations?.highRiskCountriesProcurementName?.map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings),
                 ),
                 "High Risk Countries Procurement Name",

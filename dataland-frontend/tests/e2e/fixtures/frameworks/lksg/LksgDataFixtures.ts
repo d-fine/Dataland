@@ -51,7 +51,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         capacity: dataGenerator.randomShortString(),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
         subcontractingCompaniesCountries: dataGenerator.valueOrNull(
-          new Set(pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"])),
+          pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"]),
         ),
         subcontractingCompaniesIndustries: dataGenerator.valueOrNull(generateNaceCodes()),
         productionSites: dataGenerator.randomYesNo(),
@@ -167,15 +167,13 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         humanRightsOrEnvironmentalViolationsMeasuresDefinition: dataGenerator.randomShortString(),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
         highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrNull(
-          new Set(pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"])),
+          pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"]),
         ),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
-        highRiskCountries: dataGenerator.valueOrNull(
-          new Set(pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"])),
-        ),
+        highRiskCountries: dataGenerator.valueOrNull(pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"])),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
         highRiskCountriesProcurementName: dataGenerator.valueOrNull(
-          new Set(pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"])),
+          pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"]),
         ),
       },
     },
