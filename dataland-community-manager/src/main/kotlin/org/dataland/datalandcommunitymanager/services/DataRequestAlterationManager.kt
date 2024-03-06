@@ -9,12 +9,10 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -41,9 +39,7 @@ class DataRequestAlterationManager(
     @Transactional
     fun patchDataRequestStatus(
         dataRequestId: String,
-        requestStatus: RequestStatus,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        requestStatus: RequestStatus
     ): StoredDataRequest {
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
@@ -67,6 +63,7 @@ class DataRequestAlterationManager(
             receiver = "johannes.haerkoetter@d-fine.com",
             properties = properties,
         )
+        val correlationId = "0" //todo
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SendTemplateEmail,
