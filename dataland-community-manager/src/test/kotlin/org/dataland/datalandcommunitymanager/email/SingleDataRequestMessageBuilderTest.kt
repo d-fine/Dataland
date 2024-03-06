@@ -22,7 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 class SingleDataRequestMessageBuilderTest {
-    val objectMapper = jacksonObjectMapper()
+    val objectMapper = jacksonObjectMapper() // TODO workaround.  to be discussed and investigated
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyName = "Test Inc."
