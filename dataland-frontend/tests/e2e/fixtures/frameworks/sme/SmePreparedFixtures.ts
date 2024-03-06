@@ -9,16 +9,18 @@ import { generateSmeFixtures } from "@e2e/fixtures/frameworks/sme/SmeDataFixture
  */
 export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
   const preparedFixtures = [];
-  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSmeFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToIdentifyItAsNoNullFields(generateSmeFixtures(1, 0)[0]));
   return preparedFixtures;
 }
 
 /**
  * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * Furthermore, one enum field needs to be sorted, so the object-comparison in the blanket test does not fail due to a
+ * different order.
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
+function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
   input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
   return input;
