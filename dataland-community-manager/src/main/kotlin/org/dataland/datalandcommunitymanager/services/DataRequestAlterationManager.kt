@@ -1,14 +1,24 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.util.*
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -18,6 +28,9 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
     /**
      * Method to patch the status of a data request.
@@ -26,15 +39,37 @@ class DataRequestAlterationManager(
      * @return the updated data request object
      */
     @Transactional
-    fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
+    fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus, @Header(MessageHeaderKey.Type) type: String, @Header(MessageHeaderKey.CorrelationId) correlationId : String
+    ): StoredDataRequest {
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        //todo
         dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
         dataRequestEntity.requestStatus = requestStatus
         dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
         dataRequestRepository.save(dataRequestEntity)
+
+        //todo userId to email
+        val companyName = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId).companyName
+        val properties = mapOf(
+            "companyId" to dataRequestEntity.datalandCompanyId,
+            "companyName" to companyName,
+            "dataType" to dataRequestEntity.dataType,
+            "reportingPeriods" to dataRequestEntity.reportingPeriod,
+            "creationTimestamp" to Date(dataRequestEntity.creationTimestamp).toString()
+        )
+        val message = TemplateEmailMessage(
+            emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
+            receiver = "johannes.haerkoetter@d-fine.com",
+            properties = properties,
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(message),
+            MessageType.SendTemplateEmail,
+            correlationId,
+            ExchangeName.SendEmail,
+            RoutingKeyNames.templateEmail,
+        )
         return dataRequestEntity.toStoredDataRequest()
     }
 }

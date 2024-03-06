@@ -27,6 +27,7 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 /**
  * This service checks if freshly uploaded and validated data answers a data request
@@ -84,15 +85,16 @@ class DataRequestUpdater(
         messageUtils.rejectMessageOnException {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             val companyName = companyDataControllerApi.getCompanyInfo(metaData.companyId).companyName
-            val properties = mapOf(
-                "companyId" to metaData.companyId,
-                "companyName" to companyName,
-                "dataType" to metaData.dataType.value,
-                "reportingPeriods" to metaData.reportingPeriod,
-            )
             val dataRequestEntities= dataRequestRepository.searchDataRequestEntity(GetDataRequestsSearchFilter(
                 metaData.dataType.value, "",RequestStatus.Open, metaData.reportingPeriod,metaData.companyId))
             dataRequestEntities.forEach {
+                val properties = mapOf(
+                    "companyId" to metaData.companyId,
+                    "companyName" to companyName,
+                    "dataType" to metaData.dataType.value,
+                    "reportingPeriods" to metaData.reportingPeriod,
+                    "creationTimeStamp" to Date(it.creationTimestamp).toString()
+                )
                 //todo receiver from userId
                 val message = TemplateEmailMessage(
                     emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
