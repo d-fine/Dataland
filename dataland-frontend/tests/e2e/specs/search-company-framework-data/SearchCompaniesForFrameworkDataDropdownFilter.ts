@@ -53,9 +53,9 @@ describe("As a user, I expect the search functionality on the /companies page to
           "/companies?" +
           `framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
-          `&framework=${DataTypeEnum.Sme}` +
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
+          `&framework=${DataTypeEnum.Sme}` +
           `&framework=${DataTypeEnum.EsgQuestionnaire}` +
           `&framework=${DataTypeEnum.Heimathafen}`,
       )
@@ -77,8 +77,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         `framework=${DataTypeEnum.EutaxonomyFinancials}` +
         `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
         `&framework=${DataTypeEnum.Lksg}` +
-        `&framework=${DataTypeEnum.Sme}` +
         `&framework=${DataTypeEnum.P2p}` +
+        `&framework=${DataTypeEnum.Sme}` +
         `&framework=${DataTypeEnum.EsgQuestionnaire}` +
         `&framework=${DataTypeEnum.Heimathafen}`,
     );
