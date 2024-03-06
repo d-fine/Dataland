@@ -77,9 +77,10 @@ describeIf(
         }).as("postCompanyAssociatedData");
         submitButton.clickButton();
         cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
-          .then((postInterception) => {
+          .then((postResponseInterception) => {
             cy.url().should("eq", getBaseUrl() + "/datasets");
-            const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
+            const dataMetaInformationOfReuploadedDataset =
+                postResponseInterception.response?.body as DataMetaInformation;
             return new SmeDataControllerApi(
               new Configuration({ accessToken: tokenForAdminUser }),
             ).getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId);
