@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.frameworks.sme.model.power.SmePower
  * The root data-model for the Sme Framework
  */
 @Suppress("MagicNumber")
-@DataType("sme", 4)
+@DataType("sme", 6)
 data class SmeData(
     @field:Valid()
     val general: SmeGeneral,
