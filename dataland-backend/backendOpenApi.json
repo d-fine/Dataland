@@ -13788,21 +13788,21 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
           },
           "permId": {
             "type": "string",
@@ -13829,10 +13829,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

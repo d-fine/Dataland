@@ -71,6 +71,9 @@ describeIf(
         .contains("1 REQUESTED IDENTIFIER");
 
       cy.get('[data-test="requestStatusText"]').should("exist").contains("Success");
+      cy.get("button[type='button']").should("exist").should("be.visible").click();
+      cy.url().should("not.include", "/bulkdatarequest");
+      cy.url().should("include", "/requests");
     });
 
     it("When identifiers are rejected", () => {
