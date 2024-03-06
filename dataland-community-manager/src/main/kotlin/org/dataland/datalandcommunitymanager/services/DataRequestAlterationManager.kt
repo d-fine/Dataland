@@ -48,29 +48,30 @@ class DataRequestAlterationManager(
         dataRequestEntity.requestStatus = requestStatus
         dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
         dataRequestRepository.save(dataRequestEntity)
-
-        val companyName = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId).companyName
-        val properties = mapOf(
-            "companyId" to dataRequestEntity.datalandCompanyId,
-            "companyName" to companyName,
-            "dataType" to dataRequestEntity.dataType,
-            "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to Date(dataRequestEntity.creationTimestamp).toString(),
-        )
-        // todo userId to email
-        val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
-            receiver = "johannes.haerkoetter@d-fine.com",
-            properties = properties,
-        )
-        val correlationId = "0" //todo welche correlationId?
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
-            correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
-        )
+        if(requestStatus == RequestStatus.Answered){
+            val companyName = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId).companyName
+            val properties = mapOf(
+                "companyId" to dataRequestEntity.datalandCompanyId,
+                "companyName" to companyName,
+                "dataType" to dataRequestEntity.dataType,
+                "reportingPeriods" to dataRequestEntity.reportingPeriod,
+                "creationTimestamp" to Date(dataRequestEntity.creationTimestamp).toString(),
+            )
+            // todo userId to email
+            val message = TemplateEmailMessage(
+                emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
+                receiver = "johannes.haerkoetter@d-fine.com",
+                properties = properties,
+            )
+            val correlationId = "0" //todo welche correlationId?
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                objectMapper.writeValueAsString(message),
+                MessageType.SendTemplateEmail,
+                correlationId,
+                ExchangeName.SendEmail,
+                RoutingKeyNames.templateEmail,
+            )
+        }
         return dataRequestEntity.toStoredDataRequest()
     }
 }
