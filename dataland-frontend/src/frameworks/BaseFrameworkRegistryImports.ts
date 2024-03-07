@@ -3,6 +3,7 @@ import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import esgQuestionnaireBaseFrameworkDefinition from "@/frameworks/esg-questionnaire/BaseFrameworkDefinition";
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from "@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition";
 import heimathafenBaseFrameworkDefinition from "@/frameworks/heimathafen/BaseFrameworkDefinition";
+import lksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
 import sfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
 import smeBaseFrameworkDefinition from "@/frameworks/sme/BaseFrameworkDefinition";
 
@@ -10,6 +11,7 @@ export const FrameworkDefinitions: Record<string, BaseFrameworkDefinition<object
   esgQuestionnaire: esgQuestionnaireBaseFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
   heimathafen: heimathafenBaseFrameworkDefinition,
+  lksg: lksgBaseFrameworkDefinition,
   sfdr: sfdrBaseFrameworkDefinition,
   sme: smeBaseFrameworkDefinition,
 };

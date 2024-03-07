@@ -30,14 +30,6 @@
               :inReviewMode="slotProps.inReviewMode"
             />
             <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.Lksg"
-              :frameworkIdentifier="DataTypeEnum.Lksg"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(lksgDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-            />
-            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
               :frameworkIdentifier="DataTypeEnum.P2p"
               :companyId="companyId"
@@ -94,7 +86,6 @@ import type Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
@@ -103,9 +94,6 @@ import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/framew
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
   computed: {
-    lksgDataModel() {
-      return lksgDataModel;
-    },
     p2pDataModel() {
       return p2pDataModel;
     },
