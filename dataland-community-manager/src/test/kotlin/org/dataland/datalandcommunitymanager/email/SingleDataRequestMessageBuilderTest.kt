@@ -30,12 +30,6 @@ class SingleDataRequestMessageBuilderTest {
     private val datalandCompanyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val correlationId = UUID.randomUUID().toString()
 
-    fun buildUserInfo(
-        userAuthentication: DatalandJwtAuthentication,
-    ): String {
-        return "User ${userAuthentication.username} (Keycloak ID: ${userAuthentication.userId})"
-    }
-
     fun formatReportingPeriods(reportingPeriods: Set<String>) =
         reportingPeriods.toList().sorted().joinToString(", ")
 
@@ -72,7 +66,7 @@ class SingleDataRequestMessageBuilderTest {
             assertEquals("Dataland Single Data Request", arg1.subject)
             assertEquals("A single data request has been submitted", arg1.textTitle)
             assertEquals("Single Data Request", arg1.htmlTitle)
-            assertEquals(buildUserInfo(authenticationMock), arg1.properties.getValue("User"))
+            assertEquals(authenticationMock.userDescription, arg1.properties.getValue("User"))
             assertEquals("lksg", arg1.properties.getValue("Data Type"))
             assertEquals("2022, 2023", arg1.properties.getValue("Reporting Periods"))
             assertEquals(datalandCompanyId, arg1.properties.getValue("Dataland Company ID"))
@@ -84,7 +78,7 @@ class SingleDataRequestMessageBuilderTest {
         }
 
         val properties = mapOf(
-            "User" to buildUserInfo(authenticationMock),
+            "User" to authenticationMock.userDescription,
             "Data Type" to DataTypeEnum.lksg.toString(),
             "Reporting Periods" to formatReportingPeriods(reportingPeriods),
             "Dataland Company ID" to datalandCompanyId,
