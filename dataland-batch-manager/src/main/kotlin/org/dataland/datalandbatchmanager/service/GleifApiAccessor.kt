@@ -12,6 +12,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.SocketException
+import java.net.URI
 import java.net.URL
 import java.util.zip.ZipInputStream
 
@@ -51,7 +52,7 @@ class GleifApiAccessor(
     fun getFullIsinMappingFile(targetFile: File) {
         logger.info("Successfully acquired download link for mapping")
         val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
-        downloadIndirectFile(URL(isinMappingReferenceUrl), tempZipFile)
+        downloadIndirectFile(URI(isinMappingReferenceUrl).toURL(), tempZipFile)
         getCsvFileFromZip(tempZipFile).copyTo(targetFile, true)
         if (!tempZipFile.delete()) {
             logger.error("Unable to delete file $tempZipFile")
@@ -88,7 +89,7 @@ class GleifApiAccessor(
 
     private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
         logger.info("Starting download of $fileDescription.")
-        val downloadUrl = URL("$gleifBaseUrl/$urlSuffx")
+        val downloadUrl = URI("$gleifBaseUrl/$urlSuffx").toURL()
         downloadFile(downloadUrl, targetFile)
         logger.info("Download of $fileDescription completed.")
     }
