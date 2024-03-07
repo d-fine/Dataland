@@ -1,9 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.DataRequestEmailSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -18,6 +20,8 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val dataRequestEmailSender: DataRequestEmailSender,
 ) {
     /**
      * Method to patch the status of a data request.
@@ -26,7 +30,10 @@ class DataRequestAlterationManager(
      * @return the updated data request object
      */
     @Transactional
-    fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
+    fun patchDataRequestStatus(
+        dataRequestId: String,
+        requestStatus: RequestStatus,
+    ): StoredDataRequest {
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
@@ -34,6 +41,10 @@ class DataRequestAlterationManager(
         dataRequestEntity.requestStatus = requestStatus
         dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
         dataRequestRepository.save(dataRequestEntity)
+        if (requestStatus == RequestStatus.Answered) {
+            val companyName = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId).companyName
+            dataRequestEmailSender.sendDataRequestedAnsweredEmail(dataRequestEntity, companyName)
+        }
         return dataRequestEntity.toStoredDataRequest()
     }
 }

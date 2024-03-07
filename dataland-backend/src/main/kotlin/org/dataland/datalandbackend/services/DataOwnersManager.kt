@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -7,13 +8,18 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandemail.email.EmailSender
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
@@ -25,8 +31,9 @@ import kotlin.jvm.optionals.getOrNull
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val emailSender: EmailSender,
-    @Autowired private val dataOwnershipRequestEmailBuilder: DataOwnershipRequestEmailBuilder,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val objectMapper: ObjectMapper,
+
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -211,16 +218,43 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
-        emailSender.sendEmail(
-            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(
-                companyId,
-                companyName,
-                userAuthentication,
-                comment,
+        val correlationId = UUID.randomUUID().toString()
+        logger.info(
+            "User with Id ${userAuthentication.userId} is requesting data ownership for company with Id $companyId " +
+                "and correlationId $correlationId",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(
+                InternalEmailMessage(
+                    "Dataland Data Ownership Request",
+                    "A data ownership request has been submitted",
+                    "Data Ownership Request",
+                    mapOf(
+
+                        "User" to buildUserInfo(userAuthentication as DatalandJwtAuthentication),
+                        "Company (Dataland ID)" to companyId,
+                        "Company Name" to companyName,
+                        "Comment" to comment,
+                    ),
+                ),
             ),
+            MessageType.SendInternalEmail,
+            correlationId,
+            ExchangeName.SendEmail,
+            RoutingKeyNames.internalEmail,
         )
     }
 
+    /**
+     * Builds a user information string from a DatalandAuthentication
+     * @param userAuthentication DatalandAuthentication as base for the info string
+     * @return the user info string
+     */
+    private fun buildUserInfo(
+        userAuthentication: DatalandJwtAuthentication,
+    ): String {
+        return "User ${userAuthentication.username} (Keycloak ID: ${userAuthentication.userId})"
+    }
     private fun assertAuthenticationViaJwtToken(userAuthentication: DatalandAuthentication) {
         if (userAuthentication !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException()

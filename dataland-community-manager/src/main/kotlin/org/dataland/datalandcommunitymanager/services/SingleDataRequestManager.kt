@@ -4,11 +4,12 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
-    @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
+    @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -57,12 +58,61 @@ class SingleDataRequestManager(
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             singleDataRequest, datalandCompanyId,
         )
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+        sendSingleDataRequestEmailMessages(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
             datalandCompanyId,
         )
         return storedDataRequests
+    }
+
+    private fun sendSingleDataRequestEmailMessages(
+        userAuthentication: DatalandJwtAuthentication,
+        singleDataRequest: SingleDataRequest,
+        datalandCompanyId: String,
+    ) {
+        if (singleDataRequest.reportingPeriods.isEmpty()) return
+        if (
+            singleDataRequest.contacts.isNullOrEmpty()
+        ) {
+            sendInternalEmail(
+                userAuthentication = userAuthentication,
+                singleDataRequest = singleDataRequest,
+                datalandCompanyId = datalandCompanyId,
+            )
+            return
+        }
+        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, datalandCompanyId)
+    }
+
+    private fun sendEmailToSpecifiedContacts(
+        userAuthentication: DatalandJwtAuthentication,
+        singleDataRequest: SingleDataRequest,
+        datalandCompanyId: String,
+    ) {
+        singleDataRequest.contacts?.forEach { contactEmail ->
+            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                receiver = contactEmail,
+                userAuthentication = userAuthentication,
+                datalandCompanyId = datalandCompanyId,
+                dataType = singleDataRequest.dataType,
+                reportingPeriods = singleDataRequest.reportingPeriods,
+                contactMessage = singleDataRequest.message,
+            )
+        }
+    }
+
+    private fun sendInternalEmail(
+        userAuthentication: DatalandJwtAuthentication,
+        datalandCompanyId: String,
+        singleDataRequest: SingleDataRequest,
+    ) {
+        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+            userAuthentication = userAuthentication,
+            datalandCompanyId,
+            dataType = singleDataRequest.dataType,
+            reportingPeriods = singleDataRequest.reportingPeriods,
+        )
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {

@@ -5,9 +5,9 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,8 +21,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
-    @Autowired private val emailSender: EmailSender,
+    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
@@ -160,12 +159,11 @@ class BulkDataRequestManager(
         acceptedDatalandCompanyIds: List<String>,
         bulkDataRequestId: String,
     ) {
-        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
+        emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
             acceptedDatalandCompanyIds,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
-        emailSender.sendEmail(emailToSend)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {

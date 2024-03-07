@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
-import org.dataland.datalandcommunitymanager.services.CauseOfMail
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -50,7 +49,7 @@ class DataRequestLogger {
      */
     fun logMessageForSendBulkDataRequestEmail(bulkDataRequestId: String) {
         bulkDataRequestLogger.info(
-            "Sending email after ${CauseOfMail.BulkDataRequest}" +
+            "Sending email after BulkDataRequest" +
                 " with bulkDataRequestId $bulkDataRequestId has been processed",
 
         )

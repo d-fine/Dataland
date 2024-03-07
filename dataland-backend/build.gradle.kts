@@ -28,8 +28,6 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
-    implementation(project(":dataland-email"))
-    testImplementation(project(":dataland-email").dependencyProject.sourceSets.test.get().output)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
@@ -55,13 +53,13 @@ dependencies {
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
-    implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
     implementation(libs.flyway.core)
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation(libs.json)
 }
 
 openApi {

@@ -4,7 +4,6 @@ rootProject.name = "Dataland"
 
 include(
     "dataland-backend-utils",
-    "dataland-email",
     "dataland-backend",
     "dataland-api-key-manager",
     "dataland-internal-storage",
@@ -18,6 +17,7 @@ include(
     "dataland-batch-manager",
     "dataland-framework-toolbox",
     "dataland-community-manager",
+    "dataland-email-service",
 )
 
 plugins {
