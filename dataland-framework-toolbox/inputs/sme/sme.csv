@@ -1,6 +1,6 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip,Tooltip - view page (if different from upload page),Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
 1,General,Basic Information,Reporting Date,Please select a date on which the specified values can be considered valid.,,Date,,,,,,Yes
-2,General,Basic Information,Sectors,Please select the industry sector in which your company was mainly active in the relevant fiscal year.,,NACE codes,,,,,,Yes
+2,General,Basic Information,Sectors,Please select the industry sectors in which your company was mainly active in the relevant fiscal year.,,NACE codes,,,,,,Yes
 3,General,Basic Information,Number of Employees,Please provide the number of workforce employed by your company in the relevant fiscal year.,,Integer,,,,,,Yes
 4,General,Basic Information,Fiscal Year Start,Please provide the starting date of the company's fiscal year to which you refer.,,Date,,,,,,Yes
 5,General,Basic Information,Referenced Reports,Provide all documents that need to be referenced in this dataset.,,Report Preupload,,,,,,

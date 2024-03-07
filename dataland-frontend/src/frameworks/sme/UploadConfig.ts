@@ -27,7 +27,7 @@ export const smeDataModel = [
             name: "sectors",
             label: "Sectors",
             description:
-              "Please select the industry sector in which your company was mainly active in the relevant fiscal year.",
+              "Please select the industry sectors in which your company was mainly active in the relevant fiscal year.",
 
             component: "NaceCodeFormField",
             required: true,
