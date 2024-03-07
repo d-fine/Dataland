@@ -225,7 +225,7 @@ class DataOwnersManager(
             properties,
         )
         singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-            UserId = userAuthentication.userId,
+            userId = userAuthentication.userId,
             datalandCompanyId = companyId,
             message = message,
         )
