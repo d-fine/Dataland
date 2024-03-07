@@ -27,8 +27,6 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
-    implementation(libs.moshi.kotlin)
-    implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)

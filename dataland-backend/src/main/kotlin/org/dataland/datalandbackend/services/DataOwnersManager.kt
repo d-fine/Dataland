@@ -27,7 +27,6 @@ class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val singleDataRequestEmailMessageSender: EmailMessageSender,
-
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -213,7 +212,7 @@ class DataOwnersManager(
             )
         }
         val properties = mapOf(
-            "User" to buildUserInfo(userAuthentication as DatalandJwtAuthentication),
+            "User" to (userAuthentication as DatalandJwtAuthentication).userDescription,
             "Company (Dataland ID)" to companyId,
             "Company Name" to companyName,
             "Comment" to comment,
@@ -231,16 +230,6 @@ class DataOwnersManager(
         )
     }
 
-    /**
-     * Builds a user information string from a DatalandAuthentication
-     * @param userAuthentication DatalandAuthentication as base for the info string
-     * @return the user info string
-     */
-    private fun buildUserInfo(
-        userAuthentication: DatalandJwtAuthentication,
-    ): String {
-        return "User ${userAuthentication.username} (Keycloak ID: ${userAuthentication.userId})"
-    }
     private fun assertAuthenticationViaJwtToken(userAuthentication: DatalandAuthentication) {
         if (userAuthentication !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException()

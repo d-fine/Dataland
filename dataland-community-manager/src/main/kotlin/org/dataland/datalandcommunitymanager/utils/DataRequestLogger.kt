@@ -45,11 +45,11 @@ class DataRequestLogger {
     }
 
     /**
-     * Logs an appropriate message when a bulk data request email is sent.
+     * Logs an appropriate message when a bulk data request email sending is initiated.
      */
-    fun logMessageForSendBulkDataRequestEmail(bulkDataRequestId: String) {
+    fun logMessageForSendBulkDataRequestEmailMessage(bulkDataRequestId: String) {
         bulkDataRequestLogger.info(
-            "Sending email after BulkDataRequest" +
+            "Notifying email sender that an email should be sent after BulkDataRequest" +
                 " with bulkDataRequestId $bulkDataRequestId has been processed",
 
         )
