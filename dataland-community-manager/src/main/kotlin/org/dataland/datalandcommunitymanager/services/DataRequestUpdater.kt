@@ -6,15 +6,14 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.DataRequestEmailSender
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -39,7 +38,7 @@ class DataRequestUpdater(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val dataRequestEmailSender: DataRequestEmailSender,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -91,32 +90,8 @@ class DataRequestUpdater(
                 ),
             )
             dataRequestEntities.forEach {
-                val properties = mapOf(
-                    "companyId" to metaData.companyId,
-                    "companyName" to companyName,
-                    "dataType" to metaData.dataType.value,
-                    "reportingPeriods" to metaData.reportingPeriod,
-                    "creationTimeStamp" to Date(it.creationTimestamp).toString(),
-                )
-                // todo receiver from userId
-                val message = TemplateEmailMessage(
-                    emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
-                    receiver = "johannes.haerkoetter@d-fine.com",
-                    properties = properties,
-                )
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    objectMapper.writeValueAsString(message),
-                    MessageType.SendTemplateEmail,
-                    correlationId,
-                    ExchangeName.SendEmail,
-                    RoutingKeyNames.templateEmail,
-                )
+                dataRequestEmailSender.sendDataRequestedAnsweredEmail(it,companyName,correlationId)
             }
-            dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
-                metaData.companyId,
-                metaData.reportingPeriod,
-                metaData.dataType.value,
-            )
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
                     "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
