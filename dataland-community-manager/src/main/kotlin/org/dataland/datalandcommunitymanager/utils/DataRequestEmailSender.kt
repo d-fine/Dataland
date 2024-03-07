@@ -36,7 +36,7 @@ class DataRequestEmailSender(
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
             "creationTimestamp" to getDateFromUnitTime(dataRequestEntity.creationTimestamp),
-            "dataTypeName" to getDataTypeDescription(dataRequestEntity.dataType),
+            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,

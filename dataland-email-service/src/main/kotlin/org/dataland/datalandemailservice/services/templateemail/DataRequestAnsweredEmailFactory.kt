@@ -24,14 +24,14 @@ class DataRequestAnsweredEmailFactory(
         val reportingPeriods = "reportingPeriods"
         val creationTimestamp = "creationTimestamp"
         val closedIn = "closedIn"
-        val dataTypeName = "dataTypeName"
+        val dataTypeDescription = "dataTypeDescription"
     }
 
     override val builderForType = TemplateEmailMessage.Type.DataRequestedAnswered
     override val requiredProperties = setOf(
         keys.companyId, keys.companyName, keys.dataType, keys.reportingPeriods, keys.creationTimestamp,
     )
-    override val optionalProperties = setOf(keys.closedIn, keys.dataTypeName)
+    override val optionalProperties = setOf(keys.closedIn, keys.dataTypeDescription)
 
     override val templateFile = "/request_answered.html.ftl"
     override val subject = "Your data request has been answered!"
