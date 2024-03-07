@@ -34,10 +34,10 @@ class DataRequestAnsweredEmailFactory(
     override val optionalProperties = setOf(keys.closedIn, keys.dataTypeName)
 
     override val templateFile = "/request_answered.html.ftl"
-    override val subject = "Your data request for ${keys.companyName} has been answered!"
+    override val subject = "Your data request has been answered!"
 
     override fun buildTextContent(properties: Map<String, String?>): String {
-        val closedInDays = keys.closedIn.ifEmpty { "7 days" }
+        val closedInDays = keys.closedIn.ifEmpty { "some days" }
         return StringBuilder()
             .append(
                 "Great news!\n" +
