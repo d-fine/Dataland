@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.utils
+package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -15,7 +15,7 @@ import java.util.*
  * Manage sending emails to user regarding data requests
  */
 @Service("DataRequestEmailSender")
-class DataRequestEmailSender(
+class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
 ) {

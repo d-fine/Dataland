@@ -5,7 +5,7 @@ import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiEx
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.DataRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,7 +21,7 @@ class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val dataRequestEmailSender: DataRequestEmailSender,
+    @Autowired private val dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender,
 ) {
     /**
      * Method to patch the status of a data request.
@@ -43,7 +43,7 @@ class DataRequestAlterationManager(
         dataRequestRepository.save(dataRequestEntity)
         if (requestStatus == RequestStatus.Answered) {
             val companyName = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId).companyName
-            dataRequestEmailSender.sendDataRequestedAnsweredEmail(dataRequestEntity, companyName)
+            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(dataRequestEntity, companyName)
         }
         return dataRequestEntity.toStoredDataRequest()
     }

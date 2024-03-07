@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.utils.DataRequestEmailSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -38,7 +38,7 @@ class DataRequestUpdater(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val dataRequestEmailSender: DataRequestEmailSender,
+    @Autowired private val dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -90,7 +90,7 @@ class DataRequestUpdater(
                 ),
             )
             dataRequestEntities.forEach {
-                dataRequestEmailSender.sendDataRequestedAnsweredEmail(it, companyName, correlationId)
+                dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, companyName, correlationId)
             }
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
