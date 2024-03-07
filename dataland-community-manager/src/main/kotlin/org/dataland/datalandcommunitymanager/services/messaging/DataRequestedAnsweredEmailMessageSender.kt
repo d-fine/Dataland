@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -27,7 +28,7 @@ class DataRequestedAnsweredEmailMessageSender(
      */
     fun sendDataRequestedAnsweredEmail(
         dataRequestEntity: DataRequestEntity,
-        companyName: String,
+        companyName: String = getCompanyNameById(dataRequestEntity.datalandCompanyId),
         correlationId: String = UUID.randomUUID().toString(),
     ) {
         val properties = mapOf(
@@ -51,12 +52,17 @@ class DataRequestedAnsweredEmailMessageSender(
             RoutingKeyNames.templateEmail,
         )
     }
+    private fun getCompanyNameById(companyId: String):String{
+        val companyDataControllerApi = CompanyDataControllerApi()
+        return companyDataControllerApi.getCompanyInfo(companyId).companyName
+
+    }
     private fun convertUnitTimeInsMsToDate(creationTimestamp: Long):String{
-        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
+        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         return dateFormat.format(creationTimestamp)
     }
     private fun getUserEmailById(userId :String):String{
-        return "Benedikt.Laubmann@d-fine.com" //todo userId -> user mail
+        return "$userId@testemail.com" //todo userId -> user mail
     }
     private fun getDataTypeDescription(dataType : String) :String {
         return when(dataType){
