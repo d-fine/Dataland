@@ -16,6 +16,7 @@ import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export type LksgProcurementType = { [key in ProcurementCategoryType]?: LksgProcurementCategory };
+export type LksgSubcontractingCompanies = { [key: string]: Array<string> };
 
 /**
  * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
@@ -80,7 +81,7 @@ function convertLksgProcumentTypeToListForModal(
  * @param field the underlying form field
  * @returns the created getter
  */
-export function lksgProcurementCategoriesValueGetterFactory(
+export function lksgProcurementCategoriesValueGetterFactory( // TODO remove
   path: string,
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

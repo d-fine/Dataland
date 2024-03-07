@@ -7,7 +7,10 @@ import {
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type LksgProcurementType } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
+import {
+  type LksgProcurementType,
+  type LksgSubcontractingCompanies,
+} from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
@@ -25,6 +28,13 @@ export const lksgModalColumnHeaders = {
     relatedCorporateSupplyChain: "Related Corporate Supply Chain",
   },
   procurementCategories: {
+    procurementCategory: "Procurement Category",
+    procuredProductTypesAndServicesNaceCodes: "Procured Products/Services",
+    suppliersAndCountries: "Number of Direct Suppliers and Countries",
+    totalProcurementInPercent: "Order Volume",
+  },
+  subcontractingCompanies: {
+    // TODO adapt see effect
     procurementCategory: "Procurement Category",
     procuredProductTypesAndServicesNaceCodes: "Procured Products/Services",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
@@ -58,6 +68,11 @@ interface LksgProcurementCategoryDisplayFormat {
   totalProcurementInPercent: string;
 }
 
+interface LksgSubcontractingCompaniesDisplayFormat {
+  country: string;
+  naceCodes: string[];
+}
+
 /**
  * Convert an object of type LksgProcurementType into a list that can be displayed using the standard
  * modal DataTable
@@ -83,6 +98,25 @@ function convertLksgProcumentTypeToListForModal(
         lksgProcurementCategory.shareOfTotalProcurementInPercent != null
           ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
           : "",
+    });
+  }
+  return listForModal;
+}
+
+/**
+ * Convert an object of type LksgSubcontractingCompanies into a list that can be displayed using the standard
+ * modal DataTable
+ * @param datasetValue the value of the dataset
+ * @returns the converted list
+ */
+function convertLksgSubcontractingCompaniesToListForModal(
+  datasetValue: LksgSubcontractingCompanies,
+): LksgSubcontractingCompaniesDisplayFormat[] {
+  const listForModal: LksgSubcontractingCompaniesDisplayFormat[] = [];
+  for (const [countryCode, naceCodes] of Object.entries(datasetValue)) {
+    listForModal.push(<LksgSubcontractingCompaniesDisplayFormat>{
+      country: getCountryNameFromCountryCode(countryCode),
+      naceCodes: naceCodes,
     });
   }
   return listForModal;
@@ -154,6 +188,44 @@ export function formatLksgProcurementCategoriesForDisplay(
         data: {
           listOfRowContents: convertedValueForModal,
           kpiKeyOfTable: "procurementCategories",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Generates a display modal component for all subcontracting companies
+ * @param input list of lksg procurement categories for display
+ * @param fieldLabel Field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgSubcontractingCompaniesForDisplay(
+  input: LksgSubcontractingCompanies | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  let convertedValueForModal = null;
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    convertedValueForModal = convertLksgSubcontractingCompaniesToListForModal(input);
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: convertedValueForModal,
+          kpiKeyOfTable: "subcontractingCompanies",
           columnHeaders: lksgModalColumnHeaders,
         },
       },

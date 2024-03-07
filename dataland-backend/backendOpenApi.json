@@ -7105,17 +7105,30 @@
             ]
           },
           "subcontractingCompaniesCountries": {
-            "type": "array",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "example": {
+                "DE": [
+                  "NaceCodeA, NaceCodeB"
+                ],
+                "GB": [
+                  "NaceCodeC"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "example": "{\"DE\":[\"NaceCodeA, NaceCodeB\"],\"GB\":[\"NaceCodeC\"]}"
+              }
+            },
             "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "subcontractingCompaniesIndustries": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
+            "example": {
+              "DE": [
+                "NaceCodeA, NaceCodeB"
+              ],
+              "GB": [
+                "NaceCodeC"
+              ]
             }
           },
           "productionSites": {

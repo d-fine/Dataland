@@ -163,19 +163,8 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesCountries",
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
-            component: "MultiSelectFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
-          },
-          {
-            name: "subcontractingCompaniesIndustries",
-            label: "Subcontracting Companies Industries",
-            description: "In which industries do the subcontracting companies operate?",
-
-            component: "NaceCodeFormField",
+            component: "SubcontractingCompaniesFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
@@ -976,7 +965,8 @@ export const lksgDataModel = [
 
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
           },
           {
             name: "worstFormsOfChildLaborForms",
@@ -985,7 +975,8 @@ export const lksgDataModel = [
 
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
           },
           {
             name: "measuresForPreventionOfEmploymentUnderLocalMinimumAge",

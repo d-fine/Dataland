@@ -3,6 +3,7 @@ import { type LksgData, YesNo } from "@clients/backend";
 import { generateLksgFixtures } from "./LksgDataFixtures";
 import { LksgGenerator } from "@e2e/fixtures/frameworks/lksg/LksgGenerator";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { type LksgSubcontractingCompanies } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 
 /**
  * Generates lksg prepared fixtures by generating random lksg datasets and
@@ -41,10 +42,15 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   newFixture.t.general.masterData.industry = generateNaceCodes(1, 5);
-  newFixture.t.general.productionSpecific!.subcontractingCompaniesIndustries = generateNaceCodes(1, 5);
+  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = <LksgSubcontractingCompanies>{
+    DE: generateNaceCodes(1, 5),
+    GB: generateNaceCodes(0, 5),
+  };
   newFixture.companyInformation.companyName = "lksg-all-fields";
   return newFixture;
 }
+
+// TODO add fake fixture for new test
 
 /**
  * Ensures that the fixture contains production sites but is not a manufacturing company (to test show-if)
