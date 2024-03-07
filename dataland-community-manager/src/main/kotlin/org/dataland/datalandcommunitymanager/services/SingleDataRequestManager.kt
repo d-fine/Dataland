@@ -56,7 +56,7 @@ class SingleDataRequestManager(
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             singleDataRequest, datalandCompanyId,
         )
-        sendSingleDataRequestEmailMessages(
+        sendSingleDataRequestEmailMessage(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
             datalandCompanyId,
@@ -64,7 +64,7 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
-    private fun sendSingleDataRequestEmailMessages(
+    private fun sendSingleDataRequestEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
@@ -73,17 +73,17 @@ class SingleDataRequestManager(
         if (
             singleDataRequest.contacts.isNullOrEmpty()
         ) {
-            sendInternalEmail(
+            sendInternalEmailMessage(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
                 datalandCompanyId = datalandCompanyId,
             )
             return
         }
-        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, datalandCompanyId)
+        sendExternalEmailMessage(userAuthentication, singleDataRequest, datalandCompanyId)
     }
 
-    private fun sendEmailToSpecifiedContacts(
+    private fun sendExternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
@@ -100,7 +100,7 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun sendInternalEmail(
+    private fun sendInternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
         singleDataRequest: SingleDataRequest,
