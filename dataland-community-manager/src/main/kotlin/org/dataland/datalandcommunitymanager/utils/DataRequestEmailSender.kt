@@ -35,7 +35,7 @@ class DataRequestEmailSender(
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to getDateFromUnitTime(dataRequestEntity.creationTimestamp),
+            "creationTimestamp" to convertUnitTimeInsMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(
@@ -51,12 +51,12 @@ class DataRequestEmailSender(
             RoutingKeyNames.templateEmail,
         )
     }
-    private fun getDateFromUnitTime(creationTimestamp: Long):String{
+    private fun convertUnitTimeInsMsToDate(creationTimestamp: Long):String{
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
         return dateFormat.format(creationTimestamp)
     }
     private fun getUserEmailById(userId :String):String{
-        return "userEmail" //todo userId -> user mail
+        return "Benedikt.Laubmann@d-fine.com" //todo userId -> user mail
     }
     private fun getDataTypeDescription(dataType : String) :String {
         return when(dataType){
