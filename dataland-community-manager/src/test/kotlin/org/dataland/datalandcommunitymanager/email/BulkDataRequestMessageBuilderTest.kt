@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 class BulkDataRequestMessageBuilderTest {
-    val objectMapper = jacksonObjectMapper() // TODO workaround.  to be discussed and investigated
+    val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
     private val correlationId = UUID.randomUUID().toString()
