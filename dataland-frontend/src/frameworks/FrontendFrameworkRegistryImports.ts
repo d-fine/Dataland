@@ -5,6 +5,7 @@ import eutaxonomyNonFinancialsFrontendFrameworkDefinition from "@/frameworks/eut
 import heimathafenFrontendFrameworkDefinition from "@/frameworks/heimathafen/FrontendFrameworkDefinition";
 import lksgFrontendFrameworkDefinition from "@/frameworks/lksg/FrontendFrameworkDefinition";
 import sfdrFrontendFrameworkDefinition from "@/frameworks/sfdr/FrontendFrameworkDefinition";
+import smeFrontendFrameworkDefinition from "@/frameworks/sme/FrontendFrameworkDefinition";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<any>> = {
@@ -13,4 +14,5 @@ export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<an
   heimathafen: heimathafenFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
+  sme: smeFrontendFrameworkDefinition,
 };
