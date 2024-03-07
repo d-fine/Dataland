@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
-
+/**
+ * Manage sending emails to user regarding data requests
+ */
 @Service("DataRequestEmailSender")
 class DataRequestEmailSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
