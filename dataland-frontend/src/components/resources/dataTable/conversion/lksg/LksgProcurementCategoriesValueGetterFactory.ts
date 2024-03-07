@@ -16,7 +16,6 @@ import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export type LksgProcurementType = { [key in ProcurementCategoryType]?: LksgProcurementCategory };
-export type LksgSubcontractingCompanies = { [key: string]: Array<string> };
 
 /**
  * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries

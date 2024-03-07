@@ -7,7 +7,6 @@ import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
-import { type LksgSubcontractingCompanies } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -50,7 +49,7 @@ export class LksgGenerator extends Generator {
     return Object.fromEntries(lksgProcurementCategoriesMap);
   }
 
-  generateSubcontractingCompanies(): LksgSubcontractingCompanies {
+  generateSubcontractingCompanies(): { [key: string]: Array<string> } {
     const countryCodes = generateArray(generateIso2CountryCode);
     const lksgSubcontractingCompaniesMap = new Map<string, string[]>();
     countryCodes.forEach((countryCode) => lksgSubcontractingCompaniesMap.set(countryCode, generateNaceCodes()));
