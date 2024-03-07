@@ -36,7 +36,7 @@ class DataRequestEmailSender(
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
             "creationTimestamp" to getDateFromUnitTime(dataRequestEntity.creationTimestamp),
-            "dataTypeName" to getDataTypeName(dataRequestEntity.dataType),
+            "dataTypeName" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
@@ -56,17 +56,19 @@ class DataRequestEmailSender(
         return dateFormat.format(creationTimestamp)
     }
     private fun getUserEmailById(userId :String):String{
-        return "byUserId@testmail.com" //todo userId -> user mail
+        return "userEmail" //todo userId -> user mail
     }
-    private fun getDataTypeName(dataType : String) :String {
-        when(dataType){
-            "eutaxonomy-financials" -> return "EU Taxonomy for financial companies"
-            "eutaxonomy-non-financials" -> return "EU Taxonomy for non-financial companies"
-            "lksg" -> return "LkSG"
-            "sfdr" ->return "SFDR"
-            "sme" -> return "SME"
-            "p2p" -> return "WWF Pathway to Paris"
+    private fun getDataTypeDescription(dataType : String) :String {
+        return when(dataType){
+            "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
+            "eutaxonomy-non-financials" -> "EU Taxonomy for non-financial companies"
+            "lksg" -> "LkSG"
+            "sfdr" -> "SFDR"
+            "sme" -> "SME"
+            "p2p" -> "WWF Pathway to Paris"
+            "esg-questionnaire" -> "ESG Questionnaire"
+            "heimathafen" -> "Heimathafen"
+            else -> dataType
         }
-        return dataType
     }
 }
