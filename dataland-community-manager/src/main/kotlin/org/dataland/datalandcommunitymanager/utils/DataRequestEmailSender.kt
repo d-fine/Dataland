@@ -25,19 +25,20 @@ class DataRequestEmailSender(
     fun sendDataRequestedAnsweredEmail(
         dataRequestEntity: DataRequestEntity,
         companyName: String,
-        correlationId: String = "Email - Request has been answered"
-    ){
+        correlationId: String = UUID.randomUUID().toString(),
+    ) {
+        val creationTimestamp = Date(dataRequestEntity.creationTimestamp).toString()
         val properties = mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to Date(dataRequestEntity.creationTimestamp).toString(),
+            "creationTimestamp" to creationTimestamp,
         )
-        // todo userId to email
+        val userId = "byUserId@testmail.com" //todo userId -> user mail
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
-            receiver = "johannes.haerkoetter@d-fine.com",
+            receiver = userId,
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

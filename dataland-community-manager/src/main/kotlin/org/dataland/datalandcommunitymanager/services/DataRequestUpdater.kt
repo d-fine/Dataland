@@ -90,7 +90,7 @@ class DataRequestUpdater(
                 ),
             )
             dataRequestEntities.forEach {
-                dataRequestEmailSender.sendDataRequestedAnsweredEmail(it,companyName,correlationId)
+                dataRequestEmailSender.sendDataRequestedAnsweredEmail(it, companyName, correlationId)
             }
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
