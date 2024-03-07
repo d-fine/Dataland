@@ -9,6 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Service("DataRequestEmailSender")
@@ -27,18 +28,21 @@ class DataRequestEmailSender(
         companyName: String,
         correlationId: String = UUID.randomUUID().toString(),
     ) {
-        val creationTimestamp = Date(dataRequestEntity.creationTimestamp).toString()
+        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
+        val creationTimestamp = dateFormat.format(dataRequestEntity.creationTimestamp)
+        val dataTypeName = dataRequestEntity.dataType
         val properties = mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
             "creationTimestamp" to creationTimestamp,
+            "dataTypeName" to dataTypeName,
         )
         val userId = "byUserId@testmail.com" //todo userId -> user mail
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
-            receiver = userId,
+            receiver = "",
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
