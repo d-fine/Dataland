@@ -134,7 +134,7 @@
     <tr>
         <td colspan="3"> Without any actions,
             your data request will be set to closed automatically
-            in <b> <#if closedIn??> ${closedIn} <#else> some days</#if> </b>.</td>
+            in <b> <#if closedIn??> ${closedIn} <#else> some days</#if></b>.</td>
 
     </tr>
     <tr>
