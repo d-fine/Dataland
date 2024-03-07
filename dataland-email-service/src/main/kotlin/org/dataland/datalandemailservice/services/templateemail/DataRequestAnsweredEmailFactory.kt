@@ -46,8 +46,9 @@ class DataRequestAnsweredEmailFactory(
             .append("Company: ${properties[keys.companyName]} \n")
             .append("Framework: ${properties[keys.dataType]} \n")
             .append("Reporting period(s): ${properties[keys.creationTimestamp]} \n\n")
-            .append("Go to your data requests:  $proxyPrimaryUrl/companies/${properties[keys.companyId]}/frameworks/${properties[keys.dataType]}")
-            .append("Warning: \n Without any actions, your data request will be set to closed automatically in $closedInDays.")
+            .append("Go to your data requests:\n")
+            .append("$proxyPrimaryUrl/companies/${properties[keys.companyId]}/frameworks/${properties[keys.dataType]}")
+            .append("\nWithout any actions, your data request will be set to closed automatically in $closedInDays.")
             .toString()
     }
 }

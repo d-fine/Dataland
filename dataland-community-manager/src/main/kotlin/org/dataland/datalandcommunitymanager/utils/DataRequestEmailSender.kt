@@ -30,21 +30,17 @@ class DataRequestEmailSender(
         companyName: String,
         correlationId: String = UUID.randomUUID().toString(),
     ) {
-        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
-        val creationTimestamp = dateFormat.format(dataRequestEntity.creationTimestamp)
-        val dataTypeName = dataRequestEntity.dataType
         val properties = mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to creationTimestamp,
-            "dataTypeName" to dataTypeName,
+            "creationTimestamp" to getDateFromUnitTime(dataRequestEntity.creationTimestamp),
+            "dataTypeName" to getDataTypeName(dataRequestEntity.dataType),
         )
-        val userId = "byUserId@testmail.com" //todo userId -> user mail
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
-            receiver = "",
+            receiver = getUserEmailById(dataRequestEntity.userId),
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -54,5 +50,23 @@ class DataRequestEmailSender(
             ExchangeName.SendEmail,
             RoutingKeyNames.templateEmail,
         )
+    }
+    private fun getDateFromUnitTime(creationTimestamp: Long):String{
+        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
+        return dateFormat.format(creationTimestamp)
+    }
+    private fun getUserEmailById(userId :String):String{
+        return "byUserId@testmail.com" //todo userId -> user mail
+    }
+    private fun getDataTypeName(dataType : String) :String {
+        when(dataType){
+            "eutaxonomy-financials" -> return "EU Taxonomy for financial companies"
+            "eutaxonomy-non-financials" -> return "EU Taxonomy for non-financial companies"
+            "lksg" -> return "LkSG"
+            "sfdr" ->return "SFDR"
+            "sme" -> return "SME"
+            "p2p" -> return "WWF Pathway to Paris"
+        }
+        return dataType
     }
 }
