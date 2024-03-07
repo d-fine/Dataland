@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+
 /**
  * Manage sending emails to user regarding data requests
  */
@@ -18,6 +20,7 @@ import java.util.*
 class DataRequestEmailSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
     /**
      * Method to informs user by mail that his request is answered.
@@ -51,15 +54,18 @@ class DataRequestEmailSender(
             RoutingKeyNames.templateEmail,
         )
     }
-    private fun getDateFromUnitTime(creationTimestamp: Long):String{
+
+    private fun getDateFromUnitTime(creationTimestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
         return dateFormat.format(creationTimestamp)
     }
-    private fun getUserEmailById(userId :String):String{
-        return "userEmail" //todo userId -> user mail
+
+    private fun getUserEmailById(userId: String): String {
+        return keycloakUserControllerApiService.getEmailAddress(userId)
     }
-    private fun getDataTypeDescription(dataType : String) :String {
-        return when(dataType){
+
+    private fun getDataTypeDescription(dataType: String): String {
+        return when (dataType) {
             "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
             "eutaxonomy-non-financials" -> "EU Taxonomy for non-financial companies"
             "lksg" -> "LkSG"

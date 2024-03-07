@@ -22,9 +22,6 @@ class KeycloakUserControllerApiService(
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private data class User(
-        @JsonProperty("username")
-        val userName: String,
-
         @JsonProperty("email")
         val email: String,
 

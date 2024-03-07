@@ -1227,7 +1227,12 @@
         "phone",
         "offline_access",
         "microprofile-jwt"
-      ]
+      ],
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      }
     },
     {
       "id": "9c594354-2d02-4394-9d36-c9bf625b42a2",
