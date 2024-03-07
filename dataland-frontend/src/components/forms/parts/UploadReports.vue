@@ -1,11 +1,11 @@
 <template>
   <div :data-test="`upload-reports-${name}`" class="display-contents">
-    <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
+    <div v-if="isMountedForEuTaxoFinancialsUploadPage" class="col-3 p-3 topicLabel">
       <h4 class="anchor title">Upload company reports</h4>
       <p>Please upload all relevant reports for this dataset in the PDF format.</p>
     </div>
     <!-- Select company reports -->
-    <div :class="isEuTaxonomy ? 'col-9 formFields' : 'formField'">
+    <div :class="isMountedForEuTaxoFinancialsUploadPage ? 'col-9 formFields' : 'formField'">
       <h3 class="mt-0">Select company reports</h3>
       <UploadDocumentsForm
         ref="uploadDocumentsForm"
@@ -20,7 +20,7 @@
         <div
           v-for="documentToUpload of documentsToUpload"
           :key="documentToUpload.file.name"
-          :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
+          :class="isMountedForEuTaxoFinancialsUploadPage ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
           data-test="report-to-upload-form"
         >
           <div :data-test="documentToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
@@ -36,7 +36,7 @@
       </div>
       <div v-if="alreadyStoredReports.length > 0" class="uploadFormSection">
         <!-- List of company reports -->
-        <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
+        <div v-if="isMountedForEuTaxoFinancialsUploadPage" class="col-3 p-3 topicLabel">
           <h4 class="anchor title">Uploaded company reports</h4>
         </div>
         <div v-else class="col-12">
@@ -45,7 +45,7 @@
         <div
           v-for="(storedReport, index) of alreadyStoredReports"
           :key="storedReport.fileName"
-          :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
+          :class="isMountedForEuTaxoFinancialsUploadPage ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
           data-test="report-uploaded-form"
         >
           <div :data-test="storedReport.fileName + 'AlreadyUploadedContainer'" class="form-field-label">
@@ -122,7 +122,7 @@ export default defineComponent({
     referencedReportsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
-    isEuTaxonomy: {
+    isMountedForEuTaxoFinancialsUploadPage: {
       type: Boolean,
       default: false,
     },
@@ -158,12 +158,7 @@ export default defineComponent({
       ) {
         this.openModalToDisplayNameErrorsInFileSelectionByUser();
       }
-
-      if (this.isEuTaxonomy) {
-        this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences);
-      } else {
-        this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences, this.documentsToUpload);
-      }
+      this.$emit("reportsUpdated", this.allReferenceableReportNamesAndReferences, this.documentsToUpload);
     },
     /**
      * Handles selection of files by the user. If invalid file names are found in the selection, this is handled.

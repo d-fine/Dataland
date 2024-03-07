@@ -8,7 +8,6 @@ import { type ObjectType } from "@/utils/UpdateObjectUtils";
 export interface DocumentToUpload {
   file: File;
   fileNameWithoutSuffix: string;
-
   fileReference: string;
 }
 export interface StoredReport extends CompanyReport {
