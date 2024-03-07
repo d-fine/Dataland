@@ -114,12 +114,17 @@ sonar {
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
+                "dataland-frontend/src/frameworks/sme/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
 
                 // backend
-                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt",
+                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
+
+                // toolbox
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
+                "/Iso2CountryCodesMultiSelectComponent.kt",
         )
         property(
             "sonar.exclusions",
@@ -134,7 +139,8 @@ sonar {
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
-                // -> no need to cover the heimathafen-ViewConfig because there are no custom fields
+                "dataland-frontend/src/frameworks/sme/ViewConfig.ts," +
+                // -> no need to cover these two ViewConfigs because there are no custom fields
 
                 // backend
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +

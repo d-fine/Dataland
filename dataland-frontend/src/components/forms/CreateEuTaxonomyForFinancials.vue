@@ -56,9 +56,9 @@
                 <UploadReports
                   name="UploadReports"
                   ref="UploadReports"
-                  :isEuTaxonomy="true"
+                  :isMountedForEuTaxoFinancialsUploadPage="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports ?? undefined"
-                  @reportsUpdated="handleChangeOfReferenceableReportNamesAndReferences"
+                  @reportsUpdated="updateReportsSelection"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -440,6 +440,7 @@ export default defineComponent({
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
       isValidFileName: isValidFileName,
+      documentsToUpload: [] as DocumentToUpload[],
     };
   },
   mounted() {
@@ -649,12 +650,7 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
         );
-
-        await uploadFiles(
-          (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
-          assertDefined(this.getKeycloakPromise),
-        );
-
+        await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
@@ -703,11 +699,15 @@ export default defineComponent({
       this.postEuTaxonomyDataForFinancialsProcessed = true;
     },
     /**
-     * Updates the local list of names of referenceable reports
-     * @param reportNamesAndReferences new list of the referenceable reports' names and references
+     * Sets the object containing the names of all stored and to-be-uploaded reports as keys, and their respective
+     * fileReferences as values, and then sets the selection of reports that are to be uploaded.
+     * @param reportsNamesAndReferences contains the names of all stored and to-be-uploaded reports as keys,
+     * and their respective fileReferences as values
+     * @param reportsToUpload contains the actual selection of reports that are to be uploaded
      */
-    handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
-      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
+    updateReportsSelection(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
+      this.documentsToUpload = [...reportsToUpload];
     },
   },
 });

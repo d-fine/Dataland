@@ -15,7 +15,7 @@ export function generateEsgQuestionnairePreparedFixtures(): Array<FixtureData<Es
 }
 
 /**
- * Generates a esg-questionnaire fixture with no null values and all YesNo fields set to "Yes"
+ * Generates an esg-questionnaire fixture with no null values and all YesNo fields set to "Yes"
  * @returns the fixture
  */
 function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgQuestionnaireData> {
