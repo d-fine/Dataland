@@ -50,8 +50,7 @@ class BulkDataRequestMessageBuilderTest {
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    @Test
-    fun `validate that the output of the bulk internal email message sender is correctly build`() {
+    private fun buildInternalBulkEmailMessageMock() {
         Mockito.`when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 ArgumentMatchers.anyString(),
@@ -85,7 +84,11 @@ class BulkDataRequestMessageBuilderTest {
             Assertions.assertEquals(ExchangeName.SendEmail, arg4)
             Assertions.assertEquals(RoutingKeyNames.internalEmail, arg5)
         }
+    }
 
+    @Test
+    fun `validate that the output of the bulk internal email message sender is correctly build`() {
+        buildInternalBulkEmailMessageMock()
         val properties = mapOf(
             "User" to authenticationMock.userDescription,
             "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),

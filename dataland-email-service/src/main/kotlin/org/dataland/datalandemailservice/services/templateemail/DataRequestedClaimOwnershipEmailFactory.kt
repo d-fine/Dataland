@@ -26,7 +26,7 @@ class DataRequestedClaimOwnershipEmailFactory(
         val message = "message"
     }
 
-    override val builderForType = TemplateEmailMessage.Type.DataRequestedClaimOwnership
+    override val builderForType = TemplateEmailMessage.Type.ClaimOwnership
     override val requiredProperties = setOf(
         keys.companyId, keys.companyName,
         keys.requesterEmail, keys.dataType, keys.reportingPeriods,

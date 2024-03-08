@@ -89,37 +89,21 @@ class DataRequestAnsweredEmailFactoryTest {
     }
     private fun validateEmailText(email: Email) {
         Assertions.assertTrue(
-            email.content.textContent.contains(
-                "Great news!\nYour data request has been answered.\n\n",
-            ),
+            email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n")
+        )
+        Assertions.assertTrue(email.content.textContent.contains("Company: $companyName \n"))
+        Assertions.assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
+        Assertions.assertTrue(
+            email.content.textContent.contains("Request created: $creationTimestampAsDate \n\n"),
         )
         Assertions.assertTrue(
-            email.content.textContent.contains(
-                "Company: $companyName \n",
-            ),
+            email.content.textContent.contains("$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType"),
         )
-        Assertions.assertTrue(
-            email.content.textContent.contains(
-                "Go to your data requests:\n",
-            ),
-        )
-        Assertions.assertTrue(
-            email.content.textContent.contains(
-                "Request created: $creationTimestampAsDate \n\n",
-            ),
-        )
-        Assertions.assertTrue(
-            email.content.textContent.contains(
-                "$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType",
-            ),
-        )
-
         Assertions.assertTrue(
             email.content.textContent.contains(
                 "\nWithout any actions, your data request will be set to closed automatically in some days.",
             ),
         )
-
         Assertions.assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
     }
 }

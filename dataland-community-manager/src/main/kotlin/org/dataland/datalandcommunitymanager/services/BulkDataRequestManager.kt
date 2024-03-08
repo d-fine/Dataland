@@ -33,9 +33,8 @@ class BulkDataRequestManager(
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
-        val bulkDataRequestId = UUID.randomUUID().toString()
         val correlationId = UUID.randomUUID().toString()
-        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId, correlationId)
+        dataRequestLogger.logMessageForBulkDataRequest(correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
@@ -56,9 +55,8 @@ class BulkDataRequestManager(
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(
-            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(),
-            bulkDataRequestId, correlationId,
+        sendBulkDataRequestInternalEmailMessage(
+            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
@@ -156,10 +154,9 @@ class BulkDataRequestManager(
         )
     }
 
-    private fun sendBulkDataRequestNotificationMail(
+    private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
         acceptedDatalandCompanyIds: List<String>,
-        bulkDataRequestId: String,
         correlationId: String,
     ) {
         emailMessageSender.sendBulkDataRequestInternalMessage(
@@ -167,7 +164,7 @@ class BulkDataRequestManager(
             acceptedDatalandCompanyIds,
             correlationId,
         )
-        dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(bulkDataRequestId)
+        dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {

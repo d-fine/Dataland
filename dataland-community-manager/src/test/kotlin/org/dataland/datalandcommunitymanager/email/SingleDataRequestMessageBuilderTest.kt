@@ -46,8 +46,7 @@ class SingleDataRequestMessageBuilderTest {
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    @Test
-    fun `validate that the output of the internal email message sender is correctly build`() {
+    private fun buildInternalEmailMessageMock() {
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 anyString(),
@@ -76,7 +75,11 @@ class SingleDataRequestMessageBuilderTest {
             assertEquals(ExchangeName.SendEmail, arg4)
             assertEquals(RoutingKeyNames.internalEmail, arg5)
         }
+    }
 
+    @Test
+    fun `validate that the output of the internal email message sender is correctly build`() {
+        buildInternalEmailMessageMock()
         val properties = mapOf(
             "User" to authenticationMock.userDescription,
             "Data Type" to DataTypeEnum.lksg.toString(),
@@ -99,8 +102,7 @@ class SingleDataRequestMessageBuilderTest {
         )
     }
 
-    @Test
-    fun `validate that the output of the external email message sender is correctly build`() {
+    private fun buildExternalEmailMessageMock() {
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 anyString(),
@@ -116,7 +118,7 @@ class SingleDataRequestMessageBuilderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertEquals(TemplateEmailMessage.Type.DataRequestedClaimOwnership, arg1.emailTemplateType)
+            assertEquals(TemplateEmailMessage.Type.ClaimOwnership, arg1.emailTemplateType)
             assertEquals("alphabet@dumy.com", arg1.receiver)
             assertEquals(datalandCompanyId, arg1.properties.getValue("companyId"))
             assertEquals(companyName, arg1.properties.getValue("companyName"))
@@ -129,7 +131,11 @@ class SingleDataRequestMessageBuilderTest {
             assertEquals(ExchangeName.SendEmail, arg4)
             assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
+    }
 
+    @Test
+    fun `validate that the output of the external email message sender is correctly build`() {
+        buildExternalEmailMessageMock()
         val properties = mapOf(
             "companyId" to datalandCompanyId,
             "companyName" to companyName,
@@ -139,7 +145,7 @@ class SingleDataRequestMessageBuilderTest {
             "message" to "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         )
         val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataRequestedClaimOwnership,
+            emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
             receiver = "alphabet@dumy.com",
             properties = properties,
         )
