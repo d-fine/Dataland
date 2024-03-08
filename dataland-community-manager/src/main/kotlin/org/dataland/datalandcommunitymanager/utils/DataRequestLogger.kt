@@ -61,14 +61,14 @@ class DataRequestLogger {
      * returned "true".
      */
     fun logMessageForCheckingIfDataRequestAlreadyExists(
-        identifierValue: String,
+        companyId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
         requestStatus: RequestStatus,
     ) {
         bulkDataRequestLogger.info(
             "The following data request already exists for the requesting user and therefore " +
-                "is not being recreated: (identifierValue: $identifierValue, framework: $framework, " +
+                "is not being recreated: (companyId: $companyId, framework: $framework, " +
                 "reportingPeriod: $reportingPeriod, requestStatus: $requestStatus)",
         )
     }

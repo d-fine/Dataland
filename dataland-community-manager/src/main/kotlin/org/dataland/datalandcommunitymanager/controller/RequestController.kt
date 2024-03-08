@@ -7,6 +7,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
@@ -56,7 +57,9 @@ class RequestController(
         )
     }
 
-    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<List<StoredDataRequest>> {
+    override fun postSingleDataRequest(
+        singleDataRequest: SingleDataRequest,
+    ): ResponseEntity<SingleDataRequestResponse> {
         return ResponseEntity.ok(singleDataRequestManager.processSingleDataRequest(singleDataRequest))
     }
 

@@ -16,20 +16,19 @@ class SingleDataRequestEmailSender(
     @Autowired private val singleDataRequestInternalEmailBuilder: SingleDataRequestInternalEmailBuilder,
 ) {
     /**
-     * Sends emails to the proper recepients,
+     * Sends emails to the proper recipients,
      * i.e. to the provided contacts and the data owners of the specified companies
      * or the dataland staff if the company is not known to Dataland
      * or no contact is specified and no data owner is known
      * @param userAuthentication the authentication of the user who called this method
      * @param singleDataRequest the fundamental data request
-     * @param datalandCompanyId is the companyId of the company in dataland
+     * @param datalandCompanyId is the companyId of the company in Dataland
      */
     fun sendSingleDataRequestEmails(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
     ) {
-        if (singleDataRequest.reportingPeriods.isEmpty()) return
         if (
             singleDataRequest.contacts.isNullOrEmpty()
         ) {

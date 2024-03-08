@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -125,7 +126,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
     ):
-        ResponseEntity<List<StoredDataRequest>>
+        ResponseEntity<SingleDataRequestResponse>
 
     /** A method for users to get a data request by its ID.
      * @return the data requests corresponding to the provided ID
