@@ -19,6 +19,8 @@ plugins {
     jacoco
     id("org.springframework.boot")
     kotlin("kapt")
+    id("com.github.ben-manes.versions") apply false
+    id("com.github.jk1.dependency-license-report") apply false
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_21
