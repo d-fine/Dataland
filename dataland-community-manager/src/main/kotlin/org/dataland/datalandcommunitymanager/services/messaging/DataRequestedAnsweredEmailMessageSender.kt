@@ -36,7 +36,7 @@ class DataRequestedAnsweredEmailMessageSender(
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to convertUnitTimeInsMsToDate(dataRequestEntity.creationTimestamp),
+            "creationTimestamp" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(
@@ -52,17 +52,37 @@ class DataRequestedAnsweredEmailMessageSender(
             RoutingKeyNames.templateEmail,
         )
     }
+    /**
+     * Method to retrieve companyName by companyId
+     * @param companyId dataland companyId
+     * @returns companyName as string
+     */
     private fun getCompanyNameById(companyId: String): String {
         val companyDataControllerApi = CompanyDataControllerApi()
         return companyDataControllerApi.getCompanyInfo(companyId).companyName
     }
-    private fun convertUnitTimeInsMsToDate(creationTimestamp: Long): String {
+    /**
+     * Method to convert unit time in ms to human-readable date
+     * @param creationTimestamp unix time in ms
+     * @returns human-readable date as string
+     */
+    private fun convertUnitTimeInMsToDate(creationTimestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         return dateFormat.format(creationTimestamp)
     }
+    /**
+     * Method to retrieve userEmail by userId
+     * @param userId dataland userId
+     * @returns userEmail as string
+     */
     private fun getUserEmailById(userId: String): String {
         return "$userId@testemail.com" // todo userId -> user mail
     }
+    /**
+     * Method to retrieve human-readable dataType
+     * @param dataType dataland dataType
+     * @returns human-readable dataType as string
+     */
     private fun getDataTypeDescription(dataType: String): String {
         return when (dataType) {
             "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
