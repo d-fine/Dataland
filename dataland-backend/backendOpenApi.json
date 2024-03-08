@@ -6617,60 +6617,6 @@
           }
         }
       },
-      "ComplaintsRiskPositionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "IdentifiedRisksOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
       "LksgData": {
         "required": [
           "general"
@@ -7372,7 +7318,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HumanRightsOrEnvironmentalViolationsDefinitionOptions"
+              "$ref": "#/components/schemas/RiskPosition"
             }
           },
           "humanRightsOrEnvironmentalViolationsMeasures": {
@@ -7497,7 +7443,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/ComplaintsRiskPositionOptions"
+              "$ref": "#/components/schemas/RiskPosition"
             }
           },
           "complaintsReason": {
@@ -7573,7 +7519,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/IdentifiedRisksOptions"
+              "$ref": "#/components/schemas/RiskPosition"
             }
           },
           "counteractingMeasures": {
@@ -8626,6 +8572,24 @@
             "nullable": true
           }
         }
+      },
+      "RiskPosition": {
+        "type": "string",
+        "enum": [
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
+        ]
       },
       "SpecificProcurementOptions": {
         "type": "string",
@@ -13884,6 +13848,12 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
@@ -13897,12 +13867,6 @@
           "permId": {
             "type": "string",
             "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
           }
         }
       },
