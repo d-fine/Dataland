@@ -18,7 +18,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
-    id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     id("org.jetbrains.kotlin.plugin.jpa")
 }
@@ -52,8 +51,4 @@ tasks.bootJar {
 
 jacoco {
     toolVersion = jacocoVersion
-}
-
-gitProperties {
-    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
