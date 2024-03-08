@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -17,7 +18,7 @@ import java.util.*
  * Manage sending emails to user regarding data requests
  */
 @Service("DataRequestEmailSender")
-class DataRequestEmailSender(
+class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
@@ -30,7 +31,7 @@ class DataRequestEmailSender(
      */
     fun sendDataRequestedAnsweredEmail(
         dataRequestEntity: DataRequestEntity,
-        companyName: String,
+        companyName: String = getCompanyNameById(dataRequestEntity.datalandCompanyId),
         correlationId: String = UUID.randomUUID().toString(),
     ) {
         val properties = mapOf(
@@ -38,7 +39,7 @@ class DataRequestEmailSender(
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to getDateFromUnitTime(dataRequestEntity.creationTimestamp),
+            "creationTimestamp" to convertUnitTimeInsMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(
@@ -54,9 +55,12 @@ class DataRequestEmailSender(
             RoutingKeyNames.templateEmail,
         )
     }
-
-    private fun getDateFromUnitTime(creationTimestamp: Long): String {
-        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm:ss")
+    private fun getCompanyNameById(companyId: String): String {
+        val companyDataControllerApi = CompanyDataControllerApi()
+        return companyDataControllerApi.getCompanyInfo(companyId).companyName
+    }
+    private fun convertUnitTimeInsMsToDate(creationTimestamp: Long): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         return dateFormat.format(creationTimestamp)
     }
 

@@ -39,8 +39,6 @@ class SingleDataRequestManager(
         utils.throwExceptionIfNotJwtAuth()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
         validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
-
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
         val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             singleDataRequest.companyIdentifier
@@ -58,7 +56,7 @@ class SingleDataRequestManager(
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             singleDataRequest, datalandCompanyId,
         )
-        sendSingleDataRequestEmailMessages(
+        sendSingleDataRequestEmailMessage(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
             datalandCompanyId,
@@ -66,7 +64,7 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
-    private fun sendSingleDataRequestEmailMessages(
+    private fun sendSingleDataRequestEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
@@ -75,17 +73,17 @@ class SingleDataRequestManager(
         if (
             singleDataRequest.contacts.isNullOrEmpty()
         ) {
-            sendInternalEmail(
+            sendInternalEmailMessage(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
                 datalandCompanyId = datalandCompanyId,
             )
             return
         }
-        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, datalandCompanyId)
+        sendExternalEmailMessage(userAuthentication, singleDataRequest, datalandCompanyId)
     }
 
-    private fun sendEmailToSpecifiedContacts(
+    private fun sendExternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
@@ -102,7 +100,7 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun sendInternalEmail(
+    private fun sendInternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
         singleDataRequest: SingleDataRequest,

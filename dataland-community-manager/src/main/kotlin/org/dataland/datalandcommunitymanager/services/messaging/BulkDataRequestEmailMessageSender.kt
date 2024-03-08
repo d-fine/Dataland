@@ -36,7 +36,7 @@ class BulkDataRequestEmailMessageSender(
             "A bulk data request with correlationId $correlationId has been submitted",
         )
         val properties = mapOf(
-            "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
+            "User" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).userDescription,
             "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
             "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
             "Accepted Companies (Dataland ID)" to acceptedCompanyIdentifiers.joinToString(", "),

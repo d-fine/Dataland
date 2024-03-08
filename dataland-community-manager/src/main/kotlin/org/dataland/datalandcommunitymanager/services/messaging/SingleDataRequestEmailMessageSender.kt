@@ -42,7 +42,7 @@ class SingleDataRequestEmailMessageSender(
                 " Id $datalandCompanyId and correlationId $correlationId",
         )
         val properties = mapOf(
-            "User" to buildUserInfo(userAuthentication),
+            "User" to userAuthentication.userDescription,
             "Data Type" to dataType.value,
             "Reporting Periods" to formatReportingPeriods(reportingPeriods),
             "Dataland Company ID" to datalandCompanyId,

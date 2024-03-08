@@ -163,7 +163,7 @@ class BulkDataRequestManager(
             bulkDataRequest,
             acceptedDatalandCompanyIds,
         )
-        dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
+        dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(bulkDataRequestId)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
