@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.email
+package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -22,7 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 class SingleDataRequestMessageBuilderTest {
-    val objectMapper = jacksonObjectMapper() // TODO workaround.  to be discussed and investigated
+    val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyName = "Test Inc."

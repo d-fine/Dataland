@@ -1,17 +1,13 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.services.messaging.EmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -19,7 +15,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
@@ -31,9 +26,7 @@ import kotlin.jvm.optionals.getOrNull
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val objectMapper: ObjectMapper,
-
+    @Autowired private val singleDataRequestEmailMessageSender: EmailMessageSender,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -218,30 +211,22 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
-        val correlationId = UUID.randomUUID().toString()
-        logger.info(
-            "User with Id ${userAuthentication.userId} is requesting data ownership for company with Id $companyId " +
-                "and correlationId $correlationId",
+        val properties = mapOf(
+            "User" to (userAuthentication as DatalandJwtAuthentication).userDescription,
+            "Company (Dataland ID)" to companyId,
+            "Company Name" to companyName,
+            "Comment" to comment,
         )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(
-                InternalEmailMessage(
-                    "Dataland Data Ownership Request",
-                    "A data ownership request has been submitted",
-                    "Data Ownership Request",
-                    mapOf(
-
-                        "User" to (userAuthentication as DatalandJwtAuthentication).userDescription,
-                        "Company (Dataland ID)" to companyId,
-                        "Company Name" to companyName,
-                        "Comment" to comment,
-                    ),
-                ),
-            ),
-            MessageType.SendInternalEmail,
-            correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
+        val message = InternalEmailMessage(
+            "Dataland Data Ownership Request",
+            "A data ownership request has been submitted",
+            "Data Ownership Request",
+            properties,
+        )
+        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+            userId = userAuthentication.userId,
+            datalandCompanyId = companyId,
+            message = message,
         )
     }
 

@@ -37,12 +37,12 @@ class DataRequestedClaimOwnershipEmailFactory(
     override val subject = "A message from Dataland: Your ESG data are high on demand!"
 
     override fun buildTextContent(properties: Map<String, String?>): String {
-        val hasMultipleReportingPeriods = properties[keys.reportingPeriods]!!.contains(",")
+        val hasMultipleReportingPeriods = properties[keys.reportingPeriods]?.contains(",") ?: false
         return StringBuilder()
             .append("Greetings!\n\nYou have been invited to provide data on Dataland.\n")
             .append("People are interested in ${properties[keys.dataType]} data")
             .append(
-                " from ${properties[keys.companyName]}  for the year${if (hasMultipleReportingPeriods) "s" else ""}",
+                " from ${properties[keys.companyName]} for the year${if (hasMultipleReportingPeriods) "s" else ""}",
             )
             .append(" ${properties[keys.reportingPeriods]}.\n")
             .also {

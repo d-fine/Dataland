@@ -58,17 +58,17 @@ abstract class TemplateEmailFactory(
 
     private fun validateNoUnknownPropertiesAreProvided(properties: Map<String, String?>) {
         val allPossibleProperties = requiredProperties + optionalProperties
-        if (!allPossibleProperties.containsAll(properties.keys.toSet())) {
+        require(allPossibleProperties.containsAll(properties.keys.toSet())) {
             throw IllegalArgumentException("Unknown property specified")
         }
     }
 
     private fun validateRequiredPropertiesAreProvided(properties: Map<String, String?>) {
         requiredProperties.forEach {
-            if (!properties.keys.contains(it)) {
+            require(properties.keys.contains(it)) {
                 throw IllegalArgumentException("Required key \"$it\" missing in properties")
             }
-            if (properties.getValue(it).isNullOrBlank()) {
+            require(!properties.getValue(it).isNullOrBlank()) {
                 throw IllegalArgumentException("A non-blank value is required for the key \"$it\".")
             }
         }
