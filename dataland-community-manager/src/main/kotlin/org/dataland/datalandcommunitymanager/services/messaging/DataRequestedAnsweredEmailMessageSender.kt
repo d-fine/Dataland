@@ -52,27 +52,26 @@ class DataRequestedAnsweredEmailMessageSender(
             RoutingKeyNames.templateEmail,
         )
     }
-    private fun getCompanyNameById(companyId: String):String{
+    private fun getCompanyNameById(companyId: String): String {
         val companyDataControllerApi = CompanyDataControllerApi()
         return companyDataControllerApi.getCompanyInfo(companyId).companyName
-
     }
-    private fun convertUnitTimeInsMsToDate(creationTimestamp: Long):String{
+    private fun convertUnitTimeInsMsToDate(creationTimestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         return dateFormat.format(creationTimestamp)
     }
-    private fun getUserEmailById(userId :String):String{
-        return "$userId@testemail.com" //todo userId -> user mail
+    private fun getUserEmailById(userId: String): String {
+        return "$userId@testemail.com" // todo userId -> user mail
     }
-    private fun getDataTypeDescription(dataType : String) :String {
-        return when(dataType){
+    private fun getDataTypeDescription(dataType: String): String {
+        return when (dataType) {
             "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
             "eutaxonomy-non-financials" -> "EU Taxonomy for non-financial companies"
             "lksg" -> "LkSG"
             "sfdr" -> "SFDR"
             "sme" -> "SME"
             "p2p" -> "WWF Pathway to Paris"
-            "esg-questionnaire" ->  "ESG Questionnaire"
+            "esg-questionnaire" -> "ESG Questionnaire"
             "heimathafen" -> "Heimathafen"
             else -> dataType
         }
