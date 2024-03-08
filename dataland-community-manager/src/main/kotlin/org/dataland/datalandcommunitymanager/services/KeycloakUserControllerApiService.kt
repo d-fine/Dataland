@@ -25,8 +25,7 @@ class KeycloakUserControllerApiService(
 
         @JsonProperty("id")
         val userId: String,
-
-        )
+    )
 
     /**
      * gets the email address of a user in keycloak given the user id
