@@ -5,19 +5,22 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.communitymanager.openApiClient.model.SingleDataRequestResponse
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
-import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
+import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
+import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
+import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
+import org.dataland.e2etests.utils.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
+import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -40,28 +43,35 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post single data request and check if retrieval of stored requests via their IDs works as expected`() {
+    fun `post single data request for multiple reporting periods and check stored requests`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
-        )
+        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
+        val reportingPeriods = setOf("2022", "2023")
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022", "2023"),
+            reportingPeriods = reportingPeriods,
             contacts = setOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
-        authenticateAsPremiumUser()
-        val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
-        assertEquals(singleDataRequest.reportingPeriods.size, allStoredDataRequests.size)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        for (storedDataRequest in allStoredDataRequests) {
-            val retrievedDataRequest = requestControllerApi.getDataRequestById(
-                UUID.fromString(storedDataRequest.dataRequestId),
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
+        checkThatAllReportingPeriodsAreTreatedAsExpected(
+            singleDataRequestResponse = response,
+            expectedNumberOfStoredReportingPeriods = reportingPeriods.size,
+            expectedNumberOfDuplicateReportingPeriods = 0,
+        )
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, reportingPeriods.size)
+        newlyStoredRequests.forEach {
+            assertEquals(
+                companyId, it.datalandCompanyId, "The company ID in a stored data request is not as expected.",
             )
-            assertEquals(storedDataRequest, retrievedDataRequest)
+        }
+        reportingPeriods.forEach {
+            checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+                newlyStoredRequests, SingleDataRequest.DataType.lksg.value, it, companyId,
+            )
         }
     }
 
@@ -78,7 +88,6 @@ class SingleDataRequestsTest {
         }
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
-        println(responseBody)
         assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
         assertTrue(
             responseBody.contains(
@@ -113,33 +122,32 @@ class SingleDataRequestsTest {
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = setOf("2022"),
         )
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-
-        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
-
-        assertEquals(companyIdOfNewCompany, retrievedDataRequest.datalandCompanyId)
-        assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
-    }
-
-    @Test
-    fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
-        val validPermId = System.currentTimeMillis().toString()
-        val companyIdOfNewCompany = getIdForUploadedCompanyWithIdentifiers(permId = validPermId)
-        val storedDataRequest = postStandardSingleDataRequest(validPermId)
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-
-        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
-
-        assertEquals(companyIdOfNewCompany, retrievedDataRequest.datalandCompanyId)
-        assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        val response = requestControllerApi.postSingleDataRequest(singleDataRequest)
+        checkThatAllReportingPeriodsAreTreatedAsExpected(
+            singleDataRequestResponse = response,
+            expectedNumberOfStoredReportingPeriods = 1,
+            expectedNumberOfDuplicateReportingPeriods = 0,
+        )
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, 1)
+        assertEquals(
+            companyIdOfNewCompany,
+            newlyStoredRequests[0].datalandCompanyId,
+            "The company ID of the newly stored data request does not match the expected one.",
+        )
+        assertEquals(
+            RequestStatus.open,
+            newlyStoredRequests[0].requestStatus,
+            "The new data request is not stored with status 'Open'.",
+        )
     }
 
     private fun postStandardSingleDataRequest(
         companyIdentifier: String,
         contacts: Set<String>? = null,
         message: String? = null,
-    ): StoredDataRequest {
+    ): SingleDataRequestResponse {
         return requestControllerApi.postSingleDataRequest(
             SingleDataRequest(
                 companyIdentifier = companyIdentifier,
@@ -148,7 +156,7 @@ class SingleDataRequestsTest {
                 contacts = contacts,
                 message = message,
             ),
-        ).first()
+        )
     }
 
     @Test
@@ -198,40 +206,47 @@ class SingleDataRequestsTest {
 
     @Test
     fun `post a single data requests without a message but with valid email address in contact list`() {
-        val validLei = generateRandomLei()
-        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
-        val storedDataRequest = postStandardSingleDataRequest(validLei, setOf("test@someprovider.abc"))
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
+        val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
+        val emailAddress = "test@someprovider.abc"
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        val response = postStandardSingleDataRequest(companyId, setOf(emailAddress))
+        checkThatAllReportingPeriodsAreTreatedAsExpected(
+            singleDataRequestResponse = response,
+            expectedNumberOfStoredReportingPeriods = 1,
+            expectedNumberOfDuplicateReportingPeriods = 0,
+        )
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, 1)
+        val messageHistory = newlyStoredRequests[0].messageHistory
         assertEquals(
-            storedDataRequest,
-            retrievedDataRequest,
+            1,
+            messageHistory.size,
+            "The message history of the stored data request does not have the expected length.",
+        )
+        assertEquals(
+            null,
+            messageHistory[0].message,
+            "The message in the message history of the stored data request is not null although it should be.",
+        )
+        assertEquals(
+            setOf(emailAddress),
+            messageHistory[0].contacts,
+            "The contact list in the message history of the stored data request is not as expected.",
         )
     }
 
     @Test
     fun `post a single data request and check if patching it changes its status accordingly`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        postStandardSingleDataRequest(companyId)
+        val dataRequestId = UUID.fromString(
+            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
         )
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-        authenticateAsPremiumUser()
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
+        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
-        assertStatusForDataRequestId(storedDataRequestId, RequestStatus.open)
-
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.answered)
-
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.open)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.closed)
     }
 
     @Test
@@ -251,25 +266,17 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `patch data request as an reader and assert that it is forbidden`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex),
+    fun `patch data request as a reader and assert that this is forbidden`() {
+        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        postStandardSingleDataRequest(companyId)
+        val dataRequestId = UUID.fromString(
+            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
         )
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
-        )
-        authenticateAsPremiumUser()
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
+        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.answered)
+            requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }

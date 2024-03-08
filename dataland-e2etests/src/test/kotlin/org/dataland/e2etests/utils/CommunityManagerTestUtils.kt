@@ -23,6 +23,7 @@ import java.util.*
 
 private val apiAccessor = ApiAccessor()
 val jwtHelper = JwtAuthenticationHelper()
+private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
 fun retrieveTimeAndWaitOneMillisecond(): Long {
     val timestamp = Instant.now().toEpochMilli()
@@ -158,19 +159,19 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 
 fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
-    framework: BulkDataRequest.DataTypes,
+    framework: String,
     reportingPeriod: String,
     dataRequestCompanyIdentifierValue: String?,
 ) {
     assertEquals(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
-            storedDataRequest.dataType == framework.value &&
+            storedDataRequest.dataType == framework &&
                 storedDataRequest.reportingPeriod == reportingPeriod &&
                 storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
         }.size,
         "For dataland company Id $dataRequestCompanyIdentifierValue " +
-            "and the framework ${framework.value} there is not exactly one newly stored request as expected.",
+            "and the framework $framework there is not exactly one newly stored request as expected.",
     )
 }
 
@@ -329,7 +330,6 @@ fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestSta
 }
 
 fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID, newStatus: RequestStatus) {
-    val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     val storedDataRequestAfterPatch = requestControllerApi.patchDataRequestStatus(dataRequestId, newStatus)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
@@ -370,4 +370,10 @@ fun getUniqueDatalandCompanyIdForIdentifierValue(identifierValue: String): Strin
         apiAccessor.companyDataControllerApi.getCompaniesBySearchString(identifierValue)
     assertEquals(1, matchingCompanyIdsAndNamesOnDataland.size)
     return matchingCompanyIdsAndNamesOnDataland.first().companyId
+}
+
+fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
+    return requestControllerApi.getDataRequestsForUser().filter { storedDataRequest ->
+        storedDataRequest.creationTimestamp > timestamp
+    }
 }

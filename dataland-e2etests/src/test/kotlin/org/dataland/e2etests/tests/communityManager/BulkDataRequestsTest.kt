@@ -24,6 +24,7 @@ import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
+import org.dataland.e2etests.utils.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
@@ -31,7 +32,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BulkDataRequestsTest {
@@ -39,12 +39,6 @@ class BulkDataRequestsTest {
     val jwtHelper = JwtAuthenticationHelper()
     val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-
-    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
-        return requestControllerApi.getDataRequestsForUser().filter { storedDataRequest ->
-            storedDataRequest.creationTimestamp > timestamp
-        }
-    }
 
     @BeforeAll
     fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
@@ -68,7 +62,7 @@ class BulkDataRequestsTest {
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
             checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-                newlyStoredRequests, dataTypes.random(), reportingPeriods.random(),
+                newlyStoredRequests, dataTypes.random().value, reportingPeriods.random(),
                 getUniqueDatalandCompanyIdForIdentifierValue(it),
             )
         }
@@ -122,7 +116,7 @@ class BulkDataRequestsTest {
             (identifiersForBulkRequest.size - 2) * frameworksForBulkRequest.size,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriod, companyId,
+            newlyStoredRequests, frameworksForBulkRequest[0].value, reportingPeriod, companyId,
         )
     }
 
@@ -135,13 +129,13 @@ class BulkDataRequestsTest {
     ) {
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
             requestsStoredAfterBulkRequest,
-            framework,
+            framework.value,
             reportingPeriod,
             companyId,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
             requestsStoredAfterBulkRequest,
-            framework,
+            framework.value,
             reportingPeriod,
             identifierValueForUnknownCompany,
         )
