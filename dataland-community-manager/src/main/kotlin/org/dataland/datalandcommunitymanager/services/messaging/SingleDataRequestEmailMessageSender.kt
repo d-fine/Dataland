@@ -33,7 +33,7 @@ class SingleDataRequestEmailMessageSender(
     )
 
     /**
-     * Function that generates the message object for single data request mails
+     * Function that generates the message object for single data request internal mails
      */
     fun sendSingleDataRequestInternalMessage(
         messageInformation: MessageInformation,
@@ -63,7 +63,7 @@ class SingleDataRequestEmailMessageSender(
     }
 
     /**
-     * Function that generates the message object for single data request mails
+     * Function that generates the message object for single data request external mails
      */
     fun sendSingleDataRequestExternalMessage(
         messageInformation: MessageInformation,

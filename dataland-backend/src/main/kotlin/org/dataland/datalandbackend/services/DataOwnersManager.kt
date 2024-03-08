@@ -26,7 +26,7 @@ import kotlin.jvm.optionals.getOrNull
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val singleDataRequestDataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
+    @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -206,7 +206,7 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
-        singleDataRequestDataOwnershipEmailMessageSender.sendDataOwnershipInternalEmailMessage(
+        dataOwnershipEmailMessageSender.sendDataOwnershipInternalEmailMessage(
             userAuthentication = userAuthentication as DatalandJwtAuthentication,
             datalandCompanyId = companyId,
             comment = comment,
