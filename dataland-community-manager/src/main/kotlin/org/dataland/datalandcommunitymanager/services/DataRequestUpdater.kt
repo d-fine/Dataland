@@ -83,7 +83,6 @@ class DataRequestUpdater(
         }
         messageUtils.rejectMessageOnException {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            val companyName = companyDataControllerApi.getCompanyInfo(metaData.companyId).companyName
             val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
                 GetDataRequestsSearchFilter(
                     metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
@@ -94,6 +93,7 @@ class DataRequestUpdater(
                 metaData.reportingPeriod,
                 metaData.dataType.value,
             )
+            val companyName = companyDataControllerApi.getCompanyInfo(metaData.companyId).companyName
             dataRequestEntities.forEach {
                 dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, companyName = companyName)
             }
