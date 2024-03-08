@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
-import org.dataland.datalandbackend.services.messaging.EmailMessageSender
+import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -31,7 +31,7 @@ class DataOwnersManagerTest {
         dataOwnersManager = DataOwnersManager(
             mockDataOwnersRepository,
             mockCompanyRepository,
-            mock(EmailMessageSender::class.java),
+            mock(DataOwnershipEmailMessageSender::class.java),
         )
     }
 
@@ -43,6 +43,7 @@ class DataOwnersManagerTest {
                 "non-existing-company-id",
                 mockAuthentication,
                 null,
+                "",
             )
         }
         assertTrue(exception.summary.contains("Company is invalid"))
@@ -66,6 +67,7 @@ class DataOwnersManagerTest {
                 "indeed-existing-company-id",
                 mockAuthentication,
                 null,
+                "",
             )
         }
         assertTrue(exception.summary.contains("User is already a data owner for company."))

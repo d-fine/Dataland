@@ -116,7 +116,7 @@ class SingleDataRequestMessageBuilderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertEquals(TemplateEmailMessage.Type.DataRequestedClaimOwnership, arg1.emailTemplateType)
+            assertEquals(TemplateEmailMessage.Type.ClaimOwnership, arg1.emailTemplateType)
             assertEquals("alphabet@dumy.com", arg1.receiver)
             assertEquals(datalandCompanyId, arg1.properties.getValue("companyId"))
             assertEquals(companyName, arg1.properties.getValue("companyName"))
@@ -139,7 +139,7 @@ class SingleDataRequestMessageBuilderTest {
             "message" to "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         )
         val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataRequestedClaimOwnership,
+            emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
             receiver = "alphabet@dumy.com",
             properties = properties,
         )

@@ -56,7 +56,7 @@ class BulkDataRequestManager(
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(
+        sendBulkDataRequestInternalEmailMessage(
             bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(),
             bulkDataRequestId, correlationId,
         )
@@ -156,7 +156,7 @@ class BulkDataRequestManager(
         )
     }
 
-    private fun sendBulkDataRequestNotificationMail(
+    private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
         acceptedDatalandCompanyIds: List<String>,
         bulkDataRequestId: String,

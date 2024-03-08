@@ -37,7 +37,7 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        utils.throwExceptionIfNotJwtAuth()
+        validateRequest(singleDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
@@ -69,13 +69,22 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
+    private fun validateRequest(singleDataRequest: SingleDataRequest) {
+        utils.throwExceptionIfNotJwtAuth()
+        if (singleDataRequest.reportingPeriods.isEmpty()) {
+            throw InvalidInputApiException(
+                "There were no reporting periods provided.",
+                "There were no reporting periods provided.",
+            )
+        }
+    }
+
     private fun sendSingleDataRequestEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
         correlationId: String,
     ) {
-        if (singleDataRequest.reportingPeriods.isEmpty()) return
         if (
             singleDataRequest.contacts.isNullOrEmpty()
         ) {

@@ -81,7 +81,7 @@ class SingleDataRequestEmailMessageSender(
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
         )
         val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataRequestedClaimOwnership,
+            emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
             receiver = receiver,
             properties = properties,
         )

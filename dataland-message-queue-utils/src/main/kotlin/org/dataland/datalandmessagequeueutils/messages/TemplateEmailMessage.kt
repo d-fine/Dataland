@@ -12,7 +12,7 @@ data class TemplateEmailMessage(
      * This specifies the types of a template email
      */
     enum class Type {
-        DataRequestedClaimOwnership,
+        ClaimOwnership,
         DataRequestedAnswered,
     }
 }
