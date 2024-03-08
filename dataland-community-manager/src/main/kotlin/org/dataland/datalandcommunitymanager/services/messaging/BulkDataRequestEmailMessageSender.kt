@@ -9,10 +9,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * A class that manages generating emails messages for bulk and single data requests
@@ -22,19 +20,14 @@ class BulkDataRequestEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
 ) : DataRequestEmailMessageSenderBase() {
-    private val logger = LoggerFactory.getLogger(BulkDataRequestEmailMessageSender::class.java)
-
     /**
      * Function that generates the message object for bulk data request mails
      */
     fun sendBulkDataRequestInternalMessage(
         bulkDataRequest: BulkDataRequest,
         acceptedCompanyIdentifiers: List<String>,
+        correlationId: String,
     ) {
-        val correlationId = UUID.randomUUID().toString()
-        logger.info(
-            "A bulk data request with correlationId $correlationId has been submitted",
-        )
         val properties = mapOf(
             "User" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).userDescription,
             "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),

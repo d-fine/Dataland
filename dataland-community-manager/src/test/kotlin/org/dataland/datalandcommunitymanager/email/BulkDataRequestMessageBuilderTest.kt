@@ -51,7 +51,7 @@ class BulkDataRequestMessageBuilderTest {
     }
 
     @Test
-    fun `validate that the output of the (bulk) internal email message sender is correctly build`() {
+    fun `validate that the output of the bulk internal email message sender is correctly build`() {
         Mockito.`when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 ArgumentMatchers.anyString(),

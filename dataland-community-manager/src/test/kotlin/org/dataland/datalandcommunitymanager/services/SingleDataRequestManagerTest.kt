@@ -139,21 +139,21 @@ class SingleDataRequestManagerTest {
         singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
+        val dummyMessageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
+            dataType = DataTypeEnum.lksg, reportingPeriods = setOf("2024"),
+            userAuthentication = authenticationMock, datalandCompanyId = companyIdRegexSafeCompanyId,
+        )
         verify(singleDataRequestEmailMessageSenderMock, times(expectedExternalMessagesSent))
             .sendSingleDataRequestExternalMessage(
+                any() ?: dummyMessageInformation,
                 anyString(),
-                any() ?: authenticationMock,
-                anyString(),
-                any() ?: request.dataType,
-                any() ?: request.reportingPeriods,
                 any(),
+                anyString(),
             )
         verify(singleDataRequestEmailMessageSenderMock, times(expectedInternalMessagesSent))
             .sendSingleDataRequestInternalMessage(
-                any() ?: authenticationMock,
+                any() ?: dummyMessageInformation,
                 anyString(),
-                any() ?: request.dataType,
-                any() ?: request.reportingPeriods,
             )
     }
 }

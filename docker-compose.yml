@@ -141,7 +141,7 @@ services:
       - backend-db
     <<: *uncritical-constants-env
     environment:
-      <<: [ *rabbit-mq-user-and-pass, *mailjet-api-id-and-secret ]
+      <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
@@ -447,7 +447,7 @@ services:
     expose:
       - "8080"
     environment:
-      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}

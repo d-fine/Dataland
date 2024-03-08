@@ -10,10 +10,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * A class that manages generating emails messages for bulk and single data requests
@@ -24,28 +22,29 @@ class SingleDataRequestEmailMessageSender(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired val companyApi: CompanyDataControllerApi,
 ) : DataRequestEmailMessageSenderBase() {
-    private val logger = LoggerFactory.getLogger(SingleDataRequestEmailMessageSender::class.java)
+    /**
+     * Data structure holding the shared information of the sent messages
+     */
+    data class MessageInformation(
+        val userAuthentication: DatalandJwtAuthentication,
+        val datalandCompanyId: String,
+        val dataType: DataTypeEnum,
+        val reportingPeriods: Set<String>,
+    )
 
     /**
      * Function that generates the message object for single data request mails
      */
     fun sendSingleDataRequestInternalMessage(
-        userAuthentication: DatalandJwtAuthentication,
-        datalandCompanyId: String,
-        dataType: DataTypeEnum,
-        reportingPeriods: Set<String>,
+        messageInformation: MessageInformation,
+        correlationId: String,
     ) {
-        val correlationId = UUID.randomUUID().toString()
-        val companyName = companyApi.getCompanyInfo(datalandCompanyId).companyName
-        logger.info(
-            "User with Id ${userAuthentication.userId} has submitted a single data request for company with" +
-                " Id $datalandCompanyId and correlationId $correlationId",
-        )
+        val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
         val properties = mapOf(
-            "User" to userAuthentication.userDescription,
-            "Data Type" to dataType.value,
-            "Reporting Periods" to formatReportingPeriods(reportingPeriods),
-            "Dataland Company ID" to datalandCompanyId,
+            "User" to messageInformation.userAuthentication.userDescription,
+            "Data Type" to messageInformation.dataType.value,
+            "Reporting Periods" to formatReportingPeriods(messageInformation.reportingPeriods),
+            "Dataland Company ID" to messageInformation.datalandCompanyId,
             "Company Name" to companyName,
         )
         val message = InternalEmailMessage(
@@ -67,25 +66,18 @@ class SingleDataRequestEmailMessageSender(
      * Function that generates the message object for single data request mails
      */
     fun sendSingleDataRequestExternalMessage(
+        messageInformation: MessageInformation,
         receiver: String,
-        userAuthentication: DatalandJwtAuthentication,
-        datalandCompanyId: String,
-        dataType: DataTypeEnum,
-        reportingPeriods: Set<String>,
         contactMessage: String?,
+        correlationId: String,
     ) {
-        val correlationId = UUID.randomUUID().toString()
-        val companyName = companyApi.getCompanyInfo(datalandCompanyId).companyName
-        logger.info(
-            "User with Id ${userAuthentication.userId} has submitted a single data request for company with" +
-                " Id $datalandCompanyId and correlationId $correlationId",
-        )
+        val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
         val properties = mapOf(
-            "companyId" to datalandCompanyId,
+            "companyId" to messageInformation.datalandCompanyId,
             "companyName" to companyName,
-            "requesterEmail" to userAuthentication.username,
-            "dataType" to dataType.value,
-            "reportingPeriods" to formatReportingPeriods(reportingPeriods),
+            "requesterEmail" to messageInformation.userAuthentication.username,
+            "dataType" to messageInformation.dataType.value,
+            "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
         )
         val message = TemplateEmailMessage(

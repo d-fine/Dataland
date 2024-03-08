@@ -22,6 +22,7 @@ class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     /**
      * Method to informs user by mail that his request is answered.
@@ -38,8 +39,8 @@ class DataRequestedAnsweredEmailMessageSender(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
-            "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+            "reportingPeriod" to dataRequestEntity.reportingPeriod,
+            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(
@@ -55,6 +56,7 @@ class DataRequestedAnsweredEmailMessageSender(
             RoutingKeyNames.templateEmail,
         )
     }
+
     /**
      * Method to retrieve companyName by companyId
      * @param companyId dataland companyId
@@ -64,6 +66,7 @@ class DataRequestedAnsweredEmailMessageSender(
         val companyDataControllerApi = CompanyDataControllerApi()
         return companyDataControllerApi.getCompanyInfo(companyId).companyName
     }
+
     /**
      * Method to convert unit time in ms to human-readable date
      * @param creationTimestamp unix time in ms
@@ -81,6 +84,7 @@ class DataRequestedAnsweredEmailMessageSender(
     private fun getUserEmailById(userId: String): String {
         return keycloakUserControllerApiService.getEmailAddress(userId)
     }
+
     /**
      * Method to retrieve human-readable dataType
      * @param dataType dataland dataType

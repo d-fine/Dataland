@@ -19,28 +19,21 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a bulk data request has happened.
      */
-    fun logMessageForBulkDataRequest(bulkDataRequestId: String) {
+    fun logMessageForBulkDataRequest(bulkDataRequestId: String, correlationId: String) {
         bulkDataRequestLogger.info(
             "Received a bulk data request from a user. " +
-                "-> Processing it with bulkDataRequestId $bulkDataRequestId",
+                "-> Processing it with bulkDataRequestId $bulkDataRequestId. (correlationId: $correlationId)",
 
         )
     }
 
     /**
-     * Logs an appropriate message when a bulk data request has happened.
-     */
-    fun logMessageForSingleDataRequestReceived() {
-        singleDataRequestLogger.info("Received a single data request from a user.")
-    }
-
-    /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForReceivingSingleDataRequest(companyIdentifier: String) {
-        bulkDataRequestLogger.info(
-            "Received a single data request with Identifier $companyIdentifier by a user. " +
-                "-> Processing it",
+    fun logMessageForReceivingSingleDataRequest(companyIdentifier: String, userId: String, correlationId: String) {
+        singleDataRequestLogger.info(
+            "Received a single data request with Identifier $companyIdentifier by user $userId. " +
+                "-> Processing it. (correlationId: $correlationId)",
         )
     }
 

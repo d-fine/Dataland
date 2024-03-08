@@ -34,7 +34,8 @@ class BulkDataRequestManager(
         throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
-        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
+        val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId, correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
@@ -56,7 +57,8 @@ class BulkDataRequestManager(
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
         sendBulkDataRequestNotificationMail(
-            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), bulkDataRequestId,
+            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(),
+            bulkDataRequestId, correlationId,
         )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
@@ -158,10 +160,12 @@ class BulkDataRequestManager(
         bulkDataRequest: BulkDataRequest,
         acceptedDatalandCompanyIds: List<String>,
         bulkDataRequestId: String,
+        correlationId: String,
     ) {
         emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
             acceptedDatalandCompanyIds,
+            correlationId,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(bulkDataRequestId)
     }
