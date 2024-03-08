@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component
 class DataOwnershipEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyRepository: StoredCompanyRepository
+    @Autowired private val companyRepository: StoredCompanyRepository,
 ) {
     /**
-     * Function that generates the message object for single data request mails
+     * Function that generates the message object for data ownership request mails
      */
     fun sendDataOwnershipInternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
