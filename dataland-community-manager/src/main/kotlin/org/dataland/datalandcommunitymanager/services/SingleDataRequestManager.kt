@@ -42,7 +42,6 @@ class SingleDataRequestManager(
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
         val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             singleDataRequest.companyIdentifier
@@ -77,6 +76,7 @@ class SingleDataRequestManager(
                 "There were no reporting periods provided.",
             )
         }
+        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
     }
 
     private fun sendSingleDataRequestEmailMessage(
