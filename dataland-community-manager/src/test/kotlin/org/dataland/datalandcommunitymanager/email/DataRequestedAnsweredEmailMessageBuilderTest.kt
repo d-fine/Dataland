@@ -73,7 +73,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
         dataTypes.forEach {
             setCloudEventMessageHandlerMockAndSetChecks(it[0], it[1])
             val dataRequestedAnsweredEmailMessageSender =
-                DataRequestedAnsweredEmailMessageSender(cloudEventMessageHandlerMock, objectMapper,companyDataControllerMock)
+                DataRequestedAnsweredEmailMessageSender(cloudEventMessageHandlerMock, objectMapper, companyDataControllerMock)
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName, correlationId)
