@@ -85,56 +85,37 @@ class SingleDataRequestManager(
         datalandCompanyId: String,
         correlationId: String,
     ) {
+        val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
+            userAuthentication,
+            datalandCompanyId,
+            singleDataRequest.dataType,
+            singleDataRequest.reportingPeriods,
+        )
         if (
             singleDataRequest.contacts.isNullOrEmpty()
         ) {
-            sendInternalEmailMessage(
-                userAuthentication = userAuthentication,
-                singleDataRequest = singleDataRequest,
-                datalandCompanyId = datalandCompanyId,
-                correlationId = correlationId,
+            singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                messageInformation,
+                correlationId,
             )
             return
         }
-        sendExternalEmailMessage(userAuthentication, singleDataRequest, datalandCompanyId, correlationId)
+        sendExternalEmailMessages(messageInformation, singleDataRequest, correlationId)
     }
 
-    private fun sendExternalEmailMessage(
-        userAuthentication: DatalandJwtAuthentication,
+    private fun sendExternalEmailMessages(
+        messageInformation: SingleDataRequestEmailMessageSender.MessageInformation,
         singleDataRequest: SingleDataRequest,
-        datalandCompanyId: String,
         correlationId: String,
     ) {
         singleDataRequest.contacts?.forEach { contactEmail ->
             singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-                messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-                    userAuthentication,
-                    datalandCompanyId,
-                    singleDataRequest.dataType,
-                    singleDataRequest.reportingPeriods,
-                ),
+                messageInformation = messageInformation,
                 receiver = contactEmail,
                 contactMessage = singleDataRequest.message,
                 correlationId = correlationId,
             )
         }
-    }
-
-    private fun sendInternalEmailMessage(
-        userAuthentication: DatalandJwtAuthentication,
-        datalandCompanyId: String,
-        singleDataRequest: SingleDataRequest,
-        correlationId: String,
-    ) {
-        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-            SingleDataRequestEmailMessageSender.MessageInformation(
-                userAuthentication,
-                datalandCompanyId,
-                singleDataRequest.dataType,
-                singleDataRequest.reportingPeriods,
-            ),
-            correlationId,
-        )
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
