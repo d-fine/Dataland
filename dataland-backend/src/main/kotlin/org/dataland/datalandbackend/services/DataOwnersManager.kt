@@ -206,7 +206,6 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
-        logger
         singleDataRequestDataOwnershipEmailMessageSender.sendDataOwnershipInternalEmailMessage(
             userAuthentication = userAuthentication as DatalandJwtAuthentication,
             datalandCompanyId = companyId,
