@@ -72,7 +72,7 @@ class DataRequestedAnsweredEmailMessageSender(
             "sfdr" -> "SFDR"
             "sme" -> "SME"
             "p2p" -> "WWF Pathway to Paris"
-            "esg-questionnaire" -> "ESG Questionnaire"
+            "esg-questionnaire" ->  "ESG Questionnaire"
             "heimathafen" -> "Heimathafen"
             else -> dataType
         }
