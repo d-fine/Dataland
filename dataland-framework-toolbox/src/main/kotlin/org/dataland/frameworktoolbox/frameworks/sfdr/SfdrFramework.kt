@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.sfdr
 
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
@@ -14,7 +14,7 @@ import java.io.File
  * Definition of the SFDR framework
  */
 @Component
-class SfdrFramework : InDevelopmentPavedRoadFramework(
+class SfdrFramework : PavedRoadFramework(
     identifier = "sfdr",
     label = "SFDR",
     explanation = "Sustainability Finance Disclosure Regulation",

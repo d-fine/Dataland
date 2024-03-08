@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 class BulkDataRequestMessageBuilderTest {
-    val objectMapper = jacksonObjectMapper() // TODO workaround.  to be discussed and investigated
+    val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
     private val correlationId = UUID.randomUUID().toString()
@@ -34,12 +34,6 @@ class BulkDataRequestMessageBuilderTest {
         reportingPeriods = setOf("2020, 2023"),
     )
     private val acceptedCompanyIdentifiers = listOf("AR8756188701,9856177321")
-    fun buildUserInfo(
-        userAuthentication: DatalandJwtAuthentication,
-    ): String {
-        return "User ${userAuthentication.username} (Keycloak ID: ${userAuthentication.userId})"
-    }
-
     fun formatReportingPeriods(reportingPeriods: Set<String>) =
         reportingPeriods.toList().sorted().joinToString(", ")
 
@@ -76,7 +70,7 @@ class BulkDataRequestMessageBuilderTest {
             Assertions.assertEquals("Dataland Bulk Data Request", arg1.subject)
             Assertions.assertEquals("A bulk data request has been submitted", arg1.textTitle)
             Assertions.assertEquals("Bulk Data Request", arg1.htmlTitle)
-            Assertions.assertEquals(buildUserInfo(authenticationMock), arg1.properties.getValue("User"))
+            Assertions.assertEquals(authenticationMock.userDescription, arg1.properties.getValue("User"))
             Assertions.assertEquals("2020, 2023", arg1.properties.getValue("Reporting Periods"))
             Assertions.assertEquals(
                 bulkDataRequest.dataTypes.joinToString(", ") { it.value },
@@ -93,7 +87,7 @@ class BulkDataRequestMessageBuilderTest {
         }
 
         val properties = mapOf(
-            "User" to buildUserInfo(authenticationMock),
+            "User" to authenticationMock.userDescription,
             "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
             "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
             "Accepted Companies (Dataland ID)" to acceptedCompanyIdentifiers.joinToString(", "),

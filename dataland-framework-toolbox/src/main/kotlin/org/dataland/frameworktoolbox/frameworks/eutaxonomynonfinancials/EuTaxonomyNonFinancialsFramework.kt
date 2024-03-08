@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
@@ -14,7 +14,7 @@ import java.io.File
  * Definition of the Eu Taxonomy Non-Financials framework
  */
 @Component
-class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
+class EuTaxonomyNonFinancialsFramework : PavedRoadFramework(
     identifier = "eutaxonomy-non-financials",
     label = "EU Taxonomy Non-Financials",
     explanation = "The EU-Taxonomy framework for non-financial companies",
