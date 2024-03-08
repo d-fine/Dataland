@@ -17,9 +17,10 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
-    id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     kotlin("kapt")
+    id("com.github.ben-manes.versions") apply false
+    id("com.github.jk1.dependency-license-report") apply false
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_21
@@ -54,8 +55,4 @@ tasks.test {
 
 jacoco {
     toolVersion = jacocoVersion
-}
-
-gitProperties {
-    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

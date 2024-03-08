@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * A class that manages generating emails messages for bulk and single data requests
+ * A class that manages generating emails messages for  data ownership request if an ownership does not already exist
  */
 @Component
 class DataOwnershipEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyRepository: StoredCompanyRepository
+    @Autowired private val companyRepository: StoredCompanyRepository,
 ) {
     /**
-     * Function that generates the message object for single data request mails
+     * Function that generates the message object for data ownership request mails
      */
     fun sendDataOwnershipInternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
