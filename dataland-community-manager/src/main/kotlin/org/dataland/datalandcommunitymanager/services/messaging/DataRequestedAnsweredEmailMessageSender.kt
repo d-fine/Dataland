@@ -35,8 +35,8 @@ class DataRequestedAnsweredEmailMessageSender(
             "companyId" to dataRequestEntity.datalandCompanyId,
             "companyName" to companyName,
             "dataType" to dataRequestEntity.dataType,
-            "reportingPeriods" to dataRequestEntity.reportingPeriod,
-            "creationTimestamp" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+            "reportingPeriod" to dataRequestEntity.reportingPeriod,
+            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
         )
         val message = TemplateEmailMessage(

@@ -72,7 +72,7 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">${reportingPeriods}</td>
+                    <td style="font-weight: bold; font-size:19px">${reportingPeriod}</td>
                 </tr>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>
@@ -84,7 +84,7 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">${creationTimestamp}</td>
+                    <td style="font-weight: bold; font-size:19px">${creationDate}</td>
                 </tr>
                 <tr>
                     <td style="text-align: left; width: 20px; height: 13px; padding: 0"></td>
@@ -134,7 +134,7 @@
     <tr>
         <td colspan="3"> Without any actions,
             your data request will be set to closed automatically
-            in <b> <#if closedIn??> ${closedIn} <#else> some days</#if></b>.</td>
+            in <b><#if closedIn??>${closedIn}<#else>some days</#if></b>.</td>
 
     </tr>
     <tr>
