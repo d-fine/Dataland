@@ -71,7 +71,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            setMockAndSetChecks(it[0], it[1])
+            setCloudEventMessageHandlerMockAndSetChecks(it[0], it[1])
             val dataRequestedAnsweredEmailMessageSender =
                 DataRequestedAnsweredEmailMessageSender(cloudEventMessageHandlerMock, objectMapper)
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
@@ -89,7 +89,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
             datalandCompanyId = companyId,
         )
     }
-    private fun setMockAndSetChecks(dataType: String, dataTypeDescription: String) {
+    private fun setCloudEventMessageHandlerMockAndSetChecks(dataType: String, dataTypeDescription: String) {
         Mockito.`when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 ArgumentMatchers.anyString(),
