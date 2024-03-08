@@ -19,7 +19,7 @@ import java.util.*
 class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyDataControllerApi: CompanyDataControllerApi
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     /**
      * Method to informs user by mail that his request is answered.
@@ -53,6 +53,7 @@ class DataRequestedAnsweredEmailMessageSender(
             RoutingKeyNames.templateEmail,
         )
     }
+
     /**
      * Method to retrieve companyName by companyId
      * @param companyId dataland companyId
@@ -61,6 +62,7 @@ class DataRequestedAnsweredEmailMessageSender(
     private fun getCompanyNameById(companyId: String): String {
         return companyDataControllerApi.getCompanyInfo(companyId).companyName
     }
+
     /**
      * Method to convert unit time in ms to human-readable date
      * @param creationTimestamp unix time in ms
@@ -70,6 +72,7 @@ class DataRequestedAnsweredEmailMessageSender(
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         return dateFormat.format(creationTimestamp)
     }
+
     /**
      * Method to retrieve userEmail by userId
      * @param userId dataland userId
@@ -78,6 +81,7 @@ class DataRequestedAnsweredEmailMessageSender(
     private fun getUserEmailById(userId: String): String {
         return "$userId@testemail.com" // todo userId -> user mail
     }
+
     /**
      * Method to retrieve human-readable dataType
      * @param dataType dataland dataType

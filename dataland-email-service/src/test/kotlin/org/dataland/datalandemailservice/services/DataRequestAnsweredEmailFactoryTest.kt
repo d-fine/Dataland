@@ -21,19 +21,21 @@ class DataRequestAnsweredEmailFactoryTest {
     private val closedInDays = "100 days"
 
     private fun buildTestEmail(
-        setOptionalProperties: Boolean
+        setOptionalProperties: Boolean,
     ): Email {
         var properties = mapOf(
             "companyId" to companyId,
-        "companyName" to companyName,
-        "dataType" to dataType,
-       "reportingPeriod" to reportingPeriod,
-        "creationDate" to creationTimestampAsDate,
-        "dataTypeDescription" to dataTypeDescription
+            "companyName" to companyName,
+            "dataType" to dataType,
+            "reportingPeriod" to reportingPeriod,
+            "creationDate" to creationTimestampAsDate,
+            "dataTypeDescription" to dataTypeDescription,
         )
-        if(setOptionalProperties){
-            properties = properties + mapOf("closedIn" to closedInDays,
-                "dataTypeDescription" to dataTypeDescription)
+        if (setOptionalProperties) {
+            properties = properties + mapOf(
+                "closedIn" to closedInDays,
+                "dataTypeDescription" to dataTypeDescription,
+            )
         }
 
         val email = DataRequestAnsweredEmailFactory(
@@ -46,6 +48,7 @@ class DataRequestAnsweredEmailFactoryTest {
         )
         return email
     }
+
     @Test
     fun `validate that the output of the data request answered mail is correctly formatted`() {
         val emailWithoutOptionalProperties = buildTestEmail(false)
@@ -53,7 +56,7 @@ class DataRequestAnsweredEmailFactoryTest {
         validateEmailFormat(emailWithoutOptionalProperties, false)
         validateEmailFormat(emailWithOptionalProperties, true)
     }
-    private fun validateEmailFormat(email: Email, hasOptionalProperties: Boolean){
+    private fun validateEmailFormat(email: Email, hasOptionalProperties: Boolean) {
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
             setOf(EmailContact(receiverEmail)),
@@ -69,43 +72,54 @@ class DataRequestAnsweredEmailFactoryTest {
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType\"",
             ),
         )
-        if(hasOptionalProperties){
+        if (hasOptionalProperties) {
             Assertions.assertTrue(email.content.htmlContent.contains(closedInDays))
             Assertions.assertTrue(email.content.htmlContent.contains(dataTypeDescription))
-        }else{
+        } else {
             Assertions.assertTrue(email.content.htmlContent.contains("some days"))
         }
     }
+
     @Test
     fun `validate that the text content of the data request answered mail is correctly formatted`() {
         val emailWithoutOptionalProperties = buildTestEmail(false)
         val emailWithOptionalProperties = buildTestEmail(true)
         validateEmailText(emailWithoutOptionalProperties)
         validateEmailText(emailWithOptionalProperties)
-
     }
-    private fun validateEmailText(email: Email){
-        Assertions.assertTrue(email.content.textContent.contains(
-            "Great news!\nYour data request has been answered.\n\n"))
-        Assertions.assertTrue(email.content.textContent.contains(
-            "Company: $companyName \n"
-        ))
-        Assertions.assertTrue(email.content.textContent.contains(
-            "Go to your data requests:\n"
-        ))
-        Assertions.assertTrue(email.content.textContent.contains(
-            "Request created: $creationTimestampAsDate \n\n"
-        ))
-        Assertions.assertTrue(email.content.textContent.contains(
-            "$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType"
-        ))
+    private fun validateEmailText(email: Email) {
+        Assertions.assertTrue(
+            email.content.textContent.contains(
+                "Great news!\nYour data request has been answered.\n\n",
+            ),
+        )
+        Assertions.assertTrue(
+            email.content.textContent.contains(
+                "Company: $companyName \n",
+            ),
+        )
+        Assertions.assertTrue(
+            email.content.textContent.contains(
+                "Go to your data requests:\n",
+            ),
+        )
+        Assertions.assertTrue(
+            email.content.textContent.contains(
+                "Request created: $creationTimestampAsDate \n\n",
+            ),
+        )
+        Assertions.assertTrue(
+            email.content.textContent.contains(
+                "$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType",
+            ),
+        )
 
-        Assertions.assertTrue(email.content.textContent.contains(
-                "\nWithout any actions, your data request will be set to closed automatically in some days."
-            ))
+        Assertions.assertTrue(
+            email.content.textContent.contains(
+                "\nWithout any actions, your data request will be set to closed automatically in some days.",
+            ),
+        )
 
         Assertions.assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
-
-
     }
 }
