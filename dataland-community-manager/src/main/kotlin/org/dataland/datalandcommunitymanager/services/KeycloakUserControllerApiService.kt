@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -18,11 +17,7 @@ class KeycloakUserControllerApiService(
     @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
-    @Value("\${dataland.keycloak.client-id}") private val clientId: String,
-    @Value("\${dataland.keycloak.client-secret}") private val clientSecret: String,
 ) {
-    private val singleDataRequestLogger = LoggerFactory.getLogger(SingleDataRequestManager::class.java) // todo
-
     @JsonIgnoreProperties(ignoreUnknown = true)
     private data class User(
         @JsonProperty("email")
@@ -40,22 +35,14 @@ class KeycloakUserControllerApiService(
      */
     @Transactional
     fun getEmailAddress(userId: String): String {
-        val authorizationHeader = Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())
         val request = Request.Builder()
             .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
-            .addHeader("Content-Type", "application/x-www-form-urlencoded")
-            .addHeader("Authorization", "Basic $authorizationHeader")
             .build()
-
-        singleDataRequestLogger.info("executing this request: $request")
         val response = authenticatedOkHttpClient.newCall(request).execute()
         val parsedResponseBody = objectMapper.readValue(
             response.body!!.string(),
             User::class.java,
         )
-        singleDataRequestLogger.info("and getting this as response: $response")
-
-
-        return parsedResponseBody.email ?: "noEmail@todo.do"
+        return parsedResponseBody.email ?: "noEmail@todo.do" // todo
     }
 }
