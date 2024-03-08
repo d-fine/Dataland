@@ -19,10 +19,10 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a bulk data request has happened.
      */
-    fun logMessageForBulkDataRequest(bulkDataRequestId: String, correlationId: String) {
+    fun logMessageForBulkDataRequest(correlationId: String) {
         bulkDataRequestLogger.info(
             "Received a bulk data request from a user. " +
-                "-> Processing it with bulkDataRequestId $bulkDataRequestId. (correlationId: $correlationId)",
+                "-> Processing it with correlationId: $correlationId",
 
         )
     }
@@ -40,10 +40,10 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a bulk data request email sending is initiated.
      */
-    fun logMessageForSendBulkDataRequestEmailMessage(bulkDataRequestId: String) {
+    fun logMessageForSendBulkDataRequestEmailMessage(correlationId: String) {
         bulkDataRequestLogger.info(
             "Notifying email sender that an email should be sent after BulkDataRequest" +
-                " with bulkDataRequestId $bulkDataRequestId has been processed",
+                " with correlationId: $correlationId has been processed",
 
         )
     }
