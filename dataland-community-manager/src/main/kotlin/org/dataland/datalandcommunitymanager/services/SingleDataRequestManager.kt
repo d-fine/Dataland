@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
@@ -37,7 +38,10 @@ class SingleDataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
         utils.throwExceptionIfNotJwtAuth()
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
+        val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(
+            singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
+        )
         validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
         val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
@@ -59,7 +63,8 @@ class SingleDataRequestManager(
         sendSingleDataRequestEmailMessage(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
-            datalandCompanyId,
+            datalandCompanyId = datalandCompanyId,
+            correlationId = correlationId,
         )
         return storedDataRequests
     }
@@ -68,6 +73,7 @@ class SingleDataRequestManager(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
+        correlationId: String,
     ) {
         if (singleDataRequest.reportingPeriods.isEmpty()) return
         if (
@@ -77,25 +83,30 @@ class SingleDataRequestManager(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
                 datalandCompanyId = datalandCompanyId,
+                correlationId = correlationId,
             )
             return
         }
-        sendExternalEmailMessage(userAuthentication, singleDataRequest, datalandCompanyId)
+        sendExternalEmailMessage(userAuthentication, singleDataRequest, datalandCompanyId, correlationId)
     }
 
     private fun sendExternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
+        correlationId: String,
     ) {
         singleDataRequest.contacts?.forEach { contactEmail ->
             singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
+                    userAuthentication,
+                    datalandCompanyId,
+                    singleDataRequest.dataType,
+                    singleDataRequest.reportingPeriods,
+                ),
                 receiver = contactEmail,
-                userAuthentication = userAuthentication,
-                datalandCompanyId = datalandCompanyId,
-                dataType = singleDataRequest.dataType,
-                reportingPeriods = singleDataRequest.reportingPeriods,
                 contactMessage = singleDataRequest.message,
+                correlationId = correlationId,
             )
         }
     }
@@ -104,12 +115,16 @@ class SingleDataRequestManager(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
         singleDataRequest: SingleDataRequest,
+        correlationId: String,
     ) {
         singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-            userAuthentication = userAuthentication,
-            datalandCompanyId,
-            dataType = singleDataRequest.dataType,
-            reportingPeriods = singleDataRequest.reportingPeriods,
+            SingleDataRequestEmailMessageSender.MessageInformation(
+                userAuthentication,
+                datalandCompanyId,
+                singleDataRequest.dataType,
+                singleDataRequest.reportingPeriods,
+            ),
+            correlationId,
         )
     }
 
