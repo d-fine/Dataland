@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * A class that manages generating emails messages for bulk and single data requests
+ * A class that manages generating emails messages for  data ownership request if an ownership does not already exist
  */
 @Component
 class DataOwnershipEmailMessageSender(
