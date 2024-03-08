@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -20,15 +21,17 @@ class KeycloakUserControllerApiService(
     @Value("\${dataland.keycloak.client-id}") private val clientId: String,
     @Value("\${dataland.keycloak.client-secret}") private val clientSecret: String,
 ) {
+    private val singleDataRequestLogger = LoggerFactory.getLogger(SingleDataRequestManager::class.java) // todo
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     private data class User(
         @JsonProperty("email")
-        val email: String,
+        val email: String?,
 
         @JsonProperty("id")
         val userId: String,
 
-    )
+        )
 
     /**
      * gets the email address of a user in keycloak given the user id
@@ -43,11 +46,16 @@ class KeycloakUserControllerApiService(
             .addHeader("Content-Type", "application/x-www-form-urlencoded")
             .addHeader("Authorization", "Basic $authorizationHeader")
             .build()
+
+        singleDataRequestLogger.info("executing this request: $request")
         val response = authenticatedOkHttpClient.newCall(request).execute()
         val parsedResponseBody = objectMapper.readValue(
             response.body!!.string(),
             User::class.java,
         )
-        return parsedResponseBody.email
+        singleDataRequestLogger.info("and getting this as response: $response")
+
+
+        return parsedResponseBody.email ?: "noEmail@todo.do"
     }
 }

@@ -63,7 +63,6 @@ class DataRequestedAnsweredEmailMessageSender(
      * @returns companyName as string
      */
     private fun getCompanyNameById(companyId: String): String {
-        val companyDataControllerApi = CompanyDataControllerApi()
         return companyDataControllerApi.getCompanyInfo(companyId).companyName
     }
 
@@ -76,6 +75,7 @@ class DataRequestedAnsweredEmailMessageSender(
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         return dateFormat.format(creationTimestamp)
     }
+
     /**
      * Method to retrieve userEmail by userId
      * @param userId dataland userId
