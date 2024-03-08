@@ -19,6 +19,7 @@ import java.util.*
 class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi
 ) {
     /**
      * Method to informs user by mail that his request is answered.
@@ -58,7 +59,6 @@ class DataRequestedAnsweredEmailMessageSender(
      * @returns companyName as string
      */
     private fun getCompanyNameById(companyId: String): String {
-        val companyDataControllerApi = CompanyDataControllerApi()
         return companyDataControllerApi.getCompanyInfo(companyId).companyName
     }
     /**
