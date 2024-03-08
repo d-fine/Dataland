@@ -3,18 +3,18 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
-import org.dataland.datalandbackend.services.messaging.EmailMessageSender
+import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
@@ -26,7 +26,7 @@ import kotlin.jvm.optionals.getOrNull
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val singleDataRequestEmailMessageSender: EmailMessageSender,
+    @Autowired private val singleDataRequestDataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -195,14 +195,9 @@ class DataOwnersManager(
         companyId: String,
         userAuthentication: DatalandAuthentication,
         comment: String?,
+        correlationId: String,
     ) {
         assertAuthenticationViaJwtToken(userAuthentication)
-        val companyName = companyRepository.findById(companyId).getOrElse {
-            throw ResourceNotFoundApiException(
-                "Company is invalid",
-                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
-            )
-        }.companyName
         if (
             dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true
         ) {
@@ -211,22 +206,12 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
-        val properties = mapOf(
-            "User" to (userAuthentication as DatalandJwtAuthentication).userDescription,
-            "Company (Dataland ID)" to companyId,
-            "Company Name" to companyName,
-            "Comment" to comment,
-        )
-        val message = InternalEmailMessage(
-            "Dataland Data Ownership Request",
-            "A data ownership request has been submitted",
-            "Data Ownership Request",
-            properties,
-        )
-        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
-            userId = userAuthentication.userId,
+        logger
+        singleDataRequestDataOwnershipEmailMessageSender.sendDataOwnershipInternalEmailMessage(
+            userAuthentication = userAuthentication as DatalandJwtAuthentication,
             datalandCompanyId = companyId,
-            message = message,
+            comment = comment,
+            correlationId = correlationId,
         )
     }
 
