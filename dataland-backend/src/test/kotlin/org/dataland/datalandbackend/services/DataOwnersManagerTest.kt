@@ -39,11 +39,8 @@ class DataOwnersManagerTest {
     fun `check that a data ownership can only be requested for existing companies`() {
         `when`(mockCompanyRepository.findById(any())).thenReturn(Optional.empty())
         val exception = assertThrows<ResourceNotFoundApiException> {
-            dataOwnersManager.sendDataOwnershipRequestIfNecessary(
+            dataOwnersManager.checkCompanyForDataOwnership(
                 "non-existing-company-id",
-                mockAuthentication,
-                null,
-                "",
             )
         }
         assertTrue(exception.summary.contains("Company is invalid"))
