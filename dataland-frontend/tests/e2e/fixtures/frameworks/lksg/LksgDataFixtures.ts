@@ -50,10 +50,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         manufacturingCompany: dataGenerator.randomYesNo(),
         capacity: dataGenerator.randomShortString(),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
-        subcontractingCompaniesCountries: dataGenerator.valueOrNull(
-          pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"]),
-        ),
-        subcontractingCompaniesIndustries: dataGenerator.valueOrNull(generateNaceCodes()),
+        subcontractingCompaniesCountries: dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies()),
         productionSites: dataGenerator.randomYesNo(),
         numberOfProductionSites: dataGenerator.randomFloat(),
         listOfProductionSites: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),

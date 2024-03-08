@@ -6617,6 +6617,60 @@
           }
         }
       },
+      "ComplaintsRiskPositionOptions": {
+        "type": "string",
+        "enum": [
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
+        ]
+      },
+      "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
+        "type": "string",
+        "enum": [
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
+        ]
+      },
+      "IdentifiedRisksOptions": {
+        "type": "string",
+        "enum": [
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
+        ]
+      },
       "LksgData": {
         "required": [
           "general"
@@ -7051,17 +7105,30 @@
             ]
           },
           "subcontractingCompaniesCountries": {
-            "type": "array",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "example": {
+                "DE": [
+                  "NaceCodeA, NaceCodeB"
+                ],
+                "GB": [
+                  "NaceCodeC"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "example": "{\"DE\":[\"NaceCodeA, NaceCodeB\"],\"GB\":[\"NaceCodeC\"]}"
+              }
+            },
             "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "subcontractingCompaniesIndustries": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
+            "example": {
+              "DE": [
+                "NaceCodeA, NaceCodeB"
+              ],
+              "GB": [
+                "NaceCodeC"
+              ]
             }
           },
           "productionSites": {
@@ -7305,7 +7372,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/HumanRightsOrEnvironmentalViolationsDefinitionOptions"
             }
           },
           "humanRightsOrEnvironmentalViolationsMeasures": {
@@ -7430,7 +7497,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/ComplaintsRiskPositionOptions"
             }
           },
           "complaintsReason": {
@@ -7506,7 +7573,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/IdentifiedRisksOptions"
             }
           },
           "counteractingMeasures": {
@@ -8559,24 +8626,6 @@
             "nullable": true
           }
         }
-      },
-      "RiskPosition": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
       },
       "SpecificProcurementOptions": {
         "type": "string",
@@ -13835,12 +13884,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
@@ -13854,6 +13897,12 @@
           "permId": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },
@@ -13876,10 +13925,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

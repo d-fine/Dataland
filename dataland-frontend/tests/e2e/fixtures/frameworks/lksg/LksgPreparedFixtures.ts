@@ -41,10 +41,15 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   newFixture.t.general.masterData.industry = generateNaceCodes(1, 5);
-  newFixture.t.general.productionSpecific!.subcontractingCompaniesIndustries = generateNaceCodes(1, 5);
+  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = <{ [key: string]: Array<string> }>{
+    DE: generateNaceCodes(1, 5),
+    GB: generateNaceCodes(0, 5),
+  };
   newFixture.companyInformation.companyName = "lksg-all-fields";
   return newFixture;
 }
+
+// TODO add fake fixture for new test
 
 /**
  * Ensures that the fixture contains production sites but is not a manufacturing company (to test show-if)

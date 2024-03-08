@@ -80,7 +80,7 @@ function convertLksgProcumentTypeToListForModal(
  * @param field the underlying form field
  * @returns the created getter
  */
-export function lksgProcurementCategoriesValueGetterFactory(
+export function lksgProcurementCategoriesValueGetterFactory( // TODO remove
   path: string,
   field: Field,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
