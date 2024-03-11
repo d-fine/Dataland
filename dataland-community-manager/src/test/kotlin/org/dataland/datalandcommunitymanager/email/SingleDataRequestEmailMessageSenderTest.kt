@@ -62,19 +62,23 @@ class SingleDataRequestEmailMessageSenderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertEquals("Dataland Single Data Request", arg1.subject)
-            assertEquals("A single data request has been submitted", arg1.textTitle)
-            assertEquals("Single Data Request", arg1.htmlTitle)
-            assertEquals(authenticationMock.userDescription, arg1.properties.getValue("User"))
-            assertEquals("lksg", arg1.properties.getValue("Data Type"))
-            assertEquals("2022, 2023", arg1.properties.getValue("Reporting Periods"))
-            assertEquals(datalandCompanyId, arg1.properties.getValue("Dataland Company ID"))
-            assertEquals(companyName, arg1.properties.getValue("Company Name"))
+            validateInternalEmailContents(arg1)
             assertEquals(MessageType.SendInternalEmail, arg2)
             assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SendEmail, arg4)
             assertEquals(RoutingKeyNames.internalEmail, arg5)
         }
+    }
+
+    private fun validateInternalEmailContents(internalEmailMessage: InternalEmailMessage) {
+        assertEquals("Dataland Single Data Request", internalEmailMessage.subject)
+        assertEquals("A single data request has been submitted", internalEmailMessage.textTitle)
+        assertEquals("Single Data Request", internalEmailMessage.htmlTitle)
+        assertEquals(authenticationMock.userDescription, internalEmailMessage.properties.getValue("User"))
+        assertEquals("lksg", internalEmailMessage.properties.getValue("Data Type"))
+        assertEquals("2022, 2023", internalEmailMessage.properties.getValue("Reporting Periods"))
+        assertEquals(datalandCompanyId, internalEmailMessage.properties.getValue("Dataland Company ID"))
+        assertEquals(companyName, internalEmailMessage.properties.getValue("Company Name"))
     }
 
     @Test
