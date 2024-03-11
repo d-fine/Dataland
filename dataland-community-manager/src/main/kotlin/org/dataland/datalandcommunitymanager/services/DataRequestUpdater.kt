@@ -94,7 +94,7 @@ class DataRequestUpdater(
             sendDataRequestedAnsweredEmails(dataRequestEntities, metaData.companyId)
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
-                        "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
+                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
             )
         }
     }
