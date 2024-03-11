@@ -115,18 +115,25 @@ fun checkThatMessageIsAsExpected(
     expectedNumberOfAcceptedIdentifiers: Int,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
+    val totalNumberOfCompanyIdentifiers = expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers
     val errorMessage = "The message sent as part of the response to the bulk data request is not as expected."
-    if (expectedNumberOfRejectedIdentifiers == 0) {
-        assertEquals(
-            "$expectedNumberOfAcceptedIdentifiers distinct company identifiers were accepted.",
+    when (expectedNumberOfRejectedIdentifiers) {
+        0 -> assertEquals(
+            "All of your $totalNumberOfCompanyIdentifiers distinct company identifiers were accepted.",
             requestResponse.message,
             errorMessage,
         )
-    } else {
-        assertEquals(
-            "$expectedNumberOfRejectedIdentifiers of your " +
-                "${expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers} distinct company " +
-                "identifiers were rejected because they could not be matched with an existing company on dataland.",
+
+        1 -> assertEquals(
+            "One of your $totalNumberOfCompanyIdentifiers distinct company identifiers was rejected " +
+                "because it could not be matched with an existing company on Dataland.",
+            requestResponse.message,
+            errorMessage,
+        )
+
+        else -> assertEquals(
+            "$expectedNumberOfRejectedIdentifiers of your $totalNumberOfCompanyIdentifiers distinct company " +
+                "identifiers were rejected because they could not be matched with existing companies on Dataland.",
             requestResponse.message,
             errorMessage,
         )
