@@ -21,15 +21,15 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
     private val receiverEmail = "testReceiver@somewhere.com"
 
     private fun buildTestEmail(
-        multiplePeriods: Boolean,
+        reportingPeriods: String,
     ): Email {
         val properties = mapOf(
             "companyId" to companyId,
             "companyName" to companyName,
             "requesterEmail" to requesterEmail,
             "dataType" to dataType,
-            "reportingPeriods" to if (multiplePeriods) reportingPeriods else reportingPeriod,
-            "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
+            "reportingPeriods" to reportingPeriods,
+            "message" to contactMessage,
         )
 
         val email = DataRequestedClaimOwnershipEmailFactory(
@@ -46,7 +46,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
 
     @Test
     fun `validate that the output of the claim ownership mail is correctly formatted`() {
-        val email = buildTestEmail(true)
+        val email = buildTestEmail(reportingPeriods)
 
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
@@ -67,32 +67,17 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
 
     @Test
     fun `validate that the text content of the claim ownership mail is correctly formatted with multiple periods`() {
-        val email = buildTestEmail(true)
-        val hasMultipleReportingPeriods = "s"
-        assertTrue(
-            email.content.textContent.contains(
-                "Greetings!\n\nYou have been invited to provide data on Dataland.\n",
-            ),
-        )
-        assertTrue(
-            email.content.textContent.contains(
-                " from $companyName for the year$hasMultipleReportingPeriods",
-            ),
-        )
-        assertTrue(email.content.textContent.contains(" $reportingPeriods.\n"))
-        assertTrue(email.content.textContent.contains("User $requesterEmail sent the following message:\n"))
-        assertTrue(email.content.textContent.contains(contactMessage))
-        assertTrue(
-            email.content.textContent.contains(
-                "\n\nRegister as a data owner on $proxyPrimaryUrl/companies/$companyId",
-            ),
-        )
+        validateTextContent(reportingPeriods)
     }
 
     @Test
     fun `validate that the text content of the claim ownership mail is correctly formatted with single period`() {
-        val email = buildTestEmail(false)
-        val hasMultipleReportingPeriods = ""
+        validateTextContent(reportingPeriod)
+    }
+
+    fun validateTextContent(reportingPeriods: String) {
+        val email = buildTestEmail(reportingPeriods)
+        val pluralSuffix = if (reportingPeriods.contains(",")) "s" else ""
         assertTrue(
             email.content.textContent.contains(
                 "Greetings!\n\nYou have been invited to provide data on Dataland.\n",
@@ -100,10 +85,10 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
         )
         assertTrue(
             email.content.textContent.contains(
-                " from $companyName for the year$hasMultipleReportingPeriods",
+                " from $companyName for the year$pluralSuffix",
             ),
         )
-        assertTrue(email.content.textContent.contains(" $reportingPeriod.\n"))
+        assertTrue(email.content.textContent.contains(" $reportingPeriods.\n"))
         assertTrue(email.content.textContent.contains("User $requesterEmail sent the following message:\n"))
         assertTrue(email.content.textContent.contains(contactMessage))
         assertTrue(
