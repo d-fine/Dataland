@@ -9,16 +9,16 @@ import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
-import org.dataland.e2etests.utils.findAggregatedDataRequestDataTypeForFramework
-import org.dataland.e2etests.utils.findRequestControllerApiDataTypeForFramework
-import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
-import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifierType
-import org.dataland.e2etests.utils.generateRandomIsin
-import org.dataland.e2etests.utils.generateRandomLei
-import org.dataland.e2etests.utils.generateRandomPermId
-import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
-import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
+import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
+import org.dataland.e2etests.utils.communityManager.findAggregatedDataRequestDataTypeForFramework
+import org.dataland.e2etests.utils.communityManager.findRequestControllerApiDataTypeForFramework
+import org.dataland.e2etests.utils.communityManager.generateCompaniesWithOneRandomValueForEachIdentifierType
+import org.dataland.e2etests.utils.communityManager.generateMapWithOneRandomValueForEachIdentifierType
+import org.dataland.e2etests.utils.communityManager.generateRandomIsin
+import org.dataland.e2etests.utils.communityManager.generateRandomLei
+import org.dataland.e2etests.utils.communityManager.generateRandomPermId
+import org.dataland.e2etests.utils.communityManager.getUniqueDatalandCompanyIdForIdentifierValue
+import org.dataland.e2etests.utils.communityManager.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
@@ -201,24 +201,21 @@ class AggregatedDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
         )
-        println(response)
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(status = RequestStatus.open)
         assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(
             aggregatedDataRequests, datalandCompanyIDForLei,
-            2,
         )
         val aggregatedRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
         assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(
             aggregatedRequestsNoFilter, datalandCompanyIDForLei,
-            2,
         )
     }
 
     private fun assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(
         aggregatedDataRequests: List<AggregatedDataRequest>,
         companyIdentifierValue: String,
-        countOfOpenRequests: Long,
+        countOfOpenRequests: Long = 2, // currently only used with input 2, default added because of linting
     ) {
         val allRequestStati = RequestStatus.entries.toSet()
         assertNumberOfMatchesOnRequestStatusEquals(

@@ -7,13 +7,10 @@ import org.dataland.communitymanager.openApiClient.model.SingleDataRequestRespon
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.utils.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
-import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.util.*
 
-val jwtHelper = JwtAuthenticationHelper()
+private val jwtHelper = JwtAuthenticationHelper()
 private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
 private fun checkThatTheNumberOfStoredReportingPeriodsIsAsExpected(

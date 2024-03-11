@@ -4,16 +4,18 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.e2etests.ADMIN_USER_ID
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
-import org.dataland.e2etests.utils.generateRandomIsin
-import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
+import org.dataland.e2etests.utils.communityManager.generateRandomLei
+import org.dataland.e2etests.utils.communityManager.generateRandomPermId
+import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
+import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -25,91 +27,136 @@ class QueryDataRequestsTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    fun authenticateAsPremiumUser() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-    }
-
-    private lateinit var permIdOfExistingCompany: String
-    private lateinit var companyIdOfExistingCompanyWithPermId: String
+    private val companyIdA = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
+    private val companyIdB = getIdForUploadedCompanyWithIdentifiers(permId = generateRandomPermId())
+    private val timestampBeforePost = retrieveTimeAndWaitOneMillisecond()
 
     @BeforeAll
     fun postDataRequestsBeforeQueryTest() {
-        val isinString = generateRandomIsin()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.isin to isinString),
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                companyIdentifier = companyIdA,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2022", "2023"),
+            ),
         )
-        val requestA = SingleDataRequest(
-            companyIdentifier = isinString,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf("2022"),
+        requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                companyIdentifier = companyIdB,
+                dataType = SingleDataRequest.DataType.p2p,
+                reportingPeriods = setOf("2023"),
+            ),
         )
-        authenticateAsPremiumUser()
-        requestControllerApi.postSingleDataRequest(requestA)
-
-        permIdOfExistingCompany = System.currentTimeMillis().toString()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(
-            mapOf(IdentifierType.permId to permIdOfExistingCompany),
-        )
-
-        val requestB = SingleDataRequest(
-            companyIdentifier = permIdOfExistingCompany,
-            dataType = SingleDataRequest.DataType.sfdr,
-            reportingPeriods = setOf("2021"),
-        )
-        authenticateAsPremiumUser()
-        val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        requestControllerApi.patchDataRequestStatus(UUID.fromString(req2.dataRequestId), RequestStatus.answered)
-        companyIdOfExistingCompanyWithPermId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfExistingCompany)
     }
 
     @Test
     fun `query data requests with no filters and assert that the expected results are being retrieved`() {
-        val allDataRequests = requestControllerApi.getDataRequests()
-        assertTrue(allDataRequests.isNotEmpty())
+        val storedDataRequests = requestControllerApi.getDataRequests().filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(storedDataRequests, 3)
     }
 
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
+        val smeDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.sme,
+        ).filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(0, smeDataRequests.size)
+
+        val p2pDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.p2p,
+        ).filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(1, p2pDataRequests.size)
+        assertEquals(DataTypeEnum.p2p.value, p2pDataRequests.first().dataType)
+
         val lksgDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
-        )
-        assertTrue(lksgDataRequests.isNotEmpty())
-        assertTrue(lksgDataRequests.all { it.dataType == DataTypeEnum.lksg.value })
+        ).filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(2, lksgDataRequests.size)
+        lksgDataRequests.forEach { assertEquals(DataTypeEnum.lksg.value, it.dataType) }
     }
 
     @Test
     fun `query data requests with reporting period filter and assert that the expected results are being retrieved`() {
-        val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
-        assertTrue(reportingPeriod2021DataRequests.isNotEmpty())
-        assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
+        val dataRequestsFor2021 = requestControllerApi.getDataRequests(reportingPeriod = "2021").filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(0, dataRequestsFor2021.size)
+
+        val dataRequestsFor2022 = requestControllerApi.getDataRequests(reportingPeriod = "2022").filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(1, dataRequestsFor2022.size)
+        assertEquals("2022", dataRequestsFor2022.first().reportingPeriod)
+
+        val dataRequestsFor2023 = requestControllerApi.getDataRequests(reportingPeriod = "2023").filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(2, dataRequestsFor2023.size)
+        dataRequestsFor2023.forEach { assertEquals("2023", it.reportingPeriod) }
     }
 
     @Test
     fun `query data requests with request status filter and assert that the expected results are being retrieved`() {
-        val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.answered)
-        assertTrue(resolvedDataRequests.isNotEmpty())
-        assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
+        val dataRequestIdB = UUID.fromString(
+            requestControllerApi.getDataRequests().filter {
+                it.creationTimestamp > timestampBeforePost
+            }.first {
+                it.datalandCompanyId == companyIdB
+            }.dataRequestId,
+        )
+
+        val closedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.closed).filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(0, closedDataRequests.size)
+
+        val storedDataRequestB = requestControllerApi.getDataRequestById(dataRequestIdB)
+        assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
+        assertEquals("2023", storedDataRequestB.reportingPeriod)
+
+        requestControllerApi.patchDataRequestStatus(dataRequestIdB, RequestStatus.answered)
+
+        val answeredDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.answered).filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(1, answeredDataRequests.size)
+        assertEquals(companyIdB, answeredDataRequests.first().datalandCompanyId)
+        assertEquals(RequestStatus.answered, answeredDataRequests.first().requestStatus)
     }
 
     @Test
     fun `query data requests with company id filter and assert that the expected results are being retrieved`() {
-        val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            datalandCompanyId = getUniqueDatalandCompanyIdForIdentifierValue(permIdOfExistingCompany),
-        )
-        assertTrue(specificPermIdDataRequests.isNotEmpty())
-        assertTrue(
-            specificPermIdDataRequests.all {
-                it.datalandCompanyId == getUniqueDatalandCompanyIdForIdentifierValue(permIdOfExistingCompany)
-            },
-        )
-        assertTrue(specificPermIdDataRequests.all { it.datalandCompanyId == companyIdOfExistingCompanyWithPermId })
+        val storedDataRequestsForRandomCompanyId = requestControllerApi.getDataRequests(
+            datalandCompanyId = UUID.randomUUID().toString(),
+        ).filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(0, storedDataRequestsForRandomCompanyId.size)
+
+        val storedDataRequestsForCompanyB = requestControllerApi.getDataRequests(datalandCompanyId = companyIdB)
+            .filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(1, storedDataRequestsForCompanyB.size)
+        assertEquals(companyIdB, storedDataRequestsForCompanyB.first().datalandCompanyId)
+
+        val storedDataRequestsForCompanyA = requestControllerApi.getDataRequests(datalandCompanyId = companyIdA)
+            .filter { it.creationTimestamp > timestampBeforePost }
+        assertEquals(2, storedDataRequestsForCompanyA.size)
+        storedDataRequestsForCompanyA.forEach { assertEquals(companyIdA, it.datalandCompanyId) }
     }
 
     @Test
     fun `query data requests with user id filter and assert that the expected results are being retrieved`() {
-        val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
-        assertTrue(specificUsersDataRequests.isNotEmpty())
-        assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })
+        val dataRequestsByAdmin = requestControllerApi.getDataRequests(userId = ADMIN_USER_ID).filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(0, dataRequestsByAdmin.size)
+
+        val dataRequestsByPremiumUser = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID).filter {
+            it.creationTimestamp > timestampBeforePost
+        }
+        assertEquals(3, dataRequestsByPremiumUser.size)
+        dataRequestsByPremiumUser.forEach { assertEquals(PREMIUM_USER_ID, it.userId) }
     }
 }
