@@ -44,12 +44,10 @@ class SingleDataRequestManager(
         )
         singleDataRequest.companyIdentifier
         val datalandCompanyId = getDatalandCompanyId(singleDataRequest.companyIdentifier)
-        if (datalandCompanyId == null) {
-            throw InvalidInputApiException(
+            ?: throw InvalidInputApiException(
                 "The specified company is unknown to Dataland",
                 "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland",
             )
-        }
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             singleDataRequest, datalandCompanyId,
         )
