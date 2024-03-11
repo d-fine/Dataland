@@ -1,8 +1,11 @@
 package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -19,11 +22,13 @@ import org.mockito.Mockito
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
-class BulkDataRequestMessageBuilderTest {
+
+class BulkDataRequestEmailMessageSenderTest {
     val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
     private val correlationId = UUID.randomUUID().toString()
+    private val companyName = "Company Name"
     private val bulkDataRequest = BulkDataRequest(
         companyIdentifiers = setOf(
             "AR8756188701," +
@@ -34,11 +39,10 @@ class BulkDataRequestMessageBuilderTest {
         reportingPeriods = setOf("2020, 2023"),
     )
     private val acceptedCompanyIdentifiers = listOf("AR8756188701,9856177321")
-    fun formatReportingPeriods(reportingPeriods: Set<String>) =
-        reportingPeriods.toList().sorted().joinToString(", ")
+    private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
 
     @BeforeEach
-    fun setupAuthentication() {
+    fun setup() {
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",
@@ -48,6 +52,14 @@ class BulkDataRequestMessageBuilderTest {
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
+        val companyApiMock = Mockito.mock(CompanyDataControllerApi::class.java)
+        val companyInfoMock = Mockito.mock(CompanyInformation::class.java)
+        Mockito.`when`(companyInfoMock.companyName).thenReturn(companyName)
+        Mockito.`when`(companyApiMock.getCompanyInfo(ArgumentMatchers.anyString())).thenReturn(companyInfoMock)
+        bulkDataRequestEmailMessageSender = BulkDataRequestEmailMessageSender(
+            cloudEventMessageHandler = cloudEventMessageHandlerMock,
+            objectMapper = objectMapper,
+        )
     }
 
     private fun buildInternalBulkEmailMessageMock() {
@@ -88,24 +100,10 @@ class BulkDataRequestMessageBuilderTest {
     @Test
     fun `validate that the output of the bulk internal email message sender is correctly build`() {
         buildInternalBulkEmailMessageMock()
-        val properties = mapOf(
-            "User" to authenticationMock.userDescription,
-            "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
-            "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
-            "Accepted Companies (Dataland ID)" to acceptedCompanyIdentifiers.joinToString(", "),
-        )
-        val message = InternalEmailMessage(
-            "Dataland Bulk Data Request",
-            "A bulk data request has been submitted",
-            "Bulk Data Request",
-            properties,
-        )
-        cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendInternalEmail,
+        bulkDataRequestEmailMessageSender.sendBulkDataRequestInternalMessage(
+            bulkDataRequest,
+            acceptedCompanyIdentifiers,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
         )
     }
 }

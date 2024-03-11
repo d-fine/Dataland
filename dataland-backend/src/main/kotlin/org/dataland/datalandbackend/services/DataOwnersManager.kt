@@ -206,9 +206,16 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
+        val companyName = companyRepository.findById(companyId).getOrElse {
+            throw ResourceNotFoundApiException(
+                "Company is invalid",
+                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+            )
+        }.companyName
         dataOwnershipEmailMessageSender.sendDataOwnershipInternalEmailMessage(
             userAuthentication = userAuthentication as DatalandJwtAuthentication,
             datalandCompanyId = companyId,
+            companyName = companyName,
             comment = comment,
             correlationId = correlationId,
         )
