@@ -42,7 +42,6 @@ class SingleDataRequestManager(
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        singleDataRequest.companyIdentifier
         val datalandCompanyId = getDatalandCompanyId(singleDataRequest.companyIdentifier)
             ?: throw InvalidInputApiException(
                 "The specified company is unknown to Dataland",
