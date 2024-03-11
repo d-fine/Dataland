@@ -1,7 +1,20 @@
 package org.dataland.e2etests.utils.communityManager
 
+import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.model.RequestStatus
+import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequestResponse
+import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.JwtAuthenticationHelper
+import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.getNewlyStoredRequestsAfterTimestamp
+import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
+import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
+import java.util.*
+
+val jwtHelper = JwtAuthenticationHelper()
+private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
 private fun checkThatTheNumberOfStoredReportingPeriodsIsAsExpected(
     singleDataRequestResponse: SingleDataRequestResponse,
@@ -94,4 +107,31 @@ fun checkThatAllReportingPeriodsAreTreatedAsExpected(
     checkThatSingleDataRequestResponseMessageIsAsExpected(
         singleDataRequestResponse, expectedNumberOfStoredReportingPeriods, expectedNumberOfDuplicateReportingPeriods,
     )
+}
+
+fun postSingleDataRequestForReportingPeriodAndUpdateStatus(
+    companyIdentifier: String,
+    reportingPeriod: String,
+    newStatus: RequestStatus? = null,
+) {
+    val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+    val response = requestControllerApi.postSingleDataRequest(
+        SingleDataRequest(
+            companyIdentifier = companyIdentifier,
+            dataType = SingleDataRequest.DataType.lksg,
+            reportingPeriods = setOf(reportingPeriod),
+        ),
+    )
+    checkThatAllReportingPeriodsAreTreatedAsExpected(
+        singleDataRequestResponse = response,
+        expectedNumberOfStoredReportingPeriods = 1,
+        expectedNumberOfDuplicateReportingPeriods = 0,
+    )
+    val dataRequestId = UUID.fromString(
+        getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
+    )
+    if (newStatus != null) {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, newStatus)
+    }
 }

@@ -15,6 +15,7 @@ import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
 import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
+import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
@@ -289,5 +290,33 @@ class SingleDataRequestsTest {
             requestControllerApi.getDataRequests()
         }
         assertEquals("Client error : 403 ", clientException.message)
+    }
+
+    @Test
+    fun `post a duplicate request and check that it is only stored if previous in final status`() {
+        val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2021")
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.answered)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.closed)
+        val timestampBeforeFinalRequest = retrieveTimeAndWaitOneMillisecond()
+        val response = requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                companyIdentifier = companyId,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2021", "2022", "2023"),
+            ),
+        )
+        checkThatAllReportingPeriodsAreTreatedAsExpected(
+            singleDataRequestResponse = response,
+            expectedNumberOfStoredReportingPeriods = 1,
+            expectedNumberOfDuplicateReportingPeriods = 2,
+        )
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeFinalRequest)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, 1)
+        assertEquals(
+            "2023",
+            newlyStoredRequests[0].reportingPeriod,
+            "The reporting period of the one newly stored request is not as expected.",
+        )
     }
 }
