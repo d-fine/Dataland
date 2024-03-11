@@ -8,7 +8,7 @@ import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTabl
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { type LksgProcurementType } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
-import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
+import { convertNace, convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { type LksgProductionSite } from "@clients/backend";
@@ -110,7 +110,7 @@ function convertLksgSubcontractingCompaniesToListForModal(datasetValue: {
   for (const [countryCode, naceCodes] of Object.entries(datasetValue)) {
     listForModal.push(<LksgSubcontractingCompaniesDisplayFormat>{
       country: getCountryNameFromCountryCode(countryCode),
-      naceCodes: naceCodes,
+      naceCodes: convertNace(naceCodes),
     });
   }
   return listForModal;
