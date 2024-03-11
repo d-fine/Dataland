@@ -42,6 +42,6 @@ class KeycloakUserControllerApiService(
             response.body!!.string(),
             User::class.java,
         )
-        return parsedResponseBody.email ?: "noEmail@todo.do" // todo
+        return parsedResponseBody.email ?: ""
     }
 }
