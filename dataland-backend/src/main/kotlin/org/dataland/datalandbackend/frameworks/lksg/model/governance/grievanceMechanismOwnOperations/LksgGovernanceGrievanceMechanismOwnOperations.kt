@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.governance.grievanceMechanismOwnOperations
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.lksg.custom.RiskPosition
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.DataPointMinimumValue
@@ -29,7 +30,7 @@ data class LksgGovernanceGrievanceMechanismOwnOperations(
     @field:Valid()
     val complaintsNumber: BaseDataPoint<BigDecimal>? = null,
 
-    val complaintsRiskPosition: EnumSet<ComplaintsRiskPositionOptions>? = null,
+    val complaintsRiskPosition: EnumSet<RiskPosition>? = null,
 
     val complaintsReason: String? = null,
 
