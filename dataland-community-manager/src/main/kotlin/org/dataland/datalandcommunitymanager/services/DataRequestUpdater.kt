@@ -90,9 +90,7 @@ class DataRequestUpdater(
                 ),
             )
             dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
-                metaData.companyId,
-                metaData.reportingPeriod,
-                metaData.dataType.value,
+                metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
             )
             sendDataRequestedAnsweredEmails(dataRequestEntities, metaData.companyId)
             logger.info(
