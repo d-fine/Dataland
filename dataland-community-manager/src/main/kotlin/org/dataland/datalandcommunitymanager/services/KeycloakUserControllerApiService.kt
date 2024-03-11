@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * Class to manage the clients interaction with keycloak,
+ * e.g. retrieving user information like email address
+ */
 @Service("KeycloakUserControllerApiService")
 class KeycloakUserControllerApiService(
     @Autowired private val objectMapper: ObjectMapper,
