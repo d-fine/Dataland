@@ -42,12 +42,8 @@ class SingleDataRequestManager(
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
-            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            singleDataRequest.companyIdentifier
-        } else {
-            utils.getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
-        }
+        singleDataRequest.companyIdentifier
+        val datalandCompanyId = getDatalandCompanyId(singleDataRequest.companyIdentifier)
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
                 "The specified company is unknown to Dataland",
@@ -64,6 +60,16 @@ class SingleDataRequestManager(
             correlationId = correlationId,
         )
         return storedDataRequests
+    }
+
+    private fun getDatalandCompanyId(companyIdentifier: String): String? {
+        val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
+            checkIfCompanyIsValid(companyIdentifier)
+            companyIdentifier
+        } else {
+            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+        }
+        return datalandCompanyId
     }
 
     private fun validateRequest(singleDataRequest: SingleDataRequest) {
