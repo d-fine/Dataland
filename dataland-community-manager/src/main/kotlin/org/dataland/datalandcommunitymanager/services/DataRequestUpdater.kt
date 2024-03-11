@@ -101,12 +101,13 @@ class DataRequestUpdater(
             )
         }
     }
+
     /**
      * Method to informs users by mail that their data requests has been answered.
      * @param dataRequestEntities list of answered dataRequestEntity
      * @param companyId Dataland companyId
      */
-    private fun sendDataRequestedAnsweredEmails(dataRequestEntities: List<DataRequestEntity>, companyId : String){
+    private fun sendDataRequestedAnsweredEmails(dataRequestEntities: List<DataRequestEntity>, companyId: String) {
         val companyName = companyDataControllerApi.getCompanyInfo(companyId).companyName
         dataRequestEntities.forEach {
             dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, companyName = companyName)

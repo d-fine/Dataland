@@ -89,7 +89,7 @@ class DataRequestAnsweredEmailFactoryTest {
     }
     private fun validateEmailText(email: Email) {
         Assertions.assertTrue(
-            email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n")
+            email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n"),
         )
         Assertions.assertTrue(email.content.textContent.contains("Company: $companyName \n"))
         Assertions.assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
