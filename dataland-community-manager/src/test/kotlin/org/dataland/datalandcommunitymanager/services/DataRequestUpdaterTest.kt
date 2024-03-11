@@ -89,7 +89,7 @@ class DataRequestUpdaterTest {
     }
 
     @BeforeEach
-    fun setUpSecurityMock() {
+    fun setupSecurityMock() {
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "user@requests.com",
