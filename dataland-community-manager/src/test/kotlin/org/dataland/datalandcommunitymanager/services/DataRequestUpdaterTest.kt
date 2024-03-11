@@ -62,20 +62,17 @@ class DataRequestUpdaterTest {
         currentlyActive = false,
         qaStatus = org.dataland.datalandbackend.openApiClient.model.QaStatus.accepted,
     )
-
-    @BeforeEach
-    fun setupDataRequestUpdater() {
+    private fun mockParameterObjects() {
         Mockito.`when`(objectMapper.readValue(jsonString, QaCompletedMessage::class.java))
             .thenReturn(QaCompletedMessage(metaData.dataId, QaStatus.Accepted))
         Mockito.`when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
         Mockito.`when`(
-            dataRequestRepository
-                .searchDataRequestEntity(
-                    searchFilter = GetDataRequestsSearchFilter(
-                        metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
-                    ),
+            dataRequestRepository.searchDataRequestEntity(
+                searchFilter = GetDataRequestsSearchFilter(
+                    metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
                 ),
+            ),
         ).thenReturn(dataRequestEntities)
         Mockito.doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
             metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
@@ -87,6 +84,11 @@ class DataRequestUpdaterTest {
         Mockito.`when`(companyDataControllerApi.getCompanyInfo(metaData.companyId)).thenReturn(
             CompanyInformation(companyName, "", emptyMap(), ""),
         )
+    }
+
+    @BeforeEach
+    fun setupDataRequestUpdater() {
+        mockParameterObjects()
         dataRequestUpdater = DataRequestUpdater(
             messageUtils = messageUtils,
             metaDataControllerApi = metaDataControllerApi,

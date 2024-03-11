@@ -17,7 +17,7 @@ import java.util.*
 /**
  * Manage sending emails to user regarding data requests
  */
-@Service("DataRequestEmailSender")
+@Service("DataRequestedAnsweredEmailSender")
 class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
