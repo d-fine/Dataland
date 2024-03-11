@@ -27,7 +27,8 @@ import java.util.*
 
 class DataRequestUpdaterTest {
     private lateinit var dataRequestUpdater: DataRequestUpdater
-    private val dataRequestedAnsweredEmailMessageSender = Mockito.mock(DataRequestedAnsweredEmailMessageSender::class.java)
+    private val dataRequestedAnsweredEmailMessageSender =
+        Mockito.mock(DataRequestedAnsweredEmailMessageSender::class.java)
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val dataRequestRepository = Mockito.mock(DataRequestRepository::class.java)
     private val metaDataControllerApi = Mockito.mock(MetaDataControllerApi::class.java)
@@ -56,10 +57,8 @@ class DataRequestUpdaterTest {
     fun setupDataRequestUpdater() {
         Mockito.`when`(objectMapper.readValue("", QaCompletedMessage::class.java))
             .thenReturn(QaCompletedMessage(metaData.dataId, QaStatus.Accepted))
-
         Mockito.`when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
-
         Mockito.`when`(
             dataRequestRepository
                 .searchDataRequestEntity(
@@ -68,13 +67,11 @@ class DataRequestUpdaterTest {
                     ),
                 ),
         ).thenReturn(listOf(dummyDataRequestEntity))
-
         Mockito.doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
             metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
         )
         Mockito.doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
             .sendDataRequestedAnsweredEmail(dummyDataRequestEntity)
-
         Mockito.`when`(companyDataControllerApi.getCompanyInfo(metaData.companyId)).thenReturn(
             CompanyInformation(companyName, "", emptyMap(), ""),
         )
