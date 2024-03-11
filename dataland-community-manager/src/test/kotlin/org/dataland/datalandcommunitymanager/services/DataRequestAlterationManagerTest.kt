@@ -57,7 +57,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that an request answered email is send when a request status is patched to answered`() {
+    fun `validate that a request answered email is send when a request status is patched to answered`() {
         dataRequestAlterationManager.patchDataRequestStatus(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Answered,
@@ -67,7 +67,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that an request answered email is not send when a request status is patched to anything but answered`() {
+    fun `validate that a request answered email is not send when a request status is patched to any but answered`() {
         for (requestStatus in RequestStatus.entries) {
             if (requestStatus == RequestStatus.Answered) {
                 continue
