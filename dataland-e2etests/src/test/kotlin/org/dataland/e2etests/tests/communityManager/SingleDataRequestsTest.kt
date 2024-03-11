@@ -98,6 +98,28 @@ class SingleDataRequestsTest {
     }
 
     @Test
+    fun `post single data request without reporting periods and assert exception`() {
+        val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
+        val clientException = assertThrows<ClientException> {
+            requestControllerApi.postSingleDataRequest(
+                SingleDataRequest(
+                    companyIdentifier = companyId,
+                    dataType = SingleDataRequest.DataType.lksg,
+                    reportingPeriods = setOf(),
+                ),
+            )
+        }
+        check400ClientExceptionErrorMessage(clientException)
+        val responseBody = (clientException.response as ClientError<*>).body as String
+        assertTrue(responseBody.contains("The list of reporting periods must not be empty."))
+        assertTrue(
+            responseBody.contains(
+                "At least one reporting period must be provided. Without, no meaningful request can be created.",
+            ),
+        )
+    }
+
+    @Test
     fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
         val unknownCompanyId = UUID.randomUUID().toString()
         val singleDataRequest = SingleDataRequest(
