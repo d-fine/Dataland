@@ -1,7 +1,10 @@
 package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -16,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.reset
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -29,6 +33,8 @@ class SingleDataRequestEmailMessageSenderTest {
     private val reportingPeriods = setOf("2022", "2023")
     private val datalandCompanyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val correlationId = UUID.randomUUID().toString()
+
+    private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
 
     fun formatReportingPeriods(reportingPeriods: Set<String>) =
         reportingPeriods.toList().sorted().joinToString(", ")
@@ -44,6 +50,16 @@ class SingleDataRequestEmailMessageSenderTest {
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
+        reset(cloudEventMessageHandlerMock)
+        val companyApiMock = mock(CompanyDataControllerApi::class.java)
+        val companyInfoMock = mock(CompanyInformation::class.java)
+        `when`(companyInfoMock.companyName).thenReturn(companyName)
+        `when`(companyApiMock.getCompanyInfo(anyString())).thenReturn(companyInfoMock)
+        singleDataRequestEmailMessageSender = SingleDataRequestEmailMessageSender(
+            cloudEventMessageHandler = cloudEventMessageHandlerMock,
+            objectMapper = objectMapper,
+            companyApi = companyApiMock,
+        )
     }
 
     private fun buildInternalEmailMessageMock() {
@@ -80,25 +96,11 @@ class SingleDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the internal email message sender is correctly build`() {
         buildInternalEmailMessageMock()
-        val properties = mapOf(
-            "User" to authenticationMock.userDescription,
-            "Data Type" to DataTypeEnum.lksg.toString(),
-            "Reporting Periods" to formatReportingPeriods(reportingPeriods),
-            "Dataland Company ID" to datalandCompanyId,
-            "Company Name" to companyName,
-        )
-        val message = InternalEmailMessage(
-            "Dataland Single Data Request",
-            "A single data request has been submitted",
-            "Single Data Request",
-            properties,
-        )
-        cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendInternalEmail,
+        singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+            SingleDataRequestEmailMessageSender.MessageInformation(
+                authenticationMock, datalandCompanyId, DataTypeEnum.lksg, reportingPeriods,
+            ),
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
         )
     }
 
@@ -136,25 +138,13 @@ class SingleDataRequestEmailMessageSenderTest {
     @Test
     fun `validate that the output of the external email message sender is correctly build`() {
         buildExternalEmailMessageMock()
-        val properties = mapOf(
-            "companyId" to datalandCompanyId,
-            "companyName" to companyName,
-            "requesterEmail" to authenticationMock.username,
-            "dataType" to DataTypeEnum.p2p.toString(),
-            "reportingPeriods" to formatReportingPeriods(reportingPeriods),
-            "message" to "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        )
-        val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership,
-            receiver = "alphabet@dumy.com",
-            properties = properties,
-        )
-        cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
+        singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+            SingleDataRequestEmailMessageSender.MessageInformation(
+                authenticationMock, datalandCompanyId, DataTypeEnum.p2p, reportingPeriods,
+            ),
+            "alphabet@dumy.com",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
         )
     }
 }
