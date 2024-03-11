@@ -28,12 +28,13 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
     private val companyDataControllerMock = Mockito.mock(CompanyDataControllerApi::class.java)
+    private val keycloakUserControllerApiService = Mockito.mock(KeycloakUserControllerApiService::class.java)
     private val companyName = "Test Inc."
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val correlationId = UUID.randomUUID().toString()
     private val userId = "1234-221-1111elf"
-    private val userEmail = "$userId@testemail.com" //todo
+    private val userEmail = "$userId@testemail.com"
     private val creationTimestamp = 1709820187875
     private val creationTimestampAsDate = "07 Mar 2024, 15:03"
     private val dataTypes = listOf(
@@ -57,6 +58,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
         )
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
+        Mockito.`when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
         SecurityContextHolder.setContext(mockSecurityContext)
         Mockito.`when`(companyDataControllerMock.getCompanyInfo(companyId))
             .thenReturn(
@@ -74,7 +76,8 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
         dataTypes.forEach {
             mockCloudEventMessageHandlerAndSetChecks(it[0], it[1])
             val dataRequestedAnsweredEmailMessageSender =
-                DataRequestedAnsweredEmailMessageSender(cloudEventMessageHandlerMock, objectMapper, companyDataControllerMock)
+                DataRequestedAnsweredEmailMessageSender(cloudEventMessageHandlerMock,
+                    objectMapper, keycloakUserControllerApiService, companyDataControllerMock)
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName, correlationId)
