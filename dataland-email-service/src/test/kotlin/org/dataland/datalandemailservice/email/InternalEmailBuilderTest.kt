@@ -1,10 +1,10 @@
 package org.dataland.datalandemailservice.email
 
 import org.dataland.datalandemailservice.services.InternalEmailBuilder
-import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
+import org.dataland.datalandemailservice.utils.EmailMatchingPattern
+import org.dataland.datalandemailservice.utils.assertEmailMatchesPattern
 import org.dataland.datalandemailservice.utils.toEmailContacts
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class InternalEmailBuilderTest {
@@ -16,7 +16,7 @@ class InternalEmailBuilderTest {
     private val originalProperty = "something"
 
     @Test
-    fun `validate that the the internal email builder adds the environment property`() {
+    fun `validate that the internal email builder adds the environment property`() {
         val message = InternalEmailMessage(
             subject = "SUBJECT",
             textTitle = "Text Title",
@@ -30,13 +30,16 @@ class InternalEmailBuilderTest {
             semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
             semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
         ).buildInternalEmail(message)
-        assertEmailContactInformationEquals(
-            EmailContact(senderEmail, senderName),
-            receiverEmails.toEmailContacts(),
-            ccEmails.toEmailContacts(),
+        assertEmailMatchesPattern(
             email,
+            EmailMatchingPattern(
+                expectedSender = EmailContact(senderEmail, senderName),
+                expectedReceiversGetter = { receiverEmails.toEmailContacts() },
+                expectedCc = ccEmails.toEmailContacts(),
+                expectedSubject = "SUBJECT",
+                expectedToBeContainedInTextContent = setOf("Environment: $environment", "Original: $originalProperty"),
+                expectedToBeContainedInHtmlContent = setOf(),
+            ),
         )
-        assertTrue(email.content.textContent.contains("Environment: $environment"))
-        assertTrue(email.content.textContent.contains("Original: $originalProperty"))
     }
 }
