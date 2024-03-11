@@ -15,8 +15,9 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestEmailMessageSenderTest {
     val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
@@ -39,7 +41,7 @@ class SingleDataRequestEmailMessageSenderTest {
     fun formatReportingPeriods(reportingPeriods: Set<String>) =
         reportingPeriods.toList().sorted().joinToString(", ")
 
-    @BeforeEach
+    @BeforeAll
     fun setup() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
