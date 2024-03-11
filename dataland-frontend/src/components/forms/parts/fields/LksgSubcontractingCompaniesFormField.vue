@@ -65,14 +65,13 @@ export default defineComponent({
   },
   watch: {
     industriesPerCountry() {
-      console.log("called", this.industriesPerCountry, this.industriesPerCountry, this.selectedCountries);
       if (this.industriesPerCountry == undefined) {
         return;
       }
-      if (this.industriesPerCountry.size > this.selectedCountries.length) {
-        this.selectedCountries = Object.keys(this.industriesPerCountry);
-        console.log("a", Object.keys(this.industriesPerCountry));
-        console.log("b", this.selectedCountries);
+      if (Object.keys(this.industriesPerCountry).length > this.selectedCountries.length) {
+        this.selectedCountries = Object.keys(this.industriesPerCountry).map((countryCode) =>
+          this.allCountries.find((country) => country.value == countryCode),
+        );
       }
     },
   },
