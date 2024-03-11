@@ -5,7 +5,6 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.communitymanager.openApiClient.model.SingleDataRequestResponse
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -16,6 +15,7 @@ import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAn
 import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
+import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
@@ -144,22 +144,6 @@ class SingleDataRequestsTest {
         )
     }
 
-    private fun postStandardSingleDataRequest(
-        companyIdentifier: String,
-        contacts: Set<String>? = null,
-        message: String? = null,
-    ): SingleDataRequestResponse {
-        return requestControllerApi.postSingleDataRequest(
-            SingleDataRequest(
-                companyIdentifier = companyIdentifier,
-                dataType = SingleDataRequest.DataType.sfdr,
-                reportingPeriods = setOf("2022"),
-                contacts = contacts,
-                message = message,
-            ),
-        )
-    }
-
     @Test
     fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
@@ -248,38 +232,6 @@ class SingleDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.closed)
-    }
-
-    @Test
-    fun `patch a non existing dataRequestId and assert exception`() {
-        val nonExistingDataRequestId = UUID.randomUUID()
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(nonExistingDataRequestId, RequestStatus.answered)
-        }
-        val responseBody = (clientException.response as ClientError<*>).body as String
-
-        assertEquals("Client error : 404 ", clientException.message)
-        assertTrue(
-            responseBody.contains("Dataland does not know the Data request ID $nonExistingDataRequestId"),
-        )
-    }
-
-    @Test
-    fun `patch data request as a reader and assert that this is forbidden`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId = UUID.fromString(
-            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-        )
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.answered)
-        }
-        assertEquals("Client error : 403 ", clientException.message)
     }
 
     @Test

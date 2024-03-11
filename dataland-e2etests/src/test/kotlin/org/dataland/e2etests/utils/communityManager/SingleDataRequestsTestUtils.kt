@@ -135,3 +135,19 @@ fun postSingleDataRequestForReportingPeriodAndUpdateStatus(
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, newStatus)
     }
 }
+
+fun postStandardSingleDataRequest(
+    companyIdentifier: String,
+    contacts: Set<String>? = null,
+    message: String? = null,
+): SingleDataRequestResponse {
+    return requestControllerApi.postSingleDataRequest(
+        SingleDataRequest(
+            companyIdentifier = companyIdentifier,
+            dataType = SingleDataRequest.DataType.sfdr,
+            reportingPeriods = setOf("2022"),
+            contacts = contacts,
+            message = message,
+        ),
+    )
+}

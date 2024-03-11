@@ -331,8 +331,8 @@ fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWit
 }
 
 fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestStatus) {
-    val retrievedStoredDataRequest = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-        .getDataRequestById(dataRequestId)
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    val retrievedStoredDataRequest = requestControllerApi.getDataRequestById(dataRequestId)
     assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
 }
 

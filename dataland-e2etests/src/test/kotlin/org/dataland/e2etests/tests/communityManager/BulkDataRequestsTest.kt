@@ -3,7 +3,6 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -19,6 +18,7 @@ import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAn
 import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
+import org.dataland.e2etests.utils.communityManager.retrieveDataRequestIdForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.generateRandomIsin
@@ -27,7 +27,6 @@ import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.getUniqueDatalandCompanyIdForIdentifierValue
-import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -35,7 +34,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BulkDataRequestsTest {
@@ -152,18 +150,6 @@ class BulkDataRequestsTest {
             newlyStoredRequestsAfterDuplicates[0].reportingPeriod,
             "The reporting period of the one newly stored request is not as expected.",
         )
-    }
-
-    fun retrieveDataRequestIdForReportingPeriodAndUpdateStatus(
-        dataRequests: List<StoredDataRequest>,
-        reportingPeriod: String,
-        newStatus: RequestStatus,
-    ) {
-        val dataRequestId = UUID.fromString(
-            dataRequests.filter { it.reportingPeriod == reportingPeriod }[0].dataRequestId,
-        )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, newStatus)
     }
 
     @Test
