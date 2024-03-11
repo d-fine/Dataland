@@ -12,7 +12,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.communityManager.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
-import org.dataland.e2etests.utils.communityManager.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
+import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.generateRandomPermId
@@ -70,7 +70,7 @@ class SingleDataRequestsTest {
             )
         }
         reportingPeriods.forEach {
-            checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+            checkThatDataRequestExistsExactlyOnceInRecentlyStored(
                 newlyStoredRequests, SingleDataRequest.DataType.lksg.value, it, companyId,
             )
         }

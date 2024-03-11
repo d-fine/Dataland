@@ -137,7 +137,7 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
     )
 }
 
-fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
     framework: String,
     reportingPeriod: String,

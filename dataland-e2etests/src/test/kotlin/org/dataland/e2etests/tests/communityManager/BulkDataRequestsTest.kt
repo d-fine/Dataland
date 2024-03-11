@@ -13,8 +13,8 @@ import org.dataland.e2etests.utils.communityManager.causeClientExceptionByBulkDa
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForAmbivalentIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
+import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
 import org.dataland.e2etests.utils.communityManager.checkThatMessageIsAsExpected
-import org.dataland.e2etests.utils.communityManager.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
@@ -63,7 +63,7 @@ class BulkDataRequestsTest {
         )
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
-            checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+            checkThatDataRequestExistsExactlyOnceInRecentlyStored(
                 newlyStoredRequests, dataTypes.random().value, reportingPeriods.random(),
                 getUniqueDatalandCompanyIdForIdentifierValue(it),
             )
@@ -117,7 +117,7 @@ class BulkDataRequestsTest {
             newlyStoredRequests,
             (identifiersForBulkRequest.size - 2) * frameworksForBulkRequest.size,
         )
-        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+        checkThatDataRequestExistsExactlyOnceInRecentlyStored(
             newlyStoredRequests, frameworksForBulkRequest[0].value, reportingPeriod, companyId,
         )
     }
