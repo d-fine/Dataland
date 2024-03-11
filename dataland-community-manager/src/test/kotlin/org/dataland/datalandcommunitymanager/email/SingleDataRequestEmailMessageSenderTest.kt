@@ -51,7 +51,6 @@ class SingleDataRequestEmailMessageSenderTest {
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
-        reset(cloudEventMessageHandlerMock)
         val companyApiMock = mock(CompanyDataControllerApi::class.java)
         val companyInfoMock = mock(CompanyInformation::class.java)
         `when`(companyInfoMock.companyName).thenReturn(companyName)
