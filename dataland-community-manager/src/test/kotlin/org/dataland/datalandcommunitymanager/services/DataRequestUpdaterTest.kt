@@ -35,6 +35,7 @@ class DataRequestUpdaterTest {
     private val objectMapper = Mockito.mock(ObjectMapper::class.java)
     private val companyDataControllerApi = Mockito.mock(CompanyDataControllerApi::class.java)
     private val messageUtils = MessageQueueUtils()
+    private val jsonString = "jsonString"
     private val dataRequestEntities: List<DataRequestEntity> = listOf(
         DataRequestEntity(
             userId = "",
@@ -64,7 +65,7 @@ class DataRequestUpdaterTest {
 
     @BeforeEach
     fun setupDataRequestUpdater() {
-        Mockito.`when`(objectMapper.readValue("", QaCompletedMessage::class.java))
+        Mockito.`when`(objectMapper.readValue(jsonString, QaCompletedMessage::class.java))
             .thenReturn(QaCompletedMessage(metaData.dataId, QaStatus.Accepted))
         Mockito.`when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
@@ -111,7 +112,7 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `validate that an request answered email is send when a request status is updated`() {
-        dataRequestUpdater.changeRequestStatusAfterUpload("", MessageType.QaCompleted)
+        dataRequestUpdater.changeRequestStatusAfterUpload(jsonString, MessageType.QaCompleted)
         dataRequestEntities.forEach {
             Mockito.verify(dataRequestedAnsweredEmailMessageSender)
                 .sendDataRequestedAnsweredEmail(it, companyName)
