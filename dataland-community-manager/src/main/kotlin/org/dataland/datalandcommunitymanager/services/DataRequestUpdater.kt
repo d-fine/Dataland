@@ -69,7 +69,6 @@ class DataRequestUpdater(
     fun changeRequestStatusAfterUpload(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)

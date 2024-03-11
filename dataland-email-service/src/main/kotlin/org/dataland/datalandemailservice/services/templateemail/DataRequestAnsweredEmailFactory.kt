@@ -43,7 +43,7 @@ class DataRequestAnsweredEmailFactory(
                     "Your data request has been answered.\n\n",
             )
             .append("Company: ${properties[keys.companyName]} \n")
-            .append("Framework: ${properties[keys.dataType]} \n")
+            .append("Framework: ${properties[keys.dataTypeDescription]} \n")
             .append("Reporting period: ${properties[keys.reportingPeriod]} \n\n")
             .append("Request created: ${properties[keys.creationDate]} \n\n")
             .append("Go to your data requests:\n")
