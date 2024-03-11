@@ -73,6 +73,7 @@ class DataRequestedAnsweredEmailMessageSender(
      */
     private fun convertUnitTimeInMsToDate(creationTimestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
+        dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
         return dateFormat.format(creationTimestamp)
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -27,6 +28,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
     private val companyDataControllerMock = Mockito.mock(CompanyDataControllerApi::class.java)
+    private val keycloakUserControllerApiService = Mockito.mock(KeycloakUserControllerApiService::class.java)
     private val companyName = "Test Inc."
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
@@ -56,6 +58,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
         )
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
+        Mockito.`when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
         SecurityContextHolder.setContext(mockSecurityContext)
         Mockito.`when`(companyDataControllerMock.getCompanyInfo(companyId))
             .thenReturn(
@@ -71,9 +74,12 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            setCloudEventMessageHandlerMockAndSetChecks(it[0], it[1])
+            mockCloudEventMessageHandlerAndSetChecks(it[0], it[1])
             val dataRequestedAnsweredEmailMessageSender =
-                DataRequestedAnsweredEmailMessageSender(cloudEventMessageHandlerMock, objectMapper, companyDataControllerMock)
+                DataRequestedAnsweredEmailMessageSender(
+                    cloudEventMessageHandlerMock,
+                    objectMapper, keycloakUserControllerApiService, companyDataControllerMock,
+                )
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName, correlationId)
@@ -89,7 +95,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
             datalandCompanyId = companyId,
         )
     }
-    private fun setCloudEventMessageHandlerMockAndSetChecks(dataType: String, dataTypeDescription: String) {
+    private fun mockCloudEventMessageHandlerAndSetChecks(dataType: String, dataTypeDescription: String) {
         Mockito.`when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
                 ArgumentMatchers.anyString(),
