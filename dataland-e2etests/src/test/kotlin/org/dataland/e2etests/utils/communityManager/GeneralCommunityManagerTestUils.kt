@@ -186,7 +186,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
+fun iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
