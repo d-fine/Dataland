@@ -69,7 +69,6 @@ class DataRequestUpdater(
     fun changeRequestStatusAfterUpload(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
@@ -97,7 +96,7 @@ class DataRequestUpdater(
             sendDataRequestedAnsweredEmails(dataRequestEntities, metaData.companyId)
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
+                        "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
             )
         }
     }
