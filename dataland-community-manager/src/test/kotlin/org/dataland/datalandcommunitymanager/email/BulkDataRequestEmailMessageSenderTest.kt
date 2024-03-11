@@ -66,11 +66,7 @@ class BulkDataRequestEmailMessageSenderTest {
             val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
-            Assertions.assertEquals("Dataland Bulk Data Request", arg1.subject)
-            Assertions.assertEquals("A bulk data request has been submitted", arg1.textTitle)
-            Assertions.assertEquals("Bulk Data Request", arg1.htmlTitle)
-            Assertions.assertEquals(authenticationMock.userDescription, arg1.properties.getValue("User"))
-            Assertions.assertEquals("2020, 2023", arg1.properties.getValue("Reporting Periods"))
+            validateInternalEmailMessageContents(arg1)
             Assertions.assertEquals(
                 bulkDataRequest.dataTypes.joinToString(", ") { it.value },
                 arg1.properties.getValue("Requested Frameworks"),
@@ -84,6 +80,14 @@ class BulkDataRequestEmailMessageSenderTest {
             Assertions.assertEquals(ExchangeName.SendEmail, arg4)
             Assertions.assertEquals(RoutingKeyNames.internalEmail, arg5)
         }
+    }
+
+    private fun validateInternalEmailMessageContents(internalEmailMessage: InternalEmailMessage) {
+        Assertions.assertEquals("Dataland Bulk Data Request", internalEmailMessage.subject)
+        Assertions.assertEquals("A bulk data request has been submitted", internalEmailMessage.textTitle)
+        Assertions.assertEquals("Bulk Data Request", internalEmailMessage.htmlTitle)
+        Assertions.assertEquals(authenticationMock.userDescription, internalEmailMessage.properties.getValue("User"))
+        Assertions.assertEquals("2020, 2023", internalEmailMessage.properties.getValue("Reporting Periods"))
     }
 
     @Test
