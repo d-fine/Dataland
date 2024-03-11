@@ -422,3 +422,44 @@ ul.unstyled-ul-list {
 .display-contents {
   display: contents;
 }
+// Subheader or info sheet
+.sheet {
+  width: 100%;
+  background-color: var(--surface-0);
+  box-shadow: 0 4px 4px 0 #00000005;
+  padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  &--attached {
+    width: 100%;
+    background-color: var(--surface-0);
+    box-shadow: 0 4px 4px 0 #00000005;
+    padding: 0.5rem 1rem 1rem;
+    position: fixed;
+    top: 0;
+  }
+}
+.headline {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.mobile-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  text-align: center;
+
+  &__title {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+.visuals-hidden {
+  visibility: hidden;
+}
