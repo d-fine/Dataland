@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * --- API model ---
- * Contains all relevant info that a user should receive as response when posting a bulk data request to Dataland.
- * @param message contains a text about the result of Dataland processing the bulk data request
+ * Contains all relevant info that a user should receive as response when posting a single data request to Dataland.
+ * @param message contains a text about the result of Dataland processing the single data request
  * @param reportingPeriodsOfStoredDataRequests reporting periods corresponding to the accepted and stored data requests
  * @param reportingPeriodsOfDuplicateDataRequests reporting periods corresponding to duplicate data requests on Dataland
  */
