@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -15,13 +14,11 @@ import org.springframework.stereotype.Component
  * A class that manages generating emails messages for  data ownership request if an ownership does not already exist
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param companyRepository JPA for company data
  */
 @Component
 class DataOwnershipEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyRepository: StoredCompanyRepository,
 ) {
     /**
      * Function that generates the message object for data ownership request mails
@@ -33,10 +30,10 @@ class DataOwnershipEmailMessageSender(
     fun sendDataOwnershipInternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
+        companyName: String,
         comment: String?,
         correlationId: String,
     ) {
-        val companyName = companyRepository.findById(datalandCompanyId).get().companyName
         val properties = mapOf(
             "User" to userAuthentication.userDescription,
             "Company (Dataland ID)" to datalandCompanyId,
