@@ -46,47 +46,61 @@ private fun checkThatSingleDataRequestResponseMessageIsAsExpected(
 ) {
     val totalNumberOfReportingPeriods =
         expectedNumberOfStoredReportingPeriods + expectedNumberOfDuplicateReportingPeriods
-    val errorMessage = "The message sent as part of the response to the single data request is not as expected."
     if (totalNumberOfReportingPeriods == 1) {
-        when (expectedNumberOfDuplicateReportingPeriods) {
-            1 -> assertEquals(
-                "Your data request was not stored, as it was already created by you before and exists on Dataland.",
-                singleDataRequestResponse.message,
-                errorMessage,
-            )
-            else -> assertEquals(
-                "Your data request was stored successfully.",
-                singleDataRequestResponse.message,
-                errorMessage,
-            )
-        }
+        checkThatResponseMessageIsAsExpectedForOnlyOneReportingPeriod(
+            singleDataRequestResponse, expectedNumberOfDuplicateReportingPeriods,
+        )
     } else {
-        when (expectedNumberOfDuplicateReportingPeriods) {
-            0 -> assertEquals(
-                "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored.",
-                singleDataRequestResponse.message,
-                errorMessage,
-            )
-            1 -> assertEquals(
-                "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
-                    "it was already created by you before and exists on Dataland.",
-                singleDataRequestResponse.message,
-                errorMessage,
-            )
-            totalNumberOfReportingPeriods -> assertEquals(
-                "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
-                    "already created by you before and exist on Dataland.",
-                singleDataRequestResponse.message,
-                errorMessage,
-            )
-            else -> assertEquals(
-                "The data requests for $expectedNumberOfDuplicateReportingPeriods of your " +
-                    "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
-                    "created by you before and exist on Dataland.",
-                singleDataRequestResponse.message,
-                errorMessage,
-            )
-        }
+        checkThatResponseMessageIsAsExpectedForMoreThanOneReportingPeriod(
+            singleDataRequestResponse, expectedNumberOfDuplicateReportingPeriods, totalNumberOfReportingPeriods,
+        )
+    }
+}
+
+private fun checkThatResponseMessageIsAsExpectedForOnlyOneReportingPeriod(
+    singleDataRequestResponse: SingleDataRequestResponse,
+    expectedNumberOfDuplicateReportingPeriods: Int,
+) {
+    val errorMessage = "The message sent as part of the response to the single data request is not as expected."
+    when (expectedNumberOfDuplicateReportingPeriods) {
+        1 -> assertEquals(
+            "Your data request was not stored, as it was already created by you before and exists on Dataland.",
+            singleDataRequestResponse.message, errorMessage,
+        )
+        else -> assertEquals(
+            "Your data request was stored successfully.",
+            singleDataRequestResponse.message, errorMessage,
+        )
+    }
+}
+
+private fun checkThatResponseMessageIsAsExpectedForMoreThanOneReportingPeriod(
+    singleDataRequestResponse: SingleDataRequestResponse,
+    expectedNumberOfDuplicateReportingPeriods: Int,
+    totalNumberOfReportingPeriods: Int,
+) {
+    val errorMessage = "The message sent as part of the response to the single data request is not as expected."
+    when (expectedNumberOfDuplicateReportingPeriods) {
+        0 -> assertEquals(
+            "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored.",
+            singleDataRequestResponse.message, errorMessage,
+        )
+        1 -> assertEquals(
+            "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
+                "it was already created by you before and exists on Dataland.",
+            singleDataRequestResponse.message, errorMessage,
+        )
+        totalNumberOfReportingPeriods -> assertEquals(
+            "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
+                "already created by you before and exist on Dataland.",
+            singleDataRequestResponse.message, errorMessage,
+        )
+        else -> assertEquals(
+            "The data requests for $expectedNumberOfDuplicateReportingPeriods of your " +
+                "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
+                "created by you before and exist on Dataland.",
+            singleDataRequestResponse.message, errorMessage,
+        )
     }
 }
 
