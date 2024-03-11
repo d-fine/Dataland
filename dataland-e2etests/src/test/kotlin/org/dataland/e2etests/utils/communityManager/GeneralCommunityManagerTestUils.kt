@@ -1,6 +1,5 @@
 package org.dataland.e2etests.utils.communityManager
 
-import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
@@ -13,6 +12,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import java.time.Instant
@@ -112,14 +112,14 @@ fun checkThatMessageIsAsExpected(
 
         1 -> assertEquals(
             "One of your $totalNumberOfCompanyIdentifiers distinct company identifiers was rejected " +
-                    "because it could not be matched with an existing company on Dataland.",
+                "because it could not be matched with an existing company on Dataland.",
             requestResponse.message,
             errorMessage,
         )
 
         else -> assertEquals(
             "$expectedNumberOfRejectedIdentifiers of your $totalNumberOfCompanyIdentifiers distinct company " +
-                    "identifiers were rejected because they could not be matched with existing companies on Dataland.",
+                "identifiers were rejected because they could not be matched with existing companies on Dataland.",
             requestResponse.message,
             errorMessage,
         )
@@ -147,11 +147,11 @@ fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
             storedDataRequest.dataType == framework &&
-                    storedDataRequest.reportingPeriod == reportingPeriod &&
-                    storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
+                storedDataRequest.reportingPeriod == reportingPeriod &&
+                storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
         }.size,
         "For dataland company Id $dataRequestCompanyIdentifierValue " +
-                "and the framework $framework there is not exactly one newly stored request as expected.",
+            "and the framework $framework there is not exactly one newly stored request as expected.",
     )
 }
 
@@ -169,20 +169,20 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     val companyIdForIdentifierValue = getUniqueDatalandCompanyIdForIdentifierValue(identifierValue)
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
-                aggregatedDataRequest.reportingPeriod == reportingPeriod &&
-                aggregatedDataRequest.datalandCompanyId == companyIdForIdentifierValue
+            aggregatedDataRequest.reportingPeriod == reportingPeriod &&
+            aggregatedDataRequest.datalandCompanyId == companyIdForIdentifierValue
     }
     assertEquals(
         1,
         matchingAggregatedRequests.size,
         "For the $identifierValue and the framework ${framework.value} " +
-                "there is not exactly one aggregated request as expected.",
+            "there is not exactly one aggregated request as expected.",
     )
     assertEquals(
         count,
         matchingAggregatedRequests[0].count,
         "For the aggregated data request with  $identifierValue and the " +
-                "framework ${framework.value} the count is not as expected.",
+            "framework ${framework.value} the count is not as expected.",
     )
 }
 
