@@ -28,16 +28,16 @@ class DataRequestedAnsweredEmailMessageSender(
      * Method to informs user by mail that his request is answered.
      * @param dataRequestEntity the dataRequestEntity
      * @param companyName name of the company
-     * @param correlationId correlation Id
      */
     fun sendDataRequestedAnsweredEmail(
         dataRequestEntity: DataRequestEntity,
-        companyName: String = getCompanyNameById(dataRequestEntity.datalandCompanyId),
-        correlationId: String = UUID.randomUUID().toString(),
+        companyName: String = "",
     ) {
+        val correlationId: String = UUID.randomUUID().toString()
+        val compName = companyName.ifEmpty { getCompanyNameById(dataRequestEntity.datalandCompanyId) }
         val properties = mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
-            "companyName" to companyName,
+            "companyName" to compName,
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriod" to dataRequestEntity.reportingPeriod,
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),

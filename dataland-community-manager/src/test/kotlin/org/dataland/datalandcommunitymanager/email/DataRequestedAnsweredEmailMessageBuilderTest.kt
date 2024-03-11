@@ -21,7 +21,6 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
 
 class DataRequestedAnsweredEmailMessageBuilderTest {
     private val objectMapper = jacksonObjectMapper()
@@ -32,7 +31,6 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
     private val companyName = "Test Inc."
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
-    private val correlationId = UUID.randomUUID().toString()
     private val userId = "1234-221-1111elf"
     private val userEmail = "$userId@testemail.com"
     private val creationTimestamp = 1709820187875
@@ -60,6 +58,8 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
         Mockito.`when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+    private fun setupCompanyDataController() {
         Mockito.`when`(companyDataControllerMock.getCompanyInfo(companyId))
             .thenReturn(
                 CompanyInformation(
@@ -73,6 +73,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
 
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
+        setupCompanyDataController()
         dataTypes.forEach {
             mockCloudEventMessageHandlerAndSetChecks(it[0], it[1])
             val dataRequestedAnsweredEmailMessageSender =
@@ -82,7 +83,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
                 )
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
             dataRequestedAnsweredEmailMessageSender
-                .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName, correlationId)
+                .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName)
             Mockito.reset(cloudEventMessageHandlerMock)
         }
     }
@@ -106,7 +107,6 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
             ),
         ).then() {
             val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
             val arg1 =
@@ -120,7 +120,6 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
             Assertions.assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
             Assertions.assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
             Assertions.assertEquals(MessageType.SendTemplateEmail, arg2)
-            Assertions.assertEquals(correlationId, arg3)
             Assertions.assertEquals(ExchangeName.SendEmail, arg4)
             Assertions.assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
