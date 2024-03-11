@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services.messaging
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
+
 /**
  * Manage sending emails to user regarding data requests
  */
@@ -19,6 +21,7 @@ import java.util.*
 class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     /**
@@ -79,7 +82,7 @@ class DataRequestedAnsweredEmailMessageSender(
      * @returns userEmail as string
      */
     private fun getUserEmailById(userId: String): String {
-        return "$userId@testemail.com" // todo userId -> user mail
+        return keycloakUserControllerApiService.getEmailAddress(userId)
     }
 
     /**
