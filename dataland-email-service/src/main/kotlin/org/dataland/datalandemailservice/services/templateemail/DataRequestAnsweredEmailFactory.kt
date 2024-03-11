@@ -40,7 +40,7 @@ class DataRequestAnsweredEmailFactory(
         return StringBuilder()
             .append(
                 "Great news!\n" +
-                        "Your data request has been answered.\n\n",
+                    "Your data request has been answered.\n\n",
             )
             .append("Company: ${properties[keys.companyName]} \n")
             .append("Framework: ${properties[keys.dataTypeDescription]} \n")
