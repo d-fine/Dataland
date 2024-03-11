@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service("KeycloakUserControllerApiService")
 class KeycloakUserControllerApiService(
@@ -29,7 +28,7 @@ class KeycloakUserControllerApiService(
 
     /**
      * gets the email address of a user in keycloak given the user id
-     * @param userId: the userId of the user in question
+     * @param userId the userId of the user in question
      * @returns the email address
      */
     @Transactional

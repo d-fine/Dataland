@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
@@ -93,14 +94,22 @@ class DataRequestUpdater(
                 metaData.reportingPeriod,
                 metaData.dataType.value,
             )
-            val companyName = companyDataControllerApi.getCompanyInfo(metaData.companyId).companyName
-            dataRequestEntities.forEach {
-                dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, companyName = companyName)
-            }
+            sendDataRequestedAnsweredEmails(dataRequestEntities, metaData.companyId)
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
                     "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
             )
+        }
+    }
+    /**
+     * Method to informs users by mail that their data requests has been answered.
+     * @param dataRequestEntities list of answered dataRequestEntity
+     * @param companyId Dataland companyId
+     */
+    private fun sendDataRequestedAnsweredEmails(dataRequestEntities: List<DataRequestEntity>, companyId : String){
+        val companyName = companyDataControllerApi.getCompanyInfo(companyId).companyName
+        dataRequestEntities.forEach {
+            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, companyName = companyName)
         }
     }
 }
