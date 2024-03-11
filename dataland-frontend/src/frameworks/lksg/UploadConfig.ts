@@ -164,7 +164,7 @@ export const lksgDataModel = [
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
 
-            component: "SubcontractingCompaniesFormField",
+            component: "LksgSubcontractingCompaniesFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
