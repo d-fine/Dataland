@@ -46,9 +46,7 @@ class SingleDataRequestManager(
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             singleDataRequest.companyIdentifier
         } else {
-            utils.getDatalandCompanyIdForIdentifierValue(
-                singleDataRequest.companyIdentifier,
-            )
+            utils.getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
         }
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
