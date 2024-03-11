@@ -65,9 +65,7 @@ class SingleDataRequestsTest {
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, reportingPeriods.size)
         newlyStoredRequests.forEach {
-            assertEquals(
-                companyId, it.datalandCompanyId, "The company ID in a stored data request is not as expected.",
-            )
+            assertEquals(companyId, it.datalandCompanyId, "The company ID in a stored data request is not as expected.")
         }
         reportingPeriods.forEach {
             checkThatDataRequestExistsExactlyOnceInRecentlyStored(
