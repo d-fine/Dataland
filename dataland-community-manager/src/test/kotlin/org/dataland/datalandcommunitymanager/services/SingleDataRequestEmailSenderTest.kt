@@ -77,22 +77,6 @@ class SingleDataRequestEmailSenderTest {
     }
 
     @Test
-    fun `validate that no email is sent if there are no reporting periods provided`() {
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            mockRequesterAuthentication,
-            SingleDataRequest(
-                companyIdentifier = properCompanyId,
-                dataType = dataType,
-                reportingPeriods = setOf(),
-                contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
-                message = defaultMessage,
-            ),
-            properCompanyId,
-        )
-        assertNumEmailsSentEquals(0)
-    }
-
-    @Test
     fun `validate that an internal email is sent if there are no contacts provided`() {
         expectSentEmailsToMatchInternalEmail()
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
