@@ -42,7 +42,7 @@ class BulkDataRequestEmailMessageSenderTest {
     private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender
 
     @BeforeEach
-    fun setupAuthentication() {
+    fun setup() {
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",

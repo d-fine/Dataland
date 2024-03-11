@@ -40,7 +40,7 @@ class SingleDataRequestEmailMessageSenderTest {
         reportingPeriods.toList().sorted().joinToString(", ")
 
     @BeforeEach
-    fun setupAuthentication() {
+    fun setup() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",
