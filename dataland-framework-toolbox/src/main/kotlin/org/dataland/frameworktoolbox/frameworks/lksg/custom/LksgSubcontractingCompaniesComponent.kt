@@ -78,7 +78,7 @@ class LksgSubcontractingCompaniesComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "SubcontractingCompaniesFormField",
+            uploadComponentName = "LksgSubcontractingCompaniesFormField",
         )
     }
 
