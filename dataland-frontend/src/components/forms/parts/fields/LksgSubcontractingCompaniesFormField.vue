@@ -5,46 +5,31 @@
       :label="label"
       placeholder="Countries"
       :description="description"
-      :name="name"
       :options="allCountries"
       optionLabel="label"
       v-model:selectedItemsBindInternal="selectedCountries"
       inputClass="long"
     />
   </div>
-  <div class="form-field border-none">
-    <div class="flex justify-content-between">
-      <UploadFormHeader
-        v-if="selectedCountries.length > 0"
-        label="Subcontracting Companies Industries per Country"
-        description="In which industries do the subcontracting companies in a country operate?"
-        :is-required="false"
-        data-test="directSuppliersHeader"
-      />
-    </div>
-    <FormKit type="group" name="numberOfSuppliersPerCountryCode" label="Suppliers Per Country">
-      <div v-for="el in selectedCountries" :key="el.label">
-        <div class="justify-content-between flex align-items-center" data-test="supplierCountry">
-          <h5>{{ getCountryNameFromCountryCode(el.value) }}</h5>
-          <div class="justify-content-end flex align-items-center">
-            <FormKit
-              type="number"
-              :name="el.value"
-              min="1"
-              step="1"
-              validation="required"
-              validation-label="Number of suppliers per country"
-              data-test="supplierCountryValue"
-              outer-class="my-0 mx-3"
-            />
-            <PrimeButton
-              icon="pi pi-times"
-              rounded
-              class="p-button-icon"
-              data-test="removeElementBtn"
-              @click="removeItemFromListOfSelectedCountries(el.value)"
-            />
-          </div>
+  <div class="form-field">
+    <FormKit type="group" :name="name" v-model="industriesPerCountry">
+      <div v-for="(el, index) in selectedCountries" :key="el.label">
+        <div v-if="index > 0" class="h-2rem" />
+        <div class="w-12 flex justify-content-start align-items-baseline" data-test="subcontractingCountriesIndustries">
+          <PrimeButton
+            icon="pi pi-times"
+            rounded
+            class="p-button-icon"
+            data-test="removeElementBtn"
+            @click="removeItemFromListOfSelectedCountries(el.value)"
+          />
+          <NaceCodeFormField
+            class="border-none w-full"
+            :label="`Subcontracting Companies Industries in ${getCountryNameFromCountryCode(el.value)}`"
+            :description="`In which industries do the subcontracting companies in ${getCountryNameFromCountryCode(el.value)} operate?`"
+            :name="el.value"
+          />
+          <!-- todo which nace codes / enable checkboxes -->
         </div>
       </div>
     </FormKit>
@@ -55,9 +40,8 @@
 import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { FormKit } from "@formkit/vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
-// import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
@@ -66,35 +50,33 @@ export default defineComponent({
   name: "LksgSubcontractingCompaniesFormField",
   components: {
     FormKit,
-    UploadFormHeader,
     MultiSelectFormFieldBindData,
     PrimeButton,
-    // NaceCodeFormField, todo
+    NaceCodeFormField,
   },
   props: BaseFormFieldProps,
   data() {
     return {
+      industriesPerCountry: undefined as { [p: string]: string[] } | undefined,
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
       selectedCountries: [] as { label: string; value: string }[],
       getCountryNameFromCountryCode,
     };
   },
-  mounted() {
-    this.selectedCountries = this.setPreSelectedCountries();
+  watch: {
+    industriesPerCountry() {
+      console.log("called", this.industriesPerCountry, this.industriesPerCountry, this.selectedCountries);
+      if (this.industriesPerCountry == undefined) {
+        return;
+      }
+      if (this.industriesPerCountry.size > this.selectedCountries.length) {
+        this.selectedCountries = Object.keys(this.industriesPerCountry);
+        console.log("a", Object.keys(this.industriesPerCountry));
+        console.log("b", this.selectedCountries);
+      }
+    },
   },
   methods: {
-    /**
-     * Sets the selectedCountries according to the value of which countries have been selected
-     * @returns Pre Selected Countries
-     */
-    setPreSelectedCountries() {
-      return this.allCountries.filter((element) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins,
-        Object.keys(this.selectedProcurementCategories?.[this.name]?.numberOfSuppliersPerCountryCode)?.includes(
-          element.value,
-        ),
-      );
-    },
     /**
      * Remove item from selected countries list
      * @param countryCode - Country code to be removed
