@@ -43,49 +43,40 @@ class DataRequestUpdaterTest {
     )
     private val companyName = "TestCompany"
     private val metaData = DataMetaInformation(
-        dataId= UUID.randomUUID().toString(),
+        dataId = UUID.randomUUID().toString(),
         companyId = "companyId",
         dataType = DataTypeEnum.p2p,
-        uploadTime =0,
-        reportingPeriod= "",
+        uploadTime = 0,
+        reportingPeriod = "",
         currentlyActive = false,
-        qaStatus= org.dataland.datalandbackend.openApiClient.model.QaStatus.accepted
+        qaStatus = org.dataland.datalandbackend.openApiClient.model.QaStatus.accepted,
     )
 
     @BeforeEach
     fun setupDataRequestUpdater() {
-        objectMapper
         Mockito.`when`(objectMapper.readValue("", QaCompletedMessage::class.java))
-            .thenReturn(QaCompletedMessage(
-                identifier= metaData.dataId,
-                validationResult= QaStatus.Accepted,
-            ))
+            .thenReturn(QaCompletedMessage(metaData.dataId, QaStatus.Accepted))
 
-        Mockito.`when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId)).
-        thenReturn(metaData)
+        Mockito.`when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
+            .thenReturn(metaData)
 
         Mockito.`when`(
             dataRequestRepository
-                .searchDataRequestEntity(searchFilter= GetDataRequestsSearchFilter(metaData.dataType.value,"",
-                    RequestStatus.Open, metaData.reportingPeriod, metaData.companyId)
-                )
+                .searchDataRequestEntity(
+                    searchFilter = GetDataRequestsSearchFilter(
+                        metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                    ),
+                ),
         ).thenReturn(listOf(dummyDataRequestEntity))
 
         Mockito.doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
-           metaData.companyId,
-            metaData.reportingPeriod,
-            metaData.dataType.value
+            metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
         )
         Mockito.doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
             .sendDataRequestedAnsweredEmail(dummyDataRequestEntity)
 
         Mockito.`when`(companyDataControllerApi.getCompanyInfo(metaData.companyId)).thenReturn(
-            CompanyInformation(
-                companyName= companyName,
-            headquarters = "",
-        identifiers = emptyMap(),
-        countryCode = "",
-            )
+            CompanyInformation(companyName, "", emptyMap(), ""),
         )
         dataRequestUpdater = DataRequestUpdater(
             messageUtils = messageUtils,
@@ -93,9 +84,12 @@ class DataRequestUpdaterTest {
             companyDataControllerApi = companyDataControllerApi,
             objectMapper = objectMapper,
             dataRequestRepository = dataRequestRepository,
-            dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender
+            dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
         )
+    }
 
+    @BeforeEach
+    fun setUpSecurityMock() {
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "user@requests.com",
