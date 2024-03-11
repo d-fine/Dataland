@@ -50,9 +50,9 @@ class DataRequestAnsweredEmailFactoryTest {
 
     @Test
     fun `validate that the output of the data request answered mail is correctly formatted`() {
-        val emailWithoutOptionalProperties = buildTestEmail(false)
+        val basicEmail = buildTestEmail(false)
         val emailWithOptionalProperties = buildTestEmail(true)
-        validateEmailFormat(emailWithoutOptionalProperties, false)
+        validateEmailFormat(basicEmail, false)
         validateEmailFormat(emailWithOptionalProperties, true)
     }
 
@@ -82,9 +82,9 @@ class DataRequestAnsweredEmailFactoryTest {
 
     @Test
     fun `validate that the text content of the data request answered mail is correctly formatted`() {
-        val emailWithoutOptionalProperties = buildTestEmail(false)
+        val basicEmail = buildTestEmail(false)
         val emailWithOptionalProperties = buildTestEmail(true)
-        validateEmailText(emailWithoutOptionalProperties)
+        validateEmailText(basicEmail)
         validateEmailText(emailWithOptionalProperties)
     }
 
