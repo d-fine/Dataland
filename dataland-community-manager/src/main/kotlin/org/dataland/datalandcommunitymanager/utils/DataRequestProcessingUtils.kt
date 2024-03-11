@@ -140,8 +140,8 @@ class DataRequestProcessingUtils(
         val answeredDataRequests = findAlreadyExistingDataRequestForCurrentUser(
             companyId, framework, reportingPeriod, RequestStatus.Answered,
         )
-        if (openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty()) {
-            return false
+        return if (openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty()) {
+            false
         } else {
             if (openDataRequests != null && openDataRequests.size > 1) {
                 throw ConflictApiException(
@@ -155,7 +155,7 @@ class DataRequestProcessingUtils(
                     "There seems to be more than one answered data request with the same specifications.",
                 )
             }
-            return true
+            true
         }
     }
 }
