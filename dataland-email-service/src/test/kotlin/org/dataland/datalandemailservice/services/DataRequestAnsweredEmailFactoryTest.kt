@@ -29,7 +29,6 @@ class DataRequestAnsweredEmailFactoryTest {
             "dataType" to dataType,
             "reportingPeriod" to reportingPeriod,
             "creationDate" to creationTimestampAsDate,
-            "dataTypeDescription" to dataTypeDescription,
         )
         if (setOptionalProperties) {
             properties = properties + mapOf(
@@ -106,6 +105,6 @@ class DataRequestAnsweredEmailFactoryTest {
                 "\nWithout any actions, your data request will be set to closed automatically in some days.",
             ),
         )
-        Assertions.assertTrue(email.content.textContent.contains("Framework: $dataTypeDescription \n"))
+        Assertions.assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
     }
 }
