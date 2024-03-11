@@ -36,63 +36,41 @@ class SingleDataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
-
-        if (singleDataRequest.reportingPeriods.isEmpty()) {
-            throw InvalidInputApiException(
-                "The list of reporting periods must not be empty.",
-                "At least one reporting period must be provided. Without, no meaningful request can be created.",
-            )
-        }
-
+        validateReportingPeriods(singleDataRequest.reportingPeriods)
         validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
-
         dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
-
-        val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
-            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            singleDataRequest.companyIdentifier
-        } else {
-            utils.getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
-        }
-        if (datalandCompanyId == null) {
-            throw InvalidInputApiException(
-                "The specified company is unknown to Dataland.",
-                "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland.",
-            )
-        }
-
+        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
         singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
-            if (
-                utils.existsDataRequestWithNonFinalStatus(
-                    datalandCompanyId, singleDataRequest.dataType, reportingPeriod,
-                )
-            ) {
+            if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
                 reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    datalandCompanyId,
-                    singleDataRequest.dataType,
-                    reportingPeriod,
+                    companyId, singleDataRequest.dataType, reportingPeriod,
                     singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                     singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 )
                 reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
             }
         }
-
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            singleDataRequest = singleDataRequest,
-            datalandCompanyId,
+            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest, companyId,
         )
-
         return buildResponseForSingleDataRequest(
             singleDataRequest,
             reportingPeriodsOfStoredDataRequests,
             reportingPeriodsOfDuplicateDataRequests,
         )
+    }
+
+    private fun validateReportingPeriods(reportingPeriods: Set<String>) {
+        if (reportingPeriods.isEmpty()) {
+            throw InvalidInputApiException(
+                "The list of reporting periods must not be empty.",
+                "At least one reporting period must be provided. Without, no meaningful request can be created.",
+            )
+        }
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
@@ -103,6 +81,23 @@ class SingleDataRequestManager(
                 "You have provided a message, but no recipients. " +
                     "Without at least one valid email address being provided no message can be forwarded.",
             )
+        }
+    }
+
+    private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
+        val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
+            checkIfCompanyIsValid(companyIdentifier)
+            companyIdentifier
+        } else {
+            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+        }
+        if (datalandCompanyId == null) {
+            throw InvalidInputApiException(
+                "The specified company is unknown to Dataland.",
+                "The company with identifier: $companyIdentifier is unknown to Dataland.",
+            )
+        } else {
+            return datalandCompanyId
         }
     }
 
