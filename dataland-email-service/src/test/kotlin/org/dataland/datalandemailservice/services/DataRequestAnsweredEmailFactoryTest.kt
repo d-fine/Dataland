@@ -56,6 +56,7 @@ class DataRequestAnsweredEmailFactoryTest {
         validateEmailFormat(emailWithoutOptionalProperties, false)
         validateEmailFormat(emailWithOptionalProperties, true)
     }
+
     private fun validateEmailFormat(email: Email, hasOptionalProperties: Boolean) {
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
@@ -87,6 +88,7 @@ class DataRequestAnsweredEmailFactoryTest {
         validateEmailText(emailWithoutOptionalProperties)
         validateEmailText(emailWithOptionalProperties)
     }
+
     private fun validateEmailText(email: Email) {
         Assertions.assertTrue(
             email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n"),
@@ -104,6 +106,6 @@ class DataRequestAnsweredEmailFactoryTest {
                 "\nWithout any actions, your data request will be set to closed automatically in some days.",
             ),
         )
-        Assertions.assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
+        Assertions.assertTrue(email.content.textContent.contains("Framework: $dataTypeDescription \n"))
     }
 }
