@@ -24,6 +24,13 @@ class DataOwnersManagerTest {
     lateinit var mockDataOwnersRepository: DataOwnerRepository
     lateinit var mockCompanyRepository: StoredCompanyRepository
 
+    private val testUserId = UUID.randomUUID().toString()
+    private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+        "username",
+        testUserId,
+        setOf(DatalandRealmRole.ROLE_USER),
+    )
+
     @BeforeEach
     fun initializeDataOwnersManager() {
         mockDataOwnersRepository = mock(DataOwnerRepository::class.java)
@@ -55,7 +62,7 @@ class DataOwnersManagerTest {
             Optional.of(
                 CompanyDataOwnersEntity(
                     "indeed-existing-company-id",
-                    mutableListOf("user-id"),
+                    mutableListOf(testUserId),
                 ),
             ),
         )
@@ -69,10 +76,4 @@ class DataOwnersManagerTest {
         }
         assertTrue(exception.summary.contains("User is already a data owner for company."))
     }
-
-    private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-        "username",
-        "user-id",
-        setOf(DatalandRealmRole.ROLE_USER),
-    )
 }
