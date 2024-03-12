@@ -14,18 +14,19 @@ describe("Component tests for the LksgSubcontractingCompaniesFormField", () => {
         .get('[aria-label="Albania (AL)"]')
         .should("contain", "Albania (AL)")
         .click();
-       cy.get('[data-test="NaceCodeSelectorInput"]').should("be.visible");
-      cy.get('[data-test="NaceCodeSelectorInput"]').click()
-      cy.get('[data-test="NaceCodeSelectorTree"]').find("li").eq(0).should("contain", "A - AGRICULTURE, FORESTRY AND FISHING")
-          .get('[data-test="NaceCodeSelectorCheckbox"]').click();
-
-          cy.get('[data-test="NaceCodeSelectorInput"]').type("62.02");
+      cy.get('[data-test="NaceCodeSelectorInput"]').should("be.visible");
+      cy.get('[data-test="NaceCodeSelectorInput"]').click();
+      cy.get('[data-test="NaceCodeSelectorInput"]').type("01.11");
       cy.get('[data-test="NaceCodeSelectorTree"]')
         .find("li")
         .should("have.length", 4)
         .eq(3)
-        .should("contain", "Computer consultancy activities").click();
-
+        .should("contain", "Growing of cereals (except rice), leguminous crops and oil seeds")
+        .get('[data-pc-section="label"]')
+        .get('[data-test="NaceCodeSelectorCheckbox"]')
+        .last()
+        .click();
+      cy.get("em").should("contain", "close");
     });
   });
 });
