@@ -38,10 +38,11 @@ class SingleDataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
-        validateReportingPeriods(singleDataRequest.reportingPeriods)
-        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
+        validateSingleDataRequest(singleDataRequest)
         val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(
+            singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
+        )
         val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
         val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
         val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
@@ -62,24 +63,20 @@ class SingleDataRequestManager(
             companyId, correlationId,
         )
         return buildResponseForSingleDataRequest(
-            singleDataRequest,
-            reportingPeriodsOfStoredDataRequests,
-            reportingPeriodsOfDuplicateDataRequests,
+            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
         )
     }
 
-    private fun validateReportingPeriods(reportingPeriods: Set<String>) {
-        if (reportingPeriods.isEmpty()) {
+    private fun validateSingleDataRequest(singleDataRequest: SingleDataRequest) {
+        if (singleDataRequest.reportingPeriods.isEmpty()) {
             throw InvalidInputApiException(
                 "The list of reporting periods must not be empty.",
                 "At least one reporting period must be provided. Without, no meaningful request can be created.",
             )
         }
-    }
 
-    private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
-        contacts?.forEach { it.validateIsEmailAddress() }
-        if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
+        singleDataRequest.contacts?.forEach { it.validateIsEmailAddress() }
+        if (singleDataRequest.contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
             throw InvalidInputApiException(
                 "No recipients provided for the message",
                 "You have provided a message, but no recipients. " +
