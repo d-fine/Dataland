@@ -44,10 +44,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredDataRequest"
-                  }
+                  "$ref": "#/components/schemas/SingleDataRequestResponse"
                 }
               }
             }
@@ -767,7 +764,7 @@
         "properties": {
           "companyIdentifier": {
             "type": "string",
-            "example": "DE0005190003"
+            "example": "enterValidIdentifier"
           },
           "dataType": {
             "type": "string",
@@ -806,6 +803,108 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "SingleDataRequestResponse": {
+        "required": [
+          "message",
+          "reportingPeriodsOfDuplicateDataRequests",
+          "reportingPeriodsOfStoredDataRequests"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "reportingPeriodsOfStoredDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriodsOfDuplicateDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BulkDataRequest": {
+        "required": [
+          "companyIdentifiers",
+          "dataTypes",
+          "reportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "companyIdentifiers": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "enterValidIdentifiers"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "p2p",
+              "sme"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
+            }
+          },
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "2022",
+              "2023"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BulkDataRequestResponse": {
+        "required": [
+          "acceptedCompanyIdentifiers",
+          "message",
+          "rejectedCompanyIdentifiers"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "acceptedCompanyIdentifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rejectedCompanyIdentifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -885,83 +984,6 @@
           "creationTimestamp": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "BulkDataRequest": {
-        "required": [
-          "companyIdentifiers",
-          "dataTypes",
-          "reportingPeriods"
-        ],
-        "type": "object",
-        "properties": {
-          "companyIdentifiers": {
-            "uniqueItems": true,
-            "type": "array",
-            "example": [
-              "enterValidIdentifiers"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "dataTypes": {
-            "uniqueItems": true,
-            "type": "array",
-            "example": [
-              "p2p",
-              "sme"
-            ],
-            "items": {
-              "type": "string",
-              "enum": [
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "sme",
-                "esg-questionnaire",
-                "heimathafen"
-              ]
-            }
-          },
-          "reportingPeriods": {
-            "uniqueItems": true,
-            "type": "array",
-            "example": [
-              "2022",
-              "2023"
-            ],
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "BulkDataRequestResponse": {
-        "required": [
-          "acceptedCompanyIdentifiers",
-          "message",
-          "rejectedCompanyIdentifiers"
-        ],
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "rejectedCompanyIdentifiers": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "acceptedCompanyIdentifiers": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
