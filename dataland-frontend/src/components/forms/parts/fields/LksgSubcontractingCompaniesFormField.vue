@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field" data-test="subcontractingCompanies">
+  <div class="form-field">
     <MultiSelectFormFieldBindData
       :label="label"
       placeholder="Countries"
