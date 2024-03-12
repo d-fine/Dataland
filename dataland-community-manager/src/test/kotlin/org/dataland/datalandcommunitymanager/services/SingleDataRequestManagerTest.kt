@@ -67,7 +67,7 @@ class SingleDataRequestManagerTest {
     private fun mockDataRequestProcessingUtils(): DataRequestProcessingUtils {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
         `when`(
-            utilsMock.storeDataRequestEntityIfNotExisting(
+            utilsMock.storeDataRequestEntityAsOpen(
                 anyString(),
                 any() ?: DataTypeEnum.lksg,
                 anyString(),
