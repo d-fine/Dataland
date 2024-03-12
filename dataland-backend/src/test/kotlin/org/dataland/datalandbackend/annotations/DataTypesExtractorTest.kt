@@ -14,10 +14,16 @@ class DataTypesExtractorTest {
             "sfdr",
             "sme",
             "p2p",
+            "esg-questionnaire",
+            "heimathafen",
         )
         val dataTypes = DataTypesExtractor().getAllDataTypes()
         Assertions.assertTrue(
             dataTypes.toSet().containsAll(expectedTypes),
+            "Found $dataTypes instead of the expected $expectedTypes",
+        )
+        Assertions.assertTrue(
+            expectedTypes.containsAll(dataTypes.toSet()),
             "Found $dataTypes instead of the expected $expectedTypes",
         )
     }

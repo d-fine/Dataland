@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.EmailSender
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,8 +18,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
-    @Autowired private val emailSender: EmailSender,
+    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
@@ -31,8 +30,8 @@ class BulkDataRequestManager(
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
-        val bulkDataRequestId = UUID.randomUUID().toString()
-        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
+        val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForBulkDataRequest(correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
@@ -53,8 +52,8 @@ class BulkDataRequestManager(
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(
-            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), bulkDataRequestId,
+        sendBulkDataRequestInternalEmailMessage(
+            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
@@ -147,17 +146,17 @@ class BulkDataRequestManager(
         )
     }
 
-    private fun sendBulkDataRequestNotificationMail(
+    private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
         acceptedDatalandCompanyIds: List<String>,
-        bulkDataRequestId: String,
+        correlationId: String,
     ) {
-        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
+        emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
             acceptedDatalandCompanyIds,
+            correlationId,
         )
-        dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
-        emailSender.sendEmail(emailToSend)
+        dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
