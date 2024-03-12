@@ -11,7 +11,7 @@ import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
-const chunkSize = 50;
+const chunkSize = 25;
 
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
@@ -57,8 +57,12 @@ describe(
 
           it(`Upload data for framework ${frameworkIdentifier}`, () => {
             cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+              let successfulUploads = 0; // Variable to keep track of successful uploads
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
+                if (storedCompany && storedCompany.companyId) {
+                  successfulUploads++;
+                }
                 await uploadGenericFrameworkData(
                   token,
                   storedCompany.companyId,
@@ -66,6 +70,8 @@ describe(
                   fixtureDataClosure.t,
                   apiClientConstructor,
                 );
+              }).then(() => {
+                expect(successfulUploads).to.equal(fixtureData.length, `Expected ${fixtureData.length} successful uploads`);
               });
             });
           });
