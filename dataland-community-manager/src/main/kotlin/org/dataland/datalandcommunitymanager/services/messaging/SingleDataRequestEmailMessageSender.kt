@@ -77,7 +77,7 @@ class SingleDataRequestEmailMessageSender(
             "companyId" to messageInformation.datalandCompanyId,
             "companyName" to companyName,
             "requesterEmail" to messageInformation.userAuthentication.username,
-            "dataType" to readableFrameworkNameMapping.get(messageInformation.dataType),
+            "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
             "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
         )
