@@ -46,12 +46,11 @@ moshi = "1.15.0"
 
 mockito = "5.2.0"
 
-junit-jupiter = "5.10.1"
+junit-jupiter = "5.10.2"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.5"
-##                                          ⬆ :8.6-milestone-1"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.6"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
@@ -155,7 +154,7 @@ awaitility = "org.awaitility:awaitility:4.2.0"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
-json = "org.json:json:20231013"
+json = "org.json:json:20240205"
 
 spring-context = "org.springframework:spring-context:_"
 spring-test = "org.springframework:spring-test:_"

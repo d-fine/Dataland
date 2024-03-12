@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -74,7 +75,7 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getDataRequestsForUser(): ResponseEntity<List<StoredDataRequest>>
+    fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /** Retrieves aggregated data requests by aggregating all userIds
      * @return aggregated data requests that match the given filters

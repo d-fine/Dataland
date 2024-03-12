@@ -3,6 +3,7 @@
 {
   "extends": "./tsconfig.cypress-e2e.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "verbatimModuleSyntax": false
   }
 }

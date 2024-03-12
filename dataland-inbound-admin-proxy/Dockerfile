@@ -1,4 +1,4 @@
-FROM nginx:1.25.3
+FROM nginx:1.25.4
 
 COPY ./dataland-inbound-admin-proxy/nginx.conf /etc/nginx/nginx.conf
 

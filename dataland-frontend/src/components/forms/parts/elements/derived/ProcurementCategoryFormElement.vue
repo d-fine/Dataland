@@ -1,12 +1,12 @@
 <template>
   <div class="form-field">
     <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
-      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isItActive" />
+      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isActive" />
       <h5 data-test="dataPointToggleTitle" class="m-2">
         {{ label }}
       </h5>
     </div>
-    <FormKit type="group" :name="name" v-if="isItActive">
+    <FormKit type="group" :name="name" v-if="isActive">
       <div data-test="ProcurementCategoryFormElementContent">
         <div class="form-field border-none">
           <NaceCodeFormField
@@ -50,12 +50,7 @@
               data-test="directSuppliersHeader"
             />
           </div>
-          <FormKit
-            type="group"
-            name="numberOfSuppliersPerCountryCode"
-            v-model="numberOfSuppliersPerCountryCodeValue"
-            label="Suppliers Per Country"
-          >
+          <FormKit type="group" name="numberOfSuppliersPerCountryCode" label="Suppliers Per Country">
             <div v-for="el in selectedCountries" :key="el.label">
               <div class="justify-content-between flex align-items-center" data-test="supplierCountry">
                 <h5>{{ getCountryNameFromCountryCode(el.value) }}</h5>
@@ -98,14 +93,14 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { type LksgProcurementCategory } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { type LksgProcurementCategory } from "@clients/backend";
 
 export default defineComponent({
   name: "ProcurementCategoryFormElement",
   inject: {
-    procurementCategories: {
-      from: "procurementCategories",
+    selectedProcurementCategories: {
+      from: "selectedProcurementCategories",
       default: {} as { [key: string]: LksgProcurementCategory },
     },
   },
@@ -121,17 +116,16 @@ export default defineComponent({
   props: BaseFormFieldProps,
   data() {
     return {
-      isItActive: !!this.procurementCategories[this.name],
+      isActive: !!this.selectedProcurementCategories?.[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
       shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
-      selectedCountries: [],
-      numberOfSuppliersPerCountryCodeValue: [],
+      selectedCountries: [] as { label: string; value: string }[],
       getCountryNameFromCountryCode,
     };
   },
   mounted() {
-    if (this.procurementCategories[this.name]) {
+    if (this.isActive) {
       this.selectedCountries = this.setPreSelectedCountries();
     }
   },
@@ -141,9 +135,11 @@ export default defineComponent({
      * @returns Pre Selected Countries
      */
     setPreSelectedCountries() {
-      return this.allCountries.filter((el) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
-        this.procurementCategories[this.name]?.numberOfSuppliersPerCountryCode?.hasOwnProperty(el.value),
+      return this.allCountries.filter((element) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins,
+        Object.keys(this.selectedProcurementCategories?.[this.name]?.numberOfSuppliersPerCountryCode)?.includes(
+          element.value,
+        ),
       );
     },
     /**

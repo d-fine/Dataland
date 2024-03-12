@@ -100,28 +100,17 @@ export function wrapDisplayValueWithDatapointInformation(
   datapointProperties: DatapointProperties | undefined | null,
 ): AvailableMLDTDisplayObjectTypes {
   if (doesAnyDataPointPropertyExist(datapointProperties)) {
-    if (inputValue.displayValue == "") {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
-        displayValue: {
-          innerContents: formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED),
-          quality: datapointProperties?.quality,
-          comment: datapointProperties?.comment ?? undefined,
-          dataSource: datapointProperties?.dataSource ?? undefined,
-          fieldLabel: fieldLabel,
-        },
-      };
-    } else
-      return {
-        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
-        displayValue: {
-          innerContents: inputValue,
-          quality: datapointProperties?.quality,
-          comment: datapointProperties?.comment ?? undefined,
-          dataSource: datapointProperties?.dataSource ?? undefined,
-          fieldLabel: fieldLabel,
-        },
-      };
+    return {
+      displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+      displayValue: {
+        innerContents:
+          inputValue.displayValue == "" ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
+        quality: datapointProperties?.quality,
+        comment: datapointProperties?.comment ?? undefined,
+        dataSource: datapointProperties?.dataSource ?? undefined,
+        fieldLabel: fieldLabel,
+      },
+    };
   } else if (inputValue.displayValue == "") {
     return MLDTDisplayObjectForEmptyString;
   } else {

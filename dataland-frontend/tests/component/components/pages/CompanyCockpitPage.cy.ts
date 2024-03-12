@@ -4,7 +4,7 @@ import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
   type SmeData,
-  DataTypeEnum,
+  type DataTypeEnum,
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
@@ -144,9 +144,7 @@ describe("Component test for the company cockpit", () => {
           aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods.toString(),
         );
 
-        const isSmeFramework = frameworkName === DataTypeEnum.Sme;
-
-        if (isProvideDataButtonExpected && !isSmeFramework) {
+        if (isProvideDataButtonExpected) {
           cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
             "exist",
           );

@@ -60,7 +60,7 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )

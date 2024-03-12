@@ -1,12 +1,6 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import type {
-  AmountWithCurrency,
-  AssuranceDataPoint,
-  EuTaxonomyActivity,
-  EuTaxonomyAlignedActivity,
-} from "@clients/backend";
+import type { AssuranceDataPoint, EuTaxonomyActivity, EuTaxonomyAlignedActivity } from "@clients/backend";
 import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture";
-import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { Activity } from "@clients/backend";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
@@ -18,17 +12,6 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
    */
   generateAssuranceDatapoint(): AssuranceDataPoint {
     return generateAssuranceDatapoint(this.reports, this.nullProbability);
-  }
-
-  /**
-   * Generates a random amount of money
-   * @returns an amount of money
-   */
-  generateAmountWithCurrency(): AmountWithCurrency {
-    return {
-      amount: this.randomCurrencyValue(),
-      currency: this.valueOrNull(generateCurrencyCode()),
-    };
   }
 
   /**

@@ -61,7 +61,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )

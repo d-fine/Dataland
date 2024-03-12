@@ -6,8 +6,8 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
+import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -146,7 +146,7 @@ fun checkThatAllIdentifiersWereAccepted(
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-    recentlyStoredRequestsForUser: List<StoredDataRequest>,
+    recentlyStoredRequestsForUser: List<ExtendedStoredDataRequest>,
     expectedNumberOfNewlyStoredRequests: Int,
 ) {
     assertEquals(
@@ -157,7 +157,7 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 }
 
 fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-    recentlyStoredRequestsForUser: List<StoredDataRequest>,
+    recentlyStoredRequestsForUser: List<ExtendedStoredDataRequest>,
     framework: BulkDataRequest.DataTypes,
     reportingPeriod: String,
     dataRequestCompanyIdentifierValue: String?,

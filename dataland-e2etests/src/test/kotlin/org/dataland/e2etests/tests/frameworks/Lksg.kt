@@ -21,7 +21,7 @@ class Lksg {
         // The following block is a workaround to circumvent a bug in the generated clients
         // which do not allow for null entries as map values but retain them at the same time.
         // On upload, however, they are not being serialized.
-        fixedDataSet.general.productionSpecificOwnOperations?.productsServicesCategoriesPurchased?.forEach {
+        fixedDataSet.general.productionSpecificOwnOperations?.procurementCategories?.forEach {
             val keysOfEntriesToDelete = mutableListOf<String>()
             it.value.numberOfSuppliersPerCountryCode?.forEach { numberOfSuppliersPerCountry ->
                 if (numberOfSuppliersPerCountry.value == null) {
@@ -52,7 +52,7 @@ class Lksg {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(fixedDataSet, downloadedAssociatedData.data)
+        assertEquals(sortDatasetsInFirstTest(fixedDataSet), downloadedAssociatedData.data)
     }
 
     @Test
@@ -82,7 +82,7 @@ class Lksg {
             activeDownloadedDatasets,
             downloaded2023Datasets,
             downloadedActive2023Datasets,
-            uploadedDataSets,
+            sortDatasetsInSecondTest(uploadedDataSets),
         )
     }
 
@@ -91,7 +91,7 @@ class Lksg {
         activeDownloadedDatasets: List<DataAndMetaInformationLksgData>,
         downloaded2023Datasets: List<DataAndMetaInformationLksgData>,
         downloadedActive2023Datasets: List<DataAndMetaInformationLksgData>,
-        uploadedDataSets: List<LksgData>,
+        uploadedDataSets: List<Any>,
     ) {
         assertTrue(
             downLoadedDataSets.size == 4 && activeDownloadedDatasets.size == 2 &&
@@ -103,6 +103,62 @@ class Lksg {
             uploadedDataSets[1],
             "Active dataset in 2023 not equal to latest upload.",
         )
+    }
+
+    private fun sortDatasetsInFirstTest(fixedDataSet: LksgData): LksgData {
+        return fixedDataSet.copy(
+            general = fixedDataSet.general.copy(
+                productionSpecific = fixedDataSet.general.productionSpecific?.copy(
+                    specificProcurement = fixedDataSet.general.productionSpecific?.specificProcurement?.sorted(),
+                ),
+            ),
+            governance = fixedDataSet.governance?.copy(
+                riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
+                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                ),
+                grievanceMechanismOwnOperations = fixedDataSet.governance?.grievanceMechanismOwnOperations?.copy(
+                    complaintsRiskPosition = fixedDataSet.governance?.grievanceMechanismOwnOperations
+                        ?.complaintsRiskPosition?.sorted(),
+                ),
+                generalViolations = fixedDataSet.governance?.generalViolations?.copy(
+                    humanRightsOrEnvironmentalViolationsDefinition = fixedDataSet.governance?.generalViolations
+                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                ),
+            ),
+        )
+    }
+
+    private fun sortDatasetsInSecondTest(uploadedDataSets: List<LksgData>): List<LksgData> {
+        val sortedUploadedDatasets = mutableListOf<LksgData>()
+        uploadedDataSets.forEach { dataset ->
+            sortedUploadedDatasets.add(
+                dataset.copy(
+                    general = dataset.general.copy(
+                        productionSpecific = dataset.general.productionSpecific?.copy(
+                            specificProcurement = dataset.general.productionSpecific?.specificProcurement?.sorted(),
+                        ),
+                    ),
+                    governance = dataset.governance?.copy(
+                        riskManagementOwnOperations =
+                        dataset.governance?.riskManagementOwnOperations?.copy(
+                            identifiedRisks = dataset.governance
+                                ?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                        ),
+                        grievanceMechanismOwnOperations =
+                        dataset.governance?.grievanceMechanismOwnOperations?.copy(
+                            complaintsRiskPosition = dataset.governance
+                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sorted(),
+                        ),
+                        generalViolations =
+                        dataset.governance?.generalViolations?.copy(
+                            humanRightsOrEnvironmentalViolationsDefinition = dataset.governance
+                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                        ),
+                    ),
+                ),
+            )
+        }
+        return sortedUploadedDatasets
     }
 
     private fun uploadFourDatasetsForACompany(): Pair<String, List<LksgData>> {

@@ -2,7 +2,7 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
+import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -31,7 +31,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BulkDataRequestsTest {
@@ -40,8 +39,8 @@ class BulkDataRequestsTest {
     val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
-        return requestControllerApi.getDataRequestsForUser().filter { storedDataRequest ->
+    private fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDataRequest> {
+        return requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
             storedDataRequest.creationTimestamp > timestamp
         }
     }
@@ -127,7 +126,7 @@ class BulkDataRequestsTest {
     }
 
     private fun checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
-        requestsStoredAfterBulkRequest: List<StoredDataRequest>,
+        requestsStoredAfterBulkRequest: List<ExtendedStoredDataRequest>,
         framework: BulkDataRequest.DataTypes,
         reportingPeriod: String,
         companyId: String,

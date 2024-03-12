@@ -8,6 +8,7 @@ import {
   QaStatus,
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 describe("Component test for the view multiple dataset display base component", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -44,6 +45,48 @@ describe("Component test for the view multiple dataset display base component", 
     cy.get('tr[data-section-label="Social"]').click();
     cy.get('tr[data-section-label="Child labor"]').click();
     cy.get('td[data-cell-label="Employee(s) Under 15"]').should("not.exist");
+  });
+
+  it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
+    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
+    const mockedData2024 = constructCompanyApiResponseForLksg(preparedFixture.t);
+    mockedData2024.metaInfo.dataId = "id-2024";
+    mockedData2024.metaInfo.reportingPeriod = "2024";
+    const mockedData2023 = constructCompanyApiResponseForLksg(preparedFixture.t);
+    mockedData2023.metaInfo.dataId = "id-2023";
+    mockedData2023.metaInfo.reportingPeriod = "2023";
+    cy.intercept(`/api/companies/*/info`, preparedFixture.companyInformation);
+    cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedData2024, mockedData2023]);
+    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
+      status: 200,
+      body: [mockedData2024.metaInfo, mockedData2023.metaInfo],
+    });
+    cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
+      keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyId: mockedData2023.metaInfo.companyId,
+        dataType: DataTypeEnum.Lksg,
+        viewInPreviewMode: false,
+      },
+    }).then((mounted) => {
+      cy.get('[data-test="editDatasetButton"').find(".material-icons-outlined").should("exist").click();
+      cy.get('[data-test="select-reporting-period-dialog"')
+        .should("exist")
+        .get('[data-test="reporting-periods"')
+        .last()
+        .should("contain", "2024")
+        .should("contain", "2023")
+        .click();
+
+      cy.wrap(mounted.component)
+        .its("$route.fullPath")
+        .should(
+          "eq",
+          `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`,
+        );
+    });
   });
 });
 

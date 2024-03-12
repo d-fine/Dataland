@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import java.io.FileWriter
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -36,6 +37,7 @@ class FrameworkUploadConfigBuilder(
             "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
             "frameworkBaseNameInCamelCase" to Naming.getNameFromLabel(framework.identifier),
             "frameworkIdentifier" to framework.identifier,
+            "imports" to TypeScriptImport.mergeImports(rootSectionConfigBuilder.imports),
         )
 
         val freemarkerTemplate = FreeMarker.configuration

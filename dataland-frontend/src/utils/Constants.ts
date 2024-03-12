@@ -6,7 +6,7 @@ export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
 
 export const ARRAY_OF_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
 export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED.filter((it) => it != DataTypeEnum.Sme);
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
 
 // - Keycloak and session management related settings
 

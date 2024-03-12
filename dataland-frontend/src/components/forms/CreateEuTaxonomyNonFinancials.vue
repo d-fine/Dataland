@@ -78,7 +78,7 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :unit="field.unit"
-                          @reportsUpdated="updateDocumentsList"
+                          @reportsUpdated="updateReportsSelection"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -229,7 +229,7 @@ export default defineComponent({
       postEutaxonomyNonFinancialsDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
+      documentsToUpload: [] as DocumentToUpload[],
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
@@ -300,13 +300,13 @@ export default defineComponent({
     async postEutaxonomyNonFinancialsData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
+        if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEutaxonomyNonFinancialsData.data as ObjectType,
             Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
 
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = new ApiClientProvider(
@@ -333,14 +333,15 @@ export default defineComponent({
       }
     },
     /**
-     * updates the list of documents that were uploaded
-     * @param reportsNamesAndReferences repots names and references
-     * @param reportsToUpload reports to upload
+     * Sets the object containing the names of all stored and to-be-uploaded reports as keys, and their respective
+     * fileReferences as values, and then sets the selection of reports that are to be uploaded.
+     * @param reportsNamesAndReferences contains the names of all stored and to-be-uploaded reports as keys,
+     * and their respective fileReferences as values
+     * @param reportsToUpload contains the actual selection of reports that are to be uploaded
      */
-    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+    updateReportsSelection(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.documents = new Map();
-      reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
+      this.documentsToUpload = [...reportsToUpload];
     },
   },
   provide() {
