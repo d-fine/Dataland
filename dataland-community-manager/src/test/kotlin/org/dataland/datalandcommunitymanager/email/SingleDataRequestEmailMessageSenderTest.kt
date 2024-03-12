@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -130,7 +131,7 @@ class SingleDataRequestEmailMessageSenderTest {
             assertEquals(datalandCompanyId, arg1.properties.getValue("companyId"))
             assertEquals(companyName, arg1.properties.getValue("companyName"))
             assertEquals(authenticationMock.username, arg1.properties.getValue("requesterEmail"))
-            assertEquals(DataTypeEnum.p2p.toString(), arg1.properties.getValue("dataType"))
+            assertEquals(readableFrameworkNameMapping.get(DataTypeEnum.p2p), arg1.properties.getValue("dataType"))
             assertEquals(reportingPeriodsAsString, arg1.properties.getValue("reportingPeriods"))
             assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", arg1.properties.getValue("message"))
             assertEquals(MessageType.SendTemplateEmail, arg2)
