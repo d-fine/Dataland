@@ -11,7 +11,7 @@ import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
-const chunkSize = 15;
+const chunkSize = 50;
 
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
@@ -27,7 +27,6 @@ describe(
     before(function uploadDocumentsAndStoreDocumentIds() {
       cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
         uploadAllDocuments(token);
-        cy.wait(1000);
       });
     });
 
@@ -67,7 +66,6 @@ describe(
                   fixtureDataClosure.t,
                   apiClientConstructor,
                 );
-                cy.wait(1000);
               });
             });
           });
