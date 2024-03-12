@@ -6,7 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
@@ -36,48 +36,70 @@ class SingleDataRequestManager(
      * @return the stored data request object
      */
     @Transactional
-    fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        validateRequest(singleDataRequest)
+    fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
+        utils.throwExceptionIfNotJwtAuth()
+        validateSingleDataRequest(singleDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
         )
-        val datalandCompanyId = getDatalandCompanyId(singleDataRequest.companyIdentifier)
-            ?: throw InvalidInputApiException(
-                "The specified company is unknown to Dataland",
-                "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland",
-            )
-        val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-            singleDataRequest, datalandCompanyId,
-        )
+        val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
+        val reportingPeriodsOfStoredDataRequests = mutableListOf<String>()
+        val reportingPeriodsOfDuplicateDataRequests = mutableListOf<String>()
+        singleDataRequest.reportingPeriods.forEach { reportingPeriod ->
+            if (utils.existsDataRequestWithNonFinalStatus(companyId, singleDataRequest.dataType, reportingPeriod)) {
+                reportingPeriodsOfDuplicateDataRequests.add(reportingPeriod)
+            } else {
+                utils.storeDataRequestEntityAsOpen(
+                    companyId, singleDataRequest.dataType, reportingPeriod,
+                    singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
+                    singleDataRequest.message.takeIf { !it.isNullOrBlank() },
+                )
+                reportingPeriodsOfStoredDataRequests.add(reportingPeriod)
+            }
+        }
         sendSingleDataRequestEmailMessage(
-            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            singleDataRequest = singleDataRequest,
-            datalandCompanyId = datalandCompanyId,
-            correlationId = correlationId,
+            DatalandAuthentication.fromContext() as DatalandJwtAuthentication, singleDataRequest,
+            companyId, correlationId,
         )
-        return storedDataRequests
+        return buildResponseForSingleDataRequest(
+            singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
+        )
     }
 
-    private fun getDatalandCompanyId(companyIdentifier: String): String? {
+    private fun validateSingleDataRequest(singleDataRequest: SingleDataRequest) {
+        if (singleDataRequest.reportingPeriods.isEmpty()) {
+            throw InvalidInputApiException(
+                "The list of reporting periods must not be empty.",
+                "At least one reporting period must be provided. Without, no meaningful request can be created.",
+            )
+        }
+
+        singleDataRequest.contacts?.forEach { it.validateIsEmailAddress() }
+        if (singleDataRequest.contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
+            throw InvalidInputApiException(
+                "No recipients provided for the message",
+                "You have provided a message, but no recipients. " +
+                    "Without at least one valid email address being provided no message can be forwarded.",
+            )
+        }
+    }
+
+    private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
         val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
             checkIfCompanyIsValid(companyIdentifier)
             companyIdentifier
         } else {
             utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
         }
-        return datalandCompanyId
-    }
-
-    private fun validateRequest(singleDataRequest: SingleDataRequest) {
-        utils.throwExceptionIfNotJwtAuth()
-        if (singleDataRequest.reportingPeriods.isEmpty()) {
+        if (datalandCompanyId == null) {
             throw InvalidInputApiException(
-                "There were no reporting periods provided.",
-                "There were no reporting periods provided.",
+                "The specified company is unknown to Dataland.",
+                "The company with identifier: $companyIdentifier is unknown to Dataland.",
             )
+        } else {
+            return datalandCompanyId
         }
-        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
     }
 
     private fun sendSingleDataRequestEmailMessage(
@@ -119,17 +141,6 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
-        contacts?.forEach { it.validateIsEmailAddress() }
-        if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
-            throw InvalidInputApiException(
-                "No recipients provided for the message",
-                "You have provided a message, but no recipients. " +
-                    "Without at least one valid email address being provided no message can be forwarded.",
-            )
-        }
-    }
-
     private fun checkIfCompanyIsValid(companyId: String) {
         try {
             companyApi.getCompanyById(companyId)
@@ -143,18 +154,44 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+    private fun buildResponseForSingleDataRequest(
         singleDataRequest: SingleDataRequest,
-        datalandCompanyId: String,
-    ): List<StoredDataRequest> {
-        return singleDataRequest.reportingPeriods.map { reportingPeriod ->
-            utils.storeDataRequestEntityIfNotExisting(
-                datalandCompanyId,
-                singleDataRequest.dataType,
-                reportingPeriod,
-                singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
-                singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-            ).toStoredDataRequest()
+        reportingPeriodsOfStoredDataRequests: List<String>,
+        reportingPeriodsOfDuplicateDataRequests: List<String>,
+    ): SingleDataRequestResponse {
+        return SingleDataRequestResponse(
+            buildResponseMessageForSingleDataRequest(
+                totalNumberOfReportingPeriods = singleDataRequest.reportingPeriods.size,
+                numberOfReportingPeriodsCorrespondingToDuplicates = reportingPeriodsOfDuplicateDataRequests.size,
+            ),
+            reportingPeriodsOfStoredDataRequests,
+            reportingPeriodsOfDuplicateDataRequests,
+        )
+    }
+
+    private fun buildResponseMessageForSingleDataRequest(
+        totalNumberOfReportingPeriods: Int,
+        numberOfReportingPeriodsCorrespondingToDuplicates: Int,
+    ): String {
+        return if (totalNumberOfReportingPeriods == 1) {
+            when (numberOfReportingPeriodsCorrespondingToDuplicates) {
+                1 -> "Your data request was not stored, as it was already created by you before and exists on Dataland."
+                else -> "Your data request was stored successfully."
+            }
+        } else {
+            when (numberOfReportingPeriodsCorrespondingToDuplicates) {
+                0 -> "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored."
+                1 ->
+                    "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
+                        "it was already created by you before and exists on Dataland."
+                totalNumberOfReportingPeriods ->
+                    "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
+                        "already created by you before and exist on Dataland."
+                else ->
+                    "The data requests for $numberOfReportingPeriodsCorrespondingToDuplicates of your " +
+                        "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
+                        "created by you before and exist on Dataland."
+            }
         }
     }
 }

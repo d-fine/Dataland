@@ -14,8 +14,8 @@ data class BulkDataRequestResponse(
     val message: String,
 
     @field:JsonProperty(required = true)
-    val rejectedCompanyIdentifiers: List<String>,
+    val acceptedCompanyIdentifiers: List<String>,
 
     @field:JsonProperty(required = true)
-    val acceptedCompanyIdentifiers: List<String>,
+    val rejectedCompanyIdentifiers: List<String>,
 )

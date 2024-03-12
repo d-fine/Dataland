@@ -1,7 +1,6 @@
-package org.dataland.e2etests.utils
+package org.dataland.e2etests.utils.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
@@ -13,16 +12,15 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.tests.communityManager.BulkDataRequestsTest
+import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.assertThrows
-import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.*
 
 private val apiAccessor = ApiAccessor()
-val jwtHelper = JwtAuthenticationHelper()
+private val jwtHelper = JwtAuthenticationHelper()
+private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
 fun retrieveTimeAndWaitOneMillisecond(): Long {
     val timestamp = Instant.now().toEpochMilli()
@@ -87,17 +85,6 @@ fun getIdForUploadedCompanyWithIdentifiers(
     return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
 }
 
-fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(
-    requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
-) {
-    assertEquals(
-        expectedNumberOfAcceptedIdentifiers,
-        requestResponse.acceptedCompanyIdentifiers.size,
-        "Not every combination of identifier and framework was sent as a request as expected.",
-    )
-}
-
 fun checkThatTheNumberOfRejectedIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfRejectedIdentifiers: Int,
@@ -114,35 +101,29 @@ fun checkThatMessageIsAsExpected(
     expectedNumberOfAcceptedIdentifiers: Int,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
+    val totalNumberOfCompanyIdentifiers = expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers
     val errorMessage = "The message sent as part of the response to the bulk data request is not as expected."
-    if (expectedNumberOfRejectedIdentifiers == 0) {
-        assertEquals(
-            "$expectedNumberOfAcceptedIdentifiers distinct company identifiers were accepted.",
+    when (expectedNumberOfRejectedIdentifiers) {
+        0 -> assertEquals(
+            "All of your $totalNumberOfCompanyIdentifiers distinct company identifiers were accepted.",
             requestResponse.message,
             errorMessage,
         )
-    } else {
-        assertEquals(
-            "$expectedNumberOfRejectedIdentifiers of your " +
-                "${expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers} distinct company " +
-                "identifiers were rejected because they could not be matched with an existing company on dataland.",
+
+        1 -> assertEquals(
+            "One of your $totalNumberOfCompanyIdentifiers distinct company identifiers was rejected " +
+                "because it could not be matched with an existing company on Dataland.",
+            requestResponse.message,
+            errorMessage,
+        )
+
+        else -> assertEquals(
+            "$expectedNumberOfRejectedIdentifiers of your $totalNumberOfCompanyIdentifiers distinct company " +
+                "identifiers were rejected because they could not be matched with existing companies on Dataland.",
             requestResponse.message,
             errorMessage,
         )
     }
-}
-
-fun checkThatAllIdentifiersWereAccepted(
-    requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
-    expectedNumberOfRejectedIdentifiers: Int,
-) {
-    checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers)
-    checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
-    checkThatMessageIsAsExpected(
-        requestResponse, expectedNumberOfAcceptedIdentifiers,
-        expectedNumberOfRejectedIdentifiers,
-    )
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
@@ -156,125 +137,26 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
     )
 }
 
-fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
     recentlyStoredRequestsForUser: List<ExtendedStoredDataRequest>,
-    framework: BulkDataRequest.DataTypes,
+    framework: String,
     reportingPeriod: String,
     dataRequestCompanyIdentifierValue: String?,
 ) {
     assertEquals(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
-            storedDataRequest.dataType == framework.value &&
+            storedDataRequest.dataType == framework &&
                 storedDataRequest.reportingPeriod == reportingPeriod &&
                 storedDataRequest.datalandCompanyId == dataRequestCompanyIdentifierValue
         }.size,
         "For dataland company Id $dataRequestCompanyIdentifierValue " +
-            "and the framework ${framework.value} there is not exactly one newly stored request as expected.",
+            "and the framework $framework there is not exactly one newly stored request as expected.",
     )
 }
 
 fun check400ClientExceptionErrorMessage(clientException: ClientException) {
     assertEquals("Client error : 400 ", clientException.message)
-}
-
-fun causeClientExceptionByBulkDataRequest(
-    identifiers: Set<String>,
-    dataTypes: Set<BulkDataRequest.DataTypes>,
-    reportingPeriods: Set<String>,
-): ClientException {
-    val clientException = assertThrows<ClientException> {
-        RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER).postBulkDataRequest(
-            BulkDataRequest(
-                identifiers, dataTypes, reportingPeriods,
-            ),
-        )
-    }
-    return clientException
-}
-
-private fun errorMessageForEmptyInputConfigurations(
-    identifiers: Set<String>,
-    dataTypes: Set<BulkDataRequest.DataTypes>,
-    reportingPeriods: Set<String>,
-): String {
-    return when {
-        identifiers.isEmpty() && dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
-            "All " +
-                "provided lists are empty."
-
-        identifiers.isEmpty() && dataTypes.isEmpty() ->
-            "The lists of company identifiers and " +
-                "frameworks are empty."
-
-        identifiers.isEmpty() && reportingPeriods.isEmpty() ->
-            "The lists of company identifiers and " +
-                "reporting periods are empty."
-
-        dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
-            "The lists of frameworks and reporting " +
-                "periods are empty."
-
-        identifiers.isEmpty() -> "The list of company identifiers is empty."
-        dataTypes.isEmpty() -> "The list of frameworks is empty."
-        else -> "The list of reporting periods is empty."
-    }
-}
-
-fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
-    identifiers: Set<String>,
-    dataTypes: Set<BulkDataRequest.DataTypes>,
-    reportingPeriods: Set<String>,
-) {
-    val logger = LoggerFactory.getLogger(BulkDataRequestsTest::class.java)
-    if (identifiers.isNotEmpty() && dataTypes.isNotEmpty() && reportingPeriods.isNotEmpty()) {
-        logger.info(
-            "None of the input lists is empty although a function to assert the error message due to their" +
-                "emptiness is called.",
-        )
-    } else {
-        val clientException = causeClientExceptionByBulkDataRequest(
-            identifiers, dataTypes, reportingPeriods,
-        )
-        check400ClientExceptionErrorMessage(clientException)
-        val responseBody = (clientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
-        assertTrue(
-            responseBody.contains(
-                errorMessageForEmptyInputConfigurations(identifiers, dataTypes, reportingPeriods),
-            ),
-        )
-    }
-}
-
-fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
-    check400ClientExceptionErrorMessage(clientException)
-    val responseBody = (clientException.response as ClientError<*>).body as String
-    assertTrue(
-        responseBody.contains(
-            "All provided company identifiers are not unique or could not be " +
-                "recognized.",
-        ),
-    )
-    assertTrue(
-        responseBody.contains(
-            "The company identifiers you provided could not be matched with an existing company on dataland",
-        ),
-    )
-}
-
-fun checkErrorMessageForAmbivalentIdentifiersInBulkRequest(clientException: ClientException) {
-    check400ClientExceptionErrorMessage(clientException)
-    val responseBody = (clientException.response as ClientError<*>).body as String
-    responseBody.also { println(it) }
-    assertTrue(
-        responseBody.contains("No unique identifier. Multiple companies could be found."),
-    )
-    assertTrue(
-        responseBody.contains(
-            "Multiple companies have been found for the identifier you specified.",
-        ),
-    )
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
@@ -304,7 +186,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
+fun iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
@@ -323,13 +205,12 @@ fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWit
 }
 
 fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestStatus) {
-    val retrievedStoredDataRequest = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-        .getDataRequestById(dataRequestId)
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    val retrievedStoredDataRequest = requestControllerApi.getDataRequestById(dataRequestId)
     assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
 }
 
 fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID, newStatus: RequestStatus) {
-    val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     val storedDataRequestAfterPatch = requestControllerApi.patchDataRequestStatus(dataRequestId, newStatus)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
@@ -370,4 +251,10 @@ fun getUniqueDatalandCompanyIdForIdentifierValue(identifierValue: String): Strin
         apiAccessor.companyDataControllerApi.getCompaniesBySearchString(identifierValue)
     assertEquals(1, matchingCompanyIdsAndNamesOnDataland.size)
     return matchingCompanyIdsAndNamesOnDataland.first().companyId
+}
+
+fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDataRequest> {
+    return requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
+        storedDataRequest.creationTimestamp > timestamp
+    }
 }
