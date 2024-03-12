@@ -4,17 +4,19 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
-    @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
+    @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -35,34 +37,86 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        utils.throwExceptionIfNotJwtAuth()
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
-        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
-
-        dataRequestLogger.logMessageForReceivingSingleDataRequest(singleDataRequest.companyIdentifier)
-        val datalandCompanyId = if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
-            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            singleDataRequest.companyIdentifier
-        } else {
-            utils.getDatalandCompanyIdForIdentifierValue(
-                singleDataRequest.companyIdentifier,
-            )
-        }
-        if (datalandCompanyId == null) {
-            throw InvalidInputApiException(
+        validateRequest(singleDataRequest)
+        val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(
+            singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
+        )
+        val datalandCompanyId = getDatalandCompanyId(singleDataRequest.companyIdentifier)
+            ?: throw InvalidInputApiException(
                 "The specified company is unknown to Dataland",
                 "The company with identifier: ${singleDataRequest.companyIdentifier} is unknown to Dataland",
             )
-        }
         val storedDataRequests = storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             singleDataRequest, datalandCompanyId,
         )
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+        sendSingleDataRequestEmailMessage(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
-            datalandCompanyId,
+            datalandCompanyId = datalandCompanyId,
+            correlationId = correlationId,
         )
         return storedDataRequests
+    }
+
+    private fun getDatalandCompanyId(companyIdentifier: String): String? {
+        val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
+            checkIfCompanyIsValid(companyIdentifier)
+            companyIdentifier
+        } else {
+            utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
+        }
+        return datalandCompanyId
+    }
+
+    private fun validateRequest(singleDataRequest: SingleDataRequest) {
+        utils.throwExceptionIfNotJwtAuth()
+        if (singleDataRequest.reportingPeriods.isEmpty()) {
+            throw InvalidInputApiException(
+                "There were no reporting periods provided.",
+                "There were no reporting periods provided.",
+            )
+        }
+        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
+    }
+
+    private fun sendSingleDataRequestEmailMessage(
+        userAuthentication: DatalandJwtAuthentication,
+        singleDataRequest: SingleDataRequest,
+        datalandCompanyId: String,
+        correlationId: String,
+    ) {
+        val messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
+            userAuthentication,
+            datalandCompanyId,
+            singleDataRequest.dataType,
+            singleDataRequest.reportingPeriods,
+        )
+        if (
+            singleDataRequest.contacts.isNullOrEmpty()
+        ) {
+            singleDataRequestEmailMessageSender.sendSingleDataRequestInternalMessage(
+                messageInformation,
+                correlationId,
+            )
+            return
+        }
+        sendExternalEmailMessages(messageInformation, singleDataRequest, correlationId)
+    }
+
+    private fun sendExternalEmailMessages(
+        messageInformation: SingleDataRequestEmailMessageSender.MessageInformation,
+        singleDataRequest: SingleDataRequest,
+        correlationId: String,
+    ) {
+        singleDataRequest.contacts?.forEach { contactEmail ->
+            singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
+                messageInformation = messageInformation,
+                receiver = contactEmail,
+                contactMessage = singleDataRequest.message,
+                correlationId = correlationId,
+            )
+        }
     }
 
     private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {

@@ -11,4 +11,5 @@ object ExchangeName {
     const val DocumentReceived = "documentReceived"
     const val DeadLetter = "deadLetter"
     const val ManualQaRequested = "manualQaRequested"
+    const val SendEmail = "sendEmail"
 }
