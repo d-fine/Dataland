@@ -22,4 +22,7 @@ class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication()
     override fun getCredentials(): String {
         return jwt.tokenValue
     }
+
+    val userDescription: String
+        get() = "User $username (Keycloak ID: $userId)"
 }

@@ -1,15 +1,12 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.EmailSender
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,8 +18,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
-    @Autowired private val emailSender: EmailSender,
+    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
@@ -32,10 +28,10 @@ class BulkDataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
-        throwExceptionIfNotJwtAuth()
+        utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
-        val bulkDataRequestId = UUID.randomUUID().toString()
-        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
+        val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForBulkDataRequest(correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
@@ -56,8 +52,8 @@ class BulkDataRequestManager(
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(
-            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), bulkDataRequestId,
+        sendBulkDataRequestInternalEmailMessage(
+            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
@@ -69,18 +65,10 @@ class BulkDataRequestManager(
     ) {
         for (framework in dataTypes) {
             for (reportingPeriod in reportingPeriods) {
-                utils.storeDataRequestEntityIfNotExisting(
-                    datalandCompanyId,
-                    framework,
-                    reportingPeriod,
-                )
+                if (!utils.existsDataRequestWithNonFinalStatus(datalandCompanyId, framework, reportingPeriod)) {
+                    utils.storeDataRequestEntityAsOpen(datalandCompanyId, framework, reportingPeriod)
+                }
             }
-        }
-    }
-
-    private fun throwExceptionIfNotJwtAuth() {
-        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException()
         }
     }
 
@@ -132,11 +120,14 @@ class BulkDataRequestManager(
         numberOfRejectedCompanyIdentifiers: Int,
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
+            0 -> "All of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
+            1 ->
+                "One of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers was rejected " +
+                    "because it could not be matched with an existing company on Dataland."
             else ->
-                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                    "distinct company identifiers were rejected because they could not be matched with an existing" +
-                    " company on dataland."
+                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers distinct " +
+                    "company identifiers were rejected because they could not be matched with existing companies on " +
+                    "Dataland."
         }
     }
 
@@ -150,22 +141,22 @@ class BulkDataRequestManager(
                 bulkDataRequest.companyIdentifiers.size,
                 rejectedCompanyIdentifiers.size,
             ),
-            rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
             acceptedCompanyIdentifiers = acceptedCompanyIdentifiers,
+            rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
         )
     }
 
-    private fun sendBulkDataRequestNotificationMail(
+    private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
         acceptedDatalandCompanyIds: List<String>,
-        bulkDataRequestId: String,
+        correlationId: String,
     ) {
-        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
+        emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
             acceptedDatalandCompanyIds,
+            correlationId,
         )
-        dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
-        emailSender.sendEmail(emailToSend)
+        dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
