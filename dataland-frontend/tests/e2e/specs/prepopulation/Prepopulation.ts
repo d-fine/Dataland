@@ -14,7 +14,7 @@ import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 const chunkSize = 15;
 
 describe(
-  "As a user, I want to be able to see some data on t Dataland webpage",
+  "As a user, I want to be able to see some data on th Dataland webpage",
   {
     defaultCommandTimeout: Cypress.env("prepopulate_timeout_s") * 1000,
     retries: {
