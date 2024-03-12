@@ -7,11 +7,11 @@ import {
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type LksgProcurementType } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 import { convertNace, convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import { type LksgProductionSite } from "@clients/backend";
+import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/backend";
+import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
@@ -55,6 +55,7 @@ function generateReadableCombinationOfNumberOfSuppliersAndCountries(numberOfSupp
   });
 }
 
+type LksgProcurementType = { [key in ProcurementCategoryType]?: LksgProcurementCategory };
 interface LksgProcurementCategoryDisplayFormat {
   procurementCategory: string;
   procuredProductTypesAndServicesNaceCodes: string[];
