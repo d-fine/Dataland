@@ -3,8 +3,7 @@ import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/field
 describe("Component tests for the LksgSubcontractingCompaniesFormField", () => {
   it("Ensure that NACE codes can be selected for selected countries", () => {
     cy.mountWithPlugins(LksgSubcontractingCompaniesFormField, {}).then(() => {
-      cy.get('[data-pc-name="multiselect"]').should("be.visible");
-      cy.get('[data-pc-name="multiselect"]').click();
+      cy.get('[data-pc-name="multiselect"]').should("be.visible").click();
       cy.get('[data-pc-name="multiselect"]')
         .get('[data-pc-section="wrapper"]')
         .get('[data-pc-section="list"]')
