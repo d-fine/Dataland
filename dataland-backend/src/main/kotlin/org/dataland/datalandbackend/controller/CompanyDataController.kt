@@ -214,8 +214,15 @@ class CompanyDataController(
 
     override fun postDataOwnershipRequest(companyId: UUID, comment: String?) {
         val userAuthentication = DatalandAuthentication.fromContext()
-        logger.info("User (id: ${userAuthentication.userId}) requested data ownership for company with id: $companyId.")
-        dataOwnersManager.sendDataOwnershipRequestIfNecessary(companyId.toString(), userAuthentication, comment)
+        val correlationId = UUID.randomUUID().toString()
+        logger.info(
+            "User (id: ${userAuthentication.userId}) requested data ownership for company with id: $companyId. " +
+                "(correlationId: $correlationId)",
+        )
+        dataOwnersManager.sendDataOwnershipRequestIfNecessary(
+            companyId.toString(), userAuthentication,
+            comment, correlationId,
+        )
     }
 
     override fun hasCompanyDataOwner(companyId: UUID) {

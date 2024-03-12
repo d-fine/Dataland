@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -24,6 +24,13 @@ class DataOwnersManagerTest {
     lateinit var mockDataOwnersRepository: DataOwnerRepository
     lateinit var mockCompanyRepository: StoredCompanyRepository
 
+    private val testUserId = UUID.randomUUID().toString()
+    private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+        "username",
+        testUserId,
+        setOf(DatalandRealmRole.ROLE_USER),
+    )
+
     @BeforeEach
     fun initializeDataOwnersManager() {
         mockDataOwnersRepository = mock(DataOwnerRepository::class.java)
@@ -31,8 +38,7 @@ class DataOwnersManagerTest {
         dataOwnersManager = DataOwnersManager(
             mockDataOwnersRepository,
             mockCompanyRepository,
-            mock(EmailSender::class.java),
-            mock(DataOwnershipRequestEmailBuilder::class.java),
+            mock(DataOwnershipEmailMessageSender::class.java),
         )
     }
 
@@ -40,10 +46,8 @@ class DataOwnersManagerTest {
     fun `check that a data ownership can only be requested for existing companies`() {
         `when`(mockCompanyRepository.findById(any())).thenReturn(Optional.empty())
         val exception = assertThrows<ResourceNotFoundApiException> {
-            dataOwnersManager.sendDataOwnershipRequestIfNecessary(
+            dataOwnersManager.checkCompanyForDataOwnership(
                 "non-existing-company-id",
-                mockAuthentication,
-                null,
             )
         }
         assertTrue(exception.summary.contains("Company is invalid"))
@@ -58,7 +62,7 @@ class DataOwnersManagerTest {
             Optional.of(
                 CompanyDataOwnersEntity(
                     "indeed-existing-company-id",
-                    mutableListOf("user-id"),
+                    mutableListOf(testUserId),
                 ),
             ),
         )
@@ -67,14 +71,9 @@ class DataOwnersManagerTest {
                 "indeed-existing-company-id",
                 mockAuthentication,
                 null,
+                "",
             )
         }
         assertTrue(exception.summary.contains("User is already a data owner for company."))
     }
-
-    private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-        "username",
-        "user-id",
-        setOf(DatalandRealmRole.ROLE_USER),
-    )
 }
