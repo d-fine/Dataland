@@ -50,8 +50,6 @@ function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
   return newFixture;
 }
 
-// TODO add fake fixture for new test
-
 /**
  * Ensures that the fixture contains production sites but is not a manufacturing company (to test show-if)
  * @returns the manipulated fixture data

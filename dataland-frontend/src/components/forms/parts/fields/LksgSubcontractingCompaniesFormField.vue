@@ -1,6 +1,5 @@
 <template>
-  <!--  todo remove border-nones -->
-  <div class="form-field border-none">
+  <div class="form-field" data-test="subcontractingCompanies">
     <MultiSelectFormFieldBindData
       :label="label"
       placeholder="Countries"
@@ -10,8 +9,6 @@
       v-model:selectedItemsBindInternal="selectedCountries"
       inputClass="long"
     />
-  </div>
-  <div class="form-field">
     <FormKit type="group" :name="name" v-model="industriesPerCountry">
       <div v-for="(el, index) in selectedCountries" :key="el.label">
         <div v-if="index > 0" class="h-2rem" />
@@ -28,8 +25,8 @@
             :label="`Subcontracting Companies Industries in ${getCountryNameFromCountryCode(el.value)}`"
             :description="`In which industries do the subcontracting companies in ${getCountryNameFromCountryCode(el.value)} operate?`"
             :name="el.value"
+            :shouldDisableCheckboxes="true"
           />
-          <!-- todo which nace codes / enable checkboxes -->
         </div>
       </div>
     </FormKit>
