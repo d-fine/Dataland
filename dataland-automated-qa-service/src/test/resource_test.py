@@ -52,8 +52,8 @@ def get_sme_data_mock(
         data=SmeData.from_dict({
             "general": {
                 "basicInformation": {
-                    "sector": ["dummy"],
-                    "addressOfHeadquarters": {"city": "something", "country": "else"},
+                    "reportingDate": "2023-03-01",
+                    "sectors": ["dummy"],
                     "numberOfEmployees": 42,
                     "fiscalYearStart": "2024-01-01",
                 }
@@ -76,7 +76,7 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual("data-id", data_resource.id)
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
         self.assertIsInstance(data_resource.data, SmeData)
-        self.assertEqual("dummy", data_resource.data.general.basic_information.sector[0])
+        self.assertEqual("dummy", data_resource.data.general.basic_information.sectors[0])
 
     def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()

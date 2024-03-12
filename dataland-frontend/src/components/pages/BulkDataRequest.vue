@@ -40,8 +40,8 @@
 
                     <PrimeButton
                       type="button"
-                      @click="goToLandingPage()"
-                      label="BACK TO LANDING PAGE"
+                      @click="goToMyRequests()"
+                      label="TO MY DATA REQUESTS"
                       class="uppercase p-button-outlined"
                     />
                   </template>
@@ -387,10 +387,10 @@ export default defineComponent({
     },
 
     /**
-     * Go to landing page
+     * Go to RequestedDatasetsPage
      */
-    goToLandingPage() {
-      void this.$router.push("/");
+    goToMyRequests() {
+      void this.$router.push("/requests");
     },
   },
   mounted() {

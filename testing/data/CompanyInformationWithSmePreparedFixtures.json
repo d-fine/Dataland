@@ -1,346 +1,107 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "SME-year-2023",
-			"headquarters": "Kingburgh",
-			"headquartersPostalCode": "65668",
-			"sector": "schemas",
+			"companyName": "Sme-dataset-with-no-null-fields",
+			"headquarters": "Rauboro",
+			"headquartersPostalCode": "63395-3744",
+			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"Ys4wYZgTmMoppNR0qJDM"
+					"Ry7Ld5NIj3oMNnxoMub8"
 				],
 				"Isin": [
-					"9OJPinXuVOU4"
+					"nU43UqBzw2K5",
+					"sw23nPMDtVBw"
 				],
-				"PermId": [],
+				"PermId": [
+					"n5APzjYxps"
+				],
 				"Ticker": [
-					"wweyJGQ"
+					"sB2qf5P"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CW",
-			"companyAlternativeNames": [
-				"Olson - Davis"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://alarming-stain.biz/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"47.42",
-						"90",
-						"91.03",
-						"93"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Walker Trace 46156",
-						"postalCode": "37008-7793",
-						"city": "Lillafort",
-						"state": "Arkansas",
-						"country": "ZW"
-					},
-					"numberOfEmployees": 9547,
-					"fiscalYearStart": "2024-04-27"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 0,
-					"operatingCostInEUR": 1000000,
-					"capitalAssetsInEUR": 2000000
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Wyman, McDermott and Willms",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dalton Port 9562",
-								"postalCode": "51763-4154",
-								"city": "Colemanview",
-								"state": "Mississippi",
-								"country": "KP"
-							},
-							"shareOfTotalRevenueInPercent": 40.94
-						},
-						{
-							"nameOfProductionSite": "Bosco Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dooley Loop 94128",
-								"postalCode": "15365-4085",
-								"city": "Vincenzatown",
-								"state": "Rhode Island",
-								"country": "LS"
-							},
-							"shareOfTotalRevenueInPercent": 73.39
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": []
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 1322,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 857,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5438216,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Beerstad",
-			"headquartersPostalCode": "48930",
-			"sector": "users",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"Lhiy4mAC3EUg"
-				],
-				"PermId": [],
-				"Ticker": [],
 				"Duns": [
-					"ba63zbOUc"
+					"ebyelOYRI"
 				],
 				"VatNumber": [
-					"xKpD3RaNi"
+					"3JASocVDZ"
 				],
 				"CompanyRegistrationNumber": [
-					"CoV4MH2oS7mNbEg"
+					"ZapnBdDHWb0RSk2"
 				]
 			},
-			"countryCode": "PA",
+			"countryCode": "IO",
 			"companyAlternativeNames": [
-				"Gusikowski, Abernathy and Moore",
-				"Hagenes - Roob",
-				"Hoeger, Russel and Hansen"
+				"McLaughlin - Mante",
+				"Simonis, Waelchi and Abernathy"
 			],
 			"companyLegalForm": "AG",
-			"website": "https://perky-leek.org/",
+			"website": "https://left-professional.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"84.3"
+					"reportingDate": "2024-05-19",
+					"sectors": [
+						"06.1",
+						"24.52"
 					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 6831,
-					"fiscalYearStart": "2024-07-27"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 27066342,
-					"operatingCostInEUR": 68287751,
-					"capitalAssetsInEUR": 60746408
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Sleek Granite Hat",
-							"shareOfTotalRevenueInPercent": 73.28
+					"numberOfEmployees": 1951,
+					"fiscalYearStart": "2024-06-11",
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-07-21",
+							"currency": "CAD"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2024-01-05",
+							"currency": "MVR"
 						}
-					]
+					}
+				},
+				"financialInformation": {
+					"revenueInEur": 87126.42,
+					"operatingCostInEur": 85375.89,
+					"capitalAssetsInEur": 24714.35
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 582,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 395,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMwh": {
+						"value": 68304.55,
+						"dataSource": {
+							"page": 1008,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "parse 1080p system",
+						"quality": "Incomplete"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 95204.62,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 27552658,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88457.93,
 					"naturalHazardsCovered": [
 						"EarthQuake",
-						"Snow",
-						"Avalanche",
 						"Hail",
-						"Flooding"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Kamilleshire",
-			"headquartersPostalCode": "58544-1978",
-			"sector": "lifetime value",
-			"identifiers": {
-				"Lei": [
-					"n8XzJaBIajt6bRwxgDc1"
-				],
-				"Isin": [
-					"Rpid1yBugPmn"
-				],
-				"PermId": [],
-				"Ticker": [
-					"9EWEAcO"
-				],
-				"Duns": [
-					"JWjnJwbtg"
-				],
-				"VatNumber": [
-					"LJXRjJrHD"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BI",
-			"companyAlternativeNames": [
-				"Dooley, Murazik and Green",
-				"Gutkowski and Sons",
-				"Rutherford - Rosenbaum",
-				"Tremblay - Ullrich"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://tiny-conformation.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"95.21"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 1725,
-					"fiscalYearStart": "2024-11-18"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 76549664,
-					"operatingCostInEUR": 61825533,
-					"capitalAssetsInEUR": 10538377
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Glebe Close 81621",
-								"postalCode": "62974-9831",
-								"city": "Dejonland",
-								"state": "Oklahoma",
-								"country": "PF"
-							},
-							"shareOfTotalRevenueInPercent": 64.51
-						},
-						{
-							"nameOfProductionSite": "Stoltenberg - Berge",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Thora Lodge 328",
-								"postalCode": null,
-								"city": "Fort Ona",
-								"state": "Wyoming",
-								"country": "SG"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Lubowitz, Ankunding and Dach",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Borer Extensions 7008",
-								"postalCode": "20720-5177",
-								"city": "Eagan",
-								"state": "West Virginia",
-								"country": "UY"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Dach, Rohan and Hudson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Oaklands 8843",
-								"postalCode": "94588",
-								"city": "Auburn",
-								"state": "Texas",
-								"country": "UY"
-							},
-							"shareOfTotalRevenueInPercent": 63.14
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Oriental Soft Cheese",
-							"shareOfTotalRevenueInPercent": 49.91
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 596,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 481,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 47426682,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Wind",
 						"Snow",
-						"Hail",
-						"Flooding",
-						"Avalanche"
+						"Wind"
 					]
 				}
 			}

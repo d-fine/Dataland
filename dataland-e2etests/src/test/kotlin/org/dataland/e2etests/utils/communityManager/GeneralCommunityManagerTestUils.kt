@@ -5,8 +5,8 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
+import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -127,7 +127,7 @@ fun checkThatMessageIsAsExpected(
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-    recentlyStoredRequestsForUser: List<StoredDataRequest>,
+    recentlyStoredRequestsForUser: List<ExtendedStoredDataRequest>,
     expectedNumberOfNewlyStoredRequests: Int,
 ) {
     assertEquals(
@@ -138,7 +138,7 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 }
 
 fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
-    recentlyStoredRequestsForUser: List<StoredDataRequest>,
+    recentlyStoredRequestsForUser: List<ExtendedStoredDataRequest>,
     framework: String,
     reportingPeriod: String,
     dataRequestCompanyIdentifierValue: String?,
@@ -253,8 +253,8 @@ fun getUniqueDatalandCompanyIdForIdentifierValue(identifierValue: String): Strin
     return matchingCompanyIdsAndNamesOnDataland.first().companyId
 }
 
-fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<StoredDataRequest> {
-    return requestControllerApi.getDataRequestsForUser().filter { storedDataRequest ->
+fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDataRequest> {
+    return requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
         storedDataRequest.creationTimestamp > timestamp
     }
 }

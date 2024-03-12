@@ -80,7 +80,7 @@ import OverlayPanel from "primevue/overlaypanel";
 import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
 import PrimeDialog from "primevue/dialog";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
@@ -120,7 +120,7 @@ export default defineComponent({
   },
   data() {
     return {
-      answeredDataRequestsForViewPage: [] as StoredDataRequest[],
+      answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
       dialogIsVisible: false,
       dialog: "Default\n text.",
       dialogIsSuccess: false,

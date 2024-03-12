@@ -49,7 +49,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: Frontend component testing
         run: timeout -v 15m ./testing/execute_frontend_component_tests.sh
@@ -94,7 +94,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: Execute framework-toolbox integrationTest
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
@@ -124,7 +124,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: assemble project
         run: ./gradlew assemble --no-daemon --stacktrace
@@ -384,7 +384,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - uses: actions/download-artifact@v4
         name: PythonUnitTestCoverage

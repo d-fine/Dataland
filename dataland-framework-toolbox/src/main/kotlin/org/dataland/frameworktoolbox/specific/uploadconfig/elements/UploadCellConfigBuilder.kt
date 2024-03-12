@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * An In-Memory representation of a MLDTCellConfig.
@@ -24,4 +25,6 @@ class UploadCellConfigBuilder(
     var validation: String?,
 ) : UploadConfigElement {
     override fun assertComplianceWithLegacyUploadPage() { /* BLANK */ }
+    override val imports: Set<TypeScriptImport>
+        get() = frameworkUploadOptions?.imports ?: emptySet()
 }

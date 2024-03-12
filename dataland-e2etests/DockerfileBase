@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get remove -y apt-transport-https gnupg && \
     apt-get update && \
     mkdir -p /usr/share/man/man1 && \
-    apt-get install -y temurin-17-jdk && \
+    apt-get install -y temurin-21-jdk && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

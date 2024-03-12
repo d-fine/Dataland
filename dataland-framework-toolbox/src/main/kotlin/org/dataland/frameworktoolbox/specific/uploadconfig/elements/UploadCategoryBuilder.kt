@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * An In-Memory representation of a upload-configuration section
@@ -21,6 +22,9 @@ data class UploadCategoryBuilder(
     var children: MutableList<UploadConfigElement> = mutableListOf(),
     var labelBadgeColor: LabelBadgeColor? = null,
 ) : UploadConfigElement {
+
+    override val imports: Set<TypeScriptImport>
+        get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
 
     override fun assertComplianceWithLegacyUploadPage() {
         require(children.isNotEmpty()) {

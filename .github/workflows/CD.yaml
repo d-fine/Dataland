@@ -99,7 +99,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - uses: ./.github/workflows/downloadImageVersions
       - name: Start server and deploy to it (either Preview or Dev)

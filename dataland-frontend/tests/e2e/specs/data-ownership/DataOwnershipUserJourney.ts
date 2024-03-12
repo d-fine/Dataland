@@ -11,6 +11,17 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   () => {
+    /**
+     * This method verifies that the summary panel for each framework is presented as expected
+     */
+    function checkFrameworks(): void {
+      // eslint-disable-next-line prettier/prettier
+      ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
+        const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
+        cy.get(frameworkSummaryPanelSelector).should("exist");
+        cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
+      });
+    }
     it("Upload a company, set a user as the data owner and then verify that the upload pages are displayed for that user", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       const uniqueCompanyMarker = Date.now().toString();
@@ -24,13 +35,7 @@ describeIf(
           login(reader_name, reader_pw);
           cy.visitAndCheckAppMount("/companies/" + storedCompany.companyId);
           cy.get("h1").should("contain", testCompanyName);
-          ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
-            const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-            cy.get(frameworkSummaryPanelSelector).should("exist");
-            cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-              "exist",
-            );
-          });
+          checkFrameworks();
           cy.get(`div[data-test="lksg-summary-panel"] a[data-test="lksg-provide-data-button"]`).should("exist").click();
 
           cy.get(`div[data-pc-section="title"]`).should("contain", "New Dataset - LkSG");

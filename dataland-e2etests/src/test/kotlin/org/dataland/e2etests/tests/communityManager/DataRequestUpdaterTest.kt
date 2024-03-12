@@ -2,9 +2,9 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -78,7 +78,7 @@ class DataRequestUpdaterTest {
         Thread.sleep(1000)
     }
 
-    private fun checkRequestStatusAfterUpload(dataRequest: StoredDataRequest) {
+    private fun checkRequestStatusAfterUpload(dataRequest: ExtendedStoredDataRequest) {
         if (dataRequest.reportingPeriod == "2022") {
             assertEquals(RequestStatus.answered, dataRequest.requestStatus)
         } else {

@@ -12,7 +12,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBoo
 class DependsOnComponentValue(var component: ComponentBase, var value: String) : FrameworkConditional() {
     override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
         return FrameworkBooleanLambda(
-            "${component.getTypescriptFieldAccessor()} " +
+            "${component.getTypescriptFieldAccessor(true)} " +
                 "== \"${StringEscapeUtils.escapeEcmaScript(value)}\"",
         )
     }

@@ -5,8 +5,8 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
+import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -144,7 +144,7 @@ fun checkErrorMessageForAmbivalentIdentifiersInBulkRequest(clientException: Clie
 }
 
 fun retrieveDataRequestIdForReportingPeriodAndUpdateStatus(
-    dataRequests: List<StoredDataRequest>,
+    dataRequests: List<ExtendedStoredDataRequest>,
     reportingPeriod: String,
     newStatus: RequestStatus,
 ) {

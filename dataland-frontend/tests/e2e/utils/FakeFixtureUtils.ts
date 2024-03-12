@@ -6,6 +6,7 @@ import {
 } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import {
+  type AmountWithCurrency,
   type CurrencyDataPoint,
   type ExtendedDocumentReference,
   QualityOptions,
@@ -215,6 +216,16 @@ export class Generator {
     return {
       ...datapoint,
       currency: currency,
+    };
+  }
+  /**
+   * Generates a random value and currency
+   * @returns an AmountWithCurrency object
+   */
+  generateAmountWithCurrency(): AmountWithCurrency {
+    return {
+      amount: this.randomCurrencyValue(),
+      currency: this.valueOrNull(generateCurrencyCode()),
     };
   }
 }

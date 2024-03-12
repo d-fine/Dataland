@@ -10,7 +10,6 @@ import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
@@ -56,7 +55,7 @@ class QueryDataRequestsTest {
         val storedDataRequests = requestControllerApi.getDataRequests().filter {
             it.creationTimestamp > timestampBeforePost
         }
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(storedDataRequests, 3)
+        assertEquals(3, storedDataRequests.size)
     }
 
     @Test

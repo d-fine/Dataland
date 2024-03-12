@@ -1,8 +1,11 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -22,20 +25,30 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestQueryManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
      * @returns all data requests for the current user
      */
-    fun getDataRequestsForUser(): List<StoredDataRequest> {
+    fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedStoredDataRequestEntitiesForUser =
             dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
-        val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            dataRequestEntity.toStoredDataRequest()
+        val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
+            getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-        return retrievedStoredDataRequestsForUser
+        return extendedStoredDataRequests
+    }
+
+    /** This method retrieves an extended stored data request based on a data request entity
+     * @param dataRequestEntity dataland data request entity
+     * @returns extended stored data request
+     */
+    fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
+        val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
+        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyInformation.companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.
