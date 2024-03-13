@@ -165,9 +165,8 @@ export function formatLksgProcurementCategoriesForDisplay(
   let convertedValueForModal = null;
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
-  } else {
-    convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
   }
+  convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
