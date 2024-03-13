@@ -9,8 +9,10 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -74,7 +76,7 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getDataRequestsForUser(): ResponseEntity<List<StoredDataRequest>>
+    fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>>
 
     /** Retrieves aggregated data requests by aggregating all userIds
      * @return aggregated data requests that match the given filters
@@ -125,7 +127,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
     ):
-        ResponseEntity<List<StoredDataRequest>>
+        ResponseEntity<SingleDataRequestResponse>
 
     /** A method for users to get a data request by its ID.
      * @return the data requests corresponding to the provided ID
@@ -163,7 +165,11 @@ interface RequestApi {
         value = ["/{dataRequestId}/requestStatus"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') " +
+            "or (@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) " +
+            "and @SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus))",
+    )
     fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus,
@@ -190,6 +196,6 @@ interface RequestApi {
         @RequestParam userId: String?,
         @RequestParam requestStatus: RequestStatus?,
         @RequestParam reportingPeriod: String?,
-        @RequestParam dataRequestCompanyIdentifierValue: String?,
+        @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<List<StoredDataRequest>>
 }

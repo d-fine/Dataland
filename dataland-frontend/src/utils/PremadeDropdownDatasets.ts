@@ -28,6 +28,17 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
 }
 
 /**
+ * Returns country list as a map
+ * @param datasetIdentifier the identifier of the common dataset to retrieve
+ * @returns the generated map
+ */
+export function getDatasetAsMap(datasetIdentifier: DropdownDatasetIdentifier): { [p: string]: string } {
+  const mapOfDropdownOptions = new Map<string, string>();
+  getDataset(datasetIdentifier).forEach((element) => mapOfDropdownOptions.set(element.value, element.label));
+  return Object.fromEntries(mapOfDropdownOptions);
+}
+
+/**
  * Retrieves a dropdown dataset of currency codes
  * @returns a dropdown dataset of currency codes
  */
@@ -56,4 +67,17 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
     });
   });
   return countryCodeDataset;
+}
+
+export enum ReportingPeriodTableActions {
+  EditDataset = "editDataset",
+  CloseRequest = "closeRequest",
+  ReopenRequest = "reOpenRequest",
+}
+export interface ReportingPeriodTableEntry {
+  reportingPeriod: string;
+  editUrl: string;
+  dataRequestId?: string;
+  actionOnClick?: ReportingPeriodTableActions;
+  isClickable: boolean;
 }

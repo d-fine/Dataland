@@ -1,5 +1,7 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.functional
 
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
+
 /**
  * A base-class for TypeScript Lambdas of the format (dataset: FrameworkDataType): T => BODY
  * @param body the body of the lambda function
@@ -8,5 +10,5 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.functional
  */
 open class FrameworkUploadBase(
     var body: String,
-    var imports: Set<String>?,
+    var imports: Set<TypeScriptImport>?,
 )

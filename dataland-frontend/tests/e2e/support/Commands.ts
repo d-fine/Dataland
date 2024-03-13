@@ -1,4 +1,3 @@
-import Chainable = Cypress.Chainable;
 import { ensureLoggedIn, getKeycloakToken } from "@e2e/utils/Auth";
 import { browserThen } from "@e2e/utils/Cypress";
 
@@ -19,7 +18,7 @@ declare global {
  * @param endpoint the endpoint to navigate to
  * @returns the cypress chainable
  */
-export function visitAndCheckAppMount(endpoint: string): Chainable<JQuery> {
+export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
   return cy.visit(endpoint).get("#app").should("exist");
 }
 

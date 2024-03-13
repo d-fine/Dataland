@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.repositories.utils
+package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 
@@ -11,7 +11,7 @@ data class GetDataRequestsSearchFilter(
     val userIdFilter: String,
     val requestStatus: RequestStatus?,
     val reportingPeriodFilter: String,
-    val dataRequestCompanyIdentifierValueFilter: String,
+    val datalandCompanyIdFilter: String,
 ) {
     val dataTypeFilterLength: Int
         get() = dataTypeFilter.length
@@ -22,6 +22,6 @@ data class GetDataRequestsSearchFilter(
     val reportingPeriodFilterLength: Int
         get() = reportingPeriodFilter.length
 
-    val dataRequestCompanyIdentifierValueFilterLength: Int
-        get() = dataRequestCompanyIdentifierValueFilter.length
+    val datalandCompanyIdFilterLength: Int
+        get() = datalandCompanyIdFilter.length
 }

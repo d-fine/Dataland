@@ -10,11 +10,12 @@
     </a>
     <DocumentLink
       v-else-if="dataPointProperties.dataSource"
-      label=""
+      :label="dataPointProperties.value"
       :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
       :file-reference="dataPointProperties.dataSource.fileReference"
       show-icon
     />
+    <div v-else><slot></slot></div>
   </div>
 </template>
 

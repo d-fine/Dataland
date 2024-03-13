@@ -7,12 +7,9 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import java.util.*
 
 /**
@@ -33,10 +30,7 @@ data class DataRequestEntity(
 
     val reportingPeriod: String,
 
-    @Enumerated(EnumType.STRING)
-    val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
-
-    val dataRequestCompanyIdentifierValue: String,
+    val datalandCompanyId: String,
 
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
@@ -48,19 +42,17 @@ data class DataRequestEntity(
 ) {
     constructor(
         userId: String,
-        dataType: DataTypeEnum,
+        dataType: String,
         reportingPeriod: String,
-        identifierType: DataRequestCompanyIdentifierType,
-        identifierValue: String,
+        datalandCompanyId: String,
         creationTimestamp: Long,
     ) : this(
         dataRequestId = UUID.randomUUID().toString(),
         userId = userId,
         creationTimestamp = creationTimestamp,
-        dataType = dataType.value,
+        dataType = dataType,
         reportingPeriod = reportingPeriod,
-        dataRequestCompanyIdentifierType = identifierType,
-        dataRequestCompanyIdentifierValue = identifierValue,
+        datalandCompanyId = datalandCompanyId,
         messageHistory = listOf(),
         lastModifiedDate = creationTimestamp,
         requestStatus = RequestStatus.Open,
@@ -86,10 +78,9 @@ data class DataRequestEntity(
         dataRequestId = dataRequestId,
         userId = userId,
         creationTimestamp = creationTimestamp,
-        dataType = getDataTypeEnumForFrameworkName(dataType)!!,
+        dataType = dataType,
         reportingPeriod = reportingPeriod,
-        dataRequestCompanyIdentifierType = dataRequestCompanyIdentifierType,
-        dataRequestCompanyIdentifierValue = dataRequestCompanyIdentifierValue,
+        datalandCompanyId = datalandCompanyId,
         messageHistory = messageHistory
             .sortedBy { it.creationTimestamp }
             .map { it.toStoredDataRequestMessageObject() },

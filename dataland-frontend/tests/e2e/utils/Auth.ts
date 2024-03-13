@@ -1,4 +1,3 @@
-import Chainable = Cypress.Chainable;
 import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
@@ -100,7 +99,7 @@ export function getKeycloakToken(
   username = reader_name,
   password = reader_pw,
   client_id = "dataland-public",
-): Chainable<string> {
+): Cypress.Chainable<string> {
   return (
     cy
       .request({

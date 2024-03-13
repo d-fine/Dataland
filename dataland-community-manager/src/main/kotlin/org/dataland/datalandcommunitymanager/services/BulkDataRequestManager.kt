@@ -1,13 +1,12 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandemail.email.EmailSender
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,8 +18,7 @@ import java.util.*
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
-    @Autowired private val emailSender: EmailSender,
+    @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
@@ -32,29 +30,46 @@ class BulkDataRequestManager(
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequests(bulkDataRequest)
-        val bulkDataRequestId = UUID.randomUUID().toString()
-        dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
+        val correlationId = UUID.randomUUID().toString()
+        dataRequestLogger.logMessageForBulkDataRequest(correlationId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
+        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
-            val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
-            if (matchedIdentifierType == null) {
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+            if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
             }
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
             acceptedIdentifiers.add(userProvidedIdentifierValue)
-            processAcceptedIdentifier(
-                userProvidedIdentifierValue,
-                matchedIdentifierType,
-                bulkDataRequest.dataTypes,
-                bulkDataRequest.reportingPeriods,
+            storeDataRequests(
+                dataTypes = bulkDataRequest.dataTypes,
+                reportingPeriods = bulkDataRequest.reportingPeriods,
+                datalandCompanyId = datalandCompanyId,
             )
         }
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
+        sendBulkDataRequestInternalEmailMessage(
+            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
+        )
         return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
+    }
+
+    private fun storeDataRequests(
+        dataTypes: Set<DataTypeEnum>,
+        reportingPeriods: Set<String>,
+        datalandCompanyId: String,
+    ) {
+        for (framework in dataTypes) {
+            for (reportingPeriod in reportingPeriods) {
+                if (!utils.existsDataRequestWithNonFinalStatus(datalandCompanyId, framework, reportingPeriod)) {
+                    utils.storeDataRequestEntityAsOpen(datalandCompanyId, framework, reportingPeriod)
+                }
+            }
+        }
     }
 
     private fun errorMessageForEmptyInputConfigurations(
@@ -100,39 +115,19 @@ class BulkDataRequestManager(
         }
     }
 
-    private fun processAcceptedIdentifier(
-        userProvidedIdentifierValue: String,
-        matchedIdentifierType: DataRequestCompanyIdentifierType,
-        requestedFrameworks: Set<DataTypeEnum>,
-        requestedReportingPeriods: Set<String>,
-    ) {
-        val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
-        val identifierTypeToStore = datalandCompanyId?.let {
-            DataRequestCompanyIdentifierType.DatalandCompanyId
-        } ?: matchedIdentifierType
-        val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
-        for (framework in requestedFrameworks) {
-            for (reportingPeriod in requestedReportingPeriods) {
-                utils.storeDataRequestEntityIfNotExisting(
-                    identifierValueToStore,
-                    identifierTypeToStore,
-                    framework,
-                    reportingPeriod,
-                )
-            }
-        }
-    }
-
     private fun buildResponseMessageForBulkDataRequest(
         totalNumberOfRequestedCompanyIdentifiers: Int,
         numberOfRejectedCompanyIdentifiers: Int,
     ): String {
         return when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
+            0 -> "All of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
+            1 ->
+                "One of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers was rejected " +
+                    "because it could not be matched with an existing company on Dataland."
             else ->
-                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                    "distinct company identifiers were rejected because of a format that is not matching a valid " +
-                    "LEI, ISIN or PermId."
+                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers distinct " +
+                    "company identifiers were rejected because they could not be matched with existing companies on " +
+                    "Dataland."
         }
     }
 
@@ -146,28 +141,27 @@ class BulkDataRequestManager(
                 bulkDataRequest.companyIdentifiers.size,
                 rejectedCompanyIdentifiers.size,
             ),
-            rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
             acceptedCompanyIdentifiers = acceptedCompanyIdentifiers,
+            rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
         )
     }
 
-    private fun sendBulkDataRequestNotificationMail(
+    private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdentifiers: List<String>,
-        bulkDataRequestId: String,
+        acceptedDatalandCompanyIds: List<String>,
+        correlationId: String,
     ) {
-        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
+        emailMessageSender.sendBulkDataRequestInternalMessage(
             bulkDataRequest,
-            acceptedCompanyIdentifiers,
+            acceptedDatalandCompanyIds,
+            correlationId,
         )
-        dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
-        emailSender.sendEmail(emailToSend)
+        dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN or PermId."
+        val summary = "All provided company identifiers are not unique or could not be recognized."
+        val message = "The company identifiers you provided could not be matched with an existing company on dataland"
         throw InvalidInputApiException(
             summary,
             message,

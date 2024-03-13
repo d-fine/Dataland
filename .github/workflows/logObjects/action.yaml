@@ -1,6 +1,9 @@
 name: "Log Inputs Action"
 description: "Logs provided inputs"
 inputs:
+  task:
+    description: the task this action is called on
+    required: true
   github:
     description: the github object
     required: false
@@ -67,7 +70,7 @@ runs:
         echo '${{ inputs.vars }}' > logs/$GITHUB_JOB/vars_json.log
         find logs/$GITHUB_JOB -type f -size -4c -delete
     - name: Store env and secrets
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: parameters
+        name: parameters-${{ inputs.task }}
         path: ./logs/

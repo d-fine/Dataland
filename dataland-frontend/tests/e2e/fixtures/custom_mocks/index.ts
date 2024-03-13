@@ -3,6 +3,7 @@ import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from "@e2e/fix
 import { generateMetaInfoDataForOneCompany } from "@e2e/fixtures/custom_mocks/DataMetaInformationFaker";
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from "@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker";
 import { generateListOfDataSearchStoredCompany } from "@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker";
+import { generateStoredDataRequests } from "@e2e/fixtures/custom_mocks/StoredDataRequestsFaker";
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -26,5 +27,14 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     "../testing/data/DataSearchStoredCompanyMocks.json",
     JSON.stringify(generateListOfDataSearchStoredCompany(), null, "\t"),
+  );
+  fs.writeFileSync(
+    "../testing/data/DataRequestsMock.json",
+    JSON.stringify(
+      generateStoredDataRequests(),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      (_key, value) => (value instanceof Set ? Array.from(value) : value),
+      "\t",
+    ),
   );
 }

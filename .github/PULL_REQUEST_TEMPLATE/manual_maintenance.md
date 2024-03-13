@@ -7,51 +7,18 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
-### Notes from Dec, 15 2023
-Some tests are failing locally due to the cookie banner. A description is given in
-https://jira.d-fine.dev/browse/DALA-3137
+### Problematic updates
 
-### Skipped updates
+See the list of known issue on the internal wiki https://github.com/d-fine/DatalandInternal/wiki/Problematic-updates
+Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem
+If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog 
 
-The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
-appear.
-
-- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
-- [ ] kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
-- [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
-- [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
-  - frontend:
-    - [ ] axios was updated to latest version 1.6.7 in sprint 60; however, it caused issues before when updating to > 1.6.2, so keep an eye on it)
-    - [ ] keycloak-js > 22.0.5
-    - [ ] primevue > 3.44.0
-    - [ ] vue > 3.4.5
-    - [ ] @vue/tsconfig > 0.1.3 (Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
-      project and unresolved imports that are hard to fix))
-    - [ ]  cypress > 12.11.0 (Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test
-      `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress:
-      https://github.com/cypress-io/cypress/issues/26902)
-  - keycloak:
-    - [ ] @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images)
-    - [ ] @zxcvbn-ts/language-en > 2.1.0(issues in rebuilding keycloak Docker images)
-    - [ ] @types/node > 20.10.8 causes issues with vite > 4.5.1 which causes build to fail
-- [ ] Update e2etests/Dockerfile update breaks the build
-- [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
-  https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
-  https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
-- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Postgres can't be upgraded to 16 as existing data is not compatible.
-- [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
-- [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from `config/detekt.yml`, 
-      at latest once the refactoring of the APIs is done this must be reevaluated
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
-  - [] as of 31.01.2024 plugin.org.springframework.boot=3.2.2 will break the CI, 3.2.1 works fine
-  - [] here is the error message for future reference
-    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(10,38): error TS2339: Property 'health' does not exist on type 'ActuatorApi'. 
-    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(11,20): error TS18046: 'healthResponse' is of type 'unknown'.
-- [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
+- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
 
@@ -98,6 +65,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-internal-storage/Dockerfile`
@@ -109,8 +77,6 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
-- [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
@@ -118,6 +84,12 @@ Update versions in the following dockerfiles
   service that is not covered by the tasks above)
 
 ## Server updates
+
+Note: First manually create backups of the servers with a short retention duration.
+Then start the update with one of the dev servers and deploy to it after the update.
+If everything was fine, proceed with other servers. Double check for Prod.
+
+Note: currently there seems to be an issue with the docker-compose plugin
 
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 
@@ -163,10 +135,10 @@ check that all ssh-keys are set and erased from people that have left
 ## Check RabbitMQ dead letter queue and disk space
 
 - [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
-  disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space
+  disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
 - [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
-  maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed
+  maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
@@ -185,7 +157,7 @@ check that all ssh-keys are set and erased from people that have left
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
     - [ ] It's verified that everything seems to be working fine by manually using the website
     - [ ] All implemented Social Logins have been tested manually in the UI
-- [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
+- [ ] This template and the internal wiki page have been updated to reflect the latest state of tasks required and known issues with upgrades
 - [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in
   future commits
 

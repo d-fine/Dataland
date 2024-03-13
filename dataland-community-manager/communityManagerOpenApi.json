@@ -44,10 +44,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StoredDataRequest"
-                  }
+                  "$ref": "#/components/schemas/SingleDataRequestResponse"
                 }
               }
             }
@@ -264,7 +261,7 @@
             }
           },
           {
-            "name": "dataRequestCompanyIdentifierValue",
+            "name": "datalandCompanyId",
             "in": "query",
             "required": false,
             "schema": {
@@ -385,7 +382,7 @@
         ],
         "summary": "Get all stored data requests of the user making the request.",
         "description": "Gets all the stored data request created by the user who is making the request.",
-        "operationId": "getDataRequestsForUser",
+        "operationId": "getDataRequestsForRequestingUser",
         "responses": {
           "200": {
             "description": "Successfully retrieved data requests for the user.",
@@ -394,7 +391,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredDataRequest"
+                    "$ref": "#/components/schemas/ExtendedStoredDataRequest"
                   }
                 }
               }
@@ -767,7 +764,7 @@
         "properties": {
           "companyIdentifier": {
             "type": "string",
-            "example": "DE0005190003"
+            "example": "enterValidIdentifier"
           },
           "dataType": {
             "type": "string",
@@ -809,106 +806,28 @@
           }
         }
       },
-      "DataRequestCompanyIdentifierType": {
-        "type": "string",
-        "enum": [
-          "Lei",
-          "Isin",
-          "PermId",
-          "MultipleRegexMatches",
-          "DatalandCompanyId"
-        ]
-      },
-      "RequestStatus": {
-        "type": "string",
-        "enum": [
-          "Open",
-          "Answered",
-          "Closed"
-        ]
-      },
-      "StoredDataRequest": {
+      "SingleDataRequestResponse": {
         "required": [
-          "creationTimestamp",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
-          "dataRequestId",
-          "dataType",
-          "lastModifiedDate",
-          "messageHistory",
-          "reportingPeriod",
-          "requestStatus",
-          "userId"
+          "message",
+          "reportingPeriodsOfDuplicateDataRequests",
+          "reportingPeriodsOfStoredDataRequests"
         ],
         "type": "object",
         "properties": {
-          "dataRequestId": {
+          "message": {
             "type": "string"
           },
-          "userId": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "dataType": {
-            "type": "string",
-            "enum": [
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "lksg",
-              "p2p",
-              "sfdr",
-              "sme",
-              "esg-questionnaire",
-              "heimathafen"
-            ]
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
-            "type": "string"
-          },
-          "messageHistory": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
-            }
-          },
-          "lastModifiedDate": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "requestStatus": {
-            "$ref": "#/components/schemas/RequestStatus"
-          }
-        }
-      },
-      "StoredDataRequestMessageObject": {
-        "required": [
-          "contacts",
-          "creationTimestamp"
-        ],
-        "type": "object",
-        "properties": {
-          "contacts": {
-            "uniqueItems": true,
+          "reportingPeriodsOfStoredDataRequests": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "message": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
+          "reportingPeriodsOfDuplicateDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -924,8 +843,7 @@
             "uniqueItems": true,
             "type": "array",
             "example": [
-              "DE0005190003",
-              "exampleForAnInvalidIdentifier"
+              "enterValidIdentifiers"
             ],
             "items": {
               "type": "string"
@@ -976,13 +894,13 @@
           "message": {
             "type": "string"
           },
-          "rejectedCompanyIdentifiers": {
+          "acceptedCompanyIdentifiers": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "acceptedCompanyIdentifiers": {
+          "rejectedCompanyIdentifiers": {
             "type": "array",
             "items": {
               "type": "string"
@@ -990,11 +908,141 @@
           }
         }
       },
+      "RequestStatus": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Answered",
+          "Closed"
+        ]
+      },
+      "StoredDataRequest": {
+        "required": [
+          "creationTimestamp",
+          "dataRequestId",
+          "dataType",
+          "datalandCompanyId",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataRequestId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
+      "StoredDataRequestMessageObject": {
+        "required": [
+          "contacts",
+          "creationTimestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ExtendedStoredDataRequest": {
+        "required": [
+          "companyName",
+          "creationTimestamp",
+          "dataRequestId",
+          "dataType",
+          "datalandCompanyId",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataRequestId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
       "AggregatedDataRequest": {
         "required": [
           "count",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
+          "datalandCompanyId",
           "requestStatus"
         ],
         "type": "object",
@@ -1015,10 +1063,7 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
+          "datalandCompanyId": {
             "type": "string"
           },
           "requestStatus": {

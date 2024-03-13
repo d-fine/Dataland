@@ -141,12 +141,10 @@ services:
       - backend-db
     <<: *uncritical-constants-env
     environment:
-      <<: [ *rabbit-mq-user-and-pass, *mailjet-api-id-and-secret ]
+      <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
-      NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST: ${NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST}
-      NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST: ${NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST}
   backend-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -202,7 +200,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "development" ]
-    image: node:20.11.0
+    image: node:20.11.1
     networks:
       internal:
         aliases:
@@ -449,12 +447,10 @@ services:
     expose:
       - "8080"
     environment:
-      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
-      NOTIFICATION_INTERNAL_RECEIVERS_DATA_REQUEST: ${NOTIFICATION_INTERNAL_RECEIVERS_DATA_REQUEST}
-      NOTIFICATION_INTERNAL_CC_DATA_REQUEST: ${NOTIFICATION_INTERNAL_CC_DATA_REQUEST}
       COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
     depends_on:
@@ -476,6 +472,18 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  email-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_test:${DATALAND_EMAIL_SERVICE_TEST_VERSION}}
+    networks:
+      - internal
+    environment:
+      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
+      NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
+      DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
 networks:
   internal:
   external:

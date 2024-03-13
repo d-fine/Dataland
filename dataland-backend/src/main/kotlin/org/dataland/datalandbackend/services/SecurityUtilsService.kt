@@ -10,10 +10,9 @@ import org.springframework.stereotype.Service
 @Service("SecurityUtilsService")
 class SecurityUtilsService {
     /**
-     * Returns true if and only if the currently authenticated user is data owner of the company
-     *
+     * Returns true if and only if the currently authenticated user is asking for him/herself
      */
-    fun isUserDataOwner(userIdRequester: String): Boolean {
+    fun isUserRequestingForOwnId(userIdRequester: String): Boolean {
         val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
         return userIdAuthenticated == userIdRequester
     }

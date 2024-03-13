@@ -5,8 +5,10 @@
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
+      :framework="dataType"
+      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
-    <div v-if="isDataProcessedSuccesfully">
+    <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
         style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
@@ -47,6 +49,7 @@
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />
+
             <PrimeButton
               v-if="isEditableByCurrentUser"
               class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
@@ -74,7 +77,11 @@
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
-            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+            <SelectReportingPeriodDialog
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              :action-on-click="ReportingPeriodTableActions.EditDataset"
+              @selected-reporting-period="handleReportingPeriodSelection"
+            />
           </OverlayPanel>
         </div>
       </MarginWrapper>
@@ -96,7 +103,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { computed, defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject, type PropType, ref } from "vue";
 
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
@@ -111,6 +118,7 @@ import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -134,7 +142,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: true,
     },
     singleDataMetaInfoToDisplay: {
@@ -164,7 +172,7 @@ export default defineComponent({
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
-      isDataProcessedSuccesfully: true,
+      isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
@@ -178,6 +186,9 @@ export default defineComponent({
     };
   },
   computed: {
+    ReportingPeriodTableActions() {
+      return ReportingPeriodTableActions;
+    },
     DataTypeEnum() {
       return DataTypeEnum;
     },
@@ -340,9 +351,9 @@ export default defineComponent({
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
-        this.isDataProcessedSuccesfully = true;
+        this.isDataProcessedSuccessfully = true;
       } catch (error) {
-        this.isDataProcessedSuccesfully = false;
+        this.isDataProcessedSuccessfully = false;
         console.error(error);
       }
     },
@@ -367,6 +378,14 @@ export default defineComponent({
             });
           }
         });
+    },
+    /**
+     * Handles the selection of the reporting period in th dropdown panel
+     * @param reportingPeriodTableEntry object, which was chosen
+     * @returns a router push to the edit url of the chosen dataset
+     */
+    handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
+      return this.$router.push(reportingPeriodTableEntry.editUrl);
     },
   },
   watch: {
