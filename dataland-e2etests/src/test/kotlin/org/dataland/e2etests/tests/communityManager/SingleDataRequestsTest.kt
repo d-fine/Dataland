@@ -15,6 +15,7 @@ import org.dataland.e2etests.utils.communityManager.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertNotNull
 import java.time.Instant
 import java.util.*
 
@@ -109,7 +110,7 @@ class SingleDataRequestsTest {
             "companyNr", framework,
             reportingPeriods,
         )
-        Assertions.assertNotNull(clientException, "invalidInputApiException should not be null")
+        assertNotNull(clientException, "invalidInputApiException should not be null")
         checkErrorMessageForNonUniqueIdentifiersInSingleRequest(clientException)
     }
 

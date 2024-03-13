@@ -167,5 +167,4 @@ class BulkDataRequestsTest {
         val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, dataTypes, reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
-
 }

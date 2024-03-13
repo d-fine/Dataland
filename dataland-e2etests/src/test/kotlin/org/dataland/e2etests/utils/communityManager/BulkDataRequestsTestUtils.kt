@@ -129,7 +129,6 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
     )
 }
 
-
 fun retrieveDataRequestIdForReportingPeriodAndUpdateStatus(
     dataRequests: List<ExtendedStoredDataRequest>,
     reportingPeriod: String,
