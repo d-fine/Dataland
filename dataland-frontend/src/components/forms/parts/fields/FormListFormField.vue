@@ -34,6 +34,7 @@ import ProductFormElement from "@/components/forms/parts/elements/derived/Produc
 import AlignedActivitiesFormElements from "@/components/forms/parts/elements/derived/AlignedActivitiesFormElements.vue";
 import NonAlignedActivitiesFormElement from "@/components/forms/parts/elements/derived/NonAlignedActivitiesFormElement.vue";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
+import RiskAssessmentFormElement from "@/components/forms/parts/elements/derived/RiskAssessmentFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import StringBaseDataPointFormField from "@/components/forms/parts/fields/StringBaseDataPointFormField.vue";
@@ -47,6 +48,7 @@ export default defineComponent({
     UploadFormHeader,
     ProductFormElement,
     ProductionSiteFormElement,
+    RiskAssessmentFormElement,
     AlignedActivitiesFormElements,
     NonAlignedActivitiesFormElement,
     StringBaseDataPointFormField,
