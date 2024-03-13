@@ -6,7 +6,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 
 /**
- * Represents the LksgRiskPositionMultiSelectComponent component
+ * Represents the LkSG-spcific "Risk Position MultiSelect" component
  */
 open class LksgRiskPositionMultiSelectComponent(
     identifier: String,
