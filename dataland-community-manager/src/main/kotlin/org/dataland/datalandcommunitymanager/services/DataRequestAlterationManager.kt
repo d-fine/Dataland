@@ -52,7 +52,11 @@ class DataRequestAlterationManager(
         }
         return dataRequestEntity.toStoredDataRequest()
     }
-
+    /**
+     * Method to patch open data request to answered after a dataset is uploaded
+     * @param dataId the id of the uploaded dataset
+     * @param correlationId dataland correlationId
+     */
     fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
