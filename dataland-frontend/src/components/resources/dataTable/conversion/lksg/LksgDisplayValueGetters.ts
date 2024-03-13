@@ -31,11 +31,13 @@ export const lksgModalColumnHeaders = {
     totalProcurementInPercent: "Order Volume",
   },
   riskPositions: {
+    //todo check if these are correct
     riskPosition: "Risk Position",
     measuresTaken: "Measures taken",
     listedMeasures: "Listed Measures",
   },
   generalViolations: {
+    //todo check if these are correct
     riskPosition: "Risk Position",
     measuresTaken: "Measures taken",
     listedMeasures: "Listed Measures",
