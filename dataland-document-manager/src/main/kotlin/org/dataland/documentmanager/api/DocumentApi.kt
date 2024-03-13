@@ -43,10 +43,21 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["multipart/form-data"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    //TODO activate security checks again
+    //@PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postDocument(
         @RequestPart("pdfDocument") pdfDocument: MultipartFile,
     ): ResponseEntity<DocumentUploadResponse>
+
+    @PostMapping(
+        value = ["/convert"],
+        produces = ["multipart/form-data"],
+        consumes = ["multipart/form-data"],
+    )
+    //@PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun convert(
+        @RequestPart("image") image: MultipartFile,
+    ): ResponseEntity<InputStreamResource>
 
     /**
      * Checks if a document with a given ID exists
@@ -67,7 +78,7 @@ interface DocumentApi {
         value = ["/{documentId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
         @PathVariable("documentId") documentId: String,
     )
@@ -93,7 +104,7 @@ interface DocumentApi {
         value = ["/{documentId}"],
         produces = ["application/json", "application/pdf"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>

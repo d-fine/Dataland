@@ -8,17 +8,17 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
-class PdfVerificationServiceTest {
-    private val pdfVerificationService = PdfVerificationService()
+class VerificationServiceTest {
+    private val verificationService = VerificationService()
     private val correlationId = "test-correlation-id"
-    private val testPdfFile = "samplePdfs/StandardWordExport.pdf"
-    private val testExcelFile = "samplePdfs/EmptyExcelFile.xlsx"
+    private val testPdfFile = "sampleFiles/StandardWordExport.pdf"
+    private val testExcelFile = "sampleFiles/EmptyExcelFile.xlsx"
 
     @Test
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileBytes = loadFileBytes(testPdfFile)
         val testFile = createPdfFromBytes(testFileBytes)
-        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+        verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
     }
 
     @Test
@@ -31,10 +31,10 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+            verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            pdfVerificationService.pdfParsingErrorMessage,
+            verificationService.pdfParsingErrorMessage,
             thrown.message,
         )
     }
@@ -44,10 +44,10 @@ class PdfVerificationServiceTest {
         val testFileBytes = loadFileBytes(testExcelFile)
         val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+            verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            pdfVerificationService.pdfParsingErrorMessage,
+            verificationService.pdfParsingErrorMessage,
             thrown.message,
         )
     }
@@ -61,7 +61,7 @@ class PdfVerificationServiceTest {
             MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
-        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+        verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
     }
 
     @Test
@@ -75,10 +75,44 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
+            verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(testFile, correlationId)
         }
         assertEquals(
-            pdfVerificationService.fileNameHasForbiddenCharactersMessage,
+            verificationService.fileNameHasForbiddenCharactersMessage,
+            thrown.message,
+        )
+    }
+
+    @Test
+    fun `verifies that a mismatch in file extension and mime type is detected`(){
+        val testFile = MockMultipartFile(
+            "test.png",
+            "test.png",
+            MediaType.APPLICATION_PDF_VALUE,
+            loadFileBytes(testPdfFile),
+        )
+        val thrown = assertThrows<InvalidInputApiException> {
+            verificationService.checkMimeTypeAndFileExtensionForConsistency(testFile, correlationId)
+        }
+        assertEquals(
+            verificationService.fileExtensionAndMimeTypeMismatchMessage,
+            thrown.message,
+        )
+    }
+
+    @Test
+    fun `verifies that an unsupported type is detected`(){
+        val testFile = MockMultipartFile(
+            "test.json",
+            "test.json",
+            MediaType.APPLICATION_JSON_VALUE,
+            loadFileBytes(testPdfFile),
+        )
+        val thrown = assertThrows<InvalidInputApiException> {
+            verificationService.checkMimeTypeAndFileExtensionForConsistency(testFile, correlationId)
+        }
+        assertEquals(
+            verificationService.typeNotSupportedMessage,
             thrown.message,
         )
     }

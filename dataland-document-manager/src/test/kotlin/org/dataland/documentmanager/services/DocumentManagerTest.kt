@@ -43,7 +43,8 @@ import java.util.Optional
 @Transactional
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private val pdfVerificationService: PdfVerificationService,
+    @Autowired private val verificationService: VerificationService,
+    @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 ) {
 
@@ -53,6 +54,7 @@ class DocumentManagerTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
     lateinit var mockMessageUtils: MessageQueueUtils
+    //TODO swap out the test report for something generic
     val reportName = "test-report.pdf"
 
     @BeforeEach
@@ -74,8 +76,9 @@ class DocumentManagerTest(
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            pdfVerificationService = pdfVerificationService,
+            verificationService = verificationService,
             storageApi = mockStorageApi,
+            pdfConverter = pdfConverter,
             objectMapper = objectMapper,
         )
     }
@@ -201,7 +204,7 @@ class DocumentManagerTest(
         }
     }
     private fun mockUploadableFile(reportName: String): MockMultipartFile {
-        val testFileStream = javaClass.getResourceAsStream("samplePdfs/$reportName")
+        val testFileStream = javaClass.getResourceAsStream("sampleFiles/$reportName")
         val testFileBytes = IOUtils.toByteArray(testFileStream)
         return MockMultipartFile(
             reportName, reportName,

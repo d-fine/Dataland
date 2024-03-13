@@ -9,6 +9,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
@@ -39,5 +40,14 @@ class DocumentController(
             .contentType(MediaType.APPLICATION_PDF)
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=${document.title}")
             .body(document.content)
+    }
+
+
+    override fun convert(image: MultipartFile): ResponseEntity<InputStreamResource> {
+        val document = documentManager.convertImageToPdf(image)
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_PDF)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Test")
+            .body(document)
     }
 }
