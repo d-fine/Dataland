@@ -49,20 +49,37 @@ class DataRequestAnsweredEmailFactoryTest {
     }
 
     @Test
-    fun `validate that the output of the data request answered mail is correctly formatted`() {
+    fun `validate that the html output of the data request answered mail is correctly formatted`() {
         val basicEmail = buildTestEmail(false)
         val emailWithOptionalProperties = buildTestEmail(true)
-        validateEmailFormat(basicEmail, false)
-        validateEmailFormat(emailWithOptionalProperties, true)
+
+        validateEmailHtmlFormat(basicEmail)
+        validateEmailHtmlFormatContainsDefaultProperties(basicEmail)
+
+        validateEmailHtmlFormat(emailWithOptionalProperties)
+        validateEmailHtmlFormatContainsOptionalProperties(emailWithOptionalProperties)
     }
 
-    private fun validateEmailFormat(email: Email, hasOptionalProperties: Boolean) {
+    private fun validateEmailHtmlFormatContainsDefaultProperties(email: Email){
+        assertTrue(email.content.htmlContent.contains("some days"))
+    }
+    private fun validateEmailHtmlFormatContainsOptionalProperties(email: Email){
+        assertTrue(email.content.htmlContent.contains(closedInDays))
+        assertTrue(email.content.htmlContent.contains(dataTypeDescription))
+    }
+    private fun validateEmailHtmlFormat(email: Email) {
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
             setOf(EmailContact(receiverEmail)),
             emptySet(),
             email,
         )
+        assertTrue(email.content.htmlContent.contains("Great news!"))
+        assertTrue(email.content.htmlContent.contains("Your data request has been answered."))
+        assertTrue(email.content.htmlContent.contains("How to proceed?"))
+        assertTrue(email.content.htmlContent.contains("Review the provided data."))
+        assertTrue(email.content.htmlContent.contains("Close or reopen your data request."))
+
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(email.content.htmlContent.contains(dataType))
         assertTrue(email.content.htmlContent.contains(reportingPeriod))
@@ -72,31 +89,27 @@ class DataRequestAnsweredEmailFactoryTest {
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType\"",
             ),
         )
-        if (hasOptionalProperties) {
-            assertTrue(email.content.htmlContent.contains(closedInDays))
-            assertTrue(email.content.htmlContent.contains(dataTypeDescription))
-        } else {
-            assertTrue(email.content.htmlContent.contains("some days"))
-        }
     }
 
     @Test
-    fun `validate that the text content of the data request answered mail is correctly formatted`() {
+    fun `validate that the default text content of the data request answered mail is correctly formatted`() {
         val basicEmail = buildTestEmail(false)
         val emailWithOptionalProperties = buildTestEmail(true)
-        validateEmailText(basicEmail)
-        validateEmailText(emailWithOptionalProperties)
+        validateTextOfDefaultEmail(basicEmail)
+        validateTextOfDefaultEmail(emailWithOptionalProperties)
     }
 
-    private fun validateEmailText(email: Email) {
+    private fun validateTextOfDefaultEmail(email: Email) {
         assertTrue(
             email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n"),
         )
         assertTrue(email.content.textContent.contains("Company: $companyName \n"))
-        assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
+        assertTrue(email.content.textContent.contains("Reporting period: $reportingPeriod \n\n"))
+        assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
         assertTrue(
             email.content.textContent.contains("Request created: $creationTimestampAsDate \n\n"),
         )
+        assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
         assertTrue(
             email.content.textContent.contains("$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType"),
         )
@@ -105,6 +118,5 @@ class DataRequestAnsweredEmailFactoryTest {
                 "\nWithout any actions, your data request will be set to closed automatically in some days.",
             ),
         )
-        assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
     }
 }
