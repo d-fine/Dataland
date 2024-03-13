@@ -20,7 +20,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
@@ -29,11 +29,11 @@ class DataRequestUpdaterTest {
     private lateinit var dataRequestUpdater: DataRequestUpdater
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private val dataRequestedAnsweredEmailMessageSender =
-        Mockito.mock(DataRequestedAnsweredEmailMessageSender::class.java)
-    private val dataRequestRepository = Mockito.mock(DataRequestRepository::class.java)
-    private val metaDataControllerApi = Mockito.mock(MetaDataControllerApi::class.java)
-    private val objectMapper = Mockito.mock(ObjectMapper::class.java)
-    private val companyDataControllerApi = Mockito.mock(CompanyDataControllerApi::class.java)
+        mock(DataRequestedAnsweredEmailMessageSender::class.java)
+    private val dataRequestRepository = mock(DataRequestRepository::class.java)
+    private val metaDataControllerApi = mock(MetaDataControllerApi::class.java)
+    private val objectMapper = mock(ObjectMapper::class.java)
+    private val companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
     private val messageUtils = MessageQueueUtils()
     private val jsonString = "jsonString"
     private val correlationId = UUID.randomUUID().toString()
@@ -64,25 +64,25 @@ class DataRequestUpdaterTest {
         qaStatus = org.dataland.datalandbackend.openApiClient.model.QaStatus.accepted,
     )
     private fun mockParameterObjects() {
-        Mockito.`when`(objectMapper.readValue(jsonString, QaCompletedMessage::class.java))
+        `when`(objectMapper.readValue(jsonString, QaCompletedMessage::class.java))
             .thenReturn(QaCompletedMessage(metaData.dataId, QaStatus.Accepted))
-        Mockito.`when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
+        `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
-        Mockito.`when`(
+        `when`(
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
                     metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
                 ),
             ),
         ).thenReturn(dataRequestEntities)
-        Mockito.doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
+        doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
             metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
         )
         dataRequestEntities.forEach {
-            Mockito.doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
+            doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
                 .sendDataRequestedAnsweredEmail(it, correlationId)
         }
-        Mockito.`when`(companyDataControllerApi.getCompanyInfo(metaData.companyId)).thenReturn(
+        `when`(companyDataControllerApi.getCompanyInfo(metaData.companyId)).thenReturn(
             CompanyInformation(companyName, "", emptyMap(), ""),
         )
     }
@@ -101,14 +101,14 @@ class DataRequestUpdaterTest {
 
     @BeforeEach
     fun setupSecurityMock() {
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "user@requests.com",
             "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )
-        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        Mockito.`when`(authenticationMock.credentials).thenReturn("")
+        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
+        `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
@@ -116,7 +116,7 @@ class DataRequestUpdaterTest {
     fun `validate that an request answered email is send when a request status is updated`() {
         dataRequestUpdater.changeRequestStatusAfterUpload(jsonString, MessageType.QaCompleted, correlationId)
         dataRequestEntities.forEach {
-            Mockito.verify(dataRequestedAnsweredEmailMessageSender)
+            verify(dataRequestedAnsweredEmailMessageSender)
                 .sendDataRequestedAnsweredEmail(it, correlationId)
         }
     }

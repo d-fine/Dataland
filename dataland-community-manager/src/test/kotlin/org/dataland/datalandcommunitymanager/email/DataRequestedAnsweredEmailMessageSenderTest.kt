@@ -14,20 +14,20 @@ import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.*
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
-class DataRequestedAnsweredEmailMessageBuilderTest {
+class DataRequestedAnsweredEmailMessageSenderTest {
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
-    private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
-    private val companyDataControllerMock = Mockito.mock(CompanyDataControllerApi::class.java)
-    private val keycloakUserControllerApiService = Mockito.mock(KeycloakUserControllerApiService::class.java)
+    private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
+    private val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
+    private val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
     private val companyName = "Test Inc."
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
@@ -48,19 +48,19 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
 
     @BeforeEach
     fun setupAuthentication() {
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             userEmail,
             userId,
             setOf(DatalandRealmRole.ROLE_USER),
         )
-        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        Mockito.`when`(authenticationMock.credentials).thenReturn("")
-        Mockito.`when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
+        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
+        `when`(authenticationMock.credentials).thenReturn("")
+        `when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
         SecurityContextHolder.setContext(mockSecurityContext)
     }
     private fun setupCompanyDataController() {
-        Mockito.`when`(companyDataControllerMock.getCompanyInfo(companyId))
+        `when`(companyDataControllerMock.getCompanyInfo(companyId))
             .thenReturn(
                 CompanyInformation(
                     companyName = companyName,
@@ -84,7 +84,7 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName)
-            Mockito.reset(cloudEventMessageHandlerMock)
+            reset(cloudEventMessageHandlerMock)
         }
     }
     private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
@@ -97,13 +97,13 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
         )
     }
     private fun mockCloudEventMessageHandlerAndSetChecks(dataType: String, dataTypeDescription: String) {
-        Mockito.`when`(
+        `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
             ),
         ).then() {
             val arg2 = it.getArgument<String>(1)
@@ -111,17 +111,17 @@ class DataRequestedAnsweredEmailMessageBuilderTest {
             val arg5 = it.getArgument<String>(4)
             val arg1 =
                 objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
-            Assertions.assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
-            Assertions.assertEquals(userEmail, arg1.receiver)
-            Assertions.assertEquals(companyId, arg1.properties.getValue("companyId"))
-            Assertions.assertEquals(companyName, arg1.properties.getValue("companyName"))
-            Assertions.assertEquals(dataType, arg1.properties.getValue("dataType"))
-            Assertions.assertEquals(dataTypeDescription, arg1.properties.getValue("dataTypeDescription"))
-            Assertions.assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
-            Assertions.assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
-            Assertions.assertEquals(MessageType.SendTemplateEmail, arg2)
-            Assertions.assertEquals(ExchangeName.SendEmail, arg4)
-            Assertions.assertEquals(RoutingKeyNames.templateEmail, arg5)
+            assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
+            assertEquals(userEmail, arg1.receiver)
+            assertEquals(companyId, arg1.properties.getValue("companyId"))
+            assertEquals(companyName, arg1.properties.getValue("companyName"))
+            assertEquals(dataType, arg1.properties.getValue("dataType"))
+            assertEquals(dataTypeDescription, arg1.properties.getValue("dataTypeDescription"))
+            assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
+            assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
+            assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(ExchangeName.SendEmail, arg4)
+            assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
     }
 }

@@ -11,6 +11,7 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
@@ -32,28 +33,28 @@ class DataRequestAlterationManagerTest {
 
     @BeforeEach
     fun setupDataRequestAlterationManager() {
-        dataRequestedAnsweredEmailMessageSender = Mockito.mock(DataRequestedAnsweredEmailMessageSender::class.java)
-        dataRequestRepository = Mockito.mock(DataRequestRepository::class.java)
-        Mockito.`when`<Any>(
+        dataRequestedAnsweredEmailMessageSender = mock(DataRequestedAnsweredEmailMessageSender::class.java)
+        dataRequestRepository = mock(DataRequestRepository::class.java)
+        `when`<Any>(
             dataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
-        Mockito.doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
+        doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
             .sendDataRequestedAnsweredEmail(dummyDataRequestEntity, correlationId)
 
         dataRequestAlterationManager = DataRequestAlterationManager(
             dataRequestRepository = dataRequestRepository,
-            dataRequestLogger = Mockito.mock(DataRequestLogger::class.java),
+            dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
         )
 
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "user@requests.com",
             "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )
-        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        Mockito.`when`(authenticationMock.credentials).thenReturn("")
+        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
+        `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
@@ -64,8 +65,8 @@ class DataRequestAlterationManagerTest {
             requestStatus = RequestStatus.Answered,
         )
         fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
-        Mockito.verify(dataRequestedAnsweredEmailMessageSender, Mockito.atLeastOnce())
-            .sendDataRequestedAnsweredEmail(any(DataRequestEntity::class.java), Mockito.anyString())
+        verify(dataRequestedAnsweredEmailMessageSender, atLeastOnce())
+            .sendDataRequestedAnsweredEmail(any(DataRequestEntity::class.java), anyString())
     }
 
     @Test
@@ -79,6 +80,6 @@ class DataRequestAlterationManagerTest {
                 requestStatus = requestStatus,
             )
         }
-        Mockito.verifyNoInteractions(dataRequestedAnsweredEmailMessageSender)
+        verifyNoInteractions(dataRequestedAnsweredEmailMessageSender)
     }
 }

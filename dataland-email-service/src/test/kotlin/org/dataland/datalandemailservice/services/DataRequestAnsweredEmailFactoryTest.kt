@@ -4,7 +4,7 @@ import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.services.templateemail.DataRequestAnsweredEmailFactory
 import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class DataRequestAnsweredEmailFactoryTest {
@@ -63,20 +63,20 @@ class DataRequestAnsweredEmailFactoryTest {
             emptySet(),
             email,
         )
-        Assertions.assertTrue(email.content.htmlContent.contains(companyName))
-        Assertions.assertTrue(email.content.htmlContent.contains(dataType))
-        Assertions.assertTrue(email.content.htmlContent.contains(reportingPeriod))
-        Assertions.assertTrue(email.content.htmlContent.contains(creationTimestampAsDate))
-        Assertions.assertTrue(
+        assertTrue(email.content.htmlContent.contains(companyName))
+        assertTrue(email.content.htmlContent.contains(dataType))
+        assertTrue(email.content.htmlContent.contains(reportingPeriod))
+        assertTrue(email.content.htmlContent.contains(creationTimestampAsDate))
+        assertTrue(
             email.content.htmlContent.contains(
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType\"",
             ),
         )
         if (hasOptionalProperties) {
-            Assertions.assertTrue(email.content.htmlContent.contains(closedInDays))
-            Assertions.assertTrue(email.content.htmlContent.contains(dataTypeDescription))
+            assertTrue(email.content.htmlContent.contains(closedInDays))
+            assertTrue(email.content.htmlContent.contains(dataTypeDescription))
         } else {
-            Assertions.assertTrue(email.content.htmlContent.contains("some days"))
+            assertTrue(email.content.htmlContent.contains("some days"))
         }
     }
 
@@ -89,22 +89,22 @@ class DataRequestAnsweredEmailFactoryTest {
     }
 
     private fun validateEmailText(email: Email) {
-        Assertions.assertTrue(
+        assertTrue(
             email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n"),
         )
-        Assertions.assertTrue(email.content.textContent.contains("Company: $companyName \n"))
-        Assertions.assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
-        Assertions.assertTrue(
+        assertTrue(email.content.textContent.contains("Company: $companyName \n"))
+        assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
+        assertTrue(
             email.content.textContent.contains("Request created: $creationTimestampAsDate \n\n"),
         )
-        Assertions.assertTrue(
+        assertTrue(
             email.content.textContent.contains("$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType"),
         )
-        Assertions.assertTrue(
+        assertTrue(
             email.content.textContent.contains(
                 "\nWithout any actions, your data request will be set to closed automatically in some days.",
             ),
         )
-        Assertions.assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
+        assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
     }
 }
