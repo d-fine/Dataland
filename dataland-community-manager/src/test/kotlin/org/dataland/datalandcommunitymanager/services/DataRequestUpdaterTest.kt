@@ -36,6 +36,7 @@ class DataRequestUpdaterTest {
     private val companyDataControllerApi = Mockito.mock(CompanyDataControllerApi::class.java)
     private val messageUtils = MessageQueueUtils()
     private val jsonString = "jsonString"
+    private val correlationId = UUID.randomUUID().toString()
     private val dataRequestEntities: List<DataRequestEntity> = listOf(
         DataRequestEntity(
             userId = "",
@@ -79,7 +80,7 @@ class DataRequestUpdaterTest {
         )
         dataRequestEntities.forEach {
             Mockito.doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
-                .sendDataRequestedAnsweredEmail(it)
+                .sendDataRequestedAnsweredEmail(it, correlationId)
         }
         Mockito.`when`(companyDataControllerApi.getCompanyInfo(metaData.companyId)).thenReturn(
             CompanyInformation(companyName, "", emptyMap(), ""),
@@ -92,7 +93,6 @@ class DataRequestUpdaterTest {
         dataRequestUpdater = DataRequestUpdater(
             messageUtils = messageUtils,
             metaDataControllerApi = metaDataControllerApi,
-            companyDataControllerApi = companyDataControllerApi,
             objectMapper = objectMapper,
             dataRequestRepository = dataRequestRepository,
             dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
@@ -114,10 +114,10 @@ class DataRequestUpdaterTest {
 
     @Test
     fun `validate that an request answered email is send when a request status is updated`() {
-        dataRequestUpdater.changeRequestStatusAfterUpload(jsonString, MessageType.QaCompleted)
+        dataRequestUpdater.changeRequestStatusAfterUpload(jsonString, MessageType.QaCompleted, correlationId)
         dataRequestEntities.forEach {
             Mockito.verify(dataRequestedAnsweredEmailMessageSender)
-                .sendDataRequestedAnsweredEmail(it, companyName)
+                .sendDataRequestedAnsweredEmail(it, correlationId)
         }
     }
 }

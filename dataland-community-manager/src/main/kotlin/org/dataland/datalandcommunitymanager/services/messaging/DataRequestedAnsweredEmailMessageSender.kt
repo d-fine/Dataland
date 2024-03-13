@@ -27,17 +27,14 @@ class DataRequestedAnsweredEmailMessageSender(
     /**
      * Method to informs user by mail that his request is answered.
      * @param dataRequestEntity the dataRequestEntity
-     * @param companyName name of the company
      */
     fun sendDataRequestedAnsweredEmail(
         dataRequestEntity: DataRequestEntity,
-        companyName: String = "",
+        correlationId: String,
     ) {
-        val correlationId: String = UUID.randomUUID().toString()
-        val compName = companyName.ifEmpty { getCompanyNameById(dataRequestEntity.datalandCompanyId) }
         val properties = mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
-            "companyName" to compName,
+            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
             "dataType" to dataRequestEntity.dataType,
             "reportingPeriod" to dataRequestEntity.reportingPeriod,
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
@@ -63,7 +60,7 @@ class DataRequestedAnsweredEmailMessageSender(
      * @returns companyName as string
      */
     private fun getCompanyNameById(companyId: String): String {
-        return companyDataControllerApi.getCompanyInfo(companyId).companyName
+        return companyDataControllerApi.getCompanyInfo(companyId).companyName.ifEmpty { companyId }
     }
 
     /**

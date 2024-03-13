@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.util.*
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -40,7 +41,8 @@ class DataRequestAlterationManager(
         dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
         dataRequestRepository.save(dataRequestEntity)
         if (requestStatus == RequestStatus.Answered) {
-            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(dataRequestEntity)
+            val correlationId = UUID.randomUUID().toString()
+            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
         }
         return dataRequestEntity.toStoredDataRequest()
     }

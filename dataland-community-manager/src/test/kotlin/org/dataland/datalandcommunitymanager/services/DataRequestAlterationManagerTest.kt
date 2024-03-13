@@ -21,6 +21,7 @@ class DataRequestAlterationManagerTest {
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
     private val dataRequestId = UUID.randomUUID().toString()
+    private val correlationId = UUID.randomUUID().toString()
     private val dummyDataRequestEntity: DataRequestEntity = DataRequestEntity(
         userId = "",
         dataType = "",
@@ -37,7 +38,7 @@ class DataRequestAlterationManagerTest {
             dataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
         Mockito.doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
-            .sendDataRequestedAnsweredEmail(dummyDataRequestEntity)
+            .sendDataRequestedAnsweredEmail(dummyDataRequestEntity, correlationId)
 
         dataRequestAlterationManager = DataRequestAlterationManager(
             dataRequestRepository = dataRequestRepository,
@@ -62,8 +63,9 @@ class DataRequestAlterationManagerTest {
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Answered,
         )
-        Mockito.verify(dataRequestedAnsweredEmailMessageSender)
-            .sendDataRequestedAnsweredEmail(dummyDataRequestEntity)
+        fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
+        Mockito.verify(dataRequestedAnsweredEmailMessageSender, Mockito.atLeastOnce())
+            .sendDataRequestedAnsweredEmail(any(DataRequestEntity::class.java), Mockito.anyString())
     }
 
     @Test
@@ -77,8 +79,6 @@ class DataRequestAlterationManagerTest {
                 requestStatus = requestStatus,
             )
         }
-
-        Mockito.verify(dataRequestedAnsweredEmailMessageSender, Mockito.never())
-            .sendDataRequestedAnsweredEmail(dummyDataRequestEntity)
+        Mockito.verifyNoInteractions(dataRequestedAnsweredEmailMessageSender)
     }
 }
