@@ -73,7 +73,7 @@ class DataRequestUpdater(
             return
         }
         messageUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, id)
+            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 }
