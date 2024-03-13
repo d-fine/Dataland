@@ -5,23 +5,13 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
-import org.dataland.e2etests.utils.communityManager.check400ClientExceptionErrorMessage
-import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
-import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
-import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
-import org.dataland.e2etests.utils.communityManager.generateRandomLei
-import org.dataland.e2etests.utils.communityManager.generateRandomPermId
-import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
-import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
-import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
-import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
-import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
+import org.dataland.e2etests.utils.communityManager.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -93,6 +83,36 @@ class SingleDataRequestsTest {
                 "The company with identifier: $invalidCompanyIdentifier is unknown to Dataland",
             ),
         )
+    }
+
+    @Test
+    fun `post single data request and verify that only unique identifiers are accepted `() {
+        val permId1 = generateRandomPermId(20)
+        val permId2 = generateRandomPermId(20)
+        val framework = SingleDataRequest.DataType.lksg
+        val reportingPeriods = setOf("2023")
+        val companyOne = CompanyInformation(
+            companyName = "companyNrOne",
+            headquarters = "HQ",
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
+            countryCode = "DE",
+        )
+        val companyTwo = CompanyInformation(
+            companyName = "companyNrTwo",
+            headquarters = "HQ",
+            identifiers = mapOf(IdentifierType.lei.value to listOf(permId2)),
+            countryCode = "DE",
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.postCompany(companyOne)
+        apiAccessor.companyDataControllerApi.postCompany(companyTwo)
+
+        val invalidInputApiException = causeInvalidInputApiExceptionBySingleDataRequest(
+            "companyNr", framework,
+            reportingPeriods,
+        )
+        checkErrorMessageForNonUniqueIdentifiersInSingleRequest(invalidInputApiException)
     }
 
     @Test

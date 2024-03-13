@@ -4,10 +4,13 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequestResponse
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 private val jwtHelper = JwtAuthenticationHelper()
@@ -159,6 +162,32 @@ fun postStandardSingleDataRequest(
             reportingPeriods = setOf("2022"),
             contacts = contacts,
             message = message,
+        ),
+    )
+}
+
+fun causeInvalidInputApiExceptionBySingleDataRequest(
+    identifier: String,
+    dataType: SingleDataRequest.DataType,
+    reportingPeriods: Set<String>,
+): InvalidInputApiException {
+    val invalidInputApiException = assertThrows<InvalidInputApiException> {
+        requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                identifier, dataType, reportingPeriods,
+            ),
+        )
+    }
+    return invalidInputApiException
+}
+
+fun checkErrorMessageForNonUniqueIdentifiersInSingleRequest(invalidInputApiException: InvalidInputApiException) {
+    Assertions.assertTrue(
+        invalidInputApiException.summary.contains("No unique identifier. Multiple companies could be found."),
+    )
+    Assertions.assertTrue(
+        invalidInputApiException.message.contains(
+            "Multiple companies have been found for the identifier you specified.",
         ),
     )
 }
