@@ -1,10 +1,11 @@
 package org.dataland.e2etests.utils.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequestResponse
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -170,23 +171,25 @@ fun causeInvalidInputApiExceptionBySingleDataRequest(
     identifier: String,
     dataType: SingleDataRequest.DataType,
     reportingPeriods: Set<String>,
-): InvalidInputApiException {
-    val invalidInputApiException = assertThrows<InvalidInputApiException> {
+): ClientException {
+    val clientException = assertThrows<ClientException> {
         requestControllerApi.postSingleDataRequest(
             SingleDataRequest(
                 identifier, dataType, reportingPeriods,
             ),
         )
     }
-    return invalidInputApiException
+    return clientException
 }
 
-fun checkErrorMessageForNonUniqueIdentifiersInSingleRequest(invalidInputApiException: InvalidInputApiException) {
+fun checkErrorMessageForNonUniqueIdentifiersInSingleRequest(clientException: ClientException) {
+    check400ClientExceptionErrorMessage(clientException)
+    val responseBody = (clientException.response as ClientError<*>).body as String
     Assertions.assertTrue(
-        invalidInputApiException.summary.contains("No unique identifier. Multiple companies could be found."),
+        responseBody.contains("No unique identifier. Multiple companies could be found."),
     )
     Assertions.assertTrue(
-        invalidInputApiException.message.contains(
+        responseBody.contains(
             "Multiple companies have been found for the identifier you specified.",
         ),
     )

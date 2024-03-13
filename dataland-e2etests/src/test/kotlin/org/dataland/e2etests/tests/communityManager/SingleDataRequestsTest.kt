@@ -12,12 +12,9 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.*
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.util.*
 
@@ -108,11 +105,12 @@ class SingleDataRequestsTest {
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
 
-        val invalidInputApiException = causeInvalidInputApiExceptionBySingleDataRequest(
+        val clientException = causeInvalidInputApiExceptionBySingleDataRequest(
             "companyNr", framework,
             reportingPeriods,
         )
-        checkErrorMessageForNonUniqueIdentifiersInSingleRequest(invalidInputApiException)
+        Assertions.assertNotNull(clientException, "invalidInputApiException should not be null")
+        checkErrorMessageForNonUniqueIdentifiersInSingleRequest(clientException)
     }
 
     @Test
