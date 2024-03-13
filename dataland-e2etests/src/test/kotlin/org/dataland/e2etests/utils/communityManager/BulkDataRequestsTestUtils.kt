@@ -124,7 +124,7 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
     )
     assertTrue(
         responseBody.contains(
-            "The company identifiers you provided could not be matched with an existing company on dataland",
+            "The company identifiers you provided could not be uniquely matched with an existing company on dataland",
         ),
     )
 }
