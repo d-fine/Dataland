@@ -109,7 +109,7 @@ class DataRequestAnsweredEmailFactoryTest {
         assertTrue(
             email.content.textContent.contains("Request created: $creationTimestampAsDate \n\n"),
         )
-        assertTrue(email.content.textContent.contains("Go to your data requests:\n"))
+        assertTrue(email.content.textContent.contains("Review the provided data:\n"))
         assertTrue(
             email.content.textContent.contains("$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType"),
         )

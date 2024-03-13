@@ -46,7 +46,7 @@ class DataRequestAnsweredEmailFactory(
             .append("Framework: ${properties[keys.dataType]} \n")
             .append("Reporting period: ${properties[keys.reportingPeriod]} \n\n")
             .append("Request created: ${properties[keys.creationDate]} \n\n")
-            .append("Go to your data requests:\n")
+            .append("Review the provided data:\n")
             .append("$proxyPrimaryUrl/companies/${properties[keys.companyId]}/frameworks/${properties[keys.dataType]}")
             .append("\nWithout any actions, your data request will be set to closed automatically in some days.")
             .toString()
