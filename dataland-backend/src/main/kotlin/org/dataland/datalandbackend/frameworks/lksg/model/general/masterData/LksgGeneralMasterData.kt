@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.generics.AmountWithCurrency
-import org.dataland.datalandbackend.validator.DataPointMinimumValue
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -23,7 +23,7 @@ data class LksgGeneralMasterData(
 
     val industry: List<String>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val numberOfEmployees: BaseDataPoint<BigDecimal>? = null,
 
