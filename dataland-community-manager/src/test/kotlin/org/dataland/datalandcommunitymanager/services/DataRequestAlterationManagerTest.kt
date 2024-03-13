@@ -91,7 +91,10 @@ class DataRequestAlterationManagerTest {
             dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
         )
+    }
 
+    @BeforeEach
+    fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "user@requests.com",

@@ -52,6 +52,7 @@ class DataRequestAlterationManager(
         }
         return dataRequestEntity.toStoredDataRequest()
     }
+
     /**
      * Method to patch open data request to answered after a dataset is uploaded
      * @param dataId the id of the uploaded dataset
