@@ -3,6 +3,8 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -166,5 +168,47 @@ class BulkDataRequestsTest {
         )
         val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, dataTypes, reportingPeriods)
         checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
+    }
+
+    @Test
+    fun `post bulk data request and verify that only unique identifiers are accepted `() {
+        val permId1 = generateRandomPermId(20)
+        val permId2 = generateRandomPermId(20)
+        val permId3 = generateRandomPermId(20)
+        val frameworks = setOf(BulkDataRequest.DataTypes.sfdr)
+        val reportingPeriods = setOf("2023")
+        val companyOne = CompanyInformation(
+            companyName = "companyNr1",
+            headquarters = "HQ",
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
+            countryCode = "DE",
+        )
+        val companyTwo = CompanyInformation(
+            companyName = "companyNr2",
+            headquarters = "HQ",
+            identifiers = mapOf(IdentifierType.lei.value to listOf(permId2)),
+            countryCode = "DE",
+        )
+        val uniqueCompany = CompanyInformation(
+            companyName = "UniqueCompanyForBulkDataRequestCheck",
+            headquarters = "HQ",
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId3)),
+            countryCode = "DE",
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.postCompany(companyOne)
+        apiAccessor.companyDataControllerApi.postCompany(companyTwo)
+        apiAccessor.companyDataControllerApi.postCompany(uniqueCompany)
+
+        val response = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(
+                setOf("UniqueCompanyForBulkDataRequestCheck","companyNr"),
+                frameworks,
+                reportingPeriods,
+            ),
+        )
+        checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
+        checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
+        checkThatMessageIsAsExpected(response, 1, 1)
     }
 }

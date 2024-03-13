@@ -94,13 +94,8 @@ class SingleDataRequestManager(
         }
         if (datalandCompanyId == null) {
             throw InvalidInputApiException(
-                summary = "The specified company is unknown to Dataland.",
-                message = "The company with identifier: $companyIdentifier is unknown to Dataland.",
-            )
-        } else if (datalandCompanyId == "IDENTIFIER_NOT_UNIQUE") {
-            throw InvalidInputApiException(
-                summary = "No unique identifier. Multiple companies could be found.",
-                message = "Multiple companies have been found for the identifier you specified.",
+                "The specified company is unknown to Dataland.",
+                "The company with identifier: $companyIdentifier is unknown to Dataland.",
             )
         } else {
             return datalandCompanyId
