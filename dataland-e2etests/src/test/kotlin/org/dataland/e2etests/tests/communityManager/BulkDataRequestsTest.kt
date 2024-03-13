@@ -202,7 +202,7 @@ class BulkDataRequestsTest {
 
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(
-                setOf("UniqueCompanyForBulkDataRequestCheck","companyNr"),
+                setOf("UniqueCompanyForBulkDataRequestCheck", "companyNr"),
                 frameworks,
                 reportingPeriods,
             ),
