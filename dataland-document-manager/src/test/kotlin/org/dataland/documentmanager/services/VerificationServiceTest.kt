@@ -92,7 +92,7 @@ class VerificationServiceTest {
             loadFileBytes(testPdfFile),
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            verificationService.checkMimeTypeAndFileExtensionForConsistency(testFile, correlationId)
+            verificationService.validateFileType(testFile, correlationId)
         }
         assertEquals(
             verificationService.fileExtensionAndMimeTypeMismatchMessage,
@@ -109,7 +109,7 @@ class VerificationServiceTest {
             loadFileBytes(testPdfFile),
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            verificationService.checkMimeTypeAndFileExtensionForConsistency(testFile, correlationId)
+            verificationService.validateFileType(testFile, correlationId)
         }
         assertEquals(
             verificationService.typeNotSupportedMessage,

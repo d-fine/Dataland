@@ -57,7 +57,7 @@ class DocumentManager(
 
     fun convertImageToPdf(image: MultipartFile): InputStreamResource {
         // TODO add correlation ID here
-        verificationService.checkMimeTypeAndFileExtensionForConsistency(image, "1")
+        verificationService.validateFileType(image, "1")
         return pdfConverter.convertImage(image, "1")
     }
 
