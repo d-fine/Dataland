@@ -18,14 +18,17 @@
         <div class="grid col-8 flex-direction-column">
           <div class="col-12">
             <div class="card">
-              <div class="card__title">Request Status:</div>
+              <div class="card__title">Request Status</div>
+              <a class=""></a>
               <div class="card__separator" />
               Test blabla {{ requestId }}
             </div>
             <div class="card">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
-              Test blabla {{ requestId }} Withdraw request
+              Once a data request is withdrawn, it will be removed from your data request list. The data owner will not
+              be notified anymore.
+              <a class="link" @click="withdrawRequest"> Withdraw request.</a>
             </div>
           </div>
         </div>
@@ -36,11 +39,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { type StoredDataRequest } from "@clients/communitymanager";
+import type Keycloak from "keycloak-js";
 export default defineComponent({
   name: "ViewDataRequest",
   components: { BackButton, AuthenticationWrapper, TheHeader, TheFooter },
@@ -50,6 +56,41 @@ export default defineComponent({
       required: false, //todo
       default: "12345",
     },
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
+  data() {
+    return {
+      storedDataRequest: {} as StoredDataRequest,
+    };
+  },
+  mounted() {
+    this.getRequest().catch((error) => console.error(error));
+  },
+  methods: {
+    /**
+     * Method to get the request from the api
+     */
+    async getRequest() {
+      try {
+        if (this.getKeycloakPromise) {
+          this.storedDataRequest = (
+            await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequestById(
+              this.requestId,
+            )
+          ).data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
+     * Method to withdraw the request when clicking on the button
+     */
+    withdrawRequest() {},
   },
 });
 </script>
@@ -65,23 +106,6 @@ export default defineComponent({
   justify-content: space-between;
   margin-bottom: 1rem;
 
-  &--interactive {
-    cursor: pointer;
-
-    &:hover {
-      box-shadow: 0 0 32px 8px #1e1e1e14;
-
-      .summary-panel__separator {
-        border-bottom-color: var(--primary-color);
-      }
-    }
-  }
-  &__title {
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 27px;
-  }
-
   &__subtitle {
     font-size: 16px;
     font-weight: 400;
@@ -90,9 +114,10 @@ export default defineComponent({
     margin-top: 8px;
   }
 
-  &__subtitle-placeholder {
-    margin-top: 8px;
-    height: 21px;
+  &__title {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 27px;
   }
 
   &__separator {
@@ -100,31 +125,6 @@ export default defineComponent({
     border-bottom: #e0dfde solid 1px;
     margin-top: 8px;
     margin-bottom: 24px;
-  }
-
-  &__data {
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 21px;
-  }
-
-  &__value {
-    font-weight: 600;
-  }
-
-  &__provide-button {
-    display: block;
-    cursor: pointer;
-    width: 100%;
-    color: var(--primary-color);
-    border: var(--primary-color) solid 2px;
-    text-decoration-line: none;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
   }
 }
 </style>
