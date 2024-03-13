@@ -35,22 +35,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.UUID.randomUUID
-import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Image
-import java.io.ByteArrayOutputStream
-import org.apache.poi.xwpf.usermodel.XWPFDocument
-import org.apache.poi.xwpf.usermodel.XWPFParagraph
-import org.apache.poi.xwpf.usermodel.XWPFRun
-import com.itextpdf.layout.element.Paragraph
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.BufferedReader
-import java.io.FileReader
-import org.apache.tika.Tika
 
 /**
  * Implements the generation of document meta info, storage of the meta info temporarily locally
@@ -67,59 +51,14 @@ class DocumentManager(
     @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 
-    ) {
+) {
     lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 
     fun convertImageToPdf(image: MultipartFile): InputStreamResource {
-        //TODO add correlation ID here
+        // TODO add correlation ID here
         verificationService.checkMimeTypeAndFileExtensionForConsistency(image, "1")
         return pdfConverter.convertImage(image, "1")
-    }
-
-    fun convertTextToPdf(textFilePath: String, pdfPath: String) {
-        val textFile = File(textFilePath)
-        if (!textFile.exists()) {
-            println("Text file not found.")
-            return
-        }
-
-        val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfPath)))
-        val document = Document(pdfDocument)
-
-        BufferedReader(FileReader(textFile)).use { reader ->
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                document.add(Paragraph(line))
-            }
-        }
-
-        document.close()
-    }
-
-    fun convertWordToPdf(wordFilePath: String, pdfPath: String) {
-        val wordFile = File(wordFilePath)
-        if (!wordFile.exists()) {
-            println("Word file not found.")
-            return
-        }
-
-        val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfPath)))
-        val document = Document(pdfDocument)
-
-        val fis = FileInputStream(wordFile)
-        val documentWord = XWPFDocument(fis)
-        val paragraphs: List<XWPFParagraph> = documentWord.paragraphs
-        for (para in paragraphs) {
-            val runs: List<XWPFRun> = para.runs
-            for (run in runs) {
-                val text = run.text()
-                document.add(Paragraph(text))
-            }
-        }
-        fis.close()
-
-        document.close()
     }
 
     /**
@@ -137,7 +76,7 @@ class DocumentManager(
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         val documentBody = document.bytes
-        verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(document, correlationId)
+        verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(document, correlationId) // TODO change
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

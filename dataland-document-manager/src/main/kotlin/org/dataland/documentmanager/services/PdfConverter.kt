@@ -6,21 +6,14 @@ import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
+import org.slf4j.LoggerFactory
+import org.springframework.core.io.InputStreamResource
+import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FileReader
-import org.apache.pdfbox.Loader
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
-import org.springframework.web.multipart.MultipartFile
-import java.io.IOException
 import java.io.InputStreamReader
-import org.apache.tika.Tika
-import org.springframework.core.io.InputStreamResource
 
 /**
  * A service for converting various file types into PDFs
@@ -64,6 +57,52 @@ class PdfConverter {
 
         return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
     }
+
+    // todo moved from unrelated DocumentManager, probably outdated
+//    fun convertTextToPdf(textFilePath: String, pdfPath: String) {
+//        val textFile = File(textFilePath)
+//        if (!textFile.exists()) {
+//            println("Text file not found.")
+//            return
+//        }
+//
+//        val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfPath)))
+//        val document = Document(pdfDocument)
+//
+//        BufferedReader(FileReader(textFile)).use { reader ->
+//            var line: String?
+//            while (reader.readLine().also { line = it } != null) {
+//                document.add(Paragraph(line))
+//            }
+//        }
+//
+//        document.close()
+//    }
+//
+//    fun convertWordToPdf(wordFilePath: String, pdfPath: String) {
+//        val wordFile = File(wordFilePath)
+//        if (!wordFile.exists()) {
+//            println("Word file not found.")
+//            return
+//        }
+//
+//        val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfPath)))
+//        val document = Document(pdfDocument)
+//
+//        val fis = FileInputStream(wordFile)
+//        val documentWord = XWPFDocument(fis)
+//        val paragraphs: List<XWPFParagraph> = documentWord.paragraphs
+//        for (para in paragraphs) {
+//            val runs: List<XWPFRun> = para.runs
+//            for (run in runs) {
+//                val text = run.text()
+//                document.add(Paragraph(text))
+//            }
+//        }
+//        fis.close()
+//
+//        document.close()
+//    }
 
     fun convertWordDocument(file: MultipartFile, correlationId: String) {
         TODO("Word conversion not implemented")

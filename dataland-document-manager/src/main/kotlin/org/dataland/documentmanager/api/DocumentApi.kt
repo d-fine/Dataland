@@ -10,7 +10,6 @@ import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,6 +28,8 @@ interface DocumentApi {
      * Upload a document
      * @param pdfDocument a PDF document
      */
+    // TODO activate security checks again
+    // @PreAuthorize("hasRole('ROLE_UPLOADER')") todo
     @Operation(
         summary = "Upload a document.",
         description = "Upload a document and receive meta information",
@@ -43,18 +44,17 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["multipart/form-data"],
     )
-    //TODO activate security checks again
-    //@PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postDocument(
         @RequestPart("pdfDocument") pdfDocument: MultipartFile,
     ): ResponseEntity<DocumentUploadResponse>
 
+    // TODO remove this endpoint
+    // @PreAuthorize("hasRole('ROLE_UPLOADER')") todo
     @PostMapping(
         value = ["/convert"],
         produces = ["multipart/form-data"],
         consumes = ["multipart/form-data"],
     )
-    //@PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun convert(
         @RequestPart("image") image: MultipartFile,
     ): ResponseEntity<InputStreamResource>
@@ -63,6 +63,7 @@ interface DocumentApi {
      * Checks if a document with a given ID exists
      * @param documentId the ID to check
      */
+    // @PreAuthorize("hasRole('ROLE_USER')") todo
     @Operation(
         summary = "Check if a document exists.",
         description = "Check for a given document ID (hash) if the document already exists in the database.",
@@ -78,7 +79,6 @@ interface DocumentApi {
         value = ["/{documentId}"],
         produces = ["application/json"],
     )
-    //@PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
         @PathVariable("documentId") documentId: String,
     )
@@ -87,6 +87,7 @@ interface DocumentApi {
      * Retrieve a document by its ID
      * @param documentId the ID to check
      */
+    // @PreAuthorize("hasRole('ROLE_USER')") todo
     @Operation(
         summary = "Receive a document.",
         description = "Receive a document by its ID from internal storage.",
@@ -104,7 +105,6 @@ interface DocumentApi {
         value = ["/{documentId}"],
         produces = ["application/json", "application/pdf"],
     )
-    //@PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>
