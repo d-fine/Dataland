@@ -74,11 +74,14 @@ class DataRequestAnsweredEmailFactoryTest {
             emptySet(),
             email,
         )
+
+        assertTrue(email.content.htmlContent.contains("DATALAND"))
         assertTrue(email.content.htmlContent.contains("Great news!"))
         assertTrue(email.content.htmlContent.contains("Your data request has been answered."))
         assertTrue(email.content.htmlContent.contains("How to proceed?"))
         assertTrue(email.content.htmlContent.contains("Review the provided data."))
         assertTrue(email.content.htmlContent.contains("Close or reopen your data request."))
+        assertTrue(email.content.htmlContent.contains("Copyright"))
 
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(email.content.htmlContent.contains(dataType))
