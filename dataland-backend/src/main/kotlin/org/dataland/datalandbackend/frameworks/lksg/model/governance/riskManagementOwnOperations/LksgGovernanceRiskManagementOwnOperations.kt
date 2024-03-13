@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.governance.riskManagementOwnOperations
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.lksg.custom.RiskPosition
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.util.EnumSet
@@ -17,7 +18,7 @@ data class LksgGovernanceRiskManagementOwnOperations(
 
     val risksIdentified: YesNo? = null,
 
-    val identifiedRisks: EnumSet<IdentifiedRisksOptions>? = null,
+    val identifiedRisks: EnumSet<RiskPosition>? = null,
 
     val counteractingMeasures: YesNo? = null,
 

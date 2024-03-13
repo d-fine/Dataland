@@ -6,8 +6,8 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.DataPointMaximumValue
-import org.dataland.datalandbackend.validator.DataPointMinimumValue
+import org.dataland.datalandbackend.validator.MaximumValue
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -66,25 +66,25 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     @field:Valid()
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val femaleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val maleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 100)
+    @field:MinimumValue(minimumValue = 0)
+    @field:MaximumValue(maximumValue = 100)
     @field:Valid()
     val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
@@ -94,12 +94,12 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 100)
+    @field:MinimumValue(minimumValue = 0)
+    @field:MaximumValue(maximumValue = 100)
     @field:Valid()
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal?>? = null,
 
@@ -112,19 +112,19 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigInteger?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<BigInteger?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
