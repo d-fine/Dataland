@@ -129,7 +129,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that an request answered email is send when a request status is patched from open to answered `() {
+    fun `validate that an request answered email is send when a request status is patched from open to answered`() {
         dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(dataRequestedAnsweredEmailMessageSender)
