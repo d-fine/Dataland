@@ -14,27 +14,7 @@ describe("test YesNoBaseDataPointFormField for entries", () => {
 
   it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
     const dummyData = getPreparedFixture("lksg-all-fields", preparedFixtures).t;
-    const dummyCompanyAssociatedData: CompanyAssociatedDataLksgData = {
-      companyId: "company-id",
-      reportingPeriod: "2024",
-      data: dummyData,
-    };
-    cy.intercept("**/api/data/lksg/*", dummyCompanyAssociatedData);
-    cy.mountWithPlugins(CreateLksgDataset, {
-      keycloak: minimalKeycloakMock({}),
-      data: () => ({
-        route: {
-          query: {
-            templateDataId: "data-id",
-          },
-        },
-      }),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        companyID: "company-id",
-      },
-    }).then(() => {
+    mountEditForm(dummyData).then(() => {
       cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']")
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
@@ -49,27 +29,7 @@ describe("test YesNoBaseDataPointFormField for entries", () => {
 
   it("Edit and subsequent upload should work properly changing subcontracting companies", () => {
     const dummyData = getPreparedFixture("lksg-with-subcontracting-countries", preparedFixtures).t;
-    const dummyCompanyAssociatedData: CompanyAssociatedDataLksgData = {
-      companyId: "company-id",
-      reportingPeriod: "2024",
-      data: dummyData,
-    };
-    cy.intercept("**/api/data/lksg/*", dummyCompanyAssociatedData);
-    cy.mountWithPlugins(CreateLksgDataset, {
-      keycloak: minimalKeycloakMock({}),
-      data: () => ({
-        route: {
-          query: {
-            templateDataId: "data-id",
-          },
-        },
-      }),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        companyID: "company-id",
-      },
-    }).then(() => {
+    mountEditForm(dummyData).then(() => {
       cy.get("[data-test='subcontractingCompaniesCountries']", {
         timeout: Cypress.env("medium_timeout_in_ms") as number,
       }).within(() => {
@@ -110,3 +70,32 @@ describe("test YesNoBaseDataPointFormField for entries", () => {
     });
   });
 });
+
+/**
+ * Function to mount the lksg upload form in edit mode with the provided data
+ * @param data the data to prefill the form with
+ * @returns the mounted component
+ */
+function mountEditForm(data: LksgData): Cypress.Chainable {
+  const dummyCompanyAssociatedData: CompanyAssociatedDataLksgData = {
+    companyId: "company-id",
+    reportingPeriod: "2024",
+    data: data,
+  };
+  cy.intercept("**/api/data/lksg/*", dummyCompanyAssociatedData);
+  return cy.mountWithPlugins(CreateLksgDataset, {
+    keycloak: minimalKeycloakMock({}),
+    data: () => ({
+      route: {
+        query: {
+          templateDataId: "data-id",
+        },
+      },
+    }),
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    props: {
+      companyID: "company-id",
+    },
+  });
+}
