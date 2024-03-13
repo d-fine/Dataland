@@ -4,7 +4,7 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { type CompanyAssociatedDataLksgData, type LksgData } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
-describe("test YesNoBaseDataPointFormField for entries", () => {
+describe("Test YesNoBaseDataPointFormField for entries", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
   before(() => {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
