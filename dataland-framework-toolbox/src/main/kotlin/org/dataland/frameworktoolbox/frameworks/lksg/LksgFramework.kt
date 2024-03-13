@@ -1,8 +1,8 @@
 package org.dataland.frameworktoolbox.frameworks.lksg
 
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.lksg.custom.LksgRiskPositionMultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -45,7 +45,7 @@ class LksgFramework : PavedRoadFramework(
 
     @Suppress("FunctionTooLong")
     private fun writeLksgRiskPositions(parentComponent: ComponentGroup, fieldName: String) {
-        parentComponent.edit<MultiSelectComponent>(fieldName) {
+        parentComponent.edit<LksgRiskPositionMultiSelectComponent>(fieldName) {
             options = mutableSetOf(
                 SelectionOption("ChildLabor", "Child labor"),
                 SelectionOption("ForcedLabor", "Forced Labor"),

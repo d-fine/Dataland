@@ -5,8 +5,8 @@ import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 /**
  * Validating Annotation for specifying a minimum value of numerical DataPoint
  */
-class DataPointMaximumValueAnnotation(maximumValue: Long) : Annotation(
-    "org.dataland.datalandbackend.validator.DataPointMaximumValue",
+class MinimumValueAnnotation(minimumValue: Long) : Annotation(
+    "org.dataland.datalandbackend.validator.MinimumValue",
     applicationTargetPrefix = "field",
-    rawParameterSpec = "maximumValue = $maximumValue",
+    rawParameterSpec = "minimumValue = $minimumValue",
 )
