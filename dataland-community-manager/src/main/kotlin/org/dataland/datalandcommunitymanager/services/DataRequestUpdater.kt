@@ -1,13 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -34,10 +28,8 @@ import java.util.*
 @Service("DataRequestUpdater")
 class DataRequestUpdater(
     @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender,
+    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -81,30 +73,7 @@ class DataRequestUpdater(
             return
         }
         messageUtils.rejectMessageOnException {
-            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
-                GetDataRequestsSearchFilter(
-                    metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
-                ),
-            )
-            dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
-                metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
-            )
-            sendDataRequestedAnsweredEmails(dataRequestEntities, id)
-            logger.info(
-                "Changed Request Status for company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
-            )
-        }
-    }
-
-    /**
-     * Method to informs users by mail that their data requests has been answered.
-     * @param dataRequestEntities list of answered dataRequestEntity
-     */
-    private fun sendDataRequestedAnsweredEmails(dataRequestEntities: List<DataRequestEntity>, correlationId: String) {
-        dataRequestEntities.forEach {
-            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, correlationId)
+            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, id)
         }
     }
 }

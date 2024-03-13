@@ -1,10 +1,15 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -27,23 +32,56 @@ class DataRequestAlterationManagerTest {
     private lateinit var dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
+    private lateinit var metaDataControllerApi: MetaDataControllerApi
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
-    private val dummyDataRequestEntity: DataRequestEntity = DataRequestEntity(
-        userId = "",
-        dataType = "",
+    private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
+        DataRequestEntity(
+            userId = "",
+            dataType = "",
+            reportingPeriod = "",
+            creationTimestamp = 0,
+            datalandCompanyId = "",
+        ),
+        DataRequestEntity(
+            userId = "dummyId",
+            dataType = "dummyDataType",
+            reportingPeriod = "dummyPeriod",
+            creationTimestamp = 123456,
+            datalandCompanyId = "dummyCompanyId",
+        ),
+    )
+    private val dummyDataRequestEntity: DataRequestEntity = dummyDataRequestEntities[0]
+    private val metaData = DataMetaInformation(
+        dataId = UUID.randomUUID().toString(),
+        companyId = "companyId",
+        dataType = DataTypeEnum.p2p,
+        uploadTime = 0,
         reportingPeriod = "",
-        creationTimestamp = 0,
-        datalandCompanyId = "",
+        currentlyActive = false,
+        qaStatus = QaStatus.accepted,
     )
 
     @BeforeEach
     fun setupDataRequestAlterationManager() {
+        metaDataControllerApi = mock(MetaDataControllerApi::class.java)
+        `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
+            .thenReturn(metaData)
         dataRequestedAnsweredEmailMessageSender = mock(DataRequestedAnsweredEmailMessageSender::class.java)
         dataRequestRepository = mock(DataRequestRepository::class.java)
         `when`<Any>(
             dataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
+        `when`(
+            dataRequestRepository.searchDataRequestEntity(
+                searchFilter = GetDataRequestsSearchFilter(
+                    metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                ),
+            ),
+        ).thenReturn(dummyDataRequestEntities)
+        doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
+            metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
+        )
         doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
             .sendDataRequestedAnsweredEmail(dummyDataRequestEntity, correlationId)
 
@@ -51,6 +89,7 @@ class DataRequestAlterationManagerTest {
             dataRequestRepository = dataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
+            metaDataControllerApi = metaDataControllerApi,
         )
 
         val mockSecurityContext = mock(SecurityContext::class.java)
@@ -87,5 +126,14 @@ class DataRequestAlterationManagerTest {
             )
         }
         verifyNoInteractions(dataRequestedAnsweredEmailMessageSender)
+    }
+
+    @Test
+    fun `validate that an request answered email is send when a request status is patched from open to answered `() {
+        dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
+        dummyDataRequestEntities.forEach {
+            verify(dataRequestedAnsweredEmailMessageSender)
+                .sendDataRequestedAnsweredEmail(it, correlationId)
+        }
     }
 }
