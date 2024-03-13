@@ -102,4 +102,14 @@ class DataRequestLogger {
     fun logMessageForPatchingRequestStatus(dataRequestId: String, requestStatus: RequestStatus) {
         singleDataRequestLogger.info("Patching request $dataRequestId with status $requestStatus")
     }
+
+    /**
+     * Logs an appropriate message when the status of a data request is updated
+     */
+    fun logMessageForNonUniqueRequestId(userProvidedIdentifierValue: String) {
+        bulkDataRequestLogger.info(
+            "The non-unique ID provided by the user $userProvidedIdentifierValue has been added to rejected IDs",
+
+            )
+    }
 }

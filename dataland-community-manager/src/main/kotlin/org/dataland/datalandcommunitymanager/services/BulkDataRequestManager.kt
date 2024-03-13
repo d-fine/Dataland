@@ -39,6 +39,7 @@ class BulkDataRequestManager(
             val datalandCompanyId: String? = try {
                 utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
             } catch (e: InvalidInputApiException) {
+                dataRequestLogger.logMessageForNonUniqueRequestId(userProvidedIdentifierValue)
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
             }
