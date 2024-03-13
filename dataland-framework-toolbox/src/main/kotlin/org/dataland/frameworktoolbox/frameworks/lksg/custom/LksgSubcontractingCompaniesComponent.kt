@@ -18,7 +18,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the ProcurementCategories component
+ * Represents the SubcontractingCompanies component
  */
 class LksgSubcontractingCompaniesComponent(
     identifier: String,
@@ -84,14 +84,14 @@ class LksgSubcontractingCompaniesComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val fixtureExperssion = if (isNullable) {
+        val fixtureExpression = if (isNullable) {
             "dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies())"
         } else {
             "dataGenerator.generateSubcontractingCompanies()"
         }
         sectionBuilder.addAtomicExpression(
             identifier,
-            fixtureExperssion,
+            fixtureExpression,
         )
     }
 }

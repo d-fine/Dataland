@@ -54,7 +54,7 @@ class DataPointMinimumValidator : ConstraintValidator<MinimumValue, BaseDataPoin
         } else if (dataPoint.value !is Number) {
             throw InvalidInputApiException(
                 "This validator is used for a wrong type",
-                "Type ${dataPoint.value!!::class.simpleName} inside BaseDataPoint is not handled by number validator",
+                "Type ${dataPoint.value!!::class.simpleName} as data point value is not handled by number validator",
             )
         } else {
             isValidNumber(dataPoint.value as Number, minimumValue)
