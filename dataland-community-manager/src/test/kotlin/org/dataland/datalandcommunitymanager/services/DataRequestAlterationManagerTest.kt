@@ -11,7 +11,13 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.*
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
@@ -65,7 +71,7 @@ class DataRequestAlterationManagerTest {
             requestStatus = RequestStatus.Answered,
         )
         fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
-        verify(dataRequestedAnsweredEmailMessageSender, atLeastOnce())
+        verify(dataRequestedAnsweredEmailMessageSender, times(1))
             .sendDataRequestedAnsweredEmail(any(DataRequestEntity::class.java), anyString())
     }
 
