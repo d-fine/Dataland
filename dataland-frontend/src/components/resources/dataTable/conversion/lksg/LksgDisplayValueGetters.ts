@@ -11,7 +11,7 @@ import { type LksgProcurementType } from "@/components/resources/dataTable/conve
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import { type LksgProductionSite } from "@clients/backend";
+import { type LksgProductionSite, type LksgRiskOrViolationAssessment } from "@clients/backend";
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
@@ -30,7 +30,17 @@ export const lksgModalColumnHeaders = {
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
     totalProcurementInPercent: "Order Volume",
   },
-};
+  riskPositions: {
+    riskPosition: "Risk Position",
+    measuresTaken: "Measures taken",
+    listedMeasures: "Listed Measures",
+  },
+  generalViolations: {
+    riskPosition: "Risk Position",
+    measuresTaken: "Measures taken",
+    listedMeasures: "Listed Measures",
+  },
+}; //todo add components risk positions, general violations, grievance mechanism headers to this file
 
 /**
  * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
@@ -188,6 +198,76 @@ export function formatLksgProductionSitesForDisplay(
         data: {
           listOfRowContents: input,
           kpiKeyOfTable: "listOfProductionSites",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Generates a display modal component for the general violations component
+ * @param input list of lksg general violations for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgRiskPositionsForDisplay(
+  input: LksgRiskOrViolationAssessment[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: input,
+          kpiKeyOfTable: "riskPositions",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Generates a display modal component for the general violations component
+ * @param input list of lksg general violations for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgGeneralViolationsForDisplay(
+  input: LksgRiskOrViolationAssessment[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: input,
+          kpiKeyOfTable: "generalViolations",
           columnHeaders: lksgModalColumnHeaders,
         },
       },

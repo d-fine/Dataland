@@ -6635,42 +6635,6 @@
           "ExportImportOfHazardousWaste"
         ]
       },
-      "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "IdentifiedRisksOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
       "LksgData": {
         "required": [
           "general"
@@ -7359,20 +7323,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HumanRightsOrEnvironmentalViolationsDefinitionOptions"
+              "$ref": "#/components/schemas/LksgRiskOrViolationAssessment"
             }
-          },
-          "humanRightsOrEnvironmentalViolationsMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "humanRightsOrEnvironmentalViolationsMeasuresDefinition": {
-            "type": "string",
-            "nullable": true
           },
           "highRiskCountriesRawMaterials": {
             "nullable": true,
@@ -7560,20 +7512,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/IdentifiedRisksOptions"
+              "$ref": "#/components/schemas/LksgRiskOrViolationAssessment"
             }
-          },
-          "counteractingMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "whichCounteractingMeasures": {
-            "type": "string",
-            "nullable": true
           },
           "regulatedRiskManagementResponsibility": {
             "nullable": true,
@@ -7681,6 +7621,25 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "LksgRiskOrViolationAssessment": {
+        "required": [
+          "measuresTaken",
+          "riskPosition"
+        ],
+        "type": "object",
+        "properties": {
+          "riskPosition": {
+            "$ref": "#/components/schemas/RiskPositionType"
+          },
+          "measuresTaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listedMeasures": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8613,6 +8572,15 @@
             "nullable": true
           }
         }
+      },
+      "RiskPositionType": {
+        "type": "string",
+        "enum": [
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardOfOccupationalHealthOrSafety"
+        ]
       },
       "SpecificProcurementOptions": {
         "type": "string",
@@ -13871,6 +13839,10 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -13882,10 +13854,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "permId": {
             "type": "string",

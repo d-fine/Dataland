@@ -329,85 +329,11 @@ export const lksgDataModel = [
             name: "identifiedRisks",
             label: "Identified Risks",
             description: "Which risks were specifically identified in the risk analysis?",
-            options: [
-              {
-                label: "Child labor",
-                value: "ChildLabor",
-              },
-              {
-                label: "Forced Labor",
-                value: "ForcedLabor",
-              },
-              {
-                label: "Slavery",
-                value: "Slavery",
-              },
-              {
-                label: "Disregard for occupational health/safety",
-                value: "DisregardForOccupationalHealthOrSafety",
-              },
-              {
-                label: "Disregard for freedom of association",
-                value: "DisregardForFreedomOfAssociation",
-              },
-              {
-                label: "Unequal treatment of employment",
-                value: "UnequalTreatmentOfEmployment",
-              },
-              {
-                label: "Withholding adequate wages",
-                value: "WithholdingAdequateWages",
-              },
-              {
-                label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                value: "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-              },
-              {
-                label: "Unlawful eviction/deprivation of land, forest and water",
-                value: "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-              },
-              {
-                label: "Use of private/public security forces with disregard for human rights",
-                value: "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-              },
-              {
-                label: "Use of mercury, mercury waste (Minamata Convention)",
-                value: "UseOfMercuryOrMercuryWaste",
-              },
-              {
-                label: "Production and use of persistent organic pollutants (POPs Convention)",
-                value: "ProductionAndUseOfPersistentOrganicPollutants",
-              },
-              {
-                label: "Export/import of hazardous waste (Basel Convention)",
-                value: "ExportImportOfHazardousWaste",
-              },
-            ],
 
-            component: "MultiSelectFormField",
+            component: "RiskAssessmentsFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
-          },
-          {
-            name: "counteractingMeasures",
-            label: "Counteracting Measures",
-            description: "Have measures been defined to counteract the risks?",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
-          },
-          {
-            name: "whichCounteractingMeasures",
-            label: "Which Counteracting Measures",
-            description: "Which measures have been applied to counteract the risks?",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.riskManagementOwnOperations?.counteractingMeasures == "Yes",
           },
           {
             name: "regulatedRiskManagementResponsibility",
@@ -774,85 +700,11 @@ export const lksgDataModel = [
             name: "humanRightsOrEnvironmentalViolationsDefinition",
             label: "Human Rights or Environmental Violations Definition",
             description: "Please define those violations.",
-            options: [
-              {
-                label: "Child labor",
-                value: "ChildLabor",
-              },
-              {
-                label: "Forced Labor",
-                value: "ForcedLabor",
-              },
-              {
-                label: "Slavery",
-                value: "Slavery",
-              },
-              {
-                label: "Disregard for occupational health/safety",
-                value: "DisregardForOccupationalHealthOrSafety",
-              },
-              {
-                label: "Disregard for freedom of association",
-                value: "DisregardForFreedomOfAssociation",
-              },
-              {
-                label: "Unequal treatment of employment",
-                value: "UnequalTreatmentOfEmployment",
-              },
-              {
-                label: "Withholding adequate wages",
-                value: "WithholdingAdequateWages",
-              },
-              {
-                label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                value: "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-              },
-              {
-                label: "Unlawful eviction/deprivation of land, forest and water",
-                value: "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-              },
-              {
-                label: "Use of private/public security forces with disregard for human rights",
-                value: "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-              },
-              {
-                label: "Use of mercury, mercury waste (Minamata Convention)",
-                value: "UseOfMercuryOrMercuryWaste",
-              },
-              {
-                label: "Production and use of persistent organic pollutants (POPs Convention)",
-                value: "ProductionAndUseOfPersistentOrganicPollutants",
-              },
-              {
-                label: "Export/import of hazardous waste (Basel Convention)",
-                value: "ExportImportOfHazardousWaste",
-              },
-            ],
 
-            component: "MultiSelectFormField",
+            component: "GeneralViolationsFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
-          },
-          {
-            name: "humanRightsOrEnvironmentalViolationsMeasures",
-            label: "Human Rights or Environmental Violations Measures",
-            description: "Have measures been taken to address this violation?",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
-          },
-          {
-            name: "humanRightsOrEnvironmentalViolationsMeasuresDefinition",
-            label: "Human Rights or Environmental Violations Measures Definition",
-            description: "Please define these measures.",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures == "Yes",
           },
           {
             name: "highRiskCountriesRawMaterials",
