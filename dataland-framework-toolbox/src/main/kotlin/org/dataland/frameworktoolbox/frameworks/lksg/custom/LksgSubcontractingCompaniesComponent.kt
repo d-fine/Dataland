@@ -18,7 +18,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the ProcurementCategories component
+ * Represents the SubcontractingCompanies component
  */
 class LksgSubcontractingCompaniesComponent(
     identifier: String,
