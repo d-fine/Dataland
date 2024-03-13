@@ -232,6 +232,8 @@ class SingleDataRequestsTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.answered)
 
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.open)
+
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.withdrawn)
     }
 
     @Test
@@ -248,6 +250,12 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains("Dataland does not know the Data request ID $nonExistingDataRequestId"),
         )
+    }
+
+    @Test
+    fun `assert that a request patch from a finalized status is forbidden` () {
+        //TODO create a closed request and patch it to withdrawn
+        //TODO optionally check if a patch from closed to closed or withdrawn to withdrawn is forbidden, since it is explicity coded that way
     }
 
     @Test
