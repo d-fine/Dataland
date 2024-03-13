@@ -23,6 +23,7 @@ import org.mockito.Mockito.reset
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.*
 
 class DataRequestedAnsweredEmailMessageSenderTest {
     private val objectMapper = jacksonObjectMapper()
@@ -32,6 +33,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
     private val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
     private val companyName = "Test Inc."
     private val reportingPeriod = "2022"
+    private val correlationId = UUID.randomUUID().toString()
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
     private val userEmail = "$userId@test-mail.com"
@@ -85,7 +87,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
                 )
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
             dataRequestedAnsweredEmailMessageSender
-                .sendDataRequestedAnsweredEmail(dataRequestEntity, companyName)
+                .sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
             reset(cloudEventMessageHandlerMock)
         }
     }
@@ -108,11 +110,12 @@ class DataRequestedAnsweredEmailMessageSenderTest {
                 anyString(),
             ),
         ).then() {
-            val arg2 = it.getArgument<String>(1)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
             val arg1 =
                 objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
+            val arg2 = it.getArgument<String>(1)
+            val arg3 = it.getArgument<String>(2)
+            val arg4 = it.getArgument<String>(3)
+            val arg5 = it.getArgument<String>(4)
             assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
             assertEquals(userEmail, arg1.receiver)
             assertEquals(companyId, arg1.properties.getValue("companyId"))
@@ -122,6 +125,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
             assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
             assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SendEmail, arg4)
             assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
