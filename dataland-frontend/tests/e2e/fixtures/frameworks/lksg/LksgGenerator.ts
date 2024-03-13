@@ -1,6 +1,7 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
 import {
+  type LksgGrievanceAssessmentMechanism,
   type LksgProcurementCategory,
   type LksgProductionSite,
   type LksgRiskOrViolationAssessment,
@@ -10,6 +11,7 @@ import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import {pickSubsetOfElements} from "@e2e/fixtures/FixtureUtils";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -70,6 +72,15 @@ export class LksgGenerator extends Generator {
   generateLksgRiskOrViolationAssessment(): LksgRiskOrViolationAssessment {
     return {
       riskPosition: Object.values(RiskPositionType)[faker.number.int(Object.values(RiskPositionType).length)],
+      measuresTaken: this.guaranteedYesNo(),
+      listedMeasures: this.randomShortString(),
+    };
+  }
+
+  generateLksgGrievanceMechanismAssessment(): LksgGrievanceAssessmentMechanism {
+    return {
+      riskPositions: Object(pickSubsetOfElements(Array(RiskPositionType))).values, //todo change to random subset of
+      specifiedComplaint: this.guaranteedShortString(),
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
     };

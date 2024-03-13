@@ -12,6 +12,7 @@ import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTab
 import { DropdownDatasetIdentifier, getDatasetAsMap } from "@/utils/PremadeDropdownDatasets";
 import {
   formatLksgGeneralViolationsForDisplay,
+  formatLksgGrievanceMechanismsForDisplay,
   formatLksgRiskPositionsForDisplay,
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
@@ -472,33 +473,11 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Please define the respective risk position of each complaint",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                ChildLabor: "Child labor",
-                ForcedLabor: "Forced Labor",
-                Slavery: "Slavery",
-                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
-                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
-                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
-                WithholdingAdequateWages: "Withholding adequate wages",
-                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
-                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
-                  "Unlawful eviction/deprivation of land, forest and water",
-                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
-                  "Use of private/public security forces with disregard for human rights",
-                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
-                ProductionAndUseOfPersistentOrganicPollutants:
-                  "Production and use of persistent organic pollutants (POPs Convention)",
-                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
-              };
-              return formatListOfStringsForDatatable(
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgGrievanceMechanismsForDisplay(
+                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
                 "Complaints Risk Position",
-              );
-            },
+              ),
           },
           {
             type: "cell",

@@ -6617,24 +6617,6 @@
           }
         }
       },
-      "ComplaintsRiskPositionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
       "LksgData": {
         "required": [
           "general"
@@ -7436,7 +7418,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/ComplaintsRiskPositionOptions"
+              "$ref": "#/components/schemas/LksgGrievanceAssessmentMechanism"
             }
           },
           "complaintsReason": {
@@ -7522,6 +7504,32 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          }
+        }
+      },
+      "LksgGrievanceAssessmentMechanism": {
+        "required": [
+          "measuresTaken",
+          "riskPositions",
+          "specifiedComplaint"
+        ],
+        "type": "object",
+        "properties": {
+          "riskPositions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskPositionType"
+            }
+          },
+          "specifiedComplaint": {
+            "type": "string"
+          },
+          "measuresTaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listedMeasures": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -13843,21 +13851,21 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "permId": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },

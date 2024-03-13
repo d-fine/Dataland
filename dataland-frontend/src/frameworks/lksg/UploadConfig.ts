@@ -431,62 +431,8 @@ export const lksgDataModel = [
             name: "complaintsRiskPosition",
             label: "Complaints Risk Position",
             description: "Please define the respective risk position of each complaint",
-            options: [
-              {
-                label: "Child labor",
-                value: "ChildLabor",
-              },
-              {
-                label: "Forced Labor",
-                value: "ForcedLabor",
-              },
-              {
-                label: "Slavery",
-                value: "Slavery",
-              },
-              {
-                label: "Disregard for occupational health/safety",
-                value: "DisregardForOccupationalHealthOrSafety",
-              },
-              {
-                label: "Disregard for freedom of association",
-                value: "DisregardForFreedomOfAssociation",
-              },
-              {
-                label: "Unequal treatment of employment",
-                value: "UnequalTreatmentOfEmployment",
-              },
-              {
-                label: "Withholding adequate wages",
-                value: "WithholdingAdequateWages",
-              },
-              {
-                label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                value: "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-              },
-              {
-                label: "Unlawful eviction/deprivation of land, forest and water",
-                value: "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-              },
-              {
-                label: "Use of private/public security forces with disregard for human rights",
-                value: "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-              },
-              {
-                label: "Use of mercury, mercury waste (Minamata Convention)",
-                value: "UseOfMercuryOrMercuryWaste",
-              },
-              {
-                label: "Production and use of persistent organic pollutants (POPs Convention)",
-                value: "ProductionAndUseOfPersistentOrganicPollutants",
-              },
-              {
-                label: "Export/import of hazardous waste (Basel Convention)",
-                value: "ExportImportOfHazardousWaste",
-              },
-            ],
 
-            component: "MultiSelectFormField",
+            component: "GeneralViolationsFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",

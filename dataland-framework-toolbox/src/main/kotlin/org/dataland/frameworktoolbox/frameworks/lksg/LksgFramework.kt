@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.frameworks.lksg
 
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -31,12 +30,8 @@ class LksgFramework : PavedRoadFramework(
             .get<ComponentGroup>("masterData").let { parent ->
                 editShareOfTemporaryWorkersOptions(parent)
             }
-        val governanceComponent = framework.root.get<ComponentGroup>("governance")
-        governanceComponent.get<ComponentGroup>("grievanceMechanismOwnOperations").let { parent ->
-            writeLksgRiskPositions(parent, "complaintsRiskPosition")
-        }
     }
-
+    /*
     @Suppress("FunctionTooLong")
     private fun writeLksgRiskPositions(parentComponent: ComponentGroup, fieldName: String) {
         parentComponent.edit<MultiSelectComponent>(fieldName) {
@@ -81,8 +76,7 @@ class LksgFramework : PavedRoadFramework(
                     "Export/import of hazardous waste (Basel Convention)",
                 ),
             )
-        }
-    }
+        } } */ // todo remove out-commented code
 
     private fun editShareOfTemporaryWorkersOptions(parent: ComponentGroup) {
         parent.edit<SingleSelectComponent>("shareOfTemporaryWorkers") {
