@@ -6560,23 +6560,6 @@
           }
         }
       },
-      "BaseDataPointBigDecimal": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "BaseDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -6977,12 +6960,8 @@
             }
           },
           "numberOfEmployees": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
+            "type": "number",
+            "nullable": true
           },
           "seasonalOrMigrantWorkers": {
             "nullable": true,
@@ -7432,12 +7411,8 @@
             ]
           },
           "complaintsNumber": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
+            "type": "number",
+            "nullable": true
           },
           "complaintsRiskPosition": {
             "type": "array",
@@ -13852,16 +13827,16 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "permId": {
@@ -13889,10 +13864,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

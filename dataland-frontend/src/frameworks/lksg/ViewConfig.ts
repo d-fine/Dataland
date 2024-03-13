@@ -79,11 +79,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees?.value, ""),
-                "Number of Employees",
-                dataset.general?.masterData?.numberOfEmployees,
-              ),
+              formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ""),
           },
           {
             type: "cell",
@@ -480,14 +476,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value,
-                  "",
-                ),
-                "Complaints Number",
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber,
-              ),
+              formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ""),
           },
           {
             type: "cell",

@@ -10,7 +10,7 @@
       inputClass="long"
     />
     <FormKit type="group" :name="name" v-model="industriesPerCountry">
-      <div v-for="(el, index) in selectedCountries" :key="el.label">
+      <div v-for="(element, index) in selectedCountries" :key="element.label">
         <div v-if="index > 0" class="h-2rem" />
         <div class="w-12 flex justify-content-start align-items-baseline" data-test="subcontractingCountriesIndustries">
           <PrimeButton
@@ -18,13 +18,13 @@
             rounded
             class="p-button-icon"
             data-test="removeElementBtn"
-            @click="removeItemFromListOfSelectedCountries(el.value)"
+            @click="removeItemFromListOfSelectedCountries(element.value)"
           />
           <NaceCodeFormField
             class="border-none w-full"
-            :label="`Subcontracting Companies Industries in ${getCountryNameFromCountryCode(el.value)}`"
-            :description="`In which industries do the subcontracting companies in ${getCountryNameFromCountryCode(el.value)} operate?`"
-            :name="el.value"
+            :label="`Subcontracting Companies Industries in ${getCountryNameFromCountryCode(element.value)}`"
+            :description="`In which industries do the subcontracting companies in ${getCountryNameFromCountryCode(element.value)} operate?`"
+            :name="element.value"
             :shouldDisableCheckboxes="true"
           />
         </div>
@@ -78,7 +78,7 @@ export default defineComponent({
      * @param countryCode - Country code to be removed
      */
     removeItemFromListOfSelectedCountries(countryCode: string) {
-      this.selectedCountries = this.selectedCountries.filter((el) => countryCode !== el.value);
+      this.selectedCountries = this.selectedCountries.filter((element) => countryCode !== element.value);
     },
   },
 });
