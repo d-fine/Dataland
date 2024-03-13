@@ -109,7 +109,6 @@ class DataRequestLogger {
     fun logMessageForNonUniqueRequestId(userProvidedIdentifierValue: String) {
         bulkDataRequestLogger.info(
             "The non-unique ID provided by the user $userProvidedIdentifierValue has been added to rejected IDs",
-
             )
     }
 }
