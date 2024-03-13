@@ -99,7 +99,7 @@ describe("Component test for the LksgPanel", () => {
     });
   });
 
-  it("Validate that the subcategories countries modal is displayed correctlz and contains the correct headers", () => {
+  it("Validate that the subcategories countries modal is displayed correctly and contains the correct headers", () => {
     const preparedFixture = getPreparedFixture("lksg-with-subcontracting-countries", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
