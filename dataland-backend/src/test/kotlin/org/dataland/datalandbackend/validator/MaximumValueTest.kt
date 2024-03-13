@@ -3,24 +3,24 @@ package org.dataland.datalandbackend.validator
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.junit.jupiter.api.Test
 
-class MinimumValueTest : NumberValidationTestBase() {
+class MaximumValueTest : NumberValidationTestBase() {
     private data class NumberFieldHolder(
-        @MinimumValue(0)
+        @MaximumValue(0)
         val value: Number?,
     )
 
     private data class DataPointFieldHolder(
-        @MinimumValue(0)
+        @MaximumValue(0)
         val dataPoint: BaseDataPoint<*>,
     )
 
     @Test
     fun `check that the number types are processed correctly`() {
-        doForAllInvalidNumberTypes(1) {
+        doForAllInvalidNumberTypes(-1) {
             assertNonDataPointExceptionThrown(it)
             assertNonDataPointExceptionThrown(dataPoint(it))
         }
-        doForAllValidNumberTypes(1) {
+        doForAllValidNumberTypes(-1) {
             assertNoViolations(it)
             assertNoViolations(dataPoint(it))
         }
@@ -35,7 +35,7 @@ class MinimumValueTest : NumberValidationTestBase() {
             assertNoViolations(it)
             assertNoViolations(dataPoint(it))
         }
-        doForAllValidNumberTypes(-1) {
+        doForAllValidNumberTypes(1) {
             assertNumberOfViolations(it, 1)
             assertNumberOfViolations(dataPoint(it), 1)
         }
