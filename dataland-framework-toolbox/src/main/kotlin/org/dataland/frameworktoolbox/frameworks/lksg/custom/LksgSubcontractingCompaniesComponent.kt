@@ -84,14 +84,14 @@ class LksgSubcontractingCompaniesComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val fixtureExperssion = if (isNullable) {
+        val fixtureExpression = if (isNullable) {
             "dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies())"
         } else {
             "dataGenerator.generateSubcontractingCompanies()"
         }
         sectionBuilder.addAtomicExpression(
             identifier,
-            fixtureExperssion,
+            fixtureExpression,
         )
     }
 }
