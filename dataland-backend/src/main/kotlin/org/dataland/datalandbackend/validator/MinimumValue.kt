@@ -63,9 +63,9 @@ class DataPointMinimumValidator : ConstraintValidator<MinimumValue, BaseDataPoin
 
 private fun isValidNumber(value: Number?, minimumValue: Long) = when (value) {
     null -> true
-    is BigDecimal -> value <= BigDecimal.valueOf(minimumValue)
-    is BigInteger -> value <= BigInteger.valueOf(minimumValue)
-    is Long -> value <= minimumValue
+    is BigDecimal -> value >= BigDecimal.valueOf(minimumValue)
+    is BigInteger -> value >= BigInteger.valueOf(minimumValue)
+    is Long -> value >= minimumValue
     else -> throw InvalidInputApiException(
         "This validator is used for a wrong type",
         "Type ${value::class.simpleName} is not handled by number validator",
