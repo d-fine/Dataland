@@ -22,13 +22,13 @@ import { defineComponent } from "vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import { IdentifiedRisksOptions } from "@clients/backend";
+import { RiskPositionType } from "@clients/backend";
 
 export default defineComponent({
   name: "RiskAssessmentFormElement",
   data() {
     return {
-      riskOptions: IdentifiedRisksOptions,
+      riskOptions: RiskPositionType,
     };
   },
   components: {
