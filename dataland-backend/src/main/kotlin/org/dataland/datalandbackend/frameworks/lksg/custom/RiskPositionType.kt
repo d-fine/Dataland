@@ -9,5 +9,17 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class RiskPositionType {
-    ChildLabor, ForcedLabor, Slavery, DisregardOfOccupationalHealthOrSafety // todo
+    ChildLabor,
+    ForcedLabor,
+    Slavery,
+    DisregardForOccupationalHealthOrSafety,
+    DisregardForFreedomOfAssociation,
+    UnequalTreatmentOfEmployment,
+    WithholdingAdequateWages,
+    ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption,
+    UnlawfulEvictionOrDeprivationOfLandOrForestAndWater,
+    UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights,
+    UseOfMercuryOrMercuryWaste,
+    ProductionAndUseOfPersistentOrganicPollutants,
+    ExportImportOfHazardousWaste,
 }
