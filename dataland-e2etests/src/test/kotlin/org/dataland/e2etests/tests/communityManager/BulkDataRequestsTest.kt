@@ -187,13 +187,13 @@ class BulkDataRequestsTest {
         val companyWithUniqueId = companyOne.copy(
             companyName = "companyWithUniqueId",
             identifiers = mapOf(IdentifierType.permId.value to listOf(permId2)),
-            )
+        )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
         apiAccessor.companyDataControllerApi.postCompany(companyWithUniqueId)
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023"))
+            BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
         )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
