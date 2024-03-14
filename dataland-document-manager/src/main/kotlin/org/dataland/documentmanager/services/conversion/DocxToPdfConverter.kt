@@ -28,11 +28,11 @@ class DocxToPdfConverter: FileConverter() {
     override fun convertToPdf(file: MultipartFile): ByteArray {
         val outputStream = ByteArrayOutputStream()
 
-        val doc = XWPFDocument(file.inputStream)
+        val docx = XWPFDocument(file.inputStream)
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
         val document = Document(pdfDocument)
 
-        for (paragraph: XWPFParagraph in doc.paragraphs) {
+        for (paragraph: XWPFParagraph in docx.paragraphs) {
             val text = StringBuilder()
             for (run: XWPFRun in paragraph.runs) {
                 text.append(run.text())
