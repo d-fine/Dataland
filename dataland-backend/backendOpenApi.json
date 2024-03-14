@@ -13851,20 +13851,20 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           }
         }
@@ -13888,10 +13888,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

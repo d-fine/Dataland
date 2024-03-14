@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 class LksgRiskAssessmentsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG Risk Positions"
+        row.component == "LkSG Risk Position Assessments"
 
     override fun generateComponent(
         row: TemplateRow,
