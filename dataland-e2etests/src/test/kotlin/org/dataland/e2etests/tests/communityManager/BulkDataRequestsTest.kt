@@ -174,37 +174,26 @@ class BulkDataRequestsTest {
     fun `post bulk data request and verify that only unique identifiers are accepted `() {
         val permId1 = generateRandomPermId(20)
         val permId2 = generateRandomPermId(20)
-        val frameworks = setOf(BulkDataRequest.DataTypes.sfdr)
-        val reportingPeriods = setOf("2023")
         val companyOne = CompanyInformation(
-            companyName = "first_company",
+            companyName = "companyOne",
             headquarters = "HQ",
             identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
             countryCode = "DE",
         )
-        val companyTwo = CompanyInformation(
-            companyName = "second_company",
-            headquarters = "HQ",
+        val companyTwo = companyOne.copy(
+            companyName = "companyTwo",
             identifiers = mapOf(IdentifierType.lei.value to listOf(permId1)),
-            countryCode = "DE",
         )
-        val uniqueCompany = CompanyInformation(
-            companyName = "third_company",
-            headquarters = "HQ",
+        val companyWithUniqueId = companyOne.copy(
+            companyName = "companyWithUniqueId",
             identifiers = mapOf(IdentifierType.permId.value to listOf(permId2)),
-            countryCode = "DE",
-        )
+            )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
-        apiAccessor.companyDataControllerApi.postCompany(uniqueCompany)
-
+        apiAccessor.companyDataControllerApi.postCompany(companyWithUniqueId)
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(
-                setOf(permId1, permId2),
-                frameworks,
-                reportingPeriods,
-            ),
+            BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023"))
         )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
