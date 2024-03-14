@@ -41,7 +41,7 @@ class DataRequestProcessingUtils(
      * @param identifierValue the identifier value
      * @return the company ID or null
      */
-    fun getDatalandCompanyIdForIdentifierValue(identifierValue: String, requestType: String?): String? {
+    fun getDatalandCompanyIdForIdentifierValue(identifierValue: String, requestType: String? = null): String? {
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
         val datalandCompanyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
