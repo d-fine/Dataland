@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 class LksgGeneralViolationAssessmentsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG General Violations"
+        row.component == "LkSG General Violations Assessments"
 
     override fun generateComponent(
         row: TemplateRow,

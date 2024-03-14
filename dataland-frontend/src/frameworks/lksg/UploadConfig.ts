@@ -163,8 +163,19 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesCountries",
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
+            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
-            component: "LksgSubcontractingCompaniesFormField",
+            component: "MultiSelectFormField",
+            required: false,
+            showIf: (dataset: LksgData): boolean =>
+              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
+          },
+          {
+            name: "subcontractingCompaniesIndustries",
+            label: "Subcontracting Companies Industries",
+            description: "In which industries do the subcontracting companies operate?",
+
+            component: "NaceCodeFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
@@ -410,7 +421,7 @@ export const lksgDataModel = [
             label: "Complaints Number",
             description: "How many complaints have been received (for the reported fiscal year)?",
 
-            component: "NumberFormField",
+            component: "BigDecimalBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
@@ -763,8 +774,7 @@ export const lksgDataModel = [
 
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
+            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
           },
           {
             name: "worstFormsOfChildLaborForms",
@@ -773,8 +783,7 @@ export const lksgDataModel = [
 
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
+            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
           },
           {
             name: "measuresForPreventionOfEmploymentUnderLocalMinimumAge",
@@ -1306,8 +1315,7 @@ export const lksgDataModel = [
 
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+            showIf: (): boolean => true,
           },
           {
             name: "diversityAndInclusionRole",
@@ -1318,7 +1326,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
           },
           {
             name: "preventionOfMistreatments",
@@ -1329,7 +1337,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
           },
           {
             name: "unequalTreatmentPreventionTraining",
@@ -1340,7 +1348,7 @@ export const lksgDataModel = [
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
           },
           {
             name: "equalOpportunitiesOfficer",
@@ -1350,7 +1358,7 @@ export const lksgDataModel = [
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
           },
           {
             name: "equalEmploymentPolicy",
@@ -1360,7 +1368,7 @@ export const lksgDataModel = [
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
           },
           {
             name: "unequalTreatmentPreventionOtherMeasures",
@@ -1370,7 +1378,7 @@ export const lksgDataModel = [
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
           },
           {
             name: "unequalTreatmentPreventionOtherMeasuresDescription",

@@ -2,12 +2,11 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.governance.grievanceMechanismOwnOperations
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.lksg.custom.RiskPosition
+import org.dataland.datalandbackend.frameworks.lksg.custom.LksgGrievanceAssessmentMechanism
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
-import java.util.EnumSet
 
 /**
  * The data-model for the GrievanceMechanismOwnOperations section
@@ -27,9 +26,10 @@ data class LksgGovernanceGrievanceMechanismOwnOperations(
     val grievanceComplaints: YesNo? = null,
 
     @field:MinimumValue(minimumValue = 0)
-    val complaintsNumber: BigDecimal? = null,
+    @field:Valid()
+    val complaintsNumber: BaseDataPoint<BigDecimal>? = null,
 
-    val complaintsRiskPosition: EnumSet<RiskPosition>? = null,
+    val complaintsRiskPosition: List<LksgGrievanceAssessmentMechanism?>? = null,
 
     val complaintsReason: String? = null,
 

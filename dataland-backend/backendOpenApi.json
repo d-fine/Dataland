@@ -6560,6 +6560,23 @@
           }
         }
       },
+      "BaseDataPointBigDecimal": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
       "BaseDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -7030,30 +7047,17 @@
             ]
           },
           "subcontractingCompaniesCountries": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "example": {
-                "DE": [
-                  "NaceCodeA, NaceCodeB"
-                ],
-                "GB": [
-                  "NaceCodeC"
-                ]
-              },
-              "items": {
-                "type": "string",
-                "example": "{\"DE\":[\"NaceCodeA, NaceCodeB\"],\"GB\":[\"NaceCodeC\"]}"
-              }
-            },
+            "type": "array",
             "nullable": true,
-            "example": {
-              "DE": [
-                "NaceCodeA, NaceCodeB"
-              ],
-              "GB": [
-                "NaceCodeC"
-              ]
+            "items": {
+              "type": "string"
+            }
+          },
+          "subcontractingCompaniesIndustries": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
             }
           },
           "productionSites": {
@@ -7297,20 +7301,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/LksgRiskOrViolationAssessment"
             }
-          },
-          "humanRightsOrEnvironmentalViolationsMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "humanRightsOrEnvironmentalViolationsMeasuresDefinition": {
-            "type": "string",
-            "nullable": true
           },
           "highRiskCountriesRawMaterials": {
             "nullable": true,
@@ -7411,14 +7403,18 @@
             ]
           },
           "complaintsNumber": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
+              }
+            ]
           },
           "complaintsRiskPosition": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/LksgGrievanceAssessmentMechanism"
             }
           },
           "complaintsReason": {
@@ -7494,20 +7490,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/LksgRiskOrViolationAssessment"
             }
-          },
-          "counteractingMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "whichCounteractingMeasures": {
-            "type": "string",
-            "nullable": true
           },
           "regulatedRiskManagementResponsibility": {
             "nullable": true,
@@ -7516,6 +7500,32 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          }
+        }
+      },
+      "LksgGrievanceAssessmentMechanism": {
+        "required": [
+          "measuresTaken",
+          "riskPositions",
+          "specifiedComplaint"
+        ],
+        "type": "object",
+        "properties": {
+          "riskPositions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskPositionType"
+            }
+          },
+          "specifiedComplaint": {
+            "type": "string"
+          },
+          "measuresTaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listedMeasures": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -7615,6 +7625,25 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "LksgRiskOrViolationAssessment": {
+        "required": [
+          "measuresTaken",
+          "riskPosition"
+        ],
+        "type": "object",
+        "properties": {
+          "riskPosition": {
+            "$ref": "#/components/schemas/RiskPositionType"
+          },
+          "measuresTaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listedMeasures": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8548,22 +8577,13 @@
           }
         }
       },
-      "RiskPosition": {
+      "RiskPositionType": {
         "type": "string",
         "enum": [
           "ChildLabor",
           "ForcedLabor",
           "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
+          "DisregardOfOccupationalHealthOrSafety"
         ]
       },
       "SpecificProcurementOptions": {
@@ -13823,9 +13843,15 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           },
           "countryCode": {
             "type": "string"
@@ -13833,13 +13859,7 @@
           "headquarters": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
           }
@@ -13864,10 +13884,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

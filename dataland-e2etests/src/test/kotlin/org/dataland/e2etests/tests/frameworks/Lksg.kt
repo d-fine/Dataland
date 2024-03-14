@@ -114,15 +114,16 @@ class Lksg {
             ),
             governance = fixedDataSet.governance?.copy(
                 riskManagementOwnOperations = fixedDataSet.governance?.riskManagementOwnOperations?.copy(
-                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                    identifiedRisks = fixedDataSet.governance?.riskManagementOwnOperations?.identifiedRisks?.sortedBy
+                        { it.riskPosition },
                 ),
                 grievanceMechanismOwnOperations = fixedDataSet.governance?.grievanceMechanismOwnOperations?.copy(
                     complaintsRiskPosition = fixedDataSet.governance?.grievanceMechanismOwnOperations
-                        ?.complaintsRiskPosition?.sorted(),
+                        ?.complaintsRiskPosition?.sortedBy { it.riskPositions.first() },
                 ),
                 generalViolations = fixedDataSet.governance?.generalViolations?.copy(
                     humanRightsOrEnvironmentalViolationsDefinition = fixedDataSet.governance?.generalViolations
-                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                        ?.humanRightsOrEnvironmentalViolationsDefinition?.sortedBy { it.riskPosition },
                 ),
             ),
         )
@@ -142,17 +143,19 @@ class Lksg {
                         riskManagementOwnOperations =
                         dataset.governance?.riskManagementOwnOperations?.copy(
                             identifiedRisks = dataset.governance
-                                ?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                                ?.riskManagementOwnOperations?.identifiedRisks?.sortedBy { it.riskPosition },
                         ),
                         grievanceMechanismOwnOperations =
                         dataset.governance?.grievanceMechanismOwnOperations?.copy(
                             complaintsRiskPosition = dataset.governance
-                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sorted(),
+                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sortedBy
+                                { it.riskPositions.first() },
                         ),
                         generalViolations =
                         dataset.governance?.generalViolations?.copy(
                             humanRightsOrEnvironmentalViolationsDefinition = dataset.governance
-                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sortedBy
+                                { it.riskPosition },
                         ),
                     ),
                 ),
