@@ -7047,17 +7047,30 @@
             ]
           },
           "subcontractingCompaniesCountries": {
-            "type": "array",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "example": {
+                "DE": [
+                  "NaceCodeA, NaceCodeB"
+                ],
+                "GB": [
+                  "NaceCodeC"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "example": "{\"DE\":[\"NaceCodeA, NaceCodeB\"],\"GB\":[\"NaceCodeC\"]}"
+              }
+            },
             "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "subcontractingCompaniesIndustries": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
+            "example": {
+              "DE": [
+                "NaceCodeA, NaceCodeB"
+              ],
+              "GB": [
+                "NaceCodeC"
+              ]
             }
           },
           "productionSites": {
@@ -13852,15 +13865,15 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "countryCode": {
             "type": "string"
@@ -13868,7 +13881,7 @@
           "headquarters": {
             "type": "string"
           },
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
           }

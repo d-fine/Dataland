@@ -42,7 +42,10 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 function generateFixutreWithNoNullFields(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   newFixture.t.general.masterData.industry = generateNaceCodes(1, 5);
-  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = generateNaceCodes(1, 5);
+  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = <{ [key: string]: Array<string> }>{
+    DE: generateNaceCodes(1, 5),
+    GB: generateNaceCodes(0, 5),
+  };
   newFixture.companyInformation.companyName = "lksg-all-fields";
   return newFixture;
 }
@@ -106,7 +109,10 @@ function generateFixtureToContainSubcontractingCountries(): FixtureData<LksgData
   newFixture.companyInformation.companyName = "lksg-with-subcontracting-countries";
   newFixture.t.general.productionSpecific!.manufacturingCompany = YesNo.Yes;
   newFixture.t.general.productionSpecific!.productionViaSubcontracting = YesNo.Yes;
-  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = generateNaceCodes(0, 5);
+  newFixture.t.general.productionSpecific!.subcontractingCompaniesCountries = {
+    DE: ["A", "G"],
+    GB: ["B"],
+  };
   if (Object.keys(newFixture.t.general.productionSpecificOwnOperations!.procurementCategories ?? {}).length < 1) {
     throw Error(
       "The fixture should contain procurement categories as the undefined percentage was set to 0. But it does not!",

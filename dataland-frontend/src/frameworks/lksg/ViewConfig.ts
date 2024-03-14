@@ -17,10 +17,11 @@ import {
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
+  formatLksgSubcontractingCompaniesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -168,26 +169,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "In which countries do the subcontracting companies operate?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
-              return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
-                "Subcontracting Companies Countries",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Subcontracting Companies Industries",
-            explanation: "In which industries do the subcontracting companies operate?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNaceCodesForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesIndustries,
-                "Subcontracting Companies Industries",
+              formatLksgSubcontractingCompaniesForDisplay(
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
+                "Subcontracting Companies Countries",
               ),
           },
           {
