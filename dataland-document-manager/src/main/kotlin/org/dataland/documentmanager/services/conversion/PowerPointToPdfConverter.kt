@@ -25,17 +25,14 @@ class PowerPointToPdfConverter : FileConverter() {
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "ppt" to imageMimeTypes,
         "pptx" to imageMimeTypes,
-    )
 
+    )
     override fun convertToPdf(file: MultipartFile): ByteArray {
         val outputStream = ByteArrayOutputStream()
+
         val ppt = XMLSlideShow(file.inputStream)
-        val imageData = ImageDataFactory.create(file.bytes)
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
         val document = Document(pdfDocument)
-
-        val pdfImage = Image(imageData)
-        document.add(pdfImage)
 
         for (slide in ppt.slides) {
             val pptxSlide = slide as XSLFSlide
