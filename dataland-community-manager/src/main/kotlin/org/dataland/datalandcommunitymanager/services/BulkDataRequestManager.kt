@@ -36,24 +36,24 @@ class BulkDataRequestManager(
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId: String? = try {
+            val datalandCompanyId: String? =
+            try {
                 utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
             } catch (e: InvalidInputApiException) {
                 dataRequestLogger.logMessageForNonUniqueRequestId(userProvidedIdentifierValue)
-                rejectedIdentifiers.add(userProvidedIdentifierValue)
-                continue
+                null
             }
             if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
-                continue
+            } else {
+                userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
+                acceptedIdentifiers.add(userProvidedIdentifierValue)
+                storeDataRequests(
+                    dataTypes = bulkDataRequest.dataTypes,
+                    reportingPeriods = bulkDataRequest.reportingPeriods,
+                    datalandCompanyId = datalandCompanyId,
+                )
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
-            acceptedIdentifiers.add(userProvidedIdentifierValue)
-            storeDataRequests(
-                dataTypes = bulkDataRequest.dataTypes,
-                reportingPeriods = bulkDataRequest.reportingPeriods,
-                datalandCompanyId = datalandCompanyId,
-            )
         }
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
@@ -132,8 +132,8 @@ class BulkDataRequestManager(
                     "because it could not be uniquely matched with an existing company on Dataland."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers distinct " +
-                    "company identifiers were rejected because they could not be uniquely matched with existing companies on " +
-                    "Dataland."
+                    "company identifiers were rejected because they could not be uniquely matched with existing " +
+                    "companies on Dataland."
         }
     }
 
@@ -167,7 +167,8 @@ class BulkDataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers are not unique or could not be recognized."
-        val message = "The company identifiers you provided could not be uniquely matched with an existing company on dataland"
+        val message = "The company identifiers you provided could not be uniquely matched with an existing " +
+            "company on dataland"
         throw InvalidInputApiException(
             summary,
             message,
