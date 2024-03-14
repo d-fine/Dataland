@@ -8,18 +8,18 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 
 /**
- * Represents the ProcurementCategories component
+ * Represents the SubcontractingCompanies component
  */
-class LksgProcurementCategoriesComponent(
+class LksgSubcontractingCompaniesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
     identifier = identifier,
     parent = parent,
-    viewFormattingFunctionName = "formatLksgProcurementCategoriesForDisplay",
-    uploadComponentName = "ProcurementCategoriesFormField",
-    guaranteedFixtureExpression = "dataGenerator.generateProcurementCategories()",
-    randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories())",
+    viewFormattingFunctionName = "formatLksgSubcontractingCompaniesForDisplay",
+    uploadComponentName = "LksgSubcontractingCompaniesFormField",
+    guaranteedFixtureExpression = "dataGenerator.generateSubcontractingCompanies()",
+    randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies())",
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
@@ -29,12 +29,13 @@ class LksgProcurementCategoriesComponent(
                 "Map", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.lksg.custom.ProcurementCategoryType",
+                        "String",
                         false,
                     ),
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProcurementCategory",
+                        "List",
                         false,
+                        listOf(TypeReference("String", false)),
                     ),
                 ),
             ),
@@ -42,7 +43,7 @@ class LksgProcurementCategoriesComponent(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                     rawParameterSpec =
-                    "example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE",
+                    "example = JsonExampleFormattingConstants.SUBCONTRACTING_COMPANIES_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),

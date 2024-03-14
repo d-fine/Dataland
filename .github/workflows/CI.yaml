@@ -460,7 +460,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - sonar
-    if: always()
+    if: ${{ !cancelled() }}
     steps:
       - name: Merge Parameters Artifacts
         uses: actions/upload-artifact/merge@v4

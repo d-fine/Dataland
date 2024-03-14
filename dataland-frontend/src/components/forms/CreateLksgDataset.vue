@@ -122,6 +122,7 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
+import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
@@ -182,6 +183,7 @@ export default defineComponent({
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
     BigDecimalBaseDataPointFormField,
+    LksgSubcontractingCompaniesFormField,
   },
   emits: ["datasetCreated"],
   data() {
