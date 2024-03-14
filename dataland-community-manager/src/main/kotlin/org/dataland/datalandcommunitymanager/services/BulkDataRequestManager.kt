@@ -37,15 +37,8 @@ class BulkDataRequestManager(
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
             val datalandCompanyId: String? =
-            try {
                 utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
-            } catch (e: InvalidInputApiException) {
-                dataRequestLogger.logMessageForNonUniqueRequestId(userProvidedIdentifierValue)
-                null
-            }
-            if (datalandCompanyId == null) {
-                rejectedIdentifiers.add(userProvidedIdentifierValue)
-            } else {
+            if (datalandCompanyId is String) {
                 userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
                 acceptedIdentifiers.add(userProvidedIdentifierValue)
                 storeDataRequests(
@@ -53,6 +46,8 @@ class BulkDataRequestManager(
                     reportingPeriods = bulkDataRequest.reportingPeriods,
                     datalandCompanyId = datalandCompanyId,
                 )
+            } else {
+                rejectedIdentifiers.add(userProvidedIdentifierValue)
             }
         }
         if (acceptedIdentifiers.isEmpty()) {
