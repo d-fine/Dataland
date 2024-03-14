@@ -11,7 +11,11 @@ import { type LksgProcurementType } from "@/components/resources/dataTable/conve
 import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import { type LksgProductionSite, type LksgRiskOrViolationAssessment } from "@clients/backend";
+import {
+  type LksgGrievanceAssessmentMechanism,
+  type LksgProductionSite,
+  type LksgRiskOrViolationAssessment,
+} from "@clients/backend";
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
@@ -42,7 +46,14 @@ export const lksgModalColumnHeaders = {
     measuresTaken: "Measures taken",
     listedMeasures: "Listed Measures",
   },
-}; //todo add components risk positions, general violations, grievance mechanism headers to this file
+  grievanceMechanisms: {
+    //todo put in the correct labels
+    riskPositions: "Risk positions",
+    specifiedComplaint: "specified Complaint",
+    measuresTaken: "were measures taken?",
+    listedMeasures: "Listed Measures",
+  },
+};
 
 /**
  * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
@@ -270,6 +281,40 @@ export function formatLksgGeneralViolationsForDisplay(
         data: {
           listOfRowContents: input,
           kpiKeyOfTable: "generalViolations",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+/**
+ * Generates a display modal component for the grievance mechanism component
+ * @param input list of lksg grievance mechanism for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgGrievanceMechanismsForDisplay(
+  input: LksgGrievanceAssessmentMechanism[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: input,
+          kpiKeyOfTable: "grievanceMechanisms",
           columnHeaders: lksgModalColumnHeaders,
         },
       },
