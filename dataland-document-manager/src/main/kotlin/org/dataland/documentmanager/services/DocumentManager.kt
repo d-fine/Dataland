@@ -17,6 +17,7 @@ import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
+import org.dataland.documentmanager.services.conversion.PdfConverter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -51,7 +52,7 @@ class DocumentManager(
     @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 
-) {
+    ) {
     lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 

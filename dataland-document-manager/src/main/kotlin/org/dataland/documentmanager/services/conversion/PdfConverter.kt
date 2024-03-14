@@ -1,4 +1,4 @@
-package org.dataland.documentmanager.services
+package org.dataland.documentmanager.services.conversion
 
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.pdf.PdfDocument
@@ -6,22 +6,40 @@ import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.InputStreamReader
 
 /**
  * A service for converting various file types into PDFs
  */
 @Component
-class PdfConverter {
+class PdfConverter(
+    @Autowired val toPdfConverters: List<FileConverter>
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    // todo this should be the only public method in the end
+    fun convertToPdf(file: MultipartFile): InputStreamResource {
+        val fileExtension = file.originalFilename!!.let { File(it).extension } // TODO move to extension method
+        val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
+            ?: throw InvalidInputApiException(
+                "File extension $fileExtension could not be recognized",
+                "File extension $fileExtension could not be recognized",
+            )
+        matchingConverter.validateFile(file)
+        return matchingConverter.convertToPdf(file)
+    }
+
+    // todo remove this function
     fun convertImage(image: MultipartFile, correlationId: String): InputStreamResource {
         logger.info("Converting ${image.name} with correlation Id $correlationId to PDF.")
         val outputStream = ByteArrayOutputStream()
