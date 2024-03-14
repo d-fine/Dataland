@@ -36,18 +36,18 @@ class BulkDataRequestManager(
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
-            if (datalandCompanyId is String) {
-                userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
-                acceptedIdentifiers.add(userProvidedIdentifierValue)
-                storeDataRequests(
-                    dataTypes = bulkDataRequest.dataTypes,
-                    reportingPeriods = bulkDataRequest.reportingPeriods,
-                    datalandCompanyId = datalandCompanyId,
-                )
-            } else {
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue, "bulkDataRequest")
+            if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
+                continue
             }
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
+            acceptedIdentifiers.add(userProvidedIdentifierValue)
+            storeDataRequests(
+                dataTypes = bulkDataRequest.dataTypes,
+                reportingPeriods = bulkDataRequest.reportingPeriods,
+                datalandCompanyId = datalandCompanyId,
+            )
         }
         if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
