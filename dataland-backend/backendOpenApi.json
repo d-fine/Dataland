@@ -8587,7 +8587,16 @@
           "ChildLabor",
           "ForcedLabor",
           "Slavery",
-          "DisregardOfOccupationalHealthOrSafety"
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
         ]
       },
       "SpecificProcurementOptions": {
@@ -13847,6 +13856,18 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -13854,18 +13875,6 @@
           "permId": {
             "type": "string",
             "nullable": true
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },
@@ -13888,10 +13897,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
