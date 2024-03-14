@@ -439,14 +439,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value,
-                  "",
-                ),
-                "Complaints Number",
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber,
-              ),
+              formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ""),
           },
           {
             type: "cell",
@@ -458,37 +451,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatLksgGrievanceMechanismsForDisplay(
                 dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
                 "Complaints Risk Position",
-              ),
-          },
-          {
-            type: "cell",
-            label: "Complaints Reason",
-            explanation: "Please specify the complaint.",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsReason),
-          },
-          {
-            type: "cell",
-            label: "Actions for Complaints Undertaken",
-            explanation: "Were measures taken to address the complaints?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Which Actions for Complaints Undertaken",
-            explanation: "Which measures were taken to address the reported complaints?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.governance?.grievanceMechanismOwnOperations?.whichActionsForComplaintsUndertaken,
               ),
           },
           {

@@ -6560,23 +6560,6 @@
           }
         }
       },
-      "BaseDataPointBigDecimal": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "BaseDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -7416,12 +7399,8 @@
             ]
           },
           "complaintsNumber": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
+            "type": "number",
+            "nullable": true
           },
           "complaintsRiskPosition": {
             "type": "array",
@@ -7429,22 +7408,6 @@
             "items": {
               "$ref": "#/components/schemas/LksgGrievanceAssessmentMechanism"
             }
-          },
-          "complaintsReason": {
-            "type": "string",
-            "nullable": true
-          },
-          "actionsForComplaintsUndertaken": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "whichActionsForComplaintsUndertaken": {
-            "type": "string",
-            "nullable": true
           },
           "publicAccessToGrievanceHandling": {
             "nullable": true,
@@ -13865,23 +13828,23 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
-            "type": "string"
-          },
-          "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "permId": {
             "type": "string",
             "nullable": true
           }
@@ -13906,10 +13869,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

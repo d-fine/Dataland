@@ -26,16 +26,9 @@ data class LksgGovernanceGrievanceMechanismOwnOperations(
     val grievanceComplaints: YesNo? = null,
 
     @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val complaintsNumber: BaseDataPoint<BigDecimal>? = null,
+    val complaintsNumber: BigDecimal? = null,
 
     val complaintsRiskPosition: List<LksgGrievanceAssessmentMechanism?>? = null,
-
-    val complaintsReason: String? = null,
-
-    val actionsForComplaintsUndertaken: YesNo? = null,
-
-    val whichActionsForComplaintsUndertaken: String? = null,
 
     val publicAccessToGrievanceHandling: YesNo? = null,
 

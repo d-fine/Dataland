@@ -410,7 +410,7 @@ export const lksgDataModel = [
             label: "Complaints Number",
             description: "How many complaints have been received (for the reported fiscal year)?",
 
-            component: "BigDecimalBaseDataPointFormField",
+            component: "NumberFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
@@ -425,36 +425,6 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-          },
-          {
-            name: "complaintsReason",
-            label: "Complaints Reason",
-            description: "Please specify the complaint.",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-          },
-          {
-            name: "actionsForComplaintsUndertaken",
-            label: "Actions for Complaints Undertaken",
-            description: "Were measures taken to address the complaints?",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-          },
-          {
-            name: "whichActionsForComplaintsUndertaken",
-            label: "Which Actions for Complaints Undertaken",
-            description: "Which measures were taken to address the reported complaints?",
-
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken == "Yes",
           },
           {
             name: "publicAccessToGrievanceHandling",
