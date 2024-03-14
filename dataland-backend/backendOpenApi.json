@@ -13862,17 +13862,17 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
-          "sector": {
+          "countryCode": {
+            "type": "string"
+          },
+          "permId": {
             "type": "string",
             "nullable": true
           },
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
           }
