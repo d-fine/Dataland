@@ -30,6 +30,8 @@ dependencies {
     implementation("org.apache.tika:tika-core:2.9.1")
     implementation("com.itextpdf:itext7-core:7.1.15")
     implementation("com.itextpdf:layout:7.1.15")
+    //implementation("org.apache.tika:tika-core:2.2.0")
+    //implementation("org.apache.tika:tika-parsers:2.2.0")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
     implementation(project(":dataland-backend-utils"))
