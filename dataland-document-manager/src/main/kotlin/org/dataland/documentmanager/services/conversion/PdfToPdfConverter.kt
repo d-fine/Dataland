@@ -1,0 +1,58 @@
+package org.dataland.documentmanager.services.conversion
+
+import com.itextpdf.io.image.ImageDataFactory
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Image
+import org.apache.pdfbox.Loader
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.core.io.InputStreamResource
+import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+
+@Component
+class PdfToPdfConverter : FileConverter() {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
+    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+        "pdf" to setOf("application/pdf"),
+    )
+
+    val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
+    val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."
+
+    override fun validateFileContent(file: MultipartFile) {
+        val correlationId = "placehoder" // TODO
+        try {
+            checkIfPotentialPdfFileIsEmpty(file.bytes, correlationId)
+        } catch (ex: IOException) {
+            logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
+            throw InvalidInputApiException(
+                "Could not parse file as PDF document",
+                pdfParsingErrorMessage,
+                ex,
+            )
+        }
+    }
+
+    private fun checkIfPotentialPdfFileIsEmpty(blob: ByteArray, correlationId: String) {
+        Loader.loadPDF(blob).use {
+            if (it.numberOfPages <= 0) {
+                logger.info(
+                    "PDF document uploaded with correlation ID: $correlationId seems to have 0 pages, aborting.",
+                )
+                throw InvalidInputApiException(
+                    "You seem to have uploaded an empty PDF",
+                    pdfHasZeroPagesErrorMessage,
+                )
+            }
+        }
+    }
+
+    override fun convertToPdf(file: MultipartFile): ByteArray = file.bytes
+}

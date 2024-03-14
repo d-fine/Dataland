@@ -28,7 +28,7 @@ class PdfConverter(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     // todo this should be the only public method in the end
-    fun convertToPdf(file: MultipartFile): InputStreamResource {
+    fun convertToPdf(file: MultipartFile): ByteArray {
         val fileExtension = file.originalFilename!!.let { File(it).extension } // TODO move to extension method
         val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
             ?: throw InvalidInputApiException(

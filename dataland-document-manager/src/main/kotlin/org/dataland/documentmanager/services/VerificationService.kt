@@ -114,7 +114,7 @@ class VerificationService {
     private fun checkThatFileNameIsWithinNamingConvention(name: String, correlationId: String) {
         if (!allowedFilenameRegex.matches(name)) {
             logger.info(
-                "PDF document uploaded with correlation ID: $correlationId violates the naming convention" +
+                "Document uploaded with correlation ID: $correlationId violates the naming convention" +
                     "of Dataland, aborting.",
             )
             throw InvalidInputApiException(

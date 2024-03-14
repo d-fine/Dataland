@@ -71,13 +71,12 @@ class DocumentManager(
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentUploadResponse {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlation ID: $correlationId")
-        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
+        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId) // todo differentiate between pdf and excel such that the downloaded file can receive the correct extension
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        val documentBody = document.bytes
-        verificationService.assertThatFileLooksLikeAValidPdfWithAValidName(document, correlationId) // TODO change
+        val documentBody = pdfConverter.convertToPdf(document) // todo don't use when handling excels
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -148,7 +147,7 @@ class DocumentManager(
         }
 
         val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-        return DocumentStream("$documentId.pdf", documentDataStream)
+        return DocumentStream("$documentId.pdf", documentDataStream) // TODO what about excel extension, store file type in metadata?
     }
 
     private fun retrieveDocumentDataStream(
