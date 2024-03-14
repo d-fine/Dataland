@@ -26,7 +26,7 @@ import java.util.*
  * This service checks if freshly uploaded and validated data answers a data request
  */
 @Service("DataRequestUpdater")
-class DataRequestUpdateListener(
+class DataRequestUploadListener(
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
