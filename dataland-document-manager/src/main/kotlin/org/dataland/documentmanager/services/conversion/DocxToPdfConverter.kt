@@ -17,13 +17,10 @@ import java.io.ByteArrayOutputStream
 class DocxToPdfConverter: FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
     private final val docxMimeTypes = setOf(
-        "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
          )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
-        "doc" to docxMimeTypes,
         "docx" to docxMimeTypes,
-
         )
     override fun convertToPdf(file: MultipartFile): ByteArray {
         val outputStream = ByteArrayOutputStream()
