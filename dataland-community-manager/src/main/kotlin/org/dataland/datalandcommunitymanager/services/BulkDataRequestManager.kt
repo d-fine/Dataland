@@ -36,8 +36,7 @@ class BulkDataRequestManager(
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId: String? =
-                utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
             if (datalandCompanyId is String) {
                 userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifierValue] = datalandCompanyId
                 acceptedIdentifiers.add(userProvidedIdentifierValue)

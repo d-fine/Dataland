@@ -167,7 +167,7 @@ fun postStandardSingleDataRequest(
     )
 }
 
-fun causeInvalidInputApiExceptionBySingleDataRequest(
+fun causeClientExceptionBySingleDataRequest(
     identifier: String,
     dataType: SingleDataRequest.DataType,
     reportingPeriods: Set<String>,

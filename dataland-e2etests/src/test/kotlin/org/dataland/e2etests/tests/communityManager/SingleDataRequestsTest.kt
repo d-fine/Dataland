@@ -12,7 +12,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
-import org.dataland.e2etests.utils.communityManager.causeInvalidInputApiExceptionBySingleDataRequest
+import org.dataland.e2etests.utils.communityManager.causeClientExceptionBySingleDataRequest
 import org.dataland.e2etests.utils.communityManager.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForNonUniqueIdentifiersInSingleRequest
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
@@ -101,21 +101,21 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post single data request and verify that only unique identifiers are accepted `() {
-        val permId1 = generateRandomPermId(20)
-        val permId2 = generateRandomPermId(20)
+    fun `post two single data request with overlapping identifiers and verify that it throws an exception`() {
+        val permId = generateRandomPermId(20)
+        val isin = permId + "1"
         val framework = SingleDataRequest.DataType.lksg
         val reportingPeriods = setOf("2023")
         val companyOne = CompanyInformation(
-            companyName = "companyNrOne",
+            companyName = "company1",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId)),
             countryCode = "DE",
         )
         val companyTwo = CompanyInformation(
-            companyName = "companyNrTwo",
+            companyName = "company2",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.lei.value to listOf(permId2)),
+            identifiers = mapOf(IdentifierType.isin.value to listOf(isin)),
             countryCode = "DE",
         )
 
@@ -123,8 +123,8 @@ class SingleDataRequestsTest {
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
 
-        val clientException = causeInvalidInputApiExceptionBySingleDataRequest(
-            "companyNr", framework,
+        val clientException = causeClientExceptionBySingleDataRequest(
+            permId, framework,
             reportingPeriods,
         )
         assertNotNull(clientException, "invalidInputApiException should not be null")
