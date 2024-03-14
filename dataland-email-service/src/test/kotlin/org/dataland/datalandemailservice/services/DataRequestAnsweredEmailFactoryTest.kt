@@ -60,10 +60,10 @@ class DataRequestAnsweredEmailFactoryTest {
         validateEmailHtmlFormatContainsOptionalProperties(emailWithOptionalProperties)
     }
 
-    private fun validateEmailHtmlFormatContainsDefaultProperties(email: Email){
+    private fun validateEmailHtmlFormatContainsDefaultProperties(email: Email) {
         assertTrue(email.content.htmlContent.contains("some days"))
     }
-    private fun validateEmailHtmlFormatContainsOptionalProperties(email: Email){
+    private fun validateEmailHtmlFormatContainsOptionalProperties(email: Email) {
         assertTrue(email.content.htmlContent.contains(closedInDays))
         assertTrue(email.content.htmlContent.contains(dataTypeDescription))
     }
