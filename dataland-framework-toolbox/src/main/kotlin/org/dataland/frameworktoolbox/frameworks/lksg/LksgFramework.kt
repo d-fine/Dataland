@@ -1,7 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.lksg
 
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.lksg.custom.LksgRiskPositionMultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
