@@ -38,7 +38,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         groupOfCompanies: dataGenerator.randomYesNo(),
         groupOfCompaniesName: dataGenerator.randomShortString(),
         industry: dataGenerator.valueOrNull(generateNaceCodes()),
-        numberOfEmployees: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedFloat(0)),
+        numberOfEmployees: dataGenerator.randomFloat(0),
         seasonalOrMigrantWorkers: dataGenerator.randomYesNo(),
         shareOfTemporaryWorkers: dataGenerator.valueOrNull(
           pickOneElement(Object.values(LksgGeneralMasterdataShareOfTemporaryWorkersOptions)),
@@ -50,10 +50,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         manufacturingCompany: dataGenerator.randomYesNo(),
         capacity: dataGenerator.randomShortString(),
         productionViaSubcontracting: dataGenerator.randomYesNo(),
-        subcontractingCompaniesCountries: dataGenerator.valueOrNull(
-          pickSubsetOfElements(["DE", "AL", "AZ", "GB", "US", "DK"]),
-        ),
-        subcontractingCompaniesIndustries: dataGenerator.valueOrNull(generateNaceCodes()),
+        subcontractingCompaniesCountries: dataGenerator.valueOrNull(dataGenerator.generateSubcontractingCompanies()),
         productionSites: dataGenerator.randomYesNo(),
         numberOfProductionSites: dataGenerator.randomFloat(),
         listOfProductionSites: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),
@@ -105,7 +102,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         appropriateGrievanceHandlingSupport: dataGenerator.randomYesNo(),
         accessToExpertiseForGrievanceHandling: dataGenerator.randomYesNo(),
         grievanceComplaints: dataGenerator.randomYesNo(),
-        complaintsNumber: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedFloat(0)),
+        complaintsNumber: dataGenerator.randomFloat(0),
         complaintsRiskPosition: dataGenerator.valueOrNull(
           pickSubsetOfElements([
             "ChildLabor",
