@@ -10,17 +10,15 @@ import { formatPercentageForDatatable } from "@/components/resources/dataTable/c
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { DropdownDatasetIdentifier, getDatasetAsMap } from "@/utils/PremadeDropdownDatasets";
+import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
-  formatLksgGeneralViolationsForDisplay,
-  formatLksgGrievanceMechanismsForDisplay,
-  formatLksgRiskPositionsForDisplay,
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
+  formatLksgSubcontractingCompaniesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -81,11 +79,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees?.value, ""),
-                "Number of Employees",
-                dataset.general?.masterData?.numberOfEmployees,
-              ),
+              formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ""),
           },
           {
             type: "cell",
@@ -172,26 +166,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "In which countries do the subcontracting companies operate?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
-              return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
-                "Subcontracting Companies Countries",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Subcontracting Companies Industries",
-            explanation: "In which industries do the subcontracting companies operate?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNaceCodesForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesIndustries,
-                "Subcontracting Companies Industries",
+              formatLksgSubcontractingCompaniesForDisplay(
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
+                "Subcontracting Companies Countries",
               ),
           },
           {
@@ -353,11 +331,51 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Which risks were specifically identified in the risk analysis?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatLksgRiskPositionsForDisplay(
-                dataset.governance?.riskManagementOwnOperations?.identifiedRisks,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                ChildLabor: "Child labor",
+                ForcedLabor: "Forced Labor",
+                Slavery: "Slavery",
+                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
+                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
+                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
+                WithholdingAdequateWages: "Withholding adequate wages",
+                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
+                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
+                  "Unlawful eviction/deprivation of land, forest and water",
+                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+                  "Use of private/public security forces with disregard for human rights",
+                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
+                ProductionAndUseOfPersistentOrganicPollutants:
+                  "Production and use of persistent organic pollutants (POPs Convention)",
+                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.riskManagementOwnOperations?.identifiedRisks?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
                 "Identified Risks",
-              ),
+              );
+            },
+          },
+          {
+            type: "cell",
+            label: "Counteracting Measures",
+            explanation: "Have measures been defined to counteract the risks?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.counteractingMeasures),
+          },
+          {
+            type: "cell",
+            label: "Which Counteracting Measures",
+            explanation: "Which measures have been applied to counteract the risks?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.riskManagementOwnOperations?.counteractingMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.governance?.riskManagementOwnOperations?.whichCounteractingMeasures),
           },
           {
             type: "cell",
@@ -458,14 +476,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value,
-                  "",
-                ),
-                "Complaints Number",
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber,
-              ),
+              formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ""),
           },
           {
             type: "cell",
@@ -473,11 +484,33 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Please define the respective risk position of each complaint",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatLksgGrievanceMechanismsForDisplay(
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                ChildLabor: "Child labor",
+                ForcedLabor: "Forced Labor",
+                Slavery: "Slavery",
+                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
+                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
+                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
+                WithholdingAdequateWages: "Withholding adequate wages",
+                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
+                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
+                  "Unlawful eviction/deprivation of land, forest and water",
+                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+                  "Use of private/public security forces with disregard for human rights",
+                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
+                ProductionAndUseOfPersistentOrganicPollutants:
+                  "Production and use of persistent organic pollutants (POPs Convention)",
+                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
                 "Complaints Risk Position",
-              ),
+              );
+            },
           },
           {
             type: "cell",
@@ -729,10 +762,54 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Please define those violations.",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatLksgGeneralViolationsForDisplay(
-                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                ChildLabor: "Child labor",
+                ForcedLabor: "Forced Labor",
+                Slavery: "Slavery",
+                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
+                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
+                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
+                WithholdingAdequateWages: "Withholding adequate wages",
+                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
+                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
+                  "Unlawful eviction/deprivation of land, forest and water",
+                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+                  "Use of private/public security forces with disregard for human rights",
+                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
+                ProductionAndUseOfPersistentOrganicPollutants:
+                  "Production and use of persistent organic pollutants (POPs Convention)",
+                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
+              };
+              return formatListOfStringsForDatatable(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
                 "Human Rights or Environmental Violations Definition",
+              );
+            },
+          },
+          {
+            type: "cell",
+            label: "Human Rights or Environmental Violations Measures",
+            explanation: "Have measures been taken to address this violation?",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Human Rights or Environmental Violations Measures Definition",
+            explanation: "Please define these measures.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasuresDefinition,
               ),
           },
           {
@@ -864,7 +941,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Worst Forms of Child Labor Prohibition",
             explanation:
               "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
           },
@@ -872,7 +950,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: "cell",
             label: "Worst Forms of Child Labor Forms",
             explanation: "Which of these worst forms of child labor are not prevented?",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
           },

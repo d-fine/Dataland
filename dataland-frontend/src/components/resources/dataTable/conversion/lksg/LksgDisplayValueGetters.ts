@@ -7,8 +7,7 @@ import {
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type LksgProcurementType } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
-import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
+import { convertNace, convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import {
@@ -16,6 +15,8 @@ import {
   type LksgProductionSite,
   type LksgRiskOrViolationAssessment,
 } from "@clients/backend";
+import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/backend";
+import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
@@ -33,6 +34,10 @@ export const lksgModalColumnHeaders = {
     procuredProductTypesAndServicesNaceCodes: "Procured Products/Services",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
     totalProcurementInPercent: "Order Volume",
+  },
+  subcontractingCompanies: {
+    country: "Country",
+    naceCodes: "Industries",
   },
   riskPositions: {
     //todo check if these are correct
@@ -74,11 +79,17 @@ function generateReadableCombinationOfNumberOfSuppliersAndCountries(numberOfSupp
   });
 }
 
+type LksgProcurementType = { [key in ProcurementCategoryType]?: LksgProcurementCategory };
 interface LksgProcurementCategoryDisplayFormat {
   procurementCategory: string;
   procuredProductTypesAndServicesNaceCodes: string[];
   suppliersAndCountries: string[];
   totalProcurementInPercent: string;
+}
+
+interface LksgSubcontractingCompaniesDisplayFormat {
+  country: string;
+  naceCodes: string[];
 }
 
 /**
@@ -106,6 +117,25 @@ function convertLksgProcumentTypeToListForModal(
         lksgProcurementCategory.shareOfTotalProcurementInPercent != null
           ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
           : "",
+    });
+  }
+  return listForModal;
+}
+
+/**
+ * Convert an object of type LksgSubcontractingCompanies into a list that can be displayed using the standard
+ * modal DataTable
+ * @param datasetValue the value of the dataset
+ * @returns the converted list
+ */
+function convertLksgSubcontractingCompaniesToListForModal(datasetValue: {
+  [key: string]: Array<string>;
+}): LksgSubcontractingCompaniesDisplayFormat[] {
+  const listForModal: LksgSubcontractingCompaniesDisplayFormat[] = [];
+  for (const [countryCode, naceCodes] of Object.entries(datasetValue)) {
+    listForModal.push(<LksgSubcontractingCompaniesDisplayFormat>{
+      country: getCountryNameFromCountryCode(countryCode),
+      naceCodes: convertNace(naceCodes),
     });
   }
   return listForModal;
@@ -159,9 +189,8 @@ export function formatLksgProcurementCategoriesForDisplay(
   let convertedValueForModal = null;
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
-  } else {
-    convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
   }
+  convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
@@ -177,6 +206,44 @@ export function formatLksgProcurementCategoriesForDisplay(
         data: {
           listOfRowContents: convertedValueForModal,
           kpiKeyOfTable: "procurementCategories",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Generates a display modal component for all subcontracting companies
+ * @param input list of lksg procurement categories for display
+ * @param fieldLabel Field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgSubcontractingCompaniesForDisplay(
+  input: { [key: string]: Array<string> } | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  let convertedValueForModal = null;
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    convertedValueForModal = convertLksgSubcontractingCompaniesToListForModal(input);
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: convertedValueForModal,
+          kpiKeyOfTable: "subcontractingCompanies",
           columnHeaders: lksgModalColumnHeaders,
         },
       },

@@ -11,6 +11,8 @@ import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import {pickSubsetOfElements} from "@e2e/fixtures/FixtureUtils";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
@@ -52,6 +54,13 @@ export class LksgGenerator extends Generator {
       lksgProcurementCategoriesMap.set(categoryType, this.generateLkSGProcurementCategory()),
     );
     return Object.fromEntries(lksgProcurementCategoriesMap);
+  }
+
+  generateSubcontractingCompanies(): { [key: string]: Array<string> } {
+    const countryCodes = generateArray(generateIso2CountryCode);
+    const lksgSubcontractingCompaniesMap = new Map<string, string[]>();
+    countryCodes.forEach((countryCode) => lksgSubcontractingCompaniesMap.set(countryCode, generateNaceCodes()));
+    return Object.fromEntries(lksgSubcontractingCompaniesMap);
   }
   /**
    * Generates a random production site

@@ -92,11 +92,30 @@ describe("Component test for the LksgPanel", () => {
     getCellValueContainer("Procurement Categories").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
-      cy.get("th");
       cy.get("th").eq(0).should("have.text", "Procurement Category");
       cy.get("th").eq(1).should("have.text", "Procured Products/Services");
       cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
       cy.get("th").eq(3).should("have.text", "Order Volume");
+    });
+  });
+
+  it("Validate that the subcategories countries modal is displayed correctly and contains the correct headers", () => {
+    const preparedFixture = getPreparedFixture("lksg-with-subcontracting-countries", preparedFixtures);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
+
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getCellValueContainer("Subcontracting Companies Countries").find("a").should("be.visible").click();
+
+    cy.get("div.p-dialog").within(() => {
+      cy.get("th").eq(0).should("have.text", "Country");
+      cy.get("th").eq(1).should("have.text", "Industries");
+      cy.get("td:contains('United Kingdom')").should("exist");
+      cy.get("td:contains('Germany')")
+        .siblings("td")
+        .find("li")
+        .should("have.length", 2)
+        .first()
+        .should("contain.text", "A - AGRICULTURE");
     });
   });
 

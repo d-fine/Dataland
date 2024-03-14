@@ -66,7 +66,7 @@ export const lksgDataModel = [
             label: "Number of Employees",
             description: "Total number of employees (including temporary workers with assignment duration >6 months)",
 
-            component: "BigDecimalBaseDataPointFormField",
+            component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
             validation: "min:0",
@@ -163,19 +163,8 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesCountries",
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
 
-            component: "MultiSelectFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
-          },
-          {
-            name: "subcontractingCompaniesIndustries",
-            label: "Subcontracting Companies Industries",
-            description: "In which industries do the subcontracting companies operate?",
-
-            component: "NaceCodeFormField",
+            component: "LksgSubcontractingCompaniesFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
@@ -421,7 +410,7 @@ export const lksgDataModel = [
             label: "Complaints Number",
             description: "How many complaints have been received (for the reported fiscal year)?",
 
-            component: "BigDecimalBaseDataPointFormField",
+            component: "NumberFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
@@ -774,7 +763,8 @@ export const lksgDataModel = [
 
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
           },
           {
             name: "worstFormsOfChildLaborForms",
@@ -783,7 +773,8 @@ export const lksgDataModel = [
 
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
           },
           {
             name: "measuresForPreventionOfEmploymentUnderLocalMinimumAge",
