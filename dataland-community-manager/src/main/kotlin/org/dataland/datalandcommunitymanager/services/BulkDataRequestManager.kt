@@ -52,7 +52,9 @@ class BulkDataRequestManager(
                 datalandCompanyId = datalandCompanyId,
             )
         }
-        if (acceptedIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+        if (acceptedIdentifiers.isEmpty()) {
+            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+        }
         sendBulkDataRequestInternalEmailMessage(
             bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )

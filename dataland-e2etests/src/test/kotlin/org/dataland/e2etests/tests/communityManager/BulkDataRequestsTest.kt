@@ -174,25 +174,24 @@ class BulkDataRequestsTest {
     fun `post bulk data request and verify that only unique identifiers are accepted `() {
         val permId1 = generateRandomPermId(20)
         val permId2 = generateRandomPermId(20)
-        val permId3 = generateRandomPermId(20)
         val frameworks = setOf(BulkDataRequest.DataTypes.sfdr)
         val reportingPeriods = setOf("2023")
         val companyOne = CompanyInformation(
-            companyName = "companyNr1",
+            companyName = "first_company",
             headquarters = "HQ",
             identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
             countryCode = "DE",
         )
         val companyTwo = CompanyInformation(
-            companyName = "companyNr2",
+            companyName = "second_company",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.lei.value to listOf(permId2)),
+            identifiers = mapOf(IdentifierType.lei.value to listOf(permId1)),
             countryCode = "DE",
         )
         val uniqueCompany = CompanyInformation(
-            companyName = "UniqueCompanyForBulkDataRequestCheck",
+            companyName = "third_company",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId3)),
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId2)),
             countryCode = "DE",
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -202,7 +201,7 @@ class BulkDataRequestsTest {
 
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(
-                setOf("UniqueCompanyForBulkDataRequestCheck", "companyNr"),
+                setOf(permId1, permId2),
                 frameworks,
                 reportingPeriods,
             ),
