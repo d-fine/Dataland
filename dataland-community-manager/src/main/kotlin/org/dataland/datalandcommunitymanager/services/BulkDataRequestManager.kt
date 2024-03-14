@@ -35,14 +35,15 @@ class BulkDataRequestManager(
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
-        for (id in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(id, "bulkDataRequest")
+        for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
+            val datalandCompanyId =
+                utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifier, "bulkDataRequest")
             if (datalandCompanyId == null) {
-                rejectedIdentifiers.add(id)
+                rejectedIdentifiers.add(userProvidedIdentifier)
                 continue
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[id] = datalandCompanyId
-            acceptedIdentifiers.add(id)
+            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyId
+            acceptedIdentifiers.add(userProvidedIdentifier)
             storeDataRequests(
                 dataTypes = bulkDataRequest.dataTypes,
                 reportingPeriods = bulkDataRequest.reportingPeriods,
@@ -122,6 +123,7 @@ class BulkDataRequestManager(
             1 ->
                 "One of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers was rejected " +
                     "because it could not be uniquely matched with an existing company on Dataland."
+
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers distinct " +
                     "company identifiers were rejected because they could not be uniquely matched with existing " +
