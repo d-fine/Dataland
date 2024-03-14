@@ -88,7 +88,7 @@ class SingleDataRequestManagerTest {
 
             )
         }
-        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
+        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString(),anyString()))
             .thenReturn(companyIdRegexSafeCompanyId)
         return utilsMock
     }

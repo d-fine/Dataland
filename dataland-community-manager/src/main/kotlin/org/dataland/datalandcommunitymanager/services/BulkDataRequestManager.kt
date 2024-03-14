@@ -36,7 +36,10 @@ class BulkDataRequestManager(
         val rejectedIdentifiers = mutableListOf<String>()
         val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, String>()
         for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue, "bulkDataRequest")
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
+                userProvidedIdentifierValue,
+                "bulkDataRequest",
+            )
             if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
@@ -49,9 +52,7 @@ class BulkDataRequestManager(
                 datalandCompanyId = datalandCompanyId,
             )
         }
-        if (acceptedIdentifiers.isEmpty()) {
-            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
-        }
+        if (acceptedIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         sendBulkDataRequestInternalEmailMessage(
             bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
         )
