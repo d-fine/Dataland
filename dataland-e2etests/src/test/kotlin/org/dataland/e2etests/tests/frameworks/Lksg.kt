@@ -143,17 +143,20 @@ class Lksg {
                         riskManagementOwnOperations =
                         dataset.governance?.riskManagementOwnOperations?.copy(
                             identifiedRisks = dataset.governance
-                                ?.riskManagementOwnOperations?.identifiedRisks?.sorted(),
+                                ?.riskManagementOwnOperations?.identifiedRisks?.sortedBy { it.riskPosition },
                         ),
                         grievanceMechanismOwnOperations =
                         dataset.governance?.grievanceMechanismOwnOperations?.copy(
                             complaintsRiskPosition = dataset.governance
-                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sorted(),
+                                ?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sortedBy {
+                                    it.riskPositions.first
+                                },
                         ),
                         generalViolations =
                         dataset.governance?.generalViolations?.copy(
                             humanRightsOrEnvironmentalViolationsDefinition = dataset.governance
-                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sorted(),
+                                ?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition
+                                ?.sortedBy { it.riskPosition },
                         ),
                     ),
                 ),
