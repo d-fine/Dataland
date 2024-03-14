@@ -18,13 +18,13 @@ import java.io.ByteArrayOutputStream
 @Component
 class PowerPointToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private final val imageMimeTypes = setOf(
+    private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
-        "ppt" to imageMimeTypes,
-        "pptx" to imageMimeTypes,
+        "ppt" to powerPointMimeTypes,
+        "pptx" to powerPointMimeTypes,
 
     )
     override fun convertToPdf(file: MultipartFile): ByteArray {

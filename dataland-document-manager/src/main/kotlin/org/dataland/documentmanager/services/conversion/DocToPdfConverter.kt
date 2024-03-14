@@ -3,12 +3,9 @@ import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Paragraph
-import org.apache.poi.xwpf.usermodel.XWPFDocument
-import org.apache.poi.xwpf.usermodel.XWPFParagraph
-import org.apache.poi.xwpf.usermodel.XWPFRun
+import org.apache.tika.metadata.Metadata
 import org.apache.tika.parser.AutoDetectParser
 import org.apache.tika.sax.BodyContentHandler
-import org.apache.tika.sax.WriteOutContentHandler
 import org.apache.tika.sax.XHTMLContentHandler
 import org.dataland.documentmanager.services.conversion.FileConverter
 import org.slf4j.Logger
@@ -16,16 +13,15 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
-import java.io.FileInputStream
 
 @Component
 class DocToPdfConverter: FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private final val imageMimeTypes = setOf(
+    private final val docMimeTypes = setOf(
         "application/msword"
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
-        "doc" to imageMimeTypes
+        "doc" to docMimeTypes
         )
     override fun convertToPdf(file: MultipartFile): ByteArray {
         val outputStream = ByteArrayOutputStream()
@@ -35,7 +31,7 @@ class DocToPdfConverter: FileConverter() {
         val document = Document(pdfDocument)
 
         val parser = AutoDetectParser()
-        val metadata = org.apache.tika.metadata.Metadata()
+        val metadata = Metadata()
         val handler = BodyContentHandler()
         val contentHandler = XHTMLContentHandler(handler, metadata)
 
