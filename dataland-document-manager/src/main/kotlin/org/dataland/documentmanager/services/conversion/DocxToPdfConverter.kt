@@ -1,13 +1,11 @@
-import com.itextpdf.io.image.ImageDataFactory
+
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
-import org.apache.poi.xslf.usermodel.XMLSlideShow
-import org.apache.poi.xslf.usermodel.XSLFPictureShape
-import org.apache.poi.xslf.usermodel.XSLFSlide
-import org.apache.poi.xslf.usermodel.XSLFTextShape
+import org.apache.poi.xwpf.usermodel.XWPFDocument
+import org.apache.poi.xwpf.usermodel.XWPFParagraph
+import org.apache.poi.xwpf.usermodel.XWPFRun
 import org.dataland.documentmanager.services.conversion.FileConverter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -30,12 +28,17 @@ class DocxToPdfConverter: FileConverter() {
     override fun convertToPdf(file: MultipartFile): ByteArray {
         val outputStream = ByteArrayOutputStream()
 
-
+        val doc = XWPFDocument(file.inputStream)
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
         val document = Document(pdfDocument)
 
-
-
+        for (paragraph: XWPFParagraph in doc.paragraphs) {
+            val text = StringBuilder()
+            for (run: XWPFRun in paragraph.runs) {
+                text.append(run.text())
+            }
+            document.add(Paragraph(text.toString()))
+        }
         document.close()
         pdfDocument.close()
 
