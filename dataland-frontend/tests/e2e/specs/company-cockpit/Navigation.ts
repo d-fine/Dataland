@@ -1,10 +1,16 @@
 import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { describeIf } from "@e2e/support/TestUtility";
 import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
-describe("As a user, I expect the navigation around the company cockpit to work as expected", () => {
+describeIf(
+    "As a user, I expect the navigation around the company cockpit to work as expected",
+    {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    },
+    () => {
   let alphaCompanyIdAndName: CompanyIdAndName;
   let betaCompanyIdAndName: CompanyIdAndName;
 
