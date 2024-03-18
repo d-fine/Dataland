@@ -13,7 +13,7 @@ import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
-import {pickSubsetOfElements} from "@e2e/fixtures/FixtureUtils";
+import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -88,7 +88,7 @@ export class LksgGenerator extends Generator {
 
   generateLksgGrievanceMechanismAssessment(): LksgGrievanceAssessmentMechanism {
     return {
-      riskPositions: Object(pickSubsetOfElements(Array(RiskPositionType))).values, //todo change to random subset of
+      riskPositions: pickSubsetOfElements(Array(RiskPositionType)),
       specifiedComplaint: this.guaranteedShortString(),
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),

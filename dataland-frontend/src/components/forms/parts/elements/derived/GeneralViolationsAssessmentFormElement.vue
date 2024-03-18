@@ -1,20 +1,19 @@
 <template>
   <SingleSelectFormField
     name="nameOfGeneralViolation"
-    label="Identified Risk for Violation"
-    description="Which risk positions of each violation were specifically identified?"
+    label="Human Rights or Environmental Violations Definition"
+    description="Please select the risk position of the violation."
     :options="riskOptions"
   />
-  <!-- todo check title -->
   <YesNoFormField
     name="nameCounteractingMeasures"
     label="Counteracting Measures"
-    description="Have measures been taken to address these violations?"
+    description="Have measures been taken to address this violation?"
   />
   <FreeTextFormField
     name="nameWhichCounteractingMeasures"
     label="Which Counteracting Measures"
-    description="Please define the measures"
+    description="Which measures have been applied to counteract this violation?"
   />
 </template>
 
