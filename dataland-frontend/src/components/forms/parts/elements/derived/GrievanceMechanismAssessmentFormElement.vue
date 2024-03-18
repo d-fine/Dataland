@@ -26,14 +26,14 @@
 import { defineComponent } from "vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import { RiskPositionType } from "@clients/backend";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "GrievanceMechanismAssessmentFormElement",
   data() {
     return {
-      riskOptions: RiskPositionType,
+      riskOptions: getDataset(DropdownDatasetIdentifier.RiskPositions),
     };
   },
   components: {
