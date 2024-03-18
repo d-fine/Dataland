@@ -4,6 +4,7 @@ import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Paragraph
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -21,6 +22,15 @@ class TextToPdfConverter : FileConverter() {
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "txt" to setOf("text/plain"),
     )
+
+    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+        if (file.bytes.decodeToString().isNullOrBlank()) {
+            throw InvalidInputApiException(
+                "Provided file is empty.",
+                "Provided file is empty.",
+            )
+        }
+    }
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting plain text file to pdf document.(correlation ID: $correlationId)")

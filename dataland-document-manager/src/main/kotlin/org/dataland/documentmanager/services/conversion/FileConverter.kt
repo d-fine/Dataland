@@ -33,8 +33,7 @@ abstract class FileConverter {
         validateFileContent(file, correlationId)
     }
 
-    protected open fun validateFileContent(file: MultipartFile, correlationId: String) {
-    }
+    protected open fun validateFileContent(file: MultipartFile, correlationId: String) {}
 
     /** Converts a file to a different format
      * @param file the file to convert
