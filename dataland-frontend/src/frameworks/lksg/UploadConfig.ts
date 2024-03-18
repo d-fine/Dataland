@@ -421,7 +421,7 @@ export const lksgDataModel = [
             label: "Complaints Risk Position",
             description: "Please define the respective risk position of each complaint",
 
-            component: "GrievanceMechanismViolationsFormField",
+            component: "GrievanceMechanismAssessmentFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",

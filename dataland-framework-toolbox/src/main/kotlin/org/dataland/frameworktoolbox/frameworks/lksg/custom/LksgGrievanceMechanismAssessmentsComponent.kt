@@ -15,7 +15,7 @@ class LksgGrievanceMechanismAssessmentsComponent(
     identifier = identifier,
     parent = parent,
     viewFormattingFunctionName = "formatLksgGrievanceMechanismsForDisplay",
-    uploadComponentName = "GrievanceMechanismViolationsFormField",
+    uploadComponentName = "GrievanceMechanismAssessmentFormField",
     guaranteedFixtureExpression = "dataGenerator.guaranteedArray(() => " +
         "dataGenerator.generateLksgGrievanceMechanismAssessment(), 0, 5)",
     randomFixtureExpression = "dataGenerator.randomArray(() => " +

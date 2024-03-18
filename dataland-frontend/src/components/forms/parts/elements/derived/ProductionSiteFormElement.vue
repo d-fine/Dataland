@@ -11,7 +11,7 @@
     label="Production Site Address"
     validation="required"
   />
-  <StringBadgeListFormField
+  <NaceCodeFormField
     name="listOfGoodsOrServices"
     label="Lists of Goods or Services"
     description="Provide List of Goods or Services"
@@ -23,12 +23,12 @@
 import { defineComponent } from "vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import StringBadgeListFormField from "@/components/forms/parts/fields/StringBadgeListFormField.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 
 export default defineComponent({
   name: "ProductionSiteFormElement",
   components: {
-    StringBadgeListFormField,
+    NaceCodeFormField,
     InputTextFormField,
     AddressFormField,
   },

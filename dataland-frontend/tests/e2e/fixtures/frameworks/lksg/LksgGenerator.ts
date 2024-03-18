@@ -80,7 +80,7 @@ export class LksgGenerator extends Generator {
    */
   generateLksgRiskOrViolationAssessment(): LksgRiskOrViolationAssessment {
     return {
-      riskPosition: Object.values(RiskPositionType)[faker.number.int(Object.values(RiskPositionType).length)],
+      riskPosition: pickSubsetOfElements(Object.values(RiskPositionType), 1, 1)[0],
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
     };
@@ -88,7 +88,7 @@ export class LksgGenerator extends Generator {
 
   generateLksgGrievanceMechanismAssessment(): LksgGrievanceAssessmentMechanism {
     return {
-      riskPositions: pickSubsetOfElements(Array(RiskPositionType)),
+      riskPositions: pickSubsetOfElements(Object.values(RiskPositionType)),
       specifiedComplaint: this.guaranteedShortString(),
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
