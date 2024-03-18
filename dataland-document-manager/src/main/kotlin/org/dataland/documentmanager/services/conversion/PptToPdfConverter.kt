@@ -4,14 +4,11 @@ import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.AreaBreak
-import com.itextpdf.layout.element.BlockElement
 import com.itextpdf.layout.element.Div
-import com.itextpdf.layout.element.IBlockElement
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.property.AreaBreakType
 import org.apache.poi.xslf.usermodel.XMLSlideShow
-import org.apache.poi.xslf.usermodel.XSLFConnectorShape
 import org.apache.poi.xslf.usermodel.XSLFGroupShape
 import org.apache.poi.xslf.usermodel.XSLFPictureShape
 import org.apache.poi.xslf.usermodel.XSLFShape
@@ -22,11 +19,15 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.awt.Color
+import java.awt.geom.Rectangle2D
+import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
+import javax.imageio.ImageIO
 
 @Component
-class PowerPointToPdfConverter : FileConverter() {
+class PptToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
@@ -36,29 +37,29 @@ class PowerPointToPdfConverter : FileConverter() {
         "ppt" to powerPointMimeTypes,
         "pptx" to powerPointMimeTypes,
 
-    )
+        )
     override fun convertToPdf(file: MultipartFile): ByteArray {
         val outputStream = ByteArrayOutputStream()
-
         val ppt = XMLSlideShow(file.inputStream)
-        val pptWidth = ppt.pageSize.width.toFloat()
-        val pptHeight = ppt.pageSize.height.toFloat()
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
-        val document = Document(pdfDocument,
-            PageSize(pptWidth,pptHeight))
-       for (slide in ppt.slides) {
-            val div = Div()
-           if(slide.title != null){
-               slide.slideLayout.shapes
-               val title = Paragraph(slide.title)
-               title.setFixedPosition(pptWidth / 2,pptHeight -10F,slide.title.length.toFloat())
-               div.add(title)
-           }
-            val shapes = slide.shapes
-            shapes.forEach{
-                div.add(getContent(it,pptHeight,pptWidth, slide.slideNumber))
-            }
-            document.add(div)
+        val document = Document(pdfDocument)
+
+        for (slide in ppt.slides) {
+            val pptxSlide = slide as XSLFSlide
+            val pgsize = ppt.pageSize
+
+            val img = BufferedImage(pgsize.width, pgsize.height, BufferedImage.TYPE_INT_RGB)
+            val graphics = img.createGraphics()
+            graphics.background = java.awt.Color.WHITE
+            graphics.clearRect(0, 0, pgsize.width, pgsize.height)
+            pptxSlide.draw(graphics)
+
+            val byteStream = ByteArrayOutputStream()
+            ImageIO.write(img, "png", byteStream)
+            val imgBytes = byteStream.toByteArray()
+
+            val pdfImg = Image(ImageDataFactory.create(imgBytes))
+            document.add(pdfImg)
             document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
         }
 
@@ -77,33 +78,6 @@ class PowerPointToPdfConverter : FileConverter() {
         }
         //todo
         return outputStream.toByteArray()
-    }
-    private fun getContent(shape: XSLFShape, pptHeight: Float, pptWidth:Float, pageNumber: Int):Div{
-        if(pageNumber == 1){
-            println(shape.anchor.x.toFloat())
-            println(shape.anchor.y.toFloat())
-            println(shape.anchor.width.toFloat())
-            println(shape.anchor.y.toFloat())
-        }
-        val div = Div().setFixedPosition(
-            pageNumber,shape.anchor.x.toFloat(), pptHeight-shape.anchor.y.toFloat(),
-            shape.anchor.width.toFloat())
-        if (shape is XSLFTextShape) {
-            val text = shape.text
-            val paragraph = Paragraph(text)
-            div.add(paragraph)
-        } else if (shape is XSLFPictureShape) {
-            val pictureData = shape.pictureData.data
-            val picture = Image(ImageDataFactory.create(pictureData))
-            picture.scaleToFit(shape.pictureData.imageDimension.width.toFloat(),
-                shape.pictureData.imageDimension.height.toFloat())
-            div.add(picture)
-        }else if (shape is XSLFGroupShape){
-            shape.shapes.forEach {
-                div.add(getContent(it, pptHeight, pptWidth, pageNumber))
-            }
-        }
-        return div
     }
 
 }

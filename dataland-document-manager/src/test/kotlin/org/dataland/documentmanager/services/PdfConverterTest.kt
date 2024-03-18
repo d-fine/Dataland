@@ -1,18 +1,63 @@
 package org.dataland.documentmanager.services
 
+import DocToPdfConverter
+import DocxToPdfConverter
+import PowerPointToPdfConverter
+import PptToPdfConverter
 import org.dataland.documentmanager.services.conversion.PdfConverter
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
 class PdfConverterTest {
-    private val pdfConverter = PdfConverter()
+    private val pdfConverter = PdfConverter(emptyList())
     private val testPng = "sampleFiles/sample.png"
     private val testTxt = "sampleFiles/sample.txt"
     private val testWord = "sampleFiles/sample.docx"
-    private val testPowerPoint = "sampleFiles/sample.pptx"
+    private val testWorddoc = "sampleFiles/sample.doc"
+    private val testPowerPoint = "sampleFiles/CypressTests.pptx"
     private val correlationId = "test-correlation-id"
 
+    @Test
+    fun `verify something pptx`(){
+        val pptConverter = PowerPointToPdfConverter()
+        val testInput = MockMultipartFile(
+            "CypressTests.pptx",
+            "CypressTests.pptx",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            TestUtils().loadFileBytes(testPowerPoint))
+        pptConverter.convertToPdf(testInput)
+    }
+    @Test
+    fun `verify something pptx2`(){
+        val pptConverter = PptToPdfConverter()
+        val testInput = MockMultipartFile(
+            "CypressTests.pptx",
+            "CypressTests.pptx",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            TestUtils().loadFileBytes(testPowerPoint))
+        pptConverter.convertToPdf(testInput)
+    }
+    @Test
+    fun `verify something docx`(){
+        val docxConverter = DocxToPdfConverter()
+        val testInput = MockMultipartFile(
+            "test.docx",
+            "test.docx",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            TestUtils().loadFileBytes(testWord))
+        docxConverter.convertToPdf(testInput)
+    }
+    @Test
+    fun `verify something doc`(){
+        val docConverter = DocToPdfConverter()
+        val testInput = MockMultipartFile(
+            "test.doc",
+            "test.doc",
+            "application/msword",
+            TestUtils().loadFileBytes(testWorddoc))
+        docConverter.convertToPdf(testInput)
+    }
     @Test
     fun `verify that a png file can be converted to pdf`() {
         val testInput = MockMultipartFile(
