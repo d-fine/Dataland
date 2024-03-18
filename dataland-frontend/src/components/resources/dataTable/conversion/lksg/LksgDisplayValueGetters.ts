@@ -14,8 +14,8 @@ import {
   type LksgGrievanceAssessmentMechanism,
   type LksgProductionSite,
   type LksgRiskOrViolationAssessment,
+  type LksgProcurementCategory,
 } from "@clients/backend";
-import { type LksgProcurementCategory } from "@clients/backend";
 import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 export const lksgModalColumnHeaders = {
