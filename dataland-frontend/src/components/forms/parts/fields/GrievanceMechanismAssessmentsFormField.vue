@@ -11,7 +11,7 @@
     data-test-add-button="addNewGrievanceMechanismAssessmentButton"
     label-add-button="ADD NEW Risk"
     data-test-sub-form="GrievanceMechanismAssessmentSection"
-    data-test-remove-button="removeItemFromListOfGrievancemechanismAssessments"
+    data-test-remove-button="removeItemFromListOfGrievanceMechanismAssessments"
   />
 </template>
 

@@ -40,6 +40,8 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import StringBaseDataPointFormField from "@/components/forms/parts/fields/StringBaseDataPointFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import GeneralViolationsAssessmentFormElement from "@/components/forms/parts/elements/derived/GeneralViolationsAssessmentFormElement.vue";
+import GrievanceMechanismAssessmentFormElement from "@/components/forms/parts/elements/derived/GrievanceMechanismAssessmentFormElement.vue";
 
 export default defineComponent({
   name: "FormListFormField",
@@ -49,6 +51,8 @@ export default defineComponent({
     ProductFormElement,
     ProductionSiteFormElement,
     RiskAssessmentFormElement,
+    GrievanceMechanismAssessmentFormElement,
+    GeneralViolationsAssessmentFormElement,
     AlignedActivitiesFormElements,
     NonAlignedActivitiesFormElement,
     StringBaseDataPointFormField,

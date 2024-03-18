@@ -4,6 +4,7 @@
     label="Human Rights or Environmental Violations Definition"
     description="Please select the risk position of the violation."
     :options="riskOptions"
+    placeholder="Select Risk"
   />
   <YesNoFormField
     name="nameCounteractingMeasures"
@@ -22,13 +23,13 @@ import { defineComponent } from "vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import { RiskPositionType } from "@clients/backend";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "GeneralViolationsAssessmentFormElement",
   data() {
     return {
-      riskOptions: RiskPositionType,
+      riskOptions: getDataset(DropdownDatasetIdentifier.RiskPositions),
     };
   },
   components: {
