@@ -12,7 +12,8 @@ import java.io.File
 abstract class FileConverter {
     protected abstract val logger: Logger
     protected abstract val allowedMimeTypesPerFileExtension: Map<String, Set<String>>
-    private val fileExtensionAndMimeTypeMismatchMessage = "Only upload of documents with matching file extensions and MIME types is supported."
+    private val fileExtensionAndMimeTypeMismatchMessage =
+        "Only upload of documents with matching file extensions and MIME types is supported."
     private val fileNameHasForbiddenCharactersMessage =
         "Please ensure that your selected file name follows the naming convention for Windows: Avoid using " +
             "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
@@ -32,7 +33,6 @@ abstract class FileConverter {
     }
 
     protected open fun validateFileContent(file: MultipartFile) {
-
     }
 
     /** Converts a file to a different format
@@ -40,7 +40,6 @@ abstract class FileConverter {
      * @returns the converted file as bytes
      */
     abstract fun convertToPdf(file: MultipartFile): ByteArray // todo rename to not contain pdf
-
 
     private fun validateMimeType(file: MultipartFile) {
         val fileExtension = file.lowerCaseExtension()

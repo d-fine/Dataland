@@ -11,10 +11,9 @@ import org.springframework.web.multipart.MultipartFile
  */
 @Component
 class PdfConverter(
-    @Autowired val toPdfConverters: List<FileConverter>
+    @Autowired val toPdfConverters: List<FileConverter>,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
 
     // todo this should be the only public method in the end
     /**

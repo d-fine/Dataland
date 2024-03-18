@@ -12,7 +12,6 @@ import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.InputStreamReader
 
-
 /**
  * A converter for txt files to the pdf format
  */
@@ -41,5 +40,4 @@ class TextToPdfConverter : FileConverter() {
 
         return outputStream.toByteArray()
     }
-
 }

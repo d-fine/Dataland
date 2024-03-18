@@ -49,6 +49,9 @@ interface DocumentApi {
     ): ResponseEntity<DocumentUploadResponse>
 
     // TODO remove this endpoint
+    /**
+     * to be removed
+     */
     // @PreAuthorize("hasRole('ROLE_UPLOADER')") todo
     @PostMapping(
         value = ["/convert"],

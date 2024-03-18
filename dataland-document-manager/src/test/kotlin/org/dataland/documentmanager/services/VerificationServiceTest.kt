@@ -84,7 +84,7 @@ class VerificationServiceTest {
     }
 
     @Test
-    fun `verifies that a mismatch in file extension and mime type is detected`(){
+    fun `verifies that a mismatch in file extension and mime type is detected`() {
         val testFile = MockMultipartFile(
             "test.png",
             "test.png",
@@ -101,7 +101,7 @@ class VerificationServiceTest {
     }
 
     @Test
-    fun `verifies that an unsupported type is detected`(){
+    fun `verifies that an unsupported type is detected`() {
         val testFile = MockMultipartFile(
             "test.json",
             "test.json",

@@ -51,10 +51,13 @@ class DocumentManager(
     @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 
-    ) {
+) {
     lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    /** todo remove
+     * test function
+     */
     fun convertAll(image: MultipartFile): InputStreamResource {
         return InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image)))
     }

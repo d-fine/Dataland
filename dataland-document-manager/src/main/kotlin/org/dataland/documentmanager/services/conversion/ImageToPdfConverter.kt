@@ -27,7 +27,7 @@ class ImageToPdfConverter : FileConverter() {
         "tif" to imageMimeTypes,
         "tiff" to imageMimeTypes,
         "heic" to imageMimeTypes,
-        "heif" to imageMimeTypes
+        "heif" to imageMimeTypes,
     )
 
     override fun convertToPdf(file: MultipartFile): ByteArray {
@@ -45,5 +45,4 @@ class ImageToPdfConverter : FileConverter() {
 
         return outputStream.toByteArray()
     }
-
 }

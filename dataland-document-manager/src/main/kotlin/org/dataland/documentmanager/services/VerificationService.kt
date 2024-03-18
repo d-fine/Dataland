@@ -1,13 +1,13 @@
 package org.dataland.documentmanager.services
 
-import java.io.File
 import org.apache.pdfbox.Loader
+import org.apache.tika.Tika
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.io.IOException
-import org.apache.tika.Tika
 
 /**
  * A service for performing basic sanity checks on files uploaded by users
@@ -31,9 +31,6 @@ class VerificationService {
         "heif" to setOf("image/heif"),
         "heic" to setOf("image/heic"),
     )
-    val imageFileExtensions = setOf("png", "jpg", "jpeg", "jpe", "jxr", "tif", "tiff", "heic", "heif")
-    val imageMimeTypes = setOf("image/png", "image/jpeg", "image/tiff", "image/heif", "image/heic")
-    val textFileExtensions = setOf("txt", "ods", "doc", "docx")
 
     val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
     val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."
@@ -42,7 +39,8 @@ class VerificationService {
             "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
             "or end with a full stop character."
     val typeNotSupportedMessage = "Only supported file types can be uploaded."
-    val fileExtensionAndMimeTypeMismatchMessage = "Only upload of documents with matching file extensions and MIME types is supported."
+    val fileExtensionAndMimeTypeMismatchMessage =
+        "Only upload of documents with matching file extensions and MIME types is supported."
 
     /**
      * A function that performs surface-level checks to ensure that an uploaded file is indeed a PDF with at least one
@@ -78,6 +76,9 @@ class VerificationService {
         }
     }
 
+    /** todo remove
+     * to be removed, got shifted
+     */
     fun validateFileType(file: MultipartFile, correlationId: String) {
         val fileExtension = validateFileExtensionSupport(file)
         validateMimeType(file, fileExtension)
@@ -96,7 +97,7 @@ class VerificationService {
 
     private fun validateFileExtensionSupport(file: MultipartFile): String {
         val fileExtension = file.originalFilename!!.let { File(it).extension }
-        if (! extensionToMimetype.containsKey(fileExtension)) {
+        if (!extensionToMimetype.containsKey(fileExtension)) {
             throw InvalidInputApiException(
                 "The provided file extension $fileExtension of ${file.originalFilename} is not recognized.",
                 typeNotSupportedMessage,

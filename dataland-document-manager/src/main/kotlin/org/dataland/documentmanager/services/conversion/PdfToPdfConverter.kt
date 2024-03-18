@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
-
 /**
  * A validator for pdfs
  */

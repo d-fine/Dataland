@@ -19,7 +19,8 @@ class PdfConverterTest {
             "test.png",
             "test.png",
             MediaType.IMAGE_PNG_VALUE,
-            TestUtils().loadFileBytes(testPng))
+            TestUtils().loadFileBytes(testPng),
+        )
         pdfConverter.convertImage(testInput, correlationId)
     }
 
@@ -29,7 +30,8 @@ class PdfConverterTest {
             "test.txt",
             "test.txt",
             MediaType.TEXT_PLAIN_VALUE,
-            TestUtils().loadFileBytes(testTxt))
+            TestUtils().loadFileBytes(testTxt),
+        )
         pdfConverter.convertLineByLine(testInput, correlationId)
     }
 
@@ -39,7 +41,8 @@ class PdfConverterTest {
             "test.docx",
             "test.docx",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            TestUtils().loadFileBytes(testWord))
+            TestUtils().loadFileBytes(testWord),
+        )
         pdfConverter.convertWordDocument(testInput, correlationId)
     }
 
@@ -49,17 +52,8 @@ class PdfConverterTest {
             "test.pptx",
             "test.pptx",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(testPowerPoint))
+            TestUtils().loadFileBytes(testPowerPoint),
+        )
         pdfConverter.convertPowerpoint(testInput, correlationId)
     }
-
-
-
-
-
-
-
-
-
-
 }
