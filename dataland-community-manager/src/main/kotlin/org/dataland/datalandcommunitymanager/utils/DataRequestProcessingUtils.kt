@@ -39,14 +39,19 @@ class DataRequestProcessingUtils(
     /**
      * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
      * @param identifierValue the identifier value
+     * @param returnOnlyUnique boolean if only unique matches should be returned (null if not unique) or if an
+     * exception will be thrown (default)
      * @return the company ID or null
      */
-    fun getDatalandCompanyIdForIdentifierValue(identifierValue: String, requestType: String? = null): String? {
+    fun getDatalandCompanyIdForIdentifierValue(
+        identifierValue: String,
+        returnOnlyUnique: Boolean = false,
+    ): String? {
         val matchingCompanyIdsAndNamesOnDataland =
             companyApi.getCompaniesBySearchString(identifierValue)
         val datalandCompanyId = if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
             matchingCompanyIdsAndNamesOnDataland.first().companyId
-        } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && requestType != "bulkDataRequest") {
+        } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
             throw InvalidInputApiException(
                 summary = "No unique identifier. Multiple companies could be found.",
                 message = "Multiple companies have been found for the identifier you specified.",

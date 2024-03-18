@@ -15,6 +15,7 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
@@ -88,7 +89,7 @@ class SingleDataRequestManagerTest {
 
             )
         }
-        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString(), anyString()))
+        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString(), anyBoolean()))
             .thenReturn(companyIdRegexSafeCompanyId)
         return utilsMock
     }
