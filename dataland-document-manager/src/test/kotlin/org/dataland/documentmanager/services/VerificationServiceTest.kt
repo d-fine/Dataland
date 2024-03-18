@@ -8,8 +8,7 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
-class VerificationServiceTest {
-    private val verificationService = VerificationService()
+class VerificationServiceTest { // TODO to be removed
     private val correlationId = "test-correlation-id"
     private val testPdfFile = "sampleFiles/StandardWordExport.pdf"
     private val testExcelFile = "sampleFiles/EmptyExcelFile.xlsx"

@@ -21,21 +21,23 @@ class PdfConverter(
      * @file the file to convert
      * @returns the pdf content as bytes
      */
-    fun convertToPdf(file: MultipartFile): ByteArray {
+    fun convertToPdf(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Trying to convert uploaded file ${file.originalFilename}. (correlation ID: $correlationId)")
         val fileExtension = file.lowerCaseExtension()
         val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
             ?: throw InvalidInputApiException(
                 "File extension $fileExtension could not be recognized",
                 "File extension $fileExtension could not be recognized",
             )
-        matchingConverter.validateFile(file)
-        return matchingConverter.convertToPdf(file)
+        matchingConverter.validateFile(file, correlationId)
+        return matchingConverter.convert(file, correlationId)
     }
 
     /** todo
      * to be removed
      */
     fun convertWordDocument(file: MultipartFile, correlationId: String) {
+        logger.info("${file.originalFilename} (correlation ID: $correlationId)")
         TODO("Word conversion not implemented")
     }
 
@@ -43,6 +45,7 @@ class PdfConverter(
      * to be removed
      */
     fun convertPowerpoint(file: MultipartFile, correlationId: String) {
+        logger.info("${file.originalFilename} (correlation ID: $correlationId)")
         TODO("Powerpoint conversion not implemented")
     }
 }

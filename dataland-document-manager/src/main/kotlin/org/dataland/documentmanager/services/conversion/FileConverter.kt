@@ -26,20 +26,21 @@ abstract class FileConverter {
      * Validates that a file is what it claims to be, e.g. by mime type and content validation
      * @param file the file to validate
      */
-    fun validateFile(file: MultipartFile) {
-        validateFileNameWithinNamingConvention(file.originalFilename!!, "placeholder") // todo
+    fun validateFile(file: MultipartFile, correlationId: String) {
+        logger.info("Validating uploaded file. (correlation ID: $correlationId)")
+        validateFileNameWithinNamingConvention(file.originalFilename!!, correlationId)
         validateMimeType(file)
-        validateFileContent(file)
+        validateFileContent(file, correlationId)
     }
 
-    protected open fun validateFileContent(file: MultipartFile) {
+    protected open fun validateFileContent(file: MultipartFile, correlationId: String) {
     }
 
     /** Converts a file to a different format
      * @param file the file to convert
      * @returns the converted file as bytes
      */
-    abstract fun convertToPdf(file: MultipartFile): ByteArray // todo rename to not contain pdf
+    abstract fun convert(file: MultipartFile, correlationId: String): ByteArray
 
     private fun validateMimeType(file: MultipartFile) {
         val fileExtension = file.lowerCaseExtension()

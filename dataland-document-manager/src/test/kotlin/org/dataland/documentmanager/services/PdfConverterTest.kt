@@ -1,12 +1,14 @@
 package org.dataland.documentmanager.services
 
+import org.dataland.documentmanager.services.conversion.ImageToPdfConverter
 import org.dataland.documentmanager.services.conversion.PdfConverter
+import org.dataland.documentmanager.services.conversion.TextToPdfConverter
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
 class PdfConverterTest {
-    private val pdfConverter = PdfConverter()
+    private val pdfConverter = PdfConverter(emptyList()) // todo change argument
     private val testPng = "sampleFiles/sample.png"
     private val testTxt = "sampleFiles/sample.txt"
     private val testWord = "sampleFiles/sample.docx"
@@ -21,7 +23,7 @@ class PdfConverterTest {
             MediaType.IMAGE_PNG_VALUE,
             TestUtils().loadFileBytes(testPng),
         )
-        pdfConverter.convertImage(testInput, correlationId)
+        ImageToPdfConverter().convert(testInput, correlationId)
     }
 
     @Test
@@ -32,7 +34,7 @@ class PdfConverterTest {
             MediaType.TEXT_PLAIN_VALUE,
             TestUtils().loadFileBytes(testTxt),
         )
-        pdfConverter.convertLineByLine(testInput, correlationId)
+        TextToPdfConverter().convert(testInput, correlationId)
     }
 
     @Test

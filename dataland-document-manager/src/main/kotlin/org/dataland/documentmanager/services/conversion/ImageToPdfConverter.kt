@@ -30,7 +30,8 @@ class ImageToPdfConverter : FileConverter() {
         "heif" to imageMimeTypes,
     )
 
-    override fun convertToPdf(file: MultipartFile): ByteArray {
+    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting image to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
         val imageData = ImageDataFactory.create(file.bytes)

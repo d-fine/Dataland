@@ -22,8 +22,8 @@ class TextToPdfConverter : FileConverter() {
         "txt" to setOf("text/plain"),
     )
 
-    override fun convertToPdf(file: MultipartFile): ByteArray {
-        val correlationId = "e" // todo
+    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting plain text file to pdf document.(correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
         val document = Document(pdfDocument)
