@@ -144,6 +144,7 @@ import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountW
 import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
 import RiskAssessmentsFormField from "@/components/forms/parts/fields/RiskAssessmentsFormField.vue";
 import GeneralViolationsAssessmentsFormField from "@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue";
+import GrievanceMechanismAssessmentsFormField from "@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -175,6 +176,7 @@ export default defineComponent({
     ProductionSitesFormField,
     RiskAssessmentsFormField,
     GeneralViolationsAssessmentsFormField,
+    GrievanceMechanismAssessmentsFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     IntegerExtendedDataPointFormField,
