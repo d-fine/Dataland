@@ -1,131 +1,51 @@
 package org.dataland.documentmanager.services.conversion
 
-import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Image
-import com.itextpdf.layout.element.Paragraph
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import java.io.BufferedReader
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.InputStreamReader
 
 /**
  * A service for converting various file types into PDFs
  */
 @Component
 class PdfConverter(
-    @Autowired val toPdfConverters: List<FileConverter>
+    @Autowired val toPdfConverters: List<FileConverter>,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     // todo this should be the only public method in the end
-    fun convertToPdf(file: MultipartFile): ByteArray {
-        val fileExtension = file.originalFilename!!.let { File(it).extension } // TODO move to extension method
+    /**
+     * Tries to convert a file to a pdf document
+     * @file the file to convert
+     * @returns the pdf content as bytes
+     */
+    fun convertToPdf(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Trying to convert uploaded file ${file.originalFilename}. (correlation ID: $correlationId)")
+        val fileExtension = file.lowerCaseExtension()
         val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
             ?: throw InvalidInputApiException(
                 "File extension $fileExtension could not be recognized",
                 "File extension $fileExtension could not be recognized",
             )
-        matchingConverter.validateFile(file)
-        return matchingConverter.convertToPdf(file)
+        matchingConverter.validateFile(file, correlationId)
+        return matchingConverter.convert(file, correlationId)
     }
 
-    // todo remove this function
-    fun convertImage(image: MultipartFile, correlationId: String): InputStreamResource {
-        logger.info("Converting ${image.name} with correlation Id $correlationId to PDF.")
-        val outputStream = ByteArrayOutputStream()
-
-        val imageData = ImageDataFactory.create(image.bytes)
-        val pdfDocument = PdfDocument(PdfWriter(outputStream))
-        val document = Document(pdfDocument)
-
-        val pdfImage = Image(imageData)
-        document.add(pdfImage)
-
-        document.close()
-        pdfDocument.close()
-
-        // TODO there is probably a better way of doing this
-        return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
-    }
-
-    fun convertLineByLine(file: MultipartFile, correlationId: String): InputStreamResource {
-        val outputStream = ByteArrayOutputStream()
-        val pdfDocument = PdfDocument(PdfWriter(outputStream))
-        val document = Document(pdfDocument)
-
-        BufferedReader(InputStreamReader(file.inputStream)).use { reader ->
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                document.add(Paragraph(line))
-            }
-        }
-
-        document.close()
-        pdfDocument.close()
-
-        return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
-    }
-
-    // todo moved from unrelated DocumentManager, probably outdated
-//    fun convertTextToPdf(textFilePath: String, pdfPath: String) {
-//        val textFile = File(textFilePath)
-//        if (!textFile.exists()) {
-//            println("Text file not found.")
-//            return
-//        }
-//
-//        val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfPath)))
-//        val document = Document(pdfDocument)
-//
-//        BufferedReader(FileReader(textFile)).use { reader ->
-//            var line: String?
-//            while (reader.readLine().also { line = it } != null) {
-//                document.add(Paragraph(line))
-//            }
-//        }
-//
-//        document.close()
-//    }
-//
-//    fun convertWordToPdf(wordFilePath: String, pdfPath: String) {
-//        val wordFile = File(wordFilePath)
-//        if (!wordFile.exists()) {
-//            println("Word file not found.")
-//            return
-//        }
-//
-//        val pdfDocument = PdfDocument(PdfWriter(FileOutputStream(pdfPath)))
-//        val document = Document(pdfDocument)
-//
-//        val fis = FileInputStream(wordFile)
-//        val documentWord = XWPFDocument(fis)
-//        val paragraphs: List<XWPFParagraph> = documentWord.paragraphs
-//        for (para in paragraphs) {
-//            val runs: List<XWPFRun> = para.runs
-//            for (run in runs) {
-//                val text = run.text()
-//                document.add(Paragraph(text))
-//            }
-//        }
-//        fis.close()
-//
-//        document.close()
-//    }
-
+    /** todo
+     * to be removed
+     */
     fun convertWordDocument(file: MultipartFile, correlationId: String) {
+        logger.info("${file.originalFilename} (correlation ID: $correlationId)")
         TODO("Word conversion not implemented")
     }
+
+    /** todo
+     * to be removed
+     */
     fun convertPowerpoint(file: MultipartFile, correlationId: String) {
+        logger.info("${file.originalFilename} (correlation ID: $correlationId)")
         TODO("Powerpoint conversion not implemented")
     }
 }

@@ -1,16 +1,18 @@
 package org.dataland.documentmanager.services
 
+import org.dataland.documentmanager.services.conversion.ImageToPdfConverter
 import DocToPdfConverter
 import DocxToPdfConverter
 import PowerPointToPdfConverter
 import PptToPdfConverter
 import org.dataland.documentmanager.services.conversion.PdfConverter
+import org.dataland.documentmanager.services.conversion.TextToPdfConverter
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
 class PdfConverterTest {
-    private val pdfConverter = PdfConverter(emptyList())
+    private val pdfConverter = PdfConverter(emptyList()) // todo change argument
     private val testPng = "sampleFiles/sample.png"
     private val testTxt = "sampleFiles/sample.txt"
     private val testWord = "sampleFiles/sample.docx"
@@ -64,8 +66,9 @@ class PdfConverterTest {
             "test.png",
             "test.png",
             MediaType.IMAGE_PNG_VALUE,
-            TestUtils().loadFileBytes(testPng))
-        pdfConverter.convertImage(testInput, correlationId)
+            TestUtils().loadFileBytes(testPng),
+        )
+        ImageToPdfConverter().convert(testInput, correlationId)
     }
 
     @Test
@@ -74,8 +77,9 @@ class PdfConverterTest {
             "test.txt",
             "test.txt",
             MediaType.TEXT_PLAIN_VALUE,
-            TestUtils().loadFileBytes(testTxt))
-        pdfConverter.convertLineByLine(testInput, correlationId)
+            TestUtils().loadFileBytes(testTxt),
+        )
+        TextToPdfConverter().convert(testInput, correlationId)
     }
 
     @Test
@@ -84,7 +88,8 @@ class PdfConverterTest {
             "test.docx",
             "test.docx",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            TestUtils().loadFileBytes(testWord))
+            TestUtils().loadFileBytes(testWord),
+        )
         pdfConverter.convertWordDocument(testInput, correlationId)
     }
 
@@ -94,7 +99,8 @@ class PdfConverterTest {
             "test.pptx",
             "test.pptx",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(testPowerPoint))
+            TestUtils().loadFileBytes(testPowerPoint),
+        )
         pdfConverter.convertPowerpoint(testInput, correlationId)
     }
 

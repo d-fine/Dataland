@@ -48,18 +48,18 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val verificationService: VerificationService,
     @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 
-    ) {
+) {
     lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun convertImageToPdf(image: MultipartFile): InputStreamResource {
-        // TODO add correlation ID here
-        verificationService.validateFileType(image, "1")
-        return pdfConverter.convertImage(image, "1")
+    /** todo remove
+     * test function
+     */
+    fun convertAll(image: MultipartFile): InputStreamResource {
+        return InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image, "placeholder")))
     }
 
     /**
@@ -71,12 +71,13 @@ class DocumentManager(
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentUploadResponse {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlation ID: $correlationId")
-        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId) // todo differentiate between pdf and excel such that the downloaded file can receive the correct extension
+        // todo differentiate between pdf and excel such that the downloaded file can receive the correct extension
+        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        val documentBody = pdfConverter.convertToPdf(document) // todo don't use when handling excels
+        val documentBody = pdfConverter.convertToPdf(document, correlationId) // todo don't use when handling excels
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -147,7 +148,8 @@ class DocumentManager(
         }
 
         val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-        return DocumentStream("$documentId.pdf", documentDataStream) // TODO what about excel extension, store file type in metadata?
+        // TODO what about excel extension, store file type in metadata?
+        return DocumentStream("$documentId.pdf", documentDataStream)
     }
 
     private fun retrieveDocumentDataStream(

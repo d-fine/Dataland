@@ -1,21 +1,16 @@
 package org.dataland.documentmanager.services.conversion
 
-import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Image
 import org.apache.pdfbox.Loader
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 
+/**
+ * A validator for pdfs
+ */
 @Component
 class PdfToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -26,8 +21,8 @@ class PdfToPdfConverter : FileConverter() {
     val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
     val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."
 
-    override fun validateFileContent(file: MultipartFile) {
-        val correlationId = "placehoder" // TODO
+    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+        logger.info("Validating that the pdf is not empty. (correlation ID: $correlationId)")
         try {
             checkIfPotentialPdfFileIsEmpty(file.bytes, correlationId)
         } catch (ex: IOException) {
@@ -54,5 +49,5 @@ class PdfToPdfConverter : FileConverter() {
         }
     }
 
-    override fun convertToPdf(file: MultipartFile): ByteArray = file.bytes
+    override fun convert(file: MultipartFile, correlationId: String): ByteArray = file.bytes
 }

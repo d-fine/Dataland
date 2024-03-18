@@ -8,8 +8,7 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
-class VerificationServiceTest {
-    private val verificationService = VerificationService()
+class VerificationServiceTest { // TODO to be removed
     private val correlationId = "test-correlation-id"
     private val testPdfFile = "sampleFiles/StandardWordExport.pdf"
     private val testExcelFile = "sampleFiles/EmptyExcelFile.xlsx"
@@ -84,7 +83,7 @@ class VerificationServiceTest {
     }
 
     @Test
-    fun `verifies that a mismatch in file extension and mime type is detected`(){
+    fun `verifies that a mismatch in file extension and mime type is detected`() {
         val testFile = MockMultipartFile(
             "test.png",
             "test.png",
@@ -101,7 +100,7 @@ class VerificationServiceTest {
     }
 
     @Test
-    fun `verifies that an unsupported type is detected`(){
+    fun `verifies that an unsupported type is detected`() {
         val testFile = MockMultipartFile(
             "test.json",
             "test.json",

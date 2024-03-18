@@ -44,7 +44,6 @@ import java.util.Optional
 @Transactional
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private val verificationService: VerificationService,
     @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 ) {
@@ -55,7 +54,8 @@ class DocumentManagerTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
     lateinit var mockMessageUtils: MessageQueueUtils
-    //TODO swap out the test report for something generic
+
+    // TODO swap out the test report for something generic
     val reportName = "test-report.pdf"
 
     @BeforeEach
@@ -77,7 +77,6 @@ class DocumentManagerTest(
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            verificationService = verificationService,
             storageApi = mockStorageApi,
             pdfConverter = pdfConverter,
             objectMapper = objectMapper,

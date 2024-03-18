@@ -7,12 +7,13 @@ import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
+/**
+ * A converter for multiple image types to the pdf format
+ */
 @Component
 class ImageToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -26,10 +27,11 @@ class ImageToPdfConverter : FileConverter() {
         "tif" to imageMimeTypes,
         "tiff" to imageMimeTypes,
         "heic" to imageMimeTypes,
-        "heif" to imageMimeTypes
+        "heif" to imageMimeTypes,
     )
 
-    override fun convertToPdf(file: MultipartFile): ByteArray {
+    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting image to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
         val imageData = ImageDataFactory.create(file.bytes)
@@ -44,5 +46,4 @@ class ImageToPdfConverter : FileConverter() {
 
         return outputStream.toByteArray()
     }
-
 }
