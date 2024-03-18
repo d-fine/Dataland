@@ -12,8 +12,7 @@ import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
-import { generateArray } from "@e2e/fixtures/FixtureUtils";
-import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
+import { generateArray, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
