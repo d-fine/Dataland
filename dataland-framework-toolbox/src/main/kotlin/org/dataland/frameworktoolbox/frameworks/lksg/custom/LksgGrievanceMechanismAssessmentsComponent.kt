@@ -65,7 +65,7 @@ class LksgGrievanceMechanismAssessmentsComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "GeneralViolationsFormField",
+            uploadComponentName = "GrievanceMechanismViolationsFormField",
         )
     }
 
