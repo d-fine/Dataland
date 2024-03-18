@@ -1,44 +1,40 @@
 package org.dataland.documentmanager.services.conversion
 
-import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Image
+import com.itextpdf.layout.element.Paragraph
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
+import java.io.InputStreamReader
+
 
 /**
- * A converter for multiple image types to the pdf format
+ * A converter for txt files to the pdf format
  */
 @Component
-class ImageToPdfConverter : FileConverter() {
+class TextToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private final val imageMimeTypes = setOf("image/png", "image/jpeg", "image/tiff", "image/heif", "image/heic")
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
-        "png" to imageMimeTypes,
-        "jpg" to imageMimeTypes,
-        "jpeg" to imageMimeTypes,
-        "jpe" to imageMimeTypes,
-        "jxr" to imageMimeTypes,
-        "tif" to imageMimeTypes,
-        "tiff" to imageMimeTypes,
-        "heic" to imageMimeTypes,
-        "heif" to imageMimeTypes
+        "txt" to setOf("text/plain"),
     )
 
     override fun convertToPdf(file: MultipartFile): ByteArray {
+        val correlationId = "e" // todo
         val outputStream = ByteArrayOutputStream()
-
-        val imageData = ImageDataFactory.create(file.bytes)
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
         val document = Document(pdfDocument)
 
-        val pdfImage = Image(imageData)
-        document.add(pdfImage)
+        BufferedReader(InputStreamReader(file.inputStream)).use { reader ->
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                document.add(Paragraph(line))
+            }
+        }
 
         document.close()
         pdfDocument.close()

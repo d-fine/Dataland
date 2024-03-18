@@ -42,7 +42,7 @@ class DocumentController(
     }
 
     override fun convert(image: MultipartFile): ResponseEntity<InputStreamResource> {
-        val document = documentManager.convertImageToPdf(image)
+        val document = documentManager.convertAll(image)
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_PDF)
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Test")

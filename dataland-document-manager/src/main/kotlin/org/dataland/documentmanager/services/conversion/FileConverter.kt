@@ -6,11 +6,14 @@ import org.slf4j.Logger
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 
+/**
+ * A base class for a converter to convert between different file types
+ */
 abstract class FileConverter {
     protected abstract val logger: Logger
     protected abstract val allowedMimeTypesPerFileExtension: Map<String, Set<String>>
-    val fileExtensionAndMimeTypeMismatchMessage = "Only upload of documents with matching file extensions and MIME types is supported."
-    val fileNameHasForbiddenCharactersMessage =
+    private val fileExtensionAndMimeTypeMismatchMessage = "Only upload of documents with matching file extensions and MIME types is supported."
+    private val fileNameHasForbiddenCharactersMessage =
         "Please ensure that your selected file name follows the naming convention for Windows: Avoid using " +
             "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
             "or end with a full stop character."
@@ -18,6 +21,10 @@ abstract class FileConverter {
     val responsibleFileExtensions: Set<String>
         get() = allowedMimeTypesPerFileExtension.keys
 
+    /**
+     * Validates that a file is what it claims to be, e.g. by mime type and content validation
+     * @param file the file to validate
+     */
     fun validateFile(file: MultipartFile) {
         validateFileNameWithinNamingConvention(file.originalFilename!!, "placeholder") // todo
         validateMimeType(file)
@@ -28,11 +35,15 @@ abstract class FileConverter {
 
     }
 
-    abstract fun convertToPdf(file: MultipartFile): ByteArray
+    /** Converts a file to a different format
+     * @param file the file to convert
+     * @returns the converted file as bytes
+     */
+    abstract fun convertToPdf(file: MultipartFile): ByteArray // todo rename to not contain pdf
 
 
     private fun validateMimeType(file: MultipartFile) {
-        val fileExtension = file.originalFilename!!.let { File(it).extension }
+        val fileExtension = file.lowerCaseExtension()
         require(fileExtension in allowedMimeTypesPerFileExtension) // TODO probably duplicate later
         val detectedMimeType = Tika().detect(file.bytes)
         val expectedMimeTypes = allowedMimeTypesPerFileExtension.getValue(fileExtension)
@@ -63,3 +74,8 @@ abstract class FileConverter {
         }
     }
 }
+
+/**
+ * @returns the lowercase file extension of a file
+ */
+fun MultipartFile.lowerCaseExtension() = this.originalFilename!!.let { File(it).extension }.lowercase()

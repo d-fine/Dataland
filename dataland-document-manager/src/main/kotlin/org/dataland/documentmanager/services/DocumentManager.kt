@@ -48,7 +48,6 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val verificationService: VerificationService,
     @Autowired private val pdfConverter: PdfConverter,
     @Autowired private var objectMapper: ObjectMapper,
 
@@ -56,10 +55,8 @@ class DocumentManager(
     lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun convertImageToPdf(image: MultipartFile): InputStreamResource {
-        // TODO add correlation ID here
-        verificationService.validateFileType(image, "1")
-        return pdfConverter.convertImage(image, "1")
+    fun convertAll(image: MultipartFile): InputStreamResource {
+        return InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image)))
     }
 
     /**
