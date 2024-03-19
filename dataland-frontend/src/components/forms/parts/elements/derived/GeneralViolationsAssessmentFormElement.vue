@@ -1,19 +1,19 @@
 <template>
   <SingleSelectFormField
-    name="nameOfGeneralViolation"
+    name="riskPosition"
     label="Human Rights or Environmental Violations Definition"
     description="Please select the risk position of the violation."
     :options="riskOptions"
     placeholder="Select Risk"
   />
   <YesNoFormField
-    name="nameCounteractingMeasures"
+    name="measuresTaken"
     @update-yes-no-value="handleValueUpdate"
     label="Counteracting Measures"
     description="Have measures been taken to address this violation?"
   />
   <FreeTextFormField
-    name="nameWhichCounteractingMeasures"
+    name="listedMeasures"
     v-if="counteractingMeasures"
     label="Which Counteracting Measures"
     description="Which measures have been applied to counteract this violation?"
