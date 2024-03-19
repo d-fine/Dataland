@@ -1,4 +1,5 @@
-import org.dataland.documentmanager.services.conversion.FileConverter
+package org.dataland.documentmanager.services.conversion
+
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry
 import org.jodconverter.core.office.OfficeManager
 import org.jodconverter.local.LocalConverter
@@ -15,10 +16,11 @@ import java.io.ByteArrayOutputStream
 @Component
 class PptxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
+    var pathToLibre = "/usr/lib/libreoffice" // todo "/usr/lib/libreoffice"
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/x-tika-ooxml"
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "ppt" to powerPointMimeTypes,
