@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream
 @Component
 class PptxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "/usr/lib/libreoffice" // todo "/usr/lib/libreoffice"
+    private val pathToLibre = "/usr/lib/libreoffice"
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",

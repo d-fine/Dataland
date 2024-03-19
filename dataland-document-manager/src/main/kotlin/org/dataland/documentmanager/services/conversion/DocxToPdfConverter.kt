@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream
 @Component
 class DocxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "/usr/lib/libreoffice" // todo "/usr/lib/libreoffice"
+    private val pathToLibre = "/usr/lib/libreoffice"
     private final val docxMimeTypes = setOf(
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/msword",
