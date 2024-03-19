@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.DataPointMinimumValue
+import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigInteger
 
 /**
@@ -27,7 +27,7 @@ data class SfdrSocialHumanRights(
     @field:Valid()
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<BigInteger?>? = null,
 

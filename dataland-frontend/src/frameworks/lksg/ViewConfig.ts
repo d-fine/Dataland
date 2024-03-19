@@ -15,9 +15,10 @@ import {
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
+  formatLksgSubcontractingCompaniesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
-import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -78,11 +79,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees?.value, ""),
-                "Number of Employees",
-                dataset.general?.masterData?.numberOfEmployees,
-              ),
+              formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ""),
           },
           {
             type: "cell",
@@ -169,26 +166,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "In which countries do the subcontracting companies operate?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
-              return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
-                "Subcontracting Companies Countries",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Subcontracting Companies Industries",
-            explanation: "In which industries do the subcontracting companies operate?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNaceCodesForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesIndustries,
-                "Subcontracting Companies Industries",
+              formatLksgSubcontractingCompaniesForDisplay(
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
+                "Subcontracting Companies Countries",
               ),
           },
           {
@@ -495,14 +476,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value,
-                  "",
-                ),
-                "Complaints Number",
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber,
-              ),
+              formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ""),
           },
           {
             type: "cell",
@@ -967,7 +941,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Worst Forms of Child Labor Prohibition",
             explanation:
               "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
           },
@@ -975,7 +950,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: "cell",
             label: "Worst Forms of Child Labor Forms",
             explanation: "Which of these worst forms of child labor are not prevented?",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.employeeSUnder18InApprenticeship == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
           },
