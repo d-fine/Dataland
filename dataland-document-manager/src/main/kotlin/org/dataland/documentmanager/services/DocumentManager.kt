@@ -1,6 +1,10 @@
 package org.dataland.documentmanager.services
 
+// import com.aspose.cells.Workbook
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.poi.ss.usermodel.WorkbookFactory
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
@@ -15,9 +19,11 @@ import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentStream
+import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.PdfConverter
+import org.dataland.documentmanager.services.conversion.lowerCaseExtension
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -33,6 +39,8 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import xyz.capybara.clamav.ClamavClient
+import xyz.capybara.clamav.commands.scan.result.ScanResult
 import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.UUID.randomUUID
@@ -71,19 +79,75 @@ class DocumentManager(
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentUploadResponse {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlation ID: $correlationId")
-        // todo differentiate between pdf and excel such that the downloaded file can receive the correct extension
-        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
+        val documentType = categorizeDocumentType(document)
+        val documentMetaInfo = generateDocumentMetaInfo(document, documentType, correlationId)
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        val documentBody = pdfConverter.convertToPdf(document, correlationId) // todo don't use when handling excels
+        checkDocumentForViruses(document)
+        val documentBody = when (documentType) {
+            DocumentType.Pdf -> pdfConverter.convertToPdf(document, correlationId)
+            DocumentType.Xls -> {
+                validateExcelFile(document)
+                document.bytes
+            }
+            DocumentType.Xlsx -> {
+                validateExcelFile(document)
+                document.bytes
+            }
+            DocumentType.Ods -> {
+                // TODO Validate ODS files similarly to Excel files?
+                document.bytes
+            }
+        }
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeName.DocumentReceived,
         )
         return DocumentUploadResponse(documentMetaInfo.documentId)
+    }
+
+    private fun categorizeDocumentType(document: MultipartFile): DocumentType {
+        val documentExtension = document.lowerCaseExtension()
+        return when (documentExtension) {
+            "xls" -> DocumentType.Xls
+            "xlsx" -> DocumentType.Xlsx
+            "ods" -> DocumentType.Ods
+            else -> DocumentType.Pdf
+        }
+    }
+
+    private fun checkDocumentForViruses(document: MultipartFile) {
+        val scanResult = ClamavClient("localhost").scan(document.inputStream) // TODO Check whether localhost is correct
+        if (scanResult is ScanResult.VirusFound) {
+            throw InvalidInputApiException(
+                "Virus found",
+                "The open-source program ClamAV has found a virus inside the document you provided - please check!",
+            )
+        }
+    }
+
+    private fun validateExcelFile(document: MultipartFile) {
+        val workbook = WorkbookFactory.create(document.inputStream)
+        if (workbook is XSSFWorkbook) {
+            if (workbook.isMacroEnabled) {
+                throw InvalidInputApiException(
+                    "No macros allowed.",
+                    "The Excel file you provided seems to have macros enabled, which is recognized as a " +
+                        "potential security issue.",
+                )
+            }
+        }
+        // TODO Enable code below if Aspose EULA license is OK, then remove code above
+        /*val book = Workbook(document.inputStream)
+        if (book.hasMacro()) {
+            throw InvalidInputApiException(
+                "No macros allowed.",
+                "The Excel file you provided seems to use a macro, which is recognized as a potential security issue."
+            )
+        }*/
     }
 
     /**
@@ -97,7 +161,11 @@ class DocumentManager(
         documentMetaInfoRepository.save(DocumentMetaInfoEntity(documentMetaInfo))
     }
 
-    private fun generateDocumentMetaInfo(document: MultipartFile, correlationId: String): DocumentMetaInfo {
+    private fun generateDocumentMetaInfo(
+        document: MultipartFile,
+        documentType: DocumentType,
+        correlationId: String,
+    ): DocumentMetaInfo {
         logger.info("Generate document meta info for document with correlation ID: $correlationId")
         val documentId = document.bytes.sha256()
         logger.info(
@@ -105,6 +173,7 @@ class DocumentManager(
         )
         return DocumentMetaInfo(
             documentId = documentId,
+            documentType = documentType,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
             qaStatus = QaStatus.Pending,
@@ -146,10 +215,14 @@ class DocumentManager(
                     "Only quality-assured documents can be retrieved. Correlation ID: $correlationId",
             )
         }
-
+        val documentName = documentId + when (metaDataInfoEntity.documentType) {
+            DocumentType.Pdf -> ".pdf"
+            DocumentType.Xls -> ".xls"
+            DocumentType.Xlsx -> ".xlsx"
+            DocumentType.Ods -> ".ods"
+        }
         val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-        // TODO what about excel extension, store file type in metadata?
-        return DocumentStream("$documentId.pdf", documentDataStream)
+        return DocumentStream(documentName, documentDataStream)
     }
 
     private fun retrieveDocumentDataStream(
