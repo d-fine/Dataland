@@ -26,6 +26,7 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import { yesNoUndefinedToBoolean } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "RiskAssessmentFormElement",
@@ -46,14 +47,7 @@ export default defineComponent({
      * @param yesNoValue
      */
     handleValueUpdate(yesNoValue: string | undefined) {
-      console.log(yesNoValue);
-      if (yesNoValue == "Yes") {
-        this.counteractingMeasures = true;
-      } else if (yesNoValue == "No") {
-        this.counteractingMeasures = false;
-      } else {
-        this.counteractingMeasures = undefined;
-      }
+      this.counteractingMeasures = yesNoUndefinedToBoolean(yesNoValue);
     },
   },
 });
