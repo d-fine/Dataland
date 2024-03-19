@@ -221,31 +221,37 @@
         "tags": [
           "sme-data-controller"
         ],
-        "operationId": "postCompanyAssociatedSmeData",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
+        "summary": "a",
+        "description": "b",
+        "operationId": "postSmeJsonAndDocuments",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                "required": [
+                  "companyAssociatedSmeData",
+                  "documents"
+                ],
+                "type": "object",
+                "properties": {
+                  "companyAssociatedSmeData": {
+                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  },
+                  "documents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successfully added data to the data store.",
+            "description": "S.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1765,142 +1771,6 @@
             }
           }
         }
-      }
-    },
-    "/data/sme/{dataId}": {
-      "get": {
-        "tags": [
-          "sme-data-controller"
-        ],
-        "operationId": "getCompanyAssociatedSmeData",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data set.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/sme/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "sme-data-controller"
-        ],
-        "operationId": "getAllCompanySmeData",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
       }
     },
     "/data/sfdr/{dataId}": {
@@ -6560,23 +6430,6 @@
           }
         }
       },
-      "BaseDataPointBigDecimal": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "BaseDataPointYesNoNa": {
         "type": "object",
         "properties": {
@@ -6616,60 +6469,6 @@
             "$ref": "#/components/schemas/LksgData"
           }
         }
-      },
-      "ComplaintsRiskPositionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
-      },
-      "IdentifiedRisksOptions": {
-        "type": "string",
-        "enum": [
-          "ChildLabor",
-          "ForcedLabor",
-          "Slavery",
-          "DisregardForOccupationalHealthOrSafety",
-          "DisregardForFreedomOfAssociation",
-          "UnequalTreatmentOfEmployment",
-          "WithholdingAdequateWages",
-          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-          "UseOfMercuryOrMercuryWaste",
-          "ProductionAndUseOfPersistentOrganicPollutants",
-          "ExportImportOfHazardousWaste"
-        ]
       },
       "LksgData": {
         "required": [
@@ -7031,12 +6830,8 @@
             }
           },
           "numberOfEmployees": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
+            "type": "number",
+            "nullable": true
           },
           "seasonalOrMigrantWorkers": {
             "nullable": true,
@@ -7105,17 +6900,30 @@
             ]
           },
           "subcontractingCompaniesCountries": {
-            "type": "array",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "example": {
+                "DE": [
+                  "NaceCodeA, NaceCodeB"
+                ],
+                "GB": [
+                  "NaceCodeC"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "example": "{\"DE\":[\"NaceCodeA, NaceCodeB\"],\"GB\":[\"NaceCodeC\"]}"
+              }
+            },
             "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "subcontractingCompaniesIndustries": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
+            "example": {
+              "DE": [
+                "NaceCodeA, NaceCodeB"
+              ],
+              "GB": [
+                "NaceCodeC"
+              ]
             }
           },
           "productionSites": {
@@ -7359,7 +7167,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HumanRightsOrEnvironmentalViolationsDefinitionOptions"
+              "$ref": "#/components/schemas/RiskPosition"
             }
           },
           "humanRightsOrEnvironmentalViolationsMeasures": {
@@ -7473,18 +7281,14 @@
             ]
           },
           "complaintsNumber": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointBigDecimal"
-              }
-            ]
+            "type": "number",
+            "nullable": true
           },
           "complaintsRiskPosition": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/ComplaintsRiskPositionOptions"
+              "$ref": "#/components/schemas/RiskPosition"
             }
           },
           "complaintsReason": {
@@ -7560,7 +7364,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/IdentifiedRisksOptions"
+              "$ref": "#/components/schemas/RiskPosition"
             }
           },
           "counteractingMeasures": {
@@ -8613,6 +8417,24 @@
             "nullable": true
           }
         }
+      },
+      "RiskPosition": {
+        "type": "string",
+        "enum": [
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
+        ]
       },
       "SpecificProcurementOptions": {
         "type": "string",
@@ -13742,21 +13564,6 @@
           }
         }
       },
-      "DataAndMetaInformationSmeData": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SmeData"
-          }
-        }
-      },
       "DataAndMetaInformationSfdrData": {
         "required": [
           "data",
@@ -13871,16 +13678,16 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "sector": {
