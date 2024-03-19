@@ -16,7 +16,7 @@ class PdfConverterTest {
         ImageToPdfConverter(),
         PptxToPdfConverter(),
         TextToPdfConverter(),
-    )// todo add converters
+    )
     private val pdfConverter = PdfConverter(converters)
     private val testPng = "sampleFiles/sample.png"
     private val testTxt = "sampleFiles/sample.txt"
