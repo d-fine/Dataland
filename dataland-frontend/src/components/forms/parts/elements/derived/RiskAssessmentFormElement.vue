@@ -1,18 +1,20 @@
 <template>
   <SingleSelectFormField
-    name="nameOfRiskPosition"
+    name="riskPosition"
     label="Identified Risk"
     description="Which risks were specifically identified in the risk analysis?"
     :options="riskOptions"
     placeholder="Select Risk"
   />
   <YesNoFormField
-    name="nameCounteractingMeasures"
+    name="measuresTaken"
+    @update-yes-no-value="handleValueUpdate"
     label="Counteracting Measures"
     description="Have measures been defined to counteract the risk?"
   />
   <FreeTextFormField
-    name="nameWhichCounteractingMeasures"
+    name="listedMeasures"
+    v-if="counteractingMeasures"
     label="Which Counteracting Measures"
     description="Which measures have been applied to counteract the risk?"
   />
@@ -30,12 +32,29 @@ export default defineComponent({
   data() {
     return {
       riskOptions: getDataset(DropdownDatasetIdentifier.RiskPositions),
+      counteractingMeasures: undefined as boolean | undefined,
     };
   },
   components: {
     SingleSelectFormField,
     YesNoFormField,
     FreeTextFormField,
+  },
+  methods: {
+    /**
+     * Handles the update of the YesNoValue
+     * @param yesNoValue
+     */
+    handleValueUpdate(yesNoValue: string | undefined) {
+      console.log(yesNoValue);
+      if (yesNoValue == "Yes") {
+        this.counteractingMeasures = true;
+      } else if (yesNoValue == "No") {
+        this.counteractingMeasures = false;
+      } else {
+        this.counteractingMeasures = undefined;
+      }
+    },
   },
 });
 </script>
