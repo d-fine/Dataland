@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
 @Component
 class PptxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" //todo "/usr/lib/libreoffice"
+    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -20,10 +20,10 @@ class PptxToPdfConverter : FileConverter() {
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "ppt" to powerPointMimeTypes,
         "pptx" to powerPointMimeTypes,
-
     )
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting ppt/pptx to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
         val officeManager: OfficeManager = LocalOfficeManager.builder()

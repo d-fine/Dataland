@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
 @Component
 class DocxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" //todo "/usr/lib/libreoffice"
+    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
     private final val docxMimeTypes = setOf(
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/msword",
@@ -20,10 +20,10 @@ class DocxToPdfConverter : FileConverter() {
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "docx" to docxMimeTypes,
         "doc" to docxMimeTypes,
-
     )
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting doc/docx to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
         val officeManager: OfficeManager = LocalOfficeManager.builder()
