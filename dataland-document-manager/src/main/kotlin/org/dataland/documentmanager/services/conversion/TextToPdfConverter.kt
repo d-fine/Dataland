@@ -17,11 +17,12 @@ import java.io.InputStreamReader
  * A converter for txt files to the pdf format
  */
 @Component
-class TextToPdfConverter : FileConverter() {
-    override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+class TextToPdfConverter : FileConverter(
+    allowedMimeTypesPerFileExtension = mapOf(
         "txt" to setOf("text/plain"),
-    )
+    ),
+) {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
         if (file.bytes.decodeToString().isNullOrBlank()) {

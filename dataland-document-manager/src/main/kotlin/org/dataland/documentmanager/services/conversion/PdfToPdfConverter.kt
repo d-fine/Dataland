@@ -12,11 +12,12 @@ import java.io.IOException
  * A validator for pdfs
  */
 @Component
-class PdfToPdfConverter : FileConverter() {
-    override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+class PdfToPdfConverter : FileConverter(
+    allowedMimeTypesPerFileExtension = mapOf(
         "pdf" to setOf("application/pdf"),
-    )
+    ),
+) {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
     val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."

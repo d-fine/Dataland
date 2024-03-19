@@ -15,10 +15,8 @@ import java.io.ByteArrayOutputStream
  * A converter for multiple image types to the pdf format
  */
 @Component
-class ImageToPdfConverter : FileConverter() {
-    override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private final val imageMimeTypes = setOf("image/png", "image/jpeg", "image/tiff", "image/heif", "image/heic")
-    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+class ImageToPdfConverter : FileConverter(
+    allowedMimeTypesPerFileExtension = mapOf(
         "png" to imageMimeTypes,
         "jpg" to imageMimeTypes,
         "jpeg" to imageMimeTypes,
@@ -28,7 +26,9 @@ class ImageToPdfConverter : FileConverter() {
         "tiff" to imageMimeTypes,
         "heic" to imageMimeTypes,
         "heif" to imageMimeTypes,
-    )
+    ),
+) {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting image to a pdf document. (correlation ID: $correlationId)")
@@ -47,3 +47,5 @@ class ImageToPdfConverter : FileConverter() {
         return outputStream.toByteArray()
     }
 }
+
+private val imageMimeTypes = setOf("image/png", "image/jpeg", "image/tiff", "image/heif", "image/heic")

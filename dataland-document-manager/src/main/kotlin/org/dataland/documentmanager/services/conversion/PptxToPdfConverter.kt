@@ -13,17 +13,14 @@ import java.io.ByteArrayOutputStream
  * Converts a ppt/pptx file to a pdf file
  */
 @Component
-class PptxToPdfConverter : FileConverter() {
-    override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
-    private final val powerPointMimeTypes = setOf(
-        "application/vnd.ms-powerpoint",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    )
-    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+class PptxToPdfConverter : FileConverter(
+    allowedMimeTypesPerFileExtension = mapOf(
         "ppt" to powerPointMimeTypes,
         "pptx" to powerPointMimeTypes,
-    )
+    ),
+) {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
+    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting ppt/pptx to a pdf document. (correlation ID: $correlationId)")
@@ -48,3 +45,8 @@ class PptxToPdfConverter : FileConverter() {
         return outputStream.toByteArray()
     }
 }
+
+private val powerPointMimeTypes = setOf(
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+)

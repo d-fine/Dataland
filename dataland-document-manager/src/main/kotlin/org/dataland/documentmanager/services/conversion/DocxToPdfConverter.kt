@@ -13,17 +13,14 @@ import java.io.ByteArrayOutputStream
  * Converts a doc/docx file to a pdf file
  */
 @Component
-class DocxToPdfConverter : FileConverter() {
-    override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
-    private final val docxMimeTypes = setOf(
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/msword",
-    )
-    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+class DocxToPdfConverter : FileConverter(
+    allowedMimeTypesPerFileExtension = mapOf(
         "docx" to docxMimeTypes,
         "doc" to docxMimeTypes,
-    )
+    ),
+) {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
+    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting doc/docx to a pdf document. (correlation ID: $correlationId)")
@@ -48,3 +45,8 @@ class DocxToPdfConverter : FileConverter() {
         return outputStream.toByteArray()
     }
 }
+
+private val docxMimeTypes = setOf(
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/msword",
+)
