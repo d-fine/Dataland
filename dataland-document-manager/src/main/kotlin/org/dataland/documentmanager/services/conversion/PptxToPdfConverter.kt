@@ -20,7 +20,7 @@ class PptxToPdfConverter : FileConverter() {
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        "application/x-tika-ooxml"
+        "application/x-tika-ooxml",
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "ppt" to powerPointMimeTypes,

@@ -23,7 +23,7 @@ import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.PdfConverter
-import org.dataland.documentmanager.services.conversion.lowerCaseExtension
+import org.dataland.documentmanager.services.conversion.lowercaseExtension
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -110,7 +110,7 @@ class DocumentManager(
     }
 
     private fun categorizeDocumentType(document: MultipartFile): DocumentType {
-        val documentExtension = document.lowerCaseExtension()
+        val documentExtension = document.lowercaseExtension()
         return when (documentExtension) {
             "xls" -> DocumentType.Xls
             "xlsx" -> DocumentType.Xlsx

@@ -20,7 +20,7 @@ class DocxToPdfConverter : FileConverter() {
     private final val docxMimeTypes = setOf(
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/msword",
-        "application/x-tika-ooxml"
+        "application/x-tika-ooxml",
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "docx" to docxMimeTypes,
