@@ -10,7 +10,6 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.causeClientExceptionByBulkDataRequest
-import org.dataland.e2etests.utils.communityManager.checkErrorMessageForAmbivalentIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
@@ -173,33 +172,31 @@ class BulkDataRequestsTest {
 
     @Test
     fun `post bulk data request and verify that only unique identifiers are accepted `() {
-        val permId = generateRandomPermId(20)
-        val leiId = permId
-        val identifiersMap = mapOf(
-            IdentifierType.permId to permId,
-            IdentifierType.lei to leiId,
-        )
-        val frameworks = setOf(BulkDataRequest.DataTypes.lksg)
-        val reportingPeriods = setOf("2023")
+        val permId1 = generateRandomPermId(20)
+        val permId2 = generateRandomPermId(20)
         val companyOne = CompanyInformation(
             companyName = "companyOne",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId)),
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
             countryCode = "DE",
         )
         val companyTwo = companyOne.copy(
             companyName = "companyTwo",
-            identifiers = mapOf(IdentifierType.lei.value to listOf(leiId)),
+            identifiers = mapOf(IdentifierType.lei.value to listOf(permId1)),
         )
-
+        val companyWithUniqueId = companyOne.copy(
+            companyName = "companyWithUniqueId",
+            identifiers = mapOf(IdentifierType.permId.value to listOf(permId2)),
+        )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postCompany(companyOne)
         apiAccessor.companyDataControllerApi.postCompany(companyTwo)
-
-        val clientException = causeClientExceptionByBulkDataRequest(
-            identifiersMap.values.toSet(), frameworks,
-            reportingPeriods,
+        apiAccessor.companyDataControllerApi.postCompany(companyWithUniqueId)
+        val response = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
         )
-        checkErrorMessageForAmbivalentIdentifiersInBulkRequest(clientException)
+        checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
+        checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
+        checkThatMessageIsAsExpected(response, 1, 1)
     }
 }

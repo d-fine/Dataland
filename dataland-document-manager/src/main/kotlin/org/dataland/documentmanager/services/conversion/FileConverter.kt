@@ -31,6 +31,7 @@ abstract class FileConverter {
         validateFileNameWithinNamingConvention(file.originalFilename!!, correlationId)
         validateMimeType(file)
         validateFileContent(file, correlationId)
+        println("done")
     }
 
     protected open fun validateFileContent(file: MultipartFile, correlationId: String) {}
@@ -42,7 +43,7 @@ abstract class FileConverter {
     abstract fun convert(file: MultipartFile, correlationId: String): ByteArray
 
     private fun validateMimeType(file: MultipartFile) {
-        val fileExtension = file.lowerCaseExtension()
+        val fileExtension = file.lowercaseExtension()
         require(fileExtension in allowedMimeTypesPerFileExtension) // TODO probably duplicate later
         val detectedMimeType = Tika().detect(file.bytes)
         val expectedMimeTypes = allowedMimeTypesPerFileExtension.getValue(fileExtension)
@@ -77,4 +78,4 @@ abstract class FileConverter {
 /**
  * @returns the lowercase file extension of a file
  */
-fun MultipartFile.lowerCaseExtension() = this.originalFilename!!.let { File(it).extension }.lowercase()
+fun MultipartFile.lowercaseExtension() = this.originalFilename!!.let { File(it).extension }.lowercase()

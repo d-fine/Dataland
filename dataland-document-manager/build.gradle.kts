@@ -36,6 +36,7 @@ dependencies {
     implementation("org.apache.tika:tika-parsers:2.2.0")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.odftoolkit:simple-odf:0.9.0")
     implementation("xyz.capybara:clamav-client:2.1.2")
     // implementation("com.luhuiguo:aspose-cells:23.1") TODO Enable only if Aspose EULA license is OK
     implementation(project(":dataland-backend-utils"))
