@@ -1,33 +1,24 @@
-import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.geom.PageSize
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.AreaBreak
-import com.itextpdf.layout.element.BlockElement
-import com.itextpdf.layout.element.Div
-import com.itextpdf.layout.element.IBlockElement
-import com.itextpdf.layout.element.Image
-import com.itextpdf.layout.element.Paragraph
-import com.itextpdf.layout.property.AreaBreakType
-import org.apache.poi.xslf.usermodel.XMLSlideShow
-import org.apache.poi.xslf.usermodel.XSLFConnectorShape
-import org.apache.poi.xslf.usermodel.XSLFGroupShape
-import org.apache.poi.xslf.usermodel.XSLFPictureShape
-import org.apache.poi.xslf.usermodel.XSLFShape
-import org.apache.poi.xslf.usermodel.XSLFSlide
-import org.apache.poi.xslf.usermodel.XSLFTextShape
 import org.dataland.documentmanager.services.conversion.FileConverter
+import org.jodconverter.core.document.DefaultDocumentFormatRegistry
+import org.jodconverter.core.office.OfficeManager
+import org.jodconverter.local.JodConverter
+import org.jodconverter.local.LocalConverter
+import org.jodconverter.local.office.LocalOfficeManager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.FileOutputStream
+import java.io.InputStream
+import java.nio.file.Files
+
 
 @Component
 class PowerPointToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
+    var pathToLibre = "C:\\Program Files\\LibreOffice" //todo
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation"
@@ -37,35 +28,24 @@ class PowerPointToPdfConverter : FileConverter() {
         "pptx" to powerPointMimeTypes,
 
     )
-    override fun convertToPdf(file: MultipartFile): ByteArray {
+
+    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        val officeManager: OfficeManager = LocalOfficeManager.builder()
+            .officeHome(pathToLibre)
+            .build()
+        officeManager.start()
         val outputStream = ByteArrayOutputStream()
 
-        val ppt = XMLSlideShow(file.inputStream)
-        val pptWidth = ppt.pageSize.width.toFloat()
-        val pptHeight = ppt.pageSize.height.toFloat()
-        val pdfDocument = PdfDocument(PdfWriter(outputStream))
-        val document = Document(pdfDocument,
-            PageSize(pptWidth,pptHeight))
-       for (slide in ppt.slides) {
-            val div = Div()
-           if(slide.title != null){
-               slide.slideLayout.shapes
-               val title = Paragraph(slide.title)
-               title.setFixedPosition(pptWidth / 2,pptHeight -10F,slide.title.length.toFloat())
-               div.add(title)
-           }
-            val shapes = slide.shapes
-            shapes.forEach{
-                div.add(getContent(it,pptHeight,pptWidth, slide.slideNumber))
-            }
-            document.add(div)
-            document.add(AreaBreak(AreaBreakType.NEXT_PAGE))
-        }
+        val converter = LocalConverter.builder()
+            .officeManager(officeManager)
+            .build()
 
-        document.close()
-        pdfDocument.close()
-
-        //todo
+            converter.convert(file.inputStream)
+            .`as`(DefaultDocumentFormatRegistry.PPTX)
+            .to(outputStream)
+            .`as`(DefaultDocumentFormatRegistry.PDF)
+            .execute()
+        //todo remove saving
         val outputFile = "MeineTestPowerPointToPdf.pdf"
         try {
             val fileOutputStream = FileOutputStream(outputFile)
@@ -75,35 +55,8 @@ class PowerPointToPdfConverter : FileConverter() {
         } catch (e: Exception) {
             println("Fehler beim Speichern der PDF-Datei: ${e.message}")
         }
-        //todo
+        officeManager.stop()
         return outputStream.toByteArray()
-    }
-    private fun getContent(shape: XSLFShape, pptHeight: Float, pptWidth:Float, pageNumber: Int):Div{
-        if(pageNumber == 1){
-            println(shape.anchor.x.toFloat())
-            println(shape.anchor.y.toFloat())
-            println(shape.anchor.width.toFloat())
-            println(shape.anchor.y.toFloat())
-        }
-        val div = Div().setFixedPosition(
-            pageNumber,shape.anchor.x.toFloat(), pptHeight-shape.anchor.y.toFloat(),
-            shape.anchor.width.toFloat())
-        if (shape is XSLFTextShape) {
-            val text = shape.text
-            val paragraph = Paragraph(text)
-            div.add(paragraph)
-        } else if (shape is XSLFPictureShape) {
-            val pictureData = shape.pictureData.data
-            val picture = Image(ImageDataFactory.create(pictureData))
-            picture.scaleToFit(shape.pictureData.imageDimension.width.toFloat(),
-                shape.pictureData.imageDimension.height.toFloat())
-            div.add(picture)
-        }else if (shape is XSLFGroupShape){
-            shape.shapes.forEach {
-                div.add(getContent(it, pptHeight, pptWidth, pageNumber))
-            }
-        }
-        return div
-    }
 
+    }
 }
