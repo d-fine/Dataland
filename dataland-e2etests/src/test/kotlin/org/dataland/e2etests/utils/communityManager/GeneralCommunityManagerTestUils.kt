@@ -112,14 +112,15 @@ fun checkThatMessageIsAsExpected(
 
         1 -> assertEquals(
             "One of your $totalNumberOfCompanyIdentifiers distinct company identifiers was rejected " +
-                "because it could not be matched with an existing company on Dataland.",
+                "because it could not be uniquely matched with an existing company on Dataland.",
             requestResponse.message,
             errorMessage,
         )
 
         else -> assertEquals(
             "$expectedNumberOfRejectedIdentifiers of your $totalNumberOfCompanyIdentifiers distinct company " +
-                "identifiers were rejected because they could not be matched with existing companies on Dataland.",
+                "identifiers were rejected because they could not be uniquely matched with existing " +
+                "companies on Dataland.",
             requestResponse.message,
             errorMessage,
         )
