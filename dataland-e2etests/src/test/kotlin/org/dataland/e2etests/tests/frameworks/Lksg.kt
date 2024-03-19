@@ -17,6 +17,7 @@ class Lksg {
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
         .getCompanyInformationWithoutIdentifiers(1)
 
+    @Suppress("FunctionTooLong")
     private fun removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(dataset: LksgData): LksgData {
         val fixedDataSet = dataset.copy()
         // The following block is a workaround to circumvent a bug in the generated clients
