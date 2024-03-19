@@ -11,12 +11,14 @@
     @update-yes-no-value="handleValueUpdate"
     label="Counteracting Measures"
     description="Have measures been defined to counteract the risk?"
+    data-test="counteractingMeasures"
   />
   <FreeTextFormField
     name="listedMeasures"
     v-if="counteractingMeasures"
     label="Which Counteracting Measures"
     description="Which measures have been applied to counteract the risk?"
+    data-test="listedMeasures"
   />
 </template>
 
