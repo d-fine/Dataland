@@ -443,14 +443,14 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
           },
           {
             type: "cell",
-            label: "Grievance complaints",
+            label: "Complaints Risk Position",
             explanation: "Please define the respective risk position of each complaint",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatLksgGrievanceMechanismsForDisplay(
                 dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
-                "Grievance complaints",
+                "Complaints Risk Position",
               ),
           },
           {
