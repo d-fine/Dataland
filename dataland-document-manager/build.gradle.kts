@@ -29,7 +29,6 @@ plugins {
 dependencies {
     implementation("org.jodconverter:jodconverter-core:4.4.7")
     implementation("org.jodconverter:jodconverter-local:4.4.7")
-    implementation("org.apache.tika:tika-core:2.9.1")
     implementation("com.itextpdf:itext7-core:7.1.15")
     implementation("com.itextpdf:layout:7.1.15")
     implementation("org.apache.tika:tika-core:2.2.0")
