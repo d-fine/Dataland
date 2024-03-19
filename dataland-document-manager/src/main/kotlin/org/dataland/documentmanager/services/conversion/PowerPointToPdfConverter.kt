@@ -10,15 +10,13 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 
-
-
 @Component
 class PowerPointToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" //todo
+    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo
     private final val powerPointMimeTypes = setOf(
         "application/vnd.ms-powerpoint",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "ppt" to powerPointMimeTypes,
@@ -37,12 +35,12 @@ class PowerPointToPdfConverter : FileConverter() {
             .officeManager(officeManager)
             .build()
 
-            converter.convert(file.inputStream)
+        converter.convert(file.inputStream)
             .`as`(DefaultDocumentFormatRegistry.PPTX)
             .to(outputStream)
             .`as`(DefaultDocumentFormatRegistry.PDF)
             .execute()
-        //todo remove saving
+        // todo remove saving
         val outputFile = "MeineTestPowerPointToPdf.pdf"
         try {
             val fileOutputStream = FileOutputStream(outputFile)
@@ -54,6 +52,5 @@ class PowerPointToPdfConverter : FileConverter() {
         }
         officeManager.stop()
         return outputStream.toByteArray()
-
     }
 }

@@ -10,19 +10,17 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 
-
-
 @Component
 class DocxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" //todo
+    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo
     private final val docxMimeTypes = setOf(
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/msword"
+        "application/msword",
     )
     override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
         "docx" to docxMimeTypes,
-        "doc" to docxMimeTypes
+        "doc" to docxMimeTypes,
 
     )
 
@@ -43,7 +41,7 @@ class DocxToPdfConverter : FileConverter() {
             .`as`(DefaultDocumentFormatRegistry.PDF)
             .execute()
         println("hey")
-        //todo remove saving
+        // todo remove saving
         val outputFile = "MeineTestDocxToPdf.pdf"
         try {
             val fileOutputStream = FileOutputStream(outputFile)
@@ -55,6 +53,5 @@ class DocxToPdfConverter : FileConverter() {
         }
         officeManager.stop()
         return outputStream.toByteArray()
-
     }
 }

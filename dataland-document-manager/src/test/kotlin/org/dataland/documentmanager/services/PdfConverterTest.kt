@@ -1,8 +1,8 @@
 package org.dataland.documentmanager.services
 
-import org.dataland.documentmanager.services.conversion.ImageToPdfConverter
 import DocxToPdfConverter
 import PowerPointToPdfConverter
+import org.dataland.documentmanager.services.conversion.ImageToPdfConverter
 import org.dataland.documentmanager.services.conversion.PdfConverter
 import org.dataland.documentmanager.services.conversion.TextToPdfConverter
 import org.junit.jupiter.api.Test
@@ -18,25 +18,29 @@ class PdfConverterTest {
     private val correlationId = "test-correlation-id"
 
     @Test
-    fun `verify something pptx`(){
+    fun `verify something pptx`() {
         val pptConverter = PowerPointToPdfConverter()
         val testInput = MockMultipartFile(
             "CypressTests.pptx",
             "CypressTests.pptx",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(testPowerPoint))
+            TestUtils().loadFileBytes(testPowerPoint),
+        )
         pptConverter.convert(testInput, correlationId)
     }
+
     @Test
-    fun `verify something docx`(){
+    fun `verify something docx`() {
         val docxConverter = DocxToPdfConverter()
         val testInput = MockMultipartFile(
             "test.docx",
             "test.docx",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            TestUtils().loadFileBytes(testWord))
+            TestUtils().loadFileBytes(testWord),
+        )
         docxConverter.convert(testInput, correlationId)
     }
+
     @Test
     fun `verify that a png file can be converted to pdf`() {
         val testInput = MockMultipartFile(
@@ -80,14 +84,4 @@ class PdfConverterTest {
         )
         pdfConverter.convertPowerpoint(testInput, correlationId)
     }
-
-
-
-
-
-
-
-
-
-
 }
