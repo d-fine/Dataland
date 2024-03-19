@@ -14,8 +14,9 @@ export const HumanizedYesNoNa: { [key in YesNoNa]: string } = {
 /**
  * Util function to convert yes/no to true/false/undefined
  * @param yesNoValue a string
+ * @returns boolean or undefined
  */
-export function yesNoUndefinedToBoolean(yesNoValue: string | undefined): boolean | undefined {
+export function convertYesNoUndefinedToBoolean(yesNoValue: string | undefined): boolean | undefined {
   if (yesNoValue == HumanizedYesNo.Yes) {
     return true;
   } else if (yesNoValue == HumanizedYesNo.No) {

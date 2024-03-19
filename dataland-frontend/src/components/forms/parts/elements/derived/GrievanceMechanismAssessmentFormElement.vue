@@ -26,7 +26,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { yesNoUndefinedToBoolean } from "@/utils/YesNoNa";
+import { convertYesNoUndefinedToBoolean } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "GrievanceMechanismAssessmentFormElement",
@@ -47,7 +47,7 @@ export default defineComponent({
      * @param yesNoValue the updated value
      */
     handleValueUpdate(yesNoValue: string | undefined) {
-      this.addressingMeasures = yesNoUndefinedToBoolean(yesNoValue);
+      this.addressingMeasures = convertYesNoUndefinedToBoolean(yesNoValue);
     },
   },
 });
