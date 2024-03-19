@@ -292,7 +292,7 @@ interface LksgRiskOrViolationAssessmentDisplayFormat {
  * @param input to be humanized
  * @returns the converted object
  */
-function convertLksgRiskPositionForDisplay(
+function convertLksgRiskOrViolationPositionForDisplay(
   input: LksgRiskOrViolationAssessment[],
 ): LksgRiskOrViolationAssessmentDisplayFormat[] {
   return input.map((item) => {
@@ -306,19 +306,19 @@ function convertLksgRiskPositionForDisplay(
 }
 
 /**
- * Generates a display modal component for the general violations component
- * @param input list of lksg general violations for display
+ * Generates a display modal component for the general violations or risks component
+ * @param input list of lksg general violations/risks for display
  * @param fieldLabel field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatLksgRiskPositionsForDisplay(
+export function formatLksgRisksOrViolationsForDisplay(
   input: LksgRiskOrViolationAssessment[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    const convertedValueForModal = convertLksgRiskPositionForDisplay(input);
+    const convertedValueForModal = convertLksgRiskOrViolationPositionForDisplay(input);
 
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
@@ -342,42 +342,6 @@ export function formatLksgRiskPositionsForDisplay(
   }
 }
 
-/**
- * Generates a display modal component for the general violations component
- * @param input list of lksg general violations for display
- * @param fieldLabel field label for the corresponding object
- * @returns ModalLinkDisplayComponent to the modal (if any data is present).
- */
-export function formatLksgGeneralViolationsForDisplay(
-  input: LksgRiskOrViolationAssessment[] | null | undefined,
-  fieldLabel: string,
-): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
-    return MLDTDisplayObjectForEmptyString;
-  } else {
-    const convertedValueForModal = convertLksgRiskPositionForDisplay(input);
-
-    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
-      displayValue: {
-        label: `Show ${fieldLabel}`,
-        modalComponent: DetailsCompanyDataTable,
-        modalOptions: {
-          props: {
-            header: fieldLabel,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: {
-            listOfRowContents: convertedValueForModal,
-            kpiKeyOfTable: "generalViolations",
-            columnHeaders: lksgModalColumnHeaders,
-          },
-        },
-      },
-    };
-  }
-}
 interface LksgGrievanceMechanismsDisplayFormat {
   riskPositions: string[];
   specifiedComplaint: string;
