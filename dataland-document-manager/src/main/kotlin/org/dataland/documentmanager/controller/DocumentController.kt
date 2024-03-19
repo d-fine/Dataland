@@ -43,9 +43,14 @@ class DocumentController(
 
     override fun convert(image: MultipartFile): ResponseEntity<InputStreamResource> {
         val document = documentManager.convertAll(image)
+        var originalFileName = image.originalFilename ?: "UnknownFileName"
+        val indexOfLastDot = originalFileName.lastIndexOf('.')
+        if (indexOfLastDot != -1) {
+            originalFileName = originalFileName.substring(0, indexOfLastDot)
+        }
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_PDF)
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Test")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$originalFileName")
             .body(document)
     }
 }

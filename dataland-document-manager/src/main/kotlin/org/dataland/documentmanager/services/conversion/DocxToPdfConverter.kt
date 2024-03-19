@@ -1,4 +1,5 @@
-import org.dataland.documentmanager.services.conversion.FileConverter
+package org.dataland.documentmanager.services.conversion
+
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry
 import org.jodconverter.core.office.OfficeManager
 import org.jodconverter.local.LocalConverter
@@ -20,7 +21,7 @@ class DocxToPdfConverter : FileConverter(
     ),
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
+    private val pathToLibre = "/usr/lib/libreoffice"
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting doc/docx to a pdf document. (correlation ID: $correlationId)")
@@ -49,4 +50,5 @@ class DocxToPdfConverter : FileConverter(
 private val docxMimeTypes = setOf(
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "application/msword",
+    "application/x-tika-ooxml",
 )

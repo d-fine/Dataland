@@ -1,4 +1,5 @@
-import org.dataland.documentmanager.services.conversion.FileConverter
+package org.dataland.documentmanager.services.conversion
+
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry
 import org.jodconverter.core.office.OfficeManager
 import org.jodconverter.local.LocalConverter
@@ -20,7 +21,7 @@ class PptxToPdfConverter : FileConverter(
     ),
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    var pathToLibre = "C:\\Program Files\\LibreOffice" // todo "/usr/lib/libreoffice"
+    private val pathToLibre = "/usr/lib/libreoffice"
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting ppt/pptx to a pdf document. (correlation ID: $correlationId)")
@@ -49,4 +50,5 @@ class PptxToPdfConverter : FileConverter(
 private val powerPointMimeTypes = setOf(
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/x-tika-ooxml",
 )
