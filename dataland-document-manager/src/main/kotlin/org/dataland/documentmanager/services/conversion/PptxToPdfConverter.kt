@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
 
+/**
+ * Converts a ppt/pptx file to a pdf file
+ */
 @Component
 class PptxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)

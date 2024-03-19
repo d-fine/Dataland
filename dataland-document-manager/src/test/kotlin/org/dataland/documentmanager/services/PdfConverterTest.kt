@@ -14,15 +14,15 @@ class PdfConverterTest {
     private val testPng = "sampleFiles/sample.png"
     private val testTxt = "sampleFiles/sample.txt"
     private val testWord = "sampleFiles/sample.docx"
-    private val testPowerPoint = "sampleFiles/CypressTests.pptx"
+    private val testPowerPoint = "sampleFiles/sample.pptx"
     private val correlationId = "test-correlation-id"
 
     @Test
-    fun `verify something pptx`() {
+    fun `verify that a pptx file can be converted to pdf`() {
         val pptConverter = PptxToPdfConverter()
         val testInput = MockMultipartFile(
-            "CypressTests.pptx",
-            "CypressTests.pptx",
+            "sample.pptx",
+            "sample.pptx",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
             TestUtils().loadFileBytes(testPowerPoint),
         )
@@ -30,7 +30,7 @@ class PdfConverterTest {
     }
 
     @Test
-    fun `verify something docx`() {
+    fun `verify that a docx file can be converted to pdf`() {
         val docxConverter = DocxToPdfConverter()
         val testInput = MockMultipartFile(
             "test.docx",
