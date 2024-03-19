@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
 
 @Component
 class DocxToPdfConverter : FileConverter() {
@@ -25,11 +24,12 @@ class DocxToPdfConverter : FileConverter() {
     )
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+
         val officeManager: OfficeManager = LocalOfficeManager.builder()
             .officeHome(pathToLibre)
             .build()
         officeManager.start()
-        val outputStream = ByteArrayOutputStream()
 
         val converter = LocalConverter.builder()
             .officeManager(officeManager)
@@ -40,17 +40,7 @@ class DocxToPdfConverter : FileConverter() {
             .to(outputStream)
             .`as`(DefaultDocumentFormatRegistry.PDF)
             .execute()
-        println("hey")
-        // todo remove saving
-        val outputFile = "MeineTestDocxToPdf.pdf"
-        try {
-            val fileOutputStream = FileOutputStream(outputFile)
-            fileOutputStream.write(outputStream.toByteArray())
-            fileOutputStream.close()
-            println("PDF-Datei erfolgreich gespeichert: $outputFile")
-        } catch (e: Exception) {
-            println("Fehler beim Speichern der PDF-Datei: ${e.message}")
-        }
+
         officeManager.stop()
         return outputStream.toByteArray()
     }
