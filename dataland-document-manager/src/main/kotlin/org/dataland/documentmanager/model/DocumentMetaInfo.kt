@@ -12,6 +12,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  */
 data class DocumentMetaInfo(
     val documentId: String,
+    val documentType: DocumentType,
     val uploaderId: String,
     val uploadTime: Long,
     var qaStatus: QaStatus,
