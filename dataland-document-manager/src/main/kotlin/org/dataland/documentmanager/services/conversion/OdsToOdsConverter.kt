@@ -36,7 +36,6 @@ class OdsToOdsConverter : FileConverter(
     }
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
-        println("converting")
         return file.bytes
     }
 }

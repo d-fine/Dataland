@@ -35,7 +35,6 @@ abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<S
         validateFileNameWithinNamingConvention(file.originalFilename!!, correlationId)
         validateMimeType(file)
         validateFileContent(file, correlationId)
-        println("done")
     }
 
     protected open fun validateFileContent(file: MultipartFile, correlationId: String) {}
