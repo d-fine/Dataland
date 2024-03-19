@@ -32,6 +32,8 @@ dependencies {
     implementation("com.itextpdf:layout:7.1.15")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.odftoolkit:odfdom-java:0.12.0")
+    implementation("org.apache.odftoolkit:incubator-simple-odf:0.6.6")
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
