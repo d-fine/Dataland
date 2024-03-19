@@ -23,7 +23,7 @@ class PdfConverter(
      */
     fun convertToPdf(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Trying to convert uploaded file ${file.originalFilename}. (correlation ID: $correlationId)")
-        val fileExtension = file.lowerCaseExtension()
+        val fileExtension = file.lowercaseExtension()
         val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
             ?: throw InvalidInputApiException(
                 "File extension $fileExtension could not be recognized",
