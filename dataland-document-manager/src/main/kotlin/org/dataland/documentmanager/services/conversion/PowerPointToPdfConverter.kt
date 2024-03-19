@@ -1,7 +1,6 @@
 import org.dataland.documentmanager.services.conversion.FileConverter
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry
 import org.jodconverter.core.office.OfficeManager
-import org.jodconverter.local.JodConverter
 import org.jodconverter.local.LocalConverter
 import org.jodconverter.local.office.LocalOfficeManager
 import org.slf4j.Logger
@@ -9,10 +8,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
-import java.nio.file.Files
+
 
 
 @Component
