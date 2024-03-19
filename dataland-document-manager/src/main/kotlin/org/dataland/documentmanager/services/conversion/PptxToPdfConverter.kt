@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
 
 @Component
-class PowerPointToPdfConverter : FileConverter() {
+class PptxToPdfConverter : FileConverter() {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
     var pathToLibre = "C:\\Program Files\\LibreOffice" //todo "/usr/lib/libreoffice"
     private final val powerPointMimeTypes = setOf(

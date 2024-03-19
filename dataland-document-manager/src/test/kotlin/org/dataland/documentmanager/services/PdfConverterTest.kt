@@ -1,7 +1,7 @@
 package org.dataland.documentmanager.services
 
 import DocxToPdfConverter
-import PowerPointToPdfConverter
+import PptxToPdfConverter
 import org.dataland.documentmanager.services.conversion.ImageToPdfConverter
 import org.dataland.documentmanager.services.conversion.PdfConverter
 import org.dataland.documentmanager.services.conversion.TextToPdfConverter
@@ -19,7 +19,7 @@ class PdfConverterTest {
 
     @Test
     fun `verify something pptx`() {
-        val pptConverter = PowerPointToPdfConverter()
+        val pptConverter = PptxToPdfConverter()
         val testInput = MockMultipartFile(
             "CypressTests.pptx",
             "CypressTests.pptx",
