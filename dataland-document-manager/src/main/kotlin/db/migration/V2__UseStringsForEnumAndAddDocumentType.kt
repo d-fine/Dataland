@@ -1,0 +1,42 @@
+package db.migration
+
+import org.flywaydb.core.api.migration.BaseJavaMigration
+import org.flywaydb.core.api.migration.Context
+
+/**
+ * This migration script handles the creation of the initial databases
+ */
+class V2__UseStringsForEnumAndAddDocumentType : BaseJavaMigration() {
+    override fun migrate(context: Context?) {
+        migrateEnum(context!!)
+        addDocumentType(context)
+    }
+
+    private fun addDocumentType(context: Context) {
+        context.connection.createStatement().execute(
+            """  
+            ALTER TABLE document_meta_info
+            ADD COLUMN document_type varchar(255) NOT NULL DEFAULT 'Pdf'
+            """.trimIndent(),
+        )
+    }
+
+    private fun migrateEnum(context: Context) {
+        context.connection.createStatement().execute(
+            """
+            CREATE FUNCTION change_status(status smallint) RETURNS varchar(255)
+            LANGUAGE SQL
+            IMMUTABLE
+            RETURNS NULL ON NULL INPUT
+            RETURN CASE
+             WHEN status = 0 THEN 'Pending' 
+                WHEN status = 1 THEN 'Accepted' 
+                ELSE 'Rejected'
+            END;
+
+            ALTER TABLE document_meta_info ALTER COLUMN qa_status TYPE varchar (255)
+            USING change_status(qa_status)
+            """.trimIndent(),
+        )
+    }
+}
