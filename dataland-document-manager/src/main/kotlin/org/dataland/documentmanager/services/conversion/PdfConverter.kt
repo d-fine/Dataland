@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import kotlin.system.exitProcess
 
 /**
  * A service for converting various file types into PDFs
@@ -22,9 +21,8 @@ class PdfConverter(
 
     private fun validateNoOverlapInConverterFileExtensions() {
         val aggregatedConverterFileExtensions = toPdfConverters.flatMap { it.responsibleFileExtensions }
-        if (aggregatedConverterFileExtensions.size != aggregatedConverterFileExtensions.distinct().size) {
-            logger.error("There are multiple file converters which target the same file extensions.")
-            exitProcess(1)
+        require(aggregatedConverterFileExtensions.size == aggregatedConverterFileExtensions.distinct().size) {
+            "There are multiple file converters which target the same file extensions."
         }
     }
 
