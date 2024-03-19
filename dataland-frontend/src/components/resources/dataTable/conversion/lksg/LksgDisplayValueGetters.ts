@@ -41,19 +41,19 @@ export const lksgModalColumnHeaders = {
   },
   riskPositions: {
     riskPosition: "Risk Position",
-    measuresTaken: "Were measures defined to counteract the risk",
-    listedMeasures: "Which measures",
+    measuresTaken: "Were Measures Defined to Counteract the Risk",
+    listedMeasures: "Which Measures",
   },
   generalViolations: {
-    riskPosition: "Risk position of the violation",
-    measuresTaken: "Were counteracting measures taken",
-    listedMeasures: "Which measures have been taken",
+    riskPosition: "Risk Position of the Violation",
+    measuresTaken: "Were Counteracting Measures Taken",
+    listedMeasures: "Which Measures Have Been Taken",
   },
   grievanceMechanisms: {
-    riskPositions: "Risk positions in the complaint",
-    specifiedComplaint: "Complaint specification",
-    measuresTaken: "Were measures taken to address the complaint",
-    listedMeasures: "Which measures have been taken",
+    riskPositions: "Risk Positions in the Complaint",
+    specifiedComplaint: "Complaint Specification",
+    measuresTaken: "Were Measures Taken to Address the Complaint",
+    listedMeasures: "Which Measures Have Been Taken",
   },
 };
 

@@ -1,11 +1,6 @@
 <template>
   <FormListFormField
     :name="name"
-    :label="label"
-    :description="description"
-    :required="required"
-    :validation="validation"
-    :validation-label="validationLabel"
     display-one-sub-form-per-default
     sub-form-component="GeneralViolationsAssessmentFormElement"
     data-test-add-button="addNewGeneralViolationsAssessmentButton"
