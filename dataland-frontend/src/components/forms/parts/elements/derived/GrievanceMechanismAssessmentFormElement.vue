@@ -48,7 +48,7 @@ export default defineComponent({
   methods: {
     /**
      * Handles the update of the YesNoValue
-     * @param yesNoValue
+     * @param yesNoValue the updated value
      */
     handleValueUpdate(yesNoValue: string | undefined) {
       this.addressingMeasures = yesNoUndefinedToBoolean(yesNoValue);
