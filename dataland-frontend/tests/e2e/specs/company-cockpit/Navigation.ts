@@ -6,7 +6,7 @@ import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 describeIf(
-  "As a user, I expect the navigation around the company cockpit to work as expected",
+  "As a user, I want the navigation around the company cockpit to work as expected",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
