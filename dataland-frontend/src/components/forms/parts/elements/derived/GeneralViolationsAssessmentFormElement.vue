@@ -1,18 +1,20 @@
 <template>
   <SingleSelectFormField
-    name="nameOfGeneralViolation"
+    name="riskPosition"
     label="Human Rights or Environmental Violations Definition"
     description="Please select the risk position of the violation."
     :options="riskOptions"
     placeholder="Select Risk"
   />
   <YesNoFormField
-    name="nameCounteractingMeasures"
+    name="measuresTaken"
+    @update-yes-no-value="handleValueUpdate"
     label="Counteracting Measures"
     description="Have measures been taken to address this violation?"
   />
   <FreeTextFormField
-    name="nameWhichCounteractingMeasures"
+    name="listedMeasures"
+    v-if="counteractingMeasures"
     label="Which Counteracting Measures"
     description="Which measures have been applied to counteract this violation?"
   />
@@ -24,18 +26,29 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import { yesNoUndefinedToBoolean } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "GeneralViolationsAssessmentFormElement",
   data() {
     return {
       riskOptions: getDataset(DropdownDatasetIdentifier.RiskPositions),
+      counteractingMeasures: undefined as boolean | undefined,
     };
   },
   components: {
     SingleSelectFormField,
     YesNoFormField,
     FreeTextFormField,
+  },
+  methods: {
+    /**
+     * Handles the update of the YesNoValue
+     * @param yesNoValue the updated value
+     */
+    handleValueUpdate(yesNoValue: string | undefined) {
+      this.counteractingMeasures = yesNoUndefinedToBoolean(yesNoValue);
+    },
   },
 });
 </script>

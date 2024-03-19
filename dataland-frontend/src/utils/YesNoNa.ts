@@ -10,3 +10,17 @@ export const HumanizedYesNoNa: { [key in YesNoNa]: string } = {
   No: HumanizedYesNo.No,
   NA: "N/A",
 };
+
+/**
+ * Util function to convert yes/no to true/false/undefined
+ * @param yesNoValue a string
+ */
+export function yesNoUndefinedToBoolean(yesNoValue: string | undefined): boolean | undefined {
+  if (yesNoValue == HumanizedYesNo.Yes) {
+    return true;
+  } else if (yesNoValue == HumanizedYesNo.No) {
+    return false;
+  } else {
+    return undefined;
+  }
+}
