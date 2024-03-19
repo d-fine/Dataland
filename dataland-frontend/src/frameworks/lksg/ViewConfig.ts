@@ -11,9 +11,8 @@ import { formatListOfStringsForDatatable } from "@/components/resources/dataTabl
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { DropdownDatasetIdentifier, getDatasetAsMap } from "@/utils/PremadeDropdownDatasets";
 import {
-  formatLksgGeneralViolationsForDisplay,
   formatLksgGrievanceMechanismsForDisplay,
-  formatLksgRiskPositionsForDisplay,
+  formatLksgRisksOrViolationsForDisplay,
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
@@ -335,7 +334,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatLksgRiskPositionsForDisplay(
+              formatLksgRisksOrViolationsForDisplay(
                 dataset.governance?.riskManagementOwnOperations?.identifiedRisks,
                 "Identified Risks",
               ),
@@ -673,7 +672,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatLksgGeneralViolationsForDisplay(
+              formatLksgRisksOrViolationsForDisplay(
                 dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition,
                 "Human Rights or Environmental Violations Definition",
               ),
