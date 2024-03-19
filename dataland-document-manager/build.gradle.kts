@@ -32,6 +32,8 @@ dependencies {
     implementation("com.itextpdf:layout:7.1.15")
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("xyz.capybara:clamav-client:2.1.2")
+    // implementation("com.luhuiguo:aspose-cells:23.1") TODO Enable only if Aspose EULA license is OK
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
