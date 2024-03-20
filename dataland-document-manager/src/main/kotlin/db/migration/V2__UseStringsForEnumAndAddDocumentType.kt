@@ -24,7 +24,7 @@ class V2__UseStringsForEnumAndAddDocumentType : BaseJavaMigration() {
     private fun migrateEnum(context: Context) {
         context.connection.createStatement().execute(
             """
-            CREATE FUNCTION change_status(status smallint) RETURNS varchar(255)
+            CREATE OR REPLACE FUNCTION change_status(status smallint) RETURNS varchar(255)
             LANGUAGE SQL
             IMMUTABLE
             RETURNS NULL ON NULL INPUT
@@ -33,9 +33,11 @@ class V2__UseStringsForEnumAndAddDocumentType : BaseJavaMigration() {
                 WHEN status = 1 THEN 'Accepted' 
                 ELSE 'Rejected'
             END;
-
-            ALTER TABLE document_meta_info ALTER COLUMN qa_status TYPE varchar (255)
-            USING change_status(qa_status)
+            
+            ALTER TABLE document_meta_info
+            DROP CONSTRAINT document_meta_info_qa_status_check,
+            ALTER COLUMN qa_status TYPE varchar (255) USING change_status(qa_status),
+            ADD CONSTRAINT document_meta_info_qa_status_check CHECK (qa_status in ('Pending', 'Accepted', 'Rejected'))
             """.trimIndent(),
         )
     }
