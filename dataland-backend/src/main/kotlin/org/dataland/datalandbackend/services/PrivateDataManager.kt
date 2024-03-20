@@ -7,7 +7,11 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.repositories.DataDocumentsMappingRepository
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ActionType
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -35,7 +39,7 @@ class PrivateDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInMemoryStorage = mutableMapOf<String, String>()
 
-    fun storePrivateData(
+    fun processPrivateSmeDataStorageRequest(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>,
         correlationId: String,
@@ -44,8 +48,9 @@ class PrivateDataManager(
             " " + // TODO Emanuel: check later for injection of logger
                 "Correlation ID: $correlationId",
         )
-        // val dataDocumentMappingPair = DataDocumentMappingEntity(dataId, documentId) TODO
-        // storeDataDocumentMapping(dataDocumentMappingPair) TODO
+        val dataId = generateRandomDataId()
+        storeDataSetInMemory(dataId, correlationId)
+        sendReceptionMessage(dataId, correlationId)
     }
 
     /**
@@ -57,4 +62,35 @@ class PrivateDataManager(
     ): DataDocumentMappingEntity {
         return dataDocumentsMappingRepositoryInterface.save(dataDocumentMapping)
     }
+
+    private fun storeDataSetInMemory(dataId: String, correlationId: String) {
+        // TODO log smth with correlation Id
+        dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+
+    }
+
+    private fun sendReceptionMessage(dataId: String, correlationId: String) {
+        // TODO log smth with correlation Id
+        val payload = JSONObject(
+            mapOf(
+                "dataId" to dataId,
+                "actionType" to
+                        ActionType.StoreData, // TODO we need a new action type and message type for private data
+            ),
+        ).toString()
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            payload, MessageType.DataReceived, correlationId, // TODO private data received
+            ExchangeName.RequestReceived,
+        )
+        // TODO log that it has been send (with correlation Id mentioned)
+    }
+
+    private fun persistMetaInfo() {
+
+    }
+
+
+    private fun generateRandomDataId(): String{ //TODO THIS IS A DUPLICATE!!! already existing in DataManager. move to util to avoid duplicate code!
+            return "${UUID.randomUUID()}"
+        }
 }

@@ -40,7 +40,7 @@ class SmeDataController(
         val companyAssociatedSmeData = objectMapper.readValue(companyAssociatedSmeDataAsString, clazz)
         println(companyAssociatedSmeData.toString())
 
-        privateDataManager.storePrivateData(
+        privateDataManager.processPrivateSmeDataStorageRequest(
             companyAssociatedSmeData,
             documents,
             correlationId,
