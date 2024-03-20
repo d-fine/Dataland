@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.PrivateDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -23,14 +26,18 @@ import java.util.*
 class SmeDataController(
     @Autowired var myDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
+    @Autowired private val objectMapper: ObjectMapper,
+    private val clazz: Class<CompanyAssociatedData<SmeData>>,
 ) : PrivateDataApi {
-
+    private val logger = LoggerFactory.getLogger(javaClass)
     // @Operation(operationId = "postCompanyAssociatedSmeData")
     override fun postSmeJsonAndDocuments(
-        companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
+        companyAssociatedSmeDataAsString: String,
         documents: Array<MultipartFile>,
     ):
         ResponseEntity<DataMetaInformation> {
+        val companyAssociatedSmeData = objectMapper.readValue(companyAssociatedSmeDataAsString, clazz)
+        println(companyAssociatedSmeData.toString())
         val correlationId = UUID.randomUUID().toString()
         myDataManager.storePrivateData("Hi", "Hey", correlationId)
         val dummyResponse = DataMetaInformation(

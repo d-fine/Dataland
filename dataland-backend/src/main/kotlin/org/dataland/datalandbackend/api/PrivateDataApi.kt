@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
 /**
- * Defines the restful dataland-backend API regarding company data.
+ * Defines the restful dataland-backend API regarding private sme company data.
  */
 @RequestMapping("/data/sme") // TODO not final!
 @SecurityRequirement(name = "default-bearer-auth")
@@ -42,7 +42,7 @@ interface PrivateDataApi {
     )
     fun postSmeJsonAndDocuments(
         @RequestPart
-        companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
+        companyAssociatedSmeDataAsString: String,
         @RequestPart documents: Array<MultipartFile>,
     ):
         ResponseEntity<DataMetaInformation>
