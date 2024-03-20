@@ -74,7 +74,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         riskManagementSystem: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         riskAnalysisInFiscalYear: dataGenerator.randomYesNo(),
         risksIdentified: dataGenerator.randomYesNo(),
-        identifiedRisks: dataGenerator.randomArray(() => dataGenerator.generateLksgRiskOrViolationAssessment(), 0, 5),
+        identifiedRisks: dataGenerator.randomArray(() => dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5),
         regulatedRiskManagementResponsibility: dataGenerator.randomYesNo(),
       },
       grievanceMechanismOwnOperations: {
@@ -87,7 +87,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         complaintsNumber: dataGenerator.randomFloat(0),
         complaintsRiskPosition: dataGenerator.randomArray(
           () => dataGenerator.generateLksgGrievanceMechanismAssessment(),
-          0,
+          1,
           5,
         ),
         publicAccessToGrievanceHandling: dataGenerator.randomYesNo(),
@@ -112,7 +112,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         humanRightsOrEnvironmentalViolations: dataGenerator.randomYesNo(),
         humanRightsOrEnvironmentalViolationsDefinition: dataGenerator.randomArray(
           () => dataGenerator.generateLksgRiskOrViolationAssessment(),
-          0,
+          1,
           5,
         ),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),

@@ -11,8 +11,8 @@ import { formatListOfStringsForDatatable } from "@/components/resources/dataTabl
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { DropdownDatasetIdentifier, getDatasetAsMap } from "@/utils/PremadeDropdownDatasets";
 import {
-  formatLksgGrievanceMechanismsForDisplay,
   formatLksgRisksOrViolationsForDisplay,
+  formatLksgGrievanceMechanismsForDisplay,
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
