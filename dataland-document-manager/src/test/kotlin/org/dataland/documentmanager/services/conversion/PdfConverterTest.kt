@@ -40,7 +40,7 @@ class PdfConverterTest(
     @Test
     fun `check if an error is thrown if there are file converters with overlapping file extension responsibility`() {
         val exception = assertThrows<IllegalArgumentException> {
-            PdfConverter(
+            FileProcessor(
                 listOf(
                     object : FileConverter(
                         mapOf(
@@ -68,7 +68,7 @@ class PdfConverterTest(
 
     @Test
     fun `check if no error is thrown if the pdf converter is initialized correctly`() {
-        PdfConverter(
+        FileProcessor(
             listOf(
                 object : FileConverter(
                     mapOf(

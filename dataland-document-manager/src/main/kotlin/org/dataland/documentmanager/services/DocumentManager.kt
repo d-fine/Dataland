@@ -22,7 +22,7 @@ import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
-import org.dataland.documentmanager.services.conversion.PdfConverter
+import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.documentmanager.services.conversion.lowercaseExtension
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -56,7 +56,7 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val pdfConverter: PdfConverter,
+    @Autowired private val fileProcessor: FileProcessor,
     @Autowired private var objectMapper: ObjectMapper,
 
 ) {
@@ -67,7 +67,7 @@ class DocumentManager(
      * test function
      */
     fun convertAll(image: MultipartFile): DocumentStream {
-        val stream = InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image, "placeholder")))
+        val stream = InputStreamResource(ByteArrayInputStream(fileProcessor.processFile(image, "placeholder")))
         return DocumentStream("TEST", categorizeDocumentType(image), stream)
     }
 
@@ -89,7 +89,7 @@ class DocumentManager(
         checkDocumentForViruses(document)
         val documentBody = when (documentType) { // TODO we could use the pdf converter for all of these
             //  should be renamed then
-            DocumentType.Pdf -> pdfConverter.convertToPdf(document, correlationId)
+            DocumentType.Pdf -> fileProcessor.processFile(document, correlationId)
             DocumentType.Xls -> {
                 validateExcelFile(document)
                 document.bytes

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile
  * A service for converting various file types into PDFs
  */
 @Component
-class PdfConverter(
+class FileProcessor(
     @Autowired val toPdfConverters: List<FileConverter>,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -32,7 +32,7 @@ class PdfConverter(
      * @file the file to convert
      * @returns the pdf content as bytes
      */
-    fun convertToPdf(file: MultipartFile, correlationId: String): ByteArray {
+    fun processFile(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Trying to convert uploaded file ${file.originalFilename}. (correlation ID: $correlationId)")
         val fileExtension = file.lowercaseExtension()
         val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }

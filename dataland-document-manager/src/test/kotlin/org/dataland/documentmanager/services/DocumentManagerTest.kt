@@ -14,7 +14,7 @@ import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
-import org.dataland.documentmanager.services.conversion.PdfConverter
+import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
@@ -44,7 +44,7 @@ import java.util.Optional
 @Transactional
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private val pdfConverter: PdfConverter,
+    @Autowired private val fileProcessor: FileProcessor,
     @Autowired private var objectMapper: ObjectMapper,
 ) {
 
@@ -78,7 +78,7 @@ class DocumentManagerTest(
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
             storageApi = mockStorageApi,
-            pdfConverter = pdfConverter,
+            fileProcessor = fileProcessor,
             objectMapper = objectMapper,
         )
     }
