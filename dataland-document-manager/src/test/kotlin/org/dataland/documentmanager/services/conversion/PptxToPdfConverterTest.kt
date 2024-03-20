@@ -9,7 +9,7 @@ import org.springframework.mock.web.MockMultipartFile
 class PptxToPdfConverterTest {
 
     private val correlationId = "test-correlation-id"
-    private val pptxToPdfConverter = PptxToPdfConverter()
+    private val pptxToPdfConverter = PptxToPdfConverter("/usr/lib/libreoffice")
     private val testPowerPoint = "sampleFiles/sample.pptx"
 
     @Test

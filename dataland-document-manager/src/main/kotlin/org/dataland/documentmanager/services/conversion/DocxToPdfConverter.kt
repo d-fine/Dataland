@@ -6,6 +6,7 @@ import org.jodconverter.local.LocalConverter
 import org.jodconverter.local.office.LocalOfficeManager
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
@@ -14,14 +15,16 @@ import java.io.ByteArrayOutputStream
  * Converts a doc/docx file to a pdf file
  */
 @Component
-class DocxToPdfConverter : FileConverter(
+class DocxToPdfConverter(
+    @Value("\${dataland.libreoffice.path}")
+    val pathToLibre: String,
+) : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "docx" to docxMimeTypes,
         "doc" to docxMimeTypes,
     ),
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val pathToLibre = "/usr/lib/libreoffice"
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting doc/docx to a pdf document. (correlation ID: $correlationId)")

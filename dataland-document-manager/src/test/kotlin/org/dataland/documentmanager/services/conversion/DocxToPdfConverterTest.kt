@@ -9,7 +9,7 @@ import org.springframework.mock.web.MockMultipartFile
 class DocxToPdfConverterTest {
     private val correlationId = "test-correlation-id"
     private val testWord = "sampleFiles/sample.docx"
-    private val docxToPdfConverter = DocxToPdfConverter()
+    private val docxToPdfConverter = DocxToPdfConverter("/usr/lib/libreoffice")
 
     @Test
     fun `verify that a docx file can be converted to pdf`() {
