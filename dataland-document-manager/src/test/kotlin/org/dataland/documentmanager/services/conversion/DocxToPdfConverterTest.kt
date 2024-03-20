@@ -19,9 +19,9 @@ class DocxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             TestUtils().loadFileBytes(testWord),
         )
-        assertFalse(TestUtils().isPDF(testInput.bytes))
-        val convertedDocument = docxToPdfConverter.convert(testInput, correlationId)
-        assertTrue(TestUtils().isPDF(convertedDocument), "converted document should be a pdf document")
-        assertTrue(TestUtils().isNotEmptyPDF(convertedDocument), "converted document should not be empty")
+        assertFalse(TestUtils().isPdf(testInput.bytes))
+        val convertedDocument = docxToPdfConverter.convertFile(testInput, correlationId)
+        assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
+        assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should not be empty")
     }
 }
