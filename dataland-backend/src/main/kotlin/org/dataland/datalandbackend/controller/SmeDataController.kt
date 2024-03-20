@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.PrivateDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -19,27 +17,34 @@ import java.util.*
 
 /**
  * Controller for the SME framework endpoints
- * @param myDataManager data manager to be used
+ * @param privateDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RestController
 class SmeDataController(
-    @Autowired var myDataManager: PrivateDataManager,
+    @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
     @Autowired private val objectMapper: ObjectMapper,
     private val clazz: Class<CompanyAssociatedData<SmeData>>,
 ) : PrivateDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
-    // @Operation(operationId = "postCompanyAssociatedSmeData")
+
+    // @Operation(operationId = "postCompanyAssociatedSmeData") TODO needed?
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeDataAsString: String,
         documents: Array<MultipartFile>,
     ):
         ResponseEntity<DataMetaInformation> {
+        val correlationId = UUID.randomUUID().toString()
+        // TODO log storage request here; smth like "received a request to store sme data as private data" or similar
         val companyAssociatedSmeData = objectMapper.readValue(companyAssociatedSmeDataAsString, clazz)
         println(companyAssociatedSmeData.toString())
-        val correlationId = UUID.randomUUID().toString()
-        myDataManager.storePrivateData("Hi", "Hey", correlationId)
+
+        privateDataManager.storePrivateData(
+            companyAssociatedSmeData,
+            documents,
+            correlationId,
+        )
         val dummyResponse = DataMetaInformation(
             dataId = "hi",
             companyId = "hey",

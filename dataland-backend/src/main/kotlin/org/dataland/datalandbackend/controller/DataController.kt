@@ -26,7 +26,7 @@ import java.util.UUID.randomUUID
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
 
-abstract class DataController<T>(
+abstract class DataController<T>( // TODO PublicDataController?   rename?
     var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,

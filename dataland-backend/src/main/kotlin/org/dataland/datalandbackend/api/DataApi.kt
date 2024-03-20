@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface DataApi<T> {
+interface DataApi<T> { // TODO should be named PublicDataApi?  And "PublicDataManager" for the service?
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored

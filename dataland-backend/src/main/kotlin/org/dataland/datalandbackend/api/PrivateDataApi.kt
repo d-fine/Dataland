@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackend.frameworks.sme.model.SmeData
-import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -25,8 +23,8 @@ interface PrivateDataApi {
      * TODO
      */
     // TODO activate at the end to allow only owners
-     /*@PreAuthorize("(hasRole('ROLE_USER') " +
-             "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
+            /*@PreAuthorize("(hasRole('ROLE_USER') " +
+                    "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
     @Operation(
         summary = "a", // TODO
         description = "b", // TODO

@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataDocumentMappingEntity
+import org.dataland.datalandbackend.frameworks.sme.model.SmeData
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.repositories.DataDocumentsMappingRepository
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -9,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 /**
@@ -33,16 +36,16 @@ class PrivateDataManager(
     private val dataInMemoryStorage = mutableMapOf<String, String>()
 
     fun storePrivateData(
-        dataId: String,
-        documentId: String,
+        companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
+        documents: Array<MultipartFile>,
         correlationId: String,
     ) {
         logger.info(
-            "Requesting Data with ID $dataId and expected type from framework data storage. " +
+            " " + // TODO Emanuel: check later for injection of logger
                 "Correlation ID: $correlationId",
         )
-        val dataDocumentMappingPair = DataDocumentMappingEntity(dataId, documentId)
-        storeDataDocumentMapping(dataDocumentMappingPair)
+        // val dataDocumentMappingPair = DataDocumentMappingEntity(dataId, documentId) TODO
+        // storeDataDocumentMapping(dataDocumentMappingPair) TODO
     }
 
     /**
