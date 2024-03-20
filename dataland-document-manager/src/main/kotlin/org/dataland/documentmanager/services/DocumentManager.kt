@@ -83,7 +83,7 @@ class DocumentManager(
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        checkDocumentForViruses(document)
+        checkDocumentForViruses(document) // todo move to file validator
         val documentBody = fileProcessor.processFile(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
