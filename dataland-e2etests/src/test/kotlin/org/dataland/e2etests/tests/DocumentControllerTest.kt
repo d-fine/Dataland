@@ -19,22 +19,62 @@ class DocumentControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentControllerClient = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
 
-    private val document = File("./public/test-report.pdf")
+    private val pdfDocument = File("./public/test-report.pdf")
+    private val xlsxDocument = File("./public/sample.xlsx")
+    private val odsDocument = File("./public/sample.ods")
+    private val docxDocument = File("./public/sample.docx")
 
     @Test
-    fun `test that a dummy document can be uploaded and retrieved after successful QA`() {
-        val expectedHash = document.readBytes().sha256()
-        val nonExistentDocumentId = "nonExistentDocumentId"
+    fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
+        val uploadResponse = uploadDocument(docxDocument)
+        val downloadedFile = ensureQaCompleted(uploadResponse)
+        assertEquals("pdf", downloadedFile.extension)
+        assertEquals(docxDocument.nameWithoutExtension, downloadedFile.nameWithoutExtension)
+    }
+
+    @Test
+    fun `test that a dummy ods document can be uploaded and retrieved after successful QA`() {
+        val uploadResponse = uploadDocument(odsDocument)
+        val downloadedFile = ensureQaCompleted(uploadResponse)
+        assertEquals(odsDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+    }
+
+    @Test
+    fun `test that a dummy xlsx document can be uploaded and retrieved after successful QA`() {
+        val uploadResponse = uploadDocument(xlsxDocument)
+        val downloadedFile = ensureQaCompleted(uploadResponse)
+        assertEquals(xlsxDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+    }
+
+    @Test
+    fun `test that a dummy pdf document can be uploaded and retrieved after successful QA`() {
+        val uploadResponse = uploadDocument(pdfDocument)
+        val downloadedFile = ensureQaCompleted(uploadResponse)
+        assertEquals(pdfDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+    }
+
+    @Test
+    fun `test that a non existing document cannot be found`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val nonExistentDocumentId = "nonExistentDocumentId"
         val exception = assertThrows<ClientException> {
             documentControllerClient.checkDocument(nonExistentDocumentId)
         }
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
+    }
+
+    /**
+     * uploads a document
+     * @param document document to upload
+     * @returns the upload response
+     */
+    private fun uploadDocument(document: File): DocumentUploadResponse {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val expectedHash = pdfDocument.readBytes().sha256()
         val uploadResponse = documentControllerClient.postDocument(document)
         assertEquals(expectedHash, uploadResponse.documentId)
         documentControllerClient.checkDocument(uploadResponse.documentId)
-        val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(expectedHash, downloadedFile.readBytes().sha256())
+        return uploadResponse
     }
 
     /**
