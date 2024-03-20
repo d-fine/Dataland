@@ -43,7 +43,12 @@ abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<S
      * @param file the file to convert
      * @returns the converted file as bytes
      */
-    abstract fun convert(file: MultipartFile, correlationId: String): ByteArray
+    fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting uploaded file. (correlation ID: $correlationId)")
+        return convert(file, correlationId)
+    }
+
+    protected abstract fun convert(file: MultipartFile, correlationId: String): ByteArray
 
     private fun validateMimeType(file: MultipartFile) {
         val fileExtension = file.lowercaseExtension()

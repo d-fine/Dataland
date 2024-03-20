@@ -1,9 +1,6 @@
 package org.dataland.documentmanager.services
 
-// import com.aspose.cells.Workbook
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.apache.poi.ss.usermodel.WorkbookFactory
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -22,7 +19,7 @@ import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
-import org.dataland.documentmanager.services.conversion.PdfConverter
+import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.documentmanager.services.conversion.lowercaseExtension
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -56,7 +53,7 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val pdfConverter: PdfConverter,
+    @Autowired private val fileProcessor: FileProcessor,
     @Autowired private var objectMapper: ObjectMapper,
 
 ) {
@@ -67,7 +64,7 @@ class DocumentManager(
      * test function
      */
     fun convertAll(image: MultipartFile): DocumentStream {
-        val stream = InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image, "placeholder")))
+        val stream = InputStreamResource(ByteArrayInputStream(fileProcessor.processFile(image, "placeholder")))
         return DocumentStream("TEST", categorizeDocumentType(image), stream)
     }
 
@@ -87,22 +84,7 @@ class DocumentManager(
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         checkDocumentForViruses(document)
-        val documentBody = when (documentType) { // TODO we could use the pdf converter for all of these
-            //  should be renamed then
-            DocumentType.Pdf -> pdfConverter.convertToPdf(document, correlationId)
-            DocumentType.Xls -> {
-                validateExcelFile(document)
-                document.bytes
-            }
-            DocumentType.Xlsx -> {
-                validateExcelFile(document)
-                document.bytes
-            }
-            DocumentType.Ods -> {
-                // TODO Validate ODS files similarly to Excel files?
-                document.bytes
-            }
-        }
+        val documentBody = fileProcessor.processFile(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -129,27 +111,6 @@ class DocumentManager(
                 "The open-source program ClamAV has found a virus inside the document you provided - please check!",
             )
         }
-    }
-
-    private fun validateExcelFile(document: MultipartFile) {
-        val workbook = WorkbookFactory.create(document.inputStream)
-        if (workbook is XSSFWorkbook) {
-            if (workbook.isMacroEnabled) {
-                throw InvalidInputApiException(
-                    "No macros allowed.",
-                    "The Excel file you provided seems to have macros enabled, which is recognized as a " +
-                        "potential security issue.",
-                )
-            }
-        }
-        // TODO Enable code below if Aspose EULA license is OK, then remove code above
-        /*val book = Workbook(document.inputStream)
-        if (book.hasMacro()) {
-            throw InvalidInputApiException(
-                "No macros allowed.",
-                "The Excel file you provided seems to use a macro, which is recognized as a potential security issue."
-            )
-        }*/
     }
 
     /**
