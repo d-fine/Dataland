@@ -13,13 +13,13 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -97,6 +97,7 @@ class DocumentManagerTest(
             .thenReturn(
                 Optional.of(
                     DocumentMetaInfoEntity(
+                        documentType = DocumentType.Pdf,
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -124,6 +125,7 @@ class DocumentManagerTest(
             .thenReturn(
                 Optional.of(
                     DocumentMetaInfoEntity(
+                        documentType = DocumentType.Pdf,
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -132,7 +134,6 @@ class DocumentManagerTest(
                 ),
             )
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
-        assertNotNull(downloadedDocument.title)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
 
@@ -166,6 +167,7 @@ class DocumentManagerTest(
             .thenReturn(
                 Optional.of(
                     DocumentMetaInfoEntity(
+                        documentType = DocumentType.Pdf,
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
