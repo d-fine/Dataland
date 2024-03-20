@@ -1,7 +1,8 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataDocumentMappingEntity
+import org.dataland.datalandbackend.frameworks.sme.model.SmeData
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.repositories.DataDocumentsMappingRepository
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -21,28 +22,24 @@ import java.util.*
 */
 @Component("PrivateDataManager")
 class PrivateDataManager(
-    @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val dataDocumentsMappingRepositoryInterface: DataDocumentsMappingRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInMemoryStorage = mutableMapOf<String, String>()
 
     fun storePrivateData(
-        dataId: String,
+        data: CompanyAssociatedData<SmeData>,
         documentId: String,
         correlationId: String,
-    ) {
-        logger.info(
-            "Requesting Data with ID $dataId and expected type from framework data storage. " +
-                "Correlation ID: $correlationId",
-        )
+    ): String {
+        logger.info("Storing Data for companyId ${data.companyId} and Correlation ID: $correlationId")
+        val dataId = generateRandomDataId()
         val dataDocumentMappingPair = DataDocumentMappingEntity(dataId, documentId)
         storeDataDocumentMapping(dataDocumentMappingPair)
+        return dataId
     }
 
     /**
@@ -53,5 +50,13 @@ class PrivateDataManager(
         dataDocumentMapping: DataDocumentMappingEntity,
     ): DataDocumentMappingEntity {
         return dataDocumentsMappingRepositoryInterface.save(dataDocumentMapping)
+    }
+
+    /**
+     * Method to generate a random Data ID
+     * @return generated UUID
+     */
+    fun generateRandomDataId(): String {
+        return "${UUID.randomUUID()}"
     }
 }

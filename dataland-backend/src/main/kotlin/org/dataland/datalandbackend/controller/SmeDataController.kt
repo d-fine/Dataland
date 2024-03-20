@@ -1,21 +1,23 @@
 package org.dataland.datalandbackend.controller
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.PrivateDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.time.Instant
 import java.util.*
+import kotlin.math.log
 
 /**
  * Controller for the SME framework endpoints
@@ -26,28 +28,37 @@ import java.util.*
 class SmeDataController(
     @Autowired var myDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired private val objectMapper: ObjectMapper,
-    private val clazz: Class<CompanyAssociatedData<SmeData>>,
 ) : PrivateDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     // @Operation(operationId = "postCompanyAssociatedSmeData")
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeDataAsString: String,
         documents: Array<MultipartFile>,
     ):
         ResponseEntity<DataMetaInformation> {
-        val companyAssociatedSmeData = objectMapper.readValue(companyAssociatedSmeDataAsString, clazz)
-        println(companyAssociatedSmeData.toString())
+        val companyAssociatedSmeData = myObjectMapper.readValue(companyAssociatedSmeDataAsString,
+            object : TypeReference<CompanyAssociatedData<SmeData>>() {})
+        companyAssociatedSmeData.companyId
+        logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
         val correlationId = UUID.randomUUID().toString()
-        myDataManager.storePrivateData("Hi", "Hey", correlationId)
+        val documentId = "test"
+        val dataIdOfPostedData = myDataManager.storePrivateData(
+            companyAssociatedSmeData,
+            documentId,
+            correlationId,
+        )
+        val uploadTime = Instant.now().toEpochMilli()
+        val userId = DatalandAuthentication.fromContext().userId
         val dummyResponse = DataMetaInformation(
-            dataId = "hi",
-            companyId = "hey",
+            dataId = dataIdOfPostedData,
+            companyId = companyAssociatedSmeData.companyId,
             dataType = DataType.of(SmeData::class.java),
-            uploadTime = 0,
-            reportingPeriod = "2023",
+            uploadTime = uploadTime,
+            reportingPeriod = companyAssociatedSmeData.reportingPeriod,
             currentlyActive = true,
             qaStatus = QaStatus.Accepted,
+            uploaderUserId = userId,
         )
         return ResponseEntity.ok(dummyResponse)
     }
