@@ -24,7 +24,7 @@ import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DataRequestUpdaterTest {
+class DataRequestUploadListenerTest {
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = apiAccessor.requestControllerApi
