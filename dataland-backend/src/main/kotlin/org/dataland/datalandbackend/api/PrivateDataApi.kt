@@ -23,8 +23,8 @@ interface PrivateDataApi {
      * TODO
      */
     // TODO activate at the end to allow only owners
-     /*@PreAuthorize("(hasRole('ROLE_USER') " +
-             "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
+            /*@PreAuthorize("(hasRole('ROLE_USER') " +
+                    "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
     @Operation(
         summary = "a", // TODO
         description = "b", // TODO

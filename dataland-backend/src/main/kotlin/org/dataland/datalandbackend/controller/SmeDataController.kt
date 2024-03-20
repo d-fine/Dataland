@@ -21,12 +21,12 @@ import kotlin.math.log
 
 /**
  * Controller for the SME framework endpoints
- * @param myDataManager data manager to be used
+ * @param privateDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RestController
 class SmeDataController(
-    @Autowired var myDataManager: PrivateDataManager,
+    @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : PrivateDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -43,7 +43,7 @@ class SmeDataController(
         logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
         val correlationId = UUID.randomUUID().toString()
         val documentId = "test"
-        val dataIdOfPostedData = myDataManager.storePrivateData(
+        val dataIdOfPostedData = privateDataManager.storePrivateData(
             companyAssociatedSmeData,
             documentId,
             correlationId,
