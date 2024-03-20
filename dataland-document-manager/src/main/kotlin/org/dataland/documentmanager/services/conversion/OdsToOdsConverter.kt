@@ -23,7 +23,9 @@ class OdsToOdsConverter : FileConverter(
         logger.info("Validating that ods file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             SpreadsheetDocument.loadDocument(inputStream).use { document ->
-                validateDocument(document)
+                if (validateDocument(document)) {
+                    return
+                }
             }
         }
         throw InvalidInputApiException(
@@ -32,13 +34,14 @@ class OdsToOdsConverter : FileConverter(
         )
     }
 
-    private fun validateDocument(document: SpreadsheetDocument) {
+    private fun validateDocument(document: SpreadsheetDocument): Boolean {
         for (sheetIndex in 0 until document.sheetCount) {
             val sheet = document.getSheetByIndex(sheetIndex)
             if (sheet.rowCount > 0) {
-                return
+                return true
             }
         }
+        return false
     }
 
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
