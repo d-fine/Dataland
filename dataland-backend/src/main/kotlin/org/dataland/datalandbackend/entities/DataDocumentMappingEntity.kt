@@ -6,10 +6,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.IdClass
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
-import org.dataland.datalandbackend.interfaces.ApiModelConversion
-import org.dataland.datalandbackend.model.DataDocumentMapping
 import org.dataland.datalandbackend.model.DataDocumentMappingStructure
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
  * The database entity for storing mapping between data and documents
@@ -30,11 +27,4 @@ data class DataDocumentMappingEntity(
     @Column(name = "document_id")
     var documentId: String,
 
-) : ApiModelConversion<DataDocumentMapping> {
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataDocumentMapping {
-        return DataDocumentMapping(
-            dataId = dataId,
-            documentId = documentId,
-        )
-    }
-}
+)
