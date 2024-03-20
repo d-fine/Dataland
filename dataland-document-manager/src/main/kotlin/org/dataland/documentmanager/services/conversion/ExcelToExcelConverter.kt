@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services.conversion
 
+import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
@@ -23,6 +24,33 @@ class ExcelToExcelConverter : FileConverter(
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
+        validateNoMacros(file, correlationId)
+        validateFileNotEmpty(file, correlationId)
+    }
+
+    private fun validateNoMacros(document: MultipartFile, correlationId: String) {
+        logger.info("Validating that excel file has no macros. (correlation ID: $correlationId)")
+        val workbook = WorkbookFactory.create(document.inputStream)
+        if (workbook is XSSFWorkbook) {
+            if (workbook.isMacroEnabled) {
+                throw InvalidInputApiException(
+                    "No macros allowed.",
+                    "The Excel file you provided seems to have macros enabled, which is recognized as a " +
+                        "potential security issue.",
+                )
+            }
+        }
+        // TODO Enable code below if Aspose EULA license is OK, then remove code above
+        /*val book = Workbook(document.inputStream)
+        if (book.hasMacro()) {
+            throw InvalidInputApiException(
+                "No macros allowed.",
+                "The Excel file you provided seems to use a macro, which is recognized as a potential security issue."
+            )
+        }*/
+    }
+
+    private fun validateFileNotEmpty(file: MultipartFile, correlationId: String) {
         logger.info("Validating that excel file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             XSSFWorkbook(inputStream).use { workbook ->
