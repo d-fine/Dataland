@@ -25,6 +25,7 @@ class TextToPdfConverter : FileConverter(
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
+        // todo consider deleting, since an empty txt file doesnt even pass the mimetype validation
         if (file.bytes.decodeToString().isNullOrBlank()) {
             throw InvalidInputApiException(
                 "Provided file is empty.",

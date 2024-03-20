@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.multipart.MultipartFile
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
-class PdfConverterTest(
+class FileProcessorTest(
     @Autowired val toPdfConverters: List<FileConverter>,
 ) {
     private val expectedToPdfConverters = listOf(
