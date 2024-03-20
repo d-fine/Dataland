@@ -1,6 +1,8 @@
 package org.dataland.documentmanager.entities
 
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -15,9 +17,11 @@ import org.dataland.documentmanager.model.DocumentType
 data class DocumentMetaInfoEntity(
     @Id
     val documentId: String,
+    @Enumerated(EnumType.STRING)
     val documentType: DocumentType,
     val uploaderId: String,
     val uploadTime: Long,
+    @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
 ) {
     constructor(documentMetaInfo: DocumentMetaInfo) :

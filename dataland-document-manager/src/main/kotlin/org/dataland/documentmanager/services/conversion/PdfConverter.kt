@@ -15,6 +15,17 @@ class PdfConverter(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    init {
+        validateNoOverlapInConverterFileExtensions()
+    }
+
+    private fun validateNoOverlapInConverterFileExtensions() {
+        val aggregatedConverterFileExtensions = toPdfConverters.flatMap { it.responsibleFileExtensions }
+        require(aggregatedConverterFileExtensions.size == aggregatedConverterFileExtensions.distinct().size) {
+            "There are multiple file converters which target the same file extensions."
+        }
+    }
+
     // todo this should be the only public method in the end
     /**
      * Tries to convert a file to a pdf document

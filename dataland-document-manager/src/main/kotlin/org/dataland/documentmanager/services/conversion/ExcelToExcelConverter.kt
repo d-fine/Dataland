@@ -11,15 +11,16 @@ import org.springframework.web.multipart.MultipartFile
  * Validates the file content of an excel document
  */
 @Component
-class ExcelToExcelConverter : FileConverter() {
-    override val logger: Logger = LoggerFactory.getLogger(javaClass)
-    override val allowedMimeTypesPerFileExtension: Map<String, Set<String>> = mapOf(
+class ExcelToExcelConverter : FileConverter(
+    allowedMimeTypesPerFileExtension = mapOf(
         "xlsx" to setOf(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "application/x-tika-ooxml",
         ),
         "xls" to setOf("application/vnd.ms-excel"),
-    )
+    ),
+) {
+    override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
         logger.info("Validating that excel file is not empty. (correlation ID: $correlationId)")

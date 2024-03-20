@@ -66,8 +66,9 @@ class DocumentManager(
     /** todo remove
      * test function
      */
-    fun convertAll(image: MultipartFile): InputStreamResource {
-        return InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image, "placeholder")))
+    fun convertAll(image: MultipartFile): DocumentStream {
+        val stream = InputStreamResource(ByteArrayInputStream(pdfConverter.convertToPdf(image, "placeholder")))
+        return DocumentStream("TEST", categorizeDocumentType(image), stream)
     }
 
     /**
@@ -86,7 +87,8 @@ class DocumentManager(
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         checkDocumentForViruses(document)
-        val documentBody = when (documentType) {
+        val documentBody = when (documentType) { // TODO we could use the pdf converter for all of these
+            //  should be renamed then
             DocumentType.Pdf -> pdfConverter.convertToPdf(document, correlationId)
             DocumentType.Xls -> {
                 validateExcelFile(document)
@@ -215,14 +217,8 @@ class DocumentManager(
                     "Only quality-assured documents can be retrieved. Correlation ID: $correlationId",
             )
         }
-        val documentName = documentId + when (metaDataInfoEntity.documentType) {
-            DocumentType.Pdf -> ".pdf"
-            DocumentType.Xls -> ".xls"
-            DocumentType.Xlsx -> ".xlsx"
-            DocumentType.Ods -> ".ods"
-        }
         val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-        return DocumentStream(documentName, documentDataStream)
+        return DocumentStream(documentId, metaDataInfoEntity.documentType, documentDataStream)
     }
 
     private fun retrieveDocumentDataStream(

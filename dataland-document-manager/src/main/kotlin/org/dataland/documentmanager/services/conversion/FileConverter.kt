@@ -9,9 +9,8 @@ import java.io.File
 /**
  * A base class for a converter to convert between different file types
  */
-abstract class FileConverter {
+abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<String, Set<String>>) {
     protected abstract val logger: Logger
-    protected abstract val allowedMimeTypesPerFileExtension: Map<String, Set<String>>
     private val fileExtensionAndMimeTypeMismatchMessage =
         "Only upload of documents with matching file extensions and MIME types is supported."
     private val fileNameHasForbiddenCharactersMessage =
@@ -22,6 +21,11 @@ abstract class FileConverter {
     val responsibleFileExtensions: Set<String>
         get() = allowedMimeTypesPerFileExtension.keys
 
+    init {
+        require(allowedMimeTypesPerFileExtension.isNotEmpty()) { "No file extension for conversion is provided." }
+        require(responsibleFileExtensions.all { it == it.lowercase() }) { "Some file extensions are not lowercase." }
+    }
+
     /**
      * Validates that a file is what it claims to be, e.g. by mime type and content validation
      * @param file the file to validate
@@ -31,7 +35,6 @@ abstract class FileConverter {
         validateFileNameWithinNamingConvention(file.originalFilename!!, correlationId)
         validateMimeType(file)
         validateFileContent(file, correlationId)
-        println("done")
     }
 
     protected open fun validateFileContent(file: MultipartFile, correlationId: String) {}

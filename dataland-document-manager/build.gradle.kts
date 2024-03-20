@@ -66,6 +66,8 @@ dependencies {
     testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
 }
 
 openApi {
