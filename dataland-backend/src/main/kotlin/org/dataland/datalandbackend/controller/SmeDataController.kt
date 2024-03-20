@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.*
-import kotlin.math.log
 
 /**
  * Controller for the SME framework endpoints
@@ -37,8 +36,10 @@ class SmeDataController(
         documents: Array<MultipartFile>,
     ):
         ResponseEntity<DataMetaInformation> {
-        val companyAssociatedSmeData = myObjectMapper.readValue(companyAssociatedSmeDataAsString,
-            object : TypeReference<CompanyAssociatedData<SmeData>>() {})
+        val companyAssociatedSmeData = myObjectMapper.readValue(
+            companyAssociatedSmeDataAsString,
+            object : TypeReference<CompanyAssociatedData<SmeData>>() {},
+        )
         companyAssociatedSmeData.companyId
         logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
         val correlationId = UUID.randomUUID().toString()
