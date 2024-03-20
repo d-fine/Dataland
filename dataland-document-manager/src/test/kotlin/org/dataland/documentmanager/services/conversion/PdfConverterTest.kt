@@ -1,27 +1,37 @@
 package org.dataland.documentmanager.services.conversion
 
-import org.dataland.documentmanager.services.TestUtils
+import org.dataland.documentmanager.services.DocumentManager
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.slf4j.LoggerFactory
-import org.springframework.http.MediaType
-import org.springframework.mock.web.MockMultipartFile
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.multipart.MultipartFile
-
-class PdfConverterTest {
-    private val converters = listOf<FileConverter>(
+@SpringBootTest(classes = [DocumentManager::class], properties = ["spring.profiles.active=nodb"])
+class PdfConverterTest(
+    @Autowired val toPdfConverters: List<FileConverter>,
+) {
+    private val expectedToPdfConverters = listOf<FileConverter>(
         DocxToPdfConverter(),
+        ExcelToExcelConverter(),
         ImageToPdfConverter(),
+        OdsToOdsConverter(),
+        PdfToPdfConverter(),
         PptxToPdfConverter(),
         TextToPdfConverter(),
     )
-    private val pdfConverter = PdfConverter(converters)
-    private val testPng = "sampleFiles/sample.png"
-    private val testTxt = "sampleFiles/sample.txt"
-    private val testWord = "sampleFiles/sample.docx"
-    private val testPowerPoint = "sampleFiles/sample.pptx"
-    private val correlationId = "test-correlation-id"
+
+    @Test
+    fun `check if list of converts is complete`() {
+        toPdfConverters.forEach {
+            assertTrue(it in expectedToPdfConverters)
+        }
+        expectedToPdfConverters.forEach {
+            assertTrue(it in toPdfConverters)
+        }
+    }
 
     @Test
     fun `check if an error is thrown if there are file converters with overlapping file extension responsibility`() {
@@ -75,51 +85,5 @@ class PdfConverterTest {
                 },
             ),
         )
-    }
-
-    // TODO move all the tests below
-
-    @Test
-    fun `verify that a pptx file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            "sample.pptx",
-            "sample.pptx",
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(testPowerPoint),
-        )
-        pdfConverter.convertToPdf(testInput, correlationId)
-    }
-
-    @Test
-    fun `verify that a docx file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            "test.docx",
-            "test.docx",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            TestUtils().loadFileBytes(testWord),
-        )
-        pdfConverter.convertToPdf(testInput, correlationId)
-    }
-
-    @Test
-    fun `verify that a png file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            "test.png",
-            "test.png",
-            MediaType.IMAGE_PNG_VALUE,
-            TestUtils().loadFileBytes(testPng),
-        )
-        pdfConverter.convertToPdf(testInput, correlationId)
-    }
-
-    @Test
-    fun `verify that a txt file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            "test.txt",
-            "test.txt",
-            MediaType.TEXT_PLAIN_VALUE,
-            TestUtils().loadFileBytes(testTxt),
-        )
-        pdfConverter.convertToPdf(testInput, correlationId)
     }
 }
