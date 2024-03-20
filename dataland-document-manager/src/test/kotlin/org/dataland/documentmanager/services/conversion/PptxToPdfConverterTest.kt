@@ -20,9 +20,9 @@ class PptxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
             TestUtils().loadFileBytes(testPowerPoint),
         )
-        assertFalse(TestUtils().isPDF(testInput.bytes))
+        assertFalse(TestUtils().isPdf(testInput.bytes))
         val convertedDocument = pptxToPdfConverter.convert(testInput, correlationId)
-        assertTrue(TestUtils().isPDF(convertedDocument), "converted document should be a pdf document")
-        assertTrue(TestUtils().isNotEmptyPDF(convertedDocument), "converted document should not be empty")
+        assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
+        assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should not be empty")
     }
 }
