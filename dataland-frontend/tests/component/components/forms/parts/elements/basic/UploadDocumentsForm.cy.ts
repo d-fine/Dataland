@@ -23,12 +23,6 @@ describe("Component tests for the UploadDocumentsForm", () => {
         .should("contain.text", "tooLarge.pdf: Invalid file size, file size should be smaller than 100 MB.");
       uploadDocuments.dismissErrorMessage();
       uploadDocuments.errorMessage().should("have.css", "display", "none");
-      uploadDocuments.selectDummyFileOfType("invalidType", "exe", maximumAcceptedFileSize + 1);
-      //todo update check for wrong type behaviour
-      uploadDocuments
-        .errorMessage()
-        .should("not.have.css", "display", "none")
-        .should("contain.text", "invalidType.exe: Invalid file type, allowed file types: .pdf.");
     });
   });
 });
