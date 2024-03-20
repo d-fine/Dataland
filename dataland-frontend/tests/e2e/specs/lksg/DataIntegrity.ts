@@ -59,17 +59,17 @@ describeIf(
                   return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
-                      const frontendSubmittedLksgDataset = axiosGetResponse.data.data;
-                      const originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
+                      let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
+                      let originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
 
                       frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
                       frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      frontendSubmittedLksgDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      frontendSubmittedLksgDataset = sortComplaintsRiskObject(frontendSubmittedLksgDataset);
                       frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
                       originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
                       originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      originallyUploadedLksgDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      originallyUploadedLksgDataset = sortComplaintsRiskObject(originallyUploadedLksgDataset);
                       originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
                       compareObjectKeysAndValuesDeep(
@@ -113,16 +113,23 @@ describeIf(
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
     }
-    /*
-    function sortComplaintsRiskObject(array: Array<LksgGrievanceAssessmentMechanism>): todo edit
-        Array<LksgGrievanceAssessmentMechanism> {
-        array.forEach((element) => element.riskPositions.sort());
-        array.sort((a, b) => {
-            const comparisonA = a.riskPositions.at(0)
-            const comparisonB = b.riskPositions.at(0)
-            //return a.localeCompare(b);
-        })
-    }*/
+
+    /**
+     * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
+     * @param dataset frontend dataset to modify
+     * @returns sorted frontend object
+     */
+    function sortComplaintsRiskObject(dataset: LksgData): LksgData {
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
+        element.riskPositions.sort(),
+      );
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
+        const comparisonA = a.specifiedComplaint;
+        const comparisonB = b.specifiedComplaint;
+        return comparisonA.localeCompare(comparisonB);
+      });
+      return dataset;
+    }
 
     it(
       "Create a company and a Lksg dataset via api with most entries being null and then verify that it can be" +
