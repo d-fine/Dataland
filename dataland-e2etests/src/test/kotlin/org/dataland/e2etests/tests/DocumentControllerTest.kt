@@ -26,7 +26,6 @@ class DocumentControllerTest {
     private val odsDocument = File("./public/sample.ods")
     private val docxDocument = File("./public/sample.docx")
 
-    // todo verify that test work for xlsx, ods, docx
     @Test
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
         assertFalse(isPdf(docxDocument.readBytes()))
@@ -73,7 +72,7 @@ class DocumentControllerTest {
      */
     private fun uploadDocument(document: File): DocumentUploadResponse {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val expectedHash = pdfDocument.readBytes().sha256()
+        val expectedHash = document.readBytes().sha256()
         val uploadResponse = documentControllerClient.postDocument(document)
         assertEquals(expectedHash, uploadResponse.documentId)
         documentControllerClient.checkDocument(uploadResponse.documentId)
