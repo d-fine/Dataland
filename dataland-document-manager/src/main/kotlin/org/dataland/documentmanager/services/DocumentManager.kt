@@ -104,7 +104,7 @@ class DocumentManager(
     }
 
     private fun checkDocumentForViruses(document: MultipartFile) {
-        val scanResult = ClamavClient("localhost").scan(document.inputStream) // TODO Check whether localhost is correct
+        val scanResult = ClamavClient("clamav").scan(document.inputStream) // todo replace with di client
         if (scanResult is ScanResult.VirusFound) {
             throw InvalidInputApiException(
                 "Virus found",
