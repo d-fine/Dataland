@@ -1,7 +1,8 @@
 package org.dataland.documentmanager.services.conversion
 
+import org.apache.tika.Tika
 import org.dataland.documentmanager.services.TestUtils
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.mock.web.MockMultipartFile
 
@@ -18,21 +19,8 @@ class ExcelToExcelConverterTest {
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             TestUtils().loadFileBytes(testXlsx),
         )
-        assertTrue(isXlsx(testInput.bytes))
+        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
         val convertedDocument = excelToExcelConverter.convertFile(testInput, correlationId)
-        assertTrue(
-            isXlsx(convertedDocument),
-            "converted document should be a xlsx document",
-        )
-        assertTrue(
-            TestUtils().isNotEmptyFile(convertedDocument),
-            "converted document should not be empty",
-        )
-    }
-    private fun isXlsx(byteArray: ByteArray): Boolean {
-        val xlsxSignature = byteArrayOf(0x50, 0x4B, 0x03, 0x04)
-
-        return byteArray.size >= xlsxSignature.size && byteArray.sliceArray(0 until xlsxSignature.size)
-            .contentEquals(xlsxSignature)
+        assertEquals("application/x-tika-ooxml", Tika().detect(convertedDocument))
     }
 }

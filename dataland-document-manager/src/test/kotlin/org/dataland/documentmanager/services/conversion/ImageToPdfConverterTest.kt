@@ -1,8 +1,8 @@
 package org.dataland.documentmanager.services.conversion
 
+import org.apache.tika.Tika
 import org.dataland.documentmanager.services.TestUtils
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
@@ -20,9 +20,8 @@ class ImageToPdfConverterTest {
             MediaType.IMAGE_PNG_VALUE,
             TestUtils().loadFileBytes(testPng),
         )
-        assertFalse(TestUtils().isPdf(testInput.bytes))
+        assertEquals("image/png", Tika().detect(testInput.bytes))
         val convertedDocument = imageToPdfConverter.convertFile(testInput, correlationId)
-        assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
-        assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should be not empty")
+        assertEquals("application/pdf", Tika().detect(convertedDocument))
     }
 }

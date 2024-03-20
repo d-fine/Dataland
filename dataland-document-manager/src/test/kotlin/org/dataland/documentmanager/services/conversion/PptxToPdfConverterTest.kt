@@ -1,8 +1,8 @@
 package org.dataland.documentmanager.services.conversion
 
+import org.apache.tika.Tika
 import org.dataland.documentmanager.services.TestUtils
-import org.hibernate.validator.internal.util.Contracts.assertTrue
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.mock.web.MockMultipartFile
 
@@ -20,9 +20,8 @@ class PptxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
             TestUtils().loadFileBytes(testPowerPoint),
         )
-        assertFalse(TestUtils().isPdf(testInput.bytes))
+        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
         val convertedDocument = pptxToPdfConverter.convertFile(testInput, correlationId)
-        assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
-        assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should not be empty")
+        assertEquals("application/x-tika-ooxml", Tika().detect(convertedDocument))
     }
 }
