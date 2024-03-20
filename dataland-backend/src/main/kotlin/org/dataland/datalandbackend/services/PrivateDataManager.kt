@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataDocumentMappingEntity
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
@@ -27,6 +28,7 @@ import java.util.*
 */
 @Component("PrivateDataManager")
 class PrivateDataManager(
+    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
@@ -35,21 +37,20 @@ class PrivateDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInMemoryStorage = mutableMapOf<String, String>()
 
-    fun storePrivateData(
-        data: CompanyAssociatedData<SmeData>,
-        documentId: String,
+
     fun processPrivateSmeDataStorageRequest(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>,
         correlationId: String,
-    ) {
+    ):String {
         logger.info(
             " " + // TODO Emanuel: check later for injection of logger
-                "Correlation ID: $correlationId",
+                "Storing MiNaBo data for companyId ${companyAssociatedSmeData.companyId} and Correlation ID: $correlationId",
         )
         val dataId = generateRandomDataId()
         storeDataSetInMemory(dataId, correlationId)
         sendReceptionMessage(dataId, correlationId)
+        return dataId
     }
 
     /**

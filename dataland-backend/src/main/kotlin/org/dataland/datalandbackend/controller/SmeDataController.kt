@@ -42,10 +42,9 @@ class SmeDataController(
         companyAssociatedSmeData.companyId
         logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
         val correlationId = UUID.randomUUID().toString()
-        val documentId = "test"
-        val dataIdOfPostedData = privateDataManager.storePrivateData(
+        val dataIdOfPostedData = privateDataManager.processPrivateSmeDataStorageRequest(
             companyAssociatedSmeData,
-            documentId,
+            documents,
             correlationId,
         )
         val uploadTime = Instant.now().toEpochMilli()
