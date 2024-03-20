@@ -35,7 +35,7 @@ class V2__UseStringsForEnumAndAddDocumentType : BaseJavaMigration() {
             END;
             
             ALTER TABLE document_meta_info
-            DROP CONSTRAINT document_meta_info_qa_status_check,
+            DROP CONSTRAINT IF EXISTS document_meta_info_qa_status_check,
             ALTER COLUMN qa_status TYPE varchar (255) USING change_status(qa_status),
             ADD CONSTRAINT document_meta_info_qa_status_check CHECK (qa_status in ('Pending', 'Accepted', 'Rejected'))
             """.trimIndent(),
