@@ -9,6 +9,7 @@ import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,9 +29,10 @@ class DocumentControllerTest {
     // todo verify that test work for xlsx, ods, docx
     @Test
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
+        assertFalse(isPdf(docxDocument.readBytes()))
         val uploadResponse = uploadDocument(docxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertTrue(isPdf(downloadedFile.readBytes()), "downloaded document should be a pdf document")
+        assertTrue(isPdf(downloadedFile.readBytes()), "downloaded document is a pdf document")
     }
 
     @Test
