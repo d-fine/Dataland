@@ -65,6 +65,7 @@ class PrivateDataManager(
 
     private fun storeDataSetInMemory(dataId: String, correlationId: String) {
         // TODO log smth with correlation Id
+        logger.info("Storing MiNaBo data in temporary storage for dataId $dataId and correlationId $correlationId.")
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
 
     }
