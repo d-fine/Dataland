@@ -54,6 +54,8 @@ describeIf(
                 (postInterception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
+                  console.log("postinterception", postInterception);
+                  console.log("dataId:", dataMetaInformationOfReuploadedDataset.dataId);
                   return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
@@ -111,6 +113,16 @@ describeIf(
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
     }
+    /*
+    function sortComplaintsRiskObject(array: Array<LksgGrievanceAssessmentMechanism>): todo edit
+        Array<LksgGrievanceAssessmentMechanism> {
+        array.forEach((element) => element.riskPositions.sort());
+        array.sort((a, b) => {
+            const comparisonA = a.riskPositions.at(0)
+            const comparisonB = b.riskPositions.at(0)
+            //return a.localeCompare(b);
+        })
+    }*/
 
     it(
       "Create a company and a Lksg dataset via api with most entries being null and then verify that it can be" +

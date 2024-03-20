@@ -71,10 +71,16 @@ class LksgGrievanceMechanismAssessmentsComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val fixtureExpression = if (isNullable) {
+            "dataGenerator.randomArray(() => " +
+                "dataGenerator.generateLksgGrievanceMechanismAssessment(), 1, 5)"
+        } else {
+            "dataGenerator.guaranteedArray(() => " +
+                "dataGenerator.generateLksgGrievanceMechanismAssessment(), 1, 5)"
+        }
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.randomArray(() => " +
-                "dataGenerator.generateLksgGrievanceMechanismAssessment(), 0, 5)",
+            fixtureExpression,
         )
     }
 }

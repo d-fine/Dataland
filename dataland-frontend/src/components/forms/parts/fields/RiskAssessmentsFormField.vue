@@ -1,6 +1,5 @@
 <template>
   <FormListFormField
-    display-one-sub-form-per-default
     sub-form-component="RiskAssessmentFormElement"
     data-test-add-button="addNewRiskAssessmentButton"
     label-add-button="ADD NEW Risk"

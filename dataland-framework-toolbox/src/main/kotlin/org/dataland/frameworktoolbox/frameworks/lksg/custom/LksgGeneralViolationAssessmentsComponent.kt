@@ -70,9 +70,14 @@ class LksgGeneralViolationAssessmentsComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val fixtureExpression = if (isNullable) {
+            "dataGenerator.randomArray(() => dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)"
+        } else {
+            "dataGenerator.guaranteedArray(() => dataGenerator.generateLksgRiskOrViolationAssessment(), 1, 5)"
+        }
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.randomArray(() => dataGenerator.generateLksgRiskOrViolationAssessment(), 0, 5)",
+            fixtureExpression,
         )
     }
 }
