@@ -88,7 +88,7 @@ class PrivateDataManager(
     }
 
     private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>, correlationId: String) {
-        // TODO log smth with correlation Id
+        logger.info("Storing Sme data in temporary storage for dataId $dataId and correlationId $correlationId.")
         documentInMemoryStorage[dataId] = documents
     }
 
