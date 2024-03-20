@@ -1,9 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -22,16 +20,16 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 /**
  * This service checks if freshly uploaded and validated data answers a data request
  */
 @Service("DataRequestUpdater")
-class DataRequestUpdater(
+class DataRequestUploadListener(
     @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val dataRequestRepository: DataRequestRepository,
+    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -61,6 +59,7 @@ class DataRequestUpdater(
     fun changeRequestStatusAfterUpload(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) id: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
@@ -74,16 +73,7 @@ class DataRequestUpdater(
             return
         }
         messageUtils.rejectMessageOnException {
-            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
-                metaData.companyId,
-                metaData.reportingPeriod,
-                metaData.dataType.value,
-            )
-            logger.info(
-                "Changed Request Status for company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
-            )
+            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 }
