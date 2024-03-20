@@ -1,7 +1,8 @@
 package org.dataland.documentmanager.services.conversion
 
+import org.apache.tika.Tika
 import org.dataland.documentmanager.services.TestUtils
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.mock.web.MockMultipartFile
 
@@ -18,21 +19,8 @@ class OdsToOdsConverterTest {
             "application/vnd.oasis.opendocument.spreadsheet",
             TestUtils().loadFileBytes(testOds),
         )
-        assertTrue(isOds(testInput.bytes))
+        assertEquals("application/vnd.oasis.opendocument.spreadsheet", Tika().detect(testInput.bytes))
         val convertedDocument = odsToOdsConverter.convertFile(testInput, correlationId)
-        assertTrue(
-            isOds(convertedDocument),
-            "converted document should be a ods document",
-        )
-        assertTrue(
-            TestUtils().isNotEmptyFile(convertedDocument),
-            "converted document should not be empty",
-        )
-    }
-    private fun isOds(byteArray: ByteArray): Boolean {
-        val odsSignature = byteArrayOf(0x50, 0x4B, 0x03, 0x04)
-
-        return byteArray.size >= odsSignature.size && byteArray.sliceArray(0 until odsSignature.size)
-            .contentEquals(odsSignature)
+        assertEquals("application/vnd.oasis.opendocument.spreadsheet", Tika().detect(convertedDocument))
     }
 }

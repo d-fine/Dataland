@@ -1,9 +1,9 @@
 package org.dataland.documentmanager.services.conversion
 
 import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.tika.Tika
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.documentmanager.services.TestUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -23,16 +23,9 @@ class PdfToPdfConverterTest {
             "application/pdf",
             TestUtils().loadFileBytes(testPdf),
         )
-        Assertions.assertTrue(TestUtils().isPdf(testInput.bytes))
+        assertEquals("application/pdf", Tika().detect(testInput.bytes))
         val convertedDocument = pdfToPdfConverter.convertFile(testInput, correlationId)
-        Assertions.assertTrue(
-            TestUtils().isPdf(convertedDocument),
-            "converted document should be a pdf document",
-        )
-        Assertions.assertTrue(
-            TestUtils().isNotEmptyFile(convertedDocument),
-            "converted document should not be empty",
-        )
+        assertEquals("application/pdf", Tika().detect(convertedDocument))
     }
 
     @Test
