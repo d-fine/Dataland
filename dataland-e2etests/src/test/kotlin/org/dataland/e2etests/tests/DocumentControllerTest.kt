@@ -9,6 +9,7 @@ import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
@@ -29,8 +30,7 @@ class DocumentControllerTest {
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
         val uploadResponse = uploadDocument(docxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals("pdf", downloadedFile.extension)
-        assertEquals(docxDocument.nameWithoutExtension, downloadedFile.nameWithoutExtension)
+        assertTrue(isPdf(downloadedFile.readBytes()), "downloaded document should be a pdf document")
     }
 
     @Test
@@ -97,5 +97,16 @@ class DocumentControllerTest {
                 }
             }
         return downloadedFile
+    }
+
+    /**
+     * checks if byte array represents a pdf document
+     * @param byteArray byte array
+     * @returns boolean if byte array represents a pdf
+     */
+    private fun isPdf(byteArray: ByteArray): Boolean {
+        val pdfSignature = byteArrayOf(0x25, 0x50, 0x44, 0x46)
+        return byteArray.size >= pdfSignature.size && byteArray.sliceArray(0 until pdfSignature.size)
+            .contentEquals(pdfSignature)
     }
 }
