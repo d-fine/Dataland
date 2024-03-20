@@ -1,6 +1,6 @@
 package org.dataland.documentmanager.services.conversion
 
-import org.dataland.documentmanager.services.DocumentManager
+import org.dataland.documentmanager.DatalandDocumentManager
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -9,28 +9,32 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.multipart.MultipartFile
-@SpringBootTest(classes = [DocumentManager::class], properties = ["spring.profiles.active=nodb"])
+@SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
 class PdfConverterTest(
     @Autowired val toPdfConverters: List<FileConverter>,
 ) {
-    private val expectedToPdfConverters = listOf<FileConverter>(
-        DocxToPdfConverter(),
-        ExcelToExcelConverter(),
-        ImageToPdfConverter(),
-        OdsToOdsConverter(),
-        PdfToPdfConverter(),
-        PptxToPdfConverter(),
-        TextToPdfConverter(),
+    private val expectedToPdfConverters = listOf(
+        DocxToPdfConverter::class.java,
+        ExcelToExcelConverter::class.java,
+        ImageToPdfConverter::class.java,
+        OdsToOdsConverter::class.java,
+        PdfToPdfConverter::class.java,
+        PptxToPdfConverter::class.java,
+        TextToPdfConverter::class.java,
     )
 
     @Test
     fun `check if list of converts is complete`() {
         toPdfConverters.forEach {
-            assertTrue(it in expectedToPdfConverters)
+            assertTrue(
+                it.javaClass in expectedToPdfConverters,
+                "converter ${it.javaClass} is not expected",
+            )
         }
-        expectedToPdfConverters.forEach {
-            assertTrue(it in toPdfConverters)
-        }
+        assertEquals(
+            expectedToPdfConverters.size, toPdfConverters.size,
+            "expected number of pdf converters",
+        )
     }
 
     @Test
