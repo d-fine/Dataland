@@ -24,6 +24,7 @@ class DocumentControllerTest {
     private val odsDocument = File("./public/sample.ods")
     private val docxDocument = File("./public/sample.docx")
 
+    // todo verify that test work for xlsx, ods, docx
     @Test
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
         val uploadResponse = uploadDocument(docxDocument)
