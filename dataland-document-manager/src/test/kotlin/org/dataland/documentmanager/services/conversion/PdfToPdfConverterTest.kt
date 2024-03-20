@@ -19,7 +19,7 @@ class PdfToPdfConverterTest {
             TestUtils().loadFileBytes(testPdf),
         )
         Assertions.assertTrue(TestUtils().isPdf(testInput.bytes))
-        val convertedDocument = pdfToPdfConverter.convert(testInput, correlationId)
+        val convertedDocument = pdfToPdfConverter.convertFile(testInput, correlationId)
         Assertions.assertTrue(
             TestUtils().isPdf(convertedDocument),
             "converted document should be a pdf document",

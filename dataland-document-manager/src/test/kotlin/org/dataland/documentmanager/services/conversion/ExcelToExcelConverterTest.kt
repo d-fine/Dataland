@@ -19,7 +19,7 @@ class ExcelToExcelConverterTest {
             TestUtils().loadFileBytes(testXlsx),
         )
         assertTrue(isXlsx(testInput.bytes))
-        val convertedDocument = excelToExcelConverter.convert(testInput, correlationId)
+        val convertedDocument = excelToExcelConverter.convertFile(testInput, correlationId)
         assertTrue(
             isXlsx(convertedDocument),
             "converted document should be a xlsx document",

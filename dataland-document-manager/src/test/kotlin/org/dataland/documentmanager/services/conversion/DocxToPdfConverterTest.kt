@@ -20,7 +20,7 @@ class DocxToPdfConverterTest {
             TestUtils().loadFileBytes(testWord),
         )
         assertFalse(TestUtils().isPdf(testInput.bytes))
-        val convertedDocument = docxToPdfConverter.convert(testInput, correlationId)
+        val convertedDocument = docxToPdfConverter.convertFile(testInput, correlationId)
         assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
         assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should not be empty")
     }

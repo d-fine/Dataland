@@ -21,7 +21,7 @@ class ImageToPdfConverterTest {
             TestUtils().loadFileBytes(testPng),
         )
         assertFalse(TestUtils().isPdf(testInput.bytes))
-        val convertedDocument = imageToPdfConverter.convert(testInput, correlationId)
+        val convertedDocument = imageToPdfConverter.convertFile(testInput, correlationId)
         assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
         assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should be not empty")
     }

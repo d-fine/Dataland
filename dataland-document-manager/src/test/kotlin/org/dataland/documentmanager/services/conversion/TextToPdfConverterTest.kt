@@ -22,7 +22,7 @@ class TextToPdfConverterTest {
             TestUtils().loadFileBytes(testTxt),
         )
         assertFalse(TestUtils().isPdf(testInput.bytes))
-        val convertedDocument = textToPdfConverter.convert(testInput, correlationId)
+        val convertedDocument = textToPdfConverter.convertFile(testInput, correlationId)
         assertTrue(TestUtils().isPdf(convertedDocument), "converted document should be a pdf document")
         assertTrue(TestUtils().isNotEmptyFile(convertedDocument), "converted document should not be empty")
     }

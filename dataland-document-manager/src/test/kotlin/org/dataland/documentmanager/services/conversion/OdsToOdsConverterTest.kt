@@ -19,7 +19,7 @@ class OdsToOdsConverterTest {
             TestUtils().loadFileBytes(testOds),
         )
         assertTrue(isOds(testInput.bytes))
-        val convertedDocument = odsToOdsConverter.convert(testInput, correlationId)
+        val convertedDocument = odsToOdsConverter.convertFile(testInput, correlationId)
         assertTrue(
             isOds(convertedDocument),
             "converted document should be a ods document",
