@@ -14,12 +14,13 @@ class PdfToPdfConverterTest {
     private val correlationId = "test-correlation-id"
     private val testPdf = "sampleFiles/sample.pdf"
     private val pdfToPdfConverter = PdfToPdfConverter()
+    private val testFileName = "test.pdf"
 
     @Test
     fun `verify that a pdf file can be converted to pdf`() {
         val testInput = MockMultipartFile(
-            "test.pdf",
-            "test.pdf",
+            testFileName,
+            testFileName,
             "application/pdf",
             TestUtils().loadFileBytes(testPdf),
         )
@@ -31,8 +32,8 @@ class PdfToPdfConverterTest {
     @Test
     fun `check that an empty pdf file is not validated`() {
         val testInput = MockMultipartFile(
-            "test.pdf",
-            "test.pdf",
+            testFileName,
+            testFileName,
             "application/pdf",
             createEmptyPDFByteArray(),
         )
