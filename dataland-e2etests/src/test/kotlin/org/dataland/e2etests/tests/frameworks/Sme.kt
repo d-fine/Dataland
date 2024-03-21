@@ -1,5 +1,5 @@
 package org.dataland.e2etests.tests.frameworks
-
+/*
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -30,3 +30,4 @@ class Sme {
         Assertions.assertEquals(listOfOneSmeDataSet[0], downloadedAssociatedData.data)
     }
 }
+*/

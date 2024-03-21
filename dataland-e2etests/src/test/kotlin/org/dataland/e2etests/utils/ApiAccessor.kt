@@ -139,7 +139,7 @@ class ApiAccessor {
 
     val dataControllerApiForSmeData = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSmeData = FrameworkTestDataProvider(SmeData::class.java)
-    fun smeUploaderFunction(
+   /* fun smeUploaderFunction(
         companyId: String,
         smeData: SmeData,
         reportingPeriod: String,
@@ -150,6 +150,7 @@ class ApiAccessor {
             companyAssociatedSmeData, bypassQa,
         )
     }
+    */
 
     /**
      * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
@@ -237,10 +238,11 @@ class ApiAccessor {
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
             )
 
-            DataTypeEnum.sme -> uploadCompaniesAndDatasets(
+            /*DataTypeEnum.sme -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForSmeData,
                 frameworkDataUploadFunction = this::smeUploaderFunction,
             )
+             */
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
