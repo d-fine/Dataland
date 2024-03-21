@@ -23,4 +23,6 @@ class ExcelToExcelConverterTest {
         val convertedDocument = excelToExcelConverter.convertFile(testInput, correlationId)
         assertEquals("application/x-tika-ooxml", Tika().detect(convertedDocument))
     }
+
+    // todo add test for xls files
 }
