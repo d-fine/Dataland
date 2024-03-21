@@ -5,6 +5,7 @@
     description="Which risks were specifically identified in the risk analysis?"
     :options="riskOptions"
     placeholder="Select Risk"
+    validation="required"
   />
   <YesNoFormField
     name="measuresTaken"
@@ -12,6 +13,7 @@
     label="Counteracting Measures"
     description="Have measures been defined to counteract the risk?"
     data-test="counteractingMeasures"
+    validation="required"
   />
   <FreeTextFormField
     name="listedMeasures"

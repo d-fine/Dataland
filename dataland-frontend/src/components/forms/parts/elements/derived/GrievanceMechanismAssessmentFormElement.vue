@@ -4,13 +4,20 @@
     label="Identified Risk"
     description="Which risks were specifically identified in the risk analysis?"
     :options="riskOptions"
+    validation="required"
   />
-  <FreeTextFormField name="specifiedComplaint" label="Specified Complaint" description="Please specify the complaint" />
+  <FreeTextFormField
+    name="specifiedComplaint"
+    label="Specified Complaint"
+    description="Please specify the complaint"
+    validation="required"
+  />
   <YesNoFormField
     name="measuresTaken"
     label="Addressing Measures"
     @update-yes-no-value="handleValueUpdate"
     description="Were measures taken to address the complaints?"
+    validation="required"
   />
   <FreeTextFormField
     name="listedMeasures"

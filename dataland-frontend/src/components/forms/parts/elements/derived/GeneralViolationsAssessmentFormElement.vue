@@ -5,12 +5,14 @@
     description="Please select the risk position of the violation."
     :options="riskOptions"
     placeholder="Select Risk"
+    validation="required"
   />
   <YesNoFormField
     name="measuresTaken"
     @update-yes-no-value="handleValueUpdate"
     label="Counteracting Measures"
     description="Have measures been taken to address this violation?"
+    validation="required"
   />
   <FreeTextFormField
     name="listedMeasures"
