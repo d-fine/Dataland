@@ -38,7 +38,6 @@ dependencies {
     implementation("org.apache.poi:poi-scratchpad:5.2.5")
     implementation("org.odftoolkit:simple-odf:0.9.0")
     implementation("xyz.capybara:clamav-client:2.1.2")
-    // implementation("com.luhuiguo:aspose-cells:23.1") TODO Enable only if Aspose EULA license is OK
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
