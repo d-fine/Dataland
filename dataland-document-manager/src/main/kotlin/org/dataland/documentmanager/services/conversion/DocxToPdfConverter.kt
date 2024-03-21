@@ -1,5 +1,7 @@
 package org.dataland.documentmanager.services.conversion
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry
 import org.jodconverter.core.office.OfficeManager
 import org.jodconverter.local.LocalConverter
@@ -12,22 +14,43 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
 
 /**
- * Converts a doc/docx file to a pdf file
+ * Converts a docx file to a pdf file
  */
 @Component
 class DocxToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
-    val pathToLibre: String,
-) : FileConverter(
+    private val pathToLibre: String,
+) : WordToPdfConverterBase(
+    converterSourceType = DefaultDocumentFormatRegistry.DOCX,
+    pathToLibre = pathToLibre,
     allowedMimeTypesPerFileExtension = mapOf(
-        "docx" to docxMimeTypes,
-        "doc" to docxMimeTypes,
+        "docx" to setOf(
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/x-tika-ooxml",
+        ),
     ),
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
+    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+        file.inputStream.use { inputStream ->
+            XWPFDocument(inputStream).use { document ->
+                validateDocumentContent(document)
+            }
+        }
+    }
+
+    private fun validateDocumentContent(document: XWPFDocument) {
+        if (document.paragraphs.all { it.text.isBlank() }) {
+            throw InvalidInputApiException(
+                "Provided file is empty.",
+                "Provided file is empty.",
+            )
+        }
+    }
+
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
-        logger.info("Converting doc/docx to a pdf document. (correlation ID: $correlationId)")
+        logger.info("Converting docx to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
         val officeManager: OfficeManager = LocalOfficeManager.builder()
@@ -49,9 +72,3 @@ class DocxToPdfConverter(
         return outputStream.toByteArray()
     }
 }
-
-private val docxMimeTypes = setOf(
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/msword",
-    "application/x-tika-ooxml",
-)
