@@ -49,12 +49,12 @@ class XlsxToExcelConverter(
         logger.info("Validating that excel file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             XSSFWorkbook(inputStream).use { workbook ->
-                validateWorkbook(workbook)
+                validateWorkbookNotEmpty(workbook)
             }
         }
     }
 
-    private fun validateWorkbook(workbook: XSSFWorkbook) {
+    private fun validateWorkbookNotEmpty(workbook: XSSFWorkbook) {
         for (i in 0 until workbook.numberOfSheets) {
             val sheet = workbook.getSheetAt(i)
             if (sheet.physicalNumberOfRows > 0) {

@@ -35,12 +35,12 @@ class XlsToExcelConverter(
         logger.info("Validating that excel file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             HSSFWorkbook(inputStream).use { workbook ->
-                validateWorkbook(workbook)
+                validateWorkbookNotEmpty(workbook)
             }
         }
     }
 
-    private fun validateWorkbook(workbook: HSSFWorkbook) {
+    private fun validateWorkbookNotEmpty(workbook: HSSFWorkbook) {
         for (i in 0 until workbook.numberOfSheets) {
             val sheet = workbook.getSheetAt(i)
             if (sheet.physicalNumberOfRows > 0) {
