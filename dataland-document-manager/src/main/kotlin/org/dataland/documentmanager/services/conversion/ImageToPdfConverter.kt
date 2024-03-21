@@ -49,11 +49,14 @@ class ImageToPdfConverter : FileConverter(
     }
 }
 
-// todo double check this list
 private val imageMimeTypes = setOf(
     "image/png",
     "image/jpeg", "image/vnd.ms-photo", "image/jxr",
     "image/tiff",
+    "image/tiff-fx",
     "image/heif",
+    "image/heif-sequence",
     "image/heic",
+    "image/heic-sequence",
+    "image/avif",
 )
