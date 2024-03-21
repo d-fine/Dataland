@@ -29,10 +29,15 @@ class DocumentControllerTest {
 
     @Test
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
-        assertFalse(isPdf(docxDocument.readBytes()))
+        assertFalse(isByteArrayRepresentationOfPdf(docxDocument.readBytes()))
         val uploadResponse = uploadDocument(docxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertTrue(isPdf(downloadedFile.readBytes()), "downloaded document is a pdf document")
+        assertTrue(
+            isByteArrayRepresentationOfPdf(
+                downloadedFile.readBytes(),
+            ),
+            "downloaded document is a pdf document",
+        )
     }
 
     @Test
@@ -113,7 +118,7 @@ class DocumentControllerTest {
      * @param byteArray byte array
      * @returns boolean if byte array represents a pdf
      */
-    private fun isPdf(byteArray: ByteArray): Boolean {
+    private fun isByteArrayRepresentationOfPdf(byteArray: ByteArray): Boolean {
         val pdfSignature = byteArrayOf(0x25, 0x50, 0x44, 0x46)
         return byteArray.size >= pdfSignature.size && byteArray.sliceArray(0 until pdfSignature.size)
             .contentEquals(pdfSignature)
