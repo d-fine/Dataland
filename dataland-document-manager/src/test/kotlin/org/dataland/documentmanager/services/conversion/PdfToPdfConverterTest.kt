@@ -14,26 +14,29 @@ class PdfToPdfConverterTest {
     private val correlationId = "test-correlation-id"
     private val testPdf = "sampleFiles/sample.pdf"
     private val pdfToPdfConverter = PdfToPdfConverter()
+    private val testFileName = "test.pdf"
+    private val mimeType = "application/pdf"
 
     @Test
     fun `verify that a pdf file can be converted to pdf`() {
         val testInput = MockMultipartFile(
-            "test.pdf",
-            "test.pdf",
-            "application/pdf",
+            testFileName,
+            testFileName,
+            mimeType,
             TestUtils().loadFileBytes(testPdf),
         )
-        assertEquals("application/pdf", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
+        pdfToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pdfToPdfConverter.convertFile(testInput, correlationId)
-        assertEquals("application/pdf", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
     fun `check that an empty pdf file is not validated`() {
         val testInput = MockMultipartFile(
-            "test.pdf",
-            "test.pdf",
-            "application/pdf",
+            testFileName,
+            testFileName,
+            mimeType,
             createEmptyPDFByteArray(),
         )
         val exception = assertThrows<InvalidInputApiException> {

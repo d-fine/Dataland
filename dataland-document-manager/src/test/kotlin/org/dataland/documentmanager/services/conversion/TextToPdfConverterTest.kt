@@ -15,12 +15,13 @@ class TextToPdfConverterTest {
     private val textToPdfConverter = TextToPdfConverter()
     private val testTxt = "sampleFiles/sample.txt"
     private val emptyTxt = "sampleFiles/emptyTxt.txt"
+    private val testFileName = "test.txt"
 
     @Test
     fun `verify that a txt file is converted to pdf`() {
         val testInput = MockMultipartFile(
-            "test.txt",
-            "test.txt",
+            testFileName,
+            testFileName,
             MediaType.TEXT_PLAIN_VALUE,
             TestUtils().loadFileBytes(testTxt),
         )
@@ -33,8 +34,8 @@ class TextToPdfConverterTest {
     @Test
     fun `check that an empty txt file is not validated`() {
         val testInput = MockMultipartFile(
-            "test.txt",
-            "test.txt",
+            testFileName,
+            testFileName,
             MediaType.TEXT_PLAIN_VALUE,
             TestUtils().loadFileBytes(emptyTxt),
         )

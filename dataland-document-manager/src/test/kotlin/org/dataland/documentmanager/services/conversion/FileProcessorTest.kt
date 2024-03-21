@@ -19,6 +19,7 @@ class FileProcessorTest(
 ) {
     private val expectedToPdfConverters = listOf(
         DocxToPdfConverter::class.java,
+        DocToPdfConverter::class.java,
         ExcelToExcelConverter::class.java,
         ImageToPdfConverter::class.java,
         OdsToOdsConverter::class.java,

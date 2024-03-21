@@ -13,12 +13,13 @@ class DocxToPdfConverterTest {
     private val testDocx = "sampleFiles/sample.docx"
     private val emptyDocx = "sampleFiles/empty.docx"
     private val docxToPdfConverter = DocxToPdfConverter("/usr/lib/libreoffice")
+    private val testFileName = "test.docx"
 
     @Test
     fun `verify that a docx file can be converted to pdf`() {
         val testInput = MockMultipartFile(
-            "test.docx",
-            "test.docx",
+            testFileName,
+            testFileName,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             TestUtils().loadFileBytes(testDocx),
         )
@@ -31,8 +32,8 @@ class DocxToPdfConverterTest {
     @Test
     fun `check that an empty docx file is not validated`() {
         val testInput = MockMultipartFile(
-            "test.docx",
-            "test.docx",
+            testFileName,
+            testFileName,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             TestUtils().loadFileBytes(emptyDocx),
         )
