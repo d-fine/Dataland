@@ -14,5 +14,5 @@ export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<an
   heimathafen: heimathafenFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
- // sme: smeFrontendFrameworkDefinition,
+  // sme: smeFrontendFrameworkDefinition,
 };

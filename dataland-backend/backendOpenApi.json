@@ -229,13 +229,13 @@
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "companyAssociatedSmeData",
+                  "companyAssociatedSmeDataAsString",
                   "documents"
                 ],
                 "type": "object",
                 "properties": {
-                  "companyAssociatedSmeData": {
-                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  "companyAssociatedSmeDataAsString": {
+                    "type": "string"
                   },
                   "documents": {
                     "type": "array",
@@ -1721,14 +1721,66 @@
         ]
       }
     },
-    "/internal/cached/{dataId}": {
+    "/internal/cached/public/{dataId}": {
       "get": {
         "tags": [
           "temporarily-cached-data-controller"
         ],
         "summary": "Retrieve specific data from the cache store of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedData",
+        "operationId": "getReceivedPublicData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/cached/private/{dataId}": {
+      "get": {
+        "tags": [
+          "temporarily-cached-data-controller"
+        ],
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided data ID is retrieved.",
+        "operationId": "getReceivedPrivateData",
         "parameters": [
           {
             "name": "dataId",
@@ -3439,350 +3491,6 @@
           }
         }
       },
-      "CompanyAssociatedDataSmeData": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SmeData"
-          }
-        }
-      },
-      "ExtendedDataPointBigDecimal": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "ExtendedDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "tagName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
-      },
-      "NaturalHazardsCoveredOptions": {
-        "type": "string",
-        "enum": [
-          "Hail",
-          "Wind",
-          "Flooding",
-          "EarthQuake",
-          "Avalanche",
-          "Snow"
-        ]
-      },
-      "QualityOptions": {
-        "type": "string",
-        "enum": [
-          "Audited",
-          "Reported",
-          "Estimated",
-          "Incomplete",
-          "NA"
-        ]
-      },
-      "SmeData": {
-        "required": [
-          "general"
-        ],
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SmeGeneral"
-          },
-          "power": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePower"
-              }
-            ]
-          },
-          "insurances": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeInsurances"
-              }
-            ]
-          }
-        }
-      },
-      "SmeGeneral": {
-        "required": [
-          "basicInformation"
-        ],
-        "type": "object",
-        "properties": {
-          "basicInformation": {
-            "$ref": "#/components/schemas/SmeGeneralBasicInformation"
-          },
-          "financialInformation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeGeneralFinancialInformation"
-              }
-            ]
-          }
-        }
-      },
-      "SmeGeneralBasicInformation": {
-        "required": [
-          "fiscalYearStart",
-          "numberOfEmployees",
-          "reportingDate",
-          "sectors"
-        ],
-        "type": "object",
-        "properties": {
-          "reportingDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "sectors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "numberOfEmployees": {
-            "type": "integer"
-          },
-          "fiscalYearStart": {
-            "type": "string",
-            "format": "date"
-          },
-          "referencedReports": {
-            "type": "object",
-            "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
-          }
-        }
-      },
-      "SmeGeneralFinancialInformation": {
-        "type": "object",
-        "properties": {
-          "revenueInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "operatingCostInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "capitalAssetsInEur": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "SmeInsurances": {
-        "type": "object",
-        "properties": {
-          "naturalHazards": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeInsurancesNaturalHazards"
-              }
-            ]
-          }
-        }
-      },
-      "SmeInsurancesNaturalHazards": {
-        "type": "object",
-        "properties": {
-          "insuranceAgainstNaturalHazards": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "amountCoveredByInsuranceAgainstNaturalHazardsInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "naturalHazardsCovered": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/NaturalHazardsCoveredOptions"
-            }
-          }
-        }
-      },
-      "SmePower": {
-        "type": "object",
-        "properties": {
-          "investments": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerInvestments"
-              }
-            ]
-          },
-          "consumption": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumption"
-              }
-            ]
-          }
-        }
-      },
-      "SmePowerConsumption": {
-        "type": "object",
-        "properties": {
-          "powerConsumptionInMwh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "powerFromRenewableSources": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "energyConsumptionHeatingAndHotWaterInMwh": {
-            "type": "number",
-            "nullable": true
-          },
-          "primaryEnergySourceForHeatingAndHotWater": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions"
-              }
-            ]
-          },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions"
-              }
-            ]
-          }
-        }
-      },
-      "SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions": {
-        "type": "string",
-        "enum": [
-          "LessThan25Percent",
-          "Between25And50Percent",
-          "Between50And75Percent",
-          "Over75Percent"
-        ]
-      },
-      "SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions": {
-        "type": "string",
-        "enum": [
-          "Oil",
-          "Gas",
-          "Electric",
-          "DistrictHeating"
-        ]
-      },
-      "SmePowerInvestments": {
-        "type": "object",
-        "properties": {
-          "investmentsInEnhancingEnergyEfficiency": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions"
-              }
-            ]
-          }
-        }
-      },
-      "SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions": {
-        "type": "string",
-        "enum": [
-          "LessThan1Percent",
-          "Between1And5Percent",
-          "Between5And10Percent",
-          "Between10And15Percent",
-          "Between15And20Percent",
-          "Between20And25Percent",
-          "Over25Percent"
-        ]
-      },
-      "YesNo": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No"
-        ]
-      },
       "BaseDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -3869,6 +3577,33 @@
           }
         }
       },
+      "ExtendedDataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
       "ExtendedDataPointBigInteger": {
         "required": [
           "quality"
@@ -3926,6 +3661,40 @@
             ]
           }
         }
+      },
+      "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "tagName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
+          }
+        }
+      },
+      "QualityOptions": {
+        "type": "string",
+        "enum": [
+          "Audited",
+          "Reported",
+          "Estimated",
+          "Incomplete",
+          "NA"
+        ]
       },
       "SfdrData": {
         "required": [
@@ -5377,6 +5146,13 @@
             ]
           }
         }
+      },
+      "YesNo": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ]
       },
       "YesNoNa": {
         "type": "string",
@@ -13678,6 +13454,10 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyId": {
             "type": "string"
           },
@@ -13689,10 +13469,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "permId": {
             "type": "string",
