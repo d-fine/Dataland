@@ -24,7 +24,6 @@ class OdsToOdsConverter(
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
-        // TODO test for macros
         logger.info("Validating that ods file is not empty. (correlation ID: $correlationId)")
         file.inputStream.use { inputStream ->
             SpreadsheetDocument.loadDocument(inputStream).use { document ->

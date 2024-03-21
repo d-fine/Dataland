@@ -11,6 +11,7 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
+import org.dataland.documentmanager.services.conversion.mockClamAvClient
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -25,6 +26,8 @@ import org.mockito.kotlin.eq
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -35,6 +38,11 @@ class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val fileProcessor: FileProcessor,
 ) {
+    @Configuration
+    class TestConfig {
+        @Bean
+        fun getClamAvClient() = mockClamAvClient()
+    }
 
     lateinit var mockStorageApi: StreamingStorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
