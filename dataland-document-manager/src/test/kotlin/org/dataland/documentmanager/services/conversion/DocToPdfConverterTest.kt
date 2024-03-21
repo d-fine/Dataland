@@ -14,19 +14,20 @@ class DocToPdfConverterTest {
     private val correlationId = "test-correlation-id"
     private val docToPdfConverter = DocToPdfConverter("/usr/lib/libreoffice")
     private val testFileName = "test.doc"
+    private val mimeType = "application/x-tika-msoffice"
 
     @Test
     fun `verify that a doc file can be converted to pdf`() {
         val testInput = MockMultipartFile(
             testFileName,
             testFileName,
-            "application/x-tika-msoffice",
+            "application/msword",
             TestUtils().loadFileBytes(testDoc),
         )
-        Assertions.assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
+        Assertions.assertEquals(mimeType, Tika().detect(testInput.bytes))
         docToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = docToPdfConverter.convertFile(testInput, correlationId)
-        Assertions.assertEquals("application/pdf", Tika().detect(convertedDocument))
+        Assertions.assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -37,7 +38,7 @@ class DocToPdfConverterTest {
             "application/msword",
             TestUtils().loadFileBytes(emptyDoc),
         )
-        Assertions.assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
+        Assertions.assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             docToPdfConverter.validateFile(testInput, correlationId)
         }

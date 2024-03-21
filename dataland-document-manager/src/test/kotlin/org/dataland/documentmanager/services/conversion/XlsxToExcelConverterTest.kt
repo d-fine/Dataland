@@ -14,6 +14,7 @@ class XlsxToExcelConverterTest {
     private val emptyXlsx = "sampleFiles/EmptyExcelFile.xlsx"
     private val xlsxToExcelConverter = XlsxToExcelConverter()
     private val testFileName = "test.xlsx"
+    private val mimeType = "application/x-tika-ooxml"
 
     @Test
     fun `verify that a xlsx file can be converted to xlsx`() {
@@ -23,10 +24,10 @@ class XlsxToExcelConverterTest {
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             TestUtils().loadFileBytes(testXlsx),
         )
-        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         xlsxToExcelConverter.validateFile(testInput, correlationId)
         val convertedDocument = xlsxToExcelConverter.convertFile(testInput, correlationId)
-        assertEquals("application/x-tika-ooxml", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -37,7 +38,7 @@ class XlsxToExcelConverterTest {
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             TestUtils().loadFileBytes(emptyXlsx),
         )
-        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             xlsxToExcelConverter.validateFile(testInput, correlationId)
         }

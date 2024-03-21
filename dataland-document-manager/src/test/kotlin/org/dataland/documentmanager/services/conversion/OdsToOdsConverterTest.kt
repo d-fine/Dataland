@@ -13,19 +13,20 @@ class OdsToOdsConverterTest {
     private val testOds = "sampleFiles/sample.ods"
     private val emptyOds = "sampleFiles/empty.ods"
     private val odsToOdsConverter = OdsToOdsConverter()
+    private val mimeType = "application/vnd.oasis.opendocument.spreadsheet"
 
     @Test
     fun `verify that a ods file can be converted to ods`() {
         val testInput = MockMultipartFile(
             "test.ods",
             "test.ods",
-            "application/vnd.oasis.opendocument.spreadsheet",
+            mimeType,
             TestUtils().loadFileBytes(testOds),
         )
-        assertEquals("application/vnd.oasis.opendocument.spreadsheet", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         odsToOdsConverter.validateFile(testInput, correlationId)
         val convertedDocument = odsToOdsConverter.convertFile(testInput, correlationId)
-        assertEquals("application/vnd.oasis.opendocument.spreadsheet", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -33,10 +34,10 @@ class OdsToOdsConverterTest {
         val testInput = MockMultipartFile(
             "test.ods",
             "test.ods",
-            "application/vnd.oasis.opendocument.spreadsheet",
+            mimeType,
             TestUtils().loadFileBytes(emptyOds),
         )
-        assertEquals("application/vnd.oasis.opendocument.spreadsheet", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             odsToOdsConverter.validateFile(testInput, correlationId)
         }

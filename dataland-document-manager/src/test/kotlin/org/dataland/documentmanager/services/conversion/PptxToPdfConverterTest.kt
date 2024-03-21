@@ -15,6 +15,7 @@ class PptxToPdfConverterTest {
     private val testPowerPoint = "sampleFiles/sample.pptx"
     private val emptyPowerPoint = "sampleFiles/empty.pptx"
     private val testFileName = "test.pptx"
+    private val mimeType = "application/x-tika-ooxml"
 
     @Test
     fun `verify that a pptx file can be converted to pdf`() {
@@ -24,10 +25,10 @@ class PptxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
             TestUtils().loadFileBytes(testPowerPoint),
         )
-        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         pptxToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pptxToPdfConverter.convertFile(testInput, correlationId)
-        assertEquals("application/x-tika-ooxml", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -38,7 +39,7 @@ class PptxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
             TestUtils().loadFileBytes(emptyPowerPoint),
         )
-        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             pptxToPdfConverter.validateFile(testInput, correlationId)
         }

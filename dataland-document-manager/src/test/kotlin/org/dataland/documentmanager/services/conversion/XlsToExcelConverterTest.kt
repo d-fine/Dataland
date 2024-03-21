@@ -14,6 +14,7 @@ class XlsToExcelConverterTest {
     private val emptyXls = "sampleFiles/EmptyExcelFile.xls"
     private val xlsToExcelConverter = XlsToExcelConverter()
     private val testFileName = "test.xls"
+    private val mimeType = "application/x-tika-msoffice"
 
     @Test
     fun `verify that a xls file can be converted to xlsx`() {
@@ -23,10 +24,10 @@ class XlsToExcelConverterTest {
             "application/vnd.ms-excel",
             TestUtils().loadFileBytes(testXls),
         )
-        assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         xlsToExcelConverter.validateFile(testInput, correlationId)
         val convertedDocument = xlsToExcelConverter.convertFile(testInput, correlationId)
-        assertEquals("application/x-tika-msoffice", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -37,7 +38,7 @@ class XlsToExcelConverterTest {
             "application/vnd.ms-excel",
             TestUtils().loadFileBytes(emptyXls),
         )
-        assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             xlsToExcelConverter.validateFile(testInput, correlationId)
         }

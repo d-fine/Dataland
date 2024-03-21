@@ -14,6 +14,7 @@ class DocxToPdfConverterTest {
     private val emptyDocx = "sampleFiles/empty.docx"
     private val docxToPdfConverter = DocxToPdfConverter("/usr/lib/libreoffice")
     private val testFileName = "test.docx"
+    private val mimeType = "application/x-tika-ooxml"
 
     @Test
     fun `verify that a docx file can be converted to pdf`() {
@@ -23,10 +24,10 @@ class DocxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             TestUtils().loadFileBytes(testDocx),
         )
-        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         docxToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = docxToPdfConverter.convertFile(testInput, correlationId)
-        assertEquals("application/pdf", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -37,7 +38,7 @@ class DocxToPdfConverterTest {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             TestUtils().loadFileBytes(emptyDocx),
         )
-        assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             docxToPdfConverter.validateFile(testInput, correlationId)
         }
