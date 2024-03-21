@@ -119,7 +119,7 @@ class DocumentControllerTest {
      */
     private fun isByteArrayRepresentationOfPdf(byteArray: ByteArray): Boolean {
         val pdfSignature = byteArrayOf(0x25, 0x50, 0x44, 0x46)
-        return byteArray.size >= pdfSignature.size && byteArray.sliceArray(0 until pdfSignature.size)
+        return byteArray.size >= pdfSignature.size && byteArray.sliceArray(pdfSignature.indices)
             .contentEquals(pdfSignature)
     }
 }
