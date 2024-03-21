@@ -42,10 +42,11 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
         new P2pDataControllerApi(configuration, undefined, axiosInstance),
       );
     case DataTypeEnum.Sme:
-      return translateFrameworkApi<typeof DataTypeEnum.Sme>(
+     /* return translateFrameworkApi<typeof DataTypeEnum.Sme>(
         "SmeData",
         new SmeDataControllerApi(configuration, undefined, axiosInstance),
       );
+      */
     case DataTypeEnum.EutaxonomyFinancials:
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
         "EuTaxonomyDataForFinancials",
