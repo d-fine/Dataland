@@ -30,14 +30,12 @@ class XlsxToExcelConverter : FileConverter(
     private fun validateNoMacros(document: MultipartFile, correlationId: String) {
         logger.info("Validating that excel file has no macros. (correlation ID: $correlationId)")
         val workbook = WorkbookFactory.create(document.inputStream)
-        if (workbook is XSSFWorkbook) {
-            if (workbook.isMacroEnabled) {
-                throw InvalidInputApiException(
-                    "No macros allowed.",
-                    "The Excel file you provided seems to have macros enabled, which is recognized as a " +
-                        "potential security issue.",
-                )
-            }
+        if (workbook is XSSFWorkbook && workbook.isMacroEnabled) {
+            throw InvalidInputApiException(
+                "No macros allowed.",
+                "The Excel file you provided seems to have macros enabled, which is recognized as a " +
+                    "potential security issue.",
+            )
         }
     }
 
