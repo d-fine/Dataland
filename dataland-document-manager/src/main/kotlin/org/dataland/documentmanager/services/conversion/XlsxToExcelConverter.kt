@@ -39,14 +39,6 @@ class XlsxToExcelConverter : FileConverter(
                 )
             }
         }
-        // TODO Enable code below if Aspose EULA license is OK, then remove code above
-        /*val book = Workbook(document.inputStream)
-        if (book.hasMacro()) {
-            throw InvalidInputApiException(
-                "No macros allowed.",
-                "The Excel file you provided seems to use a macro, which is recognized as a potential security issue."
-            )
-        }*/
     }
 
     private fun validateFileNotEmpty(file: MultipartFile, correlationId: String) {
