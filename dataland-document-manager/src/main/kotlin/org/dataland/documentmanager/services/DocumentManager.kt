@@ -41,14 +41,6 @@ class DocumentManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /** todo remove
-     * test function
-     */
-    fun convertAll(image: MultipartFile): DocumentStream {
-        val stream = InputStreamResource(ByteArrayInputStream(fileProcessor.processFile(image, "placeholder")))
-        return DocumentStream("TEST", categorizeDocumentType(image), stream)
-    }
-
     /**
      * Stores the meta information of a document, saves it temporarily locally and notifies that it can be
      * retrieved for other use

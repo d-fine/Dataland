@@ -42,13 +42,4 @@ class DocumentController(
             )
             .body(document.content)
     }
-
-    override fun convert(image: MultipartFile): ResponseEntity<InputStreamResource> {
-        val documentStream = documentManager.convertAll(image)
-        val originalFileName = image.originalFilename ?: "UnknownFileName"
-        return ResponseEntity.ok()
-            .contentType(documentStream.type.mediaType)
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$originalFileName")
-            .body(documentStream.content)
-    }
 }
