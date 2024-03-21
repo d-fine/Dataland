@@ -18,10 +18,10 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,9 +45,9 @@ class DocumentManagerTest(
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
+    lateinit var clamavClient: ClamavClient
 
-    // TODO swap out the test report for something generic
-    val reportName = "test-report.pdf"
+    val testDocument = "sample.pdf"
 
     @BeforeEach
     fun mockStorageApi() {
@@ -55,6 +55,11 @@ class DocumentManagerTest(
         mockStorageApi = mock(StreamingStorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+        fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
+        clamavClient = mock(ClamavClient::class.java).also {
+            `when`(it.scan(any(InputStream::class.java)))
+                .thenReturn(ScanResult.OK)
+        }
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
             username = "data_uploader",
             userId = "dummy-user-id",
@@ -69,10 +74,7 @@ class DocumentManagerTest(
             cloudEventMessageHandler = mockCloudEventMessageHandler,
             storageApi = mockStorageApi,
             fileProcessor = fileProcessor,
-            clamAvClient = mock(ClamavClient::class.java).also {
-                `when`(it.scan(any() as InputStream))
-                    .thenReturn(ScanResult.OK)
-            },
+            clamAvClient = clamavClient,
         )
     }
 
@@ -83,7 +85,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
-        val mockMultipartFile = mockUploadableFile(reportName)
+        val mockMultipartFile = mockUploadableFile(testDocument)
 
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
@@ -112,7 +114,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
-        val mockMultipartFile = mockUploadableFile(reportName)
+        val mockMultipartFile = mockUploadableFile(testDocument)
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
@@ -132,7 +134,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
-        val mockMultipartFile = mockUploadableFile(reportName)
+        val mockMultipartFile = mockUploadableFile(testDocument)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DocumentReceived), anyString(),
