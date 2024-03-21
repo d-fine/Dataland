@@ -21,11 +21,12 @@ class TextToPdfConverter : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "txt" to setOf("text/plain"),
     ),
+    clamAvClient = null,
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
-        if (file.bytes.decodeToString().isNullOrBlank()) {
+        if (file.bytes.decodeToString().isBlank()) {
             throw InvalidInputApiException(
                 "Provided file is empty.",
                 "Provided file is empty.",
