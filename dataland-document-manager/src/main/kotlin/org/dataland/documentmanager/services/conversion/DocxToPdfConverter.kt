@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream
 class DocxToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     private val pathToLibre: String,
-) : WordToPdfConverterBase(
+) : MsOfficeToPdfConverterBase(
     converterSourceType = DefaultDocumentFormatRegistry.DOCX,
     pathToLibre = pathToLibre,
     allowedMimeTypesPerFileExtension = mapOf(

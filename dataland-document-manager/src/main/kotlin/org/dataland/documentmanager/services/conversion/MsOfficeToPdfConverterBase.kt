@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream
 /**
  * Base for converters converting a word file to a pdf file
  */
-abstract class WordToPdfConverterBase(
+abstract class MsOfficeToPdfConverterBase(
     private val converterSourceType: DocumentFormat,
     private val pathToLibre: String,
     allowedMimeTypesPerFileExtension: Map<String, Set<String>>,

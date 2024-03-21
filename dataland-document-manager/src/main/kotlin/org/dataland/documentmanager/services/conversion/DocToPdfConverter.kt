@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile
 class DocToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     pathToLibre: String,
-) : WordToPdfConverterBase(
+) : MsOfficeToPdfConverterBase(
     converterSourceType = DefaultDocumentFormatRegistry.DOC,
     pathToLibre = pathToLibre,
     allowedMimeTypesPerFileExtension = mapOf(
