@@ -15,18 +15,20 @@ class PdfToPdfConverterTest {
     private val testPdf = "sampleFiles/sample.pdf"
     private val pdfToPdfConverter = PdfToPdfConverter()
     private val testFileName = "test.pdf"
+    private val mimeType = "application/pdf"
 
     @Test
     fun `verify that a pdf file can be converted to pdf`() {
         val testInput = MockMultipartFile(
             testFileName,
             testFileName,
-            "application/pdf",
+            mimeType,
             TestUtils().loadFileBytes(testPdf),
         )
-        assertEquals("application/pdf", Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
+        pdfToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pdfToPdfConverter.convertFile(testInput, correlationId)
-        assertEquals("application/pdf", Tika().detect(convertedDocument))
+        assertEquals(mimeType, Tika().detect(convertedDocument))
     }
 
     @Test
@@ -34,7 +36,7 @@ class PdfToPdfConverterTest {
         val testInput = MockMultipartFile(
             testFileName,
             testFileName,
-            "application/pdf",
+            mimeType,
             createEmptyPDFByteArray(),
         )
         val exception = assertThrows<InvalidInputApiException> {
