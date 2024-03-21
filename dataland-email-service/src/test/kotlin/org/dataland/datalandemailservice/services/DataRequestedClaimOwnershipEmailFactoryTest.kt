@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class DataRequestedClaimOwnershipEmailFactoryTest {
     private val proxyPrimaryUrl = "local-dev.dataland.com"
-    private val senderEmail = "sender@dataland.com"
+    private val senderEmail = "sender@example.com"
     private val senderName = "Test"
     private val companyName = "Test Inc."
     private val reportingPeriods = "2022, 2023"
