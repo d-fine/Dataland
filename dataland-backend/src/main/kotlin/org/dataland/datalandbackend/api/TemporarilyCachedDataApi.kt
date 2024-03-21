@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  * Defines the restful dataland-backend API regarding internal data exchange
  */
 @RequestMapping("/internal/cached")
-fun interface TemporarilyCachedDataApi {
+interface TemporarilyCachedDataApi {
 
     /**
      * This method retrieves data entries from the temporary storage
@@ -28,9 +28,29 @@ fun interface TemporarilyCachedDataApi {
         ],
     )
     @GetMapping(
-        value = ["/{dataId}"],
+        value = ["/public/{dataId}"],
         produces = ["application/json"],
     )
-    fun getReceivedData(@PathVariable("dataId") dataId: String):
+    fun getReceivedPublicData(@PathVariable("dataId") dataId: String):
+        ResponseEntity<String>
+
+    /**
+     * This method retrieves private data entries from the temporary storage
+     * @param dataId filters the requested data to a specific entry.
+     */
+    @Operation(
+        summary = "Retrieve specific data from the cache store of the backend.",
+        description = "Data identified by the provided data ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+        ],
+    )
+    @GetMapping(
+        value = ["/private/{dataId}"],
+        produces = ["application/json"],
+    )
+    fun getReceivedPrivateData(@PathVariable("dataId") dataId: String):
         ResponseEntity<String>
 }

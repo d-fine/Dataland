@@ -5,7 +5,9 @@ import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.services.generateRandomDataId
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -49,7 +51,7 @@ class PrivateDataManager(
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val dataInMemoryStorage = mutableMapOf<String, String>()
+    private val privateDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
     private val documentInMemoryStorage = mutableMapOf<String, Array<MultipartFile>>()
 
@@ -57,18 +59,19 @@ class PrivateDataManager(
         storableDataSet: StorableDataSet,
         documents: Array<MultipartFile>,
         correlationId: String,
-    ) {
+    ): String {
         val dataId = generateRandomDataId()
         storeDatasetInMemory(dataId, storableDataSet, correlationId)
         storeMetaInfoEntityInMemory(dataId, storableDataSet, correlationId)
         storeDocumentsInMemory(dataId, documents, correlationId)
         sendReceptionMessage(dataId, correlationId)
+        return dataId
     }
 
     private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         // TODO log smth with correlation Id
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
-        dataInMemoryStorage[dataId] = storableSmeDatasetAsString
+        privateDataInMemoryStorage[dataId] = storableSmeDatasetAsString
     }
 
     private fun storeMetaInfoEntityInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
@@ -164,13 +167,23 @@ class PrivateDataManager(
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId, correlationId)
-            dataInMemoryStorage.remove(dataId)
+            privateDataInMemoryStorage.remove(dataId)
             documentInMemoryStorage.remove(dataId)
-            dataInMemoryStorage.remove(dataId)
         }
     }
 
-    private fun generateRandomDataId(): String { // TODO THIS IS A DUPLICATE!!! already existing in DataManager. move to util to avoid duplicate code!
-        return "${UUID.randomUUID()}"
+    /**
+     * This method retrieves public data from the temporary storage
+     * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
+     * @return stringified data entry from the temporary store
+     */
+    fun selectPrivateDataSetFromTemporaryStorage(dataId: String): String {
+        val rawValue = privateDataInMemoryStorage.getOrElse(dataId) {
+            throw ResourceNotFoundApiException(
+                "Data ID not found in temporary storage",
+                "Dataland does not know the data id $dataId",
+            )
+        }
+        return objectMapper.writeValueAsString(rawValue)
     }
 }

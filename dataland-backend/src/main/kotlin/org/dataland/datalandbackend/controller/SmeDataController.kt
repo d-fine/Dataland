@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.PrivateDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.PrivateDataManager
@@ -43,13 +44,22 @@ class SmeDataController(
         companyAssociatedSmeData.companyId
         logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
         val correlationId = UUID.randomUUID().toString()
+
+        val uploadTime = Instant.now().toEpochMilli()
+        val userId = DatalandAuthentication.fromContext().userId
+        val test = StorableDataSet(
+            companyId = companyAssociatedSmeData.companyId,
+            dataType = DataType.of(SmeData::class.java),
+            uploaderUserId = userId,
+            uploadTime = uploadTime,
+            reportingPeriod = companyAssociatedSmeData.reportingPeriod,
+            data = companyAssociatedSmeData.data.toString(),
+        )
         val dataIdOfPostedData = privateDataManager.processPrivateSmeDataStorageRequest(
-            companyAssociatedSmeData,
+            test,
             documents,
             correlationId,
         )
-        val uploadTime = Instant.now().toEpochMilli()
-        val userId = DatalandAuthentication.fromContext().userId
         val dummyResponse = DataMetaInformation(
             dataId = dataIdOfPostedData,
             companyId = companyAssociatedSmeData.companyId,

@@ -2,20 +2,26 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.TemporarilyCachedDataApi
 import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.PrivateDataManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * Implementation of the controller for delivering and removing temporarily stored data
- * @param dataManager service to manage data storage
+ * @param publicDataManager service to manage data storage
  */
 @RestController
 class TemporarilyCachedDataController(
-    @Autowired var dataManager: DataManager,
+    @Autowired var publicDataManager: DataManager,
+    @Autowired var privateDataManager: PrivateDataManager,
 ) : TemporarilyCachedDataApi {
 
-    override fun getReceivedData(dataId: String): ResponseEntity<String> {
-        return ResponseEntity.ok(dataManager.selectDataSetFromTemporaryStorage(dataId))
+    override fun getReceivedPublicData(dataId: String): ResponseEntity<String> {
+        return ResponseEntity.ok(publicDataManager.selectPublicDataSetFromTemporaryStorage(dataId))
+    }
+
+    override fun getReceivedPrivateData(dataId: String): ResponseEntity<String> {
+        return ResponseEntity.ok(privateDataManager.selectPrivateDataSetFromTemporaryStorage(dataId))
     }
 }

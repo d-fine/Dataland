@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.services.generateRandomDataId
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
@@ -53,7 +54,7 @@ class DataManager(
     @Autowired private val messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val dataInMemoryStorage = mutableMapOf<String, String>()
+    private val publicDataInMemoryStorage = mutableMapOf<String, String>()
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -171,12 +172,12 @@ class DataManager(
     }
 
     /**
-     * This method retrieves data from the temporary storage
+     * This method retrieves public data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      * @return stringified data entry from the temporary store
      */
-    fun selectDataSetFromTemporaryStorage(dataId: String): String {
-        val rawValue = dataInMemoryStorage.getOrElse(dataId) {
+    fun selectPublicDataSetFromTemporaryStorage(dataId: String): String {
+        val rawValue = publicDataInMemoryStorage.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
                 "Data ID not found in temporary storage",
                 "Dataland does not know the data id $dataId",
@@ -199,7 +200,7 @@ class DataManager(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
@@ -216,14 +217,6 @@ class DataManager(
                 "for company ID '${storableDataSet.companyId}' in temporary storage. " +
                 "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
-    }
-
-    /**
-     * Method to generate a random Data ID
-     * @return generated UUID
-     */
-    fun generateRandomDataId(): String { // TODO move this into a util class, because PrivateDataManager uses it too now
-        return "${UUID.randomUUID()}"
     }
 
     /**
@@ -264,7 +257,7 @@ class DataManager(
             "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
         )
         messageUtils.rejectMessageOnException {
-            dataInMemoryStorage.remove(dataId)
+            publicDataInMemoryStorage.remove(dataId)
         }
     }
 
@@ -304,7 +297,7 @@ class DataManager(
     }
 
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return dataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
+        return publicDataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
     }
 
     private fun getDataFromStorageService(dataId: String, correlationId: String): String {
