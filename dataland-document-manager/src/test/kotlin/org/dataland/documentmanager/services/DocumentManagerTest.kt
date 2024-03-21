@@ -21,7 +21,6 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,9 +28,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import xyz.capybara.clamav.ClamavClient
-import xyz.capybara.clamav.commands.scan.result.ScanResult
-import java.io.InputStream
 import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
@@ -69,10 +65,6 @@ class DocumentManagerTest(
             cloudEventMessageHandler = mockCloudEventMessageHandler,
             storageApi = mockStorageApi,
             fileProcessor = fileProcessor,
-            clamAvClient = mock(ClamavClient::class.java).also {
-                `when`(it.scan(any() as InputStream))
-                    .thenReturn(ScanResult.OK)
-            },
         )
     }
 
