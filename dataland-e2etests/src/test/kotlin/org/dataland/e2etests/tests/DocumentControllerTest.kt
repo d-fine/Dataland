@@ -70,6 +70,7 @@ class DocumentControllerTest {
 
     @Test
     fun `test that a non existing document cannot be found`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val nonExistentDocumentId = "nonExistentDocumentId"
         val exception = assertThrows<ClientException> {
             documentControllerClient.checkDocument(nonExistentDocumentId)
