@@ -23,6 +23,7 @@ class DocumentControllerTest {
 
     private val pdfDocument = File("./public/test-report.pdf")
     private val xlsxDocument = File("./public/sample.xlsx")
+    private val xlsDocument = File("./public/sample.xls")
     private val odsDocument = File("./public/sample.ods")
     private val docxDocument = File("./public/sample.docx")
 
@@ -46,6 +47,13 @@ class DocumentControllerTest {
         val uploadResponse = uploadDocument(xlsxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         assertEquals(xlsxDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+    }
+
+    @Test
+    fun `test that a dummy xls document can be uploaded and retrieved after successful QA`() {
+        val uploadResponse = uploadDocument(xlsDocument)
+        val downloadedFile = ensureQaCompleted(uploadResponse)
+        assertEquals(xlsDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
