@@ -54,4 +54,5 @@ private val powerPointMimeTypes = setOf(
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     "application/x-tika-ooxml",
+    "application/x-tika-msoffice",
 )
