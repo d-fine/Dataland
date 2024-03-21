@@ -1,6 +1,6 @@
 package org.dataland.documentmanager.services.conversion
 
-import org.apache.poi.xslf.usermodel.XMLSlideShow
+import org.apache.poi.hslf.usermodel.HSLFSlideShow
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry
 import org.slf4j.Logger
@@ -10,19 +10,19 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 
 /**
- * Converts a pptx file to a pdf file
+ * Converts a ppt file to a pdf file
  */
 @Component
-class PptxToPdfConverter(
+class PptToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     val pathToLibre: String,
 ) : MsOfficeToPdfConverterBase(
-    converterSourceType = DefaultDocumentFormatRegistry.PPTX,
+    converterSourceType = DefaultDocumentFormatRegistry.PPT,
     pathToLibre = pathToLibre,
     allowedMimeTypesPerFileExtension = mapOf(
-        "pptx" to setOf(
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            "application/x-tika-ooxml",
+        "ppt" to setOf(
+            "application/vnd.ms-powerpoint",
+            "application/x-tika-msoffice",
         ),
     ),
 ) {
@@ -30,7 +30,7 @@ class PptxToPdfConverter(
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
         file.inputStream.use { inputStream ->
-            XMLSlideShow(inputStream).use { slideShow ->
+            HSLFSlideShow(inputStream).use { slideShow ->
                 if (slideShow.slides.isEmpty()) {
                     throw InvalidInputApiException(
                         "Provided file is empty.",
