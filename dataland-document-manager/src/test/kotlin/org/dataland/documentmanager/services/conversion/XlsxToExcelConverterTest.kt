@@ -12,8 +12,6 @@ class XlsxToExcelConverterTest {
     private val correlationId = "test-correlation-id"
     private val testXlsx = "sampleFiles/sample.xlsx"
     private val emptyXlsx = "sampleFiles/EmptyExcelFile.xlsx"
-    private val testXls = "sampleFiles/sample.xls"
-    private val emptyXls = "sampleFiles/EmptyExcelFile.xls"
     private val xlsxToExcelConverter = XlsxToExcelConverter()
     private val testFileName = "test.xlsx"
 
@@ -40,37 +38,6 @@ class XlsxToExcelConverterTest {
             TestUtils().loadFileBytes(emptyXlsx),
         )
         assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            xlsxToExcelConverter.validateFile(testInput, correlationId)
-        }
-        assertEquals("An empty spreadsheet was provided", exception.message)
-    }
-
-    @Test
-    fun `verify that a xls file can be converted to xlsx`() {
-        // todo check that validation of xls works as expected
-        val testInput = MockMultipartFile(
-            "test.xls",
-            "test.xls",
-            "application/vnd.ms-excel",
-            TestUtils().loadFileBytes(testXls),
-        )
-        assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
-        xlsxToExcelConverter.validateFile(testInput, correlationId)
-        val convertedDocument = xlsxToExcelConverter.convertFile(testInput, correlationId)
-        assertEquals("application/x-tika-msoffice", Tika().detect(convertedDocument))
-    }
-
-    @Test
-    fun `check that an empty xls file is not validated`() {
-        // todo check that validation of xls works as expected
-        val testInput = MockMultipartFile(
-            "test.xls",
-            "test.xls",
-            "application/vnd.ms-excel",
-            TestUtils().loadFileBytes(emptyXls),
-        )
-        assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             xlsxToExcelConverter.validateFile(testInput, correlationId)
         }

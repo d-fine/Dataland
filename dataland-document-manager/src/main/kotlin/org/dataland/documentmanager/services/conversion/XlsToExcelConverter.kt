@@ -13,7 +13,10 @@ import org.springframework.web.multipart.MultipartFile
 @Component
 class XlsToExcelConverter : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
-        "xls" to setOf("application/vnd.ms-excel"),
+        "xls" to setOf(
+            "application/vnd.ms-excel",
+            "application/x-tika-msoffice",
+        ),
     ),
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
