@@ -16,6 +16,7 @@
     label="Lists of Goods or Services"
     description="Provide List of Goods or Services"
     data-test-list-input="listOfGoodsOrServices"
+    :should-disable-checkboxes="true"
   />
 </template>
 
