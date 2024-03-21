@@ -23,8 +23,7 @@ abstract class FileConverter(
             "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
             "or end with a full stop character."
 
-    val responsibleFileExtensions: Set<String>
-        get() = allowedMimeTypesPerFileExtension.keys
+    val responsibleFileExtensions = allowedMimeTypesPerFileExtension.keys
 
     init {
         require(allowedMimeTypesPerFileExtension.isNotEmpty()) { "No file extension for conversion is provided." }
