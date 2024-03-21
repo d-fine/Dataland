@@ -52,7 +52,7 @@ abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<S
 
     private fun validateMimeType(file: MultipartFile) {
         val fileExtension = file.lowercaseExtension()
-        require(fileExtension in allowedMimeTypesPerFileExtension) // TODO probably duplicate later
+        require(fileExtension in allowedMimeTypesPerFileExtension)
         val detectedMimeType = Tika().detect(file.bytes)
         val expectedMimeTypes = allowedMimeTypesPerFileExtension.getValue(fileExtension)
         if (detectedMimeType !in expectedMimeTypes) {
