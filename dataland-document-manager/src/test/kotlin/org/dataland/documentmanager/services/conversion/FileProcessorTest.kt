@@ -10,13 +10,22 @@ import org.junit.jupiter.api.assertThrows
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.multipart.MultipartFile
+
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
 class FileProcessorTest(
     @Autowired val toPdfConverters: List<FileConverter>,
 ) {
+    @Configuration
+    class TestConfig {
+        @Bean
+        fun getClamAvClient() = mockClamAvClient()
+    }
+
     private val expectedToPdfConverters = listOf(
         DocxToPdfConverter::class.java,
         DocToPdfConverter::class.java,
