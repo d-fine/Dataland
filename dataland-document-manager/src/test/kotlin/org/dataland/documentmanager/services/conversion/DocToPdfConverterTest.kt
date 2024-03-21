@@ -13,12 +13,13 @@ class DocToPdfConverterTest {
     private val emptyDoc = "sampleFiles/emptyDoc.doc"
     private val correlationId = "test-correlation-id"
     private val docToPdfConverter = DocToPdfConverter("/usr/lib/libreoffice")
+    private val testFileName = "test.doc"
 
     @Test
     fun `verify that a doc file can be converted to pdf`() {
         val testInput = MockMultipartFile(
-            "test.doc",
-            "test.doc",
+            testFileName,
+            testFileName,
             "application/x-tika-msoffice",
             TestUtils().loadFileBytes(testDoc),
         )
@@ -31,8 +32,8 @@ class DocToPdfConverterTest {
     @Test
     fun `check that an empty doc file is not validated`() {
         val testInput = MockMultipartFile(
-            "test.doc",
-            "test.doc",
+            testFileName,
+            testFileName,
             "application/msword",
             TestUtils().loadFileBytes(emptyDoc),
         )
