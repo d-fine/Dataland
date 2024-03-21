@@ -13,14 +13,15 @@ class OdsToOdsConverterTest {
     private val correlationId = "test-correlation-id"
     private val testOds = "sampleFiles/sample.ods"
     private val emptyOds = "sampleFiles/empty.ods"
+    private val testFileName = "test.ods"
     private val odsToOdsConverter = OdsToOdsConverter()
     private val mimeType = "application/vnd.oasis.opendocument.spreadsheet"
 
     @Test
     fun `verify that a ods file can be converted to ods`() {
         val testInput = MockMultipartFile(
-            "test.ods",
-            "test.ods",
+            testFileName,
+            testFileName,
             mimeType,
             TestUtils().loadFileBytes(testOds),
         )
@@ -34,8 +35,8 @@ class OdsToOdsConverterTest {
     @Test
     fun `check that an empty ods file is not validated`() {
         val testInput = MockMultipartFile(
-            "test.ods",
-            "test.ods",
+            testFileName,
+            testFileName,
             mimeType,
             TestUtils().loadFileBytes(emptyOds),
         )
