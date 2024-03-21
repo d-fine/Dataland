@@ -4,12 +4,17 @@ import org.apache.tika.Tika
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
 import org.springframework.web.multipart.MultipartFile
+import xyz.capybara.clamav.ClamavClient
+import xyz.capybara.clamav.commands.scan.result.ScanResult
 import java.io.File
 
 /**
  * A base class for a converter to convert between different file types
  */
-abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<String, Set<String>>) {
+abstract class FileConverter(
+    private val allowedMimeTypesPerFileExtension: Map<String, Set<String>>,
+    private val clamAvClient: ClamavClient?,
+) {
     protected abstract val logger: Logger
     private val fileExtensionAndMimeTypeMismatchMessage =
         "Only upload of documents with matching file extensions and MIME types is supported."
@@ -34,6 +39,7 @@ abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<S
         logger.info("Validating uploaded file. (correlation ID: $correlationId)")
         validateFileNameWithinNamingConvention(file.originalFilename!!, correlationId)
         validateMimeType(file)
+        validateNoVirusIfClamAvProvided(file, correlationId)
         validateFileContent(file, correlationId)
     }
 
@@ -79,6 +85,20 @@ abstract class FileConverter(private val allowedMimeTypesPerFileExtension: Map<S
                 "You seem to have uploaded a file that has an invalid name",
                 fileNameHasForbiddenCharactersMessage,
             )
+        }
+    }
+
+    private fun validateNoVirusIfClamAvProvided(file: MultipartFile, correlationId: String) {
+        if (clamAvClient == null) return
+        logger.info("Scanning uploaded file for viruses. (correlation ID: $correlationId)")
+        file.inputStream.use { inputStream ->
+            val scanResult = clamAvClient.scan(inputStream)
+            if (scanResult is ScanResult.VirusFound) {
+                throw InvalidInputApiException(
+                    "Virus found",
+                    "The open-source program ClamAV has found a virus inside the document you provided - please check!",
+                )
+            }
         }
     }
 }

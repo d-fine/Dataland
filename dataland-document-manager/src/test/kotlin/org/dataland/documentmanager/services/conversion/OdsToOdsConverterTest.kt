@@ -14,7 +14,7 @@ class OdsToOdsConverterTest {
     private val testOds = "sampleFiles/sample.ods"
     private val emptyOds = "sampleFiles/empty.ods"
     private val testFileName = "test.ods"
-    private val odsToOdsConverter = OdsToOdsConverter()
+    private val odsToOdsConverter = OdsToOdsConverter(mockClamAvClient())
     private val mimeType = "application/vnd.oasis.opendocument.spreadsheet"
 
     @Test

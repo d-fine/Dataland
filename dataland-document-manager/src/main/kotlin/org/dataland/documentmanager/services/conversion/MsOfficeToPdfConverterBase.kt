@@ -17,6 +17,7 @@ abstract class MsOfficeToPdfConverterBase(
     allowedMimeTypesPerFileExtension: Map<String, Set<String>>,
 ) : FileConverter(
     allowedMimeTypesPerFileExtension = allowedMimeTypesPerFileExtension,
+    clamAvClient = null,
 ) {
     override fun convert(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting ${file.lowercaseExtension()} to a pdf document. (correlation ID: $correlationId)")

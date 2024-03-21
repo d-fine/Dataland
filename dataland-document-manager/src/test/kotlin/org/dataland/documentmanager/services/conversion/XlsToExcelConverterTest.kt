@@ -13,7 +13,7 @@ class XlsToExcelConverterTest {
     private val correlationId = "test-correlation-id"
     private val testXls = "sampleFiles/sample.xls"
     private val emptyXls = "sampleFiles/EmptyExcelFile.xls"
-    private val xlsToExcelConverter = XlsToExcelConverter()
+    private val xlsToExcelConverter = XlsToExcelConverter(mockClamAvClient())
     private val testFileName = "test.xls"
     private val mimeType = "application/x-tika-msoffice"
 

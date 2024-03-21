@@ -55,6 +55,7 @@ class FileProcessorTest(
                             "a" to setOf("abc"),
                             "b" to setOf("defg"),
                         ),
+                        null,
                     ) {
                         override val logger = LoggerFactory.getLogger("TestLogger")
                         override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
@@ -64,6 +65,7 @@ class FileProcessorTest(
                             "b" to setOf("hijk"),
                             "c" to setOf("lmnop"),
                         ),
+                        null,
                     ) {
                         override val logger = LoggerFactory.getLogger("TestLogger")
                         override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
@@ -83,6 +85,7 @@ class FileProcessorTest(
                         "a" to setOf("abc"),
                         "b" to setOf("defg"),
                     ),
+                    null,
                 ) {
                     override val logger = LoggerFactory.getLogger("TestLogger")
                     override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
@@ -91,6 +94,7 @@ class FileProcessorTest(
                     mapOf(
                         "c" to setOf("lmnop"),
                     ),
+                    null,
                 ) {
                     override val logger = LoggerFactory.getLogger("TestLogger")
                     override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()

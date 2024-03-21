@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import xyz.capybara.clamav.ClamavClient
-import xyz.capybara.clamav.commands.scan.result.ScanResult
 import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.UUID.randomUUID
@@ -41,7 +38,6 @@ class DocumentManager(
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val fileProcessor: FileProcessor,
-    @Autowired private val clamAvClient: ClamavClient,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -68,7 +64,6 @@ class DocumentManager(
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        checkDocumentForViruses(document) // todo move to file validator
         val documentBody = fileProcessor.processFile(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
@@ -85,17 +80,6 @@ class DocumentManager(
             "xlsx" -> DocumentType.Xlsx
             "ods" -> DocumentType.Ods
             else -> DocumentType.Pdf
-        }
-    }
-
-    // todo move to FileConverter and possibly not apply to files which are converted anyways
-    private fun checkDocumentForViruses(document: MultipartFile) {
-        val scanResult = clamAvClient.scan(document.inputStream)
-        if (scanResult is ScanResult.VirusFound) {
-            throw InvalidInputApiException(
-                "Virus found",
-                "The open-source program ClamAV has found a virus inside the document you provided - please check!",
-            )
         }
     }
 

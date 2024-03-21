@@ -5,20 +5,26 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import xyz.capybara.clamav.ClamavClient
 
 /**
  * Validates the file content of an xlsx document
  */
 @Component
-class XlsxToExcelConverter : FileConverter(
+class XlsxToExcelConverter(
+    @Autowired
+    clamAvClient: ClamavClient,
+) : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "xlsx" to setOf(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "application/x-tika-ooxml",
         ),
     ),
+    clamAvClient = clamAvClient,
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
