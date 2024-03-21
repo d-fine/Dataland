@@ -21,10 +21,12 @@ class FileProcessorTest(
         DocxToPdfConverter::class.java,
         DocToPdfConverter::class.java,
         XlsxToExcelConverter::class.java,
+        XlsToExcelConverter::class.java,
         ImageToPdfConverter::class.java,
         OdsToOdsConverter::class.java,
         PdfToPdfConverter::class.java,
         PptxToPdfConverter::class.java,
+        PptToPdfConverter::class.java,
         TextToPdfConverter::class.java,
     )
     private val testPdf = "sampleFiles/sample.pdf"
