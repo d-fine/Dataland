@@ -9,16 +9,15 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 
 /**
- * Validates the file content of an excel document
+ * Validates the file content of an xlsx document
  */
 @Component
-class ExcelToExcelConverter : FileConverter(
+class XlsxToExcelConverter : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "xlsx" to setOf(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "application/x-tika-ooxml",
         ),
-        "xls" to setOf("application/vnd.ms-excel"),
     ),
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -72,7 +71,5 @@ class ExcelToExcelConverter : FileConverter(
         )
     }
 
-    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
-        return file.bytes
-    }
+    override fun convert(file: MultipartFile, correlationId: String) = file.bytes
 }

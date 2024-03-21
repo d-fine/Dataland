@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.mock.web.MockMultipartFile
 
-class ExcelToExcelConverterTest {
+class XlsxToExcelConverterTest {
     private val correlationId = "test-correlation-id"
     private val testXlsx = "sampleFiles/sample.xlsx"
     private val emptyXlsx = "sampleFiles/EmptyExcelFile.xlsx"
     private val testXls = "sampleFiles/sample.xls"
     private val emptyXls = "sampleFiles/EmptyExcelFile.xls"
-    private val excelToExcelConverter = ExcelToExcelConverter()
+    private val xlsxToExcelConverter = XlsxToExcelConverter()
     private val testFileName = "test.xlsx"
 
     @Test
@@ -26,8 +26,8 @@ class ExcelToExcelConverterTest {
             TestUtils().loadFileBytes(testXlsx),
         )
         assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
-        excelToExcelConverter.validateFile(testInput, correlationId)
-        val convertedDocument = excelToExcelConverter.convertFile(testInput, correlationId)
+        xlsxToExcelConverter.validateFile(testInput, correlationId)
+        val convertedDocument = xlsxToExcelConverter.convertFile(testInput, correlationId)
         assertEquals("application/x-tika-ooxml", Tika().detect(convertedDocument))
     }
 
@@ -41,7 +41,7 @@ class ExcelToExcelConverterTest {
         )
         assertEquals("application/x-tika-ooxml", Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
-            excelToExcelConverter.validateFile(testInput, correlationId)
+            xlsxToExcelConverter.validateFile(testInput, correlationId)
         }
         assertEquals("An empty spreadsheet was provided", exception.message)
     }
@@ -56,8 +56,8 @@ class ExcelToExcelConverterTest {
             TestUtils().loadFileBytes(testXls),
         )
         assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
-        excelToExcelConverter.validateFile(testInput, correlationId)
-        val convertedDocument = excelToExcelConverter.convertFile(testInput, correlationId)
+        xlsxToExcelConverter.validateFile(testInput, correlationId)
+        val convertedDocument = xlsxToExcelConverter.convertFile(testInput, correlationId)
         assertEquals("application/x-tika-msoffice", Tika().detect(convertedDocument))
     }
 
@@ -72,7 +72,7 @@ class ExcelToExcelConverterTest {
         )
         assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
-            excelToExcelConverter.validateFile(testInput, correlationId)
+            xlsxToExcelConverter.validateFile(testInput, correlationId)
         }
         assertEquals("An empty spreadsheet was provided", exception.message)
     }
