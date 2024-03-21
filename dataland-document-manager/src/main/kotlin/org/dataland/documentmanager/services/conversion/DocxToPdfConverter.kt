@@ -53,5 +53,6 @@ class DocxToPdfConverter(
 private val docxMimeTypes = setOf(
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "application/msword",
+    "application/x-tika-msoffice",
     "application/x-tika-ooxml",
 )
