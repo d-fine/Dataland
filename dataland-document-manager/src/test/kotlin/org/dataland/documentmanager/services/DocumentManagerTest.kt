@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -42,8 +43,7 @@ class DocumentManagerTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
 
-    // TODO swap out the test report for something generic
-    val reportName = "test-report.pdf"
+    val testDocument = "sample.pdf"
 
     @BeforeEach
     fun mockStorageApi() {
@@ -75,7 +75,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
-        val mockMultipartFile = mockUploadableFile(reportName)
+        val mockMultipartFile = mockUploadableFile(testDocument)
 
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
@@ -104,7 +104,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
-        val mockMultipartFile = mockUploadableFile(reportName)
+        val mockMultipartFile = mockUploadableFile(testDocument)
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
@@ -124,7 +124,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
-        val mockMultipartFile = mockUploadableFile(reportName)
+        val mockMultipartFile = mockUploadableFile(testDocument)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DocumentReceived), anyString(),
