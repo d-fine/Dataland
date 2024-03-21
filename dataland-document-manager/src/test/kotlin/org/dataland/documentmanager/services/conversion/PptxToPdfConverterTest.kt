@@ -10,8 +10,9 @@ import org.springframework.mock.web.MockMultipartFile
 
 class PptxToPdfConverterTest {
 
+    private val pathToLibre = "/usr/lib/libreoffice"
     private val correlationId = "test-correlation-id"
-    private val pptxToPdfConverter = PptxToPdfConverter("/usr/lib/libreoffice")
+    private val pptxToPdfConverter = PptxToPdfConverter(pathToLibre)
     private val testPowerPoint = "sampleFiles/sample.pptx"
     private val emptyPowerPoint = "sampleFiles/empty.pptx"
     private val testFileName = "test.pptx"
@@ -28,7 +29,7 @@ class PptxToPdfConverterTest {
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         pptxToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pptxToPdfConverter.convertFile(testInput, correlationId)
-        assertEquals(mimeType, Tika().detect(convertedDocument))
+        assertEquals("application/pdf", Tika().detect(convertedDocument))
     }
 
     @Test

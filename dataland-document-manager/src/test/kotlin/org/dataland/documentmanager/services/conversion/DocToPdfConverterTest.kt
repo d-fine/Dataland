@@ -9,10 +9,11 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.mock.web.MockMultipartFile
 
 class DocToPdfConverterTest {
+    private val pathToLibre = "/usr/lib/libreoffice"
     private val testDoc = "sampleFiles/sample.doc"
     private val emptyDoc = "sampleFiles/emptyDoc.doc"
     private val correlationId = "test-correlation-id"
-    private val docToPdfConverter = DocToPdfConverter("/usr/lib/libreoffice")
+    private val docToPdfConverter = DocToPdfConverter(pathToLibre)
     private val testFileName = "test.doc"
     private val mimeType = "application/x-tika-msoffice"
 
@@ -27,7 +28,7 @@ class DocToPdfConverterTest {
         Assertions.assertEquals(mimeType, Tika().detect(testInput.bytes))
         docToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = docToPdfConverter.convertFile(testInput, correlationId)
-        Assertions.assertEquals(mimeType, Tika().detect(convertedDocument))
+        Assertions.assertEquals("application/pdf", Tika().detect(convertedDocument))
     }
 
     @Test
