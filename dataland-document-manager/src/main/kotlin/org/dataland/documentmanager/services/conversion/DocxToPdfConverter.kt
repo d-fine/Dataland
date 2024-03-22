@@ -43,8 +43,8 @@ class DocxToPdfConverter(
     private fun validateDocumentContent(document: XWPFDocument) {
         if (document.paragraphs.all { it.text.isBlank() }) {
             throw InvalidInputApiException(
-                "Provided file is empty.",
-                "Provided file is empty.",
+                fileIsEmptySummary,
+                fileIsEmptyMessage,
             )
         }
     }

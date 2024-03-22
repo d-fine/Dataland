@@ -39,8 +39,8 @@ class DocToPdfConverter(
     private fun validateDocumentContent(document: HWPFDocument) {
         if (document.range.text().isBlank()) {
             throw InvalidInputApiException(
-                "Provided file is empty.",
-                "Provided file is empty.",
+                fileIsEmptySummary,
+                fileIsEmptyMessage,
             )
         }
     }

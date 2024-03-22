@@ -44,7 +44,7 @@ class PdfToPdfConverterTest {
         val exception = assertThrows<InvalidInputApiException> {
             pdfToPdfConverter.validateFile(testInput, correlationId)
         }
-        assertEquals("The PDF you uploaded seems to have 0 pages.", exception.message)
+        assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 
     private fun createEmptyPDFByteArray(): ByteArray {

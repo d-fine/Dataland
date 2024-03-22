@@ -22,7 +22,8 @@ abstract class FileConverter(
         "Please ensure that your selected file name follows the naming convention for Windows: Avoid using " +
             "special characters like < > : \" / \\ | ? * and ensure the name does not end or begin with a space, " +
             "or end with a full stop character."
-
+    protected val fileIsEmptyMessage = "The file you uploaded seems to be empty."
+    protected val fileIsEmptySummary = "Provided file is empty."
     val responsibleFileExtensions = allowedMimeTypesPerFileExtension.keys
 
     init {

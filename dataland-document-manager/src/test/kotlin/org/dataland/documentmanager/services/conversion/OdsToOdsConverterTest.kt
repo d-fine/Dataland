@@ -44,6 +44,6 @@ class OdsToOdsConverterTest {
         val exception = assertThrows<InvalidInputApiException> {
             odsToOdsConverter.validateFile(testInput, correlationId)
         }
-        assertEquals("An empty spreadsheet was provided", exception.message)
+        assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

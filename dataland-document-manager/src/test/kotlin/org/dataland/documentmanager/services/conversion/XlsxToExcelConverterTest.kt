@@ -44,6 +44,6 @@ class XlsxToExcelConverterTest {
         val exception = assertThrows<InvalidInputApiException> {
             xlsxToExcelConverter.validateFile(testInput, correlationId)
         }
-        assertEquals("An empty spreadsheet was provided", exception.message)
+        assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }
