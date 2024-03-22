@@ -62,8 +62,8 @@ class XlsxToExcelConverter(
             }
         }
         throw InvalidInputApiException(
-            "An empty spreadsheet was provided",
-            "An empty spreadsheet was provided",
+            fileIsEmptySummary,
+            fileIsEmptyMessage,
         )
     }
 

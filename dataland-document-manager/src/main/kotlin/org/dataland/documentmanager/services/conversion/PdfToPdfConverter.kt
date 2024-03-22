@@ -26,7 +26,6 @@ class PdfToPdfConverter(
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     val pdfParsingErrorMessage = "The file you uploaded was not able to be parsed as PDF file."
-    val pdfHasZeroPagesErrorMessage = "The PDF you uploaded seems to have 0 pages."
 
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
         logger.info("Validating that the pdf is not empty. (correlation ID: $correlationId)")
@@ -49,8 +48,8 @@ class PdfToPdfConverter(
                     "PDF document uploaded with correlation ID: $correlationId seems to have 0 pages, aborting.",
                 )
                 throw InvalidInputApiException(
-                    "You seem to have uploaded an empty PDF",
-                    pdfHasZeroPagesErrorMessage,
+                    fileIsEmptySummary,
+                    fileIsEmptyMessage,
                 )
             }
         }

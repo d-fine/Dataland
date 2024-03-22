@@ -44,6 +44,6 @@ class PptxToPdfConverterTest {
         val exception = assertThrows<InvalidInputApiException> {
             pptxToPdfConverter.validateFile(testInput, correlationId)
         }
-        assertEquals("Provided file is empty.", exception.message)
+        assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

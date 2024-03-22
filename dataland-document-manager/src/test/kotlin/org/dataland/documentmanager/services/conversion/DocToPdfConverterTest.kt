@@ -3,7 +3,7 @@ package org.dataland.documentmanager.services.conversion
 import org.apache.tika.Tika
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.documentmanager.services.TestUtils
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.mock.web.MockMultipartFile
@@ -25,10 +25,10 @@ class DocToPdfConverterTest {
             "application/msword",
             TestUtils().loadFileBytes(testDoc),
         )
-        Assertions.assertEquals(mimeType, Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         docToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = docToPdfConverter.convertFile(testInput, correlationId)
-        Assertions.assertEquals("application/pdf", Tika().detect(convertedDocument))
+        assertEquals("application/pdf", Tika().detect(convertedDocument))
     }
 
     @Test
@@ -39,10 +39,10 @@ class DocToPdfConverterTest {
             "application/msword",
             TestUtils().loadFileBytes(emptyDoc),
         )
-        Assertions.assertEquals(mimeType, Tika().detect(testInput.bytes))
+        assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
             docToPdfConverter.validateFile(testInput, correlationId)
         }
-        Assertions.assertEquals("Provided file is empty.", exception.message)
+        assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

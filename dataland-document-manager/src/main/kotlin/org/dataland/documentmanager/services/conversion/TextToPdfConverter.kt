@@ -28,8 +28,8 @@ class TextToPdfConverter : FileConverter(
     override fun validateFileContent(file: MultipartFile, correlationId: String) {
         if (file.bytes.decodeToString().isBlank()) {
             throw InvalidInputApiException(
-                "Provided file is empty.",
-                "Provided file is empty.",
+                fileIsEmptySummary,
+                fileIsEmptyMessage,
             )
         }
     }

@@ -33,8 +33,8 @@ class PptToPdfConverter(
             HSLFSlideShow(inputStream).use { slideShow ->
                 if (slideShow.slides.isEmpty()) {
                     throw InvalidInputApiException(
-                        "Provided file is empty.",
-                        "Provided file is empty.",
+                        fileIsEmptySummary,
+                        fileIsEmptyMessage,
                     )
                 }
             }

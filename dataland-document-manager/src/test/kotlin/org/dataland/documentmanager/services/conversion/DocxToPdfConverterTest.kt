@@ -43,6 +43,6 @@ class DocxToPdfConverterTest {
         val exception = assertThrows<InvalidInputApiException> {
             docxToPdfConverter.validateFile(testInput, correlationId)
         }
-        assertEquals("Provided file is empty.", exception.message)
+        assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }
