@@ -40,10 +40,12 @@ class TextToPdfConverter : FileConverter(
         val pdfDocument = PdfDocument(PdfWriter(outputStream))
         val document = Document(pdfDocument)
 
-        BufferedReader(InputStreamReader(file.inputStream)).use { reader ->
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                document.add(Paragraph(line))
+        file.inputStream.use { inputStream ->
+            BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    document.add(Paragraph(line))
+                }
             }
         }
 

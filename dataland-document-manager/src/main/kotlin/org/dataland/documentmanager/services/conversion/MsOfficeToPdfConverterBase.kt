@@ -32,11 +32,13 @@ abstract class MsOfficeToPdfConverterBase(
             .officeManager(officeManager)
             .build()
 
-        converter.convert(file.inputStream)
-            .`as`(converterSourceType)
-            .to(outputStream)
-            .`as`(DefaultDocumentFormatRegistry.PDF)
-            .execute()
+        file.inputStream.use { inputStream ->
+            converter.convert(inputStream)
+                .`as`(converterSourceType)
+                .to(outputStream)
+                .`as`(DefaultDocumentFormatRegistry.PDF)
+                .execute()
+        }
 
         officeManager.stop()
         return outputStream.toByteArray()
