@@ -3,12 +3,12 @@ package org.dataland.datalandbackend.frameworks.lksg.custom
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Lksg risk positions
+ * A risk position
  */
 @Schema(
     enumAsRef = true,
 )
-enum class RiskPosition {
+enum class RiskPositionType {
     ChildLabor,
     ForcedLabor,
     Slavery,

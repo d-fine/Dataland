@@ -1,7 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.lksg
 
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.lksg.custom.LksgRiskPositionMultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
@@ -31,63 +30,6 @@ class LksgFramework : PavedRoadFramework(
             .get<ComponentGroup>("masterData").let { parent ->
                 editShareOfTemporaryWorkersOptions(parent)
             }
-        val governanceComponent = framework.root.get<ComponentGroup>("governance")
-        governanceComponent.get<ComponentGroup>("riskManagementOwnOperations").let { parent ->
-            writeLksgRiskPositions(parent, "identifiedRisks")
-        }
-        governanceComponent.get<ComponentGroup>("grievanceMechanismOwnOperations").let { parent ->
-            writeLksgRiskPositions(parent, "complaintsRiskPosition")
-        }
-        governanceComponent.get<ComponentGroup>("generalViolations").let { parent ->
-            writeLksgRiskPositions(parent, "humanRightsOrEnvironmentalViolationsDefinition")
-        }
-    }
-
-    @Suppress("FunctionTooLong")
-    private fun writeLksgRiskPositions(parentComponent: ComponentGroup, fieldName: String) {
-        parentComponent.edit<LksgRiskPositionMultiSelectComponent>(fieldName) {
-            options = mutableSetOf(
-                SelectionOption("ChildLabor", "Child labor"),
-                SelectionOption("ForcedLabor", "Forced Labor"),
-                SelectionOption("Slavery", "Slavery"),
-                SelectionOption(
-                    "DisregardForOccupationalHealthOrSafety",
-                    "Disregard for occupational" +
-                        " health/safety",
-                ),
-                SelectionOption(
-                    "DisregardForFreedomOfAssociation",
-                    "Disregard for freedom of " +
-                        "association",
-                ),
-                SelectionOption("UnequalTreatmentOfEmployment", "Unequal treatment of employment"),
-                SelectionOption("WithholdingAdequateWages", "Withholding adequate wages"),
-                SelectionOption(
-                    "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-                    "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                ),
-                SelectionOption(
-                    "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-                    "Unlawful eviction/deprivation of land, forest and water",
-                ),
-                SelectionOption(
-                    "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-                    "Use of private/public security forces with disregard for human rights",
-                ),
-                SelectionOption(
-                    "UseOfMercuryOrMercuryWaste",
-                    "Use of mercury, mercury waste (Minamata Convention)",
-                ),
-                SelectionOption(
-                    "ProductionAndUseOfPersistentOrganicPollutants",
-                    "Production and use of persistent organic pollutants (POPs Convention)",
-                ),
-                SelectionOption(
-                    "ExportImportOfHazardousWaste",
-                    "Export/import of hazardous waste (Basel Convention)",
-                ),
-            )
-        }
     }
 
     private fun editShareOfTemporaryWorkersOptions(parent: ComponentGroup) {

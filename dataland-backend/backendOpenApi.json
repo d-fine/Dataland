@@ -7297,20 +7297,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/LksgRiskOrViolationAssessment"
             }
-          },
-          "humanRightsOrEnvironmentalViolationsMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "humanRightsOrEnvironmentalViolationsMeasuresDefinition": {
-            "type": "string",
-            "nullable": true
           },
           "highRiskCountriesRawMaterials": {
             "nullable": true,
@@ -7418,24 +7406,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/LksgGrievanceAssessmentMechanism"
             }
-          },
-          "complaintsReason": {
-            "type": "string",
-            "nullable": true
-          },
-          "actionsForComplaintsUndertaken": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "whichActionsForComplaintsUndertaken": {
-            "type": "string",
-            "nullable": true
           },
           "publicAccessToGrievanceHandling": {
             "nullable": true,
@@ -7494,20 +7466,8 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/RiskPosition"
+              "$ref": "#/components/schemas/LksgRiskOrViolationAssessment"
             }
-          },
-          "counteractingMeasures": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "whichCounteractingMeasures": {
-            "type": "string",
-            "nullable": true
           },
           "regulatedRiskManagementResponsibility": {
             "nullable": true,
@@ -7516,6 +7476,32 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          }
+        }
+      },
+      "LksgGrievanceAssessmentMechanism": {
+        "required": [
+          "measuresTaken",
+          "riskPositions",
+          "specifiedComplaint"
+        ],
+        "type": "object",
+        "properties": {
+          "riskPositions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RiskPositionType"
+            }
+          },
+          "specifiedComplaint": {
+            "type": "string"
+          },
+          "measuresTaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listedMeasures": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -7615,6 +7601,25 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "LksgRiskOrViolationAssessment": {
+        "required": [
+          "measuresTaken",
+          "riskPosition"
+        ],
+        "type": "object",
+        "properties": {
+          "riskPosition": {
+            "$ref": "#/components/schemas/RiskPositionType"
+          },
+          "measuresTaken": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "listedMeasures": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8548,7 +8553,7 @@
           }
         }
       },
-      "RiskPosition": {
+      "RiskPositionType": {
         "type": "string",
         "enum": [
           "ChildLabor",
@@ -13823,15 +13828,9 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
           },
           "companyId": {
             "type": "string"
@@ -13839,7 +13838,13 @@
           "companyName": {
             "type": "string"
           },
-          "permId": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           }
