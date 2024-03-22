@@ -20,7 +20,7 @@ class EmailSenderTest {
         `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
         val emailSender = EmailSender(mockMailjetClient)
         assertThrows<EmailSendException> {
-            emailSender.sendEmail(email)
+            emailSender.sendEmailWithoutTestReceivers(email)
         }
     }
 }
