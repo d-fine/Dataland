@@ -9,15 +9,14 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
- * Generates NaceCodesComponents from rows with the component "LkSG Risk Position"
+ * Generates the Lksg risk positions component
  */
 @Component
-class LksgRiskPositionMultiSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class LksgRiskAssessmentsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG Risk Position MultiSelect Component"
+        row.component == "LkSG Risk Position Assessments"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -27,7 +26,7 @@ class LksgRiskPositionMultiSelectComponentFactory(@Autowired val templateDiagnos
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<LksgRiskPositionMultiSelectComponent>(
+        return componentGroup.create<LksgRiskAssessmentsComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

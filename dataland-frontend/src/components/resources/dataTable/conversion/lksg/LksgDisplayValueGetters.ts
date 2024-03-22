@@ -10,7 +10,12 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { convertNace, convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/backend";
+import {
+  type LksgGrievanceAssessmentMechanism,
+  type LksgProductionSite,
+  type LksgRiskOrViolationAssessment,
+  type LksgProcurementCategory,
+} from "@clients/backend";
 import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 export const lksgModalColumnHeaders = {
@@ -33,6 +38,22 @@ export const lksgModalColumnHeaders = {
   subcontractingCompanies: {
     country: "Country",
     naceCodes: "Industries",
+  },
+  riskPositions: {
+    riskPosition: "Risk Position",
+    measuresTaken: "Were Measures Defined to Counteract the Risk",
+    listedMeasures: "Which Measures",
+  },
+  generalViolations: {
+    riskPosition: "Risk Position of the Violation",
+    measuresTaken: "Were Counteracting Measures Taken",
+    listedMeasures: "Which Measures Have Been Taken",
+  },
+  grievanceMechanisms: {
+    riskPositions: "Risk Positions in the Complaint",
+    specifiedComplaint: "Complaint Specification",
+    measuresTaken: "Were Measures Taken to Address the Complaint",
+    listedMeasures: "Which Measures Have Been Taken",
   },
 };
 
@@ -259,4 +280,126 @@ export function formatLksgProductionSitesForDisplay(
       },
     },
   };
+}
+interface LksgRiskOrViolationAssessmentDisplayFormat {
+  riskPosition: string;
+  measuresTaken: string;
+  listedMeasures?: string | null;
+}
+
+/**
+ * Converts the risk positions to human-readable strings
+ * @param input to be humanized
+ * @returns the converted object
+ */
+function convertLksgRiskOrViolationPositionForDisplay(
+  input: LksgRiskOrViolationAssessment[],
+): LksgRiskOrViolationAssessmentDisplayFormat[] {
+  return input.map((item) => {
+    const humanizedItem: LksgRiskOrViolationAssessmentDisplayFormat = {
+      riskPosition: humanizeStringOrNumber(item.riskPosition),
+      measuresTaken: humanizeStringOrNumber(item.measuresTaken),
+      listedMeasures: item.listedMeasures,
+    };
+    return humanizedItem;
+  });
+}
+
+/**
+ * Generates a display modal component for the general violations or risks component
+ * @param input list of lksg general violations/risks for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgRisksOrViolationsForDisplay(
+  input: LksgRiskOrViolationAssessment[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    const convertedValueForModal = convertLksgRiskOrViolationPositionForDisplay(input);
+
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+      displayValue: {
+        label: `Show ${fieldLabel}`,
+        modalComponent: DetailsCompanyDataTable,
+        modalOptions: {
+          props: {
+            header: fieldLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            listOfRowContents: convertedValueForModal,
+            kpiKeyOfTable: "riskPositions",
+            columnHeaders: lksgModalColumnHeaders,
+          },
+        },
+      },
+    };
+  }
+}
+
+interface LksgGrievanceMechanismsDisplayFormat {
+  riskPositions: string[];
+  specifiedComplaint: string;
+  measuresTaken: string;
+  listedMeasures?: string | null;
+}
+/**
+ * Converts the risk positions to human-readable strings
+ * @param input to be humanized
+ * @returns the converted object
+ */
+function convertLksGrievanceMechanismsForDisplay(
+  input: LksgGrievanceAssessmentMechanism[],
+): LksgGrievanceMechanismsDisplayFormat[] {
+  return input.map((item) => {
+    const humanizedItem: LksgGrievanceMechanismsDisplayFormat = {
+      riskPositions: item.riskPositions.map((riskPosition) => humanizeStringOrNumber(riskPosition)),
+      specifiedComplaint: item.specifiedComplaint,
+      measuresTaken: humanizeStringOrNumber(item.measuresTaken),
+      listedMeasures: item.listedMeasures,
+    };
+    return humanizedItem;
+  });
+}
+
+/**
+ * Generates a display modal component for the grievance mechanism component
+ * @param input list of lksg grievance mechanism for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgGrievanceMechanismsForDisplay(
+  input: LksgGrievanceAssessmentMechanism[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    const humanizedInput = convertLksGrievanceMechanismsForDisplay(input);
+
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+      displayValue: {
+        label: `Show ${fieldLabel}`,
+        modalComponent: DetailsCompanyDataTable,
+        modalOptions: {
+          props: {
+            header: fieldLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            listOfRowContents: humanizedInput,
+            kpiKeyOfTable: "grievanceMechanisms",
+            columnHeaders: lksgModalColumnHeaders,
+          },
+        },
+      },
+    };
+  }
 }
