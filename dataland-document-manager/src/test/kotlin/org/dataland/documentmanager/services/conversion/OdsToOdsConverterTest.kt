@@ -18,7 +18,7 @@ class OdsToOdsConverterTest {
     private val mimeType = "application/vnd.oasis.opendocument.spreadsheet"
 
     @Test
-    fun `verify that a ods file can be converted to ods`() {
+    fun `verify that the converter validates a ods file but do not convert a ods file`() {
         val testInput = MockMultipartFile(
             testFileName,
             testFileName,

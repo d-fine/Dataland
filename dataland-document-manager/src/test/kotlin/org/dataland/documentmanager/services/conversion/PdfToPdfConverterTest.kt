@@ -19,7 +19,7 @@ class PdfToPdfConverterTest {
     private val mimeType = "application/pdf"
 
     @Test
-    fun `verify that a pdf file can be converted to pdf`() {
+    fun `verify that the converter validates a pdf file but do not convert the pdf file`() {
         val testInput = MockMultipartFile(
             testFileName,
             testFileName,

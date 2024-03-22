@@ -18,7 +18,7 @@ class XlsxToExcelConverterTest {
     private val mimeType = "application/x-tika-ooxml"
 
     @Test
-    fun `verify that a xlsx file can be converted to xlsx`() {
+    fun `verify that the converter validates a xlsx file but do not convert a xlsx file`() {
         val testInput = MockMultipartFile(
             testFileName,
             testFileName,
