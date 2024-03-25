@@ -34,14 +34,6 @@ export default defineComponent({
     showIcon: Boolean,
     fontStyle: String,
   },
-  data: () => ({
-    extensionToMimeTypeMapping: new Map<DownloadableFileExtension, string>([
-      ["pdf", "application/pdf"],
-      ["xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
-      ["xls", "application/vnd.ms-excel"],
-      ["ods", "application/vnd.oasis.opendocument.spreadsheet"],
-    ]),
-  }),
   methods: {
     /**
      * Method to download available reports
@@ -59,7 +51,7 @@ export default defineComponent({
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
             const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-            const mimeType = this.extensionToMimeTypeMapping.get(fileExtension);
+            const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
             docUrl.href = URL.createObjectURL(newBlob);
             docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
@@ -75,9 +67,16 @@ export default defineComponent({
      * @param headers
      */
     getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
-      return assertDefined(new Map(Object.entries(headers)).get("Content-Disposition") as string)
+      return assertDefined(new Map(Object.entries(headers)).get("content-disposition") as string)
         .split(".")
         .at(-1) as DownloadableFileExtension;
+    },
+    /**
+     * Extracts the content type from the http response headers
+     * @param headers
+     */
+    getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
+      return assertDefined(new Map(Object.entries(headers)).get("content-type") as string);
     },
   },
 });
