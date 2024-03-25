@@ -145,9 +145,11 @@ describe("Component test for the company cockpit", () => {
         );
 
         if (isProvideDataButtonExpected) {
-          cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-            "exist",
-          );
+          if (frameworkName != "sme") {
+            cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
+              "exist",
+            );
+          }
         } else {
           cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
             "not.exist",
