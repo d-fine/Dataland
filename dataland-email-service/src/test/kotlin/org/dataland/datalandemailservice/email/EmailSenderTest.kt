@@ -2,15 +2,16 @@ package org.dataland.datalandemailservice.email
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.MailjetRequest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.slf4j.LoggerFactory
+import java.util.logging.Logger
 
 class EmailSenderTest {
     private class EmailSendException : RuntimeException()
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Test
     fun `check if the mail sender works as expected`() {
@@ -40,6 +41,26 @@ class EmailSenderTest {
         val emailSender = EmailSender(mockMailjetClient)
         assertThrows<EmailSendException> {
             emailSender.sendEmailWithoutTestReceivers(email)
+        }
+    }
+
+    @Test
+    fun `check if the suppressing of test receivers and carbon copy works as expected`() {
+        val logger = mock(Logger::class.java)
+        val senderContact = EmailContact("sender@example.com")
+        val receiversContact = EmailContact("receiver@example.com")
+        val senderCC = EmailContact("CC@example.comn")
+        val email = Email(
+            senderContact, listOf(receiversContact), listOf(senderCC),
+            EmailContent("", "", ""),
+        )
+        val mockMailjetClient = mock(MailjetClient::class.java)
+        val mockMailjetRequest = mock(MailjetRequest::class.java)
+        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
+        val emailSender = EmailSender(mockMailjetClient)
+        assertDoesNotThrow {
+            emailSender.sendEmailWithoutTestReceivers(email)
+            Mockito.verify(logger, Mockito.times(1))
         }
     }
 }
