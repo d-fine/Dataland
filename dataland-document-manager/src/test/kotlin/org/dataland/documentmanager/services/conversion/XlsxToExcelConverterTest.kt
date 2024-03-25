@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.mock.web.MockMultipartFile
 
-class XlsxToXlsxConverterTest {
+class XlsxToExcelConverterTest {
     private val correlationId = "test-correlation-id"
     private val testXlsx = "sampleFiles/sample.xlsx"
     private val emptyXlsx = "sampleFiles/EmptyExcelFile.xlsx"
-    private val xlsxToXlsxConverter = XlsxToXlsxConverter()
+    private val xlsxToExcelConverter = XlsxToExcelConverter(mockClamAvClient())
     private val testFileName = "test.xlsx"
     private val mimeType = "application/x-tika-ooxml"
 
@@ -26,8 +26,8 @@ class XlsxToXlsxConverterTest {
             TestUtils().loadFileBytes(testXlsx),
         )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
-        xlsxToXlsxConverter.validateFile(testInput, correlationId)
-        val convertedDocument = xlsxToXlsxConverter.convertFile(testInput, correlationId)
+        xlsxToExcelConverter.validateFile(testInput, correlationId)
+        val convertedDocument = xlsxToExcelConverter.convertFile(testInput, correlationId)
         assertEquals(mimeType, Tika().detect(convertedDocument))
         assertEquals(convertedDocument.sha256(), testInput.bytes.sha256())
     }
@@ -42,7 +42,7 @@ class XlsxToXlsxConverterTest {
         )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         val exception = assertThrows<InvalidInputApiException> {
-            xlsxToXlsxConverter.validateFile(testInput, correlationId)
+            xlsxToExcelConverter.validateFile(testInput, correlationId)
         }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }

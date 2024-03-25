@@ -101,6 +101,7 @@ services:
     networks:
       - internal
       - document-manager-db
+      - clamav
     image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_test:${DATALAND_DOCUMENT_MANAGER_TEST_VERSION}}
     expose:
       - "8080"
@@ -485,6 +486,15 @@ services:
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
+  clamav:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: clamav/clamav:1.3.0-43
+    volumes:
+      - ./clamav/clamd.conf:/etc/clamav/clamd.conf
+      - clamav_data:/var/lib/clamav
+    networks:
+      - clamav
 networks:
   internal:
   external:
@@ -495,6 +505,7 @@ networks:
   document-manager-db:
   qa-service-db:
   community-manager-db:
+  clamav:
 volumes:
   keycloak_data:
     driver: local
@@ -519,4 +530,6 @@ volumes:
   community_manager_data:
     driver: local
   batch_manager_data:
+    driver: local
+  clamav_data:
     driver: local

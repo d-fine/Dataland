@@ -200,3 +200,5 @@ poi-ooxml = "org.apache.poi:poi-ooxml:5.2.5"
 poi-scratchpad = "org.apache.poi:poi-scratchpad:5.2.5"
 
 simple-odf = "org.odftoolkit:simple-odf:0.9.0"
+
+clamav-client = "xyz.capybara:clamav-client:2.1.2"

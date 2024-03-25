@@ -4,20 +4,26 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import xyz.capybara.clamav.ClamavClient
 
 /**
  * Validates the file content of an xlsx document
  */
 @Component
-class XlsToXlsConverter : FileConverter(
+class XlsToExcelConverter(
+    @Autowired
+    clamAvClient: ClamavClient,
+) : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "xls" to setOf(
             "application/vnd.ms-excel",
             "application/x-tika-msoffice",
         ),
     ),
+    clamAvClient = clamAvClient,
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 

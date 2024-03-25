@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.poi.ooxml)
     implementation(libs.poi.scratchpad)
     implementation(libs.simple.odf)
+    implementation(libs.clamav.client)
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)

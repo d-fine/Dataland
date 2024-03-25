@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services.conversion
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.documentmanager.DatalandDocumentManager
+import org.dataland.documentmanager.configurations.TestClamAvClientConfig
 import org.dataland.documentmanager.services.TestUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,17 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.web.multipart.MultipartFile
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
+@ContextConfiguration(classes = [TestClamAvClientConfig::class])
 class FileProcessorTest(
     @Autowired val toPdfConverters: List<FileConverter>,
 ) {
     private val expectedToPdfConverters = listOf(
         DocxToPdfConverter::class.java,
         DocToPdfConverter::class.java,
-        XlsxToXlsxConverter::class.java,
-        XlsToXlsConverter::class.java,
+        XlsxToExcelConverter::class.java,
+        XlsToExcelConverter::class.java,
         ImageToPdfConverter::class.java,
         OdsToOdsConverter::class.java,
         PdfToPdfConverter::class.java,
@@ -56,6 +59,7 @@ class FileProcessorTest(
                             "a" to setOf("abc"),
                             "b" to setOf("defg"),
                         ),
+                        null,
                     ) {
                         override val logger = LoggerFactory.getLogger("TestLogger")
                         override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
@@ -65,6 +69,7 @@ class FileProcessorTest(
                             "b" to setOf("hijk"),
                             "c" to setOf("lmnop"),
                         ),
+                        null,
                     ) {
                         override val logger = LoggerFactory.getLogger("TestLogger")
                         override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
@@ -84,6 +89,7 @@ class FileProcessorTest(
                         "a" to setOf("abc"),
                         "b" to setOf("defg"),
                     ),
+                    null,
                 ) {
                     override val logger = LoggerFactory.getLogger("TestLogger")
                     override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
@@ -92,6 +98,7 @@ class FileProcessorTest(
                     mapOf(
                         "c" to setOf("lmnop"),
                     ),
+                    null,
                 ) {
                     override val logger = LoggerFactory.getLogger("TestLogger")
                     override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
