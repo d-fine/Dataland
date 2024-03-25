@@ -8,6 +8,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentType
+import org.dataland.documentmanager.model.VirusScanStatus
 
 /**
  * The entity storing the document meta info
@@ -23,6 +24,8 @@ data class DocumentMetaInfoEntity(
     val uploadTime: Long,
     @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
+    @Enumerated(EnumType.STRING)
+    val virusScanStatus: VirusScanStatus,
 ) {
     constructor(documentMetaInfo: DocumentMetaInfo) :
         this(
@@ -31,5 +34,6 @@ data class DocumentMetaInfoEntity(
             uploaderId = documentMetaInfo.uploaderId,
             uploadTime = documentMetaInfo.uploadTime,
             qaStatus = documentMetaInfo.qaStatus,
+            virusScanStatus = documentMetaInfo.virusScanStatus,
         )
 }

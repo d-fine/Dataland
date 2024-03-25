@@ -11,6 +11,7 @@ import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
+import org.dataland.documentmanager.model.VirusScanStatus
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.documentmanager.services.conversion.lowercaseExtension
@@ -56,7 +57,12 @@ class DocumentManager(
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        val documentBody = fileProcessor.processFile(document, correlationId)
+        val (documentBody, usesVirusScan) = fileProcessor.processFile(document, correlationId)
+        if (usesVirusScan) {
+            documentMetaInfo.virusScanStatus = VirusScanStatus.InProgress
+        } else {
+            documentMetaInfo.virusScanStatus = VirusScanStatus.Unscanned
+        }
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -102,6 +108,7 @@ class DocumentManager(
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
             qaStatus = QaStatus.Pending,
+            virusScanStatus = VirusScanStatus.Pending,
         )
     }
 

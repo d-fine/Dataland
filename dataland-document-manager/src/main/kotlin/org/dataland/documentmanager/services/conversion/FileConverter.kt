@@ -31,6 +31,8 @@ abstract class FileConverter(
         require(responsibleFileExtensions.all { it == it.lowercase() }) { "Some file extensions are not lowercase." }
     }
 
+    val usesVirusScan = clamAvClient != null
+
     /**
      * Validates that a file is what it claims to be, e.g. by mime type and content validation
      * @param file the file to validate

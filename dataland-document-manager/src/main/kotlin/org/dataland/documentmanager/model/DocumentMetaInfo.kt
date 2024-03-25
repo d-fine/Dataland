@@ -16,4 +16,5 @@ data class DocumentMetaInfo(
     val uploaderId: String,
     val uploadTime: Long,
     var qaStatus: QaStatus,
+    var virusScanStatus: VirusScanStatus,
 )
