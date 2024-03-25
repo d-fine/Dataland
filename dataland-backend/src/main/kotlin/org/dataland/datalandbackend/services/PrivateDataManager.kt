@@ -91,6 +91,9 @@ class PrivateDataManager(
     }
 
     private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>, correlationId: String) {
+        // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
+        //  ==> Need to copy it to refer to it afterwards.
+        //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
         logger.info("Storing Sme data in temporary storage for dataId $dataId and correlationId $correlationId.")
         documentInMemoryStorage[dataId] = documents
     }

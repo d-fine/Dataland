@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.PrivateDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
@@ -33,14 +32,9 @@ class SmeDataController(
 
     // @Operation(operationId = "postCompanyAssociatedSmeData")
     override fun postSmeJsonAndDocuments(
-        companyAssociatedSmeDataAsString: String,
-        documents: Array<MultipartFile>,
-    ):
-        ResponseEntity<DataMetaInformation> {
-        val companyAssociatedSmeData = myObjectMapper.readValue(
-            companyAssociatedSmeDataAsString,
-            object : TypeReference<CompanyAssociatedData<SmeData>>() {},
-        )
+        companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
+        documents: Array<MultipartFile>?,
+    ): ResponseEntity<DataMetaInformation> {
         companyAssociatedSmeData.companyId
         logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
         val correlationId = UUID.randomUUID().toString()
@@ -57,7 +51,7 @@ class SmeDataController(
         )
         val dataIdOfPostedData = privateDataManager.processPrivateSmeDataStorageRequest(
             test,
-            documents,
+            documents ?: emptyArray(),
             correlationId,
         )
         val dummyResponse = DataMetaInformation(
