@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile
 interface DocumentApi {
     /**
      * Upload a document
-     * @param pdfDocument a PDF document
+     * @param document a document
      */
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     @Operation(
@@ -45,7 +45,7 @@ interface DocumentApi {
         consumes = ["multipart/form-data"],
     )
     fun postDocument(
-        @RequestPart("pdfDocument") pdfDocument: MultipartFile,
+        @RequestPart document: MultipartFile,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
@@ -92,7 +92,13 @@ interface DocumentApi {
     )
     @GetMapping(
         value = ["/{documentId}"],
-        produces = ["application/json", "application/pdf"],
+        produces = [
+            "application/json",
+            "application/pdf",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.oasis.opendocument.spreadsheet",
+        ],
     )
     fun getDocument(
         @PathVariable("documentId") documentId: String,

@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile
 class DocumentController(
     @Autowired private val documentManager: DocumentManager,
 ) : DocumentApi {
-    override fun postDocument(pdfDocument: MultipartFile): ResponseEntity<DocumentUploadResponse> {
-        return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(pdfDocument))
+    override fun postDocument(document: MultipartFile): ResponseEntity<DocumentUploadResponse> {
+        return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document))
     }
 
     override fun checkDocument(documentId: String) {
