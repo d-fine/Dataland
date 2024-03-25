@@ -17,7 +17,8 @@ class IntegrationTestFramework : PavedRoadFramework(
             "frameworktoolbox/integration/integrationTestFrameworkDefinition.csv",
     ),
     enabledFeatures = setOf(
-        FrameworkGenerationFeatures.DataModel,
+        FrameworkGenerationFeatures.BackendDataModel,
+        FrameworkGenerationFeatures.BackendApiController,
         FrameworkGenerationFeatures.ViewPage,
         FrameworkGenerationFeatures.FakeFixtures,
     ),

@@ -13734,16 +13734,16 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "permId": {
@@ -13771,10 +13771,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
