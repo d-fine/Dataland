@@ -27,7 +27,6 @@ class ImageToPdfConverter : FileConverter(
         "heic" to imageMimeTypes,
         "heif" to imageMimeTypes,
     ),
-    clamAvClient = null,
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 

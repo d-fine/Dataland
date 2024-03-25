@@ -4,24 +4,18 @@ import org.apache.pdfbox.Loader
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import xyz.capybara.clamav.ClamavClient
 import java.io.IOException
 
 /**
  * A validator for pdfs
  */
 @Component
-class PdfToPdfConverter(
-    @Autowired
-    clamAvClient: ClamavClient,
-) : FileConverter(
+class PdfToPdfConverter : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "pdf" to setOf("application/pdf"),
     ),
-    clamAvClient = clamAvClient,
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 

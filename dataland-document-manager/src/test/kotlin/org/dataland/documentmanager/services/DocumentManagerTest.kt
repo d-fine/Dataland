@@ -7,7 +7,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.DatalandDocumentManager
-import org.dataland.documentmanager.configurations.TestClamAvClientConfig
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -29,11 +28,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.test.context.ContextConfiguration
 import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
-@ContextConfiguration(classes = [TestClamAvClientConfig::class])
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val fileProcessor: FileProcessor,

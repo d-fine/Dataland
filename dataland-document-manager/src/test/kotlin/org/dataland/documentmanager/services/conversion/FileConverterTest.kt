@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile
 
 class FileConverterTest {
     private val dummyPdfToPdfConverter =
-        object : FileConverter(mapOf("pdf" to setOf(MediaType.APPLICATION_PDF_VALUE)), null) {
+        object : FileConverter(mapOf("pdf" to setOf(MediaType.APPLICATION_PDF_VALUE))) {
             override val logger = LoggerFactory.getLogger("TestLogger")
             override fun convert(file: MultipartFile, correlationId: String) = file.bytes
         }
@@ -21,7 +21,7 @@ class FileConverterTest {
     @Test
     fun `check that a proper error is thrown if no file extensions are provided`() {
         val exception = assertThrows<IllegalArgumentException> {
-            object : FileConverter(emptyMap(), null) {
+            object : FileConverter(emptyMap()) {
                 override val logger = LoggerFactory.getLogger("TestLogger")
                 override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
             }
@@ -32,7 +32,7 @@ class FileConverterTest {
     @Test
     fun `check that a proper error is thrown if file extensions are not correctly formatted`() {
         val exception = assertThrows<IllegalArgumentException> {
-            object : FileConverter(mapOf("PNG" to setOf("mime-type")), null) {
+            object : FileConverter(mapOf("PNG" to setOf("mime-type"))) {
                 override val logger = LoggerFactory.getLogger("TestLogger")
                 override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
             }
@@ -42,7 +42,7 @@ class FileConverterTest {
 
     @Test
     fun `check that no error is thrown if a file converter is correctly initialized`() {
-        object : FileConverter(mapOf("png" to setOf("mime-type")), null) {
+        object : FileConverter(mapOf("png" to setOf("mime-type"))) {
             override val logger = LoggerFactory.getLogger("TestLogger")
             override fun convert(file: MultipartFile, correlationId: String) = "test".encodeToByteArray()
         }

@@ -21,7 +21,6 @@ class TextToPdfConverter : FileConverter(
     allowedMimeTypesPerFileExtension = mapOf(
         "txt" to setOf("text/plain"),
     ),
-    clamAvClient = null,
 ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 

@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
 class PdfToPdfConverterTest {
     private val correlationId = "test-correlation-id"
     private val testPdf = "sampleFiles/sample.pdf"
-    private val pdfToPdfConverter = PdfToPdfConverter(mockClamAvClient())
+    private val pdfToPdfConverter = PdfToPdfConverter()
     private val testFileName = "test.pdf"
     private val mimeType = "application/pdf"
 
