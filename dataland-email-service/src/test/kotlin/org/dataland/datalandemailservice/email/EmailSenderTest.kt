@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import java.util.logging.Logger
 
 class EmailSenderTest {
     private class EmailSendException : RuntimeException()
@@ -46,7 +44,6 @@ class EmailSenderTest {
 
     @Test
     fun `check if the suppressing of test receivers and carbon copy works as expected`() {
-        val logger = mock(Logger::class.java)
         val senderContact = EmailContact("sender@example.com")
         val receiversContact = EmailContact("receiver@example.com")
         val senderCC = EmailContact("CC@example.comn")
@@ -60,7 +57,6 @@ class EmailSenderTest {
         val emailSender = EmailSender(mockMailjetClient)
         assertDoesNotThrow {
             emailSender.sendEmailWithoutTestReceivers(email)
-            Mockito.verify(logger, Mockito.times(1))
         }
     }
 }
