@@ -22,12 +22,27 @@ export default defineComponent({
       default: "back-button",
     },
   },
+  data() {
+    return {
+      hasPreviousRoutePath: false,
+    };
+  },
+  created() {
+    const previousRoutPath = this.$router.options.history.state.back;
+    if (previousRoutPath != null) {
+      this.hasPreviousRoutePath = true;
+    }
+  },
   methods: {
     /**
      * Performs a go-back operation on the vue router
      */
     goBack(): void {
-      this.$router.go(-1);
+      if (this.hasPreviousRoutePath) {
+        this.$router.back();
+      } else {
+        void this.$router.push("/companies");
+      }
     },
   },
 });
