@@ -76,7 +76,7 @@ export default defineComponent({
      * @param headers the headers of the get document http response
      * @returns the mime type of the received document
      */
-    getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
+    getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
       return assertDefined(new Map(Object.entries(headers)).get("content-type") as string);
     },
   },
