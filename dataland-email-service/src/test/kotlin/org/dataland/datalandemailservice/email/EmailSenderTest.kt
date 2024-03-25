@@ -2,12 +2,11 @@ package org.dataland.datalandemailservice.email
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.MailjetRequest
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.slf4j.LoggerFactory
-import java.util.logging.Logger
 
 class EmailSenderTest {
     private class EmailSendException : RuntimeException()
@@ -33,7 +32,7 @@ class EmailSenderTest {
         val senderCC = EmailContact("CC@somethingelse.com")
         val email = Email(
             senderContact, listOf(receiversContact), listOf(senderCC),
-            EmailContent("", "", "")
+            EmailContent("", "", ""),
         )
         val mockMailjetClient = mock(MailjetClient::class.java)
         val mockMailjetRequest = mock(MailjetRequest::class.java)
@@ -43,5 +42,4 @@ class EmailSenderTest {
             emailSender.sendEmailWithoutTestReceivers(email)
         }
     }
-
 }
