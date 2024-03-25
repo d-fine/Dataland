@@ -63,7 +63,8 @@ export default defineComponent({
     },
     /**
      * Extracts the file extension from the http response headers
-     * @param headers
+     * @param headers the headers of the get document http response
+     * @returns the file type extension of the downloaded file
      */
     getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
       return assertDefined(new Map(Object.entries(headers)).get("content-disposition") as string)
@@ -72,7 +73,8 @@ export default defineComponent({
     },
     /**
      * Extracts the content type from the http response headers
-     * @param headers
+     * @param headers the headers of the get document http response
+     * @returns the mime type of the received document
      */
     getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
       return assertDefined(new Map(Object.entries(headers)).get("content-type") as string);
