@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { type AxiosRequestConfig } from "axios";
+import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -34,6 +34,14 @@ export default defineComponent({
     showIcon: Boolean,
     fontStyle: String,
   },
+  data: () => ({
+    extensionToMimeTypeMapping: new Map<DownloadableFileExtension, string>([
+      ["pdf", "application/pdf"],
+      ["xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+      ["xls", "application/vnd.ms-excel"],
+      ["ods", "application/vnd.oasis.opendocument.spreadsheet"],
+    ]),
+  }),
   methods: {
     /**
      * Method to download available reports
@@ -46,13 +54,15 @@ export default defineComponent({
           .documentController;
         await documentControllerApi
           .getDocument(fileReference, {
-            headers: { accept: "application/pdf" },
+            // headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
-            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
+            const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+            const mimeType = this.extensionToMimeTypeMapping.get(fileExtension);
+            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
             docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute("download", `${this.downloadName}.pdf`);
+            docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
             document.body.appendChild(docUrl);
             docUrl.click();
           });
@@ -60,6 +70,16 @@ export default defineComponent({
         console.error(error);
       }
     },
+    /**
+     * Extracts the file extension from the http response headers
+     * @param headers
+     */
+    getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
+      return assertDefined(new Map(Object.entries(headers)).get("Content-Disposition") as string)
+        .split(".")
+        .at(-1) as DownloadableFileExtension;
+    },
   },
 });
+type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
 </script>
