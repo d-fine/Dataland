@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { type AxiosRequestConfig } from "axios";
+import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -46,13 +46,14 @@ export default defineComponent({
           .documentController;
         await documentControllerApi
           .getDocument(fileReference, {
-            headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
-            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
+            const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+            const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
             docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute("download", `${this.downloadName}.pdf`);
+            docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
             document.body.appendChild(docUrl);
             docUrl.click();
           });
@@ -60,6 +61,25 @@ export default defineComponent({
         console.error(error);
       }
     },
+    /**
+     * Extracts the file extension from the http response headers
+     * @param headers the headers of the get document http response
+     * @returns the file type extension of the downloaded file
+     */
+    getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
+      return assertDefined(new Map(Object.entries(headers)).get("content-disposition") as string)
+        .split(".")
+        .at(-1) as DownloadableFileExtension;
+    },
+    /**
+     * Extracts the content type from the http response headers
+     * @param headers the headers of the get document http response
+     * @returns the mime type of the received document
+     */
+    getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
+      return assertDefined(new Map(Object.entries(headers)).get("content-type") as string);
+    },
   },
 });
+type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
 </script>

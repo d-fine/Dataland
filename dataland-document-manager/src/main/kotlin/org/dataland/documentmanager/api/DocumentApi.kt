@@ -27,8 +27,9 @@ import org.springframework.web.multipart.MultipartFile
 interface DocumentApi {
     /**
      * Upload a document
-     * @param pdfDocument a PDF document
+     * @param document a document
      */
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     @Operation(
         summary = "Upload a document.",
         description = "Upload a document and receive meta information",
@@ -43,15 +44,15 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["multipart/form-data"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postDocument(
-        @RequestPart("pdfDocument") pdfDocument: MultipartFile,
+        @RequestPart document: MultipartFile,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
      * Checks if a document with a given ID exists
      * @param documentId the ID to check
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(
         summary = "Check if a document exists.",
         description = "Check for a given document ID (hash) if the document already exists in the database.",
@@ -67,7 +68,6 @@ interface DocumentApi {
         value = ["/{documentId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
         @PathVariable("documentId") documentId: String,
     )
@@ -76,6 +76,7 @@ interface DocumentApi {
      * Retrieve a document by its ID
      * @param documentId the ID to check
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(
         summary = "Receive a document.",
         description = "Receive a document by its ID from internal storage.",
@@ -91,9 +92,14 @@ interface DocumentApi {
     )
     @GetMapping(
         value = ["/{documentId}"],
-        produces = ["application/json", "application/pdf"],
+        produces = [
+            "application/json",
+            "application/pdf",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.oasis.opendocument.spreadsheet",
+        ],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>
