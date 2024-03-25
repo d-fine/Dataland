@@ -10,15 +10,25 @@ import org.mockito.Mockito.`when`
 
 class EmailSenderTest {
     private class EmailSendException : RuntimeException()
+    private val senderContact = EmailContact("sender@example.com")
+    private val receiversContact = EmailContact("receiver@example.com")
+    private val mockMailjetClient = mock(MailjetClient::class.java)
+    private val mockMailjetRequest = mock(MailjetRequest::class.java)
+
+    private fun callEmailSender(): EmailSender {
+        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
+        val emailSender = EmailSender(mockMailjetClient)
+        return emailSender
+    }
 
     @Test
     fun `check if the mail sender works as expected`() {
         val senderContact = EmailContact("sender@dataland.com")
-        val email = Email(senderContact, listOf(senderContact), listOf(), EmailContent("", "", ""))
-        val mockMailjetClient = mock(MailjetClient::class.java)
-        val mockMailjetRequest = mock(MailjetRequest::class.java)
-        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
-        val emailSender = EmailSender(mockMailjetClient)
+        val email = Email(
+            senderContact, listOf(senderContact),
+            listOf(), EmailContent("", "", ""),
+        )
+        val emailSender = callEmailSender()
         assertThrows<EmailSendException> {
             emailSender.sendEmailWithoutTestReceivers(email)
         }
@@ -26,17 +36,12 @@ class EmailSenderTest {
 
     @Test
     fun `check if the suppressing of test receivers works as expected  `() {
-        val senderContact = EmailContact("sender@dataland.com")
-        val receiversContact = EmailContact("receiver@example.com")
-        val senderCC = EmailContact("CC@somethingelse.com")
+        val senderCC = EmailContact("CC@somethingelse.comn")
         val email = Email(
             senderContact, listOf(receiversContact), listOf(senderCC),
             EmailContent("", "", ""),
         )
-        val mockMailjetClient = mock(MailjetClient::class.java)
-        val mockMailjetRequest = mock(MailjetRequest::class.java)
-        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
-        val emailSender = EmailSender(mockMailjetClient)
+        val emailSender = callEmailSender()
         assertThrows<EmailSendException> {
             emailSender.sendEmailWithoutTestReceivers(email)
         }
@@ -44,17 +49,12 @@ class EmailSenderTest {
 
     @Test
     fun `check if the suppressing of test receivers and carbon copy works as expected`() {
-        val senderContact = EmailContact("sender@example.com")
-        val receiversContact = EmailContact("receiver@example.com")
         val senderCC = EmailContact("CC@example.comn")
         val email = Email(
             senderContact, listOf(receiversContact), listOf(senderCC),
             EmailContent("", "", ""),
         )
-        val mockMailjetClient = mock(MailjetClient::class.java)
-        val mockMailjetRequest = mock(MailjetRequest::class.java)
-        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
-        val emailSender = EmailSender(mockMailjetClient)
+        val emailSender = callEmailSender()
         assertDoesNotThrow {
             emailSender.sendEmailWithoutTestReceivers(email)
         }
