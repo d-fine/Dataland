@@ -11,10 +11,8 @@ import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSmeData: Array<FixtureData<SmeData>>;
-
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
     companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
@@ -23,7 +21,6 @@ before(function () {
     companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
   });
 });
-
 /**
  * Function which escapes parenthesis for regex expression
  * @param inputString string for which parenthesis should be escaped
@@ -34,7 +31,6 @@ function escapeParenthesisInRegExp(inputString: string): string {
 }
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
-
   it("The framework filter synchronise between the search bar and the URL", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
