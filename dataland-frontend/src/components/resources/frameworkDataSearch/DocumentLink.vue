@@ -46,7 +46,6 @@ export default defineComponent({
           .documentController;
         await documentControllerApi
           .getDocument(fileReference, {
-            // headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
