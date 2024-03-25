@@ -18,11 +18,34 @@ class EmailSender(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    /** This method checks incoming email objects if their receivers or cc property contains the domain name
+     * "@example.com" and suppresses their forwarding to the mailjet client
+     * @param email the email to be checked
+     */
+    fun sendEmailWithoutTestReceivers(email: Email) {
+        val receiversWithoutExampleDomains = email.receivers.filterNot { it.emailAddress.contains("@example.com") }
+        val ccWithoutExampleDomains = email.cc?.filterNot { it.emailAddress.contains("@example.com") }
+        if (receiversWithoutExampleDomains.isEmpty() && !ccWithoutExampleDomains.isNullOrEmpty()) {
+            sendEmail(
+                Email(
+                    email.sender,
+                    ccWithoutExampleDomains,
+                    listOf(),
+                    email.content,
+                ),
+            )
+        } else if (receiversWithoutExampleDomains.isEmpty() && ccWithoutExampleDomains.isNullOrEmpty()) {
+            logger.info("No email was sent. After filtering example.com email domain no recipients remain.")
+        } else {
+            sendEmail(email)
+        }
+    }
+
     /** This method sends an email
      * @param email the email to send
      * @return a sending success indicator which is true if the sending was successful
      */
-    fun sendEmail(email: Email) {
+    private fun sendEmail(email: Email) {
         try {
             logEmail(email)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
