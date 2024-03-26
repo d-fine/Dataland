@@ -17,24 +17,24 @@
     >
       <Column field="companyName" header="COMPANY" :sortable="true" class="d-bg-white w-3 d-datatable-column-left">
       </Column>
-      <Column field="permId" :sortable="false" class="d-bg-white w-2">
+      <Column field="lei" :sortable="false" class="d-bg-white w-2">
         <template #header>
-          <span class="uppercase">PERM ID</span>
+          <span class="uppercase">Lei</span>
           <i
             class="material-icons pl-2"
             aria-hidden="true"
-            title="Perm ID"
+            title="LEI"
             v-tooltip.top="{
               value:
-                'Permanent Identifier (PermID) is a machine readable identifier that provides a unique reference ' +
-                'for data items including organizations, instruments, funds, issuers and people. You can search and verify an id at permid.org/search',
+                'The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ' +
+                'ISO 17442 standard developed by the International Organization for Standardization (ISO).',
               class: 'd-tooltip',
             }"
             >info</i
           >
         </template>
         <template #body="{ data }">
-          {{ data.permId ? data.permId : "Not available" }}
+          {{ data.lei ? data.lei : "Not available" }}
         </template>
       </Column>
       <Column field="sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
