@@ -66,6 +66,7 @@ class PrivateDataManager(
         storeDocumentsInMemory(dataId, documents, correlationId)
         sendReceptionMessage(dataId, correlationId)
         return dataId
+        //TODO same return as other frameworks
     }
 
     private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
@@ -151,7 +152,7 @@ class PrivateDataManager(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "dataStoredBackendDataManager", // own queue for eurodat-stored stuff?
+                    "dataStoredBackendPrivateDataManager",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -184,7 +185,7 @@ class PrivateDataManager(
     }
 
     /**
-     * This method retrieves public data from the temporary storage
+     * This method retrieves private data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      * @return stringified data entry from the temporary store
      */

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Dataland internal storage API documentation",
+    "title": "Dataland external storage API documentation",
     "version": "1.0.0"
   },
   "servers": [
