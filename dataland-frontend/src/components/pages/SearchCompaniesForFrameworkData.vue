@@ -148,7 +148,7 @@ export default defineComponent({
       resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: [] as Array<DataTypeEnum>, //ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: <FrameworkDataSearchFilterInterface>{
@@ -258,8 +258,7 @@ export default defineComponent({
      */
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
-      console.log(queryFrameworks);
-      if (queryFrameworks !== undefined) {
+      if (queryFrameworks) {
         const allowedDataTypeEnumValues = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
           allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam),
@@ -334,7 +333,6 @@ export default defineComponent({
       const queryCountryCodes = this.getQueryCountryCodes(route);
       const querySectors = this.getQuerySectors(route);
       const queryInput = this.getQueryInput(route);
-
       if (
         !arraySetEquals(this.currentFilteredFrameworks, queryFrameworks) ||
         !arraySetEquals(this.currentFilteredCountryCodes, queryCountryCodes) ||
@@ -368,7 +366,7 @@ export default defineComponent({
       );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;
-      if (this.currentFilteredFrameworks.length == 0) queryFrameworks = null;
+      if (this.currentFilteredFrameworks.length == 0) queryFrameworks = undefined;
 
       const queryCountryCodes =
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
