@@ -19,7 +19,7 @@
       </Column>
       <Column field="lei" :sortable="false" class="d-bg-white w-2">
         <template #header>
-          <span class="uppercase">Lei</span>
+          <span class="uppercase">LEI</span>
           <i
             class="material-icons pl-2"
             aria-hidden="true"
