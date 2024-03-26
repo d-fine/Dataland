@@ -1,10 +1,8 @@
-package org.dataland.datalandinternalstorage.services
+package org.dataland.datalandexternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandinternalstorage.entities.DataItem
-import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.dataland.datalandexternalstorage.entities.DataItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -28,15 +26,15 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * Simple implementation of a data store using a postgres database
+ * Simple implementation of a data storing service using the EuroDaT data trustee
  * @param dataItemRepository
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
-class DatabaseStringDataStore(
-    @Autowired private var dataItemRepository: DataItemRepository,
+class EurodatStringDataStore(
+    // @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
@@ -55,14 +53,14 @@ class DatabaseStringDataStore(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "requestReceivedInternalStorageDatabaseDataStore",
+                    "requestReceivedEurodatDataStore",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeName.RequestReceived, declare = "false"),
+                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
                 key = [""],
             ),
         ],
@@ -80,66 +78,38 @@ class DatabaseStringDataStore(
         }
         messageUtils.rejectMessageOnException {
             if (actionType == ActionType.StoreData) {
-                persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
-            }
-            if (actionType == ActionType.DeleteData) {
-                deleteDataItemWithoutTransaction(dataId, correlationId)
+                // TODO remove this logger
+                logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+                //  persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
             }
         }
-    }
 
-    /**
-     * Method that stores data into the database in case there is a message on the storage_queue and sends a message to
-     * the message queue
-     * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
-     * @param dataId the dataId of the dataset to be stored
-     */
-    fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
-        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = temporarilyCachedDataClient.getReceivedPublicData(dataId)
-        logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-        storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataStored, correlationId, ExchangeName.ItemStored, RoutingKeyNames.data,
-        )
-    }
-
-    /**
-     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
-     * is commited after exit of this method.
-     * @param dataItem the DataItem to be stored
-     */
-    @Transactional(propagation = Propagation.NEVER)
-    fun storeDataItemWithoutTransaction(dataItem: DataItem) {
-        dataItemRepository.save(dataItem)
-    }
-
-    /**
-     * Reads data from a database
-     * @param dataId the ID of the data to be retrieved
-     * @return the data as json string with ID dataId
-     */
-    fun selectDataSet(dataId: String, correlationId: String): String {
-        return dataItemRepository.findById(dataId).orElseThrow {
-            logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
-            ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the ID: $dataId could be found in the data store.",
+        /**
+         * Method that stores data into the database in case there is a message on the storage_queue and sends a message to
+         * the message queue
+         * @param payload the content of the message
+         * @param correlationId the correlation ID of the current user process
+         * @param dataId the dataId of the dataset to be stored
+         */
+        fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
+            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+            val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
+            logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
+            // storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                payload, MessageType.DataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
             )
-        }.data
-    }
+        }
 
-    /**
-     * Deletes a Data Item while ensuring that there is no active transaction. This will guarantee that the write
-     * is commited after exit of this method.
-     * @param dataId the DataItem to be removed from the storage
-     * @param correlationId the correlationId ot the current user process
-     */
-    @Transactional(propagation = Propagation.NEVER)
-    fun deleteDataItemWithoutTransaction(dataId: String, correlationId: String) {
-        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
-        dataItemRepository.deleteById(dataId)
+        /**
+         * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+         * is commited after exit of this method.
+         * @param dataItem the DataItem to be stored
+         */
+        @Transactional(propagation = Propagation.NEVER)
+        fun storeDataItemWithoutTransaction(dataItem: DataItem) {
+            // TODO call to eurodat
+            // dataItemRepository.save(dataItem)
+        }
     }
 }

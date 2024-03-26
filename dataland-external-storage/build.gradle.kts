@@ -1,4 +1,4 @@
-// dataland-backend
+// dataland-external-storage
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
@@ -23,51 +23,39 @@ plugins {
     id("org.springframework.boot")
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
-    kotlin("plugin.serialization")
 }
 
 dependencies {
-    implementation(project(":dataland-backend-utils"))
-    implementation(libs.jackson.module.kotlin)
     implementation(libs.springdoc.openapi.ui)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
-    implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
-    implementation(Spring.boot.oauth2ResourceServer)
-    implementation(Spring.boot.amqp)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
-    kapt(Spring.boot.configurationProcessor)
-    implementation(Spring.boot.security)
-    testImplementation(Spring.boot.test)
-    testImplementation(Testing.mockito.core)
-    testImplementation(Spring.security.spring_security_test)
-    implementation(project(":dataland-keycloak-adapter"))
+    implementation(libs.kotlin.reflect)
+    implementation(Spring.boot.amqp)
+    implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
-    implementation(libs.flyway)
-    implementation(libs.flyway.core)
-    implementation(Spring.boot.validation)
-    implementation(Spring.boot.web)
-    implementation(Spring.boot.data.jpa)
+    implementation(Square.okHttp3)
     implementation(libs.json)
+    testImplementation(Spring.boot.test)
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8482/api/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8484/external-storage/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }
-    outputFileName.set("$projectDir/backendOpenApi785.json")
+    outputFileName.set("$projectDir/externalStorageOpenApid.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
@@ -83,27 +71,18 @@ jacoco {
     toolVersion = jacocoVersion
 }
 
-tasks.register<Copy>("getTestData") {
-    from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
-    into("$buildDir/resources/test")
-}
-
-tasks.getByName("processTestResources") {
-    dependsOn("getTestData")
-}
-
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
 
-tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
         .path
-    outputDir.set("$buildDir/clients/internal-storage")
-    packageName.set(internalStorageClientDestinationPackage)
-    modelPackage.set("$internalStorageClientDestinationPackage.model")
-    apiPackage.set("$internalStorageClientDestinationPackage.api")
+    outputDir.set("$buildDir/clients/backend")
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
     generatorName.set("kotlin")
 
     additionalProperties.set(
@@ -120,7 +99,7 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
 }
 
 tasks.register("generateClients") {
-    dependsOn("generateInternalStorageClient")
+    dependsOn("generateBackendClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -133,7 +112,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
 }
 
 ktlint {

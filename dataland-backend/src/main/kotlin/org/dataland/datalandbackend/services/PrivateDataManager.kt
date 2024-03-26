@@ -57,7 +57,7 @@ class PrivateDataManager(
 
     fun processPrivateSmeDataStorageRequest(
         storableDataSet: StorableDataSet,
-        documents: Array<MultipartFile>,
+        documents: Array<MultipartFile>?,
         correlationId: String,
     ): String {
         val dataId = generateRandomDataId()
@@ -90,12 +90,15 @@ class PrivateDataManager(
         metaInfoEntityInMemoryStorage[dataId] = metaDataEntity
     }
 
-    private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>, correlationId: String) {
+    private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>?, correlationId: String) {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
         logger.info("Storing Sme data in temporary storage for dataId $dataId and correlationId $correlationId.")
-        documentInMemoryStorage[dataId] = documents
+        // TODO Check if there is another option to store it to not rely on the temp value of the multipart file
+        if (!documents.isNullOrEmpty()) {
+            documentInMemoryStorage[dataId] = documents
+        }
     }
 
     private fun sendReceptionMessage(dataId: String, correlationId: String) {
@@ -109,7 +112,7 @@ class PrivateDataManager(
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DataReceived, correlationId, // TODO private data received
-            ExchangeName.RequestReceived,
+            ExchangeName.PrivateRequestReceived,
         )
         // TODO log that it has been send (with correlation Id mentioned)  => from here on we wait on EuroDaT to send a message as soon as it is done
     }
@@ -150,7 +153,7 @@ class PrivateDataManager(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"), // TODO Exchangname maybe "PrivateDataStored"?
+                exchange = Exchange(ExchangeName.PrivateItemStored, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],
@@ -160,12 +163,12 @@ class PrivateDataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DataStored) // TODO adjust to new message type
+        messageUtils.validateMessageType(type, MessageType.PrivateItemStored)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info(
-            "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId.", // TODO is this ok like this?
+            "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId.",
         )
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)

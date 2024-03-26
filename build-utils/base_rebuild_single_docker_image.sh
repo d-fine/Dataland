@@ -64,6 +64,7 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
                         --build-arg DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
                         --build-arg MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY="${MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY:-}"
+                        --build-arg DATALAND_EXTERNAL_STORAGE_BASE_VERSION="${DATALAND_EXTERNAL_STORAGE_BASE_VERSION:-}" \
                   )
 
 if [[ ${GITHUB_ACTIONS:-} == "true" ]]; then

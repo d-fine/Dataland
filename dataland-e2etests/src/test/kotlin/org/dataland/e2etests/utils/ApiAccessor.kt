@@ -16,7 +16,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEut
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum

@@ -18,6 +18,7 @@ include(
     "dataland-framework-toolbox",
     "dataland-community-manager",
     "dataland-email-service",
+    "dataland-external-storage",
 )
 
 plugins {

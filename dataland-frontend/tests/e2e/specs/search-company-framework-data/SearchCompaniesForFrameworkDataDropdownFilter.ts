@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { DataTypeEnum, type EuTaxonomyDataForFinancials, type SmeData } from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type SfdrData } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
@@ -12,13 +12,13 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-let companiesWithSmeData: Array<FixtureData<SmeData>>;
+let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
     companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
   });
-  cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-    companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
+  cy.fixture("CompanyInformationWithSfdrData").then(function (jsonContent) {
+    companiesWithSfdrData = jsonContent as Array<FixtureData<SfdrData>>;
   });
 });
 /**
@@ -310,7 +310,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       }
 
       it(
-        "Upload a company with Eu Taxonomy Data For Financials and one with SME and " +
+        "Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
           "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
         () => {
           const companyNameFinancialPrefix = "CompanyWithFinancial";
@@ -333,23 +333,25 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
 
-          const companyNameSmePrefix = "CompanyWithSme";
-          const companyNameSme = companyNameSmePrefix + companyNameMarker;
+          const companyNameSfdrPrefix = "CompanyWithSfdr";
+          const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
 
           getKeycloakToken(admin_name, admin_pw).then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameSme)).then((storedCompany) => {
-              const smeFixture = companiesWithSmeData[0];
-              return uploadFrameworkData(
-                DataTypeEnum.Sme,
-                token,
-                storedCompany.companyId,
-                smeFixture.reportingPeriod,
-                smeFixture.t,
-              );
-            });
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameSfdr)).then(
+              (storedCompany) => {
+                const sfdrFixture = companiesWithSfdrData[0];
+                return uploadFrameworkData(
+                  DataTypeEnum.Sfdr,
+                  token,
+                  storedCompany.companyId,
+                  sfdrFixture.reportingPeriod,
+                  sfdrFixture.t,
+                );
+              },
+            );
           });
 
-          checkFirstAutoCompleteSuggestion(companyNameSmePrefix, DataTypeEnum.Sme);
+          checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
         },
       );
     },
