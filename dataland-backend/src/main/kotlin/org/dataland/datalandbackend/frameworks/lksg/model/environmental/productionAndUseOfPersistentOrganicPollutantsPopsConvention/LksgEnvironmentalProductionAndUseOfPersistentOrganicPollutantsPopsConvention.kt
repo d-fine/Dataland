@@ -19,7 +19,8 @@ data class LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsCon
 
     val persistentOrganicPollutantsUsePreventionMeasures: YesNo? = null,
 
-    val persistentOrganicPollutantsUsePolicy: YesNo? = null,
+    @field:Valid()
+    val persistentOrganicPollutantsUsePolicy: BaseDataPoint<YesNo>? = null,
 
     @field:Valid()
     val persistentOrganicPollutantsUsePreventionOtherMeasures: BaseDataPoint<YesNo>? = null,

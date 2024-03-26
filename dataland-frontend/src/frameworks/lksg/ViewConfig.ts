@@ -814,7 +814,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: "cell",
             label: "Worst Forms of Child Labor Forms",
             explanation: "Which of these worst forms of child labor are not prevented?",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
           },
@@ -2062,18 +2063,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                   ?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription,
               ),
           },
-          {
-            type: "cell",
-            label: "Voluntary Guidelines on the Responsible Governance of Tenure",
-            explanation:
-              "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
-                  ?.voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure,
-              ),
-          },
         ],
       },
       {
@@ -2446,7 +2435,12 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                 ?.persistentOrganicPollutantsUsePreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                    ?.persistentOrganicPollutantsUsePolicy?.value,
+                ),
+                "Persistent Organic Pollutants Use Policy",
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePolicy,
               ),
@@ -2563,7 +2557,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Does your company have a waste policy? If yes, please share the policy with us. ",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
@@ -2579,11 +2573,24 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Have other measures been taken to prevent the transport of hazardous waste?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Transport Prevention Other Measures Description",
+
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteTransportPreventionOtherMeasures == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteTransportPreventionOtherMeasuresDescription,
               ),
           },
           {
@@ -2617,12 +2624,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                    ?.hazardousWasteDisposalOtherWasteImport?.value,
-                ),
-                "Hazardous Waste Disposal - Other Waste Import",
+              formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImport,
               ),
@@ -2633,8 +2635,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
-                ?.value == "Yes",
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteDisposalOtherWasteImport == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention

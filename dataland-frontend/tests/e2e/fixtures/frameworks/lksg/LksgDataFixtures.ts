@@ -248,7 +248,6 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
           dataGenerator.guaranteedYesNo(),
         ),
         unlawfulEvictionAndTakingOfLandOtherMeasuresDescription: dataGenerator.randomShortString(),
-        voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: dataGenerator.randomYesNo(),
       },
       useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: {
         useOfPrivatePublicSecurityForces: dataGenerator.randomYesNo(),
@@ -282,7 +281,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         persistentOrganicPollutantsProductionAndUseRiskOfExposure: dataGenerator.randomYesNo(),
         persistentOrganicPollutantsProductionAndUseRiskOfDisposal: dataGenerator.randomYesNo(),
         persistentOrganicPollutantsUsePreventionMeasures: dataGenerator.randomYesNo(),
-        persistentOrganicPollutantsUsePolicy: dataGenerator.randomYesNo(),
+        persistentOrganicPollutantsUsePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         persistentOrganicPollutantsUsePreventionOtherMeasures: dataGenerator.randomBaseDataPoint(
           dataGenerator.guaranteedYesNo(),
         ),
@@ -296,9 +295,10 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         hazardousWasteTransportPreventionMeasures: dataGenerator.randomYesNo(),
         wastePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         hazardousWasteTransportPreventionOtherMeasures: dataGenerator.randomYesNo(),
+        hazardousWasteTransportPreventionOtherMeasuresDescription: dataGenerator.randomParagraphs(),
         hazardousWasteDisposal: dataGenerator.randomYesNo(),
         hazardousWasteDisposalRiskOfImport: dataGenerator.randomYesNo(),
-        hazardousWasteDisposalOtherWasteImport: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        hazardousWasteDisposalOtherWasteImport: dataGenerator.randomYesNo(),
         hazardousWasteDisposalOtherWasteImportDescription: dataGenerator.randomParagraphs(),
       },
     },

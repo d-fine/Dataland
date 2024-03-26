@@ -6723,6 +6723,10 @@
               }
             ]
           },
+          "hazardousWasteTransportPreventionOtherMeasuresDescription": {
+            "type": "string",
+            "nullable": true
+          },
           "hazardousWasteDisposal": {
             "nullable": true,
             "allOf": [
@@ -6743,7 +6747,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -6796,7 +6800,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -8404,14 +8408,6 @@
           "unlawfulEvictionAndTakingOfLandOtherMeasuresDescription": {
             "type": "string",
             "nullable": true
-          },
-          "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
           }
         }
       },
@@ -13828,23 +13824,23 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "permId": {
             "type": "string",
             "nullable": true
           }
@@ -13869,10 +13865,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

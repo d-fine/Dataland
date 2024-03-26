@@ -24,12 +24,13 @@ data class LksgEnvironmentalExportImportOfHazardousWasteBaselConvention(
 
     val hazardousWasteTransportPreventionOtherMeasures: YesNo? = null,
 
+    val hazardousWasteTransportPreventionOtherMeasuresDescription: String? = null,
+
     val hazardousWasteDisposal: YesNo? = null,
 
     val hazardousWasteDisposalRiskOfImport: YesNo? = null,
 
-    @field:Valid()
-    val hazardousWasteDisposalOtherWasteImport: BaseDataPoint<YesNo>? = null,
+    val hazardousWasteDisposalOtherWasteImport: YesNo? = null,
 
     val hazardousWasteDisposalOtherWasteImportDescription: String? = null,
 

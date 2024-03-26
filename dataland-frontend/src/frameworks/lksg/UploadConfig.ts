@@ -742,7 +742,8 @@ export const lksgDataModel = [
 
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "Yes",
           },
           {
             name: "measuresForPreventionOfEmploymentUnderLocalMinimumAge",
@@ -1770,16 +1771,6 @@ export const lksgDataModel = [
               dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                 ?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value == "Yes",
           },
-          {
-            name: "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure",
-            label: "Voluntary Guidelines on the Responsible Governance of Tenure",
-            description:
-              "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -2073,7 +2064,7 @@ export const lksgDataModel = [
             description:
               "Does your company have a policy for handling these materials? If yes, please share the policy with us. ",
 
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
@@ -2173,7 +2164,7 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
           },
           {
             name: "hazardousWasteTransportPreventionOtherMeasures",
@@ -2184,7 +2175,17 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
+          },
+          {
+            name: "hazardousWasteTransportPreventionOtherMeasuresDescription",
+            label: "Hazardous Waste Transport Prevention Other Measures Description",
+
+            component: "FreeTextFormField",
+            required: false,
+            showIf: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteTransportPreventionOtherMeasures == "Yes",
           },
           {
             name: "hazardousWasteDisposal",
@@ -2213,7 +2214,7 @@ export const lksgDataModel = [
             description:
               "Do you import other wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2))?",
 
-            component: "YesNoBaseDataPointFormField",
+            component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
@@ -2227,8 +2228,8 @@ export const lksgDataModel = [
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
-                ?.value == "Yes",
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteDisposalOtherWasteImport == "Yes",
           },
         ],
       },
