@@ -365,8 +365,7 @@ export default defineComponent({
         this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum),
       );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
-      if (allFrameworksSelected) queryFrameworks = undefined;
-      if (this.currentFilteredFrameworks.length == 0) queryFrameworks = undefined;
+      if (allFrameworksSelected || this.currentFilteredFrameworks.length == 0) queryFrameworks = undefined;
 
       const queryCountryCodes =
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
