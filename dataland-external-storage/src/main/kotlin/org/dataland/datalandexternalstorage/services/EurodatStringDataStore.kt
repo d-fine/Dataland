@@ -27,14 +27,12 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
- * @param dataItemRepository
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
 class EurodatStringDataStore(
-    // @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
@@ -93,6 +91,8 @@ class EurodatStringDataStore(
          */
         fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
             logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+            // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
+            // val getAuthentication = DatabaseCredentialResourceApi.
             val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             // storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
@@ -108,7 +108,7 @@ class EurodatStringDataStore(
          */
         @Transactional(propagation = Propagation.NEVER)
         fun storeDataItemWithoutTransaction(dataItem: DataItem) {
-            // TODO call to eurodat
+            // TODO call to eurodat and remove dataItem
             // dataItemRepository.save(dataItem)
         }
     }

@@ -55,7 +55,7 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }
-    outputFileName.set("$projectDir/externalStorageOpenApid.json")
+    outputFileName.set("$projectDir/externalStorageOpenApi.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
@@ -98,8 +98,30 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateEurodatClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val eurodatClientDestinationPackage = "org.dataland.datalandeurodatclient.openApiClient"
+    input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
+    outputDir.set("$buildDir/clients/eurodatclient")
+    packageName.set(eurodatClientDestinationPackage)
+    modelPackage.set("$eurodatClientDestinationPackage.model")
+    apiPackage.set("$eurodatClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
+    dependsOn("generateEurodatClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -113,6 +135,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/eurodatclient/src/main/kotlin")
 }
 
 ktlint {
