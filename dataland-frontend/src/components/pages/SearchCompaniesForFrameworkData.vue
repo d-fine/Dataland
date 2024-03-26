@@ -364,7 +364,7 @@ export default defineComponent({
       const allFrameworksSelected = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.every((frameworkAsDataTypeEnum) =>
         this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum),
       );
-      let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
+      let queryFrameworks: DataTypeEnum[] | undefined = this.currentFilteredFrameworks;
       if (allFrameworksSelected || this.currentFilteredFrameworks.length == 0) queryFrameworks = undefined;
 
       const queryCountryCodes =
