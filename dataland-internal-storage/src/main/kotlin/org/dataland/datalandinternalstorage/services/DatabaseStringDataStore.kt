@@ -72,7 +72,7 @@ class DatabaseStringDataStore(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DataReceived)
+        messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {

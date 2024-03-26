@@ -35,7 +35,7 @@ import java.util.*
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param companyManager service for managing company data
+ * @param companyQueryManager service for managing company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
@@ -69,13 +69,15 @@ class PrivateDataManager(
     }
 
     private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        // TODO log smth with correlation Id
+        logger.info("Storing storable dataset for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
+                "correlationId: $correlationId")
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
         privateDataInMemoryStorage[dataId] = storableSmeDatasetAsString
     }
 
     private fun storeMetaInfoEntityInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        // TODO log smth with correlation Id
+        logger.info("Storing metadata entry for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
+                "correlationId: $correlationId")
         val company = companyQueryManager.getCompanyById(storableDataSet.companyId)
         val metaDataEntity = DataMetaInformationEntity(
             dataId,
@@ -102,7 +104,8 @@ class PrivateDataManager(
     }
 
     private fun sendReceptionMessage(dataId: String, correlationId: String) {
-        // TODO log smth with correlation Id
+        logger.info("Received data to be stored in external storage, sending message for dataId: $dataId and " +
+                       "correlationId: $correlationId")
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId,
@@ -111,14 +114,16 @@ class PrivateDataManager(
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataReceived, correlationId, // TODO private data received
+            payload, MessageType.PublicDataReceived, correlationId, // TODO private data received
             ExchangeName.PrivateRequestReceived,
         )
-        // TODO log that it has been send (with correlation Id mentioned)  => from here on we wait on EuroDaT to send a message as soon as it is done
+        logger.info("Message to external storage for dataId: $dataId and correlationId: $correlationId was " +
+                "sent successfully")
     }
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
-        // TODO log smth
+        logger.info("Storing metadata entry permanently for dataId: $dataId and correlationId: $correlationId as the" +
+                "was successfully stored in the external datastore")
         val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
         val documentsForDataId = documentInMemoryStorage[dataId]
         val dataIdToDocumentMappingEntities =

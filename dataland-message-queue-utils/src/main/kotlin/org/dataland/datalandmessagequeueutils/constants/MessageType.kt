@@ -4,7 +4,7 @@ package org.dataland.datalandmessagequeueutils.constants
  * The type of content of a RabbitMQ message
  */
 object MessageType {
-    const val DataReceived = "Data received"
+    const val PublicDataReceived = "Public Data received"
     const val DataStored = "Data stored"
     const val DocumentReceived = "Document received"
     const val DocumentStored = "Document stored"
@@ -13,4 +13,5 @@ object MessageType {
     const val SendInternalEmail = "Send internal E-Mail"
     const val SendTemplateEmail = "Send template E-Mail"
     const val PrivateItemStored = "Private Item Stored"
+    const val PrivateDataReceived = "Private Data received"
 }

@@ -51,7 +51,7 @@ dependencies {
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8484/external-storage/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8488/external-storage/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8484"))
     }

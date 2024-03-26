@@ -68,7 +68,7 @@ class EurodatStringDataStore(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DataReceived)
+        messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
@@ -78,38 +78,43 @@ class EurodatStringDataStore(
             if (actionType == ActionType.StoreData) {
                 // TODO remove this logger
                 logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-                //  persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
+                persistentlyStoreDataInEurodatAndSendMessage(dataId, correlationId, payload)
             }
         }
-
-        /**
-         * Method that stores data into the database in case there is a message on the storage_queue and sends a message to
-         * the message queue
-         * @param payload the content of the message
-         * @param correlationId the correlation ID of the current user process
-         * @param dataId the dataId of the dataset to be stored
-         */
-        fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
-            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-            // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
-            // val getAuthentication = DatabaseCredentialResourceApi.
-            val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
-            logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-            // storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
-            )
-        }
-
-        /**
-         * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
-         * is commited after exit of this method.
-         * @param dataItem the DataItem to be stored
-         */
-        @Transactional(propagation = Propagation.NEVER)
-        fun storeDataItemWithoutTransaction(dataItem: DataItem) {
-            // TODO call to eurodat and remove dataItem
-            // dataItemRepository.save(dataItem)
-        }
     }
+
+    /**
+     * Method that stores data in eurodat data truestee and sends a message to the message queue
+     * @param payload the content of the message
+     * @param correlationId the correlation ID of the current user process
+     * @param dataId the dataId of the dataset to be stored
+     */
+    fun persistentlyStoreDataInEurodatAndSendMessage(dataId: String, correlationId: String, payload: String) {
+        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+        // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
+        // val getAuthentication = DatabaseCredentialResourceApi.
+        val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
+        logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
+        // storeDataInEurodat(DataItem(dataId, objectMapper.writeValueAsString(data)))
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            payload, MessageType.DataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
+        )
+    }
+
+    /**
+     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * is commited after exit of this method.
+     * @param dataItem the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeDataInEurodat(dataItem: DataItem) {
+        // TODO call to eurodat and remove dataItem
+        // dataItemRepository.save(dataItem)
+    }
+    // TODO Insert statement into the safedepositbox looks like this:
+    /*
+    INSERT INTO safedeposit."json"
+    (uuid_json, blob_json)
+    VALUES('88edd44a-b9e8-49fa-a34b-8493077ee9fb', '2');
+    */
 }

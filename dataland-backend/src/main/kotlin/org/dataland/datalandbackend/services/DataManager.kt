@@ -209,7 +209,7 @@ class DataManager(
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataReceived, correlationId,
+            payload, MessageType.PublicDataReceived, correlationId,
             ExchangeName.RequestReceived,
         )
         logger.info(
@@ -342,7 +342,7 @@ class DataManager(
                 ),
             ).toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataReceived, correlationId,
+                payload, MessageType.PublicDataReceived, correlationId,
                 ExchangeName.RequestReceived,
             )
             logger.info(

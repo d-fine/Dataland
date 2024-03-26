@@ -210,7 +210,7 @@ class DataManagerTest(
         ).toString()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataReceived, correlationId, ExchangeName.RequestReceived,
+                payload, MessageType.PublicDataReceived, correlationId, ExchangeName.RequestReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,
