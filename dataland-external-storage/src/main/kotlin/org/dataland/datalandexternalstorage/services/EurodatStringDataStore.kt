@@ -75,7 +75,7 @@ class EurodatStringDataStore(
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
         messageUtils.rejectMessageOnException {
-            if (actionType == ActionType.StoreData) {
+            if (actionType == ActionType.StorePrivateDataAndDocuments) {
                 // TODO remove this logger
                 logger.info("Received DataID $dataId and CorrelationId: $correlationId")
                 persistentlyStoreDataInEurodatAndSendMessage(dataId, correlationId, payload)

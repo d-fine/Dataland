@@ -110,7 +110,7 @@ class PrivateDataManager(
             mapOf(
                 "dataId" to dataId,
                 "actionType" to
-                    ActionType.StoreData, // TODO we need a new action type and message type for private data
+                    ActionType.StorePrivateDataAndDocuments, // TODO we need a new action type and message type for private data
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

@@ -79,7 +79,7 @@ class DatabaseStringDataStore(
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
         messageUtils.rejectMessageOnException {
-            if (actionType == ActionType.StoreData) {
+            if (actionType == ActionType.StorePublicData) {
                 persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
             }
             if (actionType == ActionType.DeleteData) {

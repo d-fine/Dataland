@@ -205,7 +205,7 @@ class DataManagerTest(
             mapOf(
                 "dataId" to dataUUId, "bypassQa" to false,
                 "actionType" to
-                    ActionType.StoreData,
+                    ActionType.StorePublicData,
             ),
         ).toString()
         `when`(

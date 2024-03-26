@@ -205,7 +205,7 @@ class DataManager(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
                 "actionType" to
-                    ActionType.StoreData,
+                    ActionType.StorePublicData,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
