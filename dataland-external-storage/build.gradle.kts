@@ -100,7 +100,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 
 tasks.register("generateEurodatClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val eurodatClientDestinationPackage = "org.dataland.datalandeurodatclient.openApiClient"
-    input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
+    input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApiExtern.json").path
     outputDir.set("$buildDir/clients/eurodatclient")
     packageName.set(eurodatClientDestinationPackage)
     modelPackage.set("$eurodatClientDestinationPackage.model")
