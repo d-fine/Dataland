@@ -154,7 +154,7 @@ export default defineComponent({
      * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
      */
     resetFilters() {
-      this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
+      this.selectedFrameworksInt = [];
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },

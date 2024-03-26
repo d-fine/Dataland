@@ -148,7 +148,7 @@ export default defineComponent({
       resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+      currentFilteredFrameworks: [] as Array<DataTypeEnum>, //ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: <FrameworkDataSearchFilterInterface>{
@@ -254,17 +254,18 @@ export default defineComponent({
     /**
      * Parses the framework filter query parameters.
      * @param route the current route
-     * @returns an array of framework filters from the URL or an array of all frameworks if no filter is defined
+     * @returns an array of framework filters from the URL or an empty array if no filter is defined
      */
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
+      console.log(queryFrameworks);
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
           allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam),
         ) as Array<DataTypeEnum>;
       } else {
-        return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE;
+        return [];
       }
     },
     /**
