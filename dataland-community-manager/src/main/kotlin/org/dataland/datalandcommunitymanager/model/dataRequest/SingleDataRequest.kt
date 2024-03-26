@@ -38,7 +38,7 @@ data class SingleDataRequest(
     @field:ArraySchema(
         arraySchema = Schema(
             type = "string",
-            example = "[\"testuser@dataland.com\"]",
+            example = "[\"testuser@example.com\"]",
         ),
     )
     val contacts: Set<String>?,
