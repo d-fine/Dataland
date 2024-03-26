@@ -97,7 +97,7 @@ class DataRequestAlterationManagerTest {
     fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "user@requests.com",
+            "user@example.com",
             "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )

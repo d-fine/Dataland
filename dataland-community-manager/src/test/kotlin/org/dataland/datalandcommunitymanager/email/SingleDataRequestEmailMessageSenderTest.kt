@@ -45,7 +45,7 @@ class SingleDataRequestEmailMessageSenderTest {
     fun setup() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@bigplayer.com",
+            "requester@example.com",
             "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )
