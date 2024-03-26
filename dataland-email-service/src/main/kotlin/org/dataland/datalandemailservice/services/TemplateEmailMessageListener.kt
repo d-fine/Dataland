@@ -1,7 +1,8 @@
-package org.dataland.datalandemailservice.services.templateemail
+package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandemailservice.email.EmailSender
+import org.dataland.datalandemailservice.services.templateemail.TemplateEmailFactory
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -67,7 +68,7 @@ class TemplateEmailMessageListener(
         )
         messageQueueUtils.rejectMessageOnException {
             val templateEmailFactory = getMatchingEmailFactory(message)
-            emailSender.sendEmail(
+            emailSender.sendEmailWithoutTestReceivers(
                 templateEmailFactory.buildEmail(
                     receiverEmail = message.receiver,
                     properties = message.properties,

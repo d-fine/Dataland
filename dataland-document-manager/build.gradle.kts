@@ -27,6 +27,16 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.jodconverter.core)
+    implementation(libs.jodconverter.local)
+    implementation(libs.itext.core)
+    implementation(libs.layout)
+    implementation(libs.tika.core)
+    implementation(libs.tika.parsers)
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
+    implementation(libs.poi.scratchpad)
+    implementation(libs.simple.odf)
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
@@ -55,6 +65,8 @@ dependencies {
     testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
 }
 
 openApi {

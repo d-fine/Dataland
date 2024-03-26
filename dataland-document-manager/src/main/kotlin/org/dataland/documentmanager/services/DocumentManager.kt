@@ -1,33 +1,23 @@
 package org.dataland.documentmanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentStream
+import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
+import org.dataland.documentmanager.services.conversion.FileProcessor
+import org.dataland.documentmanager.services.conversion.lowercaseExtension
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Argument
-import org.springframework.amqp.rabbit.annotation.Exchange
-import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
-import org.springframework.messaging.handler.annotation.Header
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -47,11 +37,8 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val pdfVerificationService: PdfVerificationService,
-    @Autowired private var objectMapper: ObjectMapper,
-
+    @Autowired private val fileProcessor: FileProcessor,
 ) {
-    lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -63,19 +50,29 @@ class DocumentManager(
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentUploadResponse {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlation ID: $correlationId")
-        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
+        val documentType = categorizeDocumentType(document)
+        val documentMetaInfo = generateDocumentMetaInfo(document, documentType, correlationId)
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
-        val documentBody = document.bytes
-        pdfVerificationService.assertThatFileLooksLikeAValidPdfWithAValidName(document, correlationId)
+        val documentBody = fileProcessor.processFile(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeName.DocumentReceived,
         )
         return DocumentUploadResponse(documentMetaInfo.documentId)
+    }
+
+    private fun categorizeDocumentType(document: MultipartFile): DocumentType {
+        val documentExtension = document.lowercaseExtension()
+        return when (documentExtension) {
+            "xls" -> DocumentType.Xls
+            "xlsx" -> DocumentType.Xlsx
+            "ods" -> DocumentType.Ods
+            else -> DocumentType.Pdf
+        }
     }
 
     /**
@@ -89,7 +86,11 @@ class DocumentManager(
         documentMetaInfoRepository.save(DocumentMetaInfoEntity(documentMetaInfo))
     }
 
-    private fun generateDocumentMetaInfo(document: MultipartFile, correlationId: String): DocumentMetaInfo {
+    private fun generateDocumentMetaInfo(
+        document: MultipartFile,
+        documentType: DocumentType,
+        correlationId: String,
+    ): DocumentMetaInfo {
         logger.info("Generate document meta info for document with correlation ID: $correlationId")
         val documentId = document.bytes.sha256()
         logger.info(
@@ -97,6 +98,7 @@ class DocumentManager(
         )
         return DocumentMetaInfo(
             documentId = documentId,
+            documentType = documentType,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
             qaStatus = QaStatus.Pending,
@@ -138,9 +140,8 @@ class DocumentManager(
                     "Only quality-assured documents can be retrieved. Correlation ID: $correlationId",
             )
         }
-
         val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-        return DocumentStream("$documentId.pdf", documentDataStream)
+        return DocumentStream(documentId, metaDataInfoEntity.documentType, documentDataStream)
     }
 
     private fun retrieveDocumentDataStream(
@@ -154,93 +155,6 @@ class DocumentManager(
         } else {
             logger.info("Received document $documentId from storage service")
             InputStreamResource(storageApi.getBlobFromInternalStorage(documentId, correlationId))
-        }
-    }
-
-    /**
-     * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
-     * stored in the persisted database. Further it logs success notification associated containing documentId and
-     * correlationId
-     * @param documentId the ID of the dataset to that was stored
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataStoredDocumentManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.document],
-            ),
-        ],
-    )
-    fun removeStoredDocumentFromTemporaryStore(
-        @Payload documentId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils = MessageQueueUtils()
-        messageUtils.validateMessageType(type, MessageType.DocumentStored)
-        if (documentId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
-        }
-        logger.info("Internal Storage sent a message - job done")
-        logger.info(
-            "Document with ID $documentId was successfully stored. Correlation ID: $correlationId.",
-        )
-        messageUtils.rejectMessageOnException {
-            inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
-        }
-    }
-
-    /**
-     * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param jsonString the message describing the result of the completed QA process
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "documentQualityAssuredDocumentManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.document],
-            ),
-        ],
-    )
-    @Transactional
-    fun updateDocumentMetaData(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils = MessageQueueUtils()
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
-        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
-        if (documentId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
-        }
-        messageUtils.rejectMessageOnException {
-            val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-            metaInformation.qaStatus = QaStatus.Accepted
-            logger.info(
-                "Received quality assurance for document upload with document ID: " +
-                    "$documentId with Correlation ID: $correlationId",
-            )
         }
     }
 }

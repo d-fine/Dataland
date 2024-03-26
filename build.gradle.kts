@@ -124,7 +124,11 @@ sonar {
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
-                "/Iso2CountryCodesMultiSelectComponent.kt",
+                "/Iso2CountryCodesMultiSelectComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
+                "LksgGeneralViolationAssessmentsComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
+                "LksgGeneralViolationAssessmentsComponent.kt",
         )
         property(
             "sonar.exclusions",
