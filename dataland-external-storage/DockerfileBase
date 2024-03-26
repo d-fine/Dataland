@@ -6,5 +6,6 @@ COPY ./dataland-external-storage/ ./dataland-external-storage/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-eurodat-client/eurodatClientOpenApi.json ./dataland-eurodat-client/eurodatClientOpenApi.json
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-external-storage:bootJar --no-daemon --stacktrace
