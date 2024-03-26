@@ -1,5 +1,5 @@
 package org.dataland.datalandexternalstorage.services
-
+/*
 import org.dataland.datalandexternalstorage.entities.BlobItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -92,3 +92,4 @@ class EurodatBlobDataStore(
         return blobItem
     }
 }
+*/
