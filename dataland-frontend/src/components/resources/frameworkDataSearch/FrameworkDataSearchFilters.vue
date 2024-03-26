@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="flex flex-column ml-3">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter by data</span>
+      <span class="d-section-heading mb-2" v-if="showHeading">Filter for available data sets</span>
       <div class="flex flex-row align-items-center">
         <div class="d-separator-left" />
         <FrameworkDataSearchDropdownFilter
