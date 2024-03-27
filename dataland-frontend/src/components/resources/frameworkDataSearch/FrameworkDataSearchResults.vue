@@ -5,6 +5,9 @@
       ref="dataTable"
       :value="data"
       :paginator="true"
+      :lazy="true"
+      @page="onPage($event)"
+      :total-records="totalRecords"
       :rows="rowsPerPage"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
       :alwaysShowPaginator="false"
@@ -58,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import DataTable from "primevue/datatable";
+import DataTable, { type DataTablePageEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
@@ -68,6 +71,7 @@ import { type BasicCompanyInformation } from "@clients/backend";
 export default defineComponent({
   name: "FrameworkDataSearchResults",
   components: { BulkDataRequestButton, DataTable, Column },
+  emits: ["page-update"],
   directives: {
     tooltip: Tooltip,
   },
@@ -76,12 +80,24 @@ export default defineComponent({
       type: Object,
       default: null,
     },
+    totalRecords: {
+      type: Number,
+      default: null,
+    },
     rowsPerPage: {
       type: Number,
       default: null,
     },
   },
   methods: {
+    /**
+     * Updates the current Page in the parent component
+     * @param event DataTablePageEvent
+     */
+    onPage(event: DataTablePageEvent) {
+      window.scrollTo(0, 0);
+      this.$emit("page-update", event.page);
+    },
     /**
      * Navigates to the company cockpit page on a click on the row of the company
      * @param event the row click event
@@ -109,6 +125,7 @@ export default defineComponent({
     firstUpdated(event: never) {
       window.scrollTo(0, 0);
       this.$emit("update:first", event);
+      //todo probably delete this method
     },
   },
 });
