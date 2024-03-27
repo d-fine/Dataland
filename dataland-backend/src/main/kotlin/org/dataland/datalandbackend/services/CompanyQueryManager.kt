@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,6 +25,8 @@ class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Method to verify that a given company exists in the company store
      * @param companyId the ID of the to be verified company
@@ -32,6 +35,40 @@ class CompanyQueryManager(
         if (!companyRepository.existsById(companyId)) {
             throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
         }
+    }
+
+    /**
+     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeeding
+     * the given size
+     * @param chunkSize the package size of the records
+     * @param chunkIndex the index of the chunk which is requested
+     * @param filter The filter to use during searching
+     * @return list of lists each containing BasicCompanyInformation objects
+     */
+    @Transactional
+    fun returnCompaniesInChunks(
+        chunkSize: Int,
+        chunkIndex: Int,
+        filter: StoredCompanySearchFilter,
+    ): List<BasicCompanyInformation> {
+        val getCompanies = searchCompaniesAndGetApiModel(filter)
+        logger.info("filter $filter")
+        logger.info("getCompanies $getCompanies")
+        val chunkedCompanies = getCompanies.chunked(chunkSize)
+        val requestedChunk = companyRepository.getAllCompaniesWithDataset()
+        logger.info("chunkSize $chunkSize")
+        logger.info("chunkIndex $chunkIndex")
+        logger.info("chunkedCompanies.size $chunkedCompanies.size")
+        if (chunkIndex >= 0 && chunkIndex < chunkedCompanies.size) {
+            val requestedChunk = chunkedCompanies[chunkIndex]
+            println("Chunk $chunkIndex: $requestedChunk")
+        } else {
+            throw ResourceNotFoundApiException(
+                "Invalid index",
+                "The specified index of the chunk is invalid.",
+            )
+        }
+        return requestedChunk
     }
 
     /**

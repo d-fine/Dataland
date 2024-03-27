@@ -36,7 +36,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
     private val correlationId = UUID.randomUUID().toString()
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
-    private val userEmail = "$userId@test-mail.com"
+    private val userEmail = "$userId@example.com"
     private val creationTimestamp = 1709820187875
     private val creationTimestampAsDate = "07 Mar 2024, 15:03"
     private val dataTypes = listOf(
