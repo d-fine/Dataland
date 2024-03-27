@@ -21,6 +21,37 @@ before(function () {
     companiesWithSmeData = jsonContent as Array<FixtureData<SmeData>>;
   });
 });
+
+/**
+ * select all frameworks
+ */
+function selectAllFrameworks(): void {
+  //todo
+  cy.get("#framework-filter").click();
+  for (const dataType of [
+    DataTypeEnum.EutaxonomyFinancials,
+    DataTypeEnum.EutaxonomyNonFinancials,
+    DataTypeEnum.Lksg,
+    DataTypeEnum.P2p,
+  ]) {
+    cy.get("div.p-multiselect-panel")
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(dataType)})`)
+      .click();
+  }
+
+  cy.get(".p-multiselect-items-wrapper").scrollTo("bottom");
+  for (const dataType of [
+    DataTypeEnum.Sme,
+    DataTypeEnum.Sfdr,
+    DataTypeEnum.Heimathafen,
+    DataTypeEnum.EsgQuestionnaire,
+  ]) {
+    cy.get("div.p-multiselect-panel")
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(dataType)})`)
+      .click();
+  }
+  cy.get("#framework-filter").click();
+}
 /**
  * Function which escapes parenthesis for regex expression
  * @param inputString string for which parenthesis should be escaped
@@ -36,6 +67,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
     cy.visit("/companies").wait("@companies-meta-information");
     verifySearchResultTableExists();
+    selectAllFrameworks();
     cy.get("#framework-filter")
       .click()
       .get("div.p-multiselect-panel")
