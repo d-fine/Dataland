@@ -12,6 +12,6 @@ object MessageType {
     const val ManualQaRequested = "Manual QA requested"
     const val SendInternalEmail = "Send internal E-Mail"
     const val SendTemplateEmail = "Send template E-Mail"
-    const val PrivateItemStored = "Private Item Stored"
+    const val PrivateDataStored = "Private Data Stored"
     const val PrivateDataReceived = "Private Data received"
 }
