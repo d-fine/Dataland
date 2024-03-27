@@ -63,6 +63,9 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-document-manager/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
+- [ ] `./dataland-email-service/Dockerfile`
+- [ ] `./dataland-email-service/DockerfileBase`
+- [ ] `./dataland-email-service/DockerfileTest`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
