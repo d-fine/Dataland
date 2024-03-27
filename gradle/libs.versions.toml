@@ -38,6 +38,7 @@ kotlin = "1.9.10"
 ##  ⬆ = "1.9.20"
 ##  ⬆ = "1.9.21"
 ##  ⬆ = "1.9.22"
+##  ⬆ = "1.9.23"
 
 okhttp3 = "4.12.0"
 
@@ -50,7 +51,7 @@ junit-jupiter = "5.10.2"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.6"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.7"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
@@ -150,11 +151,11 @@ mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:_"
 
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
-awaitility = "org.awaitility:awaitility:4.2.0"
+awaitility = "org.awaitility:awaitility:4.2.1"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
-json = "org.json:json:20240205"
+json = "org.json:json:20240303"
 
 spring-context = "org.springframework:spring-context:_"
 spring-test = "org.springframework:spring-test:_"
@@ -163,11 +164,11 @@ spring-boot = "org.springframework.boot:spring-boot:_"
 
 spring-rabbit = "org.springframework.amqp:spring-rabbit:_"
 
-cloudevents-api = "io.cloudevents:cloudevents-api:2.5.0"
+cloudevents-api = "io.cloudevents:cloudevents-api:3.0.0"
 
-cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:2.5.0"
+cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:3.0.0"
 
-cloudevents-core = "io.cloudevents:cloudevents-core:2.5.0"
+cloudevents-core = "io.cloudevents:cloudevents-core:3.0.0"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.0"
 
