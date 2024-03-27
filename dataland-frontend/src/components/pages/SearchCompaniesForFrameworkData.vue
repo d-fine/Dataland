@@ -166,7 +166,7 @@ export default defineComponent({
       searchBarId: "search_bar_top",
       rowsPerPage: 100,
       currentPage: 0,
-      totalRecords: 9999, //todo
+      totalRecords: 0,
       previousRecords: 0,
       waitingForDataToDisplay: true,
       windowScrollHandler: (): void => {
@@ -197,12 +197,6 @@ export default defineComponent({
       },
       deep: true,
     },
-    resultsArray: {
-      handler() {
-        this.updateTotalRecords();
-      },
-      deep: true, //todo check if deep is needed
-    },
   },
   computed: {
     currentlyVisiblePageText(): string {
@@ -224,13 +218,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Updates the number of total Records
-     */
-    updateTotalRecords() {
-      //todo use new endpoint, probably use the searchbar since the searchstring is needed!
-      this.totalRecords = 1000;
-    },
     /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update
@@ -373,12 +360,16 @@ export default defineComponent({
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
      * @param companiesReceived the received chunk of companies
      * @param chunkIndex the index of the chunk
+     * @param totalNumberOfCompanies total number of records
      * @returns the promise of the router push with the new query parameters
      */
-    handleCompanyQuery(companiesReceived: Array<BasicCompanyInformation>, chunkIndex: number) {
+    handleCompanyQuery(
+      companiesReceived: Array<BasicCompanyInformation>,
+      chunkIndex: number,
+      totalNumberOfCompanies: number,
+    ) {
+      this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
-      //this.setFirstShownRow(0);
-      console.log(chunkIndex);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       if (chunkIndex == 0) this.searchResults?.resetPagination();
       this.waitingForDataToDisplay = false;

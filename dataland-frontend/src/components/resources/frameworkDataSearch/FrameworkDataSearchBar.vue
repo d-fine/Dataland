@@ -228,7 +228,8 @@ export default defineComponent({
           this.chunkSize,
           chunkIndex,
         );
-        this.$emit("companies-received", resultsArray, chunkIndex);
+        const totalNumberOfCompanies = 1000; //todo use the new endpoint
+        this.$emit("companies-received", resultsArray, chunkIndex, totalNumberOfCompanies);
       }
     },
     /**
