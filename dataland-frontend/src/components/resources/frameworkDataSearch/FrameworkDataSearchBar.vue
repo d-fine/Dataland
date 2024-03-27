@@ -81,6 +81,14 @@ export default defineComponent({
       type: String,
       default: "framework_data_search_bar_standard",
     },
+    chunkSize: {
+      type: Number,
+      default: null,
+    },
+    currentPage: {
+      type: Number,
+      default: 0,
+    },
     filter: {
       type: Object as () => FrameworkDataSearchFilterInterface,
       default(): FrameworkDataSearchFilterInterface {
@@ -122,6 +130,9 @@ export default defineComponent({
         void this.queryCompany();
       },
       deep: true,
+    },
+    currentPage() {
+      void this.queryCompany(this.currentPage);
     },
   },
 
@@ -204,8 +215,9 @@ export default defineComponent({
     },
     /**
      * Performs the company search if the parent component indicated it wants to receive the complete search results
+     * @param chunkIndex the index of the requested chunk
      */
-    async queryCompany() {
+    async queryCompany(chunkIndex = 0) {
       if (this.emitSearchResultsArray) {
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
@@ -213,8 +225,11 @@ export default defineComponent({
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
           assertDefined(this.getKeycloakPromise)(),
+          this.chunkSize,
+          chunkIndex,
         );
-        this.$emit("companies-received", resultsArray);
+        const totalNumberOfCompanies = 1000; //todo use the new endpoint
+        this.$emit("companies-received", resultsArray, chunkIndex, totalNumberOfCompanies);
       }
     },
     /**
@@ -230,7 +245,10 @@ export default defineComponent({
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
         assertDefined(this.getKeycloakPromise)(),
+        this.maxNumOfDisplayedAutocompleteEntries,
+        0,
       );
+      //todo delete next lines
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
     },
   },

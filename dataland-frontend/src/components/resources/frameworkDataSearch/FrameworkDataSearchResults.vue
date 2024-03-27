@@ -5,6 +5,10 @@
       ref="dataTable"
       :value="data"
       :paginator="true"
+      @page="onPage($event)"
+      :lazy="true"
+      :first="previousRecords"
+      :total-records="totalRecords"
       :rows="rowsPerPage"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
       :alwaysShowPaginator="false"
@@ -58,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import DataTable from "primevue/datatable";
+import DataTable, { type DataTablePageEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
@@ -68,6 +72,7 @@ import { type BasicCompanyInformation } from "@clients/backend";
 export default defineComponent({
   name: "FrameworkDataSearchResults",
   components: { BulkDataRequestButton, DataTable, Column },
+  emits: ["page-update"],
   directives: {
     tooltip: Tooltip,
   },
@@ -76,12 +81,28 @@ export default defineComponent({
       type: Object,
       default: null,
     },
+    previousRecords: {
+      type: Number,
+      default: null,
+    },
+    totalRecords: {
+      type: Number,
+      default: null,
+    },
     rowsPerPage: {
       type: Number,
       default: null,
     },
   },
   methods: {
+    /**
+     * Updates the current Page in the parent component
+     * @param event DataTablePageEvent
+     */
+    onPage(event: DataTablePageEvent) {
+      window.scrollTo(0, 0);
+      this.$emit("page-update", event.page);
+    },
     /**
      * Navigates to the company cockpit page on a click on the row of the company
      * @param event the row click event
@@ -93,15 +114,6 @@ export default defineComponent({
       return this.$router.push(`/companies/${companyIdOfClickedRow}`);
     },
     /**
-     * Resets the pagination of the dataTable
-     */
-    // The following method is used, the linter reports a false positive here
-    // eslint-disable-next-line vue/no-unused-properties
-    resetPagination() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      if (this.$refs.dataTable) this.$refs.dataTable.resetPage();
-    },
-    /**
      * Called when the id of the first row is updated (i.e. when the user navigates to the next page)
      * Scrolls back to the top and propagates the event
      * @param event the new number of the first row
@@ -109,6 +121,7 @@ export default defineComponent({
     firstUpdated(event: never) {
       window.scrollTo(0, 0);
       this.$emit("update:first", event);
+      //todo probably delete this method
     },
   },
 });

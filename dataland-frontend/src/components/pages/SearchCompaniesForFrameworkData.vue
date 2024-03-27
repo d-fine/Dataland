@@ -15,6 +15,8 @@
             class="pl-4 m-0"
             v-model="currentSearchBarInput"
             :filter="currentCombinedFilter"
+            :chunk-size="rowsPerPage"
+            :current-page="currentPage"
             :searchBarId="searchBarId"
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
@@ -61,17 +63,19 @@
           </div>
         </div>
 
-        <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
+        <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading...</p>
           <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
         </div>
 
         <FrameworkDataSearchResults
-          v-if="!waitingForSearchResults"
+          v-if="!waitingForDataToDisplay"
           ref="searchResults"
+          :total-records="totalRecords"
+          :previous-records="previousRecords"
           :rows-per-page="rowsPerPage"
           :data="resultsArray"
-          @update:first="setFirstShownRow"
+          @page-update="handlePageUpdate"
         />
       </TheContent>
     </DatasetsTabMenu>
@@ -160,9 +164,11 @@ export default defineComponent({
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarId: "search_bar_top",
-      indexOfFirstShownRow: 0,
       rowsPerPage: 100,
-      waitingForSearchResults: true,
+      currentPage: 0,
+      totalRecords: 0,
+      previousRecords: 0,
+      waitingForDataToDisplay: true,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -194,13 +200,12 @@ export default defineComponent({
   },
   computed: {
     currentlyVisiblePageText(): string {
-      const totalSearchResults = this.resultsArray.length;
-
-      if (!this.waitingForSearchResults) {
+      const totalSearchResults = this.totalRecords;
+      if (!this.waitingForDataToDisplay) {
         if (totalSearchResults === 0) {
           return "No results";
         } else {
-          const startIndex = this.indexOfFirstShownRow;
+          const startIndex = this.currentPage * this.rowsPerPage;
           const endIndex =
             startIndex + (this.rowsPerPage - 1) >= totalSearchResults
               ? totalSearchResults - 1
@@ -214,11 +219,16 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Updates the local variable indicating which row of the datatable is currently displayed at the top
-     * @param value the index of the new row displayed on top
+     * Updates the current page.
+     * An update of the currentPage automatically triggers a data Update
+     * @param pageNumber the new page index
      */
-    setFirstShownRow(value: number) {
-      this.indexOfFirstShownRow = value;
+    handlePageUpdate(pageNumber: number) {
+      if (pageNumber != this.currentPage) {
+        this.waitingForDataToDisplay = true;
+        this.currentPage = pageNumber;
+        this.previousRecords = this.currentPage * this.rowsPerPage;
+      }
     },
     /**
      * Called when the window is scrolled.
@@ -314,7 +324,7 @@ export default defineComponent({
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
-        this.waitingForSearchResults = true;
+        this.waitingForDataToDisplay = true;
         this.currentCombinedFilter = {
           sectorFilter: this.currentFilteredSectors,
           frameworkFilter: this.currentFilteredFrameworks,
@@ -348,24 +358,26 @@ export default defineComponent({
     /**
      * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
-     * @param companiesReceived the received companies
+     * @param companiesReceived the received chunk of companies
+     * @param chunkIndex the index of the chunk
+     * @param totalNumberOfCompanies total number of records
      * @returns the promise of the router push with the new query parameters
      */
-    handleCompanyQuery(companiesReceived: Array<BasicCompanyInformation>) {
+    handleCompanyQuery(
+      companiesReceived: Array<BasicCompanyInformation>,
+      chunkIndex: number,
+      totalNumberOfCompanies: number,
+    ) {
+      this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
-      this.setFirstShownRow(0);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.searchResults?.resetPagination();
-      this.waitingForSearchResults = false;
+      if (chunkIndex == 0) this.handlePageUpdate(0);
+      this.waitingForDataToDisplay = false;
       this.searchBarToggled = false;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.every((frameworkAsDataTypeEnum) =>
-        this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum),
-      );
-      let queryFrameworks: DataTypeEnum[] | undefined = this.currentFilteredFrameworks;
-      if (allFrameworksSelected || this.currentFilteredFrameworks.length == 0) queryFrameworks = undefined;
+      const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
 
       const queryCountryCodes =
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
@@ -387,7 +399,7 @@ export default defineComponent({
      * @param companyNameFilter the new search filter
      */
     handleSearchConfirmed(companyNameFilter: string) {
-      this.waitingForSearchResults = true;
+      this.waitingForDataToDisplay = true;
       this.currentSearchBarInput = companyNameFilter;
     },
     /**
