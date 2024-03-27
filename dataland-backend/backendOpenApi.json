@@ -820,6 +820,24 @@
                 "type": "string"
               }
             }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         ],
         "responses": {
@@ -13828,23 +13846,23 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
+          "companyName": {
+            "type": "string"
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
           }
@@ -13869,10 +13887,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

@@ -56,13 +56,17 @@ class CompanyDataController(
         dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
+        chunkSize: Int?,
+        chunkIndex: Int?,
     ): ResponseEntity<List<BasicCompanyInformation>> {
         logger.info(
             "Received a request to get basic company information with searchString='$searchString'" +
                 ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(
-            companyQueryManager.searchCompaniesAndGetApiModel(
+            companyQueryManager.returnCompaniesInChunks(
+                chunkSize ?: 1,
+                chunkIndex ?: 0,
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
