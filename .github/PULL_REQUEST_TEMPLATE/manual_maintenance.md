@@ -18,7 +18,7 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
-- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z`
+- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
 
 ### Dataland frontend
 
