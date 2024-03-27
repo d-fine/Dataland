@@ -5,8 +5,9 @@
       ref="dataTable"
       :value="data"
       :paginator="true"
-      :lazy="true"
       @page="onPage($event)"
+      :lazy="true"
+      :first="previousRecords"
       :total-records="totalRecords"
       :rows="rowsPerPage"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
@@ -78,6 +79,10 @@ export default defineComponent({
   props: {
     data: {
       type: Object,
+      default: null,
+    },
+    previousRecords: {
+      type: Number,
       default: null,
     },
     totalRecords: {

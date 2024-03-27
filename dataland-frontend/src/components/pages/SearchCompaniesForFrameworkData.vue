@@ -72,8 +72,8 @@
           v-if="!waitingForDataToDisplay"
           ref="searchResults"
           :total-records="totalRecords"
+          :previous-records="previousRecords"
           :rows-per-page="rowsPerPage"
-          :current-page="currentPage"
           :data="resultsArray"
           @page-update="handlePageUpdate"
         />
@@ -164,10 +164,10 @@ export default defineComponent({
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarId: "search_bar_top",
-      indexOfFirstShownRow: 0,
       rowsPerPage: 100,
-      currentPage: 2,
+      currentPage: 0,
       totalRecords: 9999, //todo
+      previousRecords: 0,
       waitingForDataToDisplay: true,
       windowScrollHandler: (): void => {
         this.handleScroll();
@@ -197,16 +197,21 @@ export default defineComponent({
       },
       deep: true,
     },
+    resultsArray: {
+      handler() {
+        this.updateTotalRecords();
+      },
+      deep: true, //todo check if deep is needed
+    },
   },
   computed: {
     currentlyVisiblePageText(): string {
-      const totalSearchResults = this.resultsArray.length;
-      //todo
+      const totalSearchResults = this.totalRecords;
       if (!this.waitingForDataToDisplay) {
         if (totalSearchResults === 0) {
           return "No results";
         } else {
-          const startIndex = this.indexOfFirstShownRow;
+          const startIndex = this.currentPage * this.rowsPerPage;
           const endIndex =
             startIndex + (this.rowsPerPage - 1) >= totalSearchResults
               ? totalSearchResults - 1
@@ -220,20 +225,23 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Updates the number of total Records
+     */
+    updateTotalRecords() {
+      //todo use new endpoint, probably use the searchbar since the searchstring is needed!
+      this.totalRecords = 1000;
+    },
+    /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update
      * @param pageNumber the new page index
      */
     handlePageUpdate(pageNumber: number) {
-      this.waitingForDataToDisplay = true;
-      this.currentPage = pageNumber; //todo getChunkIndex(pageNumber)
-    },
-    /**
-     * Updates the local variable indicating which row of the datatable is currently displayed at the top
-     * @param value the index of the new row displayed on top
-     */
-    setFirstShownRow(value: number) {
-      this.indexOfFirstShownRow = value;
+      if (pageNumber != this.currentPage) {
+        this.waitingForDataToDisplay = true;
+        this.currentPage = pageNumber;
+        this.previousRecords = this.currentPage * this.rowsPerPage;
+      }
     },
     /**
      * Called when the window is scrolled.
@@ -369,7 +377,8 @@ export default defineComponent({
      */
     handleCompanyQuery(companiesReceived: Array<BasicCompanyInformation>, chunkIndex: number) {
       this.resultsArray = companiesReceived;
-      this.setFirstShownRow(0);
+      //this.setFirstShownRow(0);
+      console.log(chunkIndex);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       if (chunkIndex == 0) this.searchResults?.resetPagination();
       this.waitingForDataToDisplay = false;
