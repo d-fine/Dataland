@@ -371,7 +371,7 @@ export default defineComponent({
       this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      if (chunkIndex == 0) this.searchResults?.resetPagination();
+      if (chunkIndex == 0) this.handlePageUpdate(0);
       this.waitingForDataToDisplay = false;
       this.searchBarToggled = false;
 

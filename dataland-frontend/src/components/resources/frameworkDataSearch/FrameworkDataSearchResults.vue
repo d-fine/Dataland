@@ -114,15 +114,6 @@ export default defineComponent({
       return this.$router.push(`/companies/${companyIdOfClickedRow}`);
     },
     /**
-     * Resets the pagination of the dataTable
-     */
-    // The following method is used, the linter reports a false positive here
-    // eslint-disable-next-line vue/no-unused-properties
-    resetPagination() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      if (this.$refs.dataTable) this.$refs.dataTable.resetPage();
-    },
-    /**
      * Called when the id of the first row is updated (i.e. when the user navigates to the next page)
      * Scrolls back to the top and propagates the event
      * @param event the new number of the first row
