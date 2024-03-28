@@ -56,6 +56,7 @@ import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/
 import {
   getCompanyDataForFrameworkDataSearchPage,
   type FrameworkDataSearchFilterInterface,
+  getNumberOfCompaniesForFrameworkDataSearchPage,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
@@ -228,7 +229,13 @@ export default defineComponent({
           this.chunkSize,
           chunkIndex,
         );
-        const totalNumberOfCompanies = 1000; //todo use the new endpoint
+        const totalNumberOfCompanies = await getNumberOfCompaniesForFrameworkDataSearchPage(
+          this.searchBarInput,
+          new Set(this.filter?.frameworkFilter),
+          new Set(this.filter?.countryCodeFilter),
+          new Set(this.filter?.sectorFilter),
+          assertDefined(this.getKeycloakPromise)(),
+        );
         this.$emit("companies-received", resultsArray, chunkIndex, totalNumberOfCompanies);
       }
     },
@@ -248,8 +255,6 @@ export default defineComponent({
         this.maxNumOfDisplayedAutocompleteEntries,
         0,
       );
-      //todo delete next lines
-      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
     },
   },
 });
