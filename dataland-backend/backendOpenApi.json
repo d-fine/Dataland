@@ -3049,6 +3049,103 @@
         ]
       }
     },
+    "/companies/numberOfCompanies": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve the number of companies satisfying different filters.",
+        "description": "The number of companies via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "operationId": "getNumberOfCompanies",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            }
+          },
+          {
+            "name": "countryCodes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sectors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved number of companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/names": {
       "get": {
         "tags": [
@@ -13849,17 +13946,17 @@
           "companyName": {
             "type": "string"
           },
+          "companyId": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
             "type": "string"
           },
           "permId": {

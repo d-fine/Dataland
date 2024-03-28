@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
+import org.dataland.datalandbackend.services.CompanyChunkManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataOwnersManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -31,6 +32,7 @@ import java.util.UUID
  * Controller for the company data endpoints
  * @param companyAlterationManager the company manager service to handle company alteration
  * @param companyQueryManager the company manager service to handle company database queries
+ * @param companyChunkManager the company manager service to handle chunking of data
  * @param companyIdentifierRepositoryInterface the company identifier repository
  */
 
@@ -38,6 +40,7 @@ import java.util.UUID
 class CompanyDataController(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val companyChunkManager: CompanyChunkManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val dataOwnersManager: DataOwnersManager,
 ) : CompanyApi, DataOwnerApi {
@@ -64,9 +67,30 @@ class CompanyDataController(
                 ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(
-            companyQueryManager.returnCompaniesInChunks(
+            companyChunkManager.returnCompaniesInChunks(
                 chunkSize ?: 1,
                 chunkIndex ?: 0,
+                StoredCompanySearchFilter(
+                    searchString = searchString ?: "",
+                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
+                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                    sectorFilter = sectors?.toList() ?: listOf(),
+                ),
+            ),
+        )
+    }
+    override fun getNumberOfCompanies(
+        searchString: String?,
+        dataTypes: Set<DataType>?,
+        countryCodes: Set<String>?,
+        sectors: Set<String>?,
+    ): ResponseEntity<Int> {
+        logger.info(
+            "Received a request to get number of companies with searchString='$searchString'" +
+                ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
+        )
+        return ResponseEntity.ok(
+            companyChunkManager.returnNumberOfCompanies(
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),

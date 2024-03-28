@@ -27,8 +27,8 @@ export interface FrameworkDataSearchFilterInterface {
  *                                         countries specified by the country codes are returned
  * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
- * @param chunkSize
- * @param chunkIndex
+ * @param chunkSize                        size of requested chunk
+ * @param chunkIndex                       index of requested chunk
  * @returns the search result companies
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
@@ -46,11 +46,16 @@ export async function getCompanyDataForFrameworkDataSearchPage(
       frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
       //todo seems to be redundant (full set is set to empty set later)
     }
-    console.log(chunkSize);
-    console.log(chunkIndex);
-    //todo add chunkSize and chunkIndex
-    return (await companyDataControllerApi.getCompanies(searchString, frameworkFilter, countryCodeFilter, sectorFilter))
-      .data;
+    return (
+      await companyDataControllerApi.getCompanies(
+        searchString,
+        frameworkFilter,
+        countryCodeFilter,
+        sectorFilter,
+        chunkSize,
+        chunkIndex,
+      )
+    ).data;
   } catch (error) {
     console.error(error);
     return [];
