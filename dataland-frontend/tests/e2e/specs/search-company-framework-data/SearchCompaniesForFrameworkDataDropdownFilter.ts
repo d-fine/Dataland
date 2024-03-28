@@ -26,7 +26,7 @@ before(function () {
  * select all frameworks
  */
 function selectAllFrameworks(): void {
-  //todo
+  //todo after we add button, select all frameworks
   cy.get("#framework-filter").click();
   for (const dataType of [
     DataTypeEnum.EutaxonomyFinancials,
