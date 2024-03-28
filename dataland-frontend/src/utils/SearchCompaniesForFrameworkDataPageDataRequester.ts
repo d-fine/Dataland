@@ -6,7 +6,6 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 import type Keycloak from "keycloak-js";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export interface FrameworkDataSearchFilterInterface {
   companyNameFilter: string;
@@ -18,7 +17,7 @@ export interface FrameworkDataSearchFilterInterface {
 /**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  * @param  {string} searchString           the string that is used to search companies
- *                                         companies by name, or additionally by identifier values
+ *                                         by name, or additionally by identifier values
  * @param {Array<string>} frameworkFilter
  *                                         search for companies that hold at least one data set for at least one of
  *                                         the frameworks mentioned in frameworksToFilter and don't filter if
@@ -42,10 +41,6 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 ): Promise<Array<BasicCompanyInformation>> {
   try {
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
-    if (frameworkFilter.size === 0) {
-      frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
-      //todo seems to be redundant (full set is set to empty set later)
-    }
     return (
       await companyDataControllerApi.getCompanies(
         searchString,
@@ -64,7 +59,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 /**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  * @param  {string} searchString           the string that is used to search companies
- *                                         companies by name, or additionally by identifier values
+ *                                         by name, or additionally by identifier values
  * @param {Array<string>} frameworkFilter
  *                                         search for companies that hold at least one data set for at least one of
  *                                         the frameworks mentioned in frameworksToFilter and don't filter if

@@ -35,7 +35,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
 
     /**
-     * A function for querying basic information of companies with approved datasets by various filters:
+     * A function for querying basic information of companies by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
      * of one of the supplied dataTypes are returned
      * - searchString: If not empty, only companies that contain the search string in their name are returned
@@ -45,9 +45,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH" +
-            " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
+            " has_data AS ((SELECT DISTINCT company_id FROM data_meta_information" +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
-            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1)," +
+            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1)" +
+            "UNION (SELECT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0))," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +

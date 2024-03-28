@@ -43,24 +43,17 @@ class CompanyQueryManager(
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
-        if (filter.dataTypeFilter.size == DataTypesExtractor().getAllDataTypes().size) {
-            filter.dataTypeFilter = emptyList()
-        }
-
-        return if (
+        if (filter.dataTypeFilterSize == DataTypesExtractor().getAllDataTypes().size &&
             (
                 filter.sectorFilterSize +
                     filter.countryCodeFilterSize +
-                    filter.dataTypeFilterSize +
                     filter.searchStringLength
-                ) > 0
+                ) == 0
         ) {
-            companyRepository.searchCompanies(
-                filter,
-            )
-        } else {
-            companyRepository.getAllCompaniesWithDataset()
+            return companyRepository.getAllCompaniesWithDataset()
         }
+
+        return companyRepository.searchCompanies(filter)
     }
 
     /**
