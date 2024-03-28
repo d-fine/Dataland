@@ -53,7 +53,8 @@ class PrivateDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val privateDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
-    private val documentInMemoryStorage = mutableMapOf<String, Array<MultipartFile>>()
+    private val documentInMemoryStorage = mutableMapOf<String, MutableList<ByteArray>>()
+    private val dataDocumentMapInMemoryStorage = mutableMapOf<String, MutableList<String>>()
 
     fun processPrivateSmeDataStorageRequest(
         storableDataSet: StorableDataSet,
@@ -63,8 +64,8 @@ class PrivateDataManager(
         val dataId = generateRandomDataId()
         storeDatasetInMemory(dataId, storableDataSet, correlationId)
         storeMetaInfoEntityInMemory(dataId, storableDataSet, correlationId)
-        storeDocumentsInMemory(dataId, documents, correlationId)
-        sendReceptionMessage(dataId, correlationId)
+        val listOfDocumentHashes = storeDocumentsInMemory(dataId, documents, correlationId)
+        sendReceptionMessage(dataId, correlationId, listOfDocumentHashes)
         return dataId
         // TODO same return as other frameworks
     }
@@ -96,18 +97,30 @@ class PrivateDataManager(
         metaInfoEntityInMemoryStorage[dataId] = metaDataEntity
     }
 
-    private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>?, correlationId: String) {
+    private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>?, correlationId: String): MutableList<String> {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
         //  Maybe we should use the same approach as in the other document service
+        //  I've changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
+        //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
         logger.info("Storing Sme documents in temporary storage for dataId $dataId, $documents and correlationId $correlationId.")
+        val listDocumentHashes = mutableListOf<String>()
         if (!documents.isNullOrEmpty()) {
-            documentInMemoryStorage[dataId] = documents
+            val dataDocumentMapping = mutableListOf<ByteArray>()
+            for (document in documents) {
+                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend!! test?
+                val documentBody = convertFile(document, correlationId)
+                dataDocumentMapping.add(documentBody)
+                listDocumentHashes.add(documentId)
+            }
+            documentInMemoryStorage[dataId] = dataDocumentMapping
+            dataDocumentMapInMemoryStorage[dataId] = listDocumentHashes
         }
+        return listDocumentHashes
     }
 
-    private fun sendReceptionMessage(dataId: String, correlationId: String) {
+    private fun sendReceptionMessage(dataId: String, correlationId: String, listOfDocumentHashes: MutableList<String>) {
         logger.info(
             "Received data to be stored in external storage, sending message for dataId: $dataId and " +
                 "correlationId: $correlationId",
@@ -117,6 +130,7 @@ class PrivateDataManager(
                 "dataId" to dataId,
                 "actionType" to
                     ActionType.StorePrivateDataAndDocuments,
+                "listOfDocumentHashes" to listOfDocumentHashes,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -135,16 +149,17 @@ class PrivateDataManager(
                 "was successfully stored in the external datastore",
         )
         val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
-        val documentsForDataId = documentInMemoryStorage[dataId]
-        val dataIdToDocumentMappingEntities =
-            documentsForDataId!!.map { document ->
-                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend!! test?
-                DataIdToAssetIdMappingEntity(dataId, documentId)
-            }
         dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
-        dataIdToDocumentMappingEntities.forEach {
-                document ->
-            dataIdToAssetIdMappingRepository.save(document)
+        val dataDocumentsMapping = dataDocumentMapInMemoryStorage[dataId]
+        if (!dataDocumentsMapping.isNullOrEmpty()) {
+            val dataIdToDocumentMappingEntities =
+                dataDocumentsMapping!!.map { document ->
+                    DataIdToAssetIdMappingEntity(dataId, document)
+                }
+            dataIdToDocumentMappingEntities.forEach {
+                    document ->
+                dataIdToAssetIdMappingRepository.save(document)
+            }
         }
     }
     fun persistMetaInfo(dataId: String, correlationId: String) {
@@ -188,7 +203,7 @@ class PrivateDataManager(
             "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId.",
         )
         messageUtils.rejectMessageOnException {
-            // persistMappingInfo(dataId, correlationId)
+            persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId, correlationId)
             privateDataInMemoryStorage.remove(dataId)
             metaInfoEntityInMemoryStorage.remove(dataId)
@@ -211,4 +226,11 @@ class PrivateDataManager(
         return objectMapper.writeValueAsString(rawValue)
     }
     // TODO this method has to return data and documents
+
+    fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
+        logger.info("Converting uploaded file. (correlation ID: $correlationId)")
+        return convert(file, correlationId)
+    }
+
+    fun convert(file: MultipartFile, correlationId: String): ByteArray = file.bytes
 }
