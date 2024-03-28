@@ -32,14 +32,8 @@ class CompanyChunkManager(
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
         val getCompanies = companyQueryManager.searchCompaniesAndGetApiModel(filter)
-        logger.info("filter $filter")
-        logger.info("getCompanies $getCompanies")
         val chunkedCompanies = getCompanies.chunked(chunkSize)
-        // val requestedChunk = companyQueryManager.companyRepository.getAllCompaniesWithDataset()
         var requestedChunk = emptyList<BasicCompanyInformation>()
-        logger.info("chunkSize $chunkSize")
-        logger.info("chunkIndex $chunkIndex")
-        logger.info("chunkedCompanies.size $chunkedCompanies.size")
         if (chunkIndex >= 0 && chunkIndex < chunkedCompanies.size) {
             requestedChunk = chunkedCompanies[chunkIndex]
             println("Chunk $chunkIndex: $requestedChunk")
