@@ -46,8 +46,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value = "WITH" +
             " has_data AS ((SELECT DISTINCT company_id FROM data_meta_information" +
-            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
-            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1)" +
+            " WHERE data_type IN :#{#searchFilter.dataTypeFilter} AND quality_status = 1)" +
             "UNION (SELECT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0))," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
