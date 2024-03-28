@@ -53,7 +53,7 @@ class PrivateDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val privateDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
-    private val documentInMemoryStorage = mutableMapOf<String, MutableList<ByteArray>>()
+    private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
     private val dataDocumentMapInMemoryStorage = mutableMapOf<String, MutableList<String>>()
 
     fun processPrivateSmeDataStorageRequest(
@@ -107,14 +107,13 @@ class PrivateDataManager(
         logger.info("Storing Sme documents in temporary storage for dataId $dataId, $documents and correlationId $correlationId.")
         val listDocumentHashes = mutableListOf<String>()
         if (!documents.isNullOrEmpty()) {
-            val dataDocumentMapping = mutableListOf<ByteArray>()
             for (document in documents) {
                 val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend!! test?
                 val documentBody = convertFile(document, correlationId)
-                dataDocumentMapping.add(documentBody)
                 listDocumentHashes.add(documentId)
+                documentInMemoryStorage[documentId] = documentBody
             }
-            documentInMemoryStorage[dataId] = dataDocumentMapping
+
             dataDocumentMapInMemoryStorage[dataId] = listDocumentHashes
         }
         return listDocumentHashes
@@ -225,7 +224,7 @@ class PrivateDataManager(
         }
         return objectMapper.writeValueAsString(rawValue)
     }
-    // TODO this method has to return data and documents
+    // TODO this method has to return data and documents, alternatively we use two different endpoints
 
     fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting uploaded file. (correlation ID: $correlationId)")
@@ -233,4 +232,11 @@ class PrivateDataManager(
     }
 
     fun convert(file: MultipartFile, correlationId: String): ByteArray = file.bytes
+
+    /**
+     * Retrieves the data identified by the given hash from the in-memory store.
+     */
+    fun retrieveDocumentsromMemoryStore(hash: String): ByteArray? {
+        return documentInMemoryStorage[hash]
+    }
 }

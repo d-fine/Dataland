@@ -29,7 +29,7 @@ class SmeDataController(
     @Autowired var myObjectMapper: ObjectMapper,
 ) : PrivateDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
-
+ //TODO what is this annotation for?
     // @Operation(operationId = "postCompanyAssociatedSmeData")
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
@@ -41,7 +41,7 @@ class SmeDataController(
 
         val uploadTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
-        val test = StorableDataSet(
+        val storableDataSet = StorableDataSet(
             companyId = companyAssociatedSmeData.companyId,
             dataType = DataType.of(SmeData::class.java),
             uploaderUserId = userId,
@@ -50,11 +50,11 @@ class SmeDataController(
             data = companyAssociatedSmeData.data.toString(),
         )
         val dataIdOfPostedData = privateDataManager.processPrivateSmeDataStorageRequest(
-            test,
+            storableDataSet,
             documents ?: emptyArray(),
             correlationId,
         )
-        val dummyResponse = DataMetaInformation(
+        val dataMetaInformation = DataMetaInformation(
             dataId = dataIdOfPostedData,
             companyId = companyAssociatedSmeData.companyId,
             dataType = DataType.of(SmeData::class.java),
@@ -64,6 +64,6 @@ class SmeDataController(
             qaStatus = QaStatus.Accepted,
             uploaderUserId = userId,
         )
-        return ResponseEntity.ok(dummyResponse)
+        return ResponseEntity.ok(dataMetaInformation)
     }
 }

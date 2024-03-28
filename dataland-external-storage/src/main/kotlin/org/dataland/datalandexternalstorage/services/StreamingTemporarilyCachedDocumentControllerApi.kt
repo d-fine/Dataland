@@ -13,21 +13,21 @@ import java.io.InputStream
  * that allows raw access to the body data-stream
  */
 @Component
-class StreamingTemporarilyCachedDocumentControllerApi(
+class StreamingTemporarilyCachedPrivateDocumentControllerApi(
     @Value("\${dataland.backend.base-url}")
-    private val documentManagerBaseUrl: String,
+    private val backendBaseUrl: String,
 ) {
 
     private val client = OkHttpClient()
 
     /**
-     * Retrieves the blob identified by the blobId from the document manager and returns the input stream of the
+     * Retrieves the blob identified by the blobId from the backend and returns the input stream of the
      * body of the request.
      * @param blobId the ID of the data to retrieve
      * @returns a stream of the blob
      */
-    fun getReceivedData(blobId: String): InputStream {
-        val requestUrl = "$documentManagerBaseUrl/internal/cached".toHttpUrl()
+    fun getReceivedPrivateDocument(blobId: String): InputStream {
+        val requestUrl = "$backendBaseUrl/internal/cached/document/private".toHttpUrl()
             .newBuilder().addPathSegment(blobId)
             .build()
         val request = Request.Builder().url(requestUrl).build()

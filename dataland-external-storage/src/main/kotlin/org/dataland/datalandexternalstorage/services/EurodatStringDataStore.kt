@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional
 class EurodatStringDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
+    @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
     // @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
@@ -96,22 +97,43 @@ class EurodatStringDataStore(
         // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
         // val getAuthentication = DatabaseCredentialResourceApi.
         val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
+        //val documentHashList = JSONObject(payload).getJSONArray("listOfDocumentHashes").toList()
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-        // storeDataInEurodat(DataItem(dataId, objectMapper.writeValueAsString(data)))
+         storeDataInEurodat(dataId, correlationId, DataItem(dataId, objectMapper.writeValueAsString(data)))
+        val jsonArray = JSONObject(payload).getJSONArray("listOfDocumentHashes")
+
+        val list: List<String> = List(jsonArray.length()) { jsonArray.getString(it) }
+        storeBlobInEurodat(dataId, correlationId, list)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
         )
     }
 
     /**
-     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * Stores a Data Item in eurodat while ensuring that there is no active transaction. This will guarantee that the write
      * is commited after exit of this method.
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeDataInEurodat(dataItem: DataItem) {
-        // TODO call to eurodat and remove dataItem
+    fun storeDataInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
+        logger.info("Storing data for dataId $dataId and correlationId $correlationId in eurodat storage service")
+        // TODO call to eurodat
         // dataItemRepository.save(dataItem)
+        // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
+    }
+    /**
+     * Stores a Blob Item in eurodat while ensuring that there is no active transaction. This will guarantee that the write
+     * is commited after exit of this method.
+     * @param dataItem the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeBlobInEurodat(dataId: String, correlationId: String, documentHashList: List<String>) {
+        logger.info("Retrieving documents associated with dataId $dataId and correlationId $correlationId")
+        documentHashList.forEach{hash ->
+            val resource =temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
+            val test =  resource.readBytes()
+        }
+        // TODO call to eurodat
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
     }
     // TODO Insert statement into the safedepositbox looks like this:
