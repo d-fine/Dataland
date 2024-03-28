@@ -20,7 +20,7 @@ class GeneralTestDataProvider {
             "DummyCity",
             (
                 mapOf(
-                    IdentifierType.permId.value to listOf(getRandomAlphaNumericString()),
+                    IdentifierType.PermId.value to listOf(getRandomAlphaNumericString()),
                 )
                 ),
             "DE",
@@ -34,9 +34,9 @@ class GeneralTestDataProvider {
         permId: String?,
     ): CompanyInformation {
         var identifiers = emptyMap<String, List<String>>()
-        if (!lei.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.lei.value to listOf(lei))
-        if (!isins.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.isin.value to isins)
-        if (!permId.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.permId.value to listOf(permId))
+        if (!lei.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.Lei.value to listOf(lei))
+        if (!isins.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.Isin.value to isins)
+        if (!permId.isNullOrEmpty()) identifiers = identifiers + mapOf(IdentifierType.PermId.value to listOf(permId))
         return CompanyInformation(
             "DummyCompany",
             "DummyCity",

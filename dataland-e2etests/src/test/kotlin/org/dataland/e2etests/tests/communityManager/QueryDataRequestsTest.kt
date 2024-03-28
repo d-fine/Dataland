@@ -108,7 +108,7 @@ class QueryDataRequestsTest {
             }.dataRequestId,
         )
 
-        val closedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.closed).filter {
+        val closedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Closed).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(0, closedDataRequests.size)
@@ -117,14 +117,14 @@ class QueryDataRequestsTest {
         assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
         assertEquals("2023", storedDataRequestB.reportingPeriod)
 
-        requestControllerApi.patchDataRequestStatus(dataRequestIdB, RequestStatus.answered)
+        requestControllerApi.patchDataRequestStatus(dataRequestIdB, RequestStatus.Answered)
 
-        val answeredDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.answered).filter {
+        val answeredDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Answered).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(1, answeredDataRequests.size)
         assertEquals(companyIdB, answeredDataRequests.first().datalandCompanyId)
-        assertEquals(RequestStatus.answered, answeredDataRequests.first().requestStatus)
+        assertEquals(RequestStatus.Answered, answeredDataRequests.first().requestStatus)
     }
 
     @Test

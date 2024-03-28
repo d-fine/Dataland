@@ -30,7 +30,7 @@ class GleifMappingTest {
         sector = null,
         website = null,
         identifiers = mapOf(
-            IdentifierType.lei.value to listOf(expectedGleifCompanyInformation.lei),
+            IdentifierType.Lei.value to listOf(expectedGleifCompanyInformation.lei),
         ),
     )
 

@@ -10,17 +10,17 @@ class V4__MigrateEuTaxonomyNamesTest {
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected`() {
-        testIfDataIsMaintained(YesNo.yes, YesNo.no, "eutaxonomy-non-financials")
+        testIfDataIsMaintained(YesNo.Yes, YesNo.No, "eutaxonomy-non-financials")
     }
 
     @Test
     fun `test that eu taxonomy for financials migration script works as expected`() {
-        testIfDataIsMaintained(YesNo.yes, YesNo.no, "eutaxonomy-financials")
+        testIfDataIsMaintained(YesNo.Yes, YesNo.No, "eutaxonomy-financials")
     }
 
     @Test
     fun `test that eu taxonomy migration script works as expected with unprovided values`() {
-        testIfDataIsMaintained(YesNo.yes, null, "eutaxonomy-non-financials")
+        testIfDataIsMaintained(YesNo.Yes, null, "eutaxonomy-non-financials")
     }
 
     private fun testIfDataIsMaintained(
