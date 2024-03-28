@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional
 class EurodatStringDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
+    // @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
 ) {
@@ -68,7 +69,7 @@ class EurodatStringDataStore(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
+        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
@@ -91,13 +92,14 @@ class EurodatStringDataStore(
      */
     fun persistentlyStoreDataInEurodatAndSendMessage(dataId: String, correlationId: String, payload: String) {
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+        logger.info("payload: $payload")
         // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
         // val getAuthentication = DatabaseCredentialResourceApi.
         val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
         // storeDataInEurodat(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
+            payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
         )
     }
 
@@ -110,6 +112,7 @@ class EurodatStringDataStore(
     fun storeDataInEurodat(dataItem: DataItem) {
         // TODO call to eurodat and remove dataItem
         // dataItemRepository.save(dataItem)
+        // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
     }
     // TODO Insert statement into the safedepositbox looks like this:
     /*

@@ -198,8 +198,8 @@ class DataManagerTest(
     fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        //TODO check that its fine to delete this
-        //`when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
+        // TODO check that its fine to delete this
+        // `when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
 
         val payload = JSONObject(
             mapOf(

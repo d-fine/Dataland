@@ -66,19 +66,22 @@ class PrivateDataManager(
         storeDocumentsInMemory(dataId, documents, correlationId)
         sendReceptionMessage(dataId, correlationId)
         return dataId
-        //TODO same return as other frameworks
+        // TODO same return as other frameworks
     }
 
     private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        logger.info("Storing storable dataset for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
-                "correlationId: $correlationId")
+        logger.info(
+            "Storing storable dataset for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
+                "correlationId: $correlationId",
+        )
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
         privateDataInMemoryStorage[dataId] = storableSmeDatasetAsString
     }
-
-    private fun storeMetaInfoEntityInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        logger.info("Storing metadata entry for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
-                "correlationId: $correlationId")
+    fun storeMetaInfoEntityInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
+        logger.info(
+            "Storing metadata entry for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
+                "correlationId: $correlationId",
+        )
         val company = companyQueryManager.getCompanyById(storableDataSet.companyId)
         val metaDataEntity = DataMetaInformationEntity(
             dataId,
@@ -97,34 +100,40 @@ class PrivateDataManager(
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
-        logger.info("Storing Sme data in temporary storage for dataId $dataId and correlationId $correlationId.")
-        // TODO Check if there is another option to store it to not rely on the temp value of the multipart file
+        //  Maybe we should use the same approach as in the other document service
+        logger.info("Storing Sme documents in temporary storage for dataId $dataId, $documents and correlationId $correlationId.")
         if (!documents.isNullOrEmpty()) {
             documentInMemoryStorage[dataId] = documents
         }
     }
 
     private fun sendReceptionMessage(dataId: String, correlationId: String) {
-        logger.info("Received data to be stored in external storage, sending message for dataId: $dataId and " +
-                       "correlationId: $correlationId")
+        logger.info(
+            "Received data to be stored in external storage, sending message for dataId: $dataId and " +
+                "correlationId: $correlationId",
+        )
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId,
                 "actionType" to
-                    ActionType.StorePrivateDataAndDocuments, // TODO we need a new action type and message type for private data
+                    ActionType.StorePrivateDataAndDocuments,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.PublicDataReceived, correlationId, // TODO private data received
+            payload, MessageType.PrivateDataReceived, correlationId,
             ExchangeName.PrivateRequestReceived,
         )
-        logger.info("Message to external storage for dataId: $dataId and correlationId: $correlationId was " +
-                "sent successfully")
+        logger.info(
+            "Message to external storage for dataId: $dataId and correlationId: $correlationId was " +
+                "sent successfully",
+        )
     }
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
-        logger.info("Storing metadata entry permanently for dataId: $dataId and correlationId: $correlationId as the" +
-                "was successfully stored in the external datastore")
+        logger.info(
+            "Storing mapping entry permanently for dataId: $dataId and correlationId: $correlationId as it " +
+                "was successfully stored in the external datastore",
+        )
         val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
         val documentsForDataId = documentInMemoryStorage[dataId]
         val dataIdToDocumentMappingEntities =
@@ -138,15 +147,15 @@ class PrivateDataManager(
             dataIdToAssetIdMappingRepository.save(document)
         }
     }
-
-    private fun persistMetaInfo(dataId: String, correlationId: String) {
+    fun persistMetaInfo(dataId: String, correlationId: String) {
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
-        val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(currentlyActive = true, qaStatus = QaStatus.Accepted)
+        val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
+        metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
         metaDataManager.storeDataMetaInformation(dataMetaInfoToStore!!)
     }
 
     /**
-     * TODO  listen to queue to know when/if EuroDaT has stored everything
+     *
      */
     @RabbitListener(
         bindings = [
@@ -165,11 +174,13 @@ class PrivateDataManager(
         ],
     )
     fun processStoredPrivateSmeData(
-        @Payload dataId: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PrivateItemStored)
+        logger.info(payload)
+        messageUtils.validateMessageType(type, MessageType.PrivateDataStored)
+        val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
@@ -177,9 +188,10 @@ class PrivateDataManager(
             "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId.",
         )
         messageUtils.rejectMessageOnException {
-            persistMappingInfo(dataId, correlationId)
+            // persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId, correlationId)
             privateDataInMemoryStorage.remove(dataId)
+            metaInfoEntityInMemoryStorage.remove(dataId)
             documentInMemoryStorage.remove(dataId)
         }
     }
@@ -198,4 +210,5 @@ class PrivateDataManager(
         }
         return objectMapper.writeValueAsString(rawValue)
     }
+    // TODO this method has to return data and documents
 }
