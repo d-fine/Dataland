@@ -63,18 +63,6 @@ describe("Component tests for the DatasetOverview page", () => {
     }
   }
 
-  it("Checks that the tab-bar is rendered correctly and that clicking on 'COMPANIES' performs a router push", () => {
-    const keycloakMock = minimalKeycloakMock({});
-    cy.intercept("**/api/companies?**", []);
-    cy.mountWithPlugins(DatasetOverview, {
-      keycloak: keycloakMock,
-    }).then((mounted) => {
-      validateTabBar(1, keycloakMock);
-      cy.get(getTabSelector(0)).click();
-      cy.wrap(mounted.component).its("$route.path").should("eq", "/companies");
-    });
-  });
-
   it("Checks that the tab-bar is rendered correctly and that clicking on 'MY DATASETS' performs a router push", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept("**/api/companies?**", []);
@@ -108,6 +96,18 @@ describe("Component tests for the DatasetOverview page", () => {
       validateTabBar(0, keycloakMock);
       cy.get(getTabSelector(2)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
+    });
+  });
+
+  it("Checks that the tab-bar is rendered correctly and that clicking on 'COMPANIES' performs a router push", () => {
+    const keycloakMock = minimalKeycloakMock({});
+    cy.intercept("**/api/companies?**", []);
+    cy.mountWithPlugins(DatasetOverview, {
+      keycloak: keycloakMock,
+    }).then((mounted) => {
+      validateTabBar(1, keycloakMock);
+      cy.get(getTabSelector(0)).click();
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/companies");
     });
   });
 });
