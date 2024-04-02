@@ -25,12 +25,12 @@ class CompanyChunkManager(
      */
     @Transactional
     fun returnCompaniesInChunks(
-        chunkSize: Int,
+        chunkSize: Int?,
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
         val companies = companyQueryManager.searchCompaniesAndGetApiModel(filter)
-        val companiesPerChunk = if (chunkSize > 0) chunkSize else companies.size
+        val companiesPerChunk = if (chunkSize != null && chunkSize > 0) chunkSize else companies.size
 
         val chunkedCompanies = companies.chunked(companiesPerChunk)
         if (chunkIndex >= 0 && chunkIndex < chunkedCompanies.size) {

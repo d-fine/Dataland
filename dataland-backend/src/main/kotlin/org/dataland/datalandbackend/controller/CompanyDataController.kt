@@ -66,10 +66,9 @@ class CompanyDataController(
             "Received a request to get basic company information with searchString='$searchString'" +
                 ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
-
         return ResponseEntity.ok(
             companyChunkManager.returnCompaniesInChunks(
-                chunkSize ?: 0,
+                chunkSize,
                 chunkIndex ?: 0,
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",

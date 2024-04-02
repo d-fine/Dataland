@@ -95,8 +95,8 @@ interface CompanyApi {
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
-        @RequestParam chunkSize: Int? = 1,
-        @RequestParam chunkIndex: Int? = 0,
+        @RequestParam chunkSize: Int? = null,
+        @RequestParam chunkIndex: Int? = null,
     ):
         ResponseEntity<List<BasicCompanyInformation>>
 
