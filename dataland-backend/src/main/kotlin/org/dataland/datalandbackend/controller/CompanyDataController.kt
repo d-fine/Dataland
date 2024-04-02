@@ -67,10 +67,10 @@ class CompanyDataController(
                 ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
         val numberOfCompanies =
-            chunkSize ?: this.getNumberOfCompanies(searchString, dataTypes, countryCodes, sectors).body
+            (chunkSize ?: this.getNumberOfCompanies(searchString, dataTypes, countryCodes, sectors).body) ?: 0
         return ResponseEntity.ok(
             companyChunkManager.returnCompaniesInChunks(
-                numberOfCompanies ?: 0,
+                numberOfCompanies,
                 chunkIndex ?: 0,
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",

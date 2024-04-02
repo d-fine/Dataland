@@ -31,17 +31,15 @@ class CompanyChunkManager(
     ): List<BasicCompanyInformation> {
         val getCompanies = companyQueryManager.searchCompaniesAndGetApiModel(filter)
         val chunkedCompanies = getCompanies.chunked(chunkSize)
-        var requestedChunk = emptyList<BasicCompanyInformation>()
         if (chunkIndex >= 0 && chunkIndex < chunkedCompanies.size) {
-            requestedChunk = chunkedCompanies[chunkIndex]
-            println("Chunk $chunkIndex: $requestedChunk")
+            val requestedChunk = chunkedCompanies[chunkIndex]
+            return requestedChunk
         } else {
             throw ResourceNotFoundApiException(
                 "Invalid index",
                 "The specified index of the chunk is invalid.",
             )
         }
-        return requestedChunk
     }
 
     /**
