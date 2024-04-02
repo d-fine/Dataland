@@ -26,31 +26,7 @@ before(function () {
  * select all frameworks
  */
 function selectAllFrameworks(): void {
-  //todo after we add button, select all frameworks
-  cy.get("#framework-filter").click();
-  for (const dataType of [
-    DataTypeEnum.EutaxonomyFinancials,
-    DataTypeEnum.EutaxonomyNonFinancials,
-    DataTypeEnum.Lksg,
-    DataTypeEnum.P2p,
-  ]) {
-    cy.get("div.p-multiselect-panel")
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(dataType)})`)
-      .click();
-  }
-
-  cy.get(".p-multiselect-items-wrapper").scrollTo("bottom");
-  for (const dataType of [
-    DataTypeEnum.Sme,
-    DataTypeEnum.Sfdr,
-    DataTypeEnum.Heimathafen,
-    DataTypeEnum.EsgQuestionnaire,
-  ]) {
-    cy.get("div.p-multiselect-panel")
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(dataType)})`)
-      .click();
-  }
-  cy.get("#framework-filter").click();
+  cy.get("span:contains('ALL FRAMEWORKS')").click();
 }
 /**
  * Function which escapes parenthesis for regex expression
@@ -67,6 +43,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
     cy.visit("/companies").wait("@companies-meta-information");
     verifySearchResultTableExists();
+    cy.url().should("eq", getBaseUrl() + "/companies");
     selectAllFrameworks();
     cy.get("#framework-filter")
       .click()
@@ -92,9 +69,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .click();
     verifySearchResultTableExists();
     cy.get(".p-multiselect-items-wrapper").scrollTo("bottom");
-    cy.url()
-      .should("eq", getBaseUrl() + "/companies")
-      .get("div.p-multiselect-panel")
+    cy.get("div.p-multiselect-panel")
       .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
       .click();
     verifySearchResultTableExists();
@@ -251,6 +226,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
+          selectAllFrameworks();
           verifySearchResultTableExists();
           cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             verifySearchResultTableExists();
@@ -271,9 +247,9 @@ describe("As a user, I expect the search functionality on the /companies page to
             cy.wait(timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
-          cy.visit(`/companies?input=${companyName}`)
-            .get("div[class='col-12 text-left']")
-            .should("contain.text", failureMessageOnAvailableDatasetsPage);
+          cy.visit(`/companies?input=${companyName}`);
+          selectAllFrameworks();
+          cy.get("div[class='col-12 text-left']").should("contain.text", failureMessageOnAvailableDatasetsPage);
         },
       );
 
