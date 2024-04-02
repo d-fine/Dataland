@@ -773,8 +773,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve just the basic information about specific companies with approved framework data by different filters.",
-        "description": "The basic information about companies with associated approved framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve just the basic information about specific companies.",
+        "description": "The basic information about companies via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -13943,9 +13943,8 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
@@ -13956,14 +13955,15 @@
           "countryCode": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
           "permId": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }
@@ -13988,10 +13988,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
