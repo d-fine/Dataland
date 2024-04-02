@@ -13,7 +13,6 @@
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
       :alwaysShowPaginator="false"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      @update:first="firstUpdated"
       @row-click="goToCompanyCockpit"
       class="table-cursor"
       id="search-result-framework-data"
@@ -112,16 +111,6 @@ export default defineComponent({
     goToCompanyCockpit(event: { data: BasicCompanyInformation }) {
       const companyIdOfClickedRow = event.data.companyId;
       return this.$router.push(`/companies/${companyIdOfClickedRow}`);
-    },
-    /**
-     * Called when the id of the first row is updated (i.e. when the user navigates to the next page)
-     * Scrolls back to the top and propagates the event
-     * @param event the new number of the first row
-     */
-    firstUpdated(event: never) {
-      window.scrollTo(0, 0);
-      this.$emit("update:first", event);
-      //todo probably delete this method
     },
   },
 });
