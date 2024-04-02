@@ -37,6 +37,12 @@
         />
         <div class="d-separator-left ml-3" />
         <span class="ml-3 cursor-pointer text-primary font-semibold d-letters" @click="resetFilters">RESET</span>
+        <div class="d-separator-left ml-3" />
+        <span
+          class="d-seperator-left ml-3 cursor-pointer text-primary font-semibold d-letters"
+          @click="selectAllFrameworks"
+          >ALL FRAMEWORKS</span
+        >
       </div>
     </div>
   </div>
@@ -151,12 +157,18 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
+     * Resets all the filters to their default values (i.e., deselects everything)
      */
     resetFilters() {
       this.selectedFrameworksInt = [];
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
+    },
+    /**
+     * Selects all frameworks
+     */
+    selectAllFrameworks() {
+      this.selectedFrameworksInt = this.availableFrameworks;
     },
     /**
      * A helper function that closes all the dropdown filters
