@@ -255,6 +255,7 @@ export default defineComponent({
         this.maxNumOfDisplayedAutocompleteEntries,
         0,
       );
+      this.autocompleteArrayDisplayed = this.autocompleteArray;
     },
   },
 });
