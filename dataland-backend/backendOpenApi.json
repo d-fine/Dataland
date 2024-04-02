@@ -13943,21 +13943,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "permId": {
             "type": "string",
@@ -13984,10 +13988,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

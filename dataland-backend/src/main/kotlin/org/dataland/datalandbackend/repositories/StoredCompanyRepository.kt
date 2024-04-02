@@ -23,13 +23,17 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " company.headquarters AS headquarters," +
             " company.country_code AS countryCode," +
             " company.sector AS sector," +
-            " permId.min_id AS permId" +
+            " permId.min_id AS permId," +
+            " lei.min_id AS lei" +
             " FROM stored_companies company" +
             " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
             " ON company.company_id = datainfo.company_id" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'PermId' GROUP BY company_id) permId" +
             " ON company.company_id = permid.company_id" +
+            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
+            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
+            " ON company.company_id = lei.company_id" +
             " ORDER by company.company_name ASC",
     )
     fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
@@ -93,7 +97,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " info.headquarters AS headquarters, " +
             " info.country_code AS countryCode, " +
             " info.sector AS sector, " +
-            " perm_id.identifier_value AS permId " +
+            " perm_id.identifier_value AS permId, " +
+            " lei.identifier_value AS lei " +
             " FROM filtered_results " +
             " JOIN " +
             " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
@@ -105,6 +110,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
             " WHERE identifier_type = 'PermId' GROUP BY company_id) perm_id " +
             " ON perm_id.company_id = filtered_results.company_id " +
+            " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
+            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei " +
+            " ON lei.company_id = filtered_results.company_id " +
             " ORDER BY filtered_results.match_quality ASC, info.company_name ASC ",
     )
     fun searchCompanies(

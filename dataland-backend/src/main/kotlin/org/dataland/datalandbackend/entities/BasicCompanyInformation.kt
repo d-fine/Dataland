@@ -15,4 +15,6 @@ interface BasicCompanyInformation {
     val sector: String?
 
     var permId: String?
+
+    val lei: String?
 }

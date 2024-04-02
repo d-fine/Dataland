@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional
 class CompanyChunkManager(
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeeding
