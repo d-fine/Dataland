@@ -71,9 +71,9 @@ fun generateRandomPermId(numberOfDigits: Int? = null): String {
 
 fun generateMapWithOneRandomValueForEachIdentifierType(): Map<IdentifierType, String> {
     return mapOf(
-        IdentifierType.lei to generateRandomLei(),
-        IdentifierType.isin to generateRandomIsin(),
-        IdentifierType.permId to generateRandomPermId(),
+        IdentifierType.Lei to generateRandomLei(),
+        IdentifierType.Isin to generateRandomIsin(),
+        IdentifierType.PermId to generateRandomPermId(),
     )
 }
 

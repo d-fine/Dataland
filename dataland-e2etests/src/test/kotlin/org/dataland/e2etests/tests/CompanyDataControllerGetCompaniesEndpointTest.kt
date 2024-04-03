@@ -75,7 +75,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             countryCode = storedCompany.companyInformation.countryCode,
             sector = storedCompany.companyInformation.sector,
             companyName = storedCompany.companyInformation.companyName,
-            permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.permId.value, null)
+            permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.PermId.value, null)
                 ?.minOrNull(),
             headquarters = storedCompany.companyInformation.headquarters,
         )
@@ -123,7 +123,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             "The posted company was found in the query results.",
         )
         apiAccessor.companyDataControllerApi.existsIdentifier(
-            IdentifierType.permId,
+            IdentifierType.PermId,
             firstIdentifier,
         )
         uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
@@ -160,8 +160,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             CompanyInformation(
                 company1, "",
                 identifiers = mapOf(
-                    IdentifierType.isin.value to listOf("Isin$testString"),
-                    IdentifierType.lei.value to listOf("Lei$testString"),
+                    IdentifierType.Isin.value to listOf("Isin$testString"),
+                    IdentifierType.Lei.value to listOf("Lei$testString"),
                 ),
                 "",
                 listOf(company1 + testString),
@@ -169,8 +169,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first())
         uploadTestEuTaxonomyFinancialsDataSet(companyResponse.companyId)
-        testThatSearchForCompanyIdentifierWorks(IdentifierType.isin.value, "Isin$testString")
-        testThatSearchForCompanyIdentifierWorks(IdentifierType.lei.value, "Lei$testString")
+        testThatSearchForCompanyIdentifierWorks(IdentifierType.Isin.value, "Isin$testString")
+        testThatSearchForCompanyIdentifierWorks(IdentifierType.Lei.value, "Lei$testString")
     }
 
     @Test
@@ -179,7 +179,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val companyInformation = CompanyInformation(
             "retrieve empty search string", "",
             mapOf(
-                IdentifierType.lei.value to listOf(UUID.randomUUID().toString()),
+                IdentifierType.Lei.value to listOf(UUID.randomUUID().toString()),
             ),
             "",
             listOf(),
@@ -205,7 +205,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val testIdentifier = UUID.randomUUID().toString()
         val testName = "SubstringSearch"
         val companyIdentifier = mapOf(
-            IdentifierType.lei.value to listOf(testIdentifier),
+            IdentifierType.Lei.value to listOf(testIdentifier),
         )
         val companyInformation = CompanyInformation(
             testName, "", companyIdentifier, "", listOf(),
@@ -289,7 +289,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             CompanyInformation(
                 company9, "",
                 mapOf(
-                    IdentifierType.isin.value to listOf("3$inputString"),
+                    IdentifierType.Isin.value to listOf("3$inputString"),
                 ),
                 "", listOf(),
             ),
@@ -300,7 +300,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             CompanyInformation(
                 company3, "",
                 mapOf(
-                    IdentifierType.isin.value to listOf(inputString),
+                    IdentifierType.Isin.value to listOf(inputString),
                 ),
                 "", listOf(),
             ),
@@ -315,6 +315,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
             reportingPeriod = "2023",
             frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true)
+        ).copy(qaStatus = QaStatus.Accepted, currentlyActive = true)
     }
 }

@@ -59,7 +59,7 @@ class DataRequestAlterationManagerTest {
         uploadTime = 0,
         reportingPeriod = "",
         currentlyActive = false,
-        qaStatus = QaStatus.accepted,
+        qaStatus = QaStatus.Accepted,
     )
 
     @BeforeEach
