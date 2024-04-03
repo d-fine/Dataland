@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -20,7 +21,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     companion object {
         const val WAIT_TIME_IN_MS = 1000L
     }
-
+    private val setOfAllDataTypes = enumValues<DataTypeEnum>().toSet()
     private val apiAccessor = ApiAccessor()
     private val company1 = "Company 1"
     private val company2 = "Company 2"
@@ -77,6 +78,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             companyName = storedCompany.companyInformation.companyName,
             permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.PermId.value, null)
                 ?.minOrNull(),
+            lei = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.Lei.value, null)
+                ?.minOrNull(),
             headquarters = storedCompany.companyInformation.headquarters,
         )
     }
@@ -117,9 +120,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val firstIdentifier = uploadInfo.inputCompanyInformation.identifiers.values.first { it.isNotEmpty() }.first()
         assertTrue(
-            apiAccessor.companyDataControllerApi.getCompanies(
-                searchString = firstIdentifier,
-            ).isEmpty(),
+            apiAccessor.companyDataControllerApi.getCompanies(firstIdentifier, setOfAllDataTypes).isEmpty(),
             "The posted company was found in the query results.",
         )
         apiAccessor.companyDataControllerApi.existsIdentifier(
@@ -268,7 +269,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val noAcceptedDataCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         uploadDummyDataset(noAcceptedDataCompanyId, bypassQa = false)
         Thread.sleep(WAIT_TIME_IN_MS)
-        val searchResultCompanyIds = apiAccessor.companyDataControllerApi.getCompanies().map { it.companyId }
+        val searchResultCompanyIds =
+            apiAccessor.companyDataControllerApi.getCompanies(null, setOfAllDataTypes).map { it.companyId }
         assertTrue(searchResultCompanyIds.contains(acceptedDataCompanyId))
         assertFalse(searchResultCompanyIds.contains(noAcceptedDataCompanyId))
     }
