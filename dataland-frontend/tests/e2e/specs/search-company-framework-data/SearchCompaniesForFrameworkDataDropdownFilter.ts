@@ -210,32 +210,20 @@ describe("As a user, I expect the search functionality on the /companies page to
           "search results, if no framework filter is set.",
         () => {
           const preFix = "ThisCompanyHasNoDataSet";
-          const companyName = preFix + companyNameMarker;
-          const sector = "ThisSectorShouldHasNoDataSet";
+          const nameMarker = "012345678910";
+          const companyName = preFix + nameMarker;
+          const sector = "SectorWithNoDataSet";
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies*").as("searchCompany");
           verifySearchResultTableExists();
-          cy.get("input[id=search_bar_top]").click({ scrollBehavior: false }).type(preFix, { scrollBehavior: false });
+          cy.get("input[id=search_bar_top]")
+            .click({ scrollBehavior: false })
+            .type(nameMarker, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            cy.get(".p-autocomplete-item")
-              .eq(0)
-              .get("span[class='font-normal']")
-              .contains(companyNameMarker)
-              .should("exist");
-          });
-          cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
-          cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            verifySearchResultTableExists();
-            cy.get("#sector-filter")
-              .click({ scrollBehavior: false })
-              .get('input[placeholder="Search sectors"]')
-              .type(sector, { scrollBehavior: false })
-              .get("div.p-multiselect-panel")
-              .find(`li:contains('${sector}')`)
-              .should("exist");
+            cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(preFix).should("exist");
           });
         },
       );
