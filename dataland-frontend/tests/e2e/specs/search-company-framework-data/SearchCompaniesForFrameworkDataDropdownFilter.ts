@@ -23,12 +23,6 @@ before(function () {
 });
 
 /**
- * select all frameworks
- */
-function selectAllFrameworks(): void {
-  cy.get("span:contains('ALL FRAMEWORKS')").click();
-}
-/**
  * Function which escapes parenthesis for regex expression
  * @param inputString string for which parenthesis should be escaped
  * @returns inputString the string without parenthesis
@@ -44,11 +38,21 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.visit("/companies").wait("@companies-meta-information");
     verifySearchResultTableExists();
     cy.url().should("eq", getBaseUrl() + "/companies");
-    selectAllFrameworks();
     cy.get("#framework-filter")
       .click()
       .get("div.p-multiselect-panel")
-      .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
+      .click();
+    verifySearchResultTableExists();
+    cy.url()
+      .should("eq", getBaseUrl() + "/companies?" + `framework=${DataTypeEnum.EutaxonomyFinancials}`)
+      .get("div.p-multiselect-panel")
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.P2p)})`)
+      .click();
+    verifySearchResultTableExists();
+    cy.get(".p-multiselect-items-wrapper").scrollTo("bottom");
+    cy.get("div.p-multiselect-panel")
+      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
       .click();
     verifySearchResultTableExists();
     cy.url()
@@ -56,34 +60,19 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           "/companies?" +
-          `framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
-          `&framework=${DataTypeEnum.Lksg}` +
+          `framework=${DataTypeEnum.EutaxonomyFinancials}` +
           `&framework=${DataTypeEnum.P2p}` +
-          `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Sme}` +
-          `&framework=${DataTypeEnum.EsgQuestionnaire}` +
-          `&framework=${DataTypeEnum.Heimathafen}`,
+          `&framework=${DataTypeEnum.Sfdr}`,
       )
       .get("div.p-multiselect-panel")
-      .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
+      .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.P2p)})`)
       .click();
-    verifySearchResultTableExists();
-    cy.get(".p-multiselect-items-wrapper").scrollTo("bottom");
-    cy.get("div.p-multiselect-panel")
-      .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
-      .click();
-    verifySearchResultTableExists();
     cy.url().should(
       "eq",
       getBaseUrl() +
         "/companies?" +
         `framework=${DataTypeEnum.EutaxonomyFinancials}` +
-        `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
-        `&framework=${DataTypeEnum.Lksg}` +
-        `&framework=${DataTypeEnum.P2p}` +
-        `&framework=${DataTypeEnum.Sme}` +
-        `&framework=${DataTypeEnum.EsgQuestionnaire}` +
-        `&framework=${DataTypeEnum.Heimathafen}`,
+        `&framework=${DataTypeEnum.Sfdr}`,
     );
   });
 
@@ -214,10 +203,47 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.ensureLoggedIn(uploader_name, uploader_pw);
       });
 
+      const companyNameMarker = "Data987654321";
+      it(
+        "Upload a company without uploading framework data for it, assure that its sector appears as filter " +
+          "option, and check that the company appears in the autocomplete suggestions and in the " +
+          "search results, if no framework filter is set.",
+        () => {
+          const companyName = "ThisCompanyHasNoDataSet12349876";
+          const sector = "ThisSectorShouldHasNoDataSet";
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
+          });
+          cy.visit(`/companies`);
+          cy.intercept("**/api/companies*").as("searchCompany");
+          verifySearchResultTableExists();
+          cy.get("input[id=search_bar_top]")
+            .click({ scrollBehavior: false })
+            .type(companyName, { scrollBehavior: false });
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            cy.get(".p-autocomplete-item")
+              .eq(0)
+              .get("span[class='font-semibold']")
+              .contains(companyName)
+              .should("exist");
+          });
+          cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
+          cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            verifySearchResultTableExists();
+            cy.get("#sector-filter")
+              .click({ scrollBehavior: false })
+              .get('input[placeholder="Search sectors"]')
+              .type(sector, { scrollBehavior: false })
+              .get("div.p-multiselect-panel")
+              .find(`li:contains('${sector}')`)
+              .should("exist");
+          });
+        },
+      );
       it(
         "Upload a company without uploading framework data for it, assure that its sector does not appear as filter " +
           "option, and check if the company neither appears in the autocomplete suggestions nor in the " +
-          "search results, even though no framework filter is actively set.",
+          "search results, if at least one framework filter is set.",
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
@@ -226,7 +252,11 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
-          selectAllFrameworks();
+          cy.get("#framework-filter")
+            .click()
+            .get("div.p-multiselect-panel")
+            .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+            .click();
           verifySearchResultTableExists();
           cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             verifySearchResultTableExists();
@@ -248,12 +278,14 @@ describe("As a user, I expect the search functionality on the /companies page to
             cy.get(".p-autocomplete-item").should("not.exist");
           });
           cy.visit(`/companies?input=${companyName}`);
-          selectAllFrameworks();
+          cy.get("#framework-filter")
+            .click()
+            .get("div.p-multiselect-panel")
+            .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
+            .click();
           cy.get("div[class='col-12 text-left']").should("contain.text", failureMessageOnAvailableDatasetsPage);
         },
       );
-
-      const companyNameMarker = "Data987654321";
 
       it(
         "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
