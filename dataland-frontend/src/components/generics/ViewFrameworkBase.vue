@@ -218,7 +218,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Saves  the company information emitted by the CompanyInformation vue components event.
+     * Saves the company information emitted by the CompanyInformation vue components event.
      * @param fetchedCompanyInformation the company information for the current company Id
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
