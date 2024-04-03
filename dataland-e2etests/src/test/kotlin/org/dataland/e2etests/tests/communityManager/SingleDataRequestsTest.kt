@@ -109,13 +109,13 @@ class SingleDataRequestsTest {
         val companyOne = CompanyInformation(
             companyName = "company1",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId)),
+            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId)),
             countryCode = "DE",
         )
         val companyTwo = CompanyInformation(
             companyName = "company2",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.isin.value to listOf(isin)),
+            identifiers = mapOf(IdentifierType.Isin.value to listOf(isin)),
             countryCode = "DE",
         )
 
@@ -194,7 +194,7 @@ class SingleDataRequestsTest {
             "The company ID of the newly stored data request does not match the expected one.",
         )
         assertEquals(
-            RequestStatus.open,
+            RequestStatus.Open,
             newlyStoredRequests[0].requestStatus,
             "The new data request is not stored with status 'Open'.",
         )
@@ -284,10 +284,10 @@ class SingleDataRequestsTest {
         val dataRequestId = UUID.fromString(
             getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
         )
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
+        assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
     }
 
     @Test
@@ -304,8 +304,8 @@ class SingleDataRequestsTest {
     fun `post a duplicate request and check that it is only stored if previous in final status`() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2021")
-        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.answered)
-        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.closed)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.Answered)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Closed)
         val timestampBeforeFinalRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(
             SingleDataRequest(

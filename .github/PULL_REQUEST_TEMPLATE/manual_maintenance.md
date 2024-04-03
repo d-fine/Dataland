@@ -18,7 +18,7 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
-- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z`
+- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
 
 ### Dataland frontend
 
@@ -63,6 +63,9 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-document-manager/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
+- [ ] `./dataland-email-service/Dockerfile`
+- [ ] `./dataland-email-service/DockerfileBase`
+- [ ] `./dataland-email-service/DockerfileTest`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`

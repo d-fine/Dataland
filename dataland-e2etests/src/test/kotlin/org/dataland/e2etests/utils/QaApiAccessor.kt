@@ -34,10 +34,10 @@ class QaApiAccessor {
                 ?: throw NullPointerException(
                     "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
-            if (metaData.qaStatus != QaStatus.accepted) {
+            if (metaData.qaStatus != QaStatus.Accepted) {
                 uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
             }
-            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QaStatus.accepted
+            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QaStatus.Accepted
         }
     }
 
@@ -66,7 +66,7 @@ class QaApiAccessor {
         metaDataControllerApi: MetaDataControllerApi,
     ): Boolean {
         return metaDatas.all { metaData ->
-            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QaStatus.accepted)
+            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QaStatus.Accepted)
         }
     }
 }
