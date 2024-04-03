@@ -133,7 +133,9 @@ export default defineComponent({
       deep: true,
     },
     currentPage() {
-      void this.queryCompany(this.currentPage);
+      this.queryCompany(this.currentPage).catch(() => {
+        console.error(`Unable to load data for ${this.currentPage} page`);
+      });
     },
   },
 
