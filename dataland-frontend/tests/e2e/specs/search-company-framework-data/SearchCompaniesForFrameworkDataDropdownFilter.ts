@@ -209,7 +209,8 @@ describe("As a user, I expect the search functionality on the /companies page to
           "option, and check that the company appears in the autocomplete suggestions and in the " +
           "search results, if no framework filter is set.",
         () => {
-          const companyName = "ThisCompanyHasNoDataSet12349876";
+          const preFix = "ThisCompanyHasNoDataSet";
+          const companyName = preFix + companyNameMarker;
           const sector = "ThisSectorShouldHasNoDataSet";
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
@@ -217,14 +218,12 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visit(`/companies`);
           cy.intercept("**/api/companies*").as("searchCompany");
           verifySearchResultTableExists();
-          cy.get("input[id=search_bar_top]")
-            .click({ scrollBehavior: false })
-            .type(companyName, { scrollBehavior: false });
+          cy.get("input[id=search_bar_top]").click({ scrollBehavior: false }).type(preFix, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
-              .get("span[class='font-semibold']")
-              .contains(companyName)
+              .get("span[class='font-normal']")
+              .contains(companyNameMarker)
               .should("exist");
           });
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
