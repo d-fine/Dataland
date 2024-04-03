@@ -94,6 +94,7 @@ describe("Component tests for the DatasetOverview page", () => {
       keycloak: keycloakMock,
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
+      cy.wait(100); //todo check this fix again
       cy.get(getTabSelector(2)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
     });
