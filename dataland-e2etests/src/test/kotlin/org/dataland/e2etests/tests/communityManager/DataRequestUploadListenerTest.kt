@@ -46,7 +46,7 @@ class DataRequestUploadListenerTest {
             companyIdentifier = mapOfIds["companyId"].toString(),
             dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
             reportingPeriods = setOf("2022", "2023"),
-            contacts = setOf("someContact@webserver.de", "valid@e.mail"),
+            contacts = setOf("someContact@example.com", "valid@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)

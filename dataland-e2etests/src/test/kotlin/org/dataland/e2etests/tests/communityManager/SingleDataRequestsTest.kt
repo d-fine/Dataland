@@ -57,7 +57,7 @@ class SingleDataRequestsTest {
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = reportingPeriods,
-            contacts = setOf("someContact@webserver.de", "simpleString@some.thing"),
+            contacts = setOf("someContact@example.com", "simpleString@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
@@ -206,7 +206,7 @@ class SingleDataRequestsTest {
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
         val contactListsThatContainInvalidEmailAddresses =
-            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
+            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@example.com"))
         contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it.toSet(), "Dummy test message.")
@@ -248,7 +248,7 @@ class SingleDataRequestsTest {
     @Test
     fun `post a single data requests without a message but with valid email address in contact list`() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
-        val emailAddress = "test@someprovider.abc"
+        val emailAddress = "test@example.com"
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = postStandardSingleDataRequest(companyId, setOf(emailAddress))
         checkThatAllReportingPeriodsAreTreatedAsExpected(
