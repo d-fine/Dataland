@@ -31,7 +31,7 @@ class CompanyChunkManager(
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
-        return companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex)
+        return companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
 
         val companies = companyQueryManager.searchCompaniesAndGetApiModel(filter) // todo
         val companiesPerChunk = if (chunkSize != null && chunkSize > 0) chunkSize else companies.size // todo
