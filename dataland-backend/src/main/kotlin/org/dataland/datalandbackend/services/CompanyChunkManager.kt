@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service("CompanyChunkManager")
 class CompanyChunkManager(
     @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val companyRepository: StoredCompanyRepository,
 ) {
 
     /**
@@ -29,8 +31,10 @@ class CompanyChunkManager(
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
-        val companies = companyQueryManager.searchCompaniesAndGetApiModel(filter)
-        val companiesPerChunk = if (chunkSize != null && chunkSize > 0) chunkSize else companies.size
+        return companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex)
+
+        val companies = companyQueryManager.searchCompaniesAndGetApiModel(filter) // todo
+        val companiesPerChunk = if (chunkSize != null && chunkSize > 0) chunkSize else companies.size // todo
 
         val chunkedCompanies = companies.chunked(companiesPerChunk)
         if (chunkIndex >= 0 && chunkIndex < chunkedCompanies.size) {
