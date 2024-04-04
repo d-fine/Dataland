@@ -40,7 +40,7 @@ class CompanyChunkManager(
             } else {
                 // use landing page search
                 // modify object to get all data information
-                companies = companyRepository.searchCompaniesByNameOrIdentifierData(filter.searchString)
+                companies = companyRepository.searchCompaniesByNameOrIdentifierData(filter.searchString, chunkSize, chunkSize)
             }
         } else {
             if (filter.dataTypeFilterSize > 0) {
@@ -53,7 +53,7 @@ class CompanyChunkManager(
     }
 
     /**
-     * Method to check if ever Filter (excluding searchString) is deactivated
+     * Method to check if ever dropdownFilter is deactivated
      * @param filter The filter to use during searching
      */
     private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
@@ -72,13 +72,8 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        if (filter.dataTypeFilterSize +
-            filter.countryCodeFilterSize +
-            filter.sectorFilterSize +
-            filter.searchStringLength == 0
-        ) {
-            return 1000
-        }
-        return companyRepository.getNumberOfCompanies(filter)
+        // todo check if bootleneck
+        return 1000
+        // return companyRepository.getNumberOfCompanies(filter)
     }
 }

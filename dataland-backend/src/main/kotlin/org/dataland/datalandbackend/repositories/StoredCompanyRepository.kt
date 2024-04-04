@@ -25,6 +25,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " company.sector AS sector," +
             " lei.min_id AS lei" +
             " FROM stored_companies company" +
+            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
+            " ON company.company_id = datainfo.company_id" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
             " ON company.company_id = lei.company_id" +
@@ -43,18 +45,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "SELECT company.company_id AS companyId," +
-                " company.company_name AS companyName," +
-                " company.headquarters AS headquarters," +
-                " company.country_code AS countryCode," +
-                " company.sector AS sector," +
-                " lei.min_id AS lei" +
-                " FROM stored_companies company" +
-                " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
-                " ON company.company_id = datainfo.company_id" +
-                " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
-                " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
-                " ON company.company_id = lei.company_id" +
-                " ORDER by company.company_name ASC",
+            " company.company_name AS companyName," +
+            " company.headquarters AS headquarters," +
+            " company.country_code AS countryCode," +
+            " company.sector AS sector," +
+            " lei.min_id AS lei" +
+            " FROM stored_companies company" +
+            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
+            " ON company.company_id = datainfo.company_id" +
+            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
+            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
+            " ON company.company_id = lei.company_id" +
+            " ORDER by company.company_name ASC",
     )
     fun getAllCompaniesWithDataWithoutFilterOrSearchString(
         @Param("resultLimit") resultLimit: Int = 100,
@@ -227,7 +229,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
             " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1" +
-            " UNION SELECT company_id from stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0" +
             ")," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
@@ -269,8 +270,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " AS intermediate_results GROUP BY intermediate_results.company_id) " +
 
             // Count Results
-            " SELECT COUNT(*)" +
-            " FROM filtered_results ",
+            " SELECT COUNT(*) " +
+            " FROM filtered_results " +
+            " JOIN " +
+            " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
+            " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
+            " ) info " +
+            " ON info.company_id = filtered_results.company_id ",
     )
     fun getNumberOfCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
@@ -370,88 +378,84 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value =
         "WITH filtered_text_results AS (" +
-                // Fuzzy-Search Company Name
-                " (SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
-                " max(CASE " +
-                " WHEN company_name = :#{#searchString} THEN 10" +
-                " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
-                " ELSE 1" +
-                " END) match_quality, " +
-                " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
-                " FROM stored_companies" +
-                " LEFT JOIN data_meta_information " +
-                " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
-                " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
-                " GROUP BY stored_companies.company_id" +
-                " ORDER BY" +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_companies.company_id LIMIT :#{#resultLimit})" +
+            // Fuzzy-Search Company Name
+            " (SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
+            " stored_companies.headquarters, stored_companies.country_code, stored_companies.sector, " +
+            " max(CASE " +
+            " WHEN company_name = :#{#searchString} THEN 10" +
+            " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
+            " ELSE 1" +
+            " END) match_quality, " +
+            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " FROM stored_companies" +
+            " LEFT JOIN data_meta_information " +
+            " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
+            " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+            " GROUP BY stored_companies.company_id" +
+            " ORDER BY" +
+            " dataset_rank DESC," +
+            " match_quality DESC, stored_companies.company_id LIMIT :#{#resultLimit})" +
 
-                " UNION " +
-                // Fuzzy-Search Company Alternative Name
-                " (SELECT " +
-                " stored_company_entity_company_id AS company_id," +
-                " max(stored_companies.company_name) AS company_name," +
-                " max(CASE " +
-                " WHEN company_alternative_names = :#{#searchString} THEN 9" +
-                " WHEN company_alternative_names ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
-                " ELSE 1 " +
-                " END) match_quality, " +
-                " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
-                " FROM stored_company_entity_company_alternative_names" +
-                " JOIN stored_companies ON stored_companies.company_id = " +
-                " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
-                " LEFT JOIN data_meta_information " +
-                " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true" +
-                " WHERE company_alternative_names ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
-                " GROUP BY stored_company_entity_company_id" +
-                " ORDER BY " +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_company_entity_company_id LIMIT :#{#resultLimit})" +
+            " UNION " +
+            // Fuzzy-Search Company Alternative Name
+            " (SELECT " +
+            " stored_company_entity_company_id AS company_id," +
+            " max(stored_companies.company_name) AS company_name," +
+            " stored_companies.headquarters, stored_companies.country_code, stored_companies.sector," +
+            " max(CASE " +
+            " WHEN company_alternative_names = :#{#searchString} THEN 9" +
+            " WHEN company_alternative_names ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+            " ELSE 1 " +
+            " END) match_quality, " +
+            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " FROM stored_company_entity_company_alternative_names" +
+            " JOIN stored_companies ON stored_companies.company_id = " +
+            " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
+            " LEFT JOIN data_meta_information " +
+            " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true" +
+            " WHERE company_alternative_names ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+            " GROUP BY stored_company_entity_company_id" +
+            " ORDER BY " +
+            " dataset_rank DESC," +
+            " match_quality DESC, stored_company_entity_company_id LIMIT :#{#resultLimit})" +
 
-                " UNION" +
-                // Fuzzy-Search Company Identifier
-                " (SELECT company_identifiers.company_id, max(stored_companies.company_name) AS company_name," +
-                " max(CASE " +
-                " WHEN identifier_value = :#{#searchString} THEN 10" +
-                " WHEN identifier_value ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
-                " ELSE 0" +
-                " END) AS match_quality, " +
-                " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
-                " FROM company_identifiers" +
-                " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
-                " LEFT JOIN data_meta_information " +
-                " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
-                " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} " +
-                " GROUP BY company_identifiers.company_id" +
-                " ORDER BY " +
-                " dataset_rank DESC," +
-                " match_quality DESC, company_identifiers.company_id LIMIT :#{#resultLimit})) " +
-                // Combine Results
-                " SELECT filtered_text_results.company_id AS companyId," +
-                " MIN(filtered_text_results.company_name) AS companyName" +
-                " FROM filtered_text_results " +
-                " LEFT JOIN data_meta_information " +
-                " ON filtered_text_results.company_id = data_meta_information.company_id AND currently_active = true" +
-
-                /**
-                 *             " JOIN " +
-                 *             " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
-                 *             " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
-                 *             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-                 *             " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
-                 *             " ) info " +
-                 *             " ON info.company_id = filtered_results.company_id " +
-                 *             " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
-                 *             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei " +
-                 *             " ON lei.company_id = filtered_results.company_id " +
-                 */
-
-                " GROUP BY filtered_text_results.company_id" +
-                " ORDER BY " +
-                " max(dataset_rank) DESC," +
-                " MAX(filtered_text_results.match_quality) DESC, companyId " +
-                " LIMIT :#{#resultLimit}  OFFSET :#{#resultOffset}",
+            " UNION" +
+            // Fuzzy-Search Company Identifier
+            " (SELECT company_identifiers.company_id, max(stored_companies.company_name) AS company_name," +
+            " stored_companies.headquarters, stored_companies.country_code, stored_companies.sector," +
+            " max(CASE " +
+            " WHEN identifier_value = :#{#searchString} THEN 10" +
+            " WHEN identifier_value ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
+            " ELSE 0" +
+            " END) AS match_quality, " +
+            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " FROM company_identifiers" +
+            " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
+            " LEFT JOIN data_meta_information " +
+            " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
+            " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} " +
+            " GROUP BY company_identifiers.company_id" +
+            " ORDER BY " +
+            " dataset_rank DESC," +
+            " match_quality DESC, company_identifiers.company_id LIMIT :#{#resultLimit})) " +
+            // Combine Results
+            " SELECT filtered_text_results.company_id AS companyId," +
+            " MIN(filtered_text_results.company_name) AS companyName," +
+            " filtered_text_results.headquarters AS headquarters, " +
+            " filtered_text_results.country_code AS country_code," +
+            " filtered_text_results.sector AS sector," +
+            " lei.identifier_value AS lei " +
+            " FROM filtered_text_results " +
+            " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
+            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei " +
+            " ON lei.company_id = filtered_text_results.company_id " +
+            " LEFT JOIN data_meta_information " +
+            " ON filtered_text_results.company_id = data_meta_information.company_id AND currently_active = true" +
+            " GROUP BY filtered_text_results.company_id" +
+            " ORDER BY " +
+            " max(dataset_rank) DESC," +
+            " MAX(filtered_text_results.match_quality) DESC, companyId " +
+            " LIMIT :#{#resultLimit}  OFFSET :#{#resultOffset}",
     )
     fun searchCompaniesByNameOrIdentifierData(
         @Param("searchString") searchString: String,
