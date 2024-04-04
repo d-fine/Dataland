@@ -119,7 +119,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
         @Param("resultLimit") resultLimit: Int = 100,
-        @Param("resultLimit") resultOffset: Int = 0,
+        @Param("resultOffset") resultOffset: Int = 0,
     ): List<BasicCompanyInformation>
 
     /**
