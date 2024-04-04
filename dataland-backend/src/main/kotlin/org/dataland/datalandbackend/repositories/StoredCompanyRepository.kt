@@ -28,7 +28,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM stored_companies company" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'PermId' GROUP BY company_id) permId" +
-            " ON company.company_id = permid.company_id" +
+            " ON company.company_id = permId.company_id" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
             " ON company.company_id = lei.company_id" +

@@ -47,6 +47,12 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
+        if(filter.dataTypeFilterSize +
+            filter.countryCodeFilterSize +
+            filter.sectorFilterSize +
+            filter.searchStringLength == 0){
+            return 1000
+        }
         return companyRepository.getNumberOfCompanies(filter)
     }
 }
