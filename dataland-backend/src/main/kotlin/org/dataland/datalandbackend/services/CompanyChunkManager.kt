@@ -56,8 +56,6 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        // todo
-        val getCompanies = companyQueryManager.searchCompaniesAndGetApiModel(filter)
-        return getCompanies.size
+        return companyRepository.getNumberOfCompanies(filter)
     }
 }
