@@ -23,12 +23,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " company.headquarters AS headquarters," +
             " company.country_code AS countryCode," +
             " company.sector AS sector," +
-            " permId.min_id AS permId," +
             " lei.min_id AS lei" +
             " FROM stored_companies company" +
-            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
-            " WHERE identifier_type = 'PermId' GROUP BY company_id) permId" +
-            " ON company.company_id = permId.company_id" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
             " ON company.company_id = lei.company_id" +
@@ -51,14 +47,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH" +
-            " has_data AS (" +
-            " SELECT DISTINCT sc.company_id FROM stored_companies sc " +
-            " LEFT JOIN data_meta_information dmi ON sc.company_id = dmi.company_id " +
-            " WHERE ((:#{#searchFilter.dataTypeFilterSize} = 0 " +
-            " OR (dmi.data_type IN :#{#searchFilter.dataTypeFilter} AND dmi.quality_status = 1)) " +
-            "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR sc.country_code IN :#{#searchFilter.countryCodeFilter})" +
-            " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sc.sector IN :#{#searchFilter.sectorFilter})" +
-            "))," +
+            " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
+            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1" +
+            " UNION SELECT company_id from stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0" +
+            ")," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
@@ -104,7 +97,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " info.headquarters AS headquarters, " +
             " info.country_code AS countryCode, " +
             " info.sector AS sector, " +
-            " perm_id.identifier_value AS permId, " +
             " lei.identifier_value AS lei " +
             " FROM filtered_results " +
             " JOIN " +
@@ -114,9 +106,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
             " ) info " +
             " ON info.company_id = filtered_results.company_id " +
-            " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
-            " WHERE identifier_type = 'PermId' GROUP BY company_id) perm_id " +
-            " ON perm_id.company_id = filtered_results.company_id " +
             " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei " +
             " ON lei.company_id = filtered_results.company_id " +
@@ -140,9 +129,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH" +
-            " has_data AS ((SELECT DISTINCT company_id FROM data_meta_information" +
-            " WHERE data_type IN :#{#searchFilter.dataTypeFilter} AND quality_status = 1)" +
-            "UNION (SELECT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0))," +
+            " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
+            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1" +
+            " UNION SELECT company_id from stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0" +
+            ")," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
