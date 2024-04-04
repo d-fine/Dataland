@@ -86,9 +86,7 @@
         <h3>Die Nutzungsrechte des Dataland-Teilnehmers</h3>
         <p>
           Der Dataland-Teilnehmer erhält mit seiner Registrierung das Zugriffsrecht auf die Plattform-Dataland. Dies
-          umfasst insbesondere die reine Ansicht der Unternehmens-Daten auf der Website (reines Leserecht). Die
-          Unternehmens-Daten dürfen nicht kopiert oder heruntergeladen werden. Die Unternehmens-Daten und die daraus
-          gewonnenen Informationen dürfen nicht als Grundlage für Investitionsentscheidungen genutzt werden.
+          umfasst insbesondere die reine Ansicht der Unternehmens-Daten auf der Website (reines Leserecht).
         </p>
         <p>
           Als Dataland-Teilnehmer hat er die Möglichkeit gemäß den Maßgaben in § 1 Registrierungen als Daten-User,
@@ -144,14 +142,19 @@
         </p>
         <p>
           Bei der Nutzung der Unternehmens-Daten hat der Daten-User dem Umstand Rechnung zu tragen, dass die von den
-          Daten-Sammlern übermittelten Unternehmens-Daten von Dataland vor ihrer erstmaligen Bereitstellung und
-          nachfolgend inhaltlich mit automatisierten Tests überprüft werden. Darüber hinaus werden Stichproben mit
-          Einzeldaten durchgeführt. Ansonsten werden die Unternehmensdaten nicht überprüft, verifiziert oder
-          hinsichtlich ihrer Aktualität überwacht. Aus diesem Grund ist der Daten-User jedenfalls dann, bevor er auf
-          Basis der auf der Plattform-Dataland zur Verfügung gestellten Unternehmens-Daten Entscheidungen von
-          wirtschaftlicher Relevanz trifft, verpflichtet, diese selbst auf ihre inhaltliche Richtigkeit zu überprüfen
-          und ihre Aktualität zu verifizieren. Die Unternehmens-Daten und die daraus gewonnenen Informationen dürfen
-          nicht als Grundlage für Investitionsentscheidungen genutzt werden.
+          Daten-Sammlern übermittelten Unternehmens-Daten so wie sie übermittelt werden zur Verfügung gestellt und
+          veröffentlicht werden. Die Unternehmensdaten werden von Dataland vor ihrer erstmaligen Bereitstellung und
+          nachfolgend inhaltlich ausschließlich mit automatisierten Tests überprüft. Darüber hinaus werden Stichproben
+          mit Einzeldaten durchgeführt. Ansonsten werden die Unternehmensdaten nicht überprüft, verifiziert oder
+          hinsichtlich ihrer Aktualität überwacht und nur positiv bekannt gewordene Fehler werden im Rahmen des
+          Möglichen und des wirtschaftlich Vertretbaren berichtigt. Aus diesem Grund kann keine Garantie dafür
+          übernommen werden, dass die Unternehmensdaten zu einem bestimmten Zeitpunkt richtig, aktuell und vollständig
+          sind. Deshalb ist der Daten-User jedenfalls dann, bevor er auf Basis der auf der Plattform-Dataland zur
+          Verfügung gestellten Unternehmens-Daten Entscheidungen von wirtschaftlicher Relevanz, einschließlich
+          Investitionsentscheidungen, trifft, verpflichtet, diese selbst auf ihre inhaltliche Richtigkeit und
+          Vollständigkeit zu überprüfen und ihre Aktualität zu verifizieren. Die Unternehmens-Daten und die daraus
+          gewonnenen Informationen dürfen nur dann als Grundlage für Investitionsentscheidungen genutzt werden, wenn
+          dieser Verpflichtung entsprochen wurde.
         </p>
         <p>
           Der Daten-User hat keinen Anspruch darauf, zu bestimmten Zeiten auf die Plattform-Dataland zuzugreifen und zu
@@ -168,12 +171,12 @@
       <div>
         <h3>Die Vergütungspflichten des Daten-Users</h3>
         <p>
-          Für Privatpersonen, NGOs und nicht gewinnorientiert tätige Forschungs- oder Lehreinrichtungen (insg. Im Rahmen
-          dieser AGB-Dataland auch als „Privatnutzung“ bezeichnet) ist die Nutzung von Dataland kostenlos.
+          Für Privatpersonen, NGOs und nicht gewinnorientiert tätige Forschungs- oder Lehreintrichtungen (insg. Im
+          Rahmen dieser AGB-Dataland auch als „Privatnutzung“ bezeichnet) ist die Nutzung von Dataland kostenlos.
         </p>
         <p>
           Für die Nutzung durch alle anderen Daten-User ist eine monatliche Pauschale zu entrichten, die sich aus der
-          jeweils <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> von Dataland ergibt.
+          jeweils <a href="/pricing">aktuellen Preisstaffel</a> von Dataland ergibt.
         </p>
         <p>Sämtliche Vergütungen verstehen sich zuzüglich der anwendbaren Umsatzsteuer.</p>
         <p>
@@ -254,7 +257,7 @@
           ergänzen oder durch jüngere Unternehmens-Daten aktualisieren.
         </p>
         <p>
-          Dataland hat das Recht, die von dem Daten-Sammler eingegebenen Unternehmens-Daten nach eigenem und im
+          Dataland hat das Recht, die von dem Daten-Sammler eingegebenen Unternehmens-Daten nach eigenen und im
           ausschließlich eigenen Ermessen von Dataland liegenden Maßgaben zu überprüfen. Auf Grundlage dieser Prüfung
           entscheidet Dataland, ob die vom Daten-Sammler gelieferten Unternehmens-Daten als Unternehmens-Daten der
           Plattform-Dataland für den Zugriff von Daten-User zugelassen werden.
@@ -271,7 +274,7 @@
         </p>
         <p>
           Auch nach Zulassung der Unternehmens-Daten auf die Plattform-Dataland hat Dataland jederzeit und
-          uneingeschränkt das Recht, die Unternehmens-Daten nach eigenem und im ausschließlich eigenen Ermessen von
+          uneingeschränkt das Recht, die Unternehmens-Daten nach eigenen und im ausschließlich eigenen Ermessen von
           Dataland liegenden Maßgaben zu prüfen und über deren Verbleib auf der Plattform-Dataland zu entscheiden.
           Insofern kann Dataland jederzeit und frei entscheiden, ob diese vom Daten-Sammler gelieferten
           Unternehmens-Daten als Unternehmens-Daten auf der Plattform-Dataland für den Zugriff von Daten-Usern belassen
@@ -360,11 +363,10 @@
             Ausschüttungsbetrag.
           </li>
           <li>
-            Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt
-            Daten-Sammlern zuzuordnen sind und wie viele Datenpunkte jedem einzelnen Daten-Sammler zuzuordnen sind. Bei
-            Datenpunkten, bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des
-            Datenpunkts in Ansatz gebracht. Dem Daten-Sammler steht der auf ihn entfallende prozentual ermittelte Anteil
-            zu.
+            Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt bestanden
+            haben und wie viele Datenpunkte jedem einzelnen Daten-Sammler zuzuordnen sind. Bei Datenpunkten, bei denen
+            es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts in Ansatz
+            gebracht. Dem Daten-Sammler steht der auf ihn entfallende prozentual ermittelte Anteil zu.
           </li>
           <li>
             Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
@@ -380,80 +382,6 @@
           Sämtliche Berechnungsgrundlagen, die nach Vorstehendem der Errechnung des Vergütungsanspruchs des
           Daten-Sammlers zugrunde liegen, werden dem Daten-Sammler zugänglich gemacht, so dass dieser die Berechnung
           seines Vergütungsanspruchs nachvollziehen und verifizieren kann.
-        </p>
-        <p>
-          Die Auszahlung der Vergütung an den Daten-Sammler erfolgt seitens Dataland binnen drei Monaten nach Ende eines
-          Kalenderjahres für die vergütungspflichtigen Leistungen des Daten-Sammlers während dieses Kalenderjahres.
-        </p>
-      </div>
-      <div>
-        <h3>Laufzeit der Registrierung als Daten-Sammler</h3>
-        <p>Die Registrierung als Daten-Sammler erfolgt für eine unbestimmte Laufzeit.</p>
-        <p>
-          Die Registrierung kann von jeder Partei mit einer Frist von einem Monat zum Ende eines Kalendermonats
-          gekündigt werden.
-        </p>
-        <p>Das Recht zur Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.</p>
-      </div>
-    </div>
-    <div>
-      <h2>Für Daten-Owner gelten die folgenden zusätzlichen Bedingungen:</h2>
-      <p>
-        Daten-Owner können sich ebenfalls als solche auf Dataland registrieren. Als Daten-Owner haben diese das Recht,
-        die Plattform-Dataland gleich einem Daten-Sammler oder einem Daten-User zu nutzen.
-      </p>
-      <p>
-        Soweit der Daten-Owner entsprechend einem Daten-User handelt, gelten die Regelungen von § 3 einschließlich
-        dortiger Vergütungsregeln.
-      </p>
-      <p>
-        Soweit der Daten-Owner entsprechend einem Daten-Sammler handelt, gelten die Regelungen von § 4 einschließlich
-        dortiger Vergütungsregeln.
-      </p>
-      <div>
-        <h3>Vergütungen und Zahlungen</h3>
-        <p>
-          Die Registrierung als Daten-Owner und die damit verbundene Nutzung der Plattform-Dataland als Daten-Owner sind
-          kostenlos, unabhängig davon ob es sich um eine Privatnutzung oder um eine gewerbliche Nutzung handelt.
-        </p>
-        <p>
-          Unabhängig von der Vergütung, die einem Daten-Owner wegen einer Tätigkeit als Daten-Sammler nach § 5.3 i.V.m.
-          § 4 zusteht, kann dieser eine (zusätzliche) Vergütung nach nachfolgenden Grundsätzen erhalten:
-        </p>
-        <p>
-          Ausgangspunkt der möglichen zusätzlichen Vergütung des Daten-Owners sind die Datenpunkte, die sich während
-          eines Kalenderjahres auf den jeweiligen Daten-Owner beziehen.
-        </p>
-        <p>
-          Basierend auf diesem Grundsatz leitet sich eine mögliche zusätzliche Vergütung des Daten-Owners nach Ablauf
-          des Kalenderjahres für dieses Kalenderjahr wie folgt her:
-        </p>
-        <ul>
-          <li>
-            Dataland kann durch die Geschäftsführung jeweils nach Abschluss eines Kalenderjahrs einen Anteil der gem. §
-            3.2 erzielten (netto) Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token geleistet
-            wurden) bestimmen, der als Gesamtbetrag zur gesonderten Vergütung der Daten-Owner zur Verfügung stehen soll.
-          </li>
-          <li>
-            Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag dieses
-            abgelaufenen Kalenderjahres („Claimstage“) den für den jeweiligen Tag zur Verfügung stehenden
-            Ausschüttungsbetrag.
-          </li>
-          <li>
-            Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag einem Daten-Owner
-            zugeordnet sind und wie viele Datenpunkte jedem einzelnen Daten-Owner zuzuordnen sind. Bei Datenpunkten, bei
-            denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts in
-            Ansatz gebracht. Einem Data-Owner steht der auf ihn entfallende prozentual ermittelte Anteil zu
-          </li>
-          <li>
-            Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
-            technische Mindestsumme wird in der <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
-          </li>
-        </ul>
-        <p>
-          Sämtliche Berechnungsgrundlagen, die nach vorstehendem Absatz der Errechnung des Vergütungsanspruchs des
-          Data-Owner zugrunde liegen, werden dem Data-Owner zugänglich gemacht, so dass dieser die Berechnung seines
-          Vergütungsanspruchs nachvollziehen und verifizieren kann.
         </p>
         <p>
           Die Auszahlung der Vergütung an den Data-Owner erfolgt seitens Dataland binnen drei Monaten nach Ende eines
@@ -537,14 +465,14 @@
     <div>
       <h2>Inhalt und Änderungen der AGB-Dataland</h2>
       <p>
-        Änderungen oder Ergänzungen dieser AGB sowie sonstige Vereinbarungen zwischen Dataland und dem Nutzer, die den
-        Regelungen der AGB unterstellt sind, bedürfen der Schriftform.
+        Änderungen oder Ergänzungen dieser AGB-Dataland sowie sonstige Vereinbarungen zwischen Dataland und dem Nutzer,
+        die den Regelungen der AGB-Dataland unterstellt sind, bedürfen der Schriftform.
       </p>
       <p>
-        Sollte eine Bestimmung dieser AGB unwirksam sein oder werden, so soll hierdurch die Wirksamkeit der AGB im
-        Übrigen nicht berührt werden. Dataland und der Nutzer verpflichten sich bereits jetzt, eine neue wirksame
-        Regelung zu vereinbaren, die dem Zweck der unwirksamen Regelung möglichst nahekommt. Entsprechendes gilt bei
-        Vertragslücken.
+        Sollte eine Bestimmung dieser AGB-Dataland unwirksam sein oder werden, so soll hierdurch die Wirksamkeit der
+        AGB-Dataland im Übrigen nicht berührt werden. Dataland und der Nutzer verpflichten sich bereits jetzt, eine neue
+        wirksame Regelung zu vereinbaren, die dem Zweck der unwirksamen Regelung möglichst nahekommt. Entsprechendes
+        gilt bei Vertragslücken.
       </p>
       <p>
         Dataland kann diese AGB-Dataland dadurch aktualisieren oder ändern, dass Dataland dem Dataland-Teilnehmer die
@@ -563,14 +491,21 @@
         Zustimmung von Dataland an Dritte übertragen bzw. an diese abgetreten.
       </p>
       <p>
-        Die durch diese AGB geregelte Geschäftsbeziehung zwischen Dataland und dem Nutzer unterliegt dem Recht der
-        Bundesrepublik Deutschland, unter Ausschluss des UN-Kaufrechts („C.I.S.G“).
+        Die durch diese AGB-Dataland geregelte Geschäftsbeziehung zwischen Dataland und dem Nutzer unterliegt dem Recht
+        der Bundesrepublik Deutschland, unter Ausschluss des UN-Kaufrechts („C.I.S.G“).
       </p>
       <p>
-        Sofern der Nutzer Kaufmann ist oder keinen allgemeinen Gerichtsstand im Inland hat ist Erfüllungsort und
-        ausschließlicher Gerichtsstand für alle Rechtsstreitigkeiten, die sich aus oder im Zusammenhang mit der durch
-        diese AGB geregelten Geschäftsbeziehung zwischen Dataland und dem Nutzer, ergeben, Frankfurt am Main
-        (Deutschland).
+        Sofern der Dataland Nutzer Kaufmann ist oder keinen allgemeinen Gerichtsstand im Inland hat ist Erfüllungsort
+        und ausschließlicher Gerichtsstand für alle Rechtsstreitigkeiten, die sich aus oder im Zusammenhang mit der
+        durch diese AGB-Dataland geregelten Geschäftsbeziehung zwischen Dataland und dem Dataland Nutzer, ergeben,
+        Frankfurt am Main (Deutschland).
+      </p>
+    </div>
+    <div>
+      <h2>Vorrang der deutschen Fassung</h2>
+      <p>
+        Maßgeblich ist die deutsche Fassung dieser AGB-Dataland. Die englische Fassung dient ausschließlich
+        informatorischen Zwecken zugunsten nicht deutsch sprechender Personen.
       </p>
     </div>
     <div class="w-12 text-center font-bold mt-6">- Ende der AGB-Dataland -</div>
