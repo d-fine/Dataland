@@ -114,7 +114,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei " +
             " ON lei.company_id = filtered_results.company_id " +
             " ORDER BY filtered_results.match_quality ASC, info.company_name ASC " +
-            "LIMIT 5000 OFFSET 4900",
+            "LIMIT 100 OFFSET 900",
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
