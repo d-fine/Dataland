@@ -42,22 +42,30 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT * FROM stored_companies" +
-                " ORDER BY company_name ASC" +
-                " LIMIT :#{#resultLimit}  OFFSET :#{#resultOffset}"
+        value = "SELECT company.company_id AS companyId," +
+                " company.company_name AS companyName," +
+                " company.headquarters AS headquarters," +
+                " company.country_code AS countryCode," +
+                " company.sector AS sector," +
+                " lei.min_id AS lei" +
+                " FROM stored_companies company" +
+                " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
+                " ON company.company_id = datainfo.company_id" +
+                " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
+                " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
+                " ON company.company_id = lei.company_id" +
+                " ORDER by company.company_name ASC",
     )
     fun getAllCompaniesWithDataWithoutFilterOrSearchString(
         @Param("resultLimit") resultLimit: Int = 100,
         @Param("resultOffset") resultOffset: Int = 0,
     ): List<BasicCompanyInformation>
 
-
-
     /**
-     * A function for querying basic information of companies by various filters:
-     * - dataTypeFilter: If set, only companies with at least one datapoint
-     * of one of the supplied dataTypes are returned
+     * A function for querying basic information of companies with dataset(s) by various filters:
      * - searchString: If not empty, only companies that contain the search string in their name are returned
+     * - country Code: If not empty, only companies with a country Code in the given set of country codes
+     * - sector Code: If not empty, only companies with a sector Code in the given set of sector codes
      * (Prefix-Matches are ordered before Center-Matches,
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
      */
@@ -67,7 +75,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
             " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1" +
-            " UNION SELECT company_id from stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0" +
             ")," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
@@ -105,6 +112,77 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM company_identifiers identifiers" +
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
+            " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
+            " AS intermediate_results GROUP BY intermediate_results.company_id) " +
+
+            // Combine Results
+            " SELECT info.company_id AS companyId," +
+            " info.company_name AS companyName, " +
+            " info.headquarters AS headquarters, " +
+            " info.country_code AS countryCode, " +
+            " info.sector AS sector, " +
+            " lei.identifier_value AS lei " +
+            " FROM filtered_results " +
+            " JOIN " +
+            " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
+            " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
+            " ) info " +
+            " ON info.company_id = filtered_results.company_id " +
+            " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
+            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei " +
+            " ON lei.company_id = filtered_results.company_id " +
+            " ORDER BY filtered_results.match_quality ASC, info.company_name ASC " +
+            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
+    )
+    fun searchCompaniesWithDataset(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
+        @Param("resultLimit") resultLimit: Int = 100,
+        @Param("resultOffset") resultOffset: Int = 0,
+    ): List<BasicCompanyInformation>
+
+    /**
+     * A function for querying basic information of companies by various filters (excluding datatype filter):
+     * - searchString: If not empty, only companies that contain the search string in their name are returned
+     * - country Code: If not empty, only companies with a country Code in the given set of country codes
+     * - sector Code: If not empty, only companies with a sector Code in the given set of sector codes
+     * (Prefix-Matches are ordered before Center-Matches,
+     * e.g. when searching for "a" Allianz will come before Deutsche Bank)
+     */
+    @Query(
+        nativeQuery = true,
+        value = "WITH" +
+            " filtered_results AS (" +
+            " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
+            " AS match_quality FROM (" +
+            " (SELECT company.company_id AS company_id," +
+            " CASE " +
+            " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
+            " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
+            " ELSE 5" +
+            " END match_quality " +
+            " FROM (SELECT company_id, company_name FROM stored_companies) company " +
+            " WHERE company.company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
+
+            " UNION " +
+            " (SELECT " +
+            " stored_company_entity_company_id AS company_id," +
+            " CASE " +
+            " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 2" +
+            " WHEN company_alternative_names" +
+            " ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+            " ELSE 5 " +
+            " END match_quality " +
+            " FROM stored_company_entity_company_alternative_names alt_names" +
+            " WHERE company_alternative_names" +
+            " ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
+
+            " UNION " +
+            " (SELECT " +
+            " identifiers.company_id AS company_id," +
+            " 5 match_quality " +
+            " FROM company_identifiers identifiers" +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
             " AS intermediate_results GROUP BY intermediate_results.company_id) " +
 

@@ -25,43 +25,43 @@ class CompanyChunkManager(
      */
     @Transactional
     fun returnCompaniesInChunks(
-        chunkSize: Int?,
+        chunkSize: Int,
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
         var companies = emptyList<BasicCompanyInformation>()
-        if (isEveryFilterDeactivated(filter)) {
+        if (areAllDropdownFiltersDeactivated(filter)) {
             if (filter.searchStringLength == 0) {
-                //show all companies with datasets -> very simple query getALlCompaniesWithDatasets in history
+                // show all companies with datasets -> very simple query getALlCompaniesWithDatasets in history
                 companies = companyRepository
                     .getAllCompaniesWithDataWithoutFilterOrSearchString(
-                        chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+                        chunkSize, chunkIndex * (chunkSize),
+                    )
+            } else {
+                // use landing page search
+                // modify object to get all data information
             }
-            else {
-                //use landing page search
-                //modify object to get all data information
-            }
-        }
-        else {
+        } else {
             if (filter.dataTypeFilterSize > 0) {
-                //use the complex search (with countries and sector) on companiesWIthDatasetsTable
-                //query in history vorhanden
-            }
-            else {
-                //use the complex search (with countries and sector) on all companies
+                companies = companyRepository.searchCompaniesWithDataset(filter, chunkSize, chunkIndex * chunkSize)
+            } else {
+                companies = companyRepository.searchCompanies(filter, chunkSize, chunkIndex * chunkSize)
             }
         }
-        companies = companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
         return companies
     }
 
-    private fun isEveryFilterDeactivated(filter: StoredCompanySearchFilter): Boolean {
-        return  (filter.dataTypeFilterSize +
-            filter.countryCodeFilterSize +
-            filter.sectorFilterSize == 0)
+    /**
+     * Method to check if ever Filter (excluding searchString) is deactivated
+     * @param filter The filter to use during searching
+     */
+    private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
+        return (
+            filter.dataTypeFilterSize +
+                filter.countryCodeFilterSize +
+                filter.sectorFilterSize == 0
+            )
     }
-
-    private fun
 
     /**
      * Method to get the number of companies satisfying the filter

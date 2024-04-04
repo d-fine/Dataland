@@ -43,6 +43,7 @@ class CompanyQueryManager(
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
+        // todo check if needed, maybe put ChunkManager functions here
         if (filter.dataTypeFilterSize == DataTypesExtractor().getAllDataTypes().size &&
             (
                 filter.sectorFilterSize +
@@ -53,7 +54,7 @@ class CompanyQueryManager(
             return companyRepository.getAllCompaniesWithDataset()
         }
 
-        return companyRepository.searchCompanies(filter)
+        return companyRepository.searchCompaniesWithDataset(filter)
     }
 
     /**
