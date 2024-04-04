@@ -51,9 +51,14 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH" +
-            " has_data AS ((SELECT DISTINCT company_id FROM data_meta_information" +
-            " WHERE data_type IN :#{#searchFilter.dataTypeFilter} AND quality_status = 1)" +
-            " UNION (SELECT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0))," +
+            " has_data AS (" +
+            " SELECT DISTINCT sc.company_id FROM stored_companies sc " +
+            " LEFT JOIN data_meta_information dmi ON sc.company_id = dmi.company_id " +
+            " WHERE ((:#{#searchFilter.dataTypeFilterSize} = 0 " +
+            " OR (dmi.data_type IN :#{#searchFilter.dataTypeFilter} AND dmi.quality_status = 1)) " +
+            "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR sc.country_code IN :#{#searchFilter.countryCodeFilter})" +
+            " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sc.sector IN :#{#searchFilter.sectorFilter})" +
+            ")," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
