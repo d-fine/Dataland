@@ -30,18 +30,36 @@ class CompanyChunkManager(
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
         var companies = emptyList<BasicCompanyInformation>()
-        if (filter.dataTypeFilterSize +
-            filter.countryCodeFilterSize +
-            filter.sectorFilterSize +
-            filter.searchStringLength == 0
-        ) {
-            companies =
-                companyRepository.getAllCompaniesWithDataset(chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
-        } else {
-            companies = companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+        if (isEveryFilterDeactivated(filter)) {
+            if (filter.searchStringLength == 0) {
+                //show all companies with datasets -> very simple query
+                companies = companyRepository.getAllCompaniesWithDataset(chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+            }
+            else {
+                //use landing page search
+                //modify object to get all data information
+            }
         }
+        else {
+            if (filter.dataTypeFilterSize > 0) {
+                //use the complex search (with countries and sector) on companiesWIthDatasetsTable
+                //query in history vorhanden
+            }
+            else {
+                //use the complex search (with countries and sector) on all companies
+            }
+        }
+        companies = companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
         return companies
     }
+
+    private fun isEveryFilterDeactivated(filter: StoredCompanySearchFilter): Boolean {
+        return  (filter.dataTypeFilterSize +
+            filter.countryCodeFilterSize +
+            filter.sectorFilterSize == 0)
+    }
+
+    private fun
 
     /**
      * Method to get the number of companies satisfying the filter
