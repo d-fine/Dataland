@@ -1,16 +1,13 @@
 <template>
   <LegalPage>
-    <a href="/terms" class="custom-link">Switch to English version</a>
+    <a href="/terms-de" class="custom-link">Switch to German version </a>
 
     <h1>Allgemeine Bedingungen für die Teilnahme an Dataland</h1>
     <h1>(„AGB-Dataland“)</h1>
     <div>
       <h2>Vorbemerkung</h2>
       <p>
-        Die Dataland GmbH (nachfolgend: „Dataland“) betreibt eine Plattform (nachfolgend: „Plattform-Dataland“, um
-        unternehmensbezogene Daten, insbesondere in den Bereichen Umwelt („Environmental“), Soziales („Social“) und
-        Unternehmensführung („Governance“) zusammenzutragen und für ihre Nutzer (nachfolgend: „Daten-User“) verfügbar zu
-        machen (nachfolgend „Unternehmens-Daten“).
+        ENGLISH
       </p>
       <p>
         Die auf der Plattform-Dataland registrierten (natürlichen und juristischen) Personen (nachfolgend:
@@ -581,9 +578,10 @@
 import LegalPage from "@/components/generics/LegalPage.vue";
 
 export default {
-  name: "TermsAndConditions",
+  name: "TermsAndConditionsEnglish",
   components: { LegalPage },
 };
+
 </script>
 
 <style scoped>
@@ -643,4 +641,5 @@ h3 ~ p:not(:only-of-type)::before {
 .custom-link:hover {
   color: black;
 }
+
 </style>
