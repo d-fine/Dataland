@@ -32,8 +32,10 @@ class CompanyChunkManager(
         var companies = emptyList<BasicCompanyInformation>()
         if (isEveryFilterDeactivated(filter)) {
             if (filter.searchStringLength == 0) {
-                //show all companies with datasets -> very simple query
-                companies = companyRepository.getAllCompaniesWithDataset(chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+                //show all companies with datasets -> very simple query getALlCompaniesWithDatasets in history
+                companies = companyRepository
+                    .getAllCompaniesWithDataWithoutFilterOrSearchString(
+                        chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
             }
             else {
                 //use landing page search

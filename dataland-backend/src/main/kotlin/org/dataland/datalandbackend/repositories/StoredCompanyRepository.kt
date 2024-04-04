@@ -37,6 +37,23 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     ): List<BasicCompanyInformation>
 
     /**
+     * A function for querying all companies with datasets.
+     * This query is used if no filter and no search string are given.
+     */
+    @Query(
+        nativeQuery = true,
+        value = "SELECT * FROM stored_companies" +
+                " ORDER BY company_name ASC" +
+                " LIMIT :#{#resultLimit}  OFFSET :#{#resultOffset}"
+    )
+    fun getAllCompaniesWithDataWithoutFilterOrSearchString(
+        @Param("resultLimit") resultLimit: Int = 100,
+        @Param("resultOffset") resultOffset: Int = 0,
+    ): List<BasicCompanyInformation>
+
+
+
+    /**
      * A function for querying basic information of companies by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
      * of one of the supplied dataTypes are returned
