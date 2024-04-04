@@ -58,7 +58,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " OR (dmi.data_type IN :#{#searchFilter.dataTypeFilter} AND dmi.quality_status = 1)) " +
             "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR sc.country_code IN :#{#searchFilter.countryCodeFilter})" +
             " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sc.sector IN :#{#searchFilter.sectorFilter})" +
-            ")," +
+            "))," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
