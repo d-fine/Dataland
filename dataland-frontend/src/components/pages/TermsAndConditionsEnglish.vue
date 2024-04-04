@@ -6,9 +6,7 @@
     <h1>(„AGB-Dataland“)</h1>
     <div>
       <h2>Vorbemerkung</h2>
-      <p>
-        ENGLISH
-      </p>
+      <p>ENGLISH</p>
       <p>
         Die auf der Plattform-Dataland registrierten (natürlichen und juristischen) Personen (nachfolgend:
         „Dataland-Teilnehmer“) können als sogenannte Daten-Sammler Unternehmens-Daten an Dataland übertragen. Das
@@ -581,7 +579,6 @@ export default {
   name: "TermsAndConditionsEnglish",
   components: { LegalPage },
 };
-
 </script>
 
 <style scoped>
@@ -641,5 +638,4 @@ h3 ~ p:not(:only-of-type)::before {
 .custom-link:hover {
   color: black;
 }
-
 </style>
