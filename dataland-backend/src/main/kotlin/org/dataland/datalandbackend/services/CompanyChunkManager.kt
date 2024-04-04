@@ -3,17 +3,15 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 /**
  * Service to chunk large data sets
- * @param companyQueryManager provides the data
+ * @param companyRepository the data
  */
 @Service("CompanyChunkManager")
 class CompanyChunkManager(
-    @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyRepository: StoredCompanyRepository,
 ) {
 
@@ -31,21 +29,14 @@ class CompanyChunkManager(
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
-        return companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
-
-        val companies = companyQueryManager.searchCompaniesAndGetApiModel(filter) // todo
-        val companiesPerChunk = if (chunkSize != null && chunkSize > 0) chunkSize else companies.size // todo
-
-        val chunkedCompanies = companies.chunked(companiesPerChunk)
-        if (chunkIndex >= 0 && chunkIndex < chunkedCompanies.size) {
-            val requestedChunk = chunkedCompanies[chunkIndex]
-            return requestedChunk
-        } else {
-            throw ResourceNotFoundApiException(
-                "Invalid index",
-                "The specified index of the chunk is invalid.",
-            )
+        if (filter.dataTypeFilterSize +
+            filter.countryCodeFilterSize +
+            filter.sectorFilterSize +
+            filter.searchStringLength == 0
+        ) {
+            return companyRepository.getAllCompaniesWithDataset(chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
         }
+        return companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
     }
 
     /**

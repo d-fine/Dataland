@@ -26,17 +26,19 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " permId.min_id AS permId," +
             " lei.min_id AS lei" +
             " FROM stored_companies company" +
-            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
-            " ON company.company_id = datainfo.company_id" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'PermId' GROUP BY company_id) permId" +
             " ON company.company_id = permid.company_id" +
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
             " ON company.company_id = lei.company_id" +
-            " ORDER by company.company_name ASC",
+            " ORDER by company.company_name ASC" +
+            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
-    fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
+    fun getAllCompaniesWithDataset(
+        @Param("resultLimit") resultLimit: Int = 100,
+        @Param("resultOffset") resultOffset: Int = 0,
+    ): List<BasicCompanyInformation>
 
     /**
      * A function for querying basic information of companies by various filters:
