@@ -29,14 +29,18 @@ class CompanyChunkManager(
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
+        var companies = emptyList<BasicCompanyInformation>()
         if (filter.dataTypeFilterSize +
             filter.countryCodeFilterSize +
             filter.sectorFilterSize +
             filter.searchStringLength == 0
         ) {
-            return companyRepository.getAllCompaniesWithDataset(chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+            companies =
+                companyRepository.getAllCompaniesWithDataset(chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+        } else {
+            companies = companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
         }
-        return companyRepository.searchCompanies(filter, chunkSize ?: 1, chunkIndex * (chunkSize ?: 1))
+        return companies
     }
 
     /**
@@ -47,10 +51,11 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        if(filter.dataTypeFilterSize +
+        if (filter.dataTypeFilterSize +
             filter.countryCodeFilterSize +
             filter.sectorFilterSize +
-            filter.searchStringLength == 0){
+            filter.searchStringLength == 0
+        ) {
             return 1000
         }
         return companyRepository.getNumberOfCompanies(filter)

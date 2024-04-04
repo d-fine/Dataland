@@ -68,7 +68,7 @@ class CompanyDataController(
         )
         return ResponseEntity.ok(
             companyChunkManager.returnCompaniesInChunks(
-                chunkSize,
+                chunkSize ?: 100,
                 chunkIndex ?: 0,
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
