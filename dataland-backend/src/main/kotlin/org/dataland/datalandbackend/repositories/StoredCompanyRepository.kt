@@ -65,16 +65,16 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM (" +
             " SELECT company_id, company_name, headquarters, country_code, sector FROM public.stored_companies " +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0 OR company_id IN " +
-            "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE" +
-                "currently_active='true' AND data_type IN :#{#searchFilter.dataTypeFilter}))" +
+            "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE " +
+            " currently_active='true' AND data_type IN :#{#searchFilter.dataTypeFilter}))" +
             // get all unique company IDs that have active data
             " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-            " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
-            " AND company_id IN"+
+            " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
+            " AND (:#{#searchFilter.searchStringLength} = 0 OR company_id IN"+
                 "(" +
         // Fuzzy-Search Company Name
-        " (SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
+        " (SELECT stored_companies.company_id AS company_id, max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN company_name = :#{#searchString} THEN 10" +
                 " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
@@ -86,9 +86,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
                 " GROUP BY stored_companies.company_id" +
-                " ORDER BY" +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_companies.company_id LIMIT :#{#resultLimit})" +
+                ")" +
 
                 " UNION " +
                 // Fuzzy-Search Company Alternative Name
@@ -130,7 +128,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " ORDER BY " +
                 " dataset_rank DESC," +
                 " match_quality DESC, company_identifiers.company_id LIMIT :#{#resultLimit})"+
-                ") " +
+                ") )" +
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS filtered_data" +
             " LEFT JOIN (" +
             // get all LEI identifiers

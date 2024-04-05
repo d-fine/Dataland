@@ -34,7 +34,7 @@ class CompanyChunkManager(
             companies = if (filter.searchStringLength == 0) {
                 companyRepository
                     .getAllCompaniesWithDataset(
-                        chunkSize, chunkIndex * (chunkSize),
+                        chunkSize, chunkIndex * (chunkSize)
                     )
             } else {
                 companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
