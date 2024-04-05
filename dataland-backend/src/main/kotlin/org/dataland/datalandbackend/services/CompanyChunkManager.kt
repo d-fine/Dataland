@@ -29,24 +29,22 @@ class CompanyChunkManager(
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
-        var companies = emptyList<BasicCompanyInformation>()
+        val companies: List<BasicCompanyInformation>
         if (areAllDropdownFiltersDeactivated(filter)) {
-            if (filter.searchStringLength == 0) {
-                // show all companies with datasets -> very simple query getALlCompaniesWithDatasets in history
-                companies = companyRepository
+            companies = if (filter.searchStringLength == 0) {
+                companyRepository
                     .getAllCompaniesWithDataWithoutFilterOrSearchString(
                         chunkSize, chunkIndex * (chunkSize),
                     )
             } else {
-                // use landing page search
-                // modify object to get all data information
-                companies = companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(filter.searchString, chunkSize, chunkSize * chunkIndex)
+                companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
+                    filter.searchString, chunkSize, chunkSize * chunkIndex)
             }
         } else {
-            if (filter.dataTypeFilterSize > 0) {
-                companies = companyRepository.searchCompaniesWithDataset(filter, chunkSize, chunkIndex * chunkSize)
+            companies = if (filter.dataTypeFilterSize > 0) {
+                companyRepository.searchCompaniesWithDataset(filter, chunkSize, chunkIndex * chunkSize)
             } else {
-                companies = companyRepository.searchCompanies(filter, chunkSize, chunkIndex * chunkSize)
+                companyRepository.searchCompanies(filter, chunkSize, chunkIndex * chunkSize)
             }
         }
         return companies
