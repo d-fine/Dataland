@@ -33,7 +33,7 @@ class CompanyChunkManager(
         if (areAllDropdownFiltersDeactivated(filter)) {
             companies = if (filter.searchStringLength == 0) {
                 companyRepository
-                    .getAllCompaniesWithDataWithoutFilterOrSearchString(
+                    .getAllCompaniesWithDataset(
                         chunkSize, chunkIndex * (chunkSize),
                     )
             } else {

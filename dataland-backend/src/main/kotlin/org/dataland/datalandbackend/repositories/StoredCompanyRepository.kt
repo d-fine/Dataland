@@ -18,19 +18,21 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT company.company_id AS companyId," +
-            " company.company_name AS companyName," +
-            " company.headquarters AS headquarters," +
-            " company.country_code AS countryCode," +
-            " company.sector AS sector," +
-            " lei.min_id AS lei" +
-            " FROM stored_companies company" +
-            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
-            " ON company.company_id = datainfo.company_id" +
-            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
-            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
-            " ON company.company_id = lei.company_id" +
-            " ORDER by company.company_name ASC" +
+        value = "SELECT has_active_data.company_id, company_name, headquarters, country_code, sector, identifier_value AS lei " +
+                //get required information from stored companies where active data set exists +
+                " FROM (" +
+                " SELECT company_id, company_name, headquarters, country_code, sector FROM public.stored_companies " +
+                " WHERE company_id IN " +
+                "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE currently_active='true') " +
+                // get all unique company IDs that have active data
+                ") AS has_active_data" +
+                " LEFT JOIN (" +
+                //get all LEI identifiers
+                "SELECT identifier_value, company_id FROM public.company_identifiers " +
+                " WHERE identifier_type='Lei'" +
+                ") AS leis_table " +
+                " ON leis_table.company_id=has_active_data.company_id" +
+                " ORDER BY company_name ASC" +
             " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun getAllCompaniesWithDataset(
@@ -38,31 +40,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         @Param("resultOffset") resultOffset: Int = 0,
     ): List<BasicCompanyInformation>
 
-    /**
-     * A function for querying all companies with datasets.
-     * This query is used if no filter and no search string are given.
-     */
-    @Query(
-        nativeQuery = true,
-        value = "SELECT company.company_id AS companyId," +
-            " company.company_name AS companyName," +
-            " company.headquarters AS headquarters," +
-            " company.country_code AS countryCode," +
-            " company.sector AS sector," +
-            " lei.min_id AS lei" +
-            " FROM stored_companies company" +
-            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
-            " ON company.company_id = datainfo.company_id" +
-            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
-            " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
-            " ON company.company_id = lei.company_id" +
-            " ORDER by company.company_name ASC" +
-            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
-    )
-    fun getAllCompaniesWithDataWithoutFilterOrSearchString(
-        @Param("resultLimit") resultLimit: Int = 100,
-        @Param("resultOffset") resultOffset: Int = 0,
-    ): List<BasicCompanyInformation>
 
     /**
      * A function for querying basic information of companies with dataset(s) by various filters:
