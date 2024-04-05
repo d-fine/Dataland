@@ -583,7 +583,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " match_quality DESC, company_identifiers.company_id LIMIT :#{#resultLimit})) " +
             // Combine Results
             " SELECT filtered_text_results.company_id AS companyId," +
-            " MIN(filtered_text_results.company_name) AS companyName" +
+            " MIN(filtered_text_results.company_name) AS companyName," +
             " stored_companies.headquarters AS headquarters, " +
             " stored_companies.country_code AS countryCode, " +
             " stored_companies.sector AS sector, " +
