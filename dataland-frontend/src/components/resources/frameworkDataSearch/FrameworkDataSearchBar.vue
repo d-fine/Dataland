@@ -270,7 +270,6 @@ export default defineComponent({
           companyName.query,
           assertDefined(this.getKeycloakPromise)(),
           this.maxNumOfDisplayedAutocompleteEntries,
-          0,
         );
       }
       this.autocompleteArrayDisplayed = this.autocompleteArray;
