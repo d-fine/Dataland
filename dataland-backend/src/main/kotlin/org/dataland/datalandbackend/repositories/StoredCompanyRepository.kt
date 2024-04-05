@@ -30,16 +30,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " WHERE company_id IN " +
                 "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE currently_active='true') " +
                 // get all unique company IDs that have active data
-                ") AS has_active_data" +
+                " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data" +
                 " LEFT JOIN (" +
                 //get all LEI identifiers
                 "SELECT identifier_value, company_id FROM public.company_identifiers " +
                 " WHERE identifier_type='Lei'" +
                 ") AS leis_table " +
-                " ON leis_table.company_id=has_active_data.company_id" +
-                " ORDER BY company_name ASC" +
-            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
+                " ON leis_table.company_id=has_active_data.company_id",
     )
+    //todo check the moving of limit and soritng!
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int = 100,
         @Param("resultOffset") resultOffset: Int = 0,
@@ -54,6 +53,76 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * (Prefix-Matches are ordered before Center-Matches,
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
      */
+    @Query(
+        nativeQuery = true,
+        value = "SELECT has_active_data.company_id,"+
+                " company_name AS companyName," +
+                " headquarters AS headquarters, " +
+                " country_code AS countryCode, " +
+                " sector AS sector, " +
+                " identifier_value AS lei " +
+                //get required information from stored companies where active data set exists +
+                " FROM (" +
+                " SELECT company_id, company_name, headquarters, country_code, sector FROM public.stored_companies " +
+                " WHERE company_id IN " +
+                "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE currently_active='true') " +
+                // get all unique company IDs that have active data
+                " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+                " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+                " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
+                " AND company_id IN (" +
+                // check for searchstring
+                " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
+                " AS match_quality FROM (" +
+                " (SELECT company.company_id AS company_id," +
+                " CASE " +
+                " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
+                " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
+                " ELSE 5" +
+                " END match_quality " +
+                " FROM (SELECT company_id, company_name FROM stored_companies) company " +
+                " JOIN has_data datainfo" +
+                " ON company.company_id = datainfo.company_id " +
+                " WHERE company.company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
+
+                " UNION " +
+                " (SELECT " +
+                " stored_company_entity_company_id AS company_id," +
+                " CASE " +
+                " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 2" +
+                " WHEN company_alternative_names" +
+                " ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+                " ELSE 5 " +
+                " END match_quality " +
+                " FROM stored_company_entity_company_alternative_names alt_names" +
+                " JOIN has_data datainfo" +
+                " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
+                " WHERE company_alternative_names" +
+                " ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
+
+                " UNION " +
+                " (SELECT " +
+                " identifiers.company_id AS company_id," +
+                " 5 match_quality " +
+                " FROM company_identifiers identifiers" +
+                " JOIN has_data datainfo" +
+                " ON identifiers.company_id = datainfo.company_id " +
+                " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
+                " AS intermediate_results GROUP BY intermediate_results.company_id) " +
+                //limit the results
+                " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS filtered_data" +
+                " LEFT JOIN (" +
+                //get all LEI identifiers
+                "SELECT identifier_value, company_id FROM public.company_identifiers " +
+                " WHERE identifier_type='Lei'" +
+                ") AS leis_table " +
+                " ON leis_table.company_id=filtered_data.company_id",
+    )
+    fun searchCompaniesWithDataset(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
+        @Param("resultLimit") resultLimit: Int = 100,
+        @Param("resultOffset") resultOffset: Int = 0,
+    ): List<BasicCompanyInformation>
     @Query(
         nativeQuery = true,
         value = "WITH" +
@@ -121,7 +190,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ORDER BY filtered_results.match_quality ASC, info.company_name ASC " +
             " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
-    fun searchCompaniesWithDataset(
+    fun searchCompaniesWithDataset2(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
         @Param("resultLimit") resultLimit: Int = 100,
         @Param("resultOffset") resultOffset: Int = 0,
