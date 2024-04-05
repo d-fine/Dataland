@@ -259,6 +259,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         @Param("resultLimit") resultLimit: Int = 100,
         @Param("resultOffset") resultOffset: Int = 0,
     ): List<BasicCompanyInformation>
+    //todo merge queries
 
     /**
      * A function for counting the number of companies by various filters:
