@@ -71,7 +71,7 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        // todo
+        //todo
         return 1000
         return companyRepository.getNumberOfCompanies(filter)
     }

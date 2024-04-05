@@ -67,48 +67,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " WHERE company_id IN " +
                 "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE currently_active='true') " +
                 // get all unique company IDs that have active data
-                " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+                " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
                 " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
                 " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
-                " AND company_id IN (" +
+                //" AND company_id IN (" +
                 // check for searchstring
-                " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
-                " AS match_quality FROM (" +
-                " (SELECT company.company_id AS company_id," +
-                " CASE " +
-                " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
-                " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
-                " ELSE 5" +
-                " END match_quality " +
-                " FROM (SELECT company_id, company_name FROM stored_companies) company " +
-                " JOIN has_data datainfo" +
-                " ON company.company_id = datainfo.company_id " +
-                " WHERE company.company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
 
-                " UNION " +
-                " (SELECT " +
-                " stored_company_entity_company_id AS company_id," +
-                " CASE " +
-                " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 2" +
-                " WHEN company_alternative_names" +
-                " ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
-                " ELSE 5 " +
-                " END match_quality " +
-                " FROM stored_company_entity_company_alternative_names alt_names" +
-                " JOIN has_data datainfo" +
-                " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
-                " WHERE company_alternative_names" +
-                " ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
-
-                " UNION " +
-                " (SELECT " +
-                " identifiers.company_id AS company_id," +
-                " 5 match_quality " +
-                " FROM company_identifiers identifiers" +
-                " JOIN has_data datainfo" +
-                " ON identifiers.company_id = datainfo.company_id " +
-                " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
-                " AS intermediate_results GROUP BY intermediate_results.company_id) " +
                 //limit the results
                 " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS filtered_data" +
                 " LEFT JOIN (" +
