@@ -18,7 +18,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT has_active_data.company_id, company_name, headquarters, country_code, sector, identifier_value AS lei " +
+        value = "SELECT has_active_data.company_id,"+
+                " company_name AS companyName," +
+                " headquarters AS headquarters, " +
+                " country_code AS countryCode, " +
+                " sector AS sector, " +
+                " identifier_value AS lei " +
                 //get required information from stored companies where active data set exists +
                 " FROM (" +
                 " SELECT company_id, company_name, headquarters, country_code, sector FROM public.stored_companies " +
