@@ -62,18 +62,16 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  * @param  {string} searchString           the string that is used to search companies
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  * @param chunkSize                        size of requested chunk
- * @param chunkIndex                       index of requested chunk
  * @returns the search result companies
  */
 export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
   searchString: string,
   keycloakPromise: Promise<Keycloak>,
   chunkSize?: number,
-  chunkIndex?: number,
 ): Promise<Array<CompanyIdAndName>> {
   try {
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
-    return (await companyDataControllerApi.getCompaniesBySearchString(searchString, chunkSize, chunkIndex)).data;
+    return (await companyDataControllerApi.getCompaniesBySearchString(searchString, chunkSize)).data;
   } catch (error) {
     console.error(error);
     return [];
