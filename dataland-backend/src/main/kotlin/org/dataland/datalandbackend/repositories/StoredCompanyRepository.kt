@@ -56,7 +56,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
             " WHERE identifier_type = 'Lei' GROUP BY company_id) lei" +
             " ON company.company_id = lei.company_id" +
-            " ORDER by company.company_name ASC",
+            " ORDER by company.company_name ASC" +
+            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun getAllCompaniesWithDataWithoutFilterOrSearchString(
         @Param("resultLimit") resultLimit: Int = 100,
@@ -504,8 +505,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " GROUP BY filtered_text_results.company_id," +
             " stored_companies.headquarters," +
             " stored_companies.country_code," +
-            " stored_companies.sector, "+
-            " lei.identifier_value "+
+            " stored_companies.sector, " +
+            " lei.identifier_value " +
             " ORDER BY " +
             " max(dataset_rank) DESC," +
             " MAX(filtered_text_results.match_quality) DESC, companyId " +
