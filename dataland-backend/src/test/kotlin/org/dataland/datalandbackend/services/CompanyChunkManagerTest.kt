@@ -30,7 +30,6 @@ class CompanyChunkManagerTest {
                     override val headquarters: String = "Test Headquarters"
                     override val countryCode: String = "Test CountryCode"
                     override val sector: String? = null
-                    override var permId: String? = null
                     override val lei: String? = null
                 },
             )

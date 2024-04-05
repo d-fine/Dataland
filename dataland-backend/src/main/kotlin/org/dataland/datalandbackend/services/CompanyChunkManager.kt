@@ -38,7 +38,8 @@ class CompanyChunkManager(
                     )
             } else {
                 companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
-                    filter.searchString, chunkSize, chunkSize * chunkIndex)
+                    filter.searchString, chunkSize, chunkSize * chunkIndex,
+                )
             }
         } else {
             companies = if (filter.dataTypeFilterSize > 0) {
@@ -70,8 +71,8 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        // todo check if bootleneck
+        // todo
         return 1000
-        // return companyRepository.getNumberOfCompanies(filter)
+        return companyRepository.getNumberOfCompanies(filter)
     }
 }
