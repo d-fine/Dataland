@@ -40,7 +40,7 @@ class CompanyChunkManager(
             } else {
                 // use landing page search
                 // modify object to get all data information
-                companies = companyRepository.searchCompaniesByNameOrIdentifierData(filter.searchString, chunkSize, chunkSize)
+                companies = companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(filter.searchString, chunkSize, chunkSize * chunkIndex)
             }
         } else {
             if (filter.dataTypeFilterSize > 0) {
