@@ -442,7 +442,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " SELECT filtered_text_results.company_id AS companyId," +
             " MIN(filtered_text_results.company_name) AS companyName," +
             " filtered_text_results.headquarters AS headquarters, " +
-            " filtered_text_results.country_code AS country_code," +
+            " filtered_text_results.country_code AS countryCode," +
             " filtered_text_results.sector AS sector," +
             " lei.identifier_value AS lei " +
             " FROM filtered_text_results " +
