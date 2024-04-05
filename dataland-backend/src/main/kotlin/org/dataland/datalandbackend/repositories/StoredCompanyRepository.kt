@@ -64,8 +64,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             // get required information from stored companies where active data set exists +
             " FROM (" +
             " SELECT company_id, company_name, headquarters, country_code, sector FROM public.stored_companies " +
-            " WHERE company_id IN " +
-            "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE currently_active='true') " +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0 OR company_id IN " +
+            "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE" +
+                "currently_active='true' AND data_type IN :#{#searchFilter.dataTypeFilter}))" +
             // get all unique company IDs that have active data
             " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
