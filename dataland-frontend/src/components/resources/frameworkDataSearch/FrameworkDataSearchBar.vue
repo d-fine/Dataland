@@ -57,13 +57,14 @@ import {
   getCompanyDataForFrameworkDataSearchPage,
   type FrameworkDataSearchFilterInterface,
   getNumberOfCompaniesForFrameworkDataSearchPage,
+  getCompanyDataForFrameworkDataSearchPageWithoutFilters,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { type BasicCompanyInformation } from "@clients/backend";
+import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -248,17 +249,47 @@ export default defineComponent({
      * @param companyName.query the query text entered into the search bar
      */
     async searchCompanyName(companyName: { query: string }) {
-      this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
-        companyName.query,
-        new Set(this.filter?.frameworkFilter),
-        new Set(this.filter?.countryCodeFilter),
-        new Set(this.filter?.sectorFilter),
-        assertDefined(this.getKeycloakPromise)(),
-        this.maxNumOfDisplayedAutocompleteEntries,
-        0,
-      );
+      if (
+        areAllFiltersDeactivated(
+          this.filter?.frameworkFilter,
+          this.filter?.countryCodeFilter,
+          this.filter?.sectorFilter,
+        )
+      ) {
+        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
+          companyName.query,
+          new Set(this.filter?.frameworkFilter),
+          new Set(this.filter?.countryCodeFilter),
+          new Set(this.filter?.sectorFilter),
+          assertDefined(this.getKeycloakPromise)(),
+          this.maxNumOfDisplayedAutocompleteEntries,
+          0,
+        );
+      } else {
+        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+          companyName.query,
+          assertDefined(this.getKeycloakPromise)(),
+          this.maxNumOfDisplayedAutocompleteEntries,
+          0,
+        );
+      }
       this.autocompleteArrayDisplayed = this.autocompleteArray;
     },
   },
 });
+
+/**
+ * Checks if all filteres are deactivated. Is used for triggering a special case function
+ * @param frameworkFilter selection options of framework filter
+ * @param countryCodeFilter selection options of country code filter
+ * @param sectorFilter selection options of sector filter
+ * @returns boolean value representing check result
+ */
+function areAllFiltersDeactivated(
+  frameworkFilter: Array<DataTypeEnum>,
+  countryCodeFilter: Array<string>,
+  sectorFilter: Array<string>,
+): boolean {
+  return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
+}
 </script>

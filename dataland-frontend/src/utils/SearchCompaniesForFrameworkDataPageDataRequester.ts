@@ -4,7 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type BasicCompanyInformation, type CompanyIdAndName, type DataTypeEnum } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 
 export interface FrameworkDataSearchFilterInterface {
@@ -56,6 +56,30 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     return [];
   }
 }
+
+/**
+ * send out a streamlined API-call to get stored companies and map the response to a search string request the search page
+ * @param  {string} searchString           the string that is used to search companies
+ * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
+ * @param chunkSize                        size of requested chunk
+ * @param chunkIndex                       index of requested chunk
+ * @returns the search result companies
+ */
+export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+  searchString: string,
+  keycloakPromise: Promise<Keycloak>,
+  chunkSize?: number,
+  chunkIndex?: number,
+): Promise<Array<CompanyIdAndName>> {
+  try {
+    const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
+    return (await companyDataControllerApi.getCompaniesBySearchString(searchString, chunkSize, chunkIndex)).data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
 /**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  * @param  {string} searchString           the string that is used to search companies
