@@ -29,23 +29,24 @@ class CompanyChunkManager(
         chunkIndex: Int,
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
+        val offset = chunkIndex * chunkSize
         val companies: List<BasicCompanyInformation>
         if (areAllDropdownFiltersDeactivated(filter)) {
             companies = if (filter.searchStringLength == 0) {
                 companyRepository
                     .getAllCompaniesWithDataset(
-                        chunkSize, chunkIndex * (chunkSize),
+                        chunkSize, offset,
                     )
             } else {
                 companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
-                    filter.searchString, chunkSize, chunkSize * chunkIndex,
+                    filter.searchString, chunkSize, offset,
                 )
             }
         } else {
             companies = if (filter.dataTypeFilterSize > 0) {
-                companyRepository.searchCompaniesWithDataset(filter, chunkSize, chunkIndex * chunkSize)
+                companyRepository.searchCompaniesWithDataset(filter, chunkSize, offset)
             } else {
-                companyRepository.searchCompanies(filter, chunkSize, chunkIndex * chunkSize)
+                companyRepository.searchCompanies(filter, chunkSize, offset)
             }
         }
         return companies
