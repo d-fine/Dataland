@@ -126,7 +126,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " WHERE identifier_type='Lei'" +
             ") AS leis_table " +
             " ON leis_table.company_id=chunked_data.companyId" +
-            " ORDER BY chunked_data.match_quality DESC, chunked_data.companyName ASC",
+            " ORDER BY chunked_data.match_quality ASC, chunked_data.companyName ASC",
     )
     fun searchCompaniesWithDataset(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
@@ -218,7 +218,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " WHERE identifier_type='Lei'" +
             ") AS leis_table " +
             " ON leis_table.company_id=chunked_data.companyId" +
-            " ORDER BY chunked_data.match_quality DESC, chunked_data.companyName ASC",
+            " ORDER BY chunked_data.match_quality ASC, chunked_data.companyName ASC",
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
