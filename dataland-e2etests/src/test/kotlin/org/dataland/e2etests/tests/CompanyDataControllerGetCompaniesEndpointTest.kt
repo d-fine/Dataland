@@ -76,8 +76,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             countryCode = storedCompany.companyInformation.countryCode,
             sector = storedCompany.companyInformation.sector,
             companyName = storedCompany.companyInformation.companyName,
-            permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.PermId.value, null)
-                ?.minOrNull(),
             lei = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.Lei.value, null)
                 ?.minOrNull(),
             headquarters = storedCompany.companyInformation.headquarters,
