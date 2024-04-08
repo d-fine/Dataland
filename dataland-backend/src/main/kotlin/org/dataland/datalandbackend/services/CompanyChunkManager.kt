@@ -34,7 +34,7 @@ class CompanyChunkManager(
             companies = if (filter.searchStringLength == 0) {
                 companyRepository
                     .getAllCompaniesWithDataset(
-                        chunkSize, chunkIndex * (chunkSize)
+                        chunkSize, chunkIndex * (chunkSize),
                     )
             } else {
                 companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
@@ -71,8 +71,6 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        //todo
-        return 1000
         return companyRepository.getNumberOfCompanies(filter)
     }
 }
