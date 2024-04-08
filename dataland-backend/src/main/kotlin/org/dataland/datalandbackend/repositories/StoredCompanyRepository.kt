@@ -223,6 +223,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         @Param("resultOffset") resultOffset: Int = 0,
     ): List<BasicCompanyInformation>
     // todo merge queries, double check filters
+    // todo sector and country filters doesnt work without searchstring.
 
     /**
      * A function for counting the number of companies by various filters:
@@ -276,7 +277,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " AS intermediate_results GROUP BY intermediate_results.company_id), " +
 
             // Combine Results
-            "SELECT COUNT(*)" +
+            " SELECT COUNT(*)" +
             " FROM filtered_results " +
             " JOIN " +
             " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
