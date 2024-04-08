@@ -221,31 +221,37 @@
         "tags": [
           "sme-data-controller"
         ],
-        "operationId": "postCompanyAssociatedSmeData",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
+        "summary": "a",
+        "description": "b",
+        "operationId": "postSmeJsonAndDocuments",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                "required": [
+                  "companyAssociatedSmeData",
+                  "documents"
+                ],
+                "type": "object",
+                "properties": {
+                  "companyAssociatedSmeData": {
+                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  },
+                  "documents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successfully added data to the data store.",
+            "description": "S.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1715,14 +1721,14 @@
         ]
       }
     },
-    "/internal/cached/{dataId}": {
+    "/internal/cached/public/{dataId}": {
       "get": {
         "tags": [
           "temporarily-cached-data-controller"
         ],
         "summary": "Retrieve specific data from the cache store of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedData",
+        "operationId": "getReceivedPublicData",
         "parameters": [
           {
             "name": "dataId",
@@ -1767,12 +1773,14 @@
         }
       }
     },
-    "/data/sme/{dataId}": {
+    "/internal/cached/private/{dataId}": {
       "get": {
         "tags": [
-          "sme-data-controller"
+          "temporarily-cached-data-controller"
         ],
-        "operationId": "getCompanyAssociatedSmeData",
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided data ID is retrieved.",
+        "operationId": "getReceivedPrivateData",
         "parameters": [
           {
             "name": "dataId",
@@ -1789,7 +1797,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  "type": "string"
                 }
               }
             }
@@ -1814,45 +1822,22 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
+        }
       }
     },
-    "/data/sme/companies/{companyId}": {
+    "/internal/cached/private/document/{hash}": {
       "get": {
         "tags": [
-          "sme-data-controller"
+          "temporarily-cached-data-controller"
         ],
-        "operationId": "getAllCompanySmeData",
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided sha256 hash is retrieved.",
+        "operationId": "getReceivedPrivateDocuments",
         "parameters": [
           {
-            "name": "companyId",
+            "name": "hash",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -1860,14 +1845,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
+            "description": "Successfully retrieved blob.",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1892,15 +1875,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
+        }
       }
     },
     "/data/sfdr/{dataId}": {
@@ -13699,21 +13674,6 @@
           }
         }
       },
-      "DataAndMetaInformationSmeData": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SmeData"
-          }
-        }
-      },
       "DataAndMetaInformationSfdrData": {
         "required": [
           "data",
@@ -13828,21 +13788,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "permId": {
             "type": "string",
@@ -13869,10 +13829,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
