@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.api.PrivateDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
@@ -29,8 +30,8 @@ class SmeDataController(
     @Autowired var myObjectMapper: ObjectMapper,
 ) : PrivateDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
- //TODO what is this annotation for?
-    // @Operation(operationId = "postCompanyAssociatedSmeData")
+
+    @Operation(operationId = "postSmeJsonAndDocuments")
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>?,
