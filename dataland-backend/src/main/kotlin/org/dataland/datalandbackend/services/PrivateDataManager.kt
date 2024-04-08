@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -18,6 +19,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -60,31 +62,28 @@ class PrivateDataManager(
         storableDataSet: StorableDataSet,
         documents: Array<MultipartFile>?,
         correlationId: String,
-    ): String {
+    ): DataMetaInformation {
         val dataId = generateRandomDataId()
         storeDatasetInMemory(dataId, storableDataSet, correlationId)
-        storeMetaInfoEntityInMemory(dataId, storableDataSet, correlationId)
+        val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
+        storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
         val listOfDocumentHashes = storeDocumentsInMemory(dataId, documents, correlationId)
         sendReceptionMessage(dataId, correlationId, listOfDocumentHashes)
-        return dataId
-        // TODO same return as other frameworks
+        return metaInfoEntity.toApiModel(DatalandAuthentication.fromContext())
     }
 
     private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         logger.info(
-            "Storing storable dataset for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
+            "Storing storable dataset in memory for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
                 "correlationId: $correlationId",
         )
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
         privateDataInMemoryStorage[dataId] = storableSmeDatasetAsString
     }
-    fun storeMetaInfoEntityInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        logger.info(
-            "Storing metadata entry for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
-                "correlationId: $correlationId",
-        )
+
+    private fun buildMetaInfoEntity(dataId: String, storableDataSet: StorableDataSet): DataMetaInformationEntity {
         val company = companyQueryManager.getCompanyById(storableDataSet.companyId)
-        val metaDataEntity = DataMetaInformationEntity(
+        return DataMetaInformationEntity(
             dataId,
             company,
             storableDataSet.dataType.toString(),
@@ -94,7 +93,14 @@ class PrivateDataManager(
             null,
             QaStatus.Pending,
         )
-        metaInfoEntityInMemoryStorage[dataId] = metaDataEntity
+    }
+
+    private fun storeMetaInfoEntityInMemory(dataId: String, metaInfoEntity: DataMetaInformationEntity, correlationId: String) {
+        logger.info(
+            "Storing metadata entry in memory for companyId: ${metaInfoEntity.company.companyId}, dataId: $dataId and " +
+                "correlationId: $correlationId",
+        )
+        metaInfoEntityInMemoryStorage[dataId] = metaInfoEntity
     }
 
     private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>?, correlationId: String): MutableList<String> {
@@ -161,7 +167,7 @@ class PrivateDataManager(
             }
         }
     }
-    fun persistMetaInfo(dataId: String, correlationId: String) {
+    private fun persistMetaInfo(dataId: String, correlationId: String) {
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
         val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
         metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
@@ -187,7 +193,7 @@ class PrivateDataManager(
             ),
         ],
     )
-    fun processStoredPrivateSmeData(
+    private fun processStoredPrivateSmeData(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
@@ -226,12 +232,12 @@ class PrivateDataManager(
     }
     // TODO this method has to return data and documents, alternatively we use two different endpoints
 
-    fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
+    private fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
         logger.info("Converting uploaded file. (correlation ID: $correlationId)")
         return convert(file, correlationId)
     }
 
-    fun convert(file: MultipartFile, correlationId: String): ByteArray = file.bytes
+    private fun convert(file: MultipartFile, correlationId: String): ByteArray = file.bytes
 
     /**
      * Retrieves the data identified by the given hash from the in-memory store.

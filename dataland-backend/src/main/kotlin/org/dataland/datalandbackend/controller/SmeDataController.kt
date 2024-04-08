@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.PrivateDataManager
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,35 +35,28 @@ class SmeDataController(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>?,
     ): ResponseEntity<DataMetaInformation> {
-        companyAssociatedSmeData.companyId
-        logger.info("Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored.")
-        val correlationId = UUID.randomUUID().toString()
-
         val uploadTime = Instant.now().toEpochMilli()
-        val userId = DatalandAuthentication.fromContext().userId
+        val correlationId = UUID.randomUUID().toString()
+        logger.info(
+            "Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored. " +
+                "Will be processed with correlationId $correlationId",
+        )
+
         val storableDataSet = StorableDataSet(
             companyId = companyAssociatedSmeData.companyId,
             dataType = DataType.of(SmeData::class.java),
-            uploaderUserId = userId,
+            uploaderUserId = DatalandAuthentication.fromContext().userId,
             uploadTime = uploadTime,
             reportingPeriod = companyAssociatedSmeData.reportingPeriod,
             data = companyAssociatedSmeData.data.toString(),
         )
-        val dataIdOfPostedData = privateDataManager.processPrivateSmeDataStorageRequest(
+
+        val dataMetaInformation = privateDataManager.processPrivateSmeDataStorageRequest(
             storableDataSet,
             documents ?: emptyArray(),
             correlationId,
         )
-        val dataMetaInformation = DataMetaInformation(
-            dataId = dataIdOfPostedData,
-            companyId = companyAssociatedSmeData.companyId,
-            dataType = DataType.of(SmeData::class.java),
-            uploadTime = uploadTime,
-            reportingPeriod = companyAssociatedSmeData.reportingPeriod,
-            currentlyActive = true,
-            qaStatus = QaStatus.Accepted,
-            uploaderUserId = userId,
-        )
+
         return ResponseEntity.ok(dataMetaInformation)
     }
 }
