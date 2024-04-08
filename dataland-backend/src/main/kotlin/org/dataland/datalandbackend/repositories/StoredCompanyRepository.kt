@@ -26,14 +26,14 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " identifier_value AS lei " +
             // get required information from stored companies where active data set exists +
             " FROM (" +
-            " SELECT company_id, company_name, headquarters, country_code, sector FROM public.stored_companies " +
+            " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
             " WHERE company_id IN " +
-            "(SELECT DISTINCT company_id FROM public.data_meta_information WHERE currently_active='true') " +
+            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true') " +
             // get all unique company IDs that have active data
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data" +
             " LEFT JOIN (" +
             // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM public.company_identifiers " +
+            "SELECT identifier_value, company_id FROM company_identifiers " +
             " WHERE identifier_type='Lei'" +
             ") AS leis_table " +
             " ON leis_table.company_id=has_active_data.company_id" +
@@ -122,7 +122,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " from chunked_data" +
             " LEFT JOIN (" +
             // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM public.company_identifiers " +
+            "SELECT identifier_value, company_id FROM company_identifiers " +
             " WHERE identifier_type='Lei'" +
             ") AS leis_table " +
             " ON leis_table.company_id=chunked_data.companyId" +
@@ -211,7 +211,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " from chunked_data" +
             " LEFT JOIN (" +
             // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM public.company_identifiers " +
+            "SELECT identifier_value, company_id FROM company_identifiers " +
             " WHERE identifier_type='Lei'" +
             ") AS leis_table " +
             " ON leis_table.company_id=chunked_data.companyId" +
