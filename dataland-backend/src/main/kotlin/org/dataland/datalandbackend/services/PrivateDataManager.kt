@@ -93,7 +93,9 @@ class PrivateDataManager(
         storeDatasetInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
-        val documentHashes = storeDocumentsInMemoryAndReturnTheirHashes(dataId, documents, correlationId)
+        val documentHashes = documents?.takeIf { it.isNotEmpty() }
+            ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
+            ?: mutableListOf()
         sendReceptionMessage(dataId, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
@@ -135,7 +137,7 @@ class PrivateDataManager(
 
     private fun storeDocumentsInMemoryAndReturnTheirHashes(
         dataId: String,
-        documents: Array<MultipartFile>?,
+        documents: Array<MultipartFile>,
         correlationId: String,
     ): MutableList<String> {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
@@ -145,20 +147,17 @@ class PrivateDataManager(
         //  I changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
         //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
         logger.info(
-            "Storing Sme documents in temporary storage for dataId $dataId, " +
-                "$documents and correlationId $correlationId.",
+            "Storing ${documents.size} Sme documents in temporary storage for dataId $dataId, " +
+                "and correlationId $correlationId",
         )
         val documentHashes = mutableListOf<String>()
-        if (!documents.isNullOrEmpty()) {
-            for (document in documents) {
-                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
-                val documentAsByteArray = convertMultipartFileToByteArray(document)
-                documentHashes.add(documentId)
-                documentInMemoryStorage[documentId] = documentAsByteArray
-            }
-
-            dataDocumentMapInMemoryStorage[dataId] = documentHashes
+        for (document in documents) {
+            val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
+            val documentAsByteArray = convertMultipartFileToByteArray(document)
+            documentHashes.add(documentId)
+            documentInMemoryStorage[documentId] = documentAsByteArray
         }
+        dataDocumentMapInMemoryStorage[dataId] = documentHashes
         return documentHashes
     }
 
@@ -172,7 +171,7 @@ class PrivateDataManager(
                 "dataId" to dataId,
                 "actionType" to
                     ActionType.StorePrivateDataAndDocuments,
-                "documentHashes" to documentHashes,
+                "documentHashes" to documentHashes, // TODO Is it a problem that this can be an empty list? Investigate
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
