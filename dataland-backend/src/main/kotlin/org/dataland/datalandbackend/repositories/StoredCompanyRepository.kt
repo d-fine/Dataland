@@ -13,6 +13,14 @@ import org.springframework.data.repository.query.Param
  */
 
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
+    companion object {
+        const val LEFTJOIN_LEIS = " LEFT JOIN (" +
+            // get all LEI identifiers
+            "SELECT identifier_value, company_id FROM company_identifiers " +
+            " WHERE identifier_type='Lei'" +
+            ") AS leis_table "
+    }
+
     /**
      * A function for querying basic information for all companies with approved datasets
      */
@@ -31,11 +39,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true') " +
             // get all unique company IDs that have active data
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data" +
-            " LEFT JOIN (" +
-            // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM company_identifiers " +
-            " WHERE identifier_type='Lei'" +
-            ") AS leis_table " +
+            LEFTJOIN_LEIS +
             " ON leis_table.company_id=has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
@@ -67,11 +71,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
             // get all unique company IDs that have active data
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data" +
-            " LEFT JOIN (" +
-            // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM company_identifiers " +
-            " WHERE identifier_type='Lei'" +
-            ") AS leis_table " +
+            LEFTJOIN_LEIS +
             " ON leis_table.company_id=has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
@@ -97,7 +97,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "SELECT DISTINCT company_id FROM data_meta_information" +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} > 0" +
             " AND data_type IN :#{#searchFilter.dataTypeFilter} AND quality_status = 1) " +
-            " UNION SELECT DISTINCT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0)," +
+            "UNION SELECT DISTINCT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0), " +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
@@ -135,8 +135,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
-            " AS intermediate_results GROUP BY intermediate_results.company_id), " +
-
+            " AS intermediate_results GROUP BY intermediate_results.company_id)" +
+            ", " +
             // Combine Results
             "chunked_data AS ( SELECT info.company_id AS companyId," +
             " info.company_name AS companyName, " +
@@ -160,11 +160,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " sector, " +
             " leis_table.identifier_value AS lei " +
             " from chunked_data" +
-            " LEFT JOIN (" +
-            // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM company_identifiers " +
-            " WHERE identifier_type='Lei'" +
-            ") AS leis_table " +
+            LEFTJOIN_LEIS +
             " ON leis_table.company_id=chunked_data.companyId" +
             " ORDER BY chunked_data.match_quality ASC, chunked_data.companyName ASC",
     )
@@ -369,7 +365,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "SELECT Count(*)" +
-            // get required information from stored companies where active data set exists +
             " FROM (" +
             " SELECT company_id FROM stored_companies " +
             " WHERE (company_id IN " +
@@ -378,7 +373,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " AND data_type IN :#{#searchFilter.dataTypeFilter}) OR :#{#searchFilter.dataTypeFilterSize} = 0) " +
             " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-            " OR country_code IN :#{#searchFilter.countryCodeFilter}) )",
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) ) AS filtered_results",
     )
     fun getNumberOfCompaniesWithoutSearchString(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
