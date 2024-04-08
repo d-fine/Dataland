@@ -218,30 +218,45 @@ export default defineComponent({
       }
     },
     /**
-     * Performs the company search if the parent component indicated it wants to receive the complete search results
+     * Performs the company search if the parent component indicated it wants to receive the given chunk of the
+     * complete search results
+     * and the total number of records
      * @param chunkIndex the index of the requested chunk
      */
     async queryCompany(chunkIndex = 0) {
       if (this.emitSearchResultsArray) {
-        const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-          this.searchBarInput,
-          new Set(this.filter?.frameworkFilter),
-          new Set(this.filter?.countryCodeFilter),
-          new Set(this.filter?.sectorFilter),
-          assertDefined(this.getKeycloakPromise)(),
-          this.chunkSize,
-          chunkIndex,
-        );
-        const totalNumberOfCompanies = await getNumberOfCompaniesForFrameworkDataSearchPage(
-          this.searchBarInput,
-          new Set(this.filter?.frameworkFilter),
-          new Set(this.filter?.countryCodeFilter),
-          new Set(this.filter?.sectorFilter),
-          assertDefined(this.getKeycloakPromise)(),
-        );
-        this.$emit("companies-received", resultsArray, chunkIndex);
-        this.$emit("numberOfCompanies-received", totalNumberOfCompanies);
+        await this.getCompanies(chunkIndex);
+        await this.getTotalNumberOfCompanies();
       }
+    },
+    /**
+     * Performs the company search if the parent component indicated it wants to receive the complete search results
+     * @param chunkIndex the index of the requested chunk
+     */
+    async getCompanies(chunkIndex: number) {
+      const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
+        this.searchBarInput,
+        new Set(this.filter?.frameworkFilter),
+        new Set(this.filter?.countryCodeFilter),
+        new Set(this.filter?.sectorFilter),
+        assertDefined(this.getKeycloakPromise)(),
+        this.chunkSize,
+        chunkIndex,
+      );
+      this.$emit("companies-received", resultsArray, chunkIndex);
+    },
+    /**
+     * Get the total number of copanies with the given filter
+     */
+    async getTotalNumberOfCompanies() {
+      const totalNumberOfCompanies = await getNumberOfCompaniesForFrameworkDataSearchPage(
+        this.searchBarInput,
+        new Set(this.filter?.frameworkFilter),
+        new Set(this.filter?.countryCodeFilter),
+        new Set(this.filter?.sectorFilter),
+        assertDefined(this.getKeycloakPromise)(),
+      );
+      this.$emit("numberOfCompanies-received", totalNumberOfCompanies);
     },
     /**
      * This function is called to obtain search suggestions for the dropdown. Uses the Dataland API to search
