@@ -39,7 +39,44 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON leis_table.company_id=has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
+    fun getAllCompaniesWithDataset2(
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
+    ): List<BasicCompanyInformation>
+
+    /**
+     * A function for querying basic information for all companies with approved datasets
+     */
+    @Query(
+        nativeQuery = true,
+        value = "SELECT has_active_data.company_id AS companyId," +
+            " company_name AS companyName," +
+            " headquarters AS headquarters, " +
+            " country_code AS countryCode, " +
+            " sector AS sector, " +
+            " identifier_value AS lei " +
+            // get required information from stored companies where active data set exists +
+            " FROM (" +
+            " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
+            " WHERE (company_id IN " +
+            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
+            " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
+            " AND data_type IN :#{#searchFilter.dataTypeFilter}) OR :#{#searchFilter.dataTypeFilterSize} = 0) " +
+            " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
+            // get all unique company IDs that have active data
+            " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data" +
+            " LEFT JOIN (" +
+            // get all LEI identifiers
+            "SELECT identifier_value, company_id FROM company_identifiers " +
+            " WHERE identifier_type='Lei'" +
+            ") AS leis_table " +
+            " ON leis_table.company_id=has_active_data.company_Id" +
+            " ORDER BY company_name ASC",
+    )
     fun getAllCompaniesWithDataset(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<BasicCompanyInformation>

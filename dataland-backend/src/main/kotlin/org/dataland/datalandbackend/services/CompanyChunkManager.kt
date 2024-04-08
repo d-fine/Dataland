@@ -33,6 +33,7 @@ class CompanyChunkManager(
         val companies = if (areAllDropdownFiltersDeactivated(filter)) {
             companyRepository
                 .getAllCompaniesWithDataset(
+                    filter,
                     chunkSize, offset,
                 )
         } else {
@@ -47,10 +48,7 @@ class CompanyChunkManager(
      */
     private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
         return (
-            filter.sectorFilterSize +
-                filter.dataTypeFilterSize +
-                filter.countryCodeFilterSize +
-                filter.sectorFilterSize == 0
+            filter.searchStringLength == 0
             )
     }
 
