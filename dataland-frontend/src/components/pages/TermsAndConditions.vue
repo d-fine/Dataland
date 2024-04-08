@@ -1,16 +1,16 @@
 <template>
   <LegalPage>
-    <div class="flex align-content-right align-items-center pl-3">
-      <span data-test="hideEmptyDataToggleCaption" class="ml-2 font-semibold" style="font-size: 14px">
-        English version
-      </span>
-      <InputSwitch v-model="hideEmptyFields" class="p-inputswitch-singlecolor" />
-      <span data-test="hideEmptyDataToggleCaption" class="ml-2 font-semibold" style="font-size: 14px">
-        German version
-      </span>
+    <div class="flex justify-content-start align-items-center">
+      <img src="/public/static/icons/uk_flag.jpg" height="20" alt="English" />
+      <InputSwitch
+        v-model="languageGerman"
+        class="p-inputswitch-singlecolor"
+        style="margin-left: 10px; margin-right: 10px"
+      />
+      <img src="/public/static/icons/germany_flag.png" height="20" alt="German" />
     </div>
 
-    <div v-if="!hideEmptyFields">
+    <div v-if="!languageGerman">
       <h1>General terms and conditions for participation in Dataland</h1>
       <h1>(„AGB-Dataland“)</h1>
       <div>
@@ -552,7 +552,7 @@
       </div>
       <div class="w-12 text-center font-bold mt-6">- End of AGB-Dataland -</div>
     </div>
-    <div v-if="hideEmptyFields">
+    <div v-if="languageGerman">
       <h1>Allgemeine Bedingungen für die Teilnahme an Dataland</h1>
       <h1>(„AGB-Dataland“)</h1>
       <div>
@@ -1079,13 +1079,13 @@ export default defineComponent({
   components: { LegalPage, InputSwitch },
   data() {
     return {
-      hideEmptyFields: false,
+      languageGerman: false,
     };
   },
   provide() {
     return {
       hideEmptyFields: computed(() => {
-        return this.hideEmptyFields;
+        return this.languageGerman;
       }),
     };
   },
