@@ -25,11 +25,11 @@ class CompanyChunkManager(
      */
     @Transactional
     fun returnCompaniesInChunks(
-        chunkSize: Int,
-        chunkIndex: Int,
         filter: StoredCompanySearchFilter,
+        chunkIndex: Int,
+        chunkSize: Int?,
     ): List<BasicCompanyInformation> {
-        val offset = chunkIndex * chunkSize
+        val offset = chunkIndex * (chunkSize ?: 0)
         val companies: List<BasicCompanyInformation>
         if (areAllDropdownFiltersDeactivated(filter)) {
             companies = if (filter.searchStringLength == 0) {

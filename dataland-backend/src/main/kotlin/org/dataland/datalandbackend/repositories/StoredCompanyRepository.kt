@@ -40,8 +40,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ORDER BY company_name ASC",
     )
     fun getAllCompaniesWithDataset(
-        @Param("resultLimit") resultLimit: Int = 100,
-        @Param("resultOffset") resultOffset: Int = 0,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
     ): List<BasicCompanyInformation>
 
     /**
@@ -130,8 +130,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     )
     fun searchCompaniesWithDataset(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
-        @Param("resultLimit") resultLimit: Int = 100,
-        @Param("resultOffset") resultOffset: Int = 0,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
     ): List<BasicCompanyInformation>
 
     /**
@@ -222,8 +222,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
-        @Param("resultLimit") resultLimit: Int = 100,
-        @Param("resultOffset") resultOffset: Int = 0,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
     ): List<BasicCompanyInformation>
     // todo merge queries, double check filters
     // todo sector and country filters doesnt work without searchstring.
@@ -504,7 +504,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     )
     fun searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
         @Param("searchString") searchString: String,
-        @Param("resultLimit") resultLimit: Int = 100,
-        @Param("resultOffset") resultOffset: Int = 0,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
     ): List<BasicCompanyInformation>
 }
