@@ -27,14 +27,14 @@ class StreamingTemporarilyCachedPrivateDocumentControllerApi(
      * @returns a stream of the blob
      */
     fun getReceivedPrivateDocument(blobId: String): InputStream {
-        val requestUrl = "$backendBaseUrl/internal/cached/document/private".toHttpUrl()
+        val requestUrl = "$backendBaseUrl/internal/cached/private/document".toHttpUrl()
             .newBuilder().addPathSegment(blobId)
             .build()
         val request = Request.Builder().url(requestUrl).build()
         val response = client.newCall(request).execute()
         if (!response.isSuccessful) {
             throw InternalServerErrorApiException(
-                "API call to temporarily cached document controller failed " +
+                "API call to temporarily cached document controller failed 88888888888888888888888888888888 " +
                     "(code ${response.code}).",
             )
         }
