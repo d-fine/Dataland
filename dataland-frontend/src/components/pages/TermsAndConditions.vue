@@ -3,10 +3,10 @@
     <div class="flex justify-content-start align-items-center">
       <img src="/public/static/icons/uk_flag.jpg" height="20" alt="English" />
       <InputSwitch
+        data-test="terms-language-toggle-button"
         v-model="languageGerman"
         class="p-inputswitch-singlecolor"
         style="margin-left: 10px; margin-right: 10px"
-        name="terms-language-toggle-button"
       />
       <img src="/public/static/icons/germany_flag.png" height="20" alt="German" />
     </div>
