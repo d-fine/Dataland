@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.repositories.ContextOfStoredCompaniesRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service("CompanyChunkManager")
 class CompanyChunkManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val contextOfStoredCompaniesRepository: ContextOfStoredCompaniesRepository,
 ) {
 
     /**
@@ -72,6 +74,6 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        return companyRepository.getNumberOfCompanies(filter)
+        return contextOfStoredCompaniesRepository.getNumberOfCompanies(filter)
     }
 }
