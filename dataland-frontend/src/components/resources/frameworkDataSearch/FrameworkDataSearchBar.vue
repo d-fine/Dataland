@@ -256,6 +256,12 @@ export default defineComponent({
           this.filter?.sectorFilter,
         )
       ) {
+        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+          companyName.query,
+          assertDefined(this.getKeycloakPromise)(),
+          this.maxNumOfDisplayedAutocompleteEntries,
+        );
+      } else {
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
           companyName.query,
           new Set(this.filter?.frameworkFilter),
@@ -264,12 +270,6 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
           this.maxNumOfDisplayedAutocompleteEntries,
           0,
-        );
-      } else {
-        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-          companyName.query,
-          assertDefined(this.getKeycloakPromise)(),
-          this.maxNumOfDisplayedAutocompleteEntries,
         );
       }
       this.autocompleteArrayDisplayed = this.autocompleteArray;
