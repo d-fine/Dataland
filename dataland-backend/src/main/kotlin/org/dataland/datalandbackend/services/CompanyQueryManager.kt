@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.datalandbackend.repositories.ContextOfStoredCompaniesRepository
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service("CompanyQueryManager")
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val contextOfStoredCompaniesRepository: ContextOfStoredCompaniesRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
     /**
@@ -60,14 +58,14 @@ class CompanyQueryManager(
      * Returns a list of available country codes across all stored companies
      */
     fun getDistinctCountryCodes(): Set<String> {
-        return contextOfStoredCompaniesRepository.fetchDistinctCountryCodes()
+        return companyRepository.fetchDistinctCountryCodes()
     }
 
     /**
      * Returns a list of available sectors across all stored companies
      */
     fun getDistinctSectors(): Set<String> {
-        return contextOfStoredCompaniesRepository.fetchDistinctSectors()
+        return companyRepository.fetchDistinctSectors()
     }
 
     /**

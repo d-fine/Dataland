@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
-import org.dataland.datalandbackend.repositories.ContextOfStoredCompaniesRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service("CompanyChunkManager")
 class CompanyChunkManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val contextOfStoredCompaniesRepository: ContextOfStoredCompaniesRepository,
 ) {
 
     /**
@@ -33,34 +31,25 @@ class CompanyChunkManager(
     ): List<BasicCompanyInformation> {
         val offset = chunkIndex * (chunkSize ?: 0)
         val companies: List<BasicCompanyInformation>
-        if (areAllDropdownFiltersDeactivated(filter)) {
-            companies = if (filter.searchStringLength == 0) {
-                companyRepository
-                    .getAllCompaniesWithDataset(
-                        chunkSize, offset,
-                    )
-            } else {
-                companyRepository.searchCompaniesByNameOrIdentifierAsBasicCompanyInformation(
-                    filter.searchString, chunkSize, offset,
+        companies = if (areAllDropdownFiltersDeactivated(filter)) {
+            companyRepository
+                .getAllCompaniesWithDataset(
+                    chunkSize, offset,
                 )
-            }
         } else {
-            companies = if (filter.dataTypeFilterSize > 0) {
-                companyRepository.searchCompaniesWithDataset(filter, chunkSize, offset)
-            } else {
-                companyRepository.searchCompanies(filter, chunkSize, offset)
-            }
+            companyRepository.searchCompanies(filter, chunkSize, offset)
         }
         return companies
     }
 
     /**
-     * Method to check if ever dropdownFilter is deactivated
+     * Method to check if ever filter is deactivated
      * @param filter The filter to use during searching
      */
     private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
         return (
-            filter.dataTypeFilterSize +
+            filter.sectorFilterSize +
+                filter.dataTypeFilterSize +
                 filter.countryCodeFilterSize +
                 filter.sectorFilterSize == 0
             )
@@ -74,6 +63,6 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        return contextOfStoredCompaniesRepository.getNumberOfCompanies(filter)
+        return companyRepository.getNumberOfCompanies(filter)
     }
 }
