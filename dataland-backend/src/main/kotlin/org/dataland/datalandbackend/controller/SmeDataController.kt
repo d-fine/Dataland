@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.PrivateDataManager
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -23,7 +22,6 @@ class SmeDataController(
     @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : PrivateDataApi {
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Operation(operationId = "postSmeJsonAndDocuments")
     override fun postSmeJsonAndDocuments(

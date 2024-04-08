@@ -31,10 +31,7 @@ class MultipartJackson2HttpMessageConverter(
     }
 
     override fun canRead(type: Type, contextClass: Class<*>?, mediaType: MediaType?): Boolean {
-        if (contextClass != SmeDataController::class.java) {
-            return false
-        }
-        if (type.typeName != SME_DATA_TYPENAME) {
+        if (contextClass != SmeDataController::class.java || type.typeName != SME_DATA_TYPENAME) {
             return false
         }
         return super.canRead(type, contextClass, mediaType)

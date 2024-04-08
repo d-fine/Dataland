@@ -110,8 +110,8 @@ class EurodatStringDataStore(
     }
 
     /**
-     * Stores a Data Item in eurodat while ensuring that there is no active transaction. This will guarantee that the write
-     * is commited after exit of this method.
+     * Stores a Data Item in eurodat while ensuring that there is no active transaction.
+     * This will guarantee that the write is commited after exit of this method.
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
@@ -123,8 +123,8 @@ class EurodatStringDataStore(
     }
 
     /**
-     * Stores a Blob Item in eurodat while ensuring that there is no active transaction. This will guarantee that the write
-     * is commited after exit of this method.
+     * Stores a Blob Item in eurodat while ensuring that there is no active transaction.
+     * This will guarantee that the write is commited after exit of this method.
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)

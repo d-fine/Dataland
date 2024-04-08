@@ -121,27 +121,38 @@ class PrivateDataManager(
         )
     }
 
-    private fun storeMetaInfoEntityInMemory(dataId: String, metaInfoEntity: DataMetaInformationEntity, correlationId: String) {
+    private fun storeMetaInfoEntityInMemory(
+        dataId: String,
+        metaInfoEntity: DataMetaInformationEntity,
+        correlationId: String,
+    ) {
         logger.info(
-            "Storing metadata entry in memory for companyId: ${metaInfoEntity.company.companyId}, dataId: $dataId and " +
-                "correlationId: $correlationId",
+            "Storing metadata entry in memory for companyId: ${metaInfoEntity.company.companyId}, " +
+                "dataId: $dataId and correlationId: $correlationId",
         )
         metaInfoEntityInMemoryStorage[dataId] = metaInfoEntity
     }
 
-    private fun storeDocumentsInMemoryAndReturnTheirHashes(dataId: String, documents: Array<MultipartFile>?, correlationId: String): MutableList<String> {
+    private fun storeDocumentsInMemoryAndReturnTheirHashes(
+        dataId: String,
+        documents: Array<MultipartFile>?,
+        correlationId: String,
+    ): MutableList<String> {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
         //  Maybe we should use the same approach as in the other document service
-        //  I've changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
+        //  I changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
         //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
-        logger.info("Storing Sme documents in temporary storage for dataId $dataId, $documents and correlationId $correlationId.")
+        logger.info(
+            "Storing Sme documents in temporary storage for dataId $dataId, " +
+                "$documents and correlationId $correlationId.",
+        )
         val documentHashes = mutableListOf<String>()
         if (!documents.isNullOrEmpty()) {
             for (document in documents) {
-                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend!! test? one-off test?
-                val documentAsByteArray = convertMultipartFileToByteArray(document, correlationId)
+                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
+                val documentAsByteArray = convertMultipartFileToByteArray(document)
                 documentHashes.add(documentId)
                 documentInMemoryStorage[documentId] = documentAsByteArray
             }
@@ -193,7 +204,7 @@ class PrivateDataManager(
             }
         }
     }
-    private fun persistMetaInfo(dataId: String, correlationId: String) {
+    private fun persistMetaInfo(dataId: String) {
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
         val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
         metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
@@ -219,7 +230,7 @@ class PrivateDataManager(
             ),
         ],
     )
-    private fun processStoredPrivateSmeData(
+    fun processStoredPrivateSmeData(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
@@ -235,7 +246,7 @@ class PrivateDataManager(
         )
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
-            persistMetaInfo(dataId, correlationId)
+            persistMetaInfo(dataId)
             privateDataInMemoryStorage.remove(dataId)
             metaInfoEntityInMemoryStorage.remove(dataId)
             documentInMemoryStorage.remove(dataId)
@@ -258,7 +269,7 @@ class PrivateDataManager(
     }
     // TODO this method has to return data and documents, alternatively we use two different endpoints
 
-    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile, correlationId: String): ByteArray {
+    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile): ByteArray {
         return multipartFile.bytes
     }
 
