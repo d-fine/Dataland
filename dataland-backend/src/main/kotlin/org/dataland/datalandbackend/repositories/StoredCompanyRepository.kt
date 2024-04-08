@@ -146,7 +146,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value =
         "WITH" +
-            " has_data AS (SELECT DISTINCT company_id FROM stored_companies)," +
+            " has_data AS (SELECT DISTINCT company_id FROM stored_companies" +
+            " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) ), " +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
@@ -374,25 +377,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         @Param("searchString") searchString: String,
         @Param("resultLimit") resultLimit: Int = 100,
     ): List<CompanyIdAndName>
-
-    /**
-     * Returns all available distinct country codes
-     */
-    @Query(
-        "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company " +
-            "INNER JOIN company.dataRegisteredByDataland data ",
-    )
-    fun fetchDistinctCountryCodes(): Set<String>
-
-    /**
-     * Returns all available distinct sectors
-     */
-    @Query(
-        "SELECT DISTINCT company.sector FROM StoredCompanyEntity company " +
-            "INNER JOIN company.dataRegisteredByDataland data " +
-            "WHERE company.sector IS NOT NULL ",
-    )
-    fun fetchDistinctSectors(): Set<String>
 
     /**
      * Used for pre-fetching the identifiers field of a list of stored companies
