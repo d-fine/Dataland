@@ -39,7 +39,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON leis_table.company_id=has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
-    fun getAllCompaniesWithDataset2(
+    fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<BasicCompanyInformation>
@@ -75,7 +75,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON leis_table.company_id=has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
-    fun getAllCompaniesWithDataset(
+    fun searchCompaniesWithoutSearchString(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
@@ -291,25 +291,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun getAllByIsTeaserCompanyIsTrue(): List<StoredCompanyEntity>
 
     /**
-     * Returns all available distinct country codes
-     */
-    @Query(
-        "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company " +
-            "INNER JOIN company.dataRegisteredByDataland data ",
-    )
-    fun fetchDistinctCountryCodes(): Set<String>
-
-    /**
-     * Returns all available distinct sectors
-     */
-    @Query(
-        "SELECT DISTINCT company.sector FROM StoredCompanyEntity company " +
-            "INNER JOIN company.dataRegisteredByDataland data " +
-            "WHERE company.sector IS NOT NULL ",
-    )
-    fun fetchDistinctSectors(): Set<String>
-
-    /**
      * A function for counting the number of companies by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
      * of one of the supplied dataTypes are returned
@@ -376,6 +357,30 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON info.company_id = filtered_results.company_id",
     )
     fun getNumberOfCompanies(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
+    ): Int
+
+    /**
+     * A function for counting the number of companies by various filters:
+     * - dataTypeFilter: If set, only companies with at least one datapoint
+     * of one of the supplied dataTypes are returned
+     * - searchString: Is empty!
+     */
+    @Query(
+        nativeQuery = true,
+        value = "SELECT Count(*)" +
+            // get required information from stored companies where active data set exists +
+            " FROM (" +
+            " SELECT company_id FROM stored_companies " +
+            " WHERE (company_id IN " +
+            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
+            " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
+            " AND data_type IN :#{#searchFilter.dataTypeFilter}) OR :#{#searchFilter.dataTypeFilterSize} = 0) " +
+            " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) )",
+    )
+    fun getNumberOfCompaniesWithoutSearchString(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
     ): Int
 }

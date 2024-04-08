@@ -30,25 +30,26 @@ class CompanyChunkManager(
         chunkSize: Int?,
     ): List<BasicCompanyInformation> {
         val offset = chunkIndex * (chunkSize ?: 0)
-        val companies = if (areAllDropdownFiltersDeactivated(filter)) {
-            companyRepository
-                .getAllCompaniesWithDataset(
-                    filter,
-                    chunkSize, offset,
-                )
-        } else {
-            companyRepository.searchCompanies(filter, chunkSize, offset)
+        if (filter.searchStringLength == 0) {
+            return if (areAllDropdownFiltersDeactivated(filter)) {
+                companyRepository
+                    .getAllCompaniesWithDataset(
+                        chunkSize, offset,
+                    )
+            } else {
+                companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
+            }
         }
-        return companies
+        return companyRepository.searchCompanies(filter, chunkSize, offset)
     }
 
     /**
-     * Method to check if ever filter is deactivated
+     * Method to check if ever dropdownFilter is deactivated
      * @param filter The filter to use during searching
      */
     private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
         return (
-            filter.searchStringLength == 0
+            filter.dataTypeFilterSize + filter.sectorFilterSize + filter.countryCodeFilterSize == 0
             )
     }
 
@@ -60,6 +61,13 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        return companyRepository.getNumberOfCompanies(filter)
+        return if (filter.searchStringLength == 0) {
+            companyRepository
+                .getNumberOfCompaniesWithoutSearchString(
+                    filter,
+                )
+        } else {
+            companyRepository.getNumberOfCompanies(filter)
+        }
     }
 }

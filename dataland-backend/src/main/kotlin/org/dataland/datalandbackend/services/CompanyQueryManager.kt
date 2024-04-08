@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
+import org.dataland.datalandbackend.repositories.SectorAndCountryRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
+    @Autowired private val sectorAndCountryRepository: SectorAndCountryRepository,
 ) {
     /**
      * Method to verify that a given company exists in the company store
@@ -58,14 +60,14 @@ class CompanyQueryManager(
      * Returns a list of available country codes across all stored companies
      */
     fun getDistinctCountryCodes(): Set<String> {
-        return companyRepository.fetchDistinctCountryCodes()
+        return sectorAndCountryRepository.fetchDistinctCountryCodes()
     }
 
     /**
      * Returns a list of available sectors across all stored companies
      */
     fun getDistinctSectors(): Set<String> {
-        return companyRepository.fetchDistinctSectors()
+        return sectorAndCountryRepository.fetchDistinctSectors()
     }
 
     /**
