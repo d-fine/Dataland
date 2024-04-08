@@ -1,7 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.annotations.DataTypesExtractor
-import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -9,7 +7,6 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.StoredCountriesAndSectors
-import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,29 +31,6 @@ class CompanyQueryManager(
         if (!companyRepository.existsById(companyId)) {
             throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
         }
-    }
-
-    /**
-     * Method to search for basic information of companies matching the company name or identifier
-     * @param filter The filter to use during searching
-     * @return list of basic information of all matching companies in Dataland
-     */
-    @Transactional
-    fun searchCompaniesAndGetApiModel(
-        filter: StoredCompanySearchFilter,
-    ): List<BasicCompanyInformation> {
-        // todo check if needed, maybe put ChunkManager functions here
-        if (filter.dataTypeFilterSize == DataTypesExtractor().getAllDataTypes().size &&
-            (
-                filter.sectorFilterSize +
-                    filter.countryCodeFilterSize +
-                    filter.searchStringLength
-                ) == 0
-        ) {
-            return companyRepository.getAllCompaniesWithDataset()
-        }
-
-        return companyRepository.searchCompaniesWithDataset(filter)
     }
 
     /**
