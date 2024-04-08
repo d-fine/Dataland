@@ -30,8 +30,7 @@ class CompanyChunkManager(
         chunkSize: Int?,
     ): List<BasicCompanyInformation> {
         val offset = chunkIndex * (chunkSize ?: 0)
-        val companies: List<BasicCompanyInformation>
-        companies = if (areAllDropdownFiltersDeactivated(filter)) {
+        val companies = if (areAllDropdownFiltersDeactivated(filter)) {
             companyRepository
                 .getAllCompaniesWithDataset(
                     chunkSize, offset,
