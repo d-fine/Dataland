@@ -97,10 +97,10 @@ class EurodatStringDataStore(
         // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
         // val getAuthentication = DatabaseCredentialResourceApi.
         val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
-        //val documentHashList = JSONObject(payload).getJSONArray("listOfDocumentHashes").toList()
+        // val documentHashList = JSONObject(payload).getJSONArray("documentHashes").toList()
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-         storeDataInEurodat(dataId, correlationId, DataItem(dataId, objectMapper.writeValueAsString(data)))
-        val jsonArray = JSONObject(payload).getJSONArray("listOfDocumentHashes")
+        storeDataInEurodat(dataId, correlationId, DataItem(dataId, objectMapper.writeValueAsString(data)))
+        val jsonArray = JSONObject(payload).getJSONArray("documentHashes")
 
         val list: List<String> = List(jsonArray.length()) { jsonArray.getString(it) }
         storeBlobInEurodat(dataId, correlationId, list)
@@ -121,6 +121,7 @@ class EurodatStringDataStore(
         // dataItemRepository.save(dataItem)
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
     }
+
     /**
      * Stores a Blob Item in eurodat while ensuring that there is no active transaction. This will guarantee that the write
      * is commited after exit of this method.
@@ -129,9 +130,9 @@ class EurodatStringDataStore(
     @Transactional(propagation = Propagation.NEVER)
     fun storeBlobInEurodat(dataId: String, correlationId: String, documentHashList: List<String>) {
         logger.info("Retrieving documents associated with dataId $dataId and correlationId $correlationId")
-        documentHashList.forEach{hash ->
-            val resource =temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
-            val test =  resource.readBytes()
+        documentHashList.forEach { hash ->
+            val resource = temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
+            val test = resource.readBytes()
         }
         // TODO call to eurodat
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()

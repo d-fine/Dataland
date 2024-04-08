@@ -67,8 +67,8 @@ class PrivateDataManager(
         storeDatasetInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
-        val listOfDocumentHashes = storeDocumentsInMemory(dataId, documents, correlationId)
-        sendReceptionMessage(dataId, correlationId, listOfDocumentHashes)
+        val documentHashes = storeDocumentsInMemoryAndReturnTheirHashes(dataId, documents, correlationId)
+        sendReceptionMessage(dataId, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(DatalandAuthentication.fromContext())
     }
 
@@ -103,7 +103,7 @@ class PrivateDataManager(
         metaInfoEntityInMemoryStorage[dataId] = metaInfoEntity
     }
 
-    private fun storeDocumentsInMemory(dataId: String, documents: Array<MultipartFile>?, correlationId: String): MutableList<String> {
+    private fun storeDocumentsInMemoryAndReturnTheirHashes(dataId: String, documents: Array<MultipartFile>?, correlationId: String): MutableList<String> {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
@@ -111,23 +111,23 @@ class PrivateDataManager(
         //  I've changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
         //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
         logger.info("Storing Sme documents in temporary storage for dataId $dataId, $documents and correlationId $correlationId.")
-        val listDocumentHashes = mutableListOf<String>()
+        val documentHashes = mutableListOf<String>()
         if (!documents.isNullOrEmpty()) {
             for (document in documents) {
-                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend!! test?
-                val documentBody = convertFile(document, correlationId)
-                listDocumentHashes.add(documentId)
-                documentInMemoryStorage[documentId] = documentBody
+                val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend!! test? one-off test?
+                val documentAsByteArray = convertMultipartFileToByteArray(document, correlationId)
+                documentHashes.add(documentId)
+                documentInMemoryStorage[documentId] = documentAsByteArray
             }
 
-            dataDocumentMapInMemoryStorage[dataId] = listDocumentHashes
+            dataDocumentMapInMemoryStorage[dataId] = documentHashes
         }
-        return listDocumentHashes
+        return documentHashes
     }
 
-    private fun sendReceptionMessage(dataId: String, correlationId: String, listOfDocumentHashes: MutableList<String>) {
+    private fun sendReceptionMessage(dataId: String, correlationId: String, documentHashes: MutableList<String>) {
         logger.info(
-            "Received data to be stored in external storage, sending message for dataId: $dataId and " +
+            "Processed data to be stored in external storage, sending message for dataId: $dataId and " +
                 "correlationId: $correlationId",
         )
         val payload = JSONObject(
@@ -135,7 +135,7 @@ class PrivateDataManager(
                 "dataId" to dataId,
                 "actionType" to
                     ActionType.StorePrivateDataAndDocuments,
-                "listOfDocumentHashes" to listOfDocumentHashes,
+                "documentHashes" to documentHashes,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -232,17 +232,14 @@ class PrivateDataManager(
     }
     // TODO this method has to return data and documents, alternatively we use two different endpoints
 
-    private fun convertFile(file: MultipartFile, correlationId: String): ByteArray {
-        logger.info("Converting uploaded file. (correlation ID: $correlationId)")
-        return convert(file, correlationId)
+    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile, correlationId: String): ByteArray {
+        return multipartFile.bytes
     }
-
-    private fun convert(file: MultipartFile, correlationId: String): ByteArray = file.bytes
 
     /**
      * Retrieves the data identified by the given hash from the in-memory store.
      */
-    fun retrieveDocumentsromMemoryStore(hash: String): ByteArray? {
+    fun getDocumentFromInMemoryStore(hash: String): ByteArray? {
         return documentInMemoryStorage[hash]
     }
 }
