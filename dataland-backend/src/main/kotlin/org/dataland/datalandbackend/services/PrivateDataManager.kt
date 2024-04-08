@@ -3,7 +3,10 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.frameworks.sme.model.SmeData
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -32,6 +35,7 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.time.Instant
 import java.util.*
 
 /**
@@ -58,18 +62,40 @@ class PrivateDataManager(
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
     private val dataDocumentMapInMemoryStorage = mutableMapOf<String, MutableList<String>>()
 
+    /**
+     * Processes a private sme data storage request.
+     * @param companyAssociatedSmeData contains the JSON to store
+     * @param documents contains the documents associated with the JSON
+     * @returns the data meta info object generated during the storage process
+     */
     fun processPrivateSmeDataStorageRequest(
-        storableDataSet: StorableDataSet,
+        companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>?,
-        correlationId: String,
     ): DataMetaInformation {
+        val uploadTime = Instant.now().toEpochMilli()
+        val correlationId = UUID.randomUUID().toString()
+        logger.info(
+            "Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored. " +
+                "Will be processed with correlationId $correlationId",
+        )
+
+        val userAuthentication = DatalandAuthentication.fromContext()
+        val storableDataSet = StorableDataSet(
+            companyId = companyAssociatedSmeData.companyId,
+            dataType = DataType.of(SmeData::class.java),
+            uploaderUserId = userAuthentication.userId,
+            uploadTime = uploadTime,
+            reportingPeriod = companyAssociatedSmeData.reportingPeriod,
+            data = companyAssociatedSmeData.data.toString(),
+        )
         val dataId = generateRandomDataId()
+
         storeDatasetInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
         val documentHashes = storeDocumentsInMemoryAndReturnTheirHashes(dataId, documents, correlationId)
         sendReceptionMessage(dataId, correlationId, documentHashes)
-        return metaInfoEntity.toApiModel(DatalandAuthentication.fromContext())
+        return metaInfoEntity.toApiModel(userAuthentication)
     }
 
     private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
