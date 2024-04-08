@@ -497,6 +497,22 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     extra_hosts:
      - "host.docker.internal:host-gateway"
+  eurodat-client:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.28
+    networks:
+      - internal
+    expose:
+      - "8443"
+    ports:
+      - "127.0.0.1:12345:8443" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
+    volumes:
+      - ./dataland-eurodat-client/secret_files/tls.crt:/crt/tls.crt
+      - ./dataland-eurodat-client/secret_files/keystore.jks:/crt/keystore.jks
+      - ./dataland-eurodat-client/secret_files/test.jks:/crt/test.jks
+    env_file:
+      - ./dataland-eurodat-client/secret_files/client.env
 networks:
   internal:
   external:
