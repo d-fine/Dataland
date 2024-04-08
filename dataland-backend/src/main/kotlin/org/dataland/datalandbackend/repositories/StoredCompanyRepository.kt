@@ -18,7 +18,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT has_active_data.company_id," +
+        value = "SELECT has_active_data.company_id AS companyId," +
             " company_name AS companyName," +
             " headquarters AS headquarters, " +
             " country_code AS countryCode, " +
@@ -36,7 +36,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "SELECT identifier_value, company_id FROM company_identifiers " +
             " WHERE identifier_type='Lei'" +
             ") AS leis_table " +
-            " ON leis_table.company_id=has_active_data.company_id" +
+            " ON leis_table.company_id=has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
     fun getAllCompaniesWithDataset(
