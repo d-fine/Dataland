@@ -13943,23 +13943,23 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           }

@@ -21,7 +21,7 @@
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
             @companies-received="handleCompanyQuery"
-            @cumberOfCompanies-received="handleNumberOfCompanies"
+            @numberOfCompanies-received="handleNumberOfCompanies"
           />
 
           <div
@@ -202,6 +202,7 @@ export default defineComponent({
   computed: {
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
+      console.log(totalSearchResults);
       if (!this.waitingForDataToDisplay) {
         if (totalSearchResults === 0) {
           return "No results";

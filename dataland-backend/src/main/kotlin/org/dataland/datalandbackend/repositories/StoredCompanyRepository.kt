@@ -239,7 +239,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH" +
-            " has_data AS (SELECT DISTINCT company_id FROM stored_companies)," +
+            " has_data AS (" +
+            "SELECT DISTINCT company_id FROM data_meta_information" +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} > 0" +
+            " AND data_type IN :#{#searchFilter.dataTypeFilter} AND quality_status = 1) " +
+            " UNION SELECT DISTINCT company_id FROM stored_companies WHERE :#{#searchFilter.dataTypeFilterSize} = 0)," +
             " filtered_results AS (" +
             " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
             " AS match_quality FROM (" +
@@ -277,13 +281,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
-            " AS intermediate_results GROUP BY intermediate_results.company_id), " +
+            " AS intermediate_results GROUP BY intermediate_results.company_id)" +
 
             // Combine Results
             " SELECT COUNT(*)" +
             " FROM filtered_results " +
             " JOIN " +
-            " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
+            " (SELECT company_id FROM stored_companies " +
             " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
             " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +

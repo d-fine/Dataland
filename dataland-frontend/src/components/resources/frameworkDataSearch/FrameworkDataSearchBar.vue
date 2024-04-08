@@ -76,7 +76,7 @@ export default defineComponent({
   name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
-  emits: ["companies-received", "search-confirmed", "cumberOfCompanies-received"],
+  emits: ["companies-received", "search-confirmed", "numberOfCompanies-received"],
 
   props: {
     searchBarId: {
@@ -240,7 +240,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         );
         this.$emit("companies-received", resultsArray, chunkIndex);
-        this.$emit("cumberOfCompanies-received", totalNumberOfCompanies);
+        this.$emit("numberOfCompanies-received", totalNumberOfCompanies);
       }
     },
     /**
