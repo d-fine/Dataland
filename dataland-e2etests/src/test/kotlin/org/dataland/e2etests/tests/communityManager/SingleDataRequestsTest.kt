@@ -57,7 +57,7 @@ class SingleDataRequestsTest {
             companyIdentifier = stringThatMatchesThePermIdRegex,
             dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = reportingPeriods,
-            contacts = setOf("someContact@webserver.de", "simpleString@some.thing"),
+            contacts = setOf("someContact@example.com", "simpleString@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
@@ -109,13 +109,13 @@ class SingleDataRequestsTest {
         val companyOne = CompanyInformation(
             companyName = "company1",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId)),
+            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId)),
             countryCode = "DE",
         )
         val companyTwo = CompanyInformation(
             companyName = "company2",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.isin.value to listOf(isin)),
+            identifiers = mapOf(IdentifierType.Isin.value to listOf(isin)),
             countryCode = "DE",
         )
 
@@ -194,7 +194,7 @@ class SingleDataRequestsTest {
             "The company ID of the newly stored data request does not match the expected one.",
         )
         assertEquals(
-            RequestStatus.open,
+            RequestStatus.Open,
             newlyStoredRequests[0].requestStatus,
             "The new data request is not stored with status 'Open'.",
         )
@@ -206,7 +206,7 @@ class SingleDataRequestsTest {
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
         val contactListsThatContainInvalidEmailAddresses =
-            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
+            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@example.com"))
         contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it.toSet(), "Dummy test message.")
@@ -248,7 +248,7 @@ class SingleDataRequestsTest {
     @Test
     fun `post a single data requests without a message but with valid email address in contact list`() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
-        val emailAddress = "test@someprovider.abc"
+        val emailAddress = "test@example.com"
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val response = postStandardSingleDataRequest(companyId, setOf(emailAddress))
         checkThatAllReportingPeriodsAreTreatedAsExpected(
@@ -284,10 +284,10 @@ class SingleDataRequestsTest {
         val dataRequestId = UUID.fromString(
             getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
         )
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
+        assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
     }
 
     @Test
@@ -304,8 +304,8 @@ class SingleDataRequestsTest {
     fun `post a duplicate request and check that it is only stored if previous in final status`() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2021")
-        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.answered)
-        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.closed)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.Answered)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Closed)
         val timestampBeforeFinalRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(
             SingleDataRequest(

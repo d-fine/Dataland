@@ -46,7 +46,7 @@ class DataRequestUploadListenerTest {
             companyIdentifier = mapOfIds["companyId"].toString(),
             dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
             reportingPeriods = setOf("2022", "2023"),
-            contacts = setOf("someContact@webserver.de", "valid@e.mail"),
+            contacts = setOf("someContact@example.com", "valid@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
@@ -56,7 +56,7 @@ class DataRequestUploadListenerTest {
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         newlyStoredRequests.forEach {
             assertEquals(
-                RequestStatus.open, it.requestStatus, "The status of a newly stored data request is not 'Open'.",
+                RequestStatus.Open, it.requestStatus, "The status of a newly stored data request is not 'Open'.",
             )
         }
         uploadDataset(mapOfIds)
@@ -80,9 +80,9 @@ class DataRequestUploadListenerTest {
 
     private fun checkRequestStatusAfterUpload(dataRequest: ExtendedStoredDataRequest) {
         if (dataRequest.reportingPeriod == "2022") {
-            assertEquals(RequestStatus.answered, dataRequest.requestStatus)
+            assertEquals(RequestStatus.Answered, dataRequest.requestStatus)
         } else {
-            assertEquals(RequestStatus.open, dataRequest.requestStatus)
+            assertEquals(RequestStatus.Open, dataRequest.requestStatus)
         }
     }
 
@@ -96,7 +96,7 @@ class DataRequestUploadListenerTest {
         val dataRequestId = UUID.fromString(
             getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
         )
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.open)
+        assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         return dataRequestId
     }
 
@@ -117,16 +117,16 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.closed,
+            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Closed,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.closed)
+        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Closed)
         assertEquals(
-            RequestStatus.closed,
+            RequestStatus.Closed,
             closedDataRequest.requestStatus,
             "The status of the patched data request is not 'Closed' although this was expected.",
         )
@@ -147,10 +147,10 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.Admin)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.answered)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.closed,
+            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Closed,
         )
     }
 
@@ -165,7 +165,7 @@ class DataRequestUploadListenerTest {
         }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
 
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
@@ -180,7 +180,7 @@ class DataRequestUploadListenerTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(nonExistingDataRequestId, RequestStatus.answered)
+            requestControllerApi.patchDataRequestStatus(nonExistingDataRequestId, RequestStatus.Answered)
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 

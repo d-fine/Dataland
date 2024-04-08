@@ -221,37 +221,31 @@
         "tags": [
           "sme-data-controller"
         ],
-        "summary": "a",
-        "description": "b",
-        "operationId": "postSmeJsonAndDocuments",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "companyAssociatedSmeData",
-                  "documents"
-                ],
-                "type": "object",
-                "properties": {
-                  "companyAssociatedSmeData": {
-                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
-                  },
-                  "documents": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
-                }
-              }
+        "operationId": "postCompanyAssociatedSmeData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+              }
+            }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "S.",
+            "description": "Successfully added data to the data store.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1721,14 +1715,14 @@
         ]
       }
     },
-    "/internal/cached/public/{dataId}": {
+    "/internal/cached/{dataId}": {
       "get": {
         "tags": [
           "temporarily-cached-data-controller"
         ],
         "summary": "Retrieve specific data from the cache store of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedPublicData",
+        "operationId": "getReceivedData",
         "parameters": [
           {
             "name": "dataId",
@@ -1773,14 +1767,12 @@
         }
       }
     },
-    "/internal/cached/private/{dataId}": {
+    "/data/sme/{dataId}": {
       "get": {
         "tags": [
-          "temporarily-cached-data-controller"
+          "sme-data-controller"
         ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedPrivateData",
+        "operationId": "getCompanyAssociatedSmeData",
         "parameters": [
           {
             "name": "dataId",
@@ -1797,7 +1789,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
                 }
               }
             }
@@ -1822,22 +1814,45 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
-    "/internal/cached/private/document/{hash}": {
+    "/data/sme/companies/{companyId}": {
       "get": {
         "tags": [
-          "temporarily-cached-data-controller"
+          "sme-data-controller"
         ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided sha256 hash is retrieved.",
-        "operationId": "getReceivedPrivateDocuments",
+        "operationId": "getAllCompanySmeData",
         "parameters": [
           {
-            "name": "hash",
+            "name": "companyId",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -1845,12 +1860,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved blob.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
+                  }
                 }
               }
             }
@@ -1875,7 +1892,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
     "/data/sfdr/{dataId}": {
@@ -3464,12 +3489,12 @@
           "countryCode": {
             "type": "string"
           },
-          "website": {
-            "type": "string",
+          "isTeaserCompany": {
+            "type": "boolean",
             "nullable": true
           },
-          "teaserCompany": {
-            "type": "boolean",
+          "website": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -3636,15 +3661,13 @@
         ]
       },
       "SmeData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/SmeGeneral"
           },
           "power": {
             "nullable": true,
@@ -3665,15 +3688,13 @@
         }
       },
       "SmeGeneral": {
+        "required": [
+          "basicInformation"
+        ],
         "type": "object",
         "properties": {
           "basicInformation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeGeneralBasicInformation"
-              }
-            ]
+            "$ref": "#/components/schemas/SmeGeneralBasicInformation"
           },
           "financialInformation": {
             "nullable": true,
@@ -3686,28 +3707,30 @@
         }
       },
       "SmeGeneralBasicInformation": {
+        "required": [
+          "fiscalYearStart",
+          "numberOfEmployees",
+          "reportingDate",
+          "sectors"
+        ],
         "type": "object",
         "properties": {
           "reportingDate": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "sectors": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "numberOfEmployees": {
-            "type": "integer",
-            "nullable": true
+            "type": "integer"
           },
           "fiscalYearStart": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "referencedReports": {
             "type": "object",
@@ -4035,15 +4058,13 @@
         }
       },
       "SfdrData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SfdrGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/SfdrGeneral"
           },
           "environmental": {
             "nullable": true,
@@ -4780,38 +4801,34 @@
         }
       },
       "SfdrGeneral": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SfdrGeneralGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
           }
         }
       },
       "SfdrGeneralGeneral": {
+        "required": [
+          "dataDate",
+          "fiscalYearDeviation",
+          "fiscalYearEnd"
+        ],
         "type": "object",
         "properties": {
           "dataDate": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "fiscalYearDeviation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
+            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "referencedReports": {
             "type": "object",
@@ -6584,15 +6601,13 @@
         }
       },
       "LksgData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LksgGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/LksgGeneral"
           },
           "governance": {
             "nullable": true,
@@ -6881,15 +6896,13 @@
         }
       },
       "LksgGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LksgGeneralMasterData"
-              }
-            ]
+            "$ref": "#/components/schemas/LksgGeneralMasterData"
           },
           "productionSpecific": {
             "nullable": true,
@@ -6910,12 +6923,14 @@
         }
       },
       "LksgGeneralMasterData": {
+        "required": [
+          "dataDate"
+        ],
         "type": "object",
         "properties": {
           "dataDate": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "headOfficeInGermany": {
             "nullable": true,
@@ -7466,7 +7481,9 @@
       },
       "LksgGrievanceAssessmentMechanism": {
         "required": [
-          "riskPositions"
+          "measuresTaken",
+          "riskPositions",
+          "specifiedComplaint"
         ],
         "type": "object",
         "properties": {
@@ -7477,16 +7494,10 @@
             }
           },
           "specifiedComplaint": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "measuresTaken": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "$ref": "#/components/schemas/YesNo"
           },
           "listedMeasures": {
             "type": "string",
@@ -7595,6 +7606,7 @@
       },
       "LksgRiskOrViolationAssessment": {
         "required": [
+          "measuresTaken",
           "riskPosition"
         ],
         "type": "object",
@@ -7603,12 +7615,7 @@
             "$ref": "#/components/schemas/RiskPositionType"
           },
           "measuresTaken": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "$ref": "#/components/schemas/YesNo"
           },
           "listedMeasures": {
             "type": "string",
@@ -10688,15 +10695,13 @@
         }
       },
       "EuTaxonomyActivity": {
+        "required": [
+          "activityName"
+        ],
         "type": "object",
         "properties": {
           "activityName": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Activity"
-              }
-            ]
+            "$ref": "#/components/schemas/Activity"
           },
           "naceCodes": {
             "type": "array",
@@ -10716,15 +10721,13 @@
         }
       },
       "EuTaxonomyAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
         "type": "object",
         "properties": {
           "activityName": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Activity"
-              }
-            ]
+            "$ref": "#/components/schemas/Activity"
           },
           "naceCodes": {
             "type": "array",
@@ -12455,15 +12458,13 @@
         }
       },
       "EsgQuestionnaireData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
           },
           "allgemein": {
             "nullable": true,
@@ -12500,28 +12501,24 @@
         }
       },
       "EsgQuestionnaireGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
           }
         }
       },
       "EsgQuestionnaireGeneralMasterData": {
+        "required": [
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung"
+        ],
         "type": "object",
         "properties": {
           "berichtspflichtUndEinwilligungZurVeroeffentlichung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "$ref": "#/components/schemas/YesNo"
           },
           "gueltigkeitsDatum": {
             "type": "string",
@@ -13340,206 +13337,230 @@
         ]
       },
       "YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataBerichterstattungAbfallproduktionValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungAbfallproduktionValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungEinnahmenAusFossilenBrennstoffenValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungEnergieverbrauchValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataBerichterstattungWasserverbrauchValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungWasserverbrauchValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BudgetFuerSchulungAusbildungValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataRecyclingImProduktionsprozessValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/RecyclingImProduktionsprozessValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/TreibhausgasBerichterstattungUndPrognosenValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/UeberwachungDerEinkommensungleichheitValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataUmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
       "YearlyTimeseriesDataUnfallrateValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
         "type": "object",
         "properties": {
           "currentYear": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "yearlyData": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/UnfallrateValues"
-            },
-            "nullable": true
+            }
           }
         }
       },
@@ -13616,16 +13637,12 @@
             "type": "string",
             "nullable": true
           },
-          "website": {
-            "type": "string",
-            "nullable": true
-          },
-          "teaserCompany": {
-            "type": "boolean",
-            "nullable": true
-          },
           "isTeaserCompany": {
             "type": "boolean",
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -13643,39 +13660,34 @@
         ]
       },
       "DataMetaInformationForMyDatasets": {
+        "required": [
+          "companyId",
+          "companyName",
+          "dataId",
+          "dataType",
+          "qualityStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "dataId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "companyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "dataType": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DataTypeEnum"
-              }
-            ]
+            "$ref": "#/components/schemas/DataTypeEnum"
           },
           "reportingPeriod": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "qualityStatus": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaStatus"
-              }
-            ]
+            "$ref": "#/components/schemas/QaStatus"
           },
           "currentlyActive": {
             "type": "boolean",
@@ -13683,8 +13695,22 @@
           },
           "uploadTime": {
             "type": "integer",
-            "format": "int64",
-            "nullable": true
+            "format": "int64"
+          }
+        }
+      },
+      "DataAndMetaInformationSmeData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SmeData"
           }
         }
       },
@@ -13794,27 +13820,29 @@
         }
       },
       "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
           "companyId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "companyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           },
           "permId": {
             "type": "string",
@@ -13910,14 +13938,14 @@
         ]
       },
       "ErrorDetails": {
+        "required": [
+          "errorType",
+          "httpStatus",
+          "message",
+          "summary"
+        ],
         "type": "object",
         "properties": {
-          "httpStatus": {
-            "type": "number"
-          },
-          "metaInformation": {
-            "type": "object"
-          },
           "errorType": {
             "type": "string"
           },
@@ -13926,10 +13954,19 @@
           },
           "message": {
             "type": "string"
+          },
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
           }
         }
       },
       "ErrorResponse": {
+        "required": [
+          "errors"
+        ],
         "type": "object",
         "properties": {
           "errors": {

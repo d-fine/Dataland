@@ -795,7 +795,7 @@
             "uniqueItems": true,
             "type": "array",
             "example": [
-              "testuser@dataland.com"
+              "testuser@example.com"
             ],
             "items": {
               "type": "string"

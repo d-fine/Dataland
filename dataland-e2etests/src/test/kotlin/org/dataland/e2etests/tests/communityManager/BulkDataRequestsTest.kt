@@ -137,8 +137,8 @@ class BulkDataRequestsTest {
         checkThatAllIdentifiersWereAccepted(response, 2, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, reportingPeriods.size)
-        retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2022", RequestStatus.answered)
-        retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2023", RequestStatus.closed)
+        retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2022", RequestStatus.Answered)
+        retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2023", RequestStatus.Closed)
         val timestampBeforeDuplicates = retrieveTimeAndWaitOneMillisecond()
         val responseAfterDuplicates = requestControllerApi.postBulkDataRequest(bulkDataRequest)
         checkThatAllIdentifiersWereAccepted(responseAfterDuplicates, 2, 0)
@@ -177,16 +177,16 @@ class BulkDataRequestsTest {
         val companyOne = CompanyInformation(
             companyName = "companyOne",
             headquarters = "HQ",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId1)),
+            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId1)),
             countryCode = "DE",
         )
         val companyTwo = companyOne.copy(
             companyName = "companyTwo",
-            identifiers = mapOf(IdentifierType.lei.value to listOf(permId1)),
+            identifiers = mapOf(IdentifierType.Lei.value to listOf(permId1)),
         )
         val companyWithUniqueId = companyOne.copy(
             companyName = "companyWithUniqueId",
-            identifiers = mapOf(IdentifierType.permId.value to listOf(permId2)),
+            identifiers = mapOf(IdentifierType.PermId.value to listOf(permId2)),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postCompany(companyOne)

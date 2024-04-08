@@ -56,7 +56,7 @@ class CompanyUploaderTest {
         val deltaMap = mutableMapOf<String, Set<String>>()
         deltaMap["1000"] = setOf("1111", "1112", "1113")
 
-        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, "1000"))
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, "1000"))
             .thenReturn(CompanyId("testCompanyId"))
 
         companyUploader.updateIsins(deltaMap)
@@ -70,7 +70,7 @@ class CompanyUploaderTest {
             website = null, isTeaserCompany = null,
         )
 
-        verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.lei, "1000")
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, "1000")
         verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
     }
 

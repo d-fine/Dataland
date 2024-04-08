@@ -36,7 +36,7 @@ class MetaDataControllerTest {
         uploadTime: Long,
     ) = DataMetaInformation(
         dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime,
-        reportingPeriod = "", currentlyActive = true, qaStatus = QaStatus.accepted, uploaderUserId = null,
+        reportingPeriod = "", currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = null,
     )
 
     @Test
