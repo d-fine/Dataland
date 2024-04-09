@@ -38,9 +38,7 @@ class CompanyChunkManager(
                         chunkSize, offset,
                     )
             } else {
-                companyRepository.searchCompanies(filter,chunkSize,offset)
-                //todo
-                //companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
+                companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
         } else {
             //todo decide if we want to have seperat querys
