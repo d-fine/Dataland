@@ -38,13 +38,18 @@ class CompanyChunkManager(
                         chunkSize, offset,
                     )
             } else {
-                companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
+                companyRepository.searchCompanies(filter,chunkSize,offset)
+                //todo
+                //companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
         } else {
+            //todo decide if we want to have seperat querys
             return if (filter.dataTypeFilterSize > 0) {
-                companyRepository.searchCompaniesWithDatasets(filter, chunkSize, offset)
+                companyRepository.searchCompanies(filter,chunkSize,offset)
+            //companyRepository.searchCompaniesWithDatasets(filter, chunkSize, offset)
             } else {
-                companyRepository.searchCompaniesWithoutDatasets(filter, chunkSize, offset)
+                companyRepository.searchCompanies(filter,chunkSize,offset)
+                //companyRepository.searchCompaniesWithoutDatasets(filter, chunkSize, offset)
             }
 
         }

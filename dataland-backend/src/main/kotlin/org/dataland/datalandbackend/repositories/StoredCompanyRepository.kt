@@ -93,17 +93,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value =
         "WITH " +
-            "stored_companies_filter AS (" +
-            " SELECT company_id FROM stored_companies " +
-            " WHERE (company_id IN " +
-            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
-            " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
-            " AND data_type IN :#{#searchFilter.dataTypeFilter}) OR :#{#searchFilter.dataTypeFilterSize} = 0) " +
-            " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
-            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-            " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
-            ")," +
-
             " filtered_results AS (" +
             "(SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
             " max(CASE " +
@@ -157,6 +146,16 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
             " GROUP BY company_identifiers.company_id)" +
             " ), " +
+            "stored_companies_filter AS (" +
+            " SELECT company_id FROM stored_companies " +
+            " WHERE (company_id IN " +
+            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
+            " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
+            " AND data_type IN :#{#searchFilter.dataTypeFilter}) OR :#{#searchFilter.dataTypeFilterSize} = 0) " +
+            " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
+            ")," +
 
             " chunked_results AS (" +
             " SELECT filtered_results.company_id AS companyId," +
@@ -169,7 +168,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ORDER BY " +
             " maxDatasetRank DESC," +
             " maxMatchQuality DESC, companyName ASC " +
-            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset})" +
+            " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset} )" +
 
             " Select companyId, companyName, " +
             " headquarters, " +
