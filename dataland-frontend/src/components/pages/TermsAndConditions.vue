@@ -162,8 +162,8 @@
             to as "Private Use" in these GTC-Dataland ), the use of Dataland is free of charge.
           </p>
           <p>
-            A monthly flat rate is payable for use by all other Data Users, which is based on Dataland's current price
-            scale (see <a href="/pricing">Link</a>).
+            A monthly flat rate is payable for use by all other Data Users, which is based on Dataland's
+            <a href="/pricing">current price scale</a>.
           </p>
           <p>All fees are exclusive of the applicable value added tax.</p>
           <p>All fees are exclusive of the applicable value added tax.</p>
@@ -331,9 +331,8 @@
             <li>
               After the end of each calendar year, Dataland shall determine a share of the (net) revenue generated in
               accordance with § 3.2 (not taking into account the remuneration paid by means of Dataland Tokens), which
-              shall be available as a total amount to remunerate the Data Collectors, whereby this share must be at
-              least
-              <a href="/pricing">Link</a> of the revenue generated.
+              shall be available as a total amount to remunerate the Data Collectors, whereby there is a lower limit for
+              this share which can be viewed in the <a href="/pricing">current price and remuneration schedule</a>.
             </li>
             <li>
               Furthermore, Dataland determines the distribution amount available for the respective day based on the
@@ -347,7 +346,8 @@
             </li>
             <li>
               Remuneration claims below the technical minimum amount will not be paid out. The currently applicable
-              technical minimum amount is indicated <a href="/pricing">here</a>.
+              technical minimum amount is indicated in the
+              <a href="/pricing">current price and remuneration schedule</a>.
             </li>
           </ul>
           <p>
@@ -366,7 +366,7 @@
           </p>
         </div>
         <div>
-          <h3>LTerm of registration as a Data Collector</h3>
+          <h3>Term of registration as a Data Collector</h3>
           <p>Registration as a Data Collector is for an indefinite term.</p>
           <p>
             The registration can be cancelled by either party with one month's notice to the end of a calendar month.
@@ -418,14 +418,14 @@
               revenue actually generated for each calendar day of this past calendar year ("Claim Days").
             </li>
             <li>
-              ● Finally, Dataland determines how many data points according to § 4.1.2 existed in total on each
-              individual day and how many data points are to be allocated to each individual data owner. In the case of
-              data points for which there are versions of differing timeliness, only the most recent version of the data
-              point is taken into account. A data owner is entitled to the percentage share determined for it
+              Finally, Dataland determines how many data points according to § 4.1.2 existed in total on each individual
+              day and how many data points are to be allocated to each individual data owner. In the case of data points
+              for which there are versions of differing timeliness, only the most recent version of the data point is
+              taken into account. A data owner is entitled to the percentage share determined for it
             </li>
             <li>
-              ● Remuneration claims below the technical minimum amount will not be paid out. The currently applicable
-              technical minimum amount is stated <a href="/pricing">here</a>.
+              Remuneration claims below the technical minimum amount will not be paid out. The currently applicable
+              technical minimum amount is stated in the <a href="/pricing">current price and remuneration schedule</a>.
             </li>
           </ul>
           <p>
@@ -458,7 +458,7 @@
         <p>Dataland will create Dataland tokens. Each Dataland token has a nominal value of one euro.</p>
         <p>
           The prerequisite for the possession and use of Dataland Tokens by Dataland Participants is the conclusion of a
-          Token Custody Agreement <a href="/token">Link</a> between the Dataland Participant and the Custodian.
+          <a href="/token">Token Custody Agreement</a> between the Dataland Participant and the Custodian.
         </p>
         <p>
           Dataland undertakes to accept Dataland Tokens as a means of payment in accordance with the provisions of these
@@ -501,7 +501,7 @@
         <p>
           Dataland collects, processes and uses personal data of Dataland participants in strict compliance with the
           applicable laws, in particular the GDPR and the Federal Data Protection Act. Further information can be found
-          in our privacy policy <a href="/dataprivacy">link</a>.
+          in our <a href="/dataprivacy">privacy policy</a>.
         </p>
       </div>
       <div>
@@ -938,6 +938,82 @@
             Sämtliche Berechnungsgrundlagen, die nach Vorstehendem der Errechnung des Vergütungsanspruchs des
             Daten-Sammlers zugrunde liegen, werden dem Daten-Sammler zugänglich gemacht, so dass dieser die Berechnung
             seines Vergütungsanspruchs nachvollziehen und verifizieren kann.
+          </p>
+          <p>
+            Die Auszahlung der Vergütung an den Daten-Sammler erfolgt seitens Dataland binnen drei Monaten nach Ende
+            eines Kalenderjahres für die vergütungspflichtigen Leistungen des Daten-Sammlers während dieses
+            Kalenderjahres.
+          </p>
+        </div>
+        <div>
+          <h3>Laufzeit der Registrierung als Daten-Sammler</h3>
+          <p>Die Registrierung als Daten-Sammler erfolgt für eine unbestimmte Laufzeit.</p>
+          <p>
+            Die Registrierung kann von jeder Partei mit einer Frist von einem Monat zum Ende eines Kalendermonats
+            gekündigt werden.
+          </p>
+          <p>Das Recht zur Kündigung aus wichtigem Grund bleibt in jedem Fall unberührt.</p>
+        </div>
+      </div>
+      <div>
+        <h2>Für Daten-Owner gelten die folgenden zusätzlichen Bedingungen:</h2>
+        <p>
+          Daten-Owner können sich ebenfalls als solche auf Dataland registrieren. Als Daten-Owner haben diese das Recht,
+          die Plattform-Dataland gleich einem Daten-Sammler oder einem Daten-User zu nutzen.
+        </p>
+        <p>
+          Soweit der Daten-Owner entsprechend einem Daten-User handelt, gelten die Regelungen von § 3 einschließlich
+          dortiger Vergütungsregeln.
+        </p>
+        <p>
+          Soweit der Daten-Owner entsprechend einem Daten-Sammler handelt, gelten die Regelungen von § 4 einschließlich
+          dortiger Vergütungsregeln.
+        </p>
+        <div>
+          <h3>Vergütungen und Zahlungen</h3>
+          <p>
+            Die Registrierung als Daten-Owner und die damit verbundene Nutzung der Plattform-Dataland als Daten-Owner
+            sind kostenlos, unabhängig davon ob es sich um eine Privatnutzung oder um eine gewerbliche Nutzung handelt.
+          </p>
+          <p>
+            Unabhängig von der Vergütung, die einem Daten-Owner wegen einer Tätigkeit als Daten-Sammler nach § 5.3
+            i.V.m. § 4 zusteht, kann dieser eine (zusätzliche) Vergütung nach nachfolgenden Grundsätzen erhalten:
+          </p>
+          <p>
+            Ausgangspunkt der möglichen zusätzlichen Vergütung des Daten-Owners sind die Datenpunkte, die sich während
+            eines Kalenderjahres auf den jeweiligen Daten-Owner beziehen.
+          </p>
+          <p>
+            Basierend auf diesem Grundsatz leitet sich eine mögliche zusätzliche Vergütung des Daten-Owners nach Ablauf
+            des Kalenderjahres für dieses Kalenderjahr wie folgt her:
+          </p>
+          <ul>
+            <li>
+              Dataland kann jeweils nach Abschluss eines Kalenderjahrs einen Anteil der gem. § 3.2 erzielten (netto)
+              Einnahmen (ohne Berücksichtigung der Vergütungen, die mittels Dataland-Token geleistet wurden) bestimmen,
+              der als Gesamtbetrag zur gesonderten Vergütung der Daten-Owner zur Verfügung stehen soll.
+            </li>
+            <li>
+              Weiterhin bestimmt Dataland basierend auf den tatsächlich generierten Einnahmen für jeden Kalendertag
+              dieses abgelaufenen Kalenderjahres („Claimstage“) den für den jeweiligen Tag zur Verfügung stehenden
+              Ausschüttungsbetrag.
+            </li>
+            <li>
+              Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt
+              bestanden haben und wie viele Datenpunkte jedem einzelnen Daten-Owner zuzuordnen sind. Bei Datenpunkten,
+              bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts
+              in Ansatz gebracht. Einem Data-Owner steht der auf ihn entfallende prozentual ermittelte Anteil zu
+            </li>
+            <li>
+              Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
+              technische Mindestsumme wird in der
+              <a href="/pricing">aktuellen Preis- und Vergütungsstaffel</a> angegeben.
+            </li>
+          </ul>
+          <p>
+            Sämtliche Berechnungsgrundlagen, die nach vorstehendem Absatz der Errechnung des Vergütungsanspruchs des
+            Data-Owner zugrunde liegen, werden dem Data-Owner zugänglich gemacht, so dass dieser die Berechnung seines
+            Vergütungsanspruchs nachvollziehen und verifizieren kann.
           </p>
           <p>
             Die Auszahlung der Vergütung an den Data-Owner erfolgt seitens Dataland binnen drei Monaten nach Ende eines
