@@ -28,7 +28,7 @@ class TemporarilyCachedDataController(
     override fun getReceivedPrivateData(dataId: String): ResponseEntity<String> {
         return ResponseEntity.ok(privateDataManager.selectPrivateDataSetFromTemporaryStorage(dataId))
     }
-    override fun getReceivedPrivateDocuments(hash: String): ResponseEntity<InputStreamResource> {
+    override fun getReceivedPrivateDocument(hash: String): ResponseEntity<InputStreamResource> {
         val blob = privateDataManager.getDocumentFromInMemoryStore(hash)
             ?: throw ResourceNotFoundApiException(
                 "Documents for hash \"$hash\" not found in temporary storage",
