@@ -177,16 +177,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " maxMatchQuality DESC, companyId " +
             " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset})" +
 
-            " Select chunked_results.companyId, chunked_results.companyName, " +
-            " stored_companies.headquarters, " +
-            " stored_companies.country_code AS countryCode, " +
-            " stored_companies.sector, " +
+            " Select companyId, companyName, " +
+            " headquarters, " +
+            " country_code AS countryCode, " +
+            " sector, " +
             " leis_table.identifier_value AS lei " +
-            " FROM chunked_results" +
-            " LEFT JOIN stored_companies ON chunked_results.companyId = stored_companies.company_id " +
-            LEFTJOIN_LEIS +
-            " ON leis_table.company_id=chunked_results.companyId" +
-            " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC",
+            " FROM (SELECT chunked_results.companyId, chunked_results.companyName, maxDatasetRank, maxMatchQuality, " +
+            " headquarters, country_code, sector From chunked_results" +
+            " LEFT JOIN stored_companies ON chunked_results.companyId = stored_companies.company_id) AS company_data" +
+            " LEFT JOIN ( SELECT identifier_value, company_id FROM company_identifiers " +
+            "WHERE identifier_type='Lei' ) AS leis_table " +
+            "ON leis_table.company_id=company_data.companyId " +
+            "ORDER BY maxDatasetRank DESC, maxMatchQuality DESC",
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
