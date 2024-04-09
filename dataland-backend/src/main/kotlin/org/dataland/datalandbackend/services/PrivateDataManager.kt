@@ -210,6 +210,14 @@ class PrivateDataManager(
         metaDataManager.storeDataMetaInformation(dataMetaInfoToStore!!)
     }
 
+    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String) {
+        val documentHashes = documentHashesInMemoryStorage[dataId] // TODO if not found?
+        documentHashes!!.forEach { hash ->
+            documentInMemoryStorage.remove(hash)
+        }
+        documentHashesInMemoryStorage.remove(dataId)
+    }
+
     /**
      *
      */
@@ -247,8 +255,9 @@ class PrivateDataManager(
             persistMetaInfo(dataId)
             jsonDataInMemoryStorage.remove(dataId)
             metaInfoEntityInMemoryStorage.remove(dataId)
-            documentInMemoryStorage.remove(dataId) // TODO das müsste doch für alle hashes passieren? und nicht für dataId
-            // TODO documentHashesInMemoryStorage.remove()
+            removeDocumentsAndHashesFromInMemoryStorages(dataId)
+            // TODO mach mal einen one-off Test am Ende mit print-statements und check ob wirklich alles wieder leer
+            // TODO ist nach dem removal Prozess
         }
     }
 
