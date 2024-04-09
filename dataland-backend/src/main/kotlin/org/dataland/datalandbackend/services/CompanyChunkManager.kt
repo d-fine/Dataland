@@ -40,8 +40,14 @@ class CompanyChunkManager(
             } else {
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
+        } else {
+            return if (filter.dataTypeFilterSize > 0) {
+                companyRepository.searchCompaniesWithDatasets(filter, chunkSize, offset)
+            } else {
+                companyRepository.searchCompaniesWithoutDatasets(filter, chunkSize, offset)
+            }
+
         }
-        return companyRepository.searchCompanies(filter, chunkSize, offset)
     }
 
     /**
@@ -62,6 +68,7 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
+        return 1000
         // todo check because of number of Companies (idea: fix in frontend)
         if (filter.searchStringLength == 0) {
             return companyRepository
