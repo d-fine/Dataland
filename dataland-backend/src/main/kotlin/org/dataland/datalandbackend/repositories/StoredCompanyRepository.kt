@@ -155,7 +155,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " LEFT JOIN data_meta_information " +
             " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
-            " GROUP BY company_identifiers.company_id" +
+            " GROUP BY company_identifiers.company_id)" +
             " ), " +
 
             " chunked_results AS (" +
@@ -474,7 +474,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " LEFT JOIN data_meta_information " +
                 " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
-                " GROUP BY company_identifiers.company_id" +
+                " GROUP BY company_identifiers.company_id)" +
                 " ), " +
 
                 "stored_companies_filter AS (" +
@@ -574,7 +574,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " LEFT JOIN data_meta_information " +
                 " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
-                " GROUP BY company_identifiers.company_id" +
+                " GROUP BY company_identifiers.company_id )" +
                 " ), " +
 
                 "stored_companies_filter AS (" +
