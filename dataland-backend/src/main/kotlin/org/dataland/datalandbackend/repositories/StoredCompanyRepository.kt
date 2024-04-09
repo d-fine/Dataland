@@ -163,7 +163,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " MAX(filtered_results.dataset_rank) AS maxDatasetRank," +
             " MAX(filtered_results.match_quality) AS maxMatchQuality" +
             " FROM filtered_results " +
-            "INNER JOIN stored_companies_filtered ON filtered_results.company_id = stored_companies_filtered.company_id "+
+            "INNER JOIN stored_companies_filter ON filtered_results.company_id = stored_companies_filter.company_id "+
             " GROUP BY filtered_results.company_id" +
             " ORDER BY " +
             " maxDatasetRank DESC," +
