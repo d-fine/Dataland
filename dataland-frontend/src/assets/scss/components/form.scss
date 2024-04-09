@@ -403,6 +403,37 @@ input[type="radio"] {
   }
 }
 
+.p-inputswitch-singlecolor {
+  width: 2.1rem;
+  height: 1.2rem;
+  .p-inputswitch-slider {
+    background: $inputswitch-singlecolor-slider-bg;
+    transition:
+            background-color 0.2s,
+            color 0.2s,
+            border-color 0.2s,
+            box-shadow 0.2s;
+    border-radius: 30px;
+    &::before {
+      background: $bg-text-primary;
+      width: 1rem;
+      height: 1rem;
+      margin-top: -0.5rem;
+      border-radius: 50%;
+      transition-duration: 0.2s;
+    }
+  }
+  &.p-inputswitch-checked {
+    .p-inputswitch-slider {
+      background: $inputswitch-singlecolor-slider-bg;
+      &::before {
+        background: $bg-text-primary;
+        transform: translateX(1rem);
+      }
+    }
+  }
+}
+
 .p-tooltip {
   .p-tooltip-text {
     background: $input-label-color;
