@@ -164,7 +164,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " MAX(filtered_results.dataset_rank) AS maxDatasetRank," +
             " MAX(filtered_results.match_quality) AS maxMatchQuality" +
             " FROM filtered_results " +
-                "WHERE companyID in (SELECT company_id FROM stored_companies_filtered) "+
+            "INNER JOIN stored_companies_filtered ON filtered_results.company_id = stored_companies_filtered.company_id "+
             " GROUP BY filtered_results.company_id" +
             " ORDER BY " +
             " maxDatasetRank DESC," +
@@ -423,39 +423,26 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value =
         "WITH " +
-                "stored_companies_filter AS (" +
-                " SELECT company_id, company_name FROM stored_companies " +
-                " WHERE (company_id IN " +
-                "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
-                " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
-                " AND data_type IN :#{#searchFilter.dataTypeFilter})) " +
-                " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
-                " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-                " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
-                ")," +
-
                 " filtered_results AS (" +
-                "(SELECT stored_companies_filter.company_id, max(stored_companies_filter.company_name) AS company_name," +
+                "(SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN company_name = :#{#searchFilter.searchString} THEN 10" +
                 " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
                 " ELSE 1" +
                 " END) match_quality, " +
                 " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
-                " FROM stored_companies_filter" +
+                " FROM stored_companies" +
                 " LEFT JOIN data_meta_information " +
-                " ON stored_companies_filter.company_id = data_meta_information.company_id AND currently_active = true" +
+                " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
-                " GROUP BY stored_companies_filter.company_id" +
-                " ORDER BY" +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_companies_filter.company_id)" +
+                " GROUP BY stored_companies.company_id" +
+                " )" +
 
                 " UNION " +
                 // Fuzzy-Search Company Alternative Name
                 " (SELECT " +
                 " stored_company_entity_company_id AS company_id," +
-                " max(stored_companies_filter.company_name) AS company_name," +
+                " max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
                 "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
@@ -464,20 +451,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " END) match_quality, " +
                 " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
                 " FROM stored_company_entity_company_alternative_names" +
-                " JOIN stored_companies_filter ON stored_companies_filter.company_id = " +
+                " JOIN stored_companies ON stored_companies.company_id = " +
                 " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
                 " LEFT JOIN data_meta_information " +
                 " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true " +
                 "WHERE " +
                 " company_alternative_names ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
                 " GROUP BY stored_company_entity_company_id" +
-                " ORDER BY " +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_company_entity_company_id)" +
+                ")" +
 
                 " UNION" +
                 // Fuzzy-Search Company Identifier
-                " (SELECT company_identifiers.company_id, max(stored_companies_filter.company_name) AS company_name," +
+                " (SELECT company_identifiers.company_id, max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN identifier_value = :#{#searchFilter.searchString} THEN 10" +
                 " WHEN identifier_value ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
@@ -485,22 +470,30 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " END) AS match_quality, " +
                 " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
                 " FROM company_identifiers" +
-                " JOIN stored_companies_filter ON stored_companies_filter.company_id = company_identifiers.company_id " +
+                " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
                 " LEFT JOIN data_meta_information " +
                 " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
                 " GROUP BY company_identifiers.company_id" +
-                " ORDER BY " +
-                " dataset_rank DESC," +
-                " match_quality DESC, company_identifiers.company_id)" +
                 " ), " +
 
+                "stored_companies_filter AS (" +
+                " SELECT company_id FROM stored_companies " +
+                " WHERE (company_id IN " +
+                "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
+                " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
+                " AND data_type IN :#{#searchFilter.dataTypeFilter})) " +
+                " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+                " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+                " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
+                ")," +
                 " chunked_results AS (" +
                 " SELECT filtered_results.company_id AS companyId," +
                 " MIN(filtered_results.company_name) AS companyName," +
                 " MAX(filtered_results.dataset_rank) AS maxDatasetRank," +
                 " MAX(filtered_results.match_quality) AS maxMatchQuality" +
                 " FROM filtered_results " +
+                "INNER JOIN stored_companies_filtered ON filtered_results.company_id = stored_companies_filtered.company_id "+
                 " GROUP BY filtered_results.company_id" +
                 " ORDER BY " +
                 " maxDatasetRank DESC," +
@@ -529,35 +522,27 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value =
         "WITH " +
-                "stored_companies_filter AS (" +
-                " SELECT company_id, company_name FROM stored_companies " +
-                " WHERE  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
-                " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-                " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
-                ")," +
 
                 " filtered_results AS (" +
-                "(SELECT stored_companies_filter.company_id, max(stored_companies_filter.company_name) AS company_name," +
+                "(SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN company_name = :#{#searchFilter.searchString} THEN 10" +
                 " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
                 " ELSE 1" +
                 " END) match_quality, " +
                 " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
-                " FROM stored_companies_filter" +
+                " FROM stored_companies" +
                 " LEFT JOIN data_meta_information " +
-                " ON stored_companies_filter.company_id = data_meta_information.company_id AND currently_active = true" +
+                " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
-                " GROUP BY stored_companies_filter.company_id" +
-                " ORDER BY" +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_companies_filter.company_id)" +
+                " GROUP BY stored_companies.company_id" +
+                " )" +
 
                 " UNION " +
                 // Fuzzy-Search Company Alternative Name
                 " (SELECT " +
                 " stored_company_entity_company_id AS company_id," +
-                " max(stored_companies_filter.company_name) AS company_name," +
+                " max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
                 "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
@@ -566,20 +551,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " END) match_quality, " +
                 " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
                 " FROM stored_company_entity_company_alternative_names" +
-                " JOIN stored_companies_filter ON stored_companies_filter.company_id = " +
+                " JOIN stored_companies ON stored_companies.company_id = " +
                 " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
                 " LEFT JOIN data_meta_information " +
                 " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true " +
                 "WHERE " +
                 " company_alternative_names ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
                 " GROUP BY stored_company_entity_company_id" +
-                " ORDER BY " +
-                " dataset_rank DESC," +
-                " match_quality DESC, stored_company_entity_company_id)" +
+                ")" +
 
                 " UNION" +
                 // Fuzzy-Search Company Identifier
-                " (SELECT company_identifiers.company_id, max(stored_companies_filter.company_name) AS company_name," +
+                " (SELECT company_identifiers.company_id, max(stored_companies.company_name) AS company_name," +
                 " max(CASE " +
                 " WHEN identifier_value = :#{#searchFilter.searchString} THEN 10" +
                 " WHEN identifier_value ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
@@ -587,15 +570,19 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " END) AS match_quality, " +
                 " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
                 " FROM company_identifiers" +
-                " JOIN stored_companies_filter ON stored_companies_filter.company_id = company_identifiers.company_id " +
+                " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
                 " LEFT JOIN data_meta_information " +
                 " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
                 " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
                 " GROUP BY company_identifiers.company_id" +
-                " ORDER BY " +
-                " dataset_rank DESC," +
-                " match_quality DESC, company_identifiers.company_id)" +
                 " ), " +
+
+                "stored_companies_filter AS (" +
+                " SELECT company_id FROM stored_companies " +
+                " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+                " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+                " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
+                ")," +
 
                 " chunked_results AS (" +
                 " SELECT filtered_results.company_id AS companyId," +
@@ -603,6 +590,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " MAX(filtered_results.dataset_rank) AS maxDatasetRank," +
                 " MAX(filtered_results.match_quality) AS maxMatchQuality" +
                 " FROM filtered_results " +
+                "INNER JOIN stored_companies_filtered ON filtered_results.company_id = stored_companies_filtered.company_id "+
                 " GROUP BY filtered_results.company_id" +
                 " ORDER BY " +
                 " maxDatasetRank DESC," +
