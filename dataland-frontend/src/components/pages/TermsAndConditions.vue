@@ -69,7 +69,11 @@
           User.
         </p>
         <p>Dataland is under no obligation to accept and confirm a registration.</p>
-        <p>Dataland is under no obligation to accept and confirm a registration.</p>
+        <p>
+          Insofar as circumstances change after registration that the information provided there become incorrect, the
+          Dataland Participant shall be obliged to inform Dataland thereof without undue delay, namely - to the extent
+          possible - by adjusting the Dataland Participant's personal profile on the Dataland Platform.
+        </p>
         <p>
           Irrespective of other cancellation rights, Dataland is entitled to cancel or revoke participation in Dataland
           and all registrations with immediate effect if the Dataland Participant has provided false information during
@@ -92,7 +96,10 @@
         </div>
         <div>
           <h3>The Dataland Participant's remuneration obligations</h3>
-          <p>The Dataland Participant's remuneration obligations</p>
+          <p>
+            Registration as a Dataland Participant and the associated use of the Dataland platform as a Dataland
+            Participant are free of charge, regardless of whether it is for private or commercial use.
+          </p>
         </div>
         <div>
           <h3>Term of registration as a Dataland Participant</h3>
@@ -166,7 +173,7 @@
             <a href="/pricing">current price scale</a>.
           </p>
           <p>All fees are exclusive of the applicable value added tax.</p>
-          <p>All fees are exclusive of the applicable value added tax.</p>
+          <p>The remuneration shall be paid monthly in advance by the third working day of each month at the latest.</p>
           <p>
             The Data User may fulfil his payment obligations not only by bank transfer but also by any of the payment
             methods indicated as payment methods on the Platform-Dataland.
@@ -194,7 +201,11 @@
         </div>
         <div>
           <h3>Liability of Dataland towards Data Users</h3>
-          <p>Liability of Dataland towards Data Users</p>
+          <p>
+            Dataland shall be liable to the Data User only in accordance with the following provisions and only to the
+            extent that the Company Data is used and utilised by the Data User within the scope of the rights of use
+            granted to the Data User and in compliance with the Data User's own contractual obligations.
+          </p>
           <p>
             Dataland shall be liable for damages caused by slight negligence if the act of infringement attributable to
             Dataland constitutes a breach of cardinal obligations, whereby cardinal obligations are the essential
@@ -207,8 +218,8 @@
             limited to foreseeable damage.
           </p>
           <p>
-            If Dataland has breached cardinal obligations only through slight negligence, Dataland's liability shall be
-            limited to foreseeable damage.
+            Dataland shall also only be liable for the loss of data up to the amount that would have been incurred if
+            the data had been properly and regularly backed up in order to restore it.
           </p>
           <p>
             In any event, i.e. notwithstanding any other provisions in these GTC-Dataland shall be liable without
@@ -216,9 +227,8 @@
             injury to life, body or health by Dataland, its legal representatives or vicarious agents.
           </p>
           <p>
-            In any event, i.e. notwithstanding any other provisions in these GTC-Dataland shall be liable without
-            limitation for damage caused intentionally or by gross negligence as well as for damage resulting from
-            injury to life, body or health by Dataland, its legal representatives or vicarious agents.
+            Dataland shall be liable for product liability damages in accordance with the provisions of the Product
+            Liability Act.
           </p>
         </div>
       </div>
