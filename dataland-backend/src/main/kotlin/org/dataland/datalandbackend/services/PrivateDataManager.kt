@@ -57,10 +57,10 @@ class PrivateDataManager(
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val privateDataInMemoryStorage = mutableMapOf<String, String>()
+    private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
+    private val documentHashesInMemoryStorage = mutableMapOf<String, MutableList<String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
-    private val dataDocumentMapInMemoryStorage = mutableMapOf<String, MutableList<String>>()
 
     /**
      * Processes a private sme data storage request.
@@ -106,7 +106,7 @@ class PrivateDataManager(
                 "correlationId: $correlationId",
         )
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
-        privateDataInMemoryStorage[dataId] = storableSmeDatasetAsString
+        jsonDataInMemoryStorage[dataId] = storableSmeDatasetAsString
     }
 
     private fun buildMetaInfoEntity(dataId: String, storableDataSet: StorableDataSet): DataMetaInformationEntity {
@@ -152,12 +152,12 @@ class PrivateDataManager(
         )
         val documentHashes = mutableListOf<String>()
         for (document in documents) {
-            val documentId = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
+            val documentHash = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
             val documentAsByteArray = convertMultipartFileToByteArray(document)
-            documentHashes.add(documentId)
-            documentInMemoryStorage[documentId] = documentAsByteArray
+            documentHashes.add(documentHash)
+            documentInMemoryStorage[documentHash] = documentAsByteArray
         }
-        dataDocumentMapInMemoryStorage[dataId] = documentHashes
+        documentHashesInMemoryStorage[dataId] = documentHashes
         return documentHashes
     }
 
@@ -186,20 +186,20 @@ class PrivateDataManager(
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
         logger.info(
-            "Storing mapping entry permanently for dataId: $dataId and correlationId: $correlationId as it " +
+            "Persisting mapping info for dataId: $dataId and correlationId: $correlationId as it " +
                 "was successfully stored in the external datastore",
         )
         val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
         dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
-        val dataDocumentsMapping = dataDocumentMapInMemoryStorage[dataId]
-        if (!dataDocumentsMapping.isNullOrEmpty()) {
-            val dataIdToDocumentMappingEntities =
-                dataDocumentsMapping!!.map { document ->
-                    DataIdToAssetIdMappingEntity(dataId, document)
+        val documentHashes = documentHashesInMemoryStorage[dataId]
+        if (!documentHashes.isNullOrEmpty()) {
+            val dataIdToDocumentHashMappingEntities =
+                documentHashes.map { documentHash ->
+                    DataIdToAssetIdMappingEntity(dataId, documentHash)
                 }
-            dataIdToDocumentMappingEntities.forEach {
-                    document ->
-                dataIdToAssetIdMappingRepository.save(document)
+            dataIdToDocumentHashMappingEntities.forEach {
+                    mappingEntity ->
+                dataIdToAssetIdMappingRepository.save(mappingEntity)
             }
         }
     }
@@ -234,21 +234,21 @@ class PrivateDataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        logger.info(payload)
         messageUtils.validateMessageType(type, MessageType.PrivateDataStored)
         val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info(
-            "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId.",
+            "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId",
         )
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId)
-            privateDataInMemoryStorage.remove(dataId)
+            jsonDataInMemoryStorage.remove(dataId)
             metaInfoEntityInMemoryStorage.remove(dataId)
-            documentInMemoryStorage.remove(dataId)
+            documentInMemoryStorage.remove(dataId) // TODO das müsste doch für alle hashes passieren? und nicht für dataId
+            // TODO documentHashesInMemoryStorage.remove()
         }
     }
 
@@ -258,7 +258,7 @@ class PrivateDataManager(
      * @return stringified data entry from the temporary store
      */
     fun selectPrivateDataSetFromTemporaryStorage(dataId: String): String {
-        val rawValue = privateDataInMemoryStorage.getOrElse(dataId) {
+        val rawValue = jsonDataInMemoryStorage.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
                 "Data ID not found in temporary storage",
                 "Dataland does not know the data id $dataId",

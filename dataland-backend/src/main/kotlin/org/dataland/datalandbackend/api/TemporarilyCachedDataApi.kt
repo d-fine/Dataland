@@ -74,4 +74,3 @@ interface TemporarilyCachedDataApi {
     )
     fun getReceivedPrivateDocument(@PathVariable("hash") hash: String): ResponseEntity<InputStreamResource>
 }
-// TODO this endpoint could give back the data and the documents
