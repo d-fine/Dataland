@@ -32,6 +32,7 @@ class CompanyChunkManager(
         val offset = chunkIndex * (chunkSize ?: 0)
         if (filter.searchStringLength == 0) {
             return if (areAllDropdownFiltersDeactivated(filter)) {
+                // todo maybe do this in the frontend? --> set all filter as selected?
                 companyRepository
                     .getAllCompaniesWithDataset(
                         chunkSize, offset,
@@ -61,13 +62,14 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        return if (filter.searchStringLength == 0) {
-            companyRepository
+        // todo check because of number of Companies (idea: fix in frontend)
+        if (filter.searchStringLength == 0) {
+            return companyRepository
                 .getNumberOfCompaniesWithoutSearchString(
                     filter,
                 )
         } else {
-            companyRepository.getNumberOfCompanies(filter)
+            return companyRepository.getNumberOfCompanies(filter)
         }
     }
 }

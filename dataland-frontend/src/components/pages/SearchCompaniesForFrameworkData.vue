@@ -21,7 +21,6 @@
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
             @companies-received="handleCompanyQuery"
-            @numberOfCompanies-received="handleNumberOfCompanies"
           />
 
           <div
@@ -221,13 +220,6 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Called when the new number of search results are received from the framework search bar
-     * @param totalNumberOfCompanies the number of companies with respect to the filter
-     */
-    handleNumberOfCompanies(totalNumberOfCompanies: number) {
-      this.totalRecords = totalNumberOfCompanies;
-    },
-    /**
      * Updates the current page.
      * An update of the currentPage automatically triggers a data Update
      * @param pageNumber the new page index
@@ -369,9 +361,15 @@ export default defineComponent({
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
      * @param companiesReceived the received chunk of companies
      * @param chunkIndex the index of the chunk
+     * @param totalNumberOfCompanies
      * @returns the promise of the router push with the new query parameters
      */
-    handleCompanyQuery(companiesReceived: Array<BasicCompanyInformation>, chunkIndex: number) {
+    handleCompanyQuery(
+      companiesReceived: Array<BasicCompanyInformation>,
+      chunkIndex: number,
+      totalNumberOfCompanies: number,
+    ) {
+      this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       if (chunkIndex == 0) this.handlePageUpdate(0);

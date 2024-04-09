@@ -76,7 +76,7 @@ export default defineComponent({
   name: "FrameworkDataSearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
-  emits: ["companies-received", "search-confirmed", "numberOfCompanies-received"],
+  emits: ["companies-received", "search-confirmed"],
 
   props: {
     searchBarId: {
@@ -225,16 +225,18 @@ export default defineComponent({
      */
     async queryCompany(chunkIndex = 0) {
       if (this.emitSearchResultsArray) {
-        await this.getCompanies(chunkIndex);
-        await this.getTotalNumberOfCompanies();
+        const resultsArray = await this.getCompanies(chunkIndex);
+        const totalNumberOfCompanies = await this.getTotalNumberOfCompanies();
+        this.$emit("companies-received", resultsArray, chunkIndex, totalNumberOfCompanies);
       }
     },
     /**
      * Performs the company search if the parent component indicated it wants to receive the complete search results
      * @param chunkIndex the index of the requested chunk
+     * @returns chunk of companies
      */
     async getCompanies(chunkIndex: number) {
-      const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
+      return await getCompanyDataForFrameworkDataSearchPage(
         this.searchBarInput,
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
@@ -243,20 +245,19 @@ export default defineComponent({
         this.chunkSize,
         chunkIndex,
       );
-      this.$emit("companies-received", resultsArray, chunkIndex);
     },
     /**
      * Get the total number of copanies with the given filter
+     * @returns total number of companies
      */
     async getTotalNumberOfCompanies() {
-      const totalNumberOfCompanies = await getNumberOfCompaniesForFrameworkDataSearchPage(
+      return await getNumberOfCompaniesForFrameworkDataSearchPage(
         this.searchBarInput,
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
         assertDefined(this.getKeycloakPromise)(),
       );
-      this.$emit("numberOfCompanies-received", totalNumberOfCompanies);
     },
     /**
      * This function is called to obtain search suggestions for the dropdown. Uses the Dataland API to search
