@@ -34,7 +34,7 @@ class StreamingTemporarilyCachedPrivateDocumentControllerApi(
         val response = client.newCall(request).execute()
         if (!response.isSuccessful) {
             throw InternalServerErrorApiException(
-                "API call to temporarily cached document controller failed 88888888888888888888888888888888 " +
+                "API call to temporarily cached document controller failed " +
                     "(code ${response.code}).",
             )
         }
