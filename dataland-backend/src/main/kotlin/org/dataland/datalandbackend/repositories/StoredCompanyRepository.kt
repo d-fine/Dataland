@@ -174,7 +174,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " GROUP BY filtered_results.company_id" +
             " ORDER BY " +
             " maxDatasetRank DESC," +
-            " maxMatchQuality DESC, companyId " +
+            " maxMatchQuality DESC, companyName ASC " +
             " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset})" +
 
             " Select companyId, companyName, " +
@@ -188,7 +188,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " LEFT JOIN ( SELECT identifier_value, company_id FROM company_identifiers " +
             "WHERE identifier_type='Lei' ) AS leis_table " +
             "ON leis_table.company_id=company_data.companyId " +
-            "ORDER BY maxDatasetRank DESC, maxMatchQuality DESC",
+            "ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC",
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
