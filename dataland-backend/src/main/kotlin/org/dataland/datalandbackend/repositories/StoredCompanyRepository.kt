@@ -379,7 +379,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " END) AS match_quality, " +
             " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
             " FROM company_identifiers" +
-            " JOIN stored_companies_filter ON stored_companies_filter.company_id = company_identifiers.company_id " +
+            " INNER JOIN stored_companies_filter ON stored_companies_filter.company_id = company_identifiers.company_id " +
             " LEFT JOIN data_meta_information " +
             " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
@@ -493,7 +493,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " MAX(filtered_results.dataset_rank) AS maxDatasetRank," +
                 " MAX(filtered_results.match_quality) AS maxMatchQuality" +
                 " FROM filtered_results " +
-                "INNER JOIN stored_companies_filtered ON filtered_results.company_id = stored_companies_filtered.company_id "+
+                "INNER JOIN stored_companies_filter ON filtered_results.company_id = stored_companies_filter.company_id "+
                 " GROUP BY filtered_results.company_id" +
                 " ORDER BY " +
                 " maxDatasetRank DESC," +
@@ -590,7 +590,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " MAX(filtered_results.dataset_rank) AS maxDatasetRank," +
                 " MAX(filtered_results.match_quality) AS maxMatchQuality" +
                 " FROM filtered_results " +
-                "INNER JOIN stored_companies_filtered ON filtered_results.company_id = stored_companies_filtered.company_id "+
+                "INNER JOIN stored_companies_filter ON filtered_results.company_id = stored_companies_filter.company_id"+
                 " GROUP BY filtered_results.company_id" +
                 " ORDER BY " +
                 " maxDatasetRank DESC," +
