@@ -40,6 +40,17 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 - [ ] Update package versions in `dataland-automated-qa-service/requirements.txt`
 
+### Dataland EuroDaT client
+
+- [ ] Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with the currently used version 
+  of the client.
+  How to do this: With a running stack, visit https://localhost:12345/api/v1/client-controller/openapi 
+  This should trigger an automated download of the openApiSpec. The content of this file will be in YAML format.
+  Therefore convert its content to JSON with this converter: https://jsonformatter.org/yaml-to-json
+  Then replace the content of eurodatClientOpenApi.json in the repo with the converted JSON from the converter.
+  After doing this, there should be no diffs to main in eurodatClientOpenApi.json!
+  If there are diffs, this means that it is out of sync and you should discuss this with someone on the MiNaBo team.
+
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
