@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3" :class="classes" :data-test="name">
+  <div :class="classes" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <CheckboxesListFormElement
       :name="name"
