@@ -39,11 +39,11 @@ dependencies {
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
+    implementation(Spring.boot.security)
+    implementation(project(":dataland-keycloak-adapter"))
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
-    implementation(Spring.boot.security)
-    implementation(project(":dataland-keycloak-adapter"))
     testImplementation(Spring.boot.test)
 }
 
@@ -59,7 +59,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
     }
 }
 jacoco {

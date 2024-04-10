@@ -41,7 +41,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
     }
 }
 

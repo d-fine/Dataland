@@ -39,17 +39,17 @@ dependencies {
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
-    runtimeOnly(libs.postgresql)
-    runtimeOnly(libs.h2)
     implementation(libs.kotlin.reflect)
     implementation(Spring.boot.amqp)
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(Square.okHttp3)
     implementation(libs.json)
-    testImplementation(Spring.boot.test)
     implementation(libs.flyway)
     implementation(libs.flyway.core)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
+    testImplementation(Spring.boot.test)
 }
 
 openApi {
@@ -65,7 +65,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
     }
 }
 
@@ -81,7 +81,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
         .path
-    outputDir.set("$buildDir/clients/backend")
+    outputDir.set("${layout.buildDirectory}/clients/backend")
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")
@@ -114,7 +114,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.kotlin.srcDir("${layout.buildDirectory}/clients/backend/src/main/kotlin")
 }
 
 ktlint {

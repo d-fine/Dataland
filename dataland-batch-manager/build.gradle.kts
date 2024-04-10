@@ -29,16 +29,16 @@ dependencies {
     implementation(libs.jackson.kotlin)
     implementation(libs.okhttp)
     implementation(libs.commons.io)
-    testImplementation(Spring.boot.test)
     implementation(Spring.boot.security)
     implementation(Spring.boot.web)
+    testImplementation(Spring.boot.test)
 }
 
 tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
     }
 }
 jacoco {
@@ -48,7 +48,7 @@ jacoco {
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
-    outputDir.set("$buildDir/clients/backend")
+    outputDir.set("${layout.buildDirectory}/clients/backend")
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")
@@ -81,7 +81,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.kotlin.srcDir("${layout.buildDirectory}/clients/backend/src/main/kotlin")
 }
 
 ktlint {
@@ -92,7 +92,7 @@ ktlint {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data")
-    into("$buildDir/resources/test")
+    into("${layout.buildDirectory}/resources/test")
 }
 
 tasks.getByName("processTestResources") {

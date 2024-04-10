@@ -55,18 +55,18 @@ dependencies {
     implementation(Spring.boot.validation)
     implementation(Spring.boot.oauth2ResourceServer)
     implementation(Spring.boot.amqp)
-    runtimeOnly(libs.postgresql)
-    runtimeOnly(libs.h2)
-    kapt(Spring.boot.configurationProcessor)
     implementation(Spring.boot.security)
-    testImplementation(Spring.boot.test)
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
     implementation(libs.flyway.core)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
+    kapt(Spring.boot.configurationProcessor)
+    testImplementation(Spring.boot.test)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(Spring.security.spring_security_test)
 }
 
 openApi {
@@ -82,7 +82,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
     }
 }
 

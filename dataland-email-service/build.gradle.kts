@@ -35,19 +35,19 @@ dependencies {
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.amqp)
-    kapt(Spring.boot.configurationProcessor)
-    testImplementation(Spring.boot.test)
-    testImplementation(Testing.mockito.core)
     implementation(libs.mailjet.client)
     implementation(libs.jackson.kotlin)
     implementation(libs.freemarker)
+    testImplementation(Spring.boot.test)
+    testImplementation(Testing.mockito.core)
+    kapt(Spring.boot.configurationProcessor)
 }
 
 tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
     }
 }
 
