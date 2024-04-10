@@ -2,9 +2,9 @@
 import { type LksgData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
@@ -496,21 +496,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
         children: [
           {
             type: "cell",
-            label: "Additional Certifications",
-            explanation:
-              "Does your company hold further certification / verfication / best practices etc. that mitigate human rights and/or environmental risks? If yes, please share the documents with us",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications?.value,
-                ),
-                "Additional Certifications",
-                dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications,
-              ),
-          },
-          {
-            type: "cell",
             label: "Code of Conduct",
             explanation:
               "Has your company implemented and enforced internal behavioral guidelines that address the issues of human rights protection and respect for the environment  (e.g. within the code of conduct)?  If yes, please share the relevant document with us.",
@@ -608,14 +593,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.fairWorkingConditionsPolicy,
               ),
           },
-        ],
-      },
-      {
-        type: "section",
-        label: "General violations",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
           {
             type: "cell",
             label: "Responsibilities for Fair Working Conditions",
@@ -624,7 +601,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.governance?.generalViolations?.responsibilitiesForFairWorkingConditions,
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForFairWorkingConditions,
               ),
           },
           {
@@ -634,7 +611,9 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               "Has your company established official responsibilities for the topic of the environment, according to the nature and extent of the enterprise’s business activities?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.governance?.generalViolations?.responsibilitiesForTheEnvironment),
+              formatYesNoValueForDatatable(
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForTheEnvironment,
+              ),
           },
           {
             type: "cell",
@@ -644,9 +623,476 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.governance?.generalViolations?.responsibilitiesForOccupationalSafety,
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibilitiesForOccupationalSafety,
               ),
           },
+          {
+            type: "cell",
+            label: "Amfori BSCI",
+            explanation:
+              "Does your company have a current amfori BSCI audit report? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.amforiBsci?.value,
+                ),
+                "Amfori BSCI",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.amforiBsci,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Better Work Program",
+            explanation:
+              "Do the production sites where the goods are produced participate in the Better Work Program? If yes, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.betterWorkProgram?.value,
+                ),
+                "Better Work Program",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.betterWorkProgram,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Eco-Management and Audit Scheme (EMAS)",
+            explanation: "Is your company certified according to EMAS? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.ecoManagementAndAuditSchemeEmas?.value,
+                ),
+                "Eco-Management and Audit Scheme (EMAS)",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.ecoManagementAndAuditSchemeEmas,
+              ),
+          },
+          {
+            type: "cell",
+            label: "FLA Fair Labor Code and Compliance Benchmarks for Agriculture",
+            explanation:
+              "Is your company FLA Fair Labor Code and Compliance Benchmarks for Agriculture certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities
+                    ?.flaFairLaborCodeAndComplianceBenchmarksForAgriculture?.value,
+                ),
+                "FLA Fair Labor Code and Compliance Benchmarks for Agriculture",
+                dataset.governance?.certificationsPoliciesAndResponsibilities
+                  ?.flaFairLaborCodeAndComplianceBenchmarksForAgriculture,
+              ),
+          },
+          {
+            type: "cell",
+            label: "FLA Fair Labor Code and Compliance Benchmarks for Manufacturing",
+            explanation:
+              "Is your company FLA Fair Labor Code and Compliance Benchmarks for Manufacturing certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities
+                    ?.flaFairLaborCodeAndComplianceBenchmarksForManufacturing?.value,
+                ),
+                "FLA Fair Labor Code and Compliance Benchmarks for Manufacturing",
+                dataset.governance?.certificationsPoliciesAndResponsibilities
+                  ?.flaFairLaborCodeAndComplianceBenchmarksForManufacturing,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Fairtrade Trader Standard",
+            explanation:
+              "Is your company Fairtrade Trader Standard certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.fairtradeTraderStandard?.value,
+                ),
+                "Fairtrade Trader Standard",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.fairtradeTraderStandard,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Global Organic Textile Standard (GOTS)",
+            explanation:
+              "Is your company Global Organic Textile Standard (GOTS) certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.globalOrganicTextileStandardGots
+                    ?.value,
+                ),
+                "Global Organic Textile Standard (GOTS)",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.globalOrganicTextileStandardGots,
+              ),
+          },
+          {
+            type: "cell",
+            label: "GOTS Organic in Conversion",
+            explanation:
+              "Is your company GOTS – Organic in Conversion certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion?.value,
+                ),
+                "GOTS Organic in Conversion",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion,
+              ),
+          },
+          {
+            type: "cell",
+            label: "IATF 16949",
+            explanation: "Is your company IATF 16949 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iatf16949?.value,
+                ),
+                "IATF 16949",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iatf16949,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 10007",
+            explanation:
+              "Does your company comply with ISO 10007 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso10007?.value,
+                ),
+                "ISO 10007",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso10007,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 14001",
+            explanation: "Is your company ISO14001 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso14001?.value,
+                ),
+                "ISO 14001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso14001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 20400",
+            explanation:
+              "Does your company comply with ISO 20400 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso20400?.value,
+                ),
+                "ISO 20400",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso20400,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 26000",
+            explanation:
+              "Does your company comply with ISO 26000 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso26000?.value,
+                ),
+                "ISO 26000",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso26000,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 31000",
+            explanation: "Is your company ISO 31000 certified? If yes, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso31000?.value,
+                ),
+                "ISO 31000",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso31000,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 37001",
+            explanation: "Is your company ISO 37001 certified? If yes, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37001?.value,
+                ),
+                "ISO 37001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 37002",
+            explanation: "Is your company ISO 37002 certified? If yes, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37002?.value,
+                ),
+                "ISO 37002",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37002,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 37301",
+            explanation: "Is your company ISO 37301 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37301?.value,
+                ),
+                "ISO 37301",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso37301,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 44001",
+            explanation:
+              "Does your company comply with ISO 44001 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso44001?.value,
+                ),
+                "ISO 44001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso44001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 45001",
+            explanation: "Is your company ISO 45001 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso45001?.value,
+                ),
+                "ISO 45001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso45001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 50001",
+            explanation: "Is your company ISO 50001 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso50001?.value,
+                ),
+                "ISO 50001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso50001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 9001",
+            explanation: "Is your company ISO 9001 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.iso9001?.value,
+                ),
+                "ISO 9001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.iso9001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO/IEC 27001",
+            explanation: "Is your company ISO/IEC 27001 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001?.value,
+                ),
+                "ISO/IEC 27001",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO/IEC TS 33061",
+            explanation:
+              "Does your company comply with ISO/IEC TS 33061 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061?.value,
+                ),
+                "ISO/IEC TS 33061",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO/IEC/IEEE 15288",
+            explanation: "Is your company ISO/IEC/IEEE 15288 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288?.value,
+                ),
+                "ISO/IEC/IEEE 15288",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Naturland Standards",
+            explanation:
+              "Is your company Naturland Standards certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.naturlandStandards?.value,
+                ),
+                "Naturland Standards",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.naturlandStandards,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Responsible Business Alliance",
+            explanation:
+              "Is your company Responsible Business Alliance (RBA) certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibleBusinessAlliance?.value,
+                ),
+                "Responsible Business Alliance",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.responsibleBusinessAlliance,
+              ),
+          },
+          {
+            type: "cell",
+            label: "SA8000",
+            explanation: "Is your company SA8000 certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.sa8000?.value,
+                ),
+                "SA8000",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.sa8000,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Sedex Members Ethical Trade Audit (SMETA)",
+            explanation:
+              "Does your company apply a social audit concept as defined by SMETA (Sedex Members Ethical Trade Audit)?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.sedexMembersEthicalTradeAuditSmeta
+                    ?.value,
+                ),
+                "Sedex Members Ethical Trade Audit (SMETA)",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.sedexMembersEthicalTradeAuditSmeta,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Textile Exchange Global Recycled Standard",
+            explanation:
+              "Is your company Textile Exchange Global Recycled Standard certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.textileExchangeGlobalRecycledStandard
+                    ?.value,
+                ),
+                "Textile Exchange Global Recycled Standard",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.textileExchangeGlobalRecycledStandard,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ZNU-Standard Nachhaltiger Wirtschaften",
+            explanation: "Is your company ZNU Standard certified? If so, please provide us with the certificate.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.znuStandardNachhaltigerWirtschaften
+                    ?.value,
+                ),
+                "ZNU-Standard Nachhaltiger Wirtschaften",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.znuStandardNachhaltigerWirtschaften,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Additional Certifications",
+            explanation:
+              "Does your company hold further certification / verfication / best practices etc. that mitigate human rights and/or environmental risks? If yes, please share the documents with us",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications?.value,
+                ),
+                "Additional Certifications",
+                dataset.governance?.certificationsPoliciesAndResponsibilities?.additionalCertifications,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "General violations",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "Legal Proceedings",
@@ -754,6 +1200,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
         ],
       },
     ],
+    labelBadgeColor: "green",
   },
   {
     type: "section",
@@ -806,7 +1253,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Worst Forms of Child Labor Prohibition",
             explanation:
               "Is the prohibition of the worst forms of child labor ensured in your company? These include: all forms of slavery or practices similar to slavery; the use, procuring or offering of a child for prostitution, the production of pornography or pornographic performances; the use, procuring or offering of a child for illicit activities, in particular for the production or trafficking of drugs; work which, by its nature or the circumstances in which it is performed, is likely to be harmful to the health, safety, or morals of children",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborProhibition),
           },
@@ -814,7 +1261,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: "cell",
             label: "Worst Forms of Child Labor Forms",
             explanation: "Which of these worst forms of child labor are not prevented?",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "No",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.childLabor?.worstFormsOfChildLaborForms),
           },
@@ -2209,6 +2657,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
         ],
       },
     ],
+    labelBadgeColor: "yellow",
   },
   {
     type: "section",
@@ -2446,7 +2895,12 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                 ?.persistentOrganicPollutantsUsePreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
+                    ?.persistentOrganicPollutantsUsePolicy?.value,
+                ),
+                "Persistent Organic Pollutants Use Policy",
                 dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
                   ?.persistentOrganicPollutantsUsePolicy,
               ),
@@ -2563,7 +3017,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Does your company have a waste policy? If yes, please share the policy with us. ",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
@@ -2579,11 +3033,30 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Have other measures been taken to prevent the transport of hazardous waste?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(
+                  dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                    ?.hazardousWasteTransportPreventionOtherMeasures?.value,
+                ),
+                "Hazardous Waste Transport Prevention Other Measures",
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteTransportPreventionOtherMeasures,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Hazardous Waste Transport Prevention Other Measures Description",
+            explanation:
+              "Please list other measures (if available) you take to prevent the transport of hazardous waste.",
+            shouldDisplay: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteTransportPreventionOtherMeasures?.value == "Yes",
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(
+                dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                  ?.hazardousWasteTransportPreventionOtherMeasuresDescription,
               ),
           },
           {
@@ -2617,12 +3090,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                    ?.hazardousWasteDisposalOtherWasteImport?.value,
-                ),
-                "Hazardous Waste Disposal - Other Waste Import",
+              formatYesNoValueForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImport,
               ),
@@ -2633,12 +3101,41 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Please describe the other imported wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2)).",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
-                ?.value == "Yes",
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteDisposalOtherWasteImport == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.environmental?.exportImportOfHazardousWasteBaselConvention
                   ?.hazardousWasteDisposalOtherWasteImportDescription,
+              ),
+          },
+        ],
+      },
+    ],
+    labelBadgeColor: "blue",
+  },
+  {
+    type: "section",
+    label: "Attachment",
+    expandOnPageLoad: false,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "section",
+        label: "Attachment",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Attachment",
+            explanation: "Do you have any further attachments?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.attachment?.attachment?.attachment?.value),
+                "Attachment",
+                dataset.attachment?.attachment?.attachment,
               ),
           },
         ],

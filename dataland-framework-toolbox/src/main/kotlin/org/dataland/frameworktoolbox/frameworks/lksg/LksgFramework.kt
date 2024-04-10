@@ -53,5 +53,17 @@ class LksgFramework : PavedRoadFramework(
                 viewPageExpandOnPageLoad = true
             }
         }
+
+        root.edit<ComponentGroup>("governance") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Green
+        }
+
+        root.edit<ComponentGroup>("social") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Yellow
+        }
+
+        root.edit<ComponentGroup>("environmental") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Blue
+        }
     }
 }

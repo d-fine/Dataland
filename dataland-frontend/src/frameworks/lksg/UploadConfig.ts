@@ -464,16 +464,6 @@ export const lksgDataModel = [
         label: "Certifications, policies and responsibilities",
         fields: [
           {
-            name: "additionalCertifications",
-            label: "Additional Certifications",
-            description:
-              "Does your company hold further certification / verfication / best practices etc. that mitigate human rights and/or environmental risks? If yes, please share the documents with us",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: "codeOfConduct",
             label: "Code of Conduct",
             description:
@@ -545,12 +535,6 @@ export const lksgDataModel = [
             required: false,
             showIf: (): boolean => true,
           },
-        ],
-      },
-      {
-        name: "generalViolations",
-        label: "General violations",
-        fields: [
           {
             name: "responsibilitiesForFairWorkingConditions",
             label: "Responsibilities for Fair Working Conditions",
@@ -581,6 +565,308 @@ export const lksgDataModel = [
             required: false,
             showIf: (): boolean => true,
           },
+          {
+            name: "amforiBsci",
+            label: "Amfori BSCI",
+            description:
+              "Does your company have a current amfori BSCI audit report? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "betterWorkProgram",
+            label: "Better Work Program",
+            description:
+              "Do the production sites where the goods are produced participate in the Better Work Program? If yes, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "ecoManagementAndAuditSchemeEmas",
+            label: "Eco-Management and Audit Scheme (EMAS)",
+            description: "Is your company certified according to EMAS? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "flaFairLaborCodeAndComplianceBenchmarksForAgriculture",
+            label: "FLA Fair Labor Code and Compliance Benchmarks for Agriculture",
+            description:
+              "Is your company FLA Fair Labor Code and Compliance Benchmarks for Agriculture certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "flaFairLaborCodeAndComplianceBenchmarksForManufacturing",
+            label: "FLA Fair Labor Code and Compliance Benchmarks for Manufacturing",
+            description:
+              "Is your company FLA Fair Labor Code and Compliance Benchmarks for Manufacturing certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "fairtradeTraderStandard",
+            label: "Fairtrade Trader Standard",
+            description:
+              "Is your company Fairtrade Trader Standard certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "globalOrganicTextileStandardGots",
+            label: "Global Organic Textile Standard (GOTS)",
+            description:
+              "Is your company Global Organic Textile Standard (GOTS) certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "gotsOrganicInConversion",
+            label: "GOTS Organic in Conversion",
+            description:
+              "Is your company GOTS – Organic in Conversion certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iatf16949",
+            label: "IATF 16949",
+            description: "Is your company IATF 16949 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso10007",
+            label: "ISO 10007",
+            description:
+              "Does your company comply with ISO 10007 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso14001",
+            label: "ISO 14001",
+            description: "Is your company ISO14001 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso20400",
+            label: "ISO 20400",
+            description:
+              "Does your company comply with ISO 20400 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso26000",
+            label: "ISO 26000",
+            description:
+              "Does your company comply with ISO 26000 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso31000",
+            label: "ISO 31000",
+            description: "Is your company ISO 31000 certified? If yes, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso37001",
+            label: "ISO 37001",
+            description: "Is your company ISO 37001 certified? If yes, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso37002",
+            label: "ISO 37002",
+            description: "Is your company ISO 37002 certified? If yes, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso37301",
+            label: "ISO 37301",
+            description: "Is your company ISO 37301 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso44001",
+            label: "ISO 44001",
+            description:
+              "Does your company comply with ISO 44001 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso45001",
+            label: "ISO 45001",
+            description: "Is your company ISO 45001 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso50001",
+            label: "ISO 50001",
+            description: "Is your company ISO 50001 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "iso9001",
+            label: "ISO 9001",
+            description: "Is your company ISO 9001 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "isoIec27001",
+            label: "ISO/IEC 27001",
+            description: "Is your company ISO/IEC 27001 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "isoIecTs33061",
+            label: "ISO/IEC TS 33061",
+            description:
+              "Does your company comply with ISO/IEC TS 33061 standard? If yes, is there verifiable evidence of a third party validation of compliance with this standard?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "isoIecIeee15288",
+            label: "ISO/IEC/IEEE 15288",
+            description: "Is your company ISO/IEC/IEEE 15288 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "naturlandStandards",
+            label: "Naturland Standards",
+            description:
+              "Is your company Naturland Standards certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "responsibleBusinessAlliance",
+            label: "Responsible Business Alliance",
+            description:
+              "Is your company Responsible Business Alliance (RBA) certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "sa8000",
+            label: "SA8000",
+            description: "Is your company SA8000 certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "sedexMembersEthicalTradeAuditSmeta",
+            label: "Sedex Members Ethical Trade Audit (SMETA)",
+            description:
+              "Does your company apply a social audit concept as defined by SMETA (Sedex Members Ethical Trade Audit)?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "textileExchangeGlobalRecycledStandard",
+            label: "Textile Exchange Global Recycled Standard",
+            description:
+              "Is your company Textile Exchange Global Recycled Standard certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "znuStandardNachhaltigerWirtschaften",
+            label: "ZNU-Standard Nachhaltiger Wirtschaften",
+            description: "Is your company ZNU Standard certified? If so, please provide us with the certificate.",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "additionalCertifications",
+            label: "Additional Certifications",
+            description:
+              "Does your company hold further certification / verfication / best practices etc. that mitigate human rights and/or environmental risks? If yes, please share the documents with us",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "generalViolations",
+        label: "General violations",
+        fields: [
           {
             name: "legalProceedings",
             label: "Legal Proceedings",
@@ -733,7 +1019,7 @@ export const lksgDataModel = [
 
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
           },
           {
             name: "worstFormsOfChildLaborForms",
@@ -742,7 +1028,8 @@ export const lksgDataModel = [
 
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.worstFormsOfChildLabor == "Yes",
+            showIf: (dataset: LksgData): boolean =>
+              dataset.social?.childLabor?.worstFormsOfChildLaborProhibition == "No",
           },
           {
             name: "measuresForPreventionOfEmploymentUnderLocalMinimumAge",
@@ -2073,7 +2360,7 @@ export const lksgDataModel = [
             description:
               "Does your company have a policy for handling these materials? If yes, please share the policy with us. ",
 
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention
@@ -2173,18 +2460,30 @@ export const lksgDataModel = [
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
           },
           {
             name: "hazardousWasteTransportPreventionOtherMeasures",
             label: "Hazardous Waste Transport Prevention Other Measures",
             description: "Have other measures been taken to prevent the transport of hazardous waste?",
 
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention
-                ?.persistentOrganicPollutantsProductionAndUseRiskForImportingState == "Yes",
+                ?.hazardousWasteTransportPreventionMeasures == "Yes",
+          },
+          {
+            name: "hazardousWasteTransportPreventionOtherMeasuresDescription",
+            label: "Hazardous Waste Transport Prevention Other Measures Description",
+            description:
+              "Please list other measures (if available) you take to prevent the transport of hazardous waste.",
+
+            component: "FreeTextFormField",
+            required: false,
+            showIf: (dataset: LksgData): boolean =>
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteTransportPreventionOtherMeasures?.value == "Yes",
           },
           {
             name: "hazardousWasteDisposal",
@@ -2213,7 +2512,7 @@ export const lksgDataModel = [
             description:
               "Do you import other wastes that require special consideration (household waste, residues from incineration of household waste) (Article 1(2))?",
 
-            component: "YesNoBaseDataPointFormField",
+            component: "YesNoFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
               dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposal == "Yes",
@@ -2227,8 +2526,31 @@ export const lksgDataModel = [
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.environmental?.exportImportOfHazardousWasteBaselConvention?.hazardousWasteDisposalOtherWasteImport
-                ?.value == "Yes",
+              dataset.environmental?.exportImportOfHazardousWasteBaselConvention
+                ?.hazardousWasteDisposalOtherWasteImport == "Yes",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "attachment",
+    label: "Attachment",
+    color: "",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "attachment",
+        label: "Attachment",
+        fields: [
+          {
+            name: "attachment",
+            label: "Attachment",
+            description: "Do you have any further attachments?",
+
+            component: "YesNoBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
           },
         ],
       },

@@ -6600,6 +6600,32 @@
           }
         }
       },
+      "LksgAttachment": {
+        "type": "object",
+        "properties": {
+          "attachment": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgAttachmentAttachment"
+              }
+            ]
+          }
+        }
+      },
+      "LksgAttachmentAttachment": {
+        "type": "object",
+        "properties": {
+          "attachment": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          }
+        }
+      },
       "LksgData": {
         "required": [
           "general"
@@ -6630,6 +6656,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/LksgEnvironmental"
+              }
+            ]
+          },
+          "attachment": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LksgAttachment"
               }
             ]
           }
@@ -6719,9 +6753,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
+          },
+          "hazardousWasteTransportPreventionOtherMeasuresDescription": {
+            "type": "string",
+            "nullable": true
           },
           "hazardousWasteDisposal": {
             "nullable": true,
@@ -6743,7 +6781,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
           },
@@ -6796,7 +6834,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
@@ -7188,14 +7226,6 @@
       "LksgGovernanceCertificationsPoliciesAndResponsibilities": {
         "type": "object",
         "properties": {
-          "additionalCertifications": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "codeOfConduct": {
             "nullable": true,
             "allOf": [
@@ -7247,12 +7277,7 @@
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
-          }
-        }
-      },
-      "LksgGovernanceGeneralViolations": {
-        "type": "object",
-        "properties": {
+          },
           "responsibilitiesForFairWorkingConditions": {
             "nullable": true,
             "allOf": [
@@ -7277,6 +7302,259 @@
               }
             ]
           },
+          "amforiBsci": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "betterWorkProgram": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "ecoManagementAndAuditSchemeEmas": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "flaFairLaborCodeAndComplianceBenchmarksForAgriculture": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "flaFairLaborCodeAndComplianceBenchmarksForManufacturing": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "fairtradeTraderStandard": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "globalOrganicTextileStandardGots": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "gotsOrganicInConversion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iatf16949": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso10007": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso14001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso20400": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso26000": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso31000": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso37001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso37002": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso37301": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso44001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso9001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "isoIec27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "isoIecTs33061": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "isoIecIeee15288": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "naturlandStandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "responsibleBusinessAlliance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "sa8000": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "sedexMembersEthicalTradeAuditSmeta": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "textileExchangeGlobalRecycledStandard": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "znuStandardNachhaltigerWirtschaften": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "additionalCertifications": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          }
+        }
+      },
+      "LksgGovernanceGeneralViolations": {
+        "type": "object",
+        "properties": {
           "legalProceedings": {
             "nullable": true,
             "allOf": [
@@ -13828,21 +14106,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "permId": {
             "type": "string",
@@ -13869,10 +14147,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
