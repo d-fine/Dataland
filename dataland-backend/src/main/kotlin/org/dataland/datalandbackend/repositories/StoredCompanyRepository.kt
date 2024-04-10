@@ -24,12 +24,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         // Select company_id, company_name, match_quality, match_rank based on searchString as filtered_text_results
         const val TABLE_FILTERED_TEXT_RESULTS = " (" +
             " (SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name," +
-            " MAX(CASE " +
+            " MAX( CASE " +
             "   WHEN company_name = :#{#searchFilter.searchString} THEN 10" +
             "   WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
             "   ELSE 1" +
             "   END) match_quality, " +
-            " MAX(CASE " +
+            " MAX( CASE " +
             "   WHEN data_id IS NOT null THEN 2 " +
             "   ELSE 1 " +
             "   END) AS dataset_rank" +
@@ -43,16 +43,17 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             // Fuzzy-Search Company Alternative Name
             " (SELECT stored_company_entity_company_id AS company_id," +
             " MAX(stored_companies.company_name) AS company_name," +
-            " MAX(CASE " +
+            " MAX( CASE " +
             "   WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
             "   WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
             "   ESCAPE :#{escapeCharacter()} THEN 4" +
             "   ELSE 1 " +
-            " END) match_quality, " +
-            " MAX(CASE " +
+            "   END) match_quality, " +
+            " MAX( CASE " +
             "   WHEN data_id IS NOT null THEN 2 " +
-            "   ELSE 1 END) AS dataset_rank" +
-            "   FROM stored_company_entity_company_alternative_names" +
+            "   ELSE 1 " +
+            "   END) AS dataset_rank" +
+            " FROM stored_company_entity_company_alternative_names" +
             " JOIN stored_companies " +
             "   ON stored_companies.company_id = " +
             "   stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
@@ -66,13 +67,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " UNION" +
             // Fuzzy-Search Company Identifier
             " (SELECT company_identifiers.company_id, MAX(stored_companies.company_name) AS company_name," +
-            " MAX(CASE " +
+            " MAX( CASE " +
             "   WHEN identifier_value = :#{#searchFilter.searchString} THEN 10" +
             "   WHEN identifier_value " +
             "           ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
             "   ELSE 0" +
             "   END) AS match_quality, " +
-            " MAX(CASE " +
+            " MAX( CASE " +
             "   WHEN data_id IS NOT null " +
             "   THEN 2 else 1 " +
             "   END) AS dataset_rank" +
