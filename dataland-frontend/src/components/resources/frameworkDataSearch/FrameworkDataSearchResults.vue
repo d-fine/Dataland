@@ -65,7 +65,7 @@ import DataTable, { type DataTablePageEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
-import NewDatasetButton from "@/components/resources/frameworkDataSearch/NewDatasetButton.vue";
+import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
 import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
