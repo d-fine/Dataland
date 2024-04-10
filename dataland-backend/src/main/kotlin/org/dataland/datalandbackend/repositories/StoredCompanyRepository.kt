@@ -125,7 +125,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " country_code AS countryCode, " +
             " sector AS sector, " +
             " identifier_value AS lei " +
-            // get required information from stored companies with are included in the dropdown filter
+            // get required information from stored companies which are included in the dropdown filter
             " FROM (" +
             " SELECT stored_companies.company_id, company_name, headquarters, country_code, sector " +
             " FROM stored_companies " +
