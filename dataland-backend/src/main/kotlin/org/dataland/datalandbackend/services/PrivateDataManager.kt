@@ -87,7 +87,7 @@ class PrivateDataManager(
         )
         val dataId = generateRandomDataId()
 
-        storeDatasetInMemory(dataId, storableDataSet, correlationId)
+        storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
         val documentHashes = documents?.takeIf { it.isNotEmpty() }
@@ -97,10 +97,10 @@ class PrivateDataManager(
         return metaInfoEntity.toApiModel(userAuthentication)
     }
 
-    private fun storeDatasetInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
+    private fun storeJsonInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         logger.info(
-            "Storing storable dataset in memory for companyId: ${storableDataSet.companyId}, dataId: $dataId and " +
-                "correlationId: $correlationId",
+            "Storing JSON in memory for companyId ${storableDataSet.companyId} dataId: $dataId and " +
+                "correlationId $correlationId",
         )
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
         jsonDataInMemoryStorage[dataId] = storableSmeDatasetAsString
@@ -144,7 +144,7 @@ class PrivateDataManager(
         //  I changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
         //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
         logger.info(
-            "Storing ${documents.size} Sme documents in temporary storage for dataId $dataId, " +
+            "Storing ${documents.size} Sme document/s in temporary storage for dataId $dataId " +
                 "and correlationId $correlationId",
         )
         val documentHashes = mutableListOf<String>()
@@ -164,8 +164,8 @@ class PrivateDataManager(
 
     private fun sendReceptionMessage(dataId: String, correlationId: String, documentHashes: MutableList<String>) {
         logger.info(
-            "Processed data to be stored in external storage, sending message for dataId: $dataId and " +
-                "correlationId: $correlationId",
+            "Processed data to be stored in EuroDaT, sending message for dataId $dataId and " +
+                "correlationId $correlationId",
         )
         val payload = JSONObject(
             mapOf(
@@ -180,7 +180,7 @@ class PrivateDataManager(
             ExchangeName.PrivateRequestReceived,
         )
         logger.info(
-            "Message to external storage for dataId: $dataId and correlationId: $correlationId was sent successfully",
+            "Message to EuroDaT-storage-service for dataId $dataId and correlationId $correlationId was sent",
         )
     }
 
@@ -214,18 +214,22 @@ class PrivateDataManager(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info(
-            "Private dataset with dataId $dataId was successfully stored on EuroDaT. Correlation ID: $correlationId",
+            "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
+                "stored on EuroDaT. Starting to persist mapping info, meta info and clearing in-memory-storages",
         )
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
-            persistMetaInfo(dataId)
-            removeRelatedEntriesFromInMemoryStorages(dataId)
+            persistMetaInfo(dataId, correlationId)
+            removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
             // TODO mach mal einen one-off Test am Ende mit print-statements und check ob wirklich alles wieder leer
             // TODO ist nach dem removal Prozess
         }
     }
 
-    private fun removeRelatedEntriesFromInMemoryStorages(dataId: String) {
+    private fun removeRelatedEntriesFromInMemoryStorages(dataId: String, correlationId: String) {
+        logger.info(
+            "Removing entries related to dataId $dataId and correlationId $correlationId from in-memory-storages",
+        )
         jsonDataInMemoryStorage.remove(dataId)
         metaInfoEntityInMemoryStorage.remove(dataId)
         val documentHashes = documentHashesInMemoryStorage[dataId]
@@ -234,8 +238,7 @@ class PrivateDataManager(
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
         logger.info(
-            "Persisting mapping info for dataId: $dataId and correlationId: $correlationId as it " +
-                "was successfully stored in the external datastore",
+            "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
         val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
         dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
@@ -251,7 +254,10 @@ class PrivateDataManager(
             }
         }
     }
-    private fun persistMetaInfo(dataId: String) {
+    private fun persistMetaInfo(dataId: String, correlationId: String) {
+        logger.info(
+            "Persisting meta info for dataId $dataId and correlationId $correlationId",
+        )
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
         val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
         metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
