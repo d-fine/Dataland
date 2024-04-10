@@ -41,15 +41,14 @@ class CompanyChunkManager(
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
         } else {
-            //todo decide if we want to have seperat querys
+            // todo decide if we want to have seperat querys
             return if (filter.dataTypeFilterSize > 0) {
-                companyRepository.searchCompanies(filter,chunkSize,offset)
-            //companyRepository.searchCompaniesWithDatasets(filter, chunkSize, offset)
+                companyRepository.searchCompanies(filter, chunkSize, offset)
+                // companyRepository.searchCompaniesWithDatasets(filter, chunkSize, offset)
             } else {
-                companyRepository.searchCompanies(filter,chunkSize,offset)
-                //companyRepository.searchCompaniesWithoutDatasets(filter, chunkSize, offset)
+                companyRepository.searchCompanies(filter, chunkSize, offset)
+                // companyRepository.searchCompaniesWithoutDatasets(filter, chunkSize, offset)
             }
-
         }
     }
 
@@ -71,15 +70,14 @@ class CompanyChunkManager(
     fun returnNumberOfCompanies(
         filter: StoredCompanySearchFilter,
     ): Int {
-        return 1000
         // todo check because of number of Companies (idea: fix in frontend)
-        if (filter.searchStringLength == 0) {
-            return companyRepository
+        return if (filter.searchStringLength == 0) {
+            companyRepository
                 .getNumberOfCompaniesWithoutSearchString(
                     filter,
                 )
         } else {
-            return companyRepository.getNumberOfCompanies(filter)
+            companyRepository.getNumberOfCompanies(filter)
         }
     }
 }
