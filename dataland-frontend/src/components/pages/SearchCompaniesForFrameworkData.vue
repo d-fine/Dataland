@@ -361,7 +361,7 @@ export default defineComponent({
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
      * @param companiesReceived the received chunk of companies
      * @param chunkIndex the index of the chunk
-     * @param totalNumberOfCompanies
+     * @param totalNumberOfCompanies the total number of companies
      * @returns the promise of the router push with the new query parameters
      */
     handleCompanyQuery(
