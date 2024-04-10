@@ -161,6 +161,10 @@ class PrivateDataManager(
         return documentHashes
     }
 
+    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile): ByteArray {
+        return multipartFile.bytes
+    }
+
     private fun sendReceptionMessage(dataId: String, correlationId: String, documentHashes: MutableList<String>) {
         logger.info(
             "Processed data to be stored in external storage, sending message for dataId: $dataId and " +
@@ -179,43 +183,8 @@ class PrivateDataManager(
             ExchangeName.PrivateRequestReceived,
         )
         logger.info(
-            "Message to external storage for dataId: $dataId and correlationId: $correlationId was " +
-                "sent successfully",
+            "Message to external storage for dataId: $dataId and correlationId: $correlationId was sent successfully",
         )
-    }
-
-    private fun persistMappingInfo(dataId: String, correlationId: String) {
-        logger.info(
-            "Persisting mapping info for dataId: $dataId and correlationId: $correlationId as it " +
-                "was successfully stored in the external datastore",
-        )
-        val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
-        dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
-        val documentHashes = documentHashesInMemoryStorage[dataId]
-        if (!documentHashes.isNullOrEmpty()) {
-            val dataIdToDocumentHashMappingEntities =
-                documentHashes.map { documentHash ->
-                    DataIdToAssetIdMappingEntity(dataId, documentHash)
-                }
-            dataIdToDocumentHashMappingEntities.forEach {
-                    mappingEntity ->
-                dataIdToAssetIdMappingRepository.save(mappingEntity)
-            }
-        }
-    }
-    private fun persistMetaInfo(dataId: String) {
-        val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
-        val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
-        metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
-        metaDataManager.storeDataMetaInformation(dataMetaInfoToStore!!)
-    }
-
-    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String) {
-        val documentHashes = documentHashesInMemoryStorage[dataId] // TODO if not found?
-        documentHashes!!.forEach { hash ->
-            documentInMemoryStorage.remove(hash)
-        }
-        documentHashesInMemoryStorage.remove(dataId)
     }
 
     /**
@@ -253,12 +222,50 @@ class PrivateDataManager(
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId)
-            jsonDataInMemoryStorage.remove(dataId)
-            metaInfoEntityInMemoryStorage.remove(dataId)
-            removeDocumentsAndHashesFromInMemoryStorages(dataId)
+            removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
             // TODO mach mal einen one-off Test am Ende mit print-statements und check ob wirklich alles wieder leer
             // TODO ist nach dem removal Prozess
         }
+    }
+
+    private fun removeRelatedEntriesFromInMemoryStorages(dataId: String, correlationId: String) {
+        jsonDataInMemoryStorage.remove(dataId)
+        metaInfoEntityInMemoryStorage.remove(dataId)
+        removeDocumentsAndHashesFromInMemoryStorages(dataId)
+    }
+
+    private fun persistMappingInfo(dataId: String, correlationId: String) {
+        logger.info(
+            "Persisting mapping info for dataId: $dataId and correlationId: $correlationId as it " +
+                "was successfully stored in the external datastore",
+        )
+        val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
+        dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
+        val documentHashes = documentHashesInMemoryStorage[dataId]
+        if (!documentHashes.isNullOrEmpty()) {
+            val dataIdToDocumentHashMappingEntities =
+                documentHashes.map { documentHash ->
+                    DataIdToAssetIdMappingEntity(dataId, documentHash)
+                }
+            dataIdToDocumentHashMappingEntities.forEach {
+                    mappingEntity ->
+                dataIdToAssetIdMappingRepository.save(mappingEntity)
+            }
+        }
+    }
+    private fun persistMetaInfo(dataId: String) {
+        val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
+        val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
+        metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
+        metaDataManager.storeDataMetaInformation(dataMetaInfoToStore)
+    }
+
+    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String) {
+        val documentHashes = documentHashesInMemoryStorage[dataId] // TODO if not found?
+        documentHashes!!.forEach { hash ->
+            documentInMemoryStorage.remove(hash)
+        }
+        documentHashesInMemoryStorage.remove(dataId)
     }
 
     /**
@@ -276,10 +283,6 @@ class PrivateDataManager(
         return objectMapper.writeValueAsString(rawValue)
     }
     // TODO this method has to return data and documents, alternatively we use two different endpoints
-
-    private fun convertMultipartFileToByteArray(multipartFile: MultipartFile): ByteArray {
-        return multipartFile.bytes
-    }
 
     /**
      * Retrieves the data identified by the given hash from the in-memory store.
