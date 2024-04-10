@@ -14,58 +14,66 @@ import org.springframework.data.repository.query.Param
 
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     companion object {
+        // Select company_id, LEI identifiers
         const val TABLE_LEIS = " (" +
-            // get all LEI identifiers
-            "SELECT identifier_value, company_id FROM company_identifiers " +
-            " WHERE identifier_type='Lei'" +
+            " SELECT identifier_value, company_id " +
+            " FROM company_identifiers WHERE identifier_type = 'Lei'" +
             ") AS leis "
 
+        // Select company_id, company_name, match_quality, match_rank based on searchString
         const val TABLE_FILTERED_TEXT_RESULTS = " filtered_text_results AS (" +
-            "(SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
-            " max(CASE " +
+            " (SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name," +
+            " MAX(CASE " +
             " WHEN company_name = :#{#searchFilter.searchString} THEN 10" +
             " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
             " ELSE 1" +
             " END) match_quality, " +
-            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " MAX(CASE " +
+            " WHEN data_id IS NOT null THEN 2 " +
+            " ELSE 1 " +
+            " END) AS dataset_rank" +
             " FROM stored_companies" +
             " LEFT JOIN data_meta_information " +
             " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
-            " GROUP BY stored_companies.company_id" +
-            " ) " +
+            " GROUP BY stored_companies.company_id) " +
 
             " UNION " +
             // Fuzzy-Search Company Alternative Name
-            " (SELECT " +
-            " stored_company_entity_company_id AS company_id," +
-            " max(stored_companies.company_name) AS company_name," +
-            " max(CASE " +
+            " (SELECT stored_company_entity_company_id AS company_id," +
+            " MAX(stored_companies.company_name) AS company_name," +
+            " MAX(CASE " +
             " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
-            "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
+            " WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
             " ESCAPE :#{escapeCharacter()} THEN 4" +
             " ELSE 1 " +
             " END) match_quality, " +
-            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " MAX(CASE " +
+            " WHEN data_id IS NOT null THEN 2 " +
+            " ELSE 1 END) AS dataset_rank" +
             " FROM stored_company_entity_company_alternative_names" +
-            " JOIN stored_companies ON stored_companies.company_id = " +
+            " JOIN stored_companies " +
+            " ON stored_companies.company_id = " +
             " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
             " LEFT JOIN data_meta_information " +
             " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true " +
-            "WHERE " +
+            " WHERE " +
             " company_alternative_names ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
             " GROUP BY stored_company_entity_company_id" +
             ") " +
 
             " UNION" +
             // Fuzzy-Search Company Identifier
-            " (SELECT company_identifiers.company_id, max(stored_companies.company_name) AS company_name," +
-            " max(CASE " +
+            " (SELECT company_identifiers.company_id, MAX(stored_companies.company_name) AS company_name," +
+            " MAX(CASE " +
             " WHEN identifier_value = :#{#searchFilter.searchString} THEN 10" +
             " WHEN identifier_value ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
             " ELSE 0" +
             " END) AS match_quality, " +
-            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " MAX(CASE " +
+            " WHEN data_id IS NOT null " +
+            " THEN 2 else 1 " +
+            " END) AS dataset_rank" +
             " FROM company_identifiers" +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
             " LEFT JOIN data_meta_information " +
@@ -73,12 +81,16 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
             " GROUP BY company_identifiers.company_id)" +
             " ) "
+
+        // Select company_id if company satisfies data_type, sector and country filter
         const val TABLE_FILTERED_DROPDOWN_RESULTS = "filtered_dropdown_results AS (" +
             " SELECT company_id FROM stored_companies " +
-            " WHERE (company_id IN " +
-            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true'" +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0 OR company_id IN " +
+            " (SELECT DISTINCT company_id " +
+            " FROM data_meta_information " +
+            " WHERE currently_active='true'" +
             " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
-            " AND data_type IN :#{#searchFilter.dataTypeFilter}) OR :#{#searchFilter.dataTypeFilterSize} = 0) " +
+            " AND data_type IN :#{#searchFilter.dataTypeFilter}) ) " +
             " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
             " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
@@ -96,12 +108,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " country_code AS countryCode, " +
             " sector AS sector, " +
             " identifier_value AS lei " +
-            // get required information from stored companies where active data set exists +
+            // get required information from stored companies where active data set exists
             " FROM (" +
             " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
             " WHERE company_id IN " +
-            "(SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true') " +
-
+            " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true') " +
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
             " LEFT JOIN " + TABLE_LEIS +
             " ON leis.company_id=has_active_data.company_Id" +
@@ -117,8 +128,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "WITH " +
-            TABLE_FILTERED_DROPDOWN_RESULTS +
+        value = "WITH " + TABLE_FILTERED_DROPDOWN_RESULTS +
             "SELECT filtered_data.company_id AS companyId," +
             " company_name AS companyName," +
             " headquarters AS headquarters, " +
@@ -152,12 +162,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value =
-        "WITH " +
-            TABLE_FILTERED_TEXT_RESULTS +
-            ", " +
-            TABLE_FILTERED_DROPDOWN_RESULTS +
-            ", " +
+        value = "WITH " + TABLE_FILTERED_TEXT_RESULTS + ", " +
+            TABLE_FILTERED_DROPDOWN_RESULTS + ", " +
+
             " chunked_results AS (" +
             " SELECT filtered_text_results.company_id AS companyId," +
             " MIN(filtered_text_results.company_name) AS companyName," +
@@ -167,9 +174,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " INNER JOIN filtered_dropdown_results " +
             " ON filtered_text_results.company_id = filtered_dropdown_results.company_id " +
             " GROUP BY filtered_text_results.company_id" +
-            " ORDER BY " +
-            " maxDatasetRank DESC," +
-            " maxMatchQuality DESC, companyName ASC " +
+            " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC " +
             " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset} )" +
 
             " Select companyId, companyName, " +
@@ -178,11 +183,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " sector, " +
             " leis.identifier_value AS lei " +
             " FROM (SELECT chunked_results.companyId, chunked_results.companyName, maxDatasetRank, maxMatchQuality, " +
-            " headquarters, country_code, sector From chunked_results" +
+            " headquarters, country_code, sector FROM chunked_results" +
             " LEFT JOIN stored_companies ON chunked_results.companyId = stored_companies.company_id) AS filtered_data" +
             " LEFT JOIN " + TABLE_LEIS +
-            "ON leis.company_id=filtered_data.companyId " +
-            "ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC",
+            " ON leis.company_id=filtered_data.companyId " +
+            " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC",
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
@@ -321,7 +326,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             ", " +
             TABLE_FILTERED_DROPDOWN_RESULTS +
 
-            // Count Results
             " SELECT COUNT(*)" +
             " FROM filtered_text_results INNER JOIN filtered_dropdown_results " +
             " ON filtered_text_results.company_id = filtered_dropdown_results.company_id ",
