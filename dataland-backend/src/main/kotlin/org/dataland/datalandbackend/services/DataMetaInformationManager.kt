@@ -111,4 +111,18 @@ class DataMetaInformationManager(
         return dataMetaInformationRepositoryInterface.getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
     }
+
+    /**
+     * Returns a list of available country codes across all stored companies
+     */
+    fun getDistinctCountryCodes(): Set<String> {
+        return dataMetaInformationRepositoryInterface.fetchDistinctCountryCodes()
+    }
+
+    /**
+     * Returns a list of available sectors across all stored companies
+     */
+    fun getDistinctSectors(): Set<String> {
+        return dataMetaInformationRepositoryInterface.fetchDistinctSectors()
+    }
 }

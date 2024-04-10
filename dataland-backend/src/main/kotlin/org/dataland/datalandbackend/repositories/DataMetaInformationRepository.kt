@@ -98,4 +98,23 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     fun getUserUploadsDataMetaInfos(
         userId: String,
     ): List<DatasetMetaInfoEntityForMyDatasets>
+
+    /**
+     * Returns all available distinct country codes
+     */
+    @Query(
+        "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company " +
+            "INNER JOIN company.dataRegisteredByDataland data ",
+    )
+    fun fetchDistinctCountryCodes(): Set<String>
+
+    /**
+     * Returns all available distinct sectors
+     */
+    @Query(
+        "SELECT DISTINCT company.sector FROM StoredCompanyEntity company " +
+            "INNER JOIN company.dataRegisteredByDataland data " +
+            "WHERE company.sector IS NOT NULL ",
+    )
+    fun fetchDistinctSectors(): Set<String>
 }

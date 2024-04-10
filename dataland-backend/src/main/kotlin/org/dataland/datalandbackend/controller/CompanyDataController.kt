@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DataOwnersManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -40,6 +41,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val dataOwnersManager: DataOwnersManager,
+    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
 ) : CompanyApi, DataOwnerApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -146,8 +148,8 @@ class CompanyDataController(
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
         return ResponseEntity.ok(
             CompanyAvailableDistinctValues(
-                countryCodes = companyQueryManager.getDistinctCountryCodes(),
-                sectors = companyQueryManager.getDistinctSectors(),
+                countryCodes = dataMetaInformationManager.getDistinctCountryCodes(),
+                sectors = dataMetaInformationManager.getDistinctSectors(),
             ),
         )
     }
