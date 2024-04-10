@@ -56,7 +56,7 @@ class PrivateDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
-    private val documentHashesInMemoryStorage = mutableMapOf<String, MutableList<String>>()
+    private val documentHashesInMemoryStorage = mutableMapOf<String, MutableSet<String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
 
     /**
@@ -92,18 +92,18 @@ class PrivateDataManager(
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
         val documentHashes = documents?.takeIf { it.isNotEmpty() }
             ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
-            ?: mutableListOf()
+            ?: mutableSetOf()
         sendReceptionMessage(dataId, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
 
     private fun storeJsonInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        logger.info(
-            "Storing JSON in memory for companyId ${storableDataSet.companyId} dataId: $dataId and " +
-                "correlationId $correlationId",
-        )
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
         jsonDataInMemoryStorage[dataId] = storableSmeDatasetAsString
+        logger.info(
+            "Stored JSON in memory for companyId ${storableDataSet.companyId} dataId $dataId and " +
+                "correlationId $correlationId",
+        )
     }
 
     private fun buildMetaInfoEntity(dataId: String, storableDataSet: StorableDataSet): DataMetaInformationEntity {
@@ -125,35 +125,35 @@ class PrivateDataManager(
         metaInfoEntity: DataMetaInformationEntity,
         correlationId: String,
     ) {
-        logger.info(
-            "Storing metadata entry in memory for companyId: ${metaInfoEntity.company.companyId}, " +
-                "dataId: $dataId and correlationId: $correlationId",
-        )
         metaInfoEntityInMemoryStorage[dataId] = metaInfoEntity
+        logger.info(
+            "Stored metadata entry in memory for companyId ${metaInfoEntity.company.companyId}, " +
+                "dataId $dataId and correlationId $correlationId",
+        )
     }
 
     private fun storeDocumentsInMemoryAndReturnTheirHashes(
         dataId: String,
         documents: Array<MultipartFile>,
         correlationId: String,
-    ): MutableList<String> {
+    ): MutableSet<String> {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
         //  Maybe we should use the same approach as in the other document service
         //  I changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
         //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
-        logger.info(
-            "Storing ${documents.size} Sme document/s in temporary storage for dataId $dataId " +
-                "and correlationId $correlationId",
-        )
-        val documentHashes = mutableListOf<String>()
+        val documentHashes = mutableSetOf<String>()
         for (document in documents) {
             val documentHash = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
-            val documentAsByteArray = convertMultipartFileToByteArray(document)
             documentHashes.add(documentHash)
+            val documentAsByteArray = convertMultipartFileToByteArray(document)
             documentInMemoryStorage[documentHash] = documentAsByteArray
         }
+        logger.info(
+            "Stored ${documentHashes.size} distinct Sme document/s in temporary storage for dataId $dataId " +
+                "and correlationId $correlationId",
+        )
         documentHashesInMemoryStorage[dataId] = documentHashes
         return documentHashes
     }
@@ -162,7 +162,7 @@ class PrivateDataManager(
         return multipartFile.bytes
     }
 
-    private fun sendReceptionMessage(dataId: String, correlationId: String, documentHashes: MutableList<String>) {
+    private fun sendReceptionMessage(dataId: String, correlationId: String, documentHashes: MutableSet<String>) {
         logger.info(
             "Processed data to be stored in EuroDaT, sending message for dataId $dataId and " +
                 "correlationId $correlationId",
@@ -237,6 +237,7 @@ class PrivateDataManager(
     }
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
+        println("THIS RUNS") // TODO ??
         logger.info(
             "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
@@ -264,7 +265,7 @@ class PrivateDataManager(
         metaDataManager.storeDataMetaInformation(dataMetaInfoToStore)
     }
 
-    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String, documentHashes: List<String>) {
+    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String, documentHashes: MutableSet<String>) {
         documentHashes.forEach { hash ->
             documentInMemoryStorage.remove(hash)
         }
