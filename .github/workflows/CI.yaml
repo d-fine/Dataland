@@ -139,7 +139,7 @@ jobs:
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          NOTIFICATION_INTERNAL_RECEIVERS: ""
+          NOTIFICATION_INTERNAL_RECEIVERS: "dummy@example.com"
           NOTIFICATION_INTERNAL_CC: ""
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
