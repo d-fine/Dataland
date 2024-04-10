@@ -43,7 +43,6 @@ import java.util.*
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param companyQueryManager service for managing company data
  * @param metaDataManager service for managing metadata
- * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
 */
 @Component("PrivateDataManager")
@@ -51,7 +50,6 @@ class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
-    @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
@@ -175,7 +173,7 @@ class PrivateDataManager(
                 "dataId" to dataId,
                 "actionType" to
                     ActionType.StorePrivateDataAndDocuments,
-                "documentHashes" to documentHashes, // TODO Is it a problem that this can be an empty list? Investigate
+                "documentHashes" to documentHashes,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -222,16 +220,17 @@ class PrivateDataManager(
         messageUtils.rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId)
-            removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
+            removeRelatedEntriesFromInMemoryStorages(dataId)
             // TODO mach mal einen one-off Test am Ende mit print-statements und check ob wirklich alles wieder leer
             // TODO ist nach dem removal Prozess
         }
     }
 
-    private fun removeRelatedEntriesFromInMemoryStorages(dataId: String, correlationId: String) {
+    private fun removeRelatedEntriesFromInMemoryStorages(dataId: String) {
         jsonDataInMemoryStorage.remove(dataId)
         metaInfoEntityInMemoryStorage.remove(dataId)
-        removeDocumentsAndHashesFromInMemoryStorages(dataId)
+        val documentHashes = documentHashesInMemoryStorage[dataId]
+        documentHashes?.let { removeDocumentsAndHashesFromInMemoryStorages(dataId, it) }
     }
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
@@ -260,9 +259,8 @@ class PrivateDataManager(
         metaDataManager.storeDataMetaInformation(dataMetaInfoToStore)
     }
 
-    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String) {
-        val documentHashes = documentHashesInMemoryStorage[dataId] // TODO if not found?
-        documentHashes!!.forEach { hash ->
+    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String, documentHashes: List<String>) {
+        documentHashes.forEach { hash ->
             documentInMemoryStorage.remove(hash)
         }
         documentHashesInMemoryStorage.remove(dataId)
@@ -273,7 +271,7 @@ class PrivateDataManager(
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      * @return stringified data entry from the temporary store
      */
-    fun selectPrivateDataSetFromTemporaryStorage(dataId: String): String {
+    fun getJsonFromInMemoryStore(dataId: String): String {
         val rawValue = jsonDataInMemoryStorage.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
                 "Data ID not found in temporary storage",
@@ -282,7 +280,6 @@ class PrivateDataManager(
         }
         return objectMapper.writeValueAsString(rawValue)
     }
-    // TODO this method has to return data and documents, alternatively we use two different endpoints
 
     /**
      * Retrieves the data identified by the given hash from the in-memory store.
