@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.SectorAndCountryRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,7 +45,7 @@ class CompanyQueryManager(
         resultLimit: Int,
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
-            searchString,
+            StoredCompanySearchFilter(emptyList(), emptyList(), emptyList(), searchString),
             resultLimit,
         )
     }
