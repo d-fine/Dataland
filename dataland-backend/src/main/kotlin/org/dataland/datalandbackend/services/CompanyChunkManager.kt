@@ -32,7 +32,6 @@ class CompanyChunkManager(
         val offset = chunkIndex * (chunkSize ?: 0)
         if (filter.searchStringLength == 0) {
             return if (areAllDropdownFiltersDeactivated(filter)) {
-                // todo maybe do this in the frontend? --> set all filter as selected?
                 companyRepository
                     .getAllCompaniesWithDataset(
                         chunkSize, offset,
@@ -41,14 +40,7 @@ class CompanyChunkManager(
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
         } else {
-            // todo decide if we want to have seperat querys
-            return if (filter.dataTypeFilterSize > 0) {
-                companyRepository.searchCompanies(filter, chunkSize, offset)
-                // companyRepository.searchCompaniesWithDatasets(filter, chunkSize, offset)
-            } else {
-                companyRepository.searchCompanies(filter, chunkSize, offset)
-                // companyRepository.searchCompaniesWithoutDatasets(filter, chunkSize, offset)
-            }
+            return companyRepository.searchCompanies(filter, chunkSize, offset)
         }
     }
 
