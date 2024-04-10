@@ -20,12 +20,6 @@ node {
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
 val backendClientOutputDir = "$buildDir/clients/backend"
 
-tasks.register<Copy>("getBackendOpenApiSpec") {
-    from(backendOpenApiFile)
-    into(backendClientOutputDir)
-    filter({ line -> line.replace("http://localhost:8080/api", "/api") })
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
@@ -61,7 +55,6 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
             "withSeparateModelsAndApi" to "true",
         ),
     )
-    dependsOn("getBackendOpenApiSpec")
 }
 
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
