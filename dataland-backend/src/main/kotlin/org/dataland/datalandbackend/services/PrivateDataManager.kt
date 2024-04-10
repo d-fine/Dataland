@@ -237,7 +237,6 @@ class PrivateDataManager(
     }
 
     private fun persistMappingInfo(dataId: String, correlationId: String) {
-        println("THIS RUNS") // TODO ??
         logger.info(
             "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
