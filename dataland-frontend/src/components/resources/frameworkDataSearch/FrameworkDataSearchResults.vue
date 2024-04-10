@@ -52,10 +52,7 @@
     </DataTable>
     <div class="d-center-div text-center px-7 py-4" v-else>
       <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
-      <p class="font-medium text-xl">
-        Please double-check the spelling and try again or create the company you are missing!
-      </p>
-      <NewDatasetButton />
+      <p class="font-medium text-xl">Please double-check the spelling and filter settings!</p>
     </div>
   </div>
 </template>
@@ -65,12 +62,11 @@ import DataTable, { type DataTablePageEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
-import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
 import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { NewDatasetButton, DataTable, Column },
+  components: { DataTable, Column },
   emits: ["page-update"],
   directives: {
     tooltip: Tooltip,
