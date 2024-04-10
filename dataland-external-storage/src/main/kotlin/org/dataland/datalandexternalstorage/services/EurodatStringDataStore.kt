@@ -102,8 +102,9 @@ class EurodatStringDataStore(
         // TODO renamed to getReceivedPrivateJson
         storeJsonInEurodat(dataId, correlationId, DataItem(dataId, jsonToStore))
 
-        JSONObject(payload).getJSONArray("documentHashes").forEach { arrayElement ->
-            val hash = arrayElement as String
+        val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONArray("documentHashes")
+        documentHashesOfDocumentsToStore.forEach { hashAsArrayElement ->
+            val hash = hashAsArrayElement as String
             storeBlobInEurodat(dataId, correlationId, hash)
         }
     }
@@ -115,7 +116,7 @@ class EurodatStringDataStore(
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
-        logger.info("Storing data in EuroDaT for dataId $dataId and correlationId $correlationId")
+        logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
         // TODO call to eurodat
         // dataItemRepository.save(dataItem)
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
