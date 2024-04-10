@@ -65,75 +65,72 @@ class EurodatStringDataStore(
             ),
         ],
     )
-    fun distributeIncomingRequests(
+    fun processStorageRequest(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
-        val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
+        logger.info(
+            "Received storage request for dataId $dataId and correlationId $correlationId with payload: $payload",
+        )
         messageUtils.rejectMessageOnException {
+            val actionType = JSONObject(payload).getString("actionType")
             if (actionType == ActionType.StorePrivateDataAndDocuments) {
-                // TODO remove this logger
-                logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-                persistentlyStoreDataInEurodatAndSendMessage(dataId, correlationId, payload)
+                storeDataInEurodat(dataId, correlationId, payload)
+                sendMessageAfterSuccessfulStorage(payload, correlationId)
             }
         }
     }
 
     /**
-     * Method that stores data in eurodat data truestee and sends a message to the message queue
+     * Method that triggers the storage processes of the JSON and the associated documents in EuroDaT
      * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
-     * @param dataId the dataId of the dataset to be stored
+     * @param correlationId of the current storage process
+     * @param dataId the Dataland dataId of the dataset to be stored
      */
-    fun persistentlyStoreDataInEurodatAndSendMessage(dataId: String, correlationId: String, payload: String) {
-        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        logger.info("payload: $payload")
+    fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
+        logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
         // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
-        // val getAuthentication = DatabaseCredentialResourceApi.
-        val data = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
-        // val documentHashList = JSONObject(payload).getJSONArray("documentHashes").toList()
-        logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-        storeDataInEurodat(dataId, correlationId, DataItem(dataId, objectMapper.writeValueAsString(data)))
-        val jsonArray = JSONObject(payload).getJSONArray("documentHashes")
+        // val getAuthentication = DatabaseCredentialResourceApi. TODO
 
-        val list: List<String> = List(jsonArray.length()) { jsonArray.getString(it) }
-        storeBlobInEurodat(dataId, correlationId, list)
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
-        )
+        val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
+        // TODO renamed to getReceivedPrivateJson
+        storeJsonInEurodat(dataId, correlationId, DataItem(dataId, jsonToStore))
+
+        JSONObject(payload).getJSONArray("documentHashes").forEach { arrayElement ->
+            val hash = arrayElement as String
+            storeBlobInEurodat(dataId, correlationId, hash)
+        }
     }
 
     /**
-     * Stores a Data Item in eurodat while ensuring that there is no active transaction.
+     * Stores a Data Item in EuroDaT while ensuring that there is no active transaction.
      * This will guarantee that the write is commited after exit of this method.
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeDataInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
-        logger.info("Storing data for dataId $dataId and correlationId $correlationId in eurodat storage service")
+    fun storeJsonInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
+        logger.info("Storing data in EuroDaT for dataId $dataId and correlationId $correlationId")
         // TODO call to eurodat
         // dataItemRepository.save(dataItem)
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
     }
 
     /**
-     * Stores a Blob Item in eurodat while ensuring that there is no active transaction.
+     * Stores a Blob Item in EuroDaT while ensuring that there is no active transaction.
      * This will guarantee that the write is commited after exit of this method.
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeBlobInEurodat(dataId: String, correlationId: String, documentHashList: List<String>) {
-        logger.info("Retrieving documents associated with dataId $dataId and correlationId $correlationId")
-        documentHashList.forEach { hash ->
-            val resource = temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
-            val test = resource.readBytes()
-        }
+    fun storeBlobInEurodat(dataId: String, correlationId: String, hash: String) {
+        logger.info("Storing document with hash $hash in EuroDaT for dataId $dataId and correlationId $correlationId")
+        val resource = temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
+        val test = resource.readBytes()
         // TODO call to eurodat
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
     }
@@ -143,4 +140,15 @@ class EurodatStringDataStore(
     (uuid_json, blob_json)
     VALUES('88edd44a-b9e8-49fa-a34b-8493077ee9fb', '2');
     */
+
+    /**
+     * Sends a message to the queue to inform other services that the storage to EuroDaT has been successful.
+     * @param payload contains meta info about the stored assets (dataId and hashes)
+     * @param correlationId makes it possible to match the message to one specific storage process/thread
+     */
+    fun sendMessageAfterSuccessfulStorage(payload: String, correlationId: String) {
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
+        )
+    }
 }

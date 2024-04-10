@@ -52,7 +52,7 @@ interface TemporarilyCachedDataApi {
         value = ["/private/{dataId}"],
         produces = ["application/json"],
     )
-    fun getReceivedPrivateData(@PathVariable("dataId") dataId: String):
+    fun getReceivedPrivateJson(@PathVariable("dataId") dataId: String):
         ResponseEntity<String>
 
     /**

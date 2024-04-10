@@ -25,7 +25,7 @@ class TemporarilyCachedDataController(
         return ResponseEntity.ok(publicDataManager.selectPublicDataSetFromTemporaryStorage(dataId))
     }
 
-    override fun getReceivedPrivateData(dataId: String): ResponseEntity<String> {
+    override fun getReceivedPrivateJson(dataId: String): ResponseEntity<String> {
         return ResponseEntity.ok(privateDataManager.getJsonFromInMemoryStore(dataId))
     }
     override fun getReceivedPrivateDocument(hash: String): ResponseEntity<InputStreamResource> {
