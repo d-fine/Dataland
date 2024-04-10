@@ -21,18 +21,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             ") AS leis "
 
         // Select company_id, company_name, match_quality, match_rank based on searchString
-        const val TABLE_FILTERED_TEXT_RESULTS = " filtered_text_results AS (" +
+        const val TABLE_FILTERED_TEXT_RESULTS = " (" +
             " (SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name," +
             " MAX(CASE " +
-            " WHEN company_name = :#{#searchFilter.searchString} THEN 10" +
-            " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
-            " ELSE 1" +
-            " END) match_quality, " +
+            "   WHEN company_name = :#{#searchFilter.searchString} THEN 10" +
+            "   WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
+            "   ELSE 1" +
+            "   END) match_quality, " +
             " MAX(CASE " +
-            " WHEN data_id IS NOT null THEN 2 " +
-            " ELSE 1 " +
-            " END) AS dataset_rank" +
-            " FROM stored_companies" +
+            "   WHEN data_id IS NOT null THEN 2 " +
+            "   ELSE 1 " +
+            "   END) AS dataset_rank" +
+            "   FROM stored_companies" +
             " LEFT JOIN data_meta_information " +
             " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
@@ -43,18 +43,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " (SELECT stored_company_entity_company_id AS company_id," +
             " MAX(stored_companies.company_name) AS company_name," +
             " MAX(CASE " +
-            " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
-            " WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
-            " ESCAPE :#{escapeCharacter()} THEN 4" +
-            " ELSE 1 " +
+            "   WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 9 " +
+            "   WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% " +
+            "   ESCAPE :#{escapeCharacter()} THEN 4" +
+            "   ELSE 1 " +
             " END) match_quality, " +
             " MAX(CASE " +
-            " WHEN data_id IS NOT null THEN 2 " +
-            " ELSE 1 END) AS dataset_rank" +
-            " FROM stored_company_entity_company_alternative_names" +
+            "   WHEN data_id IS NOT null THEN 2 " +
+            "   ELSE 1 END) AS dataset_rank" +
+            "   FROM stored_company_entity_company_alternative_names" +
             " JOIN stored_companies " +
             " ON stored_companies.company_id = " +
-            " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
+            "   stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
             " LEFT JOIN data_meta_information " +
             " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true " +
             " WHERE " +
@@ -66,24 +66,25 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             // Fuzzy-Search Company Identifier
             " (SELECT company_identifiers.company_id, MAX(stored_companies.company_name) AS company_name," +
             " MAX(CASE " +
-            " WHEN identifier_value = :#{#searchFilter.searchString} THEN 10" +
-            " WHEN identifier_value ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
-            " ELSE 0" +
-            " END) AS match_quality, " +
+            "   WHEN identifier_value = :#{#searchFilter.searchString} THEN 10" +
+            "   WHEN identifier_value " +
+            "           ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
+            "   ELSE 0" +
+            "   END) AS match_quality, " +
             " MAX(CASE " +
-            " WHEN data_id IS NOT null " +
-            " THEN 2 else 1 " +
-            " END) AS dataset_rank" +
+            "   WHEN data_id IS NOT null " +
+            "   THEN 2 else 1 " +
+            "   END) AS dataset_rank" +
             " FROM company_identifiers" +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
             " LEFT JOIN data_meta_information " +
             " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
             " GROUP BY company_identifiers.company_id)" +
-            " ) "
+            " ) AS filtered_text_results "
 
         // Select company_id if company satisfies data_type, sector and country filter
-        const val TABLE_FILTERED_DROPDOWN_RESULTS = "filtered_dropdown_results AS (" +
+        const val TABLE_FILTERED_DROPDOWN_RESULTS = " (" +
             " SELECT company_id FROM stored_companies " +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0 OR company_id IN " +
             " (SELECT DISTINCT company_id " +
@@ -94,7 +95,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
             " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
-            ") "
+            ") AS filtered_dropdown_results "
     }
 
     /**
@@ -112,10 +113,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM (" +
             " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
             " WHERE company_id IN " +
-            " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active='true') " +
+            " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true') " +
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
             " LEFT JOIN " + TABLE_LEIS +
-            " ON leis.company_id=has_active_data.company_Id" +
+            " ON leis.company_id = has_active_data.company_Id" +
             " ORDER BY company_name ASC",
     )
     fun getAllCompaniesWithDataset(
@@ -128,8 +129,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "WITH " + TABLE_FILTERED_DROPDOWN_RESULTS +
-            "SELECT filtered_data.company_id AS companyId," +
+        value =
+        " SELECT filtered_data.company_id AS companyId," +
             " company_name AS companyName," +
             " headquarters AS headquarters, " +
             " country_code AS countryCode, " +
@@ -139,11 +140,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM (" +
             " SELECT stored_companies.company_id, company_name, headquarters, country_code, sector " +
             " FROM stored_companies " +
-            " INNER JOIN filtered_dropdown_results " +
+            " INNER JOIN " + TABLE_FILTERED_DROPDOWN_RESULTS +
             " ON stored_companies.company_id = filtered_dropdown_results.company_id " +
             " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS filtered_data " +
             " LEFT JOIN " + TABLE_LEIS +
-            " ON leis.company_id=filtered_data.company_Id" +
+            " ON leis.company_id = filtered_data.company_Id" +
             " ORDER BY company_name ASC",
     )
     fun searchCompaniesWithoutSearchString(
@@ -162,16 +163,14 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "WITH " + TABLE_FILTERED_TEXT_RESULTS + ", " +
-            TABLE_FILTERED_DROPDOWN_RESULTS + ", " +
-
+        value = "WITH " +
             " chunked_results AS (" +
             " SELECT filtered_text_results.company_id AS companyId," +
             " MIN(filtered_text_results.company_name) AS companyName," +
             " MAX(filtered_text_results.dataset_rank) AS maxDatasetRank," +
             " MAX(filtered_text_results.match_quality) AS maxMatchQuality" +
-            " FROM filtered_text_results " +
-            " INNER JOIN filtered_dropdown_results " +
+            " FROM " + TABLE_FILTERED_TEXT_RESULTS +
+            " INNER JOIN " + TABLE_FILTERED_DROPDOWN_RESULTS +
             " ON filtered_text_results.company_id = filtered_dropdown_results.company_id " +
             " GROUP BY filtered_text_results.company_id" +
             " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC " +
@@ -231,7 +230,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " WHEN company_alternative_names ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
             " ELSE 1 " +
             " END) match_quality, " +
-            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " MAX(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
             " FROM stored_company_entity_company_alternative_names" +
             " JOIN stored_companies ON stored_companies.company_id = " +
             " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
@@ -245,13 +244,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
 
             " UNION" +
             // Fuzzy-Search Company Identifier
-            " (SELECT company_identifiers.company_id, max(stored_companies.company_name) AS company_name," +
-            " max(CASE " +
+            " (SELECT company_identifiers.company_id, MAX(stored_companies.company_name) AS company_name," +
+            " MAX(CASE " +
             " WHEN identifier_value = :#{#searchString} THEN 10" +
             " WHEN identifier_value ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
             " ELSE 0" +
             " END) AS match_quality, " +
-            " max(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
+            " MAX(CASE WHEN data_id IS NOT null THEN 2 else 1 END) AS dataset_rank" +
             " FROM company_identifiers" +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
             " LEFT JOIN data_meta_information " +
@@ -269,12 +268,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON filtered_text_results.company_id = data_meta_information.company_id AND currently_active = true" +
             " GROUP BY filtered_text_results.company_id" +
             " ORDER BY " +
-            " max(dataset_rank) DESC," +
+            " MAX(dataset_rank) DESC," +
             " MAX(filtered_text_results.match_quality) DESC, companyId " +
             " LIMIT :#{#resultLimit}",
     )
     fun searchCompaniesByNameOrIdentifier(
-        @Param("searchString") searchString: String,
+        @Param("searchFilter.searchString") searchString: String,
         @Param("resultLimit") resultLimit: Int = 100,
     ): List<CompanyIdAndName>
 
@@ -321,13 +320,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "WITH " +
-            TABLE_FILTERED_TEXT_RESULTS +
-            ", " +
-            TABLE_FILTERED_DROPDOWN_RESULTS +
-
-            " SELECT COUNT(*)" +
-            " FROM filtered_text_results INNER JOIN filtered_dropdown_results " +
+        value =
+        " SELECT COUNT(*)" +
+            " FROM " + TABLE_FILTERED_TEXT_RESULTS + " INNER JOIN " + TABLE_FILTERED_DROPDOWN_RESULTS +
             " ON filtered_text_results.company_id = filtered_dropdown_results.company_id ",
     )
     fun getNumberOfCompanies(
@@ -343,11 +338,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "WITH " +
-            TABLE_FILTERED_DROPDOWN_RESULTS +
-
-            " SELECT COUNT(*)" +
-            " FROM filtered_dropdown_results ",
+        value =
+        " SELECT COUNT(*)" +
+            " FROM " + TABLE_FILTERED_DROPDOWN_RESULTS,
     )
     fun getNumberOfCompaniesWithoutSearchString(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,

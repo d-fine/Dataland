@@ -4,7 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import { type BasicCompanyInformation, type CompanyIdAndName, type DataTypeEnum } from "@clients/backend";
+import { type BasicCompanyInformation, type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 
 export interface FrameworkDataSearchFilterInterface {
@@ -79,7 +79,7 @@ export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
 }
 
 /**
- * send out an API-call to get stored companies and map the response to the required scheme for the search page
+ * send out an API-call to count stored companies that satisfy the filters
  * @param  {string} searchString           the string that is used to search companies
  *                                         by name, or additionally by identifier values
  * @param {Array<string>} frameworkFilter
@@ -90,7 +90,7 @@ export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
  *                                         countries specified by the country codes are returned
  * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
- * @returns the search result companies
+ * @returns the number of result companies
  */
 export async function getNumberOfCompaniesForFrameworkDataSearchPage(
   searchString: string,
@@ -100,6 +100,9 @@ export async function getNumberOfCompaniesForFrameworkDataSearchPage(
   keycloakPromise: Promise<Keycloak>,
 ): Promise<number> {
   try {
+    if (searchString.length + frameworkFilter.size + countryCodeFilter.size + sectorFilter.size == 0) {
+      frameworkFilter = new Set<DataTypeEnum>(Object.values(DataTypeEnum));
+    }
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
     const response = await companyDataControllerApi.getNumberOfCompanies(
       searchString,

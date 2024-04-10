@@ -64,7 +64,7 @@ import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { type BasicCompanyInformation, DataTypeEnum } from "@clients/backend";
+import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -251,23 +251,11 @@ export default defineComponent({
      * @returns total number of companies
      */
     async getTotalNumberOfCompanies() {
-      let sectorFilter = new Set(this.filter?.sectorFilter);
-      if (
-        areAllFiltersDeactivated(
-          this.filter?.frameworkFilter,
-          this.filter?.countryCodeFilter,
-          this.filter?.sectorFilter,
-        ) &&
-        this.searchBarInput.length == 0
-      ) {
-        const enumValues = Object.values(DataTypeEnum);
-        sectorFilter = new Set(enumValues);
-      }
       return await getNumberOfCompaniesForFrameworkDataSearchPage(
         this.searchBarInput,
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
-        sectorFilter,
+        new Set(this.filter?.sectorFilter),
         assertDefined(this.getKeycloakPromise)(),
       );
     },
