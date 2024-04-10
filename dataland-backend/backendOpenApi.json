@@ -8005,14 +8005,6 @@
               }
             ]
           },
-          "worstFormsOfChildLabor": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
           "worstFormsOfChildLaborProhibition": {
             "nullable": true,
             "allOf": [
@@ -8682,14 +8674,6 @@
           "unlawfulEvictionAndTakingOfLandOtherMeasuresDescription": {
             "type": "string",
             "nullable": true
-          },
-          "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
           }
         }
       },
@@ -14106,16 +14090,16 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "sector": {

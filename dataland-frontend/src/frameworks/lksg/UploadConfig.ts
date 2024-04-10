@@ -636,7 +636,7 @@ export const lksgDataModel = [
           },
           {
             name: "gotsOrganicInConversion",
-            label: "GOTS Organic in Conversion",
+            label: "GOTS - Organic in Conversion",
             description:
               "Is your company GOTS – Organic in Conversion certified? If so, please provide us with the certificate.",
 
@@ -997,15 +997,6 @@ export const lksgDataModel = [
             label: "Employee(s) Under 18 in Apprenticeship",
             description:
               "Are your employees under the age of 18 exclusively apprentices within the meaning of the locally applicable laws?",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
-          },
-          {
-            name: "worstFormsOfChildLabor",
-            label: "Worst Forms of Child Labor",
-            description: "Have there been any worst forms of child labor in your company in the last 5 years?",
 
             component: "YesNoFormField",
             required: false,
@@ -2056,16 +2047,6 @@ export const lksgDataModel = [
             showIf: (dataset: LksgData): boolean =>
               dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                 ?.unlawfulEvictionAndTakingOfLandOtherMeasures?.value == "Yes",
-          },
-          {
-            name: "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure",
-            label: "Voluntary Guidelines on the Responsible Governance of Tenure",
-            description:
-              "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
-
-            component: "YesNoFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },

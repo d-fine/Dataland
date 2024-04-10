@@ -737,7 +737,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
           },
           {
             type: "cell",
-            label: "GOTS Organic in Conversion",
+            label: "GOTS - Organic in Conversion",
             explanation:
               "Is your company GOTS – Organic in Conversion certified? If so, please provide us with the certificate.",
             shouldDisplay: (): boolean => true,
@@ -746,7 +746,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 formatYesNoValueForDatatable(
                   dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion?.value,
                 ),
-                "GOTS Organic in Conversion",
+                "GOTS - Organic in Conversion",
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.gotsOrganicInConversion,
               ),
           },
@@ -1239,14 +1239,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.childLabor?.employeeSUnder18InApprenticeship),
-          },
-          {
-            type: "cell",
-            label: "Worst Forms of Child Labor",
-            explanation: "Have there been any worst forms of child labor in your company in the last 5 years?",
-            shouldDisplay: (dataset: LksgData): boolean => dataset.social?.childLabor?.employeeSUnder18 == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.social?.childLabor?.worstFormsOfChildLabor),
           },
           {
             type: "cell",
@@ -2508,18 +2500,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               formatStringForDatatable(
                 dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
                   ?.unlawfulEvictionAndTakingOfLandOtherMeasuresDescription,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Voluntary Guidelines on the Responsible Governance of Tenure",
-            explanation:
-              "Have you implemented the voluntary guidelines on the responsible governance of tenure in your company?",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.social?.unlawfulEvictionDeprivationOfLandForestAndWater
-                  ?.voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure,
               ),
           },
         ],

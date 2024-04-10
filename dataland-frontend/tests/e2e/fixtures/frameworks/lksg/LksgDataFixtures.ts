@@ -166,7 +166,6 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         employeeSUnder18: dataGenerator.randomYesNo(),
         employeeSUnder15: dataGenerator.randomYesNo(),
         employeeSUnder18InApprenticeship: dataGenerator.randomYesNo(),
-        worstFormsOfChildLabor: dataGenerator.randomYesNo(),
         worstFormsOfChildLaborProhibition: dataGenerator.randomYesNo(),
         worstFormsOfChildLaborForms: dataGenerator.randomShortString(),
         measuresForPreventionOfEmploymentUnderLocalMinimumAge: dataGenerator.randomYesNo(),
@@ -282,7 +281,6 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
           dataGenerator.guaranteedYesNo(),
         ),
         unlawfulEvictionAndTakingOfLandOtherMeasuresDescription: dataGenerator.randomShortString(),
-        voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: dataGenerator.randomYesNo(),
       },
       useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: {
         useOfPrivatePublicSecurityForces: dataGenerator.randomYesNo(),

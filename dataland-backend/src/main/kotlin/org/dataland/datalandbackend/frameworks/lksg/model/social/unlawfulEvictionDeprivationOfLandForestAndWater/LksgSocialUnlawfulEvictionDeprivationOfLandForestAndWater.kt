@@ -28,6 +28,4 @@ data class LksgSocialUnlawfulEvictionDeprivationOfLandForestAndWater(
 
     val unlawfulEvictionAndTakingOfLandOtherMeasuresDescription: String? = null,
 
-    val voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: YesNo? = null,
-
 )
