@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
-import org.dataland.datalandbackend.services.CompanyChunkManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataOwnersManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -30,7 +29,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
-    @Autowired val companyChunkManager: CompanyChunkManager,
     @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired val dataOwnersManager: DataOwnersManager,
 ) {
@@ -56,7 +54,6 @@ internal class CompanyDataControllerTest(
         val companyController = CompanyDataController(
             companyAlterationManager,
             companyQueryManager,
-            companyChunkManager,
             companyIdentifierRepositoryInterface,
             dataOwnersManager,
         )

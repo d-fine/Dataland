@@ -17,7 +17,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         // Select company_id, LEI identifiers as leis
         const val TABLE_LEIS = " (" +
             " SELECT identifier_value, company_id " +
-            " FROM company_identifiers WHERE identifier_type = 'Lei'" +
+            " FROM company_identifiers " +
+            " WHERE identifier_type = 'Lei' " +
             ") AS leis "
 
         // Select company_id, company_name, match_quality, match_rank based on searchString as filtered_text_results
@@ -34,7 +35,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "   END) AS dataset_rank" +
             "   FROM stored_companies" +
             " LEFT JOIN data_meta_information " +
-            " ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
+            "   ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
             " GROUP BY stored_companies.company_id) " +
 
@@ -53,10 +54,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "   ELSE 1 END) AS dataset_rank" +
             "   FROM stored_company_entity_company_alternative_names" +
             " JOIN stored_companies " +
-            " ON stored_companies.company_id = " +
+            "   ON stored_companies.company_id = " +
             "   stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
             " LEFT JOIN data_meta_information " +
-            " ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true " +
+            "   ON stored_company_entity_company_id = data_meta_information.company_id AND currently_active = true " +
             " WHERE " +
             " company_alternative_names ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()}" +
             " GROUP BY stored_company_entity_company_id" +
@@ -78,7 +79,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM company_identifiers" +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
             " LEFT JOIN data_meta_information " +
-            " ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
+            "   ON company_identifiers.company_id = data_meta_information.company_id AND currently_active = true" +
             " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
             " GROUP BY company_identifiers.company_id)" +
             " ) AS filtered_text_results "
@@ -87,13 +88,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         const val TABLE_FILTERED_DROPDOWN_RESULTS = " (" +
             " SELECT company_id FROM stored_companies " +
             " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0 OR company_id IN " +
-            " (SELECT DISTINCT company_id " +
-            " FROM data_meta_information " +
-            " WHERE currently_active='true'" +
-            " AND :#{#searchFilter.dataTypeFilterSize} > 0" +
-            " AND data_type IN :#{#searchFilter.dataTypeFilter}) ) " +
-            " AND  (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
-            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            "   (SELECT DISTINCT company_id " +
+            "       FROM data_meta_information " +
+            "       WHERE currently_active='true'" +
+            "       AND :#{#searchFilter.dataTypeFilterSize} > 0" +
+            "       AND data_type IN :#{#searchFilter.dataTypeFilter})) " +
+            " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0 " +
             " OR country_code IN :#{#searchFilter.countryCodeFilter})" +
             ") AS filtered_dropdown_results "
     }
@@ -207,9 +208,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " LEFT JOIN data_meta_information " +
             " ON filtered_text_results.company_id = data_meta_information.company_id AND currently_active = true" +
             " GROUP BY filtered_text_results.company_id" +
-            " ORDER BY " +
-            " MAX(dataset_rank) DESC," +
-            " MAX(filtered_text_results.match_quality) DESC, companyId " +
+            " ORDER BY MAX(dataset_rank) DESC, MAX(filtered_text_results.match_quality) DESC, companyName ASC " +
             " LIMIT :#{#resultLimit}",
     )
     fun searchCompaniesByNameOrIdentifier(

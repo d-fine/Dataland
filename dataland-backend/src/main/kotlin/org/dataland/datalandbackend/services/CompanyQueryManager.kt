@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -32,6 +33,45 @@ class CompanyQueryManager(
         if (!companyRepository.existsById(companyId)) {
             throw ResourceNotFoundApiException("Company not found", "Dataland does not know the company ID $companyId")
         }
+    }
+
+    /**
+     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeeding
+     * the given size
+     * @param chunkSize the package size of the records
+     * @param chunkIndex the index of the chunk which is requested
+     * @param filter The filter to use during searching
+     * @return list of lists each containing BasicCompanyInformation objects
+     */
+    @Transactional
+    fun getCompaniesInChunks(
+        filter: StoredCompanySearchFilter,
+        chunkIndex: Int,
+        chunkSize: Int?,
+    ): List<BasicCompanyInformation> {
+        val offset = chunkIndex * (chunkSize ?: 0)
+        return if (filter.searchStringLength == 0) {
+            if (areAllDropdownFiltersDeactivated(filter)) {
+                companyRepository
+                    .getAllCompaniesWithDataset(
+                        chunkSize, offset,
+                    )
+            } else {
+                companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
+            }
+        } else {
+            companyRepository.searchCompanies(filter, chunkSize, offset)
+        }
+    }
+
+    /**
+     * Method to check if ever dropdownFilter is deactivated
+     * @param filter The filter to use during searching
+     */
+    private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
+        return (
+            filter.dataTypeFilterSize + filter.sectorFilterSize + filter.countryCodeFilterSize == 0
+            )
     }
 
     /**
@@ -122,5 +162,23 @@ class CompanyQueryManager(
             dataType.name,
             true,
         )
+    }
+
+    /**
+     * Method to get the number of companies satisfying the filter
+     * @param filter The filter to use during counting
+     */
+    @Transactional
+    fun countNumberOfCompanies(
+        filter: StoredCompanySearchFilter,
+    ): Int {
+        return if (filter.searchStringLength == 0) {
+            companyRepository
+                .getNumberOfCompaniesWithoutSearchString(
+                    filter,
+                )
+        } else {
+            companyRepository.getNumberOfCompanies(filter)
+        }
     }
 }
