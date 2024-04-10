@@ -196,7 +196,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
 
     /**
      * A function for querying companies by search string:
-     * - searchString: If not empty, only companies that contain the search string in their name are returned
+     * - searchFilter.searchString: If not empty,
+     *      only companies that contain the search string in their name are returned
      * (Prefix-Matches are ordered before Center-Matches,
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
      */
