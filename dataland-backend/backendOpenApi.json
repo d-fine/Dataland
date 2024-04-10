@@ -1778,7 +1778,7 @@
         ],
         "summary": "Retrieve specific data from the cache store of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedPrivateData",
+        "operationId": "getReceivedPrivateJson",
         "parameters": [
           {
             "name": "dataId",
@@ -13786,20 +13786,20 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {
@@ -13827,10 +13827,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
