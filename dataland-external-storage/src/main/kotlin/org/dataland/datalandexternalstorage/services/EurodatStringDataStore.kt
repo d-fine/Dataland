@@ -98,7 +98,7 @@ class EurodatStringDataStore(
         // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
         // val getAuthentication = DatabaseCredentialResourceApi. TODO
 
-        val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateData(dataId)
+        val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         // TODO renamed to getReceivedPrivateJson
         storeJsonInEurodat(dataId, correlationId, DataItem(dataId, jsonToStore))
 
