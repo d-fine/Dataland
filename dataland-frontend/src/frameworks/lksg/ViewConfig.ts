@@ -3123,7 +3123,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Attachment",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {

@@ -68,6 +68,9 @@ class LksgFramework : PavedRoadFramework(
 
         root.edit<ComponentGroup>("attachment") {
             viewPageLabelBadgeColor = LabelBadgeColor.Brown
+            edit<ComponentGroup>("attachment") {
+                viewPageExpandOnPageLoad = true
+            }
         }
     }
 }
