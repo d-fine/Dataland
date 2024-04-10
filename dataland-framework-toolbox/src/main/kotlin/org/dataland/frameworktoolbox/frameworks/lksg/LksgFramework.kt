@@ -65,5 +65,9 @@ class LksgFramework : PavedRoadFramework(
         root.edit<ComponentGroup>("environmental") {
             viewPageLabelBadgeColor = LabelBadgeColor.Blue
         }
+
+        root.edit<ComponentGroup>("attachment") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Brown
+        }
     }
 }

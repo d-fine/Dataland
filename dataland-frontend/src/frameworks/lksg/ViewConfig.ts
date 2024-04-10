@@ -3141,5 +3141,6 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
         ],
       },
     ],
+    labelBadgeColor: "brown",
   },
 ];

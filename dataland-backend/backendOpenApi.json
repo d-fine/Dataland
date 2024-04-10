@@ -14106,6 +14106,10 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -14119,10 +14123,6 @@
             "type": "string"
           },
           "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "permId": {
             "type": "string",
             "nullable": true
           }
