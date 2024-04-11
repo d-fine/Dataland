@@ -55,3 +55,6 @@
 [Environment]::SetEnvironmentVariable("FRONTEND_LOCATION_CONFIG", "Test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_LOCATION_CONFIG", "Dev", [System.EnvironmentVariableTarget]::User)
 
+# EuroDaT credentials - look them up in our wiki
+# [Environment]::SetEnvironmentVariable("EURODAT_CLIENT_TLS_CERT", "", [System.EnvironmentVariableTarget]::User)
+
