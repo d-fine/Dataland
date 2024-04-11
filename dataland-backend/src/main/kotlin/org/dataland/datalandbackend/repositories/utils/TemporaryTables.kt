@@ -20,7 +20,7 @@ class TemporaryTables private constructor() {
             "   ELSE 1 " +
             "   END) AS dataset_rank "
 
-        // Select company_id, company_name, match_quality, match_rank based on searchString as filtered_text_results
+        // Select company_id, company_name, match_quality, dataset_rank based on searchString as filtered_text_results
         // Requires the parameter searchFilter : StoredCompanySearchFilter
         const val TABLE_FILTERED_TEXT_RESULTS = " ( " +
             " (SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name, " +
