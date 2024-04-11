@@ -53,6 +53,9 @@
     <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
       <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
       <p class="font-medium text-xl">Please double-check the spelling and filter settings!</p>
+      <p class="font-medium text-xl">
+        It might be possible that the company you searched for does not exist on Dataland yet.
+      </p>
     </div>
   </div>
 </template>

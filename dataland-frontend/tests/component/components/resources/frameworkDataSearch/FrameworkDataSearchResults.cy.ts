@@ -34,6 +34,9 @@ describe("Component tests for 'no result text' on the level of company search re
       cy.get('[data-test="DataSearchNoResultsText"]')
         .should("exist")
         .contains("Please double-check the spelling and filter settings!");
+      cy.get('[data-test="DataSearchNoResultsText"]')
+        .should("exist")
+        .contains("It might be possible that the company you searched for does not exist on Dataland yet.");
     });
   });
 });
