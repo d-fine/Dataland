@@ -13,6 +13,13 @@
           <div class="card">
             <div class="card__title">Request Details</div>
             <div class="card__separator" />
+            <div class="card__subtitle">Company</div>
+            <div class="card__data"></div>
+            <div></div>
+            <div class="card__subtitle">Framework</div>
+            <div class="card__data">{{ storedDataRequest.dataType }}</div>
+            <div class="card__subtitle">Reporting year</div>
+            <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
           </div>
         </div>
         <div class="grid col-8 flex-direction-column">
@@ -22,7 +29,7 @@
               <a class=""></a>
               <div class="card__separator" />
               <!-- todo -->
-              Test blabla {{ requestId }}
+              Test blabla {{ storedDataRequest.creationTimestamp }}
             </div>
             <div class="card">
               <div class="card__title">Withdraw Request</div>
@@ -107,24 +114,31 @@ export default defineComponent({
   margin-bottom: 1rem;
 
   &__subtitle {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21px;
+    font-size: medium;
+    line-height: normal;
+    color: gray;
+    margin-top: auto;
+  }
 
-    margin-top: 8px;
+  &__data {
+    font-size: medium;
+    font-weight: bold;
+    line-height: normal;
+    margin-top: auto;
+    margin-bottom: 1rem;
   }
 
   &__title {
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 27px;
+    font-size: large;
+    font-weight: bold;
+    line-height: normal;
   }
 
   &__separator {
     width: 100%;
     border-bottom: #e0dfde solid 1px;
-    margin-top: 8px;
-    margin-bottom: 24px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 }
 </style>
