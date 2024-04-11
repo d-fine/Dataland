@@ -14,7 +14,7 @@ class TemporaryTables private constructor() {
             " WHERE identifier_type = 'Lei' " +
             " ) AS leis "
 
-        // Column for the next TABLE_FILTERED_TEXT_RESULTS table
+        // Column for the TABLE_FILTERED_TEXT_RESULTS table
         private const val DATASET_RANK = " MAX( CASE " +
             "   WHEN data_id IS NOT NULL THEN 2 " +
             "   ELSE 1 " +
