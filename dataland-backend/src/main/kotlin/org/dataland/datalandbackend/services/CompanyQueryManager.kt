@@ -147,22 +147,4 @@ class CompanyQueryManager(
             true,
         )
     }
-
-    /**
-     * Method to get the number of companies satisfying the filter
-     * @param filter The filter to use during counting
-     */
-    @Transactional
-    fun countNumberOfCompanies(
-        filter: StoredCompanySearchFilter,
-    ): Int {
-        return if (filter.searchStringLength == 0) {
-            companyRepository
-                .getNumberOfCompaniesWithoutSearchString(
-                    filter,
-                )
-        } else {
-            companyRepository.getNumberOfCompanies(filter)
-        }
-    }
 }
