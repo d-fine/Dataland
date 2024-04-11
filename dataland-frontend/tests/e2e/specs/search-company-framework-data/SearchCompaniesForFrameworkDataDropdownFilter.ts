@@ -210,8 +210,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           "search results, if no framework filter is set.",
         () => {
           const preFix = "ThisCompanyHasNoDataSet";
-          const nameMarker = "012345678910";
-          const companyName = preFix + nameMarker;
+          const companyName = preFix + companyNameMarker;
           const sector = "SectorWithNoDataSet";
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
@@ -221,7 +220,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           verifySearchResultTableExists();
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
-            .type(nameMarker, { scrollBehavior: false });
+            .type(companyNameMarker, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(preFix).should("exist");
           });
