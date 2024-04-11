@@ -39,6 +39,8 @@ tasks.register("generateClients") {
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.backend"
     input = project.file(backendOpenApiFile).path
     outputDir.set(backendClientOutputDir)
@@ -83,6 +85,8 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 }
 
 tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the document manager service."
+    group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.documentmanager"
     input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/documentmanager").get().toString())
@@ -103,6 +107,8 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     )
 }
 tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the QA service."
+    group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.qaservice"
     input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/qaservice").get().toString())
@@ -124,6 +130,8 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
 }
 
 tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.communitymanager"
     input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/communitymanager").get().toString())

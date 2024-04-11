@@ -84,6 +84,8 @@ jacoco {
 }
 
 tasks.register<Copy>("getTestData") {
+    description = "Task to copy required testing data."
+    group = "verification"
     from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
     into(layout.buildDirectory.dir("resources/test").get().toString())
 }
@@ -97,6 +99,8 @@ gitProperties {
 }
 
 tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the internal storage service."
+    group = "clients"
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
     input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
         .path
@@ -120,6 +124,8 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
 }
 
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateInternalStorageClient")
 }
 

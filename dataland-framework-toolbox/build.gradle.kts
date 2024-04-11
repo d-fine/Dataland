@@ -25,6 +25,8 @@ tasks.test {
 }
 
 tasks.register("integrationTest", JavaExec::class) {
+    description = "Task to execute the integration tests."
+    group = "verification"
     classpath = sourceSets["test"].runtimeClasspath
     mainClass = "org.dataland.frameworktoolbox.integration.IntegrationTestMainKt"
     workingDir = rootDir

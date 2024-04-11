@@ -38,6 +38,8 @@ tasks.withType<Test> {
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
@@ -60,6 +62,8 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 }
 
 tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the QA service."
+    group = "clients"
     val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
     input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/qa-service").get().toString())
@@ -81,6 +85,8 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
 }
 
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the API-key manager service."
+    group = "clients"
     val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/api-key-manager").get().toString())
@@ -98,6 +104,8 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 }
 
 tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the document manager service."
+    group = "clients"
     val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/document-manager").get().toString())
@@ -115,6 +123,8 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
 }
 
 tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.communitymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
     outputDir.set(layout.buildDirectory.dir("clients/community-manager").get().toString())
@@ -137,6 +147,8 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
 }
 
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateQaServiceClient")
     dependsOn("generateApiKeyManagerClient")
@@ -172,6 +184,8 @@ tasks.bootJar {
 }
 
 tasks.register<Copy>("getTestData") {
+    description = "Task to copy required testing data."
+    group = "verification"
     from("$rootDir/testing/data")
     into(layout.buildDirectory.dir("resources/test"))
 }
