@@ -45,6 +45,7 @@
             <div class="card">
               <DataTable
                 :value="displayedData"
+                class="table-cursor"
                 :rowHover="true"
                 :loading="waitingForData"
                 data-test="requested-Datasets-table"
@@ -55,6 +56,8 @@
                 :total-records="numberOfFilteredRequests"
                 @page="onPage($event)"
                 @sort="onSort($event)"
+                @row-click="onRowClick($event)"
+                id="my-data-requests-overview-table"
               >
                 <Column header="COMPANY" field="companyName" :sortable="true">
                   <template #body="slotProps">
@@ -340,6 +343,16 @@ export default defineComponent({
       );
     },
     /**
+     * Navigates to the view dataRequest page
+     * @param event contains column that was clicked
+     * @param event.data extended stored data request
+     * @returns the promise of the router push action
+     */
+    onRowClick(event: { data: ExtendedStoredDataRequest }) {
+      const requestIdOfClickedRow = event.data.dataRequestId;
+      return this.$router.push(`/requests/${requestIdOfClickedRow}`);
+    },
+    /**
      * Sorts the list of storedDataRequests
      * @param event contains column to sort and sortOrder
      */
@@ -455,3 +468,8 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+#my-data-requests-overview-table tr:hover {
+  cursor: pointer;
+}
+</style>

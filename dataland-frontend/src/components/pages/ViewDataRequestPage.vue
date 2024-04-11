@@ -21,6 +21,7 @@
               <div class="card__title">Request Status</div>
               <a class=""></a>
               <div class="card__separator" />
+              <!-- todo -->
               Test blabla {{ requestId }}
             </div>
             <div class="card">
@@ -53,8 +54,7 @@ export default defineComponent({
   props: {
     requestId: {
       type: String,
-      required: false, //todo
-      default: "12345",
+      required: true,
     },
   },
   setup() {
