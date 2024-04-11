@@ -75,7 +75,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 
@@ -85,7 +85,7 @@ jacoco {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
-    into("${layout.buildDirectory}/resources/test")
+    into(layout.buildDirectory.dir("resources/test").get().toString())
 }
 
 tasks.getByName("processTestResources") {
@@ -100,7 +100,7 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
     input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
         .path
-    outputDir.set("${layout.buildDirectory}/clients/internal-storage")
+    outputDir.set(layout.buildDirectory.dir("clients/internal-storage").get().toString())
     packageName.set(internalStorageClientDestinationPackage)
     modelPackage.set("$internalStorageClientDestinationPackage.model")
     apiPackage.set("$internalStorageClientDestinationPackage.api")
@@ -133,7 +133,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("${layout.buildDirectory}/clients/internal-storage/src/main/kotlin")
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/internal-storage/src/main/kotlin"))
 }
 
 ktlint {

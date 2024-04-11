@@ -82,7 +82,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("${layout.buildDirectory}/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("clients/jacoco/jacoco.exec").get().asFile)
     }
 }
 

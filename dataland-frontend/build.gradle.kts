@@ -18,7 +18,7 @@ node {
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
-val backendClientOutputDir = "${layout.buildDirectory}/clients/backend"
+val backendClientOutputDir = layout.buildDirectory.dir("clients/backend").get().toString()
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
@@ -60,7 +60,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.apikeymanager"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
-    outputDir.set("${layout.buildDirectory}/clients/apikeymanager")
+    outputDir.set(layout.buildDirectory.dir("clients/api-key-manager").get().toString())
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -81,7 +81,7 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.documentmanager"
     input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
-    outputDir.set("${layout.buildDirectory}/clients/documentmanager")
+    outputDir.set(layout.buildDirectory.dir("clients/document-manager").get().toString())
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -101,7 +101,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
 tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.qaservice"
     input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
-    outputDir.set("${layout.buildDirectory}/clients/qaservice")
+    outputDir.set(layout.buildDirectory.dir("clients/qa-service").get().toString())
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -122,7 +122,7 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
 tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.communitymanager"
     input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
-    outputDir.set("${layout.buildDirectory}/clients/communitymanager")
+    outputDir.set(layout.buildDirectory.dir("clients/community-manager").get().toString())
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -142,11 +142,11 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
 
 sourceSets {
     val main by getting
-    main.java.srcDir("${layout.buildDirectory}/clients/backend/src/main/kotlin")
-    main.java.srcDir("${layout.buildDirectory}/clients/documentmanager/src/main/kotlin")
-    main.java.srcDir("${layout.buildDirectory}/clients/qaservice/src/main/kotlin")
-    main.java.srcDir("${layout.buildDirectory}/clients/apikeymanager/src/main/kotlin")
-    main.java.srcDir("${layout.buildDirectory}/clients/communitymanager/src/main/kotlin")
+    main.java.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.java.srcDir(layout.buildDirectory.dir("clients/document-manager/src/main/kotlin"))
+    main.java.srcDir(layout.buildDirectory.dir("clients/qa-service/src/main/kotlin"))
+    main.java.srcDir(layout.buildDirectory.dir("clients/api-key-manager/src/main/kotlin"))
+    main.java.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
 }
 
 ktlint {
