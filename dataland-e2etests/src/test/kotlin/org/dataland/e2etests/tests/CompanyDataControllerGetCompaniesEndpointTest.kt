@@ -247,8 +247,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             sortedCompanyNames.filter { it != company8 && it != company3 },
         )
         assertEquals(
-            listOf(company2, "${testString}2", company5, company3, company8, company9),
-            sortedCompanyNames.filter { it != "3$testString" && it != testString },
+            listOf(company2, "${testString}2", company5, "3$testString", company8, company9),
+            sortedCompanyNames.filter { it != company3 && it != testString },
         )
 
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
