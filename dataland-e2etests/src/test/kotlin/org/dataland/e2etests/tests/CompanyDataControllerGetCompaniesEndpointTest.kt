@@ -256,6 +256,13 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
+
+        val chunkedSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
+            searchString = testString,
+            chunkSize = 2,
+            chunkIndex = 3,
+        ).map { it.companyName }
+        assertEquals(listOf(company8, company9), chunkedSortedCompanyNames)
     }
 
     @Test
