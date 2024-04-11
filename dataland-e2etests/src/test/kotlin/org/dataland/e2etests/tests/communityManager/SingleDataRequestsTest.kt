@@ -288,6 +288,14 @@ class SingleDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
+    }
+
+    @Test
+    fun `assert that a request patch from a finalized status is forbidden`() {
+        // TODO create a closed request and patch it to withdrawn
+        // TODO optionally check if a patch from closed to closed or withdrawn to withdrawn is forbidden,
+        //  since it is explicity coded that way
     }
 
     @Test
