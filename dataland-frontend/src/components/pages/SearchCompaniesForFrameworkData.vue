@@ -201,7 +201,6 @@ export default defineComponent({
   computed: {
     currentlyVisiblePageText(): string {
       const totalSearchResults = this.totalRecords;
-      console.log(totalSearchResults);
       if (!this.waitingForDataToDisplay) {
         if (totalSearchResults === 0) {
           return "No results";

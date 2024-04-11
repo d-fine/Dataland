@@ -75,7 +75,6 @@ describe("Component tests for the DatasetOverview page", () => {
       keycloak: keycloakMock,
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
-      cy.wait(100);
       cy.get(getTabSelector(1)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/datasets");
     });
@@ -95,7 +94,6 @@ describe("Component tests for the DatasetOverview page", () => {
       keycloak: keycloakMock,
     }).then((mounted) => {
       validateTabBar(0, keycloakMock);
-      cy.wait(100);
       cy.get(getTabSelector(2)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
     });
@@ -108,7 +106,6 @@ describe("Component tests for the DatasetOverview page", () => {
       keycloak: keycloakMock,
     }).then((mounted) => {
       validateTabBar(1, keycloakMock);
-      cy.wait(100);
       cy.get(getTabSelector(0)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/companies");
     });
