@@ -62,11 +62,9 @@ interface CompanyApi {
 
     /**
      * A method to retrieve just the basic information about specific companies
-     * with approved framework data identified by different filters
-     * If the filters are not set, all companies with approved data in the data store are returned.
+     * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
-     * @param dataTypes this function only returns companies that have data for the specified dataTypes.
-     * if none is specified, it is filtered all data types are allowed
+     * @param dataTypes this function only returns companies that have data for a specified dataType.
      * @param countryCodes If set & non-empty,
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
@@ -74,9 +72,8 @@ interface CompanyApi {
      * @return basic information about all companies with approved framework data matching the search criteria
      */
     @Operation(
-        summary = "Retrieve just the basic information about specific companies" +
-            " with approved framework data by different filters.",
-        description = "The basic information about companies with associated approved framework data identified" +
+        summary = "Retrieve just the basic information about specific companies.",
+        description = "The basic information about companies" +
             " via the provided company name/identifier" +
             " are retrieved and filtered by countryCode, sector and available framework data." +
             " Empty/Unspecified filters are ignored.",
@@ -95,8 +92,46 @@ interface CompanyApi {
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
+        @RequestParam chunkSize: Int? = null,
+        @RequestParam chunkIndex: Int? = null,
     ):
         ResponseEntity<List<BasicCompanyInformation>>
+
+    /**
+     * A method to retrieve just the number of companies identified by different filters
+     * If the filters are not set, all companies in the data store are returned
+     * @param searchString string used for substring matching
+     * @param dataTypes If set & non-empty, this function only counts companies that have data for a dataType in the set
+     * @param countryCodes If set & non-empty,
+     * this function only counts companies that have a country code contained in the set
+     * @param sectors If set & non-empty, this function only counts companies that belong to a sector in the set
+     * uploaded by the current user
+     * @return the number of companies matching the search criteria
+     */
+    @Operation(
+        summary = "Retrieve the number of companies" +
+            " satisfying different filters.",
+        description = "The number of companies" +
+            " via the provided company name/identifier" +
+            " are retrieved and filtered by countryCode, sector and available framework data." +
+            " Empty/Unspecified filters are ignored.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved number of companies."),
+        ],
+    )
+    @GetMapping(
+        value = ["/numberOfCompanies"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getNumberOfCompanies(
+        @RequestParam searchString: String? = null,
+        @RequestParam dataTypes: Set<DataType>? = null,
+        @RequestParam countryCodes: Set<String>? = null,
+        @RequestParam sectors: Set<String>? = null,
+    ): ResponseEntity<Int>
 
     /**
      * A method to retrieve companies with names or identifiers matching a search string

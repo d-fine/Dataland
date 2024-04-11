@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -20,7 +21,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     companion object {
         const val WAIT_TIME_IN_MS = 1000L
     }
-
+    private val setOfAllDataTypes = enumValues<DataTypeEnum>().toSet()
     private val apiAccessor = ApiAccessor()
     private val company1 = "Company 1"
     private val company2 = "Company 2"
@@ -75,7 +76,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             countryCode = storedCompany.companyInformation.countryCode,
             sector = storedCompany.companyInformation.sector,
             companyName = storedCompany.companyInformation.companyName,
-            permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.PermId.value, null)
+            lei = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.Lei.value, null)
                 ?.minOrNull(),
             headquarters = storedCompany.companyInformation.headquarters,
         )
@@ -117,9 +118,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val firstIdentifier = uploadInfo.inputCompanyInformation.identifiers.values.first { it.isNotEmpty() }.first()
         assertTrue(
-            apiAccessor.companyDataControllerApi.getCompanies(
-                searchString = firstIdentifier,
-            ).isEmpty(),
+            apiAccessor.companyDataControllerApi.getCompanies(firstIdentifier, setOfAllDataTypes).isEmpty(),
             "The posted company was found in the query results.",
         )
         apiAccessor.companyDataControllerApi.existsIdentifier(
@@ -248,8 +247,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             sortedCompanyNames.filter { it != company8 && it != company3 },
         )
         assertEquals(
-            listOf(company2, "${testString}2", company5, company3, company8, company9),
-            sortedCompanyNames.filter { it != "3$testString" && it != testString },
+            listOf(company2, "${testString}2", company5, "3$testString", company8, company9),
+            sortedCompanyNames.filter { it != company3 && it != testString },
         )
 
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
@@ -257,6 +256,31 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
+    }
+
+    @Test
+    fun `search for name and check that chunking does not change the ordering of results`() {
+        val testString = "unique-test-string-${UUID.randomUUID()}"
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val companyList = createCompaniesForTestingOrdering(testString)
+        for (company in companyList) {
+            apiAccessor.companyDataControllerApi.postCompany(company)
+        }
+        val firstChunkSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
+            searchString = testString,
+            chunkSize = 2,
+            chunkIndex = 0,
+        ).map { it.companyName }
+        assertEquals(
+            listOf(company3, testString),
+            firstChunkSortedCompanyNames,
+        )
+        val lastChunkSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
+            searchString = testString,
+            chunkSize = 2,
+            chunkIndex = 3,
+        ).map { it.companyName }
+        assertEquals(listOf(company8, company9), lastChunkSortedCompanyNames)
     }
 
     @Test
@@ -268,7 +292,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val noAcceptedDataCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         uploadDummyDataset(noAcceptedDataCompanyId, bypassQa = false)
         Thread.sleep(WAIT_TIME_IN_MS)
-        val searchResultCompanyIds = apiAccessor.companyDataControllerApi.getCompanies().map { it.companyId }
+        val searchResultCompanyIds =
+            apiAccessor.companyDataControllerApi.getCompanies(null, setOfAllDataTypes).map { it.companyId }
         assertTrue(searchResultCompanyIds.contains(acceptedDataCompanyId))
         assertFalse(searchResultCompanyIds.contains(noAcceptedDataCompanyId))
     }

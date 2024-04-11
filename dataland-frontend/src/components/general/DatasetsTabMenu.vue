@@ -38,7 +38,7 @@ export default defineComponent({
   data: () => ({
     tabs: [
       {
-        label: "AVAILABLE DATASETS",
+        label: "COMPANIES",
         route: "/companies",
         isVisible: true,
       },
