@@ -1,7 +1,10 @@
 package org.dataland.datalandexternalstorage.services
 
+import DatabaseConnection.executeMySQLQuery
+import DatabaseConnection.getConnection
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
+import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
 import org.dataland.datalandexternalstorage.entities.DataItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -36,11 +39,12 @@ class EurodatStringDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
-    // @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
+    @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val eurodatAppName = "minaboApp"
 
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
@@ -117,6 +121,10 @@ class EurodatStringDataStore(
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
         logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
+        val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_pdf) VALUES(?, ?)"
+        val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
+        executeMySQLQuery(conn, insertStatement, dataId, dataItem.data)
         // TODO call to eurodat
         // dataItemRepository.save(dataItem)
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
@@ -131,17 +139,13 @@ class EurodatStringDataStore(
     fun storeBlobInEurodat(dataId: String, correlationId: String, hash: String) {
         logger.info("Storing document with hash $hash in EuroDaT for dataId $dataId and correlationId $correlationId")
         val resource = temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
-        val test = resource.readBytes()
-        // TODO call to eurodat
-        // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
+        val resultByteArray = resource.readBytes()
+        // val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        // val insertStatement =  "INSERT INTO safedeposit.json (uuid_json, blob_pdf) VALUES(?, ?)"
+        // val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
+        //  executeMySQLQuery(conn, insertStatement, hash, resultByteArray)
     }
-    // TODO Insert statement into the safedepositbox looks like this:
-    /*
-    INSERT INTO safedeposit."json"
-    (uuid_json, blob_json)
-    VALUES('88edd44a-b9e8-49fa-a34b-8493077ee9fb', '2');
-    */
-
+    // TODO call to eurodat
     /**
      * Sends a message to the queue to inform other services that the storage to EuroDaT has been successful.
      * @param payload contains meta info about the stored assets (dataId and hashes)
@@ -153,3 +157,10 @@ class EurodatStringDataStore(
         )
     }
 }
+
+// TODO Insert statement into the safedepositbox looks like this:
+    /*
+    INSERT INTO safedeposit."json"
+    (uuid_json, blob_json)
+    VALUES('88edd44a-b9e8-49fa-a34b-8493077ee9fb', '2');
+    */
