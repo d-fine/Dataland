@@ -50,7 +50,7 @@
         </template>
       </Column>
     </DataTable>
-    <div class="d-center-div text-center px-7 py-4" v-else>
+    <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
       <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
       <p class="font-medium text-xl">Please double-check the spelling and filter settings!</p>
     </div>
