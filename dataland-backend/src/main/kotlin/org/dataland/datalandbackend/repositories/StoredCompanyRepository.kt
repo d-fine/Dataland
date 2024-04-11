@@ -21,9 +21,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value = " SELECT has_active_data.company_id AS companyId," +
             " company_name AS companyName," +
-            " headquarters AS headquarters, " +
+            " headquarters, " +
             " country_code AS countryCode, " +
-            " sector AS sector, " +
+            " sector, " +
             " identifier_value AS lei " +
             // get required information from stored companies where active data set exists
             " FROM (" +
@@ -47,9 +47,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value = " SELECT filtered_data.company_id AS companyId," +
             " company_name AS companyName," +
-            " headquarters AS headquarters, " +
+            " headquarters, " +
             " country_code AS countryCode, " +
-            " sector AS sector, " +
+            " sector, " +
             " identifier_value AS lei " +
             // get required information from stored companies which are included in the dropdown filter
             " FROM (" +
@@ -91,7 +91,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC " +
             " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset})" +
 
-            " Select companyId, companyName, " +
+            " SELECT companyId," +
+            " companyName, " +
             " headquarters, " +
             " country_code AS countryCode, " +
             " sector, " +
