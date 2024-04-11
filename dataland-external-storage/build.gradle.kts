@@ -48,6 +48,7 @@ dependencies {
     implementation(Square.okHttp3)
     implementation(libs.json)
     testImplementation(Spring.boot.test)
+    implementation(JetBrains.exposed.core)
 }
 
 openApi {
@@ -76,6 +77,8 @@ gitProperties {
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend client."
+    group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
         .path
@@ -99,6 +102,8 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 }
 
 tasks.register("generateEurodatClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the eurodat client."
+    group = "clients"
     val eurodatClientDestinationPackage = "org.dataland.datalandeurodatclient.openApiClient"
     input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
     outputDir.set("$buildDir/clients/eurodatclient")

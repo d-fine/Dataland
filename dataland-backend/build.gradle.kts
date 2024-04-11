@@ -25,7 +25,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
     kotlin("plugin.serialization")
 }
-//TODO check the dependencies
+// TODO check the dependencies
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.jackson.module.kotlin)
