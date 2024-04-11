@@ -64,16 +64,28 @@ jobs:
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
-  merge-docker-images:
+  merge-artefacts:
     runs-on: ubuntu-latest
     needs:
-      - deploy-to-server-with-latest-built-images
+      - e2e-tests
     steps:
       - name: Merge Docker Image Artifacts
         uses: actions/upload-artifact/merge@v4
         with:
           name: dockerImageVersions
           pattern: dockerImageVersions-*
+          delete-merged: true
+      - name: Merge Parameter Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: parameters
+          pattern: parameters-*
+          delete-merged: true
+      - name: Merge Cypress Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: cypress
+          pattern: cypress-*
           delete-merged: true
   deploy-to-server-with-latest-built-images:
     runs-on: ubuntu-latest
