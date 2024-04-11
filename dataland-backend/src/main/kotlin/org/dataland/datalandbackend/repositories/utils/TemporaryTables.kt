@@ -5,6 +5,7 @@ package org.dataland.datalandbackend.repositories.utils
  * convenient usage of temporary tables in the query
  */
 class TemporaryTables private constructor() {
+
     companion object {
         // Select company_id, LEI identifiers as leis
         const val TABLE_LEIS = " ( " +
@@ -12,6 +13,12 @@ class TemporaryTables private constructor() {
             " FROM company_identifiers " +
             " WHERE identifier_type = 'Lei' " +
             " ) AS leis "
+
+        // Column for the next TABLE_FILTERED_TEXT_RESULTS table
+        private const val DATASET_RANK = " MAX( CASE " +
+            "   WHEN data_id IS NOT NULL THEN 2 " +
+            "   ELSE 1 " +
+            "   END) AS dataset_rank "
 
         // Select company_id, company_name, match_quality, match_rank based on searchString as filtered_text_results
         // Requires the parameter searchFilter : StoredCompanySearchFilter
@@ -22,10 +29,7 @@ class TemporaryTables private constructor() {
             "   WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5 " +
             "   ELSE 1 " +
             "   END) AS match_quality, " +
-            " MAX( CASE " +
-            "   WHEN data_id IS NOT NULL THEN 2 " +
-            "   ELSE 1 " +
-            "   END) AS dataset_rank " +
+            DATASET_RANK +
             " FROM stored_companies " +
             " LEFT JOIN data_meta_information " +
             "   ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true " +
@@ -42,10 +46,7 @@ class TemporaryTables private constructor() {
             "           ESCAPE :#{escapeCharacter()} THEN 4 " +
             "   ELSE 1 " +
             "   END) AS match_quality, " +
-            " MAX( CASE " +
-            "   WHEN data_id IS NOT NULL THEN 2 " +
-            "   ELSE 1 " +
-            "   END) AS dataset_rank " +
+            DATASET_RANK +
             " FROM stored_company_entity_company_alternative_names " +
             " JOIN stored_companies " +
             "   ON stored_companies.company_id = " +
@@ -66,10 +67,7 @@ class TemporaryTables private constructor() {
             "           ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3 " +
             "   ELSE 0" +
             "   END) AS match_quality, " +
-            " MAX( CASE " +
-            "   WHEN data_id IS NOT NULL " +
-            "   THEN 2 else 1 " +
-            "   END) AS dataset_rank " +
+            DATASET_RANK +
             " FROM company_identifiers " +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
             " LEFT JOIN data_meta_information " +
