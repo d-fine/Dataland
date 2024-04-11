@@ -4,11 +4,9 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMaximumValueAnnotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMinimumValueAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -52,12 +50,8 @@ open class NumberBaseComponent(
         val annotations = mutableListOf<Annotation>()
 
         if (minimumValue != null || maximumValue != null) {
-            require(documentSupport is SimpleDocumentSupport || documentSupport is ExtendedDocumentSupport) {
-                "There are currently no minimum/maximum value constraint annotation for non-datapoint fields."
-            }
-
-            minimumValue?.let { annotations.add(DataPointMinimumValueAnnotation(it)) }
-            maximumValue?.let { annotations.add(DataPointMaximumValueAnnotation(it)) }
+            minimumValue?.let { annotations.add(MinimumValueAnnotation(it)) }
+            maximumValue?.let { annotations.add(MaximumValueAnnotation(it)) }
         }
         return annotations
     }

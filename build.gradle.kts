@@ -79,7 +79,10 @@ sonar {
         property("sonar.projectKey", "d-fine_Dataland")
         property("sonar.organization", "d-fine")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            layout.buildDirectory.dir("reports/jacoco/test/jacocoTestReport.xml").get().asFile,
+        )
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
         property("sonar.python.coverage.reportPaths", fileTree("$projectDir/python-coverage").files)
@@ -124,7 +127,11 @@ sonar {
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
-                "/Iso2CountryCodesMultiSelectComponent.kt",
+                "/Iso2CountryCodesMultiSelectComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
+                "LksgGeneralViolationAssessmentsComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
+                "LksgGeneralViolationAssessmentsComponent.kt",
         )
         property(
             "sonar.exclusions",

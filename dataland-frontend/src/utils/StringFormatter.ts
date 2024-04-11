@@ -61,7 +61,14 @@ function humanizeViaMapping(rawText: string): string {
     inhouseproduction: "In-house Production",
     contractprocessing: "Contract Processing",
     hvcplastics: "HVC Plastics",
+    contaminationofsoilwaterairornoiseemissionsorexcessivewaterconsumption:
+      "Contamination of soil/water/air, noise emissions, excessive water consumption",
+    useofmercuryormercurywaste: "Use of mercury, mercury waste (Minamata Convention)",
+    productionanduseofpersistentorganicpollutants:
+      "Production and use of persistent organic pollutants (POPs Convention)",
+    exportimportofhazardouswaste: "Export/import of hazardous waste (Basel Convention)",
   };
+
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
 }

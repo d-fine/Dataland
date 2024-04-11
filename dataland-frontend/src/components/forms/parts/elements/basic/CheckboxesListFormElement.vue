@@ -76,8 +76,10 @@ export default defineComponent({
   watch: {
     currentValue(newVal: string) {
       this.updateCurrentValue(newVal);
+      this.$emit("updateCheckboxValue", this.currentValue);
     },
   },
+  emits: ["updateCheckboxValue"],
   props: {
     name: {
       type: String,

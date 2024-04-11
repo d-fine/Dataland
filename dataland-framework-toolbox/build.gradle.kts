@@ -20,11 +20,13 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("${layout.buildDirectory.get()}/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 
 tasks.register("integrationTest", JavaExec::class) {
+    description = "Task to execute the integration tests."
+    group = "verification"
     classpath = sourceSets["test"].runtimeClasspath
     mainClass = "org.dataland.frameworktoolbox.integration.IntegrationTestMainKt"
     workingDir = rootDir

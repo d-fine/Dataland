@@ -34,11 +34,14 @@ import ProductFormElement from "@/components/forms/parts/elements/derived/Produc
 import AlignedActivitiesFormElements from "@/components/forms/parts/elements/derived/AlignedActivitiesFormElements.vue";
 import NonAlignedActivitiesFormElement from "@/components/forms/parts/elements/derived/NonAlignedActivitiesFormElement.vue";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
+import RiskAssessmentFormElement from "@/components/forms/parts/elements/derived/RiskAssessmentFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import StringBaseDataPointFormField from "@/components/forms/parts/fields/StringBaseDataPointFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import GeneralViolationsAssessmentFormElement from "@/components/forms/parts/elements/derived/GeneralViolationsAssessmentFormElement.vue";
+import GrievanceMechanismAssessmentFormElement from "@/components/forms/parts/elements/derived/GrievanceMechanismAssessmentFormElement.vue";
 
 export default defineComponent({
   name: "FormListFormField",
@@ -47,6 +50,9 @@ export default defineComponent({
     UploadFormHeader,
     ProductFormElement,
     ProductionSiteFormElement,
+    RiskAssessmentFormElement,
+    GrievanceMechanismAssessmentFormElement,
+    GeneralViolationsAssessmentFormElement,
     AlignedActivitiesFormElements,
     NonAlignedActivitiesFormElement,
     StringBaseDataPointFormField,

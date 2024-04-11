@@ -9,7 +9,6 @@
     <FileUpload
       name="fileUpload"
       ref="fileUpload"
-      accept=".pdf"
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
         DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR

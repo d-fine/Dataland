@@ -45,7 +45,7 @@ class BulkDataRequestEmailMessageSenderTest {
     fun setup() {
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@bigplayer.com",
+            "requester@example.com",
             "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )

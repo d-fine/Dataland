@@ -6,7 +6,6 @@
     :required="required"
     :validation="validation"
     :validation-label="validationLabel"
-    display-one-sub-form-per-default
     sub-form-component="ProductionSiteFormElement"
     data-test-add-button="addNewProductionSiteButton"
     label-add-button="ADD NEW Production Site"

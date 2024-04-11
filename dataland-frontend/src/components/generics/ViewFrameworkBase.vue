@@ -198,7 +198,7 @@ export default defineComponent({
     isEditableByCurrentUser() {
       return (
         this.hasUserUploaderRights &&
-        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
+        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType) &&
         (!this.singleDataMetaInfoToDisplay ||
           this.singleDataMetaInfoToDisplay.currentlyActive ||
           this.singleDataMetaInfoToDisplay.qaStatus === "Rejected")
@@ -243,7 +243,7 @@ export default defineComponent({
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
           assertDefined(this.companyID),
-          this.dataType as DataTypeEnum,
+          this.dataType,
           Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId,
         );
       }

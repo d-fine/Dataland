@@ -69,7 +69,7 @@
                     <td colspan="3" style="height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 20px"><span style="border: 0 none; font-size: 17px; color: #ffffff; text-decoration: none;">Copyright &copy; 2023 Dataland</span></td>
+                    <td colspan="3" style="height: 20px"><span style="border: 0 none; font-size: 17px; color: #ffffff; text-decoration: none;">Copyright &copy; 2024 Dataland</span></td>
                 </tr>
                 </tbody>
             </table>

@@ -51,7 +51,7 @@ class CompanyUploader(
 
         val conflictingIdentifier = conflictingIdentifiers.get(0)
         val conflictingIdentifierType = conflictingIdentifier.get("identifierType")?.textValue()
-        if (conflictingIdentifierType != IdentifierType.lei.value) {
+        if (conflictingIdentifierType != IdentifierType.Lei.value) {
             return null
         }
 
@@ -140,7 +140,7 @@ class CompanyUploader(
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")
                 val companyId = try {
-                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei).companyId
+                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
                 } catch (e: ClientException) {
                     if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                         logger.error("Could not find company with LEI: $lei")
@@ -156,7 +156,7 @@ class CompanyUploader(
 
     private fun updateIsinsOfCompany(isins: Set<String>, companyId: String) {
         val updatedIdentifiers = mapOf(
-            IdentifierType.isin.value to isins.toList(),
+            IdentifierType.Isin.value to isins.toList(),
         )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
         companyDataControllerApi.patchCompanyById(

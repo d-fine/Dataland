@@ -122,6 +122,7 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
+import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
@@ -141,6 +142,9 @@ import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
 import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
+import RiskAssessmentsFormField from "@/components/forms/parts/fields/RiskAssessmentsFormField.vue";
+import GeneralViolationsAssessmentsFormField from "@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue";
+import GrievanceMechanismAssessmentsFormField from "@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -170,6 +174,9 @@ export default defineComponent({
     RadioButtonsFormField,
     PercentageFormField,
     ProductionSitesFormField,
+    RiskAssessmentsFormField,
+    GeneralViolationsAssessmentsFormField,
+    GrievanceMechanismAssessmentsFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     IntegerExtendedDataPointFormField,
@@ -182,6 +189,7 @@ export default defineComponent({
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
     BigDecimalBaseDataPointFormField,
+    LksgSubcontractingCompaniesFormField,
   },
   emits: ["datasetCreated"],
   data() {

@@ -10,14 +10,17 @@ import { formatPercentageForDatatable } from "@/components/resources/dataTable/c
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { DropdownDatasetIdentifier, getDatasetAsMap } from "@/utils/PremadeDropdownDatasets";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
+  formatLksgRisksOrViolationsForDisplay,
+  formatLksgGrievanceMechanismsForDisplay,
   formatLksgProcurementCategoriesForDisplay,
   formatLksgMostImportantProductsForDisplay,
   formatLksgProductionSitesForDisplay,
+  formatLksgSubcontractingCompaniesForDisplay,
 } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
-import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
+import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
@@ -78,11 +81,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees?.value, ""),
-                "Number of Employees",
-                dataset.general?.masterData?.numberOfEmployees,
-              ),
+              formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ""),
           },
           {
             type: "cell",
@@ -169,26 +168,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "In which countries do the subcontracting companies operate?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = getDatasetAsMap(DropdownDatasetIdentifier.CountryCodesIso2);
-              return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesCountries?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
-                "Subcontracting Companies Countries",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Subcontracting Companies Industries",
-            explanation: "In which industries do the subcontracting companies operate?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNaceCodesForDatatable(
-                dataset.general?.productionSpecific?.subcontractingCompaniesIndustries,
-                "Subcontracting Companies Industries",
+              formatLksgSubcontractingCompaniesForDisplay(
+                dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
+                "Subcontracting Companies Countries",
               ),
           },
           {
@@ -350,51 +333,11 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Which risks were specifically identified in the risk analysis?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                ChildLabor: "Child labor",
-                ForcedLabor: "Forced Labor",
-                Slavery: "Slavery",
-                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
-                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
-                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
-                WithholdingAdequateWages: "Withholding adequate wages",
-                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
-                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
-                  "Unlawful eviction/deprivation of land, forest and water",
-                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
-                  "Use of private/public security forces with disregard for human rights",
-                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
-                ProductionAndUseOfPersistentOrganicPollutants:
-                  "Production and use of persistent organic pollutants (POPs Convention)",
-                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
-              };
-              return formatListOfStringsForDatatable(
-                dataset.governance?.riskManagementOwnOperations?.identifiedRisks?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgRisksOrViolationsForDisplay(
+                dataset.governance?.riskManagementOwnOperations?.identifiedRisks,
                 "Identified Risks",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Counteracting Measures",
-            explanation: "Have measures been defined to counteract the risks?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.governance?.riskManagementOwnOperations?.counteractingMeasures),
-          },
-          {
-            type: "cell",
-            label: "Which Counteracting Measures",
-            explanation: "Which measures have been applied to counteract the risks?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.riskManagementOwnOperations?.counteractingMeasures == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.riskManagementOwnOperations?.whichCounteractingMeasures),
+              ),
           },
           {
             type: "cell",
@@ -495,14 +438,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber?.value,
-                  "",
-                ),
-                "Complaints Number",
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber,
-              ),
+              formatNumberForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsNumber, ""),
           },
           {
             type: "cell",
@@ -510,63 +446,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Please define the respective risk position of each complaint",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                ChildLabor: "Child labor",
-                ForcedLabor: "Forced Labor",
-                Slavery: "Slavery",
-                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
-                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
-                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
-                WithholdingAdequateWages: "Withholding adequate wages",
-                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
-                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
-                  "Unlawful eviction/deprivation of land, forest and water",
-                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
-                  "Use of private/public security forces with disregard for human rights",
-                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
-                ProductionAndUseOfPersistentOrganicPollutants:
-                  "Production and use of persistent organic pollutants (POPs Convention)",
-                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
-              };
-              return formatListOfStringsForDatatable(
-                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgGrievanceMechanismsForDisplay(
+                dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition,
                 "Complaints Risk Position",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Complaints Reason",
-            explanation: "Please specify the complaint.",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.grievanceMechanismOwnOperations?.complaintsReason),
-          },
-          {
-            type: "cell",
-            label: "Actions for Complaints Undertaken",
-            explanation: "Were measures taken to address the complaints?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Which Actions for Complaints Undertaken",
-            explanation: "Which measures were taken to address the reported complaints?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.grievanceMechanismOwnOperations?.actionsForComplaintsUndertaken == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.governance?.grievanceMechanismOwnOperations?.whichActionsForComplaintsUndertaken,
               ),
           },
           {
@@ -788,54 +671,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: "Please define those violations.",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                ChildLabor: "Child labor",
-                ForcedLabor: "Forced Labor",
-                Slavery: "Slavery",
-                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
-                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
-                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
-                WithholdingAdequateWages: "Withholding adequate wages",
-                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
-                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
-                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
-                  "Unlawful eviction/deprivation of land, forest and water",
-                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
-                  "Use of private/public security forces with disregard for human rights",
-                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
-                ProductionAndUseOfPersistentOrganicPollutants:
-                  "Production and use of persistent organic pollutants (POPs Convention)",
-                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
-              };
-              return formatListOfStringsForDatatable(
-                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
+            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
+              formatLksgRisksOrViolationsForDisplay(
+                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition,
                 "Human Rights or Environmental Violations Definition",
-              );
-            },
-          },
-          {
-            type: "cell",
-            label: "Human Rights or Environmental Violations Measures",
-            explanation: "Have measures been taken to address this violation?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Human Rights or Environmental Violations Measures Definition",
-            explanation: "Please define these measures.",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasures == "Yes",
-            valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsMeasuresDefinition,
               ),
           },
           {
@@ -1580,8 +1419,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: "cell",
             label: "Unequal Treatment of Employment Prevention Measures",
             explanation: "Does your company take measures to prevent unequal treatment of employment?",
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+            shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures,
@@ -1593,7 +1431,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Is a member of your company's management responsible for promoting diversity in the workforce and among business partners?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.diversityAndInclusionRole),
           },
@@ -1603,7 +1441,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Does your company's management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.preventionOfMistreatments),
           },
@@ -1613,7 +1451,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               "Has your company introduced mandatory offers and training for employees that target unequal treatment of employment?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
@@ -1628,7 +1466,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Equal Opportunities Officer",
             explanation: "Do you have an equal opportunities officer or a similar function?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.unequalTreatmentOfEmployment?.equalOpportunitiesOfficer),
           },
@@ -1637,7 +1475,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Equal Employment Policy",
             explanation: "Does your company have an equal employment policy? If yes, please share the policy with us.",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
@@ -1652,7 +1490,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: "Unequal Treatment Prevention Other Measures",
             explanation: "Have other measures been taken to prevent unequal treatment of employment?",
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmployment == "Yes",
+              dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(

@@ -81,8 +81,8 @@ class CompanyDataControllerTest {
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformationToUpload)
         val patchObject = CompanyInformationPatch(
             identifiers = mapOf(
-                IdentifierType.lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
-                IdentifierType.duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+                IdentifierType.Lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
+                IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
             ),
         )
         val updatedCompany =
@@ -90,15 +90,15 @@ class CompanyDataControllerTest {
         val oldIdentifiers = uploadedCompany.companyInformation.identifiers
         val newIdentifiers = updatedCompany.companyInformation.identifiers
         assertEquals(
-            oldIdentifiers[IdentifierType.isin.value], newIdentifiers[IdentifierType.isin.value],
+            oldIdentifiers[IdentifierType.Isin.value], newIdentifiers[IdentifierType.Isin.value],
             "Unpatched identifiers should remain the same",
         )
         assertEquals(
-            patchObject.identifiers!![IdentifierType.lei.value], newIdentifiers[IdentifierType.lei.value],
+            patchObject.identifiers!![IdentifierType.Lei.value], newIdentifiers[IdentifierType.Lei.value],
             "The update should work as expected",
         )
         assertEquals(
-            patchObject.identifiers!![IdentifierType.duns.value], newIdentifiers[IdentifierType.duns.value],
+            patchObject.identifiers!![IdentifierType.Duns.value], newIdentifiers[IdentifierType.Duns.value],
             "The update should work as expected",
         )
     }
@@ -129,7 +129,7 @@ class CompanyDataControllerTest {
             companyName = "Updated Name${UUID.randomUUID()}",
             headquarters = "Updated HQ${UUID.randomUUID()}",
             companyAlternativeNames = listOf("Alt-Name-1${UUID.randomUUID()}", "Alt-Name-2${UUID.randomUUID()}"),
-            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
+            identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
             countryCode = "DE",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -161,26 +161,26 @@ class CompanyDataControllerTest {
             companyName = "Name",
             headquarters = "HQ",
             identifiers = mapOf(
-                IdentifierType.duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
+                IdentifierType.Duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
             ),
             countryCode = "DE",
         )
         val put2CompanyInformation = put1CompanyInformation.copy(
-            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
+            identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
         assertTrue(
-            put1CompanyInformation.identifiers[IdentifierType.duns.value]!!.toSet() ==
-                updatedCompany.companyInformation.identifiers[IdentifierType.duns.value]!!.toSet() &&
-                updatedCompany.companyInformation.identifiers[IdentifierType.lei.value]!!.isEmpty(),
+            put1CompanyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() &&
+                updatedCompany.companyInformation.identifiers[IdentifierType.Lei.value]!!.isEmpty(),
             "The Duns identifiers should have been updated and the Lei identifiers should still be empty",
         )
         updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put2CompanyInformation)
         assertTrue(
-            put2CompanyInformation.identifiers[IdentifierType.lei.value]!!.toSet() ==
-                updatedCompany.companyInformation.identifiers[IdentifierType.lei.value]!!.toSet() &&
-                updatedCompany.companyInformation.identifiers[IdentifierType.duns.value]!!.isEmpty(),
+            put2CompanyInformation.identifiers[IdentifierType.Lei.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.Lei.value]!!.toSet() &&
+                updatedCompany.companyInformation.identifiers[IdentifierType.Duns.value]!!.isEmpty(),
             "The Lei identifiers should have been updated and the Duns identifiers should have been deleted",
         )
     }
@@ -338,7 +338,7 @@ class CompanyDataControllerTest {
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = mapOf(
-                IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
+                IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
             ),
         )
         return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId

@@ -62,8 +62,9 @@ class InternalEmailMessageListener(
         messageQueueUtils.validateMessageType(type, MessageType.SendInternalEmail)
         val internalEmailMessage = objectMapper.readValue(jsonString, InternalEmailMessage::class.java)
         logger.info("Received internal email message with correlationId $correlationId.")
+
         messageQueueUtils.rejectMessageOnException {
-            emailSender.sendEmail(internalEmailBuilder.buildInternalEmail(internalEmailMessage))
+            emailSender.sendEmailWithoutTestReceivers(internalEmailBuilder.buildInternalEmail(internalEmailMessage))
         }
     }
 }

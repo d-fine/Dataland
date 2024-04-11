@@ -50,9 +50,11 @@ tasks.bootJar {
 }
 
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the API-key manager service."
+    group = "clients"
     val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
-    outputDir.set("$buildDir/clients/api-key-manager")
+    outputDir.set(layout.buildDirectory.dir("clients/api-key-manager").get().toString())
     packageName.set(apiKeyManagerClientDestinationPackage)
     modelPackage.set("$apiKeyManagerClientDestinationPackage.model")
     apiPackage.set("$apiKeyManagerClientDestinationPackage.api")
@@ -67,6 +69,8 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
 }
 
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateApiKeyManagerClient")
 }
 
@@ -84,7 +88,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/api-key-manager/src/main/kotlin"))
 }
 
 ktlint {

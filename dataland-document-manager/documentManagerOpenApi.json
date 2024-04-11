@@ -33,11 +33,11 @@
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "pdfDocument"
+                  "document"
                 ],
                 "type": "object",
                 "properties": {
-                  "pdfDocument": {
+                  "document": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -125,6 +125,24 @@
                 }
               },
               "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.ms-excel": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.oasis.opendocument.spreadsheet": {
                 "schema": {
                   "type": "string",
                   "format": "binary"

@@ -97,7 +97,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             .map {
                 it.companyInformation.copy(
                     identifiers = mapOf(
-                        IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
+                        IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
                     ),
                 )
             }

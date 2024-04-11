@@ -8,10 +8,10 @@ import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.junit.jupiter.api.Test
 
 class InternalEmailBuilderTest {
-    private val senderEmail = "sender@dataland.com"
+    private val senderEmail = "sender@example.com"
     private val senderName = "Test"
-    private val receiverEmails = listOf("receiver1@dataland.com", "receiver2@dataland.com")
-    private val ccEmails = listOf("cc1@dataland.com")
+    private val receiverEmails = listOf("receiver1@example.com", "receiver2@dexample.com")
+    private val ccEmails = listOf("cc1@example.com")
     private val environment = "test.dataland.com"
     private val originalProperty = "something"
 

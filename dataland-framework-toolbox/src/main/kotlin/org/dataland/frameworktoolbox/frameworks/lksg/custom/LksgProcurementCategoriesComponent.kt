@@ -1,21 +1,11 @@
 package org.dataland.frameworktoolbox.frameworks.lksg.custom
 
-import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
-import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * Represents the ProcurementCategories component
@@ -23,7 +13,14 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class LksgProcurementCategoriesComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+) : LksgSimpleCustomComponentBase(
+    identifier = identifier,
+    parent = parent,
+    viewFormattingFunctionName = "formatLksgProcurementCategoriesForDisplay",
+    uploadComponentName = "ProcurementCategoriesFormField",
+    guaranteedFixtureExpression = "dataGenerator.generateProcurementCategories()",
+    randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories())",
+) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -50,47 +47,6 @@ class LksgProcurementCategoriesComponent(
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),
             ),
-        )
-    }
-
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
-                "formatLksgProcurementCategoriesForDisplay(${getTypescriptFieldAccessor(true)}, \"${
-                    StringEscapeUtils.escapeEcmaScript(
-                        label,
-                    )
-                }\")",
-                setOf(
-                    TypeScriptImport(
-                        "formatLksgProcurementCategoriesForDisplay",
-                        "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters",
-                    ),
-                ),
-            ),
-        )
-    }
-
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        uploadCategoryBuilder.addStandardUploadConfigCell(
-            component = this,
-            uploadComponentName = "ProcurementCategoriesFormField",
-        )
-    }
-
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val fixtureExperssion = if (isNullable) {
-            "dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories())"
-        } else {
-            "dataGenerator.generateProcurementCategories()"
-        }
-        sectionBuilder.addAtomicExpression(
-            identifier,
-            fixtureExperssion,
         )
     }
 }

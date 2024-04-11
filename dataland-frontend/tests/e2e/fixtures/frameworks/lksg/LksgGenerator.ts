@@ -1,10 +1,18 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
-import { type LksgProcurementCategory, type LksgProductionSite } from "@clients/backend";
+import {
+  type LksgGrievanceAssessmentMechanism,
+  type LksgProcurementCategory,
+  type LksgProductionSite,
+  type LksgRiskOrViolationAssessment,
+  RiskPositionType,
+} from "@clients/backend";
 import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { faker } from "@faker-js/faker";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { generateArray, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -46,6 +54,13 @@ export class LksgGenerator extends Generator {
     );
     return Object.fromEntries(lksgProcurementCategoriesMap);
   }
+
+  generateSubcontractingCompanies(): { [key: string]: Array<string> } {
+    const countryCodes = generateArray(generateIso2CountryCode);
+    const lksgSubcontractingCompaniesMap = new Map<string, string[]>();
+    countryCodes.forEach((countryCode) => lksgSubcontractingCompaniesMap.set(countryCode, generateNaceCodes()));
+    return Object.fromEntries(lksgSubcontractingCompaniesMap);
+  }
   /**
    * Generates a random production site
    * @returns a random production site
@@ -57,6 +72,28 @@ export class LksgGenerator extends Generator {
       listOfGoodsOrServices: this.valueOrNull(this.guaranteedListOfGoodsOrServices()),
     };
   }
+
+  /**
+   * Generates a random Lksg risk assessment or general violation assessment
+   * @returns a random generated object
+   */
+  generateLksgRiskOrViolationAssessment(): LksgRiskOrViolationAssessment {
+    return {
+      riskPosition: pickSubsetOfElements(Object.values(RiskPositionType), 1, 1)[0],
+      measuresTaken: this.guaranteedYesNo(),
+      listedMeasures: this.randomShortString(),
+    };
+  }
+
+  generateLksgGrievanceMechanismAssessment(): LksgGrievanceAssessmentMechanism {
+    return {
+      riskPositions: pickSubsetOfElements(Object.values(RiskPositionType)),
+      specifiedComplaint: this.guaranteedShortString(),
+      measuresTaken: this.guaranteedYesNo(),
+      listedMeasures: this.randomShortString(),
+    };
+  }
+
   /**
    * Generates a random array of goods or services
    * @returns random array of goods or services

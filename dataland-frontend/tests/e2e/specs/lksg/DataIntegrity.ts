@@ -57,17 +57,17 @@ describeIf(
                   return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
-                      const frontendSubmittedLksgDataset = axiosGetResponse.data.data;
-                      const originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
+                      let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
+                      let originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
 
                       frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
                       frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      frontendSubmittedLksgDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      frontendSubmittedLksgDataset = sortComplaintsRiskObject(frontendSubmittedLksgDataset);
                       frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
                       originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
                       originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
-                      originallyUploadedLksgDataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort();
+                      originallyUploadedLksgDataset = sortComplaintsRiskObject(originallyUploadedLksgDataset);
                       originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
 
                       compareObjectKeysAndValuesDeep(
@@ -110,6 +110,23 @@ describeIf(
         times: 1,
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
+    }
+
+    /**
+     * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
+     * @param dataset frontend dataset to modify
+     * @returns sorted frontend object
+     */
+    function sortComplaintsRiskObject(dataset: LksgData): LksgData {
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
+        element.riskPositions.sort(),
+      );
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
+        const comparisonA = a.specifiedComplaint;
+        const comparisonB = b.specifiedComplaint;
+        return comparisonA.localeCompare(comparisonB);
+      });
+      return dataset;
     }
 
     it(

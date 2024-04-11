@@ -18,7 +18,7 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
-- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z`
+- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
 
 ### Dataland frontend
 
@@ -63,6 +63,9 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-document-manager/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
+- [ ] `./dataland-email-service/Dockerfile`
+- [ ] `./dataland-email-service/DockerfileBase`
+- [ ] `./dataland-email-service/DockerfileTest`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
@@ -184,10 +187,8 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
   authorization has worked by assuring that you get a 200 response
 - [ ] It is assured that deploying this feature branch over the current main does not break anything
-  - [ ] Deploy the version of main currently active on prod to a dev server with `Reset non-user related Docker Volumes & Re-populate` turned on
-  - [ ] Verify that the CD run is green
-  - [ ] Migrate the data from prod to the dev server using `./migrateData.sh dataland.com <SOURCE_API_KEY> <TARGET> <TARGET_API_KEY>`
-  - [ ] Deploy the feature branch to the same server with `Reset non-user related Docker Volumes & Re-populate` turned off
+  - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
+  - [ ] Deploy the feature branch to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
   - [ ] Verify that the CD run is green
   - [ ] Verify that everything seems to be working fine by manually using the website
 - [ ] Merge using Squash Commit. The Merge Commit Message needs to contain "Manual Maintenance"

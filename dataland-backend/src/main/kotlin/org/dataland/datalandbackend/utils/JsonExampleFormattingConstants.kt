@@ -34,6 +34,11 @@ object JsonExampleFormattingConstants {
         taxonomyEligibilityActivity +
         "}"
 
+    const val SUBCONTRACTING_COMPANIES_DEFAULT_VALUE = "{" +
+        "\"DE\": [\"NaceCodeA, NaceCodeB\"]," +
+        "\"GB\": [\"NaceCodeC\"]" +
+        "}"
+
     private const val procurementCategory = "{" +
         "\"procuredProductTypesAndServicesNaceCodes\": [\"string\"]," +
         "\"numberOfSuppliersPerCountryCode\": {" +

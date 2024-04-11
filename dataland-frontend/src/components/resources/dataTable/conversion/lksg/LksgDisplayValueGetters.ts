@@ -7,11 +7,16 @@ import {
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type LksgProcurementType } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
-import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
+import { convertNace, convertSingleNaceCode } from "@/utils/NaceCodeConverter";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import { type LksgProductionSite } from "@clients/backend";
+import {
+  type LksgGrievanceAssessmentMechanism,
+  type LksgProductionSite,
+  type LksgRiskOrViolationAssessment,
+  type LksgProcurementCategory,
+} from "@clients/backend";
+import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
@@ -29,6 +34,26 @@ export const lksgModalColumnHeaders = {
     procuredProductTypesAndServicesNaceCodes: "Procured Products/Services",
     suppliersAndCountries: "Number of Direct Suppliers and Countries",
     totalProcurementInPercent: "Order Volume",
+  },
+  subcontractingCompanies: {
+    country: "Country",
+    naceCodes: "Industries",
+  },
+  riskPositions: {
+    riskPosition: "Risk Position",
+    measuresTaken: "Were Measures Defined to Counteract the Risk",
+    listedMeasures: "Which Measures",
+  },
+  generalViolations: {
+    riskPosition: "Risk Position of the Violation",
+    measuresTaken: "Were Counteracting Measures Taken",
+    listedMeasures: "Which Measures Have Been Taken",
+  },
+  grievanceMechanisms: {
+    riskPositions: "Risk Positions in the Complaint",
+    specifiedComplaint: "Complaint Specification",
+    measuresTaken: "Were Measures Taken to Address the Complaint",
+    listedMeasures: "Which Measures Have Been Taken",
   },
 };
 
@@ -51,11 +76,17 @@ function generateReadableCombinationOfNumberOfSuppliersAndCountries(numberOfSupp
   });
 }
 
+type LksgProcurementType = { [key in ProcurementCategoryType]?: LksgProcurementCategory };
 interface LksgProcurementCategoryDisplayFormat {
   procurementCategory: string;
   procuredProductTypesAndServicesNaceCodes: string[];
   suppliersAndCountries: string[];
   totalProcurementInPercent: string;
+}
+
+interface LksgSubcontractingCompaniesDisplayFormat {
+  country: string;
+  naceCodes: string[];
 }
 
 /**
@@ -83,6 +114,25 @@ function convertLksgProcumentTypeToListForModal(
         lksgProcurementCategory.shareOfTotalProcurementInPercent != null
           ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
           : "",
+    });
+  }
+  return listForModal;
+}
+
+/**
+ * Convert an object of type LksgSubcontractingCompanies into a list that can be displayed using the standard
+ * modal DataTable
+ * @param datasetValue the value of the dataset
+ * @returns the converted list
+ */
+function convertLksgSubcontractingCompaniesToListForModal(datasetValue: {
+  [key: string]: Array<string>;
+}): LksgSubcontractingCompaniesDisplayFormat[] {
+  const listForModal: LksgSubcontractingCompaniesDisplayFormat[] = [];
+  for (const [countryCode, naceCodes] of Object.entries(datasetValue)) {
+    listForModal.push(<LksgSubcontractingCompaniesDisplayFormat>{
+      country: getCountryNameFromCountryCode(countryCode),
+      naceCodes: convertNace(naceCodes),
     });
   }
   return listForModal;
@@ -136,9 +186,8 @@ export function formatLksgProcurementCategoriesForDisplay(
   let convertedValueForModal = null;
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
-  } else {
-    convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
   }
+  convertedValueForModal = convertLksgProcumentTypeToListForModal(input);
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
@@ -154,6 +203,44 @@ export function formatLksgProcurementCategoriesForDisplay(
         data: {
           listOfRowContents: convertedValueForModal,
           kpiKeyOfTable: "procurementCategories",
+          columnHeaders: lksgModalColumnHeaders,
+        },
+      },
+    },
+  };
+}
+
+/**
+ * Generates a display modal component for all subcontracting companies
+ * @param input list of lksg procurement categories for display
+ * @param fieldLabel Field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgSubcontractingCompaniesForDisplay(
+  input: { [key: string]: Array<string> } | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  let convertedValueForModal = null;
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    convertedValueForModal = convertLksgSubcontractingCompaniesToListForModal(input);
+  }
+
+  return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: `Show ${fieldLabel}`,
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: fieldLabel,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          listOfRowContents: convertedValueForModal,
+          kpiKeyOfTable: "subcontractingCompanies",
           columnHeaders: lksgModalColumnHeaders,
         },
       },
@@ -193,4 +280,126 @@ export function formatLksgProductionSitesForDisplay(
       },
     },
   };
+}
+interface LksgRiskOrViolationAssessmentDisplayFormat {
+  riskPosition: string;
+  measuresTaken: string;
+  listedMeasures?: string | null;
+}
+
+/**
+ * Converts the risk positions to human-readable strings
+ * @param input to be humanized
+ * @returns the converted object
+ */
+function convertLksgRiskOrViolationPositionForDisplay(
+  input: LksgRiskOrViolationAssessment[],
+): LksgRiskOrViolationAssessmentDisplayFormat[] {
+  return input.map((item) => {
+    const humanizedItem: LksgRiskOrViolationAssessmentDisplayFormat = {
+      riskPosition: humanizeStringOrNumber(item.riskPosition),
+      measuresTaken: humanizeStringOrNumber(item.measuresTaken),
+      listedMeasures: item.listedMeasures,
+    };
+    return humanizedItem;
+  });
+}
+
+/**
+ * Generates a display modal component for the general violations or risks component
+ * @param input list of lksg general violations/risks for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgRisksOrViolationsForDisplay(
+  input: LksgRiskOrViolationAssessment[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    const convertedValueForModal = convertLksgRiskOrViolationPositionForDisplay(input);
+
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+      displayValue: {
+        label: `Show ${fieldLabel}`,
+        modalComponent: DetailsCompanyDataTable,
+        modalOptions: {
+          props: {
+            header: fieldLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            listOfRowContents: convertedValueForModal,
+            kpiKeyOfTable: "riskPositions",
+            columnHeaders: lksgModalColumnHeaders,
+          },
+        },
+      },
+    };
+  }
+}
+
+interface LksgGrievanceMechanismsDisplayFormat {
+  riskPositions: string[];
+  specifiedComplaint: string;
+  measuresTaken: string;
+  listedMeasures?: string | null;
+}
+/**
+ * Converts the risk positions to human-readable strings
+ * @param input to be humanized
+ * @returns the converted object
+ */
+function convertLksGrievanceMechanismsForDisplay(
+  input: LksgGrievanceAssessmentMechanism[],
+): LksgGrievanceMechanismsDisplayFormat[] {
+  return input.map((item) => {
+    const humanizedItem: LksgGrievanceMechanismsDisplayFormat = {
+      riskPositions: item.riskPositions.map((riskPosition) => humanizeStringOrNumber(riskPosition)),
+      specifiedComplaint: item.specifiedComplaint,
+      measuresTaken: humanizeStringOrNumber(item.measuresTaken),
+      listedMeasures: item.listedMeasures,
+    };
+    return humanizedItem;
+  });
+}
+
+/**
+ * Generates a display modal component for the grievance mechanism component
+ * @param input list of lksg grievance mechanism for display
+ * @param fieldLabel field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatLksgGrievanceMechanismsForDisplay(
+  input: LksgGrievanceAssessmentMechanism[] | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    const humanizedInput = convertLksGrievanceMechanismsForDisplay(input);
+
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+      displayValue: {
+        label: `Show ${fieldLabel}`,
+        modalComponent: DetailsCompanyDataTable,
+        modalOptions: {
+          props: {
+            header: fieldLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            listOfRowContents: humanizedInput,
+            kpiKeyOfTable: "grievanceMechanisms",
+            columnHeaders: lksgModalColumnHeaders,
+          },
+        },
+      },
+    };
+  }
 }

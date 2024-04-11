@@ -3,7 +3,7 @@ import { authenticator } from "otplib";
 import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
-  const email = `test_user${Date.now()}@dataland.com`;
+  const email = `test_user${Date.now()}@example.com`;
   const passwordBytes = crypto.getRandomValues(new Uint32Array(8));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 

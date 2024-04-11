@@ -21,6 +21,9 @@ describeIf(
     const testCompanyName = "Company-for-single-data-request" + uniqueCompanyMarker;
     let testStoredCompany: StoredCompany;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+    const testMessage = "Frontend test message";
+    const testYear = "2023";
+    const testEmail = "dummy@example.com";
 
     /**
      * Uploads a company with lksg data
@@ -78,12 +81,12 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      singleDataRequestPage.chooseReportingPeriod("2023");
+      singleDataRequestPage.chooseReportingPeriod(testYear);
       checkDropdownLabels();
       singleDataRequestPage.chooseFrameworkLksg();
 
-      cy.get('[data-test="contactEmail"]').type("example@Email.com");
-      cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
+      cy.get('[data-test="contactEmail"]').type(testEmail);
+      cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
       clickSubmitButton();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
@@ -98,7 +101,7 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      singleDataRequestPage.chooseReportingPeriod("2023");
+      singleDataRequestPage.chooseReportingPeriod(testYear);
       singleDataRequestPage.chooseFrameworkLksg();
       clickSubmitButton();
       cy.get("[data-test=submittedDiv]").should("exist");
@@ -122,9 +125,9 @@ describeIf(
         const expectedRequest: SingleDataRequestTypeInInterception = {
           companyIdentifier: testStoredCompany.companyId,
           dataType: DataTypeEnum.Lksg,
-          reportingPeriods: ["2023"],
-          contacts: ["example@Email.com"],
-          message: "Frontend test message",
+          reportingPeriods: [testYear],
+          contacts: [testEmail],
+          message: testMessage,
         };
         expect(requestBody).to.deep.equal(expectedRequest);
       }

@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class PropertyStyleEmailBuilderTest {
-    private val senderEmail = "sender@dataland.com"
+    private val senderEmail = "sender@example.com"
     private val senderName = "Test"
     private val receiverEmails = listOf(
-        "receiver1@dataland.com",
-        "receiver2@dataland.com",
+        "receiver1@example.com",
+        "receiver2@example.com",
     )
     private val ccEmails = listOf(
-        "cc1@dataland.com",
+        "cc1@example.com",
     )
     private val subject = "The Subject"
     private val textTitle = "The Text Title"

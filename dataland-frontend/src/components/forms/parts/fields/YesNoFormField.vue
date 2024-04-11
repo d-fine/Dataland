@@ -7,6 +7,7 @@
       :validation-label="validationLabel ?? label"
       :validation-messages="validationMessages"
       :options="HumanizedYesNo"
+      @update-checkbox-value="(newValue) => $emit('updateYesNoValue', newValue)"
     />
   </div>
 </template>
@@ -36,5 +37,6 @@ export default defineComponent({
       default: "form-field",
     },
   },
+  emits: ["updateYesNoValue"],
 });
 </script>
