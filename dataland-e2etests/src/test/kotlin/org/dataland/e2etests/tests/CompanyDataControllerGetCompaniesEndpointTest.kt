@@ -266,12 +266,21 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         for (company in companyList) {
             apiAccessor.companyDataControllerApi.postCompany(company)
         }
-        val chunkedSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
+        val firstChunkSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
+            searchString = testString,
+            chunkSize = 2,
+            chunkIndex = 0,
+        ).map { it.companyName }
+        assertEquals(
+            listOf(company3, testString),
+            firstChunkSortedCompanyNames,
+        )
+        val lastChunkSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = testString,
             chunkSize = 2,
             chunkIndex = 3,
         ).map { it.companyName }
-        assertEquals(listOf(company8, company9), chunkedSortedCompanyNames)
+        assertEquals(listOf(company8, company9), lastChunkSortedCompanyNames)
     }
 
     @Test
