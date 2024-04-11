@@ -499,7 +499,7 @@ services:
      - "host.docker.internal:host-gateway"
   eurodat-client:
     restart: always
-    profiles: [ "production", "testing", "development" ]
+    profiles: [ "production", "development" ]
     image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.28
     networks:
       - internal
