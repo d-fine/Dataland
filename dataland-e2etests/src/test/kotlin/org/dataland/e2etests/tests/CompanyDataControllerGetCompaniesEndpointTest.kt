@@ -256,7 +256,16 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
+    }
 
+    @Test
+    fun `search for name and check that chunking does not change the ordering of results`() {
+        val testString = "unique-test-string-${UUID.randomUUID()}"
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val companyList = createCompaniesForTestingOrdering(testString)
+        for (company in companyList) {
+            apiAccessor.companyDataControllerApi.postCompany(company)
+        }
         val chunkedSortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = testString,
             chunkSize = 2,
