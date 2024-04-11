@@ -99,7 +99,7 @@ describe("Component tests for the DatasetOverview page", () => {
     });
   });
 
-  it("Checks that the tab-bar is rendered correctly and that clicking on 'COMPANIES' performs a router push ", () => {
+  it("Checks that the tab-bar is rendered correctly and that clicking on 'COMPANIES' performs a router push", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept("**/api/companies?**", []);
     cy.mountWithPlugins(DatasetOverview, {
