@@ -12,7 +12,7 @@ function generateBasicCompanyInformation(): BasicCompanyInformation {
   return {
     companyName: mockCompanyInformation.companyName,
     companyId: mockDataMetaInformation.companyId,
-    permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
+    lei: mockCompanyInformation.identifiers[IdentifierType.Lei][0],
     headquarters: mockCompanyInformation.headquarters,
     sector: mockCompanyInformation.sector,
     countryCode: mockCompanyInformation.countryCode,

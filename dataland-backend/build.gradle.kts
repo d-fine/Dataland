@@ -46,13 +46,7 @@ dependencies {
     implementation(Spring.boot.validation)
     implementation(Spring.boot.oauth2ResourceServer)
     implementation(Spring.boot.amqp)
-    runtimeOnly(libs.postgresql)
-    runtimeOnly(libs.h2)
-    kapt(Spring.boot.configurationProcessor)
     implementation(Spring.boot.security)
-    testImplementation(Spring.boot.test)
-    testImplementation(Testing.mockito.core)
-    testImplementation(Spring.security.spring_security_test)
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
@@ -61,6 +55,12 @@ dependencies {
     implementation(Spring.boot.web)
     implementation(Spring.boot.data.jpa)
     implementation(libs.json)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
+    testImplementation(Spring.boot.test)
+    testImplementation(Testing.mockito.core)
+    testImplementation(Spring.security.spring_security_test)
+    kapt(Spring.boot.configurationProcessor)
 }
 
 openApi {
@@ -76,7 +76,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 
@@ -85,8 +85,10 @@ jacoco {
 }
 
 tasks.register<Copy>("getTestData") {
+    description = "Task to copy required testing data."
+    group = "verification"
     from("$rootDir/testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json")
-    into("$buildDir/resources/test")
+    into(layout.buildDirectory.dir("resources/test").get().toString())
 }
 
 tasks.getByName("processTestResources") {
@@ -98,10 +100,12 @@ gitProperties {
 }
 
 tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the internal storage service."
+    group = "clients"
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
     input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
         .path
-    outputDir.set("$buildDir/clients/internal-storage")
+    outputDir.set(layout.buildDirectory.dir("clients/internal-storage").get().toString())
     packageName.set(internalStorageClientDestinationPackage)
     modelPackage.set("$internalStorageClientDestinationPackage.model")
     apiPackage.set("$internalStorageClientDestinationPackage.api")
@@ -121,6 +125,8 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
 }
 
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateInternalStorageClient")
 }
 
@@ -134,7 +140,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/internal-storage/src/main/kotlin"))
 }
 
 ktlint {

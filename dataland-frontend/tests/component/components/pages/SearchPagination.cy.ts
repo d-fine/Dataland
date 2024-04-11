@@ -8,7 +8,11 @@ import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/Prepare
  */
 function intercept(arr: undefined | [] = undefined): undefined {
   const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
-  cy.intercept("**/api/companies?**", arr ?? mockDataSearchStoredCompanyArray);
+  cy.intercept("GET", "**/api/companies/numberOfCompanies?**", {
+    statusCode: 200,
+    body: 200,
+  });
+  cy.intercept("GET", "**/api/companies?**", arr ?? mockDataSearchStoredCompanyArray);
   cy.intercept("**/api/companies/meta-information", {
     countryCodes: ["CV"],
     sectors: ["partnerships"],
