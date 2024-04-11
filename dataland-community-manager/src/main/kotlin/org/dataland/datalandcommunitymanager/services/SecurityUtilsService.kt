@@ -27,7 +27,9 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns true if the request status is requested to be changed from answered to either closed or open
+     * Returns true if the request status is subject to change and conditions are met.
+     * This is the case when the request is to be changed from answered to either closed or open
+     * or if the status is changed to withdrawn.
      */
     @Transactional
     fun isRequestStatusChangeableByUser(
@@ -35,12 +37,17 @@ class SecurityUtilsService(
         requestStatusToPatch: RequestStatus,
     ): Boolean {
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
+        val statusChangeFromAnsweredToClosed =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Closed
+        val statusChangeFromAnsweredToOpen =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open
+        val statusChangeFromAnsweredToWithdrawn =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Withdrawn
+        val statusChangeFromOpenToWithdrawn =
+            currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
         return (
-            (currentRequestStatus == RequestStatus.Answered) &&
-                (
-                    requestStatusToPatch == RequestStatus.Closed ||
-                        requestStatusToPatch == RequestStatus.Open
-                    )
+            statusChangeFromAnsweredToClosed || statusChangeFromAnsweredToOpen ||
+                statusChangeFromAnsweredToWithdrawn || statusChangeFromOpenToWithdrawn
             )
     }
 }
