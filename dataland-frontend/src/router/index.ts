@@ -108,6 +108,7 @@ const routes = [
   {
     path: `/requests/:requestId`,
     name: "Data Request View Page",
+    props: true,
     component: ViewDataRequestPage,
   },
   {
