@@ -80,7 +80,7 @@ describe("Component tests for the DatasetOverview page", () => {
     });
   });
 
-  it("Checks that the tab-bar and clicking on 'QA' works as expected for data reviewer ", () => {
+  it("Checks that the tab-bar and clicking on 'QA' works as expected for data reviewer", () => {
     const keycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER],
     });
