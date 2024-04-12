@@ -102,7 +102,11 @@
               <div>
                 Once a data request is withdrawn, it will be removed from your data request list. The data owner will
                 not be notified anymore.
-                <a class="link" style="display: inline-flex; color: black" @click="withdrawRequest()">
+                <a
+                  class="link"
+                  style="display: inline-flex; font-weight: bold; color: black"
+                  @click="withdrawRequest()"
+                >
                   Withdraw request.</a
                 >
               </div>
@@ -153,6 +157,7 @@ export default defineComponent({
   },
   mounted() {
     this.getRequest()
+      .catch((error) => console.error(error))
       .then(() => {
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
       })
@@ -201,6 +206,7 @@ export default defineComponent({
      * Method to withdraw the request when clicking on the button
      */
     withdrawRequest() {
+      //todo try catch block to show succes/fail modal
       patchDataRequestStatus(this.requestId, RequestStatus.Withdrawn as RequestStatus, this.getKeycloakPromise)
         .catch((error) => console.error(error))
         .then(() => window.location.reload())
