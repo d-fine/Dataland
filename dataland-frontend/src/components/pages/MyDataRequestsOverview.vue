@@ -45,7 +45,7 @@
             <div class="card">
               <DataTable
                 :value="displayedData"
-                class="table-cursor"
+                style="cursor: pointer"
                 :rowHover="true"
                 :loading="waitingForData"
                 data-test="requested-Datasets-table"
@@ -398,8 +398,12 @@ export default defineComponent({
      * @returns result of the comparison
      */
     customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
-      if (a == RequestStatus.Answered || (a == RequestStatus.Open && b == RequestStatus.Closed))
-        return -1 * this.sortOrder;
+      const sortOrderRequestStatus: { [key: string]: number } = {};
+      sortOrderRequestStatus[RequestStatus.Answered] = 1;
+      sortOrderRequestStatus[RequestStatus.Open] = 2;
+      sortOrderRequestStatus[RequestStatus.Closed] = 3;
+      sortOrderRequestStatus[RequestStatus.Withdrawn] = 4;
+      if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * this.sortOrder;
       return this.sortOrder;
     },
     /**

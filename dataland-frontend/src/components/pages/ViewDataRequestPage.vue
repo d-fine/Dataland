@@ -201,9 +201,10 @@ export default defineComponent({
      * Method to withdraw the request when clicking on the button
      */
     withdrawRequest() {
-      patchDataRequestStatus(this.requestId, RequestStatus.Withdrawn as RequestStatus).catch((error) =>
-        console.error(error),
-      );
+      patchDataRequestStatus(this.requestId, RequestStatus.Withdrawn as RequestStatus, this.getKeycloakPromise)
+        .catch((error) => console.error(error))
+        .then(() => window.location.reload())
+        .catch((error) => console.error(error));
     },
     /**
      * Method to check if request is withdrawAble
