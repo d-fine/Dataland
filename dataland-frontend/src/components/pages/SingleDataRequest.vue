@@ -62,7 +62,13 @@
                       <label for="Emails" class="label-with-optional">
                         <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit v-model="contactsAsString" type="text" name="contactDetails" data-test="contactEmail" />
+                      <FormKit
+                        v-model="contactsAsString"
+                        type="text"
+                        name="contactDetails"
+                        data-test="contactEmail"
+                        @input="updateMessageVisibility"
+                      />
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying contacts your data request will be directed accordingly.<br />
                         You can specify multiple comma separated email addresses.<br />
@@ -82,10 +88,26 @@
                         type="textarea"
                         name="dataRequesterMessage"
                         data-test="dataRequesterMessage"
+                        v-bind:disabled="!allowAccessDataRequesterMessage"
                       />
                       <p class="gray-text font-italic" style="text-align: left">
                         Let your contacts know what exactly your are looking for.
                       </p>
+                      <div v-if="allowAccessDataRequesterMessage">
+                        <div class="mt-3 flex">
+                          <input type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
+                          <label class="tex-sm ml-2"
+                            >I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label
+                          >
+                        </div>
+                        <p
+                          v-if="displayConditionsNotAcceptedError"
+                          class="text-danger text-xs mt-2"
+                          data-test="reportingPeriodErrorMessage"
+                        >
+                          You have to accept the terms and conditions to add a message
+                        </p>
+                      </div>
                     </BasicFormSection>
                   </div>
                   <div class="col-12 flex align-items-end">
@@ -94,7 +116,7 @@
                       label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
                       name="submit_request_button"
-                      @click="checkIfAtLeastOneReportingPeriodSelected()"
+                      @click="checkPreSubmitConditions()"
                     >
                       SUBMIT DATA REQUEST
                     </PrimeButton>
@@ -183,9 +205,14 @@ export default defineComponent({
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
       frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
       contactsAsString: "",
-      dataRequesterMessage: "",
+      allowAccessDataRequesterMessage: false,
+      dataRequesterMessage: "Please provide a valid email before entering a message",
+      dataRequesterMessageNotAllowedText: "Please provide a valid email before entering a message",
+      dataRequesterMessageAllowedText: "",
+      consentToMessageDataUsageGiven: false,
       errorMessage: "",
       selectedReportingPeriodsError: false,
+      displayConditionsNotAcceptedError: false,
       reportingPeriodOptions: [
         { name: "2023", value: false },
         { name: "2022", value: false },
@@ -213,6 +240,83 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Checks if the first email in a string of comma separated emails is valid
+     * @param emails string of comma separated emails
+     * @returns true if valid, false otherwise
+     */
+    areValidEmails(emails: string): boolean {
+      return this.isValidEmail(emails.split(",")[0]);
+    },
+
+    /**
+     * Checks if an email string is a valid email by checking for _@_._
+     * @param email the email string to check
+     * @returns true if the email is valid, false otherwise
+     */
+    isValidEmail(email: string): boolean {
+      if (email == "") return false;
+
+      const splitByEt = email.split("@");
+
+      if (splitByEt.length != 2) return false;
+      if (splitByEt[0] == "") return false;
+      if (splitByEt[1] == "") return false;
+
+      const splitByEtAndDot = splitByEt[1].split(".");
+
+      if (splitByEtAndDot.length < 2) return false;
+      if (splitByEtAndDot[0] == "") return false;
+      if (splitByEtAndDot[splitByEtAndDot.length - 1] == "") return false;
+
+      return true;
+    },
+
+    /**
+     * Updates if the message block is active and if the accept terms and conditions checkmark below is visible
+     * and required, based on whether valid emails have been provided
+     * @param contactsAsString the emails string to check
+     */
+    updateMessageVisibility(contactsAsString: string | undefined): void {
+      if (this.areValidEmails(<string>contactsAsString)) {
+        this.allowAccessDataRequesterMessage = true;
+        if (this.dataRequesterMessage == this.dataRequesterMessageNotAllowedText) {
+          this.dataRequesterMessage = this.dataRequesterMessageAllowedText;
+        }
+      } else {
+        this.allowAccessDataRequesterMessage = false;
+        if (this.dataRequesterMessage != this.dataRequesterMessageNotAllowedText) {
+          this.dataRequesterMessageAllowedText = this.dataRequesterMessage;
+          this.dataRequesterMessage = this.dataRequesterMessageNotAllowedText;
+        }
+      }
+    },
+
+    /**
+     * Updates if the message terms and conditions not being accepted should stop the user from submitting the request.
+     * Based on if they are accepted or not and on if the user wants to submit a message
+     */
+    updateConditionsNotAcceptedError(): void {
+      this.displayConditionsNotAcceptedError =
+        !this.consentToMessageDataUsageGiven && this.allowAccessDataRequesterMessage;
+    },
+
+    /**
+     * checks if the forms are filled out correctly and updates the displayed warnings accordingly
+     */
+    checkPreSubmitConditions(): void {
+      this.checkIfAtLeastOneReportingPeriodSelected();
+      this.updateConditionsNotAcceptedError();
+    },
+
+    /**
+     * Returns if the forms are filled out correctly
+     * @returns true if they are filled out correctly, false otherwise
+     */
+    preSubmitConditionsFulfilled(): boolean {
+      return !this.displayConditionsNotAcceptedError && !this.selectedReportingPeriodsError;
+    },
+
     /**
      * Check whether reporting periods have been selected
      */
@@ -245,7 +349,7 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      if (!this.selectedReportingPeriodsError) {
+      if (this.preSubmitConditionsFulfilled()) {
         try {
           const singleDataRequestObject = this.collectDataToSend();
           const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
