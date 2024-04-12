@@ -327,4 +327,23 @@ class SingleDataRequestsTest {
             "The reporting period of the one newly stored request is not as expected.",
         )
     }
+
+    @Test
+    fun `post several requests with free user and check if quota-limit exception is triggered`(){
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val numberRequestsToSubmit = 15
+        for (requestNumber in 1..numberRequestsToSubmit){
+            println(requestNumber)
+            val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
+
+            val response = requestControllerApi.postSingleDataRequest(
+                SingleDataRequest(
+                    companyIdentifier = companyId,
+                    dataType = SingleDataRequest.DataType.lksg,
+                    reportingPeriods = setOf("2021", "2022", "2023"),
+                ),
+            )
+            println(response.message)
+        }
+    }
 }

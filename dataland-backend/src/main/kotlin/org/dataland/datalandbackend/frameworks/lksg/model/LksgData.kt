@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.frameworks.lksg.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
+import org.dataland.datalandbackend.frameworks.lksg.model.attachment.LksgAttachment
 import org.dataland.datalandbackend.frameworks.lksg.model.environmental.LksgEnvironmental
 import org.dataland.datalandbackend.frameworks.lksg.model.general.LksgGeneral
 import org.dataland.datalandbackend.frameworks.lksg.model.governance.LksgGovernance
@@ -25,5 +26,8 @@ data class LksgData(
 
     @field:Valid()
     val environmental: LksgEnvironmental? = null,
+
+    @field:Valid()
+    val attachment: LksgAttachment? = null,
 
 )
