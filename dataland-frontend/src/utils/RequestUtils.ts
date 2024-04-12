@@ -60,3 +60,22 @@ export async function patchDataRequestStatus(
     throw error;
   }
 }
+/**
+ * Defines the color of p-badge
+ * @param requestStatus status of a request
+ * @returns p-badge class
+ */
+export function badgeClass(requestStatus: RequestStatus): string {
+  switch (requestStatus) {
+    case "Answered":
+      return "p-badge badge-blue outline rounded";
+    case "Open":
+      return "p-badge badge-yellow outline rounded";
+    case "Closed":
+      return "p-badge badge-light-green outline rounded";
+    case "Withdrawn":
+      return "p-badge badge-gray outline rounded";
+    default:
+      return "p-badge outline rounded";
+  }
+}

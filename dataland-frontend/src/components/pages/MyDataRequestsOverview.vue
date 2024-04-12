@@ -158,17 +158,23 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import {
+  frameworkHasSubTitle,
+  getFrameworkSubtitle,
+  getFrameworkTitle,
+  humanizeStringOrNumber,
+} from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import { DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import type { FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import { badgeClass } from "@/utils/RequestUtils";
 
 export default defineComponent({
   name: "MyDataRequestsOverview",
@@ -234,6 +240,10 @@ export default defineComponent({
     },
   },
   methods: {
+    badgeClass,
+    frameworkHasSubTitle,
+    getFrameworkTitle,
+    getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
     /**
      * Navigates to the company view page
@@ -292,57 +302,6 @@ export default defineComponent({
       this.waitingForData = false;
     },
     /**
-     * Return the title of a framework
-     * @param framework dataland framework
-     * @returns title of framework
-     */
-    getFrameworkTitle(framework: DataTypeEnum) {
-      switch (framework) {
-        case DataTypeEnum.EutaxonomyFinancials:
-          return "EU Taxonomy";
-        case DataTypeEnum.EutaxonomyNonFinancials:
-          return "EU Taxonomy";
-        case DataTypeEnum.P2p:
-          return "WWF";
-        case DataTypeEnum.EsgQuestionnaire:
-          return "ESG Questionnaire";
-        default:
-          return humanizeStringOrNumber(framework);
-      }
-    },
-    /**
-     * Return the subtitle of a framework
-     * @param framework dataland framework
-     * @returns subtitle of framework
-     */
-    getFrameworkSubtitle(framework: DataTypeEnum) {
-      switch (framework) {
-        case DataTypeEnum.EutaxonomyFinancials:
-          return "for financial companies";
-        case DataTypeEnum.EutaxonomyNonFinancials:
-          return "for non-financial companies";
-        case DataTypeEnum.P2p:
-          return "Pathways to Paris";
-        case DataTypeEnum.EsgQuestionnaire:
-          return "für Corporate Schuldscheindarlehen";
-        default:
-          return "";
-      }
-    },
-    /**
-     * Checks the existence of subtitle for framework
-     * @param framework dataland framework
-     * @returns boolean if framework has subtitle
-     */
-    frameworkHasSubTitle(framework: DataTypeEnum) {
-      return (
-        framework == DataTypeEnum.P2p ||
-        framework == DataTypeEnum.EutaxonomyFinancials ||
-        framework == DataTypeEnum.EutaxonomyNonFinancials ||
-        framework == DataTypeEnum.EsgQuestionnaire
-      );
-    },
-    /**
      * Navigates to the view dataRequest page
      * @param event contains column that was clicked
      * @param event.data extended stored data request
@@ -361,21 +320,7 @@ export default defineComponent({
       this.sortOrder = event.sortOrder ?? 1;
       this.updateCurrentDisplayedData();
     },
-    /**
-     * Defines the color of p-badge
-     * @param requestStatus status of a request
-     * @returns p-badge class
-     */
-    badgeClass(requestStatus: RequestStatus): string {
-      switch (requestStatus) {
-        case "Answered":
-          return "p-badge badge-blue outline rounded";
-        case "Open":
-          return "p-badge badge-yellow outline rounded";
-        case "Closed":
-          return "p-badge badge-light-green outline rounded";
-      }
-    },
+
     /**
      * Filterfunction for frameworks
      * @param framework dataland framework
@@ -468,7 +413,7 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 #my-data-requests-overview-table tr:hover {
   cursor: pointer;
 }

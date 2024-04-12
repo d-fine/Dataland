@@ -913,7 +913,8 @@
         "enum": [
           "Open",
           "Answered",
-          "Closed"
+          "Closed",
+          "Withdrawn"
         ]
       },
       "StoredDataRequest": {

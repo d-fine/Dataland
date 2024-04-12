@@ -1,5 +1,22 @@
 <template>
   <AuthenticationWrapper>
+    <PrimeDialog
+      :dismissableMask="true"
+      :modal="true"
+      v-model:visible="showNewMessageDialog"
+      :closable="true"
+      style="text-align: center"
+      :show-header="true"
+    >
+      <template #header>
+        <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
+      </template>
+      <div>
+        test test testtest test testtest test testtest test testtest test testtest test testtest test testtest test
+        testtest test testtest test testtest test testtest test testtest test testtest test testtest test testtest test
+        testtest test test
+      </div>
+    </PrimeDialog>
     <TheHeader />
     <div class="sheet">
       <div class="headline">
@@ -14,29 +31,79 @@
             <div class="card__title">Request Details</div>
             <div class="card__separator" />
             <div class="card__subtitle">Company</div>
-            <div class="card__data"></div>
-            <div></div>
+            <div class="card__data">{{ companyName }}</div>
             <div class="card__subtitle">Framework</div>
-            <div class="card__data">{{ storedDataRequest.dataType }}</div>
+            <div class="card__data">
+              {{ getFrameworkTitle(storedDataRequest.dataType) }}
+
+              <div
+                v-if="frameworkHasSubTitle(storedDataRequest.dataType)"
+                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+              >
+                <br />
+                {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
+              </div>
+            </div>
             <div class="card__subtitle">Reporting year</div>
             <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
+          </div>
+          <div
+            v-if="isDatasetAvailable()"
+            class="link claim-panel-text"
+            style="font-weight: bold"
+            @click="goToResolveDataRequestPage()"
+          >
+            VIEW DATASET
           </div>
         </div>
         <div class="grid col-8 flex-direction-column">
           <div class="col-12">
             <div class="card">
-              <div class="card__title">Request Status</div>
-              <a class=""></a>
-              <div class="card__separator" />
-              <!-- todo -->
-              Test blabla {{ storedDataRequest.creationTimestamp }}
+              <span style="display: flex; align-items: center">
+                <div class="card__title">Request is:</div>
+                <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
+                  {{ storedDataRequest.requestStatus }}
+                </div>
+                <div class="card__subtitle">
+                  since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
+                </div>
+                <div style="margin-left: auto">
+                  <PrimeButton v-if="isRequestStatusAnswered()" @click="goToResolveDataRequestPage()">
+                    <span class="d-letters pl-2"> Resolve Request </span>
+                  </PrimeButton>
+                </div>
+              </span>
             </div>
             <div class="card">
+              <span style="display: flex; align-items: center">
+                <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
+                <div style="cursor: pointer; display: flex; align-items: center" @click="openMessageDialog()">
+                  <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
+                  <div style="font-weight: bold">NEW MESSAGE</div>
+                </div>
+              </span>
+              <div class="card__separator" />
+              <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
+                <div style="color: black; font-weight: bold; font-size: small">
+                  {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
+                </div>
+                <div class="message">
+                  <div style="color: black">Sent to: {{ formattedContacts(message.contacts) }}</div>
+                  <div class="card__separator" />
+                  <div style="color: gray">
+                    {{ message.message }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card" v-if="isWithdrawable()">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
               Once a data request is withdrawn, it will be removed from your data request list. The data owner will not
               be notified anymore.
-              <a class="link" @click="withdrawRequest"> Withdraw request.</a>
+              <a class="link" style="display: inline-flex; color: black" @click="withdrawRequest()">
+                Withdraw request.</a
+              >
             </div>
           </div>
         </div>
@@ -53,11 +120,17 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { type StoredDataRequest } from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import type Keycloak from "keycloak-js";
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from "@/utils/StringFormatter";
+import { badgeClass, patchDataRequestStatus } from "@/utils/RequestUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import PrimeButton from "primevue/button";
+import PrimeDialog from "primevue/dialog";
+
 export default defineComponent({
   name: "ViewDataRequest",
-  components: { BackButton, AuthenticationWrapper, TheHeader, TheFooter },
+  components: { PrimeDialog, PrimeButton, BackButton, AuthenticationWrapper, TheHeader, TheFooter },
   props: {
     requestId: {
       type: String,
@@ -72,12 +145,23 @@ export default defineComponent({
   data() {
     return {
       storedDataRequest: {} as StoredDataRequest,
+      companyName: "",
+      showNewMessageDialog: false,
     };
   },
   mounted() {
-    this.getRequest().catch((error) => console.error(error));
+    this.getRequest()
+      .then(() => {
+        this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
   },
   methods: {
+    convertUnixTimeInMsToDateString,
+    badgeClass,
+    getFrameworkSubtitle,
+    frameworkHasSubTitle,
+    getFrameworkTitle,
     /**
      * Method to get the request from the api
      */
@@ -95,13 +179,97 @@ export default defineComponent({
       }
     },
     /**
+     * Method to get the company Name from the backend
+     * @param companyId companyId
+     */
+    async getCompanyName(companyId: string) {
+      try {
+        if (this.getKeycloakPromise) {
+          this.companyName = (
+            await new ApiClientProvider(this.getKeycloakPromise()).backendClients.companyDataController.getCompanyInfo(
+              companyId,
+            )
+          ).data.companyName;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
      * Method to withdraw the request when clicking on the button
      */
-    withdrawRequest() {},
+    withdrawRequest() {
+      patchDataRequestStatus(this.requestId, RequestStatus.Withdrawn as RequestStatus).catch((error) =>
+        console.error(error),
+      );
+    },
+    /**
+     * Method to check if request is withdrawAble
+     * @returns boolean is withdrawAble
+     */
+    isWithdrawable() {
+      return (
+        this.storedDataRequest.requestStatus == RequestStatus.Open ||
+        this.storedDataRequest.requestStatus == RequestStatus.Answered
+      );
+    },
+    /**
+     * Navigates to the company view page
+     * @returns the promise of the router push action
+     */
+    goToResolveDataRequestPage() {
+      const url = `/companies/${this.storedDataRequest.datalandCompanyId}/frameworks/${this.storedDataRequest.dataType}`;
+      return this.$router.push(url);
+    },
+    /**
+     * Method to check if request status is answered
+     * @returns boolean if request status is answered
+     */
+    isRequestStatusAnswered() {
+      return this.storedDataRequest.requestStatus == RequestStatus.Answered;
+    },
+    /**
+     * Method to check if request status is answered
+     * @returns boolean if request status is answered
+     */
+    isDatasetAvailable() {
+      return (
+        this.storedDataRequest.requestStatus == RequestStatus.Answered ||
+        this.storedDataRequest.requestStatus == RequestStatus.Closed
+      );
+    },
+    /**
+     * Method to transform set of string to one string representing the set elements seperated by ','
+     * @param contacts set of strings
+     * @returns string representing the elements of the set
+     */
+    formattedContacts(contacts: Set<string>) {
+      const contactsList = [...contacts];
+      return contactsList.join(", ");
+    },
+    /**
+     * Shows or hides the Modal depending on the current state
+     */
+    openMessageDialog() {
+      this.showNewMessageDialog = true;
+    },
   },
 });
 </script>
 <style lang="scss" scoped>
+.message {
+  width: 100%;
+  border: #e0dfde solid 1px;
+  padding: $spacing-md;
+  border-radius: $radius-xxs;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 .card {
   width: 100%;
   background-color: var(--surface-card);
@@ -117,15 +285,14 @@ export default defineComponent({
     font-size: medium;
     line-height: normal;
     color: gray;
-    margin-top: auto;
   }
 
   &__data {
     font-size: medium;
     font-weight: bold;
     line-height: normal;
-    margin-top: auto;
-    margin-bottom: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 2rem;
   }
 
   &__title {
