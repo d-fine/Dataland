@@ -99,11 +99,13 @@
             <div class="card" v-if="isWithdrawable()">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
-              Once a data request is withdrawn, it will be removed from your data request list. The data owner will not
-              be notified anymore.
-              <a class="link" style="display: inline-flex; color: black" @click="withdrawRequest()">
-                Withdraw request.</a
-              >
+              <div>
+                Once a data request is withdrawn, it will be removed from your data request list. The data owner will
+                not be notified anymore.
+                <a class="link" style="display: inline-flex; color: black" @click="withdrawRequest()">
+                  Withdraw request.</a
+                >
+              </div>
             </div>
           </div>
         </div>
