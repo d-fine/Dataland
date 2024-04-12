@@ -42,10 +42,10 @@ export default defineComponent({
 }
 
 main {
-  margin-top: 132px;
+  margin-top: 122px;
   margin-bottom: 52px;
   @media only screen and (max-width: $small) {
-    margin-top: 52px;
+    margin-top: 82px;
   }
 }
 </style>

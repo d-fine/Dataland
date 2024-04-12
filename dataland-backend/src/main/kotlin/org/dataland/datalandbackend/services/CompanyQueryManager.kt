@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -35,32 +34,42 @@ class CompanyQueryManager(
     }
 
     /**
-     * Method to search for basic information of companies matching the company name or identifier
+     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeeding
+     * the given size
+     * @param chunkSize the package size of the records
+     * @param chunkIndex the index of the chunk which is requested
      * @param filter The filter to use during searching
-     * @return list of basic information of all matching companies in Dataland
+     * @return list of lists each containing BasicCompanyInformation objects
      */
     @Transactional
-    fun searchCompaniesAndGetApiModel(
+    fun getCompaniesInChunks(
         filter: StoredCompanySearchFilter,
+        chunkIndex: Int,
+        chunkSize: Int?,
     ): List<BasicCompanyInformation> {
-        if (filter.dataTypeFilter.size == DataTypesExtractor().getAllDataTypes().size) {
-            filter.dataTypeFilter = emptyList()
-        }
-
-        return if (
-            (
-                filter.sectorFilterSize +
-                    filter.countryCodeFilterSize +
-                    filter.dataTypeFilterSize +
-                    filter.searchStringLength
-                ) > 0
-        ) {
-            companyRepository.searchCompanies(
-                filter,
-            )
+        val offset = chunkIndex * (chunkSize ?: 0)
+        return if (filter.searchStringLength == 0) {
+            if (areAllDropdownFiltersDeactivated(filter)) {
+                companyRepository
+                    .getAllCompaniesWithDataset(
+                        chunkSize, offset,
+                    )
+            } else {
+                companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
+            }
         } else {
-            companyRepository.getAllCompaniesWithDataset()
+            companyRepository.searchCompanies(filter, chunkSize, offset)
         }
+    }
+
+    /**
+     * Method to check if ever dropdownFilter is deactivated
+     * @param filter The filter to use during searching
+     */
+    private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean {
+        return (
+            filter.dataTypeFilterSize + filter.sectorFilterSize + filter.countryCodeFilterSize == 0
+            )
     }
 
     /**
@@ -74,7 +83,7 @@ class CompanyQueryManager(
         resultLimit: Int,
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
-            searchString,
+            StoredCompanySearchFilter(emptyList(), emptyList(), emptyList(), searchString),
             resultLimit,
         )
     }
@@ -84,20 +93,6 @@ class CompanyQueryManager(
         companiesWithFetchedFields = companyRepository.fetchAlternativeNames(companiesWithFetchedFields)
         companiesWithFetchedFields = companyRepository.fetchCompanyAssociatedByDataland(companiesWithFetchedFields)
         return companiesWithFetchedFields
-    }
-
-    /**
-     * Returns a list of available country codes across all stored companies
-     */
-    fun getDistinctCountryCodes(): Set<String> {
-        return companyRepository.fetchDistinctCountryCodes()
-    }
-
-    /**
-     * Returns a list of available sectors across all stored companies
-     */
-    fun getDistinctSectors(): Set<String> {
-        return companyRepository.fetchDistinctSectors()
     }
 
     /**

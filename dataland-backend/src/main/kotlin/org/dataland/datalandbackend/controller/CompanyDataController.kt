@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
+import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataOwnersManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -32,6 +33,7 @@ import java.util.UUID
  * @param companyAlterationManager the company manager service to handle company alteration
  * @param companyQueryManager the company manager service to handle company database queries
  * @param companyIdentifierRepositoryInterface the company identifier repository
+ * @param companyBaseManager the company base manager service to handle basic information about companies
  */
 
 @RestController
@@ -40,6 +42,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val dataOwnersManager: DataOwnersManager,
+    @Autowired private val companyBaseManager: CompanyBaseManager,
 ) : CompanyApi, DataOwnerApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -56,13 +59,38 @@ class CompanyDataController(
         dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
+        chunkSize: Int?,
+        chunkIndex: Int?,
     ): ResponseEntity<List<BasicCompanyInformation>> {
         logger.info(
             "Received a request to get basic company information with searchString='$searchString'" +
                 ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(
-            companyQueryManager.searchCompaniesAndGetApiModel(
+            companyQueryManager.getCompaniesInChunks(
+                StoredCompanySearchFilter(
+                    searchString = searchString ?: "",
+                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
+                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                    sectorFilter = sectors?.toList() ?: listOf(),
+                ),
+                chunkIndex ?: 0,
+                chunkSize,
+            ),
+        )
+    }
+    override fun getNumberOfCompanies(
+        searchString: String?,
+        dataTypes: Set<DataType>?,
+        countryCodes: Set<String>?,
+        sectors: Set<String>?,
+    ): ResponseEntity<Int> {
+        logger.info(
+            "Received a request to get number of companies with searchString='$searchString'" +
+                ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
+        )
+        return ResponseEntity.ok(
+            companyBaseManager.countNumberOfCompanies(
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
@@ -121,8 +149,8 @@ class CompanyDataController(
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
         return ResponseEntity.ok(
             CompanyAvailableDistinctValues(
-                countryCodes = companyQueryManager.getDistinctCountryCodes(),
-                sectors = companyQueryManager.getDistinctSectors(),
+                countryCodes = companyBaseManager.getDistinctCountryCodes(),
+                sectors = companyBaseManager.getDistinctSectors(),
             ),
         )
     }
