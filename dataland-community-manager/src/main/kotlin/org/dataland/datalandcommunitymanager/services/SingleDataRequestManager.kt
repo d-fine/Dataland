@@ -58,7 +58,7 @@ class SingleDataRequestManager(
 
             if (numberOfDataRequestsPerformedByUserFromTimestamp >= MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER) {
                 throw InsufficientRightsApiException(
-                    "The daily quota capacity has been reached.",
+                    "Quota has been reached.",
                     "The daily quota capacity has been reached.",
                 )
             }
