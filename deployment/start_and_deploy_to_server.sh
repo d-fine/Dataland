@@ -63,7 +63,9 @@ if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
 fi
 
 # Write all the files necessary for the EuroDaT-client to work
-ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client"
+ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client/secret_files"
+scp ./dataland-eurodat-client/write_secret_files.sh ubuntu@"$target_server_url":"$location"/dataland-eurodat-client
+ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-eurodat-client/write_secret_files.sh\""
 keystore_base64="${EURODAT_CLIENT_KEYSTORE_INT_BASE64}"
 ssh ubuntu@"$target_server_url" "echo "$keystore_base64" | base64 -d > $location/dataland-eurodat-client/secret_files/keystore.jks"
 test_base64="${EURODAT_CLIENT_TEST_INT_BASE64}"
