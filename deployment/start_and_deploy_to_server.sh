@@ -24,7 +24,6 @@ keycloak_user_dir=$location/dataland-keycloak/users
 
 
 # Write all the files necessary for the EuroDaT-client to work
-ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client/secret_files_templates"
 scp ./dataland-eurodat-client/secret_files_templates ubuntu@"$target_server_url":"$location"/dataland-eurodat-client/secret_files_templates
 ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client/secret_files"
 
