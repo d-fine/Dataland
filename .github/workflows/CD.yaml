@@ -1,3 +1,4 @@
+name: CD
 run-name: Deploy to ${{ github.event.inputs.whichEnvironment }}
 
 on:
@@ -164,6 +165,8 @@ jobs:
           COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${{ vars.COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION }}
           DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${{ vars.DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION }}
           INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${{ vars.INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION }}
+          EURODAT_CLIENT_KEYSTORE_INT_BASE64: ${{ secrets.EURODAT_CLIENT_KEYSTORE_INT_BASE64 }}
+          EURODAT_CLIENT_TEST_INT_BASE64: ${{ secrets.EURODAT_CLIENT_TEST_INT_BASE64 }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:

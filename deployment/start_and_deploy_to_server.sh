@@ -62,6 +62,13 @@ if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_full_golden_copy_download_flag"
 fi
 
+# Write all the files necessary for the EuroDaT-client to work
+keystore_base64="${EURODAT_CLIENT_KEYSTORE_INT_BASE64}"
+ssh ubuntu@"$target_server_url" "echo "$keystore_base64" | base64 -d > $location/dataland-eurodat-client/secret_files/keystore.jks"
+test_base64="${EURODAT_CLIENT_TEST_INT_BASE64}"
+ssh ubuntu@"$target_server_url" "echo "$test_base64" | base64 -d > $location/dataland-eurodat-client/secret_files/test.jks"
+ssh ubuntu@"$target_server_url" "cd $location/dataland-eurodat-client; ./write_secret_files.sh"
+
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 
