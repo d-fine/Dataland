@@ -46,20 +46,16 @@ class SingleDataRequestManager(
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequest(singleDataRequest)
 
-        // if not premium user
         if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
-            // get Timestamp depicting the start of day
             val timestampMillisNow: Long = System.currentTimeMillis()
             val timeStampConvertor = TimestampConvertor()
             val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
 
-            // count number of daily requests
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
                     DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
                 )
 
-            // get error if quota is exceeded
             if (numberOfDataRequestsPerformedByUserFromTimestamp >= MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER) {
                 throw InsufficientRightsApiException(
                     "The daily quota capacity has been reached.",

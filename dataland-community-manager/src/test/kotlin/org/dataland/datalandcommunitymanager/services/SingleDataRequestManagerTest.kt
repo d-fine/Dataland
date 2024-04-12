@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
@@ -42,6 +43,7 @@ class SingleDataRequestManagerTest {
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
+            dataRequestRepository = mock(DataRequestRepository::class.java),
             companyApi = mockCompanyApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
