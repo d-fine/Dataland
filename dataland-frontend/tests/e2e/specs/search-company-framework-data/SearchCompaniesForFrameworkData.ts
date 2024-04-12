@@ -50,17 +50,17 @@ describeIf(
       },
       () => {
         it(
-          "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
+          "Check Lei tooltip, execute company search by name, check result table and assure VIEW button works",
           { scrollBehavior: false },
           () => {
             /**
-             * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
+             * Verifies that the tooltip of the Lei in the search table header contains the expected text
              */
             function checkPermIdToolTip(): void {
-              const expectedTextInToolTip = "Permanent Identifier (PermID)";
-              cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+              const expectedTextInToolTip = "The Legal Entity Identifier (LEI)";
+              cy.get('.material-icons[title="LEI"]').trigger("mouseenter", "center");
               cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
-              cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+              cy.get('.material-icons[title="LEI"]').trigger("mouseleave");
               cy.get(".p-tooltip").should("not.exist");
             }
 
