@@ -2,16 +2,21 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
+import org.dataland.datalandcommunitymanager.utils.TimestampConvertor
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -24,6 +29,7 @@ import java.util.*
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
@@ -39,6 +45,29 @@ class SingleDataRequestManager(
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequest(singleDataRequest)
+
+        // if not premium user
+        if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+            // get Timestamp depicting the start of day
+            val timestampMillisNow: Long = System.currentTimeMillis()
+            val timeStampConvertor = TimestampConvertor()
+            val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
+
+            // count number of daily requests
+            val numberOfDataRequestsPerformedByUserFromTimestamp =
+                dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
+                    DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
+                )
+
+            // get error if quota is exceeded
+            if (numberOfDataRequestsPerformedByUserFromTimestamp >= MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER) {
+                throw InsufficientRightsApiException(
+                    "The daily quota capacity has been reached.",
+                    "The daily quota capacity has been reached.",
+                )
+            }
+        }
+
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,

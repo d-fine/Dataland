@@ -131,4 +131,24 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         reportingPeriod: String,
         dataType: String,
     )
+
+    /** This method counts the number of data requests that a user
+     * has performed from a specified timestamp.
+     * @param userId to check for
+     * @param timestamp to check for
+     * @returns the number of counts
+     */
+    @Query
+    (
+        "SELECT COUNT(d.userId) FROM DataRequestEntity d " +
+            "WHERE " +
+            "(d.userId = :#{#userId})" +
+            "AND " +
+            "('d.creationTimestamp' >= :#{#timestamp})",
+
+    )
+    fun getNumberOfDataRequestsPerformedByUserFromTimestamp(
+        userId: String,
+        timestamp: Long,
+    ): Int
 }
