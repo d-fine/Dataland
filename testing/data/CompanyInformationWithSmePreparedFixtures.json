@@ -2,110 +2,116 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Rauboro",
-			"headquartersPostalCode": "63395-3744",
-			"sector": "communities",
+			"headquarters": "Jaskolskibury",
+			"headquartersPostalCode": "41180-5795",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"Ry7Ld5NIj3oMNnxoMub8"
-				],
+				"Lei": [],
 				"Isin": [
-					"nU43UqBzw2K5",
-					"sw23nPMDtVBw"
+					"bDAwpTKuU6iN",
+					"KJ2MSvFGqkge"
 				],
-				"PermId": [
-					"n5APzjYxps"
-				],
+				"PermId": [],
 				"Ticker": [
-					"sB2qf5P"
+					"25BCgwX"
 				],
-				"Duns": [
-					"ebyelOYRI"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"3JASocVDZ"
+					"T0671jPcv"
 				],
-				"CompanyRegistrationNumber": [
-					"ZapnBdDHWb0RSk2"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IO",
+			"countryCode": "GF",
 			"companyAlternativeNames": [
-				"McLaughlin - Mante",
-				"Simonis, Waelchi and Abernathy"
+				"King, Strosin and Abshire",
+				"O'Hara Inc"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://left-professional.biz",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://aromatic-underneath.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-19",
+					"reportingDate": "2024-12-06",
 					"sectors": [
-						"06.1",
-						"24.52"
+						"01.23",
+						"01.47",
+						"20.5",
+						"30.4",
+						"91.02"
 					],
-					"numberOfEmployees": 1951,
-					"fiscalYearStart": "2024-06-11",
+					"numberOfEmployees": 6847,
+					"fiscalYearStart": "2025-01-29",
 					"referencedReports": {
-						"ESEFReport": {
+						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-07-21",
-							"currency": "CAD"
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-08-30",
+							"currency": "DJF"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-08-12",
+							"currency": "GHS"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2024-02-28",
+							"currency": "CUP"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-01-05",
-							"currency": "MVR"
+							"reportDate": "2023-05-26",
+							"currency": "BDT"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 87126.42,
-					"operatingCostInEur": 85375.89,
-					"capitalAssetsInEur": 24714.35
+					"revenueInEur": 18668.84,
+					"operatingCostInEur": 38144.56,
+					"capitalAssetsInEur": 63775.04
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 68304.55,
+						"value": 21697.2,
 						"dataSource": {
-							"page": 1008,
-							"fileName": "ESEFReport",
+							"page": 603,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "lifetime value"
 						},
-						"comment": "parse 1080p system",
-						"quality": "Incomplete"
+						"comment": "quantify online bandwidth",
+						"quality": "Audited"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 95204.62,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 40146.62,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88457.93,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 10220.71,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
-						"Snow",
-						"Wind"
+						"Hail"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	}
 ]
