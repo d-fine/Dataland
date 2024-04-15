@@ -110,6 +110,45 @@
                       </div>
                     </BasicFormSection>
                   </div>
+                  <PrimeDialog
+                    v-model:visible="maxRequestReachedModalIsVisible"
+                    v-if="maxRequestReachedModalIsVisible"
+                    id="successModal"
+                    :dismissableMask="false"
+                    :modal="true"
+                    :closable="false"
+                    style="border-radius: 0.75rem; text-align: center; max-width: 400px"
+                    :show-header="false"
+                    :draggable="false"
+                  >
+                    <template v-if="true">
+                      <div class="text-center" style="display: flex; flex-direction: column">
+                        <div style="margin: 10px">
+                          <em class="material-icons info-icon red-text" style="font-size: 2.5em"> error </em>
+                        </div>
+                        <div style="margin: 10px">
+                          <h2 class="m-0" data-test="successText">Quota exceeded</h2>
+                        </div>
+                      </div>
+                    </template>
+                    <div class="text-block" style="margin: 15px">
+                      Your quota of 10 single data requests per day is exceeded. The quota will reset automatically
+                      tomorrow.
+                    </div>
+                    <div class="text-block" style="margin: 15px">
+                      To avoid quotas altogether, consider becoming a premium user.
+                      <a href="#" @click="openBecomePremiumUserEmail">Contact Erik Breen</a> for more information on
+                      premium membership.
+                    </div>
+                    <div style="margin: 10px">
+                      <PrimeButton
+                        label="RETURN TO COMPANY SEARCH"
+                        @click="closeMaxRequestsReachedModal()"
+                        class="p-button-outlined"
+                      />
+                    </div>
+                  </PrimeDialog>
+
                   <div class="col-12 flex align-items-end">
                     <PrimeButton
                       type="submit"
@@ -164,7 +203,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
+import { type CompanyInformation, type DataTypeEnum } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
@@ -175,10 +214,13 @@ import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue"
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import PrimeDialog from "primevue/dialog";
+import { openEmailClient } from "@/utils/Email";
 
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
+    PrimeDialog,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
@@ -198,6 +240,11 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
+
+    const becomePremiumUserEmailTemplate = content.pages
+      .find((page) => page.url === "/companies")
+      .sections.find((section) => section.title === "Single Data Request")
+      .cards.find((card) => card.title === "Interested in becoming a premium user");
     return {
       singleDataRequestModel: {},
       footerContent,
@@ -221,6 +268,8 @@ export default defineComponent({
       ],
       submittingSucceeded: false,
       submitted: false,
+      maxRequestReachedModalIsVisible: false,
+      becomePremiumUserEmailTemplate,
     };
   },
   computed: {
@@ -240,6 +289,26 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Opens an Email regarding becoming a premium user
+     */
+    openBecomePremiumUserEmail() {
+      openEmailClient(this.becomePremiumUserEmailTemplate);
+    },
+    /**
+     * Opens the Max Requests Reached Modal
+     */
+    openMaxRequestsReachedModal() {
+      this.maxRequestReachedModalIsVisible = true;
+    },
+    /**
+     * Closes the Max Requests Reached Modal
+     */
+    closeMaxRequestsReachedModal() {
+      this.maxRequestReachedModalIsVisible = false;
+
+      void this.$router.push("/companies");
+    },
     /**
      * Checks if the first email in a string of comma separated emails is valid
      * @param emails string of comma separated emails
@@ -356,18 +425,19 @@ export default defineComponent({
             .requestController;
           const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
           this.errorMessage = response.statusText;
+          this.submitted = true;
           this.submittingSucceeded = true;
         } catch (error) {
           console.error(error);
           if (error instanceof AxiosError) {
-            const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-            this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
+            this.openMaxRequestsReachedModal();
           } else {
+            this.submitted = true;
+            this.submittingSucceeded = false;
             this.errorMessage =
               "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
           }
         }
-        this.submitted = true;
       }
     },
     /**
