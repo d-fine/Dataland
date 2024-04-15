@@ -11,11 +11,10 @@
       <template #header>
         <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
       </template>
-      <div>
-        test test testtest test testtest test testtest test testtest test testtest test testtest test testtest test
-        testtest test testtest test testtest test testtest test testtest test testtest test testtest test testtest test
-        testtest test test
-      </div>
+      <EmailDetails :is-optional="false" @has-valid-input="updateEmailFields" />
+      <PrimeButton @click="addMessage()" style="width: 100%; justify-content: center">
+        <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
+      </PrimeButton>
     </PrimeDialog>
     <TheHeader />
     <div class="sheet">
@@ -133,10 +132,11 @@ import { badgeClass, patchDataRequestStatus } from "@/utils/RequestUtils";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
+import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
 
 export default defineComponent({
   name: "ViewDataRequest",
-  components: { PrimeDialog, PrimeButton, BackButton, AuthenticationWrapper, TheHeader, TheFooter },
+  components: { EmailDetails, PrimeDialog, PrimeButton, BackButton, AuthenticationWrapper, TheHeader, TheFooter },
   props: {
     requestId: {
       type: String,
@@ -153,6 +153,9 @@ export default defineComponent({
       storedDataRequest: {} as StoredDataRequest,
       companyName: "",
       showNewMessageDialog: false,
+      emailContact: new Set<string>(),
+      emailMessage: "",
+      hasValidEmailForm: false,
     };
   },
   mounted() {
@@ -169,6 +172,17 @@ export default defineComponent({
     getFrameworkSubtitle,
     frameworkHasSubTitle,
     getFrameworkTitle,
+    /**
+     * Method to update the email fields
+     * @param hasValidForm boolean indicating if the input is correct
+     * @param contacts email addresses
+     * @param message the content
+     */
+    updateEmailFields(hasValidForm: boolean, contacts: Set<string>, message: string) {
+      this.hasValidEmailForm = hasValidForm;
+      this.emailContact = contacts;
+      this.emailMessage = message;
+    },
     /**
      * Method to get the request from the api
      */
@@ -206,11 +220,22 @@ export default defineComponent({
      * Method to withdraw the request when clicking on the button
      */
     withdrawRequest() {
-      //todo try catch block to show succes/fail modal
       patchDataRequestStatus(this.requestId, RequestStatus.Withdrawn as RequestStatus, this.getKeycloakPromise)
         .catch((error) => console.error(error))
         .then(() => window.location.reload())
         .catch((error) => console.error(error));
+    },
+    /**
+     * Method to update the request message when clicking on the button
+     */
+    addMessage() {
+      //todo adpat endpoint
+      if (this.hasValidEmailForm) {
+        patchDataRequestStatus(this.requestId, null, this.getKeycloakPromise)
+          .catch((error) => console.error(error))
+          .then(() => window.location.reload())
+          .catch((error) => console.error(error));
+      }
     },
     /**
      * Method to check if request is withdrawAble
