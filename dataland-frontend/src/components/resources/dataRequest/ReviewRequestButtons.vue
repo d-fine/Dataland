@@ -1,5 +1,45 @@
 <template>
   <PrimeDialog
+    :dismissableMask="true"
+    :modal="true"
+    v-model:visible="showUpdateRequestDialog"
+    :closable="true"
+    style="text-align: center"
+    :show-header="true"
+  >
+    <template #header>
+      <div class="tab-menu">
+        <button :class="{ active: activeTab === 'update request' }" @click="activeTab = 'update request'">
+          UPDATE REQUEST
+        </button>
+        <button :class="{ active: activeTab === 'message history' }" @click="activeTab = 'message history'">
+          VIEW HISTORY
+        </button>
+      </div>
+    </template>
+
+    <div v-if="activeTab === 'update request'">
+      <EmailDetails :is-optional="true" @has-valid-input="updateEmailFields" />
+      <PrimeButton @click="updateRequest()" style="width: 100%; justify-content: center">
+        <span class="d-letters pl-2" style="text-align: center"> UPDATE REQUEST </span>
+      </PrimeButton>
+    </div>
+    <div v-if="activeTab === 'message history'">
+      <div v-for="message in messageHistory" :key="message.creationTimestamp">
+        <div style="color: black; font-weight: bold; font-size: small; text-align: left">
+          {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
+        </div>
+        <div class="message">
+          <div style="color: black">Sent to: {{ formattedContacts(message.contacts) }}</div>
+          <div class="separator" />
+          <div style="color: gray">
+            {{ message.message }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </PrimeDialog>
+  <PrimeDialog
     v-if="dialogIsVisible"
     id="successModal"
     :dismissableMask="true"
@@ -80,10 +120,17 @@ import OverlayPanel from "primevue/overlaypanel";
 import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
-import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
+import {
+  type ExtendedStoredDataRequest,
+  RequestStatus,
+  type StoredDataRequestMessageObject,
+} from "@clients/communitymanager";
 import PrimeDialog from "primevue/dialog";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
+import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -92,7 +139,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  components: { PrimeButton, OverlayPanel, SelectReportingPeriodDialog, PrimeDialog },
+  components: { EmailDetails, PrimeButton, OverlayPanel, SelectReportingPeriodDialog, PrimeDialog },
   props: {
     companyId: {
       type: String,
@@ -117,20 +164,62 @@ export default defineComponent({
     isVisible(newStatus: boolean) {
       this.$emit("isVisible", newStatus);
     },
+    currentChosenDataRequestId: {
+      handler(newRequestId: string) {
+        if (newRequestId.length === 0) {
+          this.messageHistory = [];
+        }
+        this.fetchMessageHistory().catch((error) => console.error(error));
+      },
+    },
   },
   data() {
     return {
+      activeTab: "update request",
+      hasValidEmailForm: false,
+      emailContact: new Set<string>(),
+      emailMessage: "",
+      showUpdateRequestDialog: false,
       answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
       dialogIsVisible: false,
       dialog: "Default\n text.",
       dialogIsSuccess: false,
       actionOnClick: ReportingPeriodTableActions.ReopenRequest,
+      currentChosenDataRequestId: "",
+      messageHistory: [] as StoredDataRequestMessageObject[],
     };
   },
   mounted() {
     void this.updateAnsweredDataRequestsForViewPage();
   },
+
   methods: {
+    convertUnixTimeInMsToDateString,
+    /**
+     * Method to transform set of string to one string representing the set elements seperated by ','
+     * @param contacts set of strings
+     * @returns string representing the elements of the set
+     */
+    formattedContacts(contacts: Set<string>) {
+      const contactsList = [...contacts];
+      return contactsList.join(", ");
+    },
+    /**
+     * Method to fetch message history with given requestId
+     */
+    async fetchMessageHistory() {
+      try {
+        if (this.getKeycloakPromise) {
+          const response = await new ApiClientProvider(
+            this.getKeycloakPromise(),
+          ).apiClients.requestController.getDataRequestById(this.currentChosenDataRequestId);
+          this.messageHistory = response.data.messageHistory;
+        }
+      } catch (error) {
+        console.error(error);
+        this.messageHistory = [];
+      }
+    },
     /**
      * Closes the SuccessModal
      */
@@ -176,13 +265,14 @@ export default defineComponent({
      * Method to reopen the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
      */
-    async reOpenRequest(event: Event) {
+    reOpenRequest(event: Event) {
       this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-          await this.patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Open);
+          this.currentChosenDataRequestId = answeredRequest.dataRequestId;
+          this.showUpdateRequestDialog = true;
         }
       }
     },
@@ -200,10 +290,20 @@ export default defineComponent({
      * Trys to patch DataRequest, displays possible error message
      * @param dataRequestId DataRequest to be closed
      * @param requestStatusToPatch desired requestStatus
+     * @param requestMessageObject a potential updated message
      */
-    async patchDataRequestStatus(dataRequestId: string, requestStatusToPatch: RequestStatus) {
+    async patchDataRequestStatus(
+      dataRequestId: string,
+      requestStatusToPatch: RequestStatus,
+      requestMessageObject?: StoredDataRequestMessageObject,
+    ) {
       try {
-        await patchDataRequestStatus(dataRequestId, requestStatusToPatch, undefined, this.getKeycloakPromise);
+        await patchDataRequestStatus(
+          dataRequestId,
+          requestStatusToPatch,
+          requestMessageObject,
+          this.getKeycloakPromise,
+        );
       } catch (e) {
         let errorMessage =
           "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -233,7 +333,12 @@ export default defineComponent({
       const requestStatusToPatch = assertDefined(
         this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick)),
       );
-      await this.patchDataRequestStatus(dataRequestId, requestStatusToPatch);
+      if (requestStatusToPatch == RequestStatus.Open) {
+        this.currentChosenDataRequestId = dataRequestId;
+        this.showUpdateRequestDialog = true;
+      } else {
+        await this.patchDataRequestStatus(dataRequestId, requestStatusToPatch);
+      }
     },
     /**
      * Helper function to handle the different actions given by the different buttons
@@ -248,6 +353,40 @@ export default defineComponent({
           return RequestStatus.Open;
       }
     },
+    /**
+     * Handles the click on update request
+     */
+    async updateRequest() {
+      if (!this.currentChosenDataRequestId) return;
+      if (this.hasValidEmailForm) {
+        const storedDataRequestMessage: StoredDataRequestMessageObject = {
+          contacts: this.emailContact,
+          creationTimestamp: Date.now(),
+          message: this.emailMessage,
+        };
+        await this.patchDataRequestStatus(
+          this.currentChosenDataRequestId,
+          RequestStatus.Open,
+          storedDataRequestMessage,
+        );
+        this.showUpdateRequestDialog = false;
+      }
+      if (!this.hasValidEmailForm && this.emailContact.size == 0) {
+        await this.patchDataRequestStatus(this.currentChosenDataRequestId, RequestStatus.Open);
+        this.showUpdateRequestDialog = false;
+      }
+    },
+    /**
+     * Method to update the email fields
+     * @param hasValidForm boolean indicating if the input is correct
+     * @param contacts email addresses
+     * @param message the content
+     */
+    updateEmailFields(hasValidForm: boolean, contacts: Set<string>, message: string) {
+      this.hasValidEmailForm = hasValidForm;
+      this.emailContact = contacts;
+      this.emailMessage = message;
+    },
   },
 });
 </script>
@@ -255,5 +394,38 @@ export default defineComponent({
 <style scoped lang="scss">
 .no-line-height {
   line-height: 0;
+}
+.tab-menu button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  outline: none;
+}
+
+.tab-menu button.active {
+  border-bottom: 2px solid #e67f3fff;
+  color: #e67f3fff;
+}
+.message {
+  width: 100%;
+  border: #e0dfde solid 1px;
+  padding: $spacing-md;
+  border-radius: $radius-xxs;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+.separator {
+  width: 100%;
+  border-bottom: #e0dfde solid 1px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>
