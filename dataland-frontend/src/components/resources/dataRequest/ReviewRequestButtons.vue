@@ -177,7 +177,7 @@ export default defineComponent({
     return {
       activeTab: "update request",
       hasValidEmailForm: false,
-      emailContact: new Set<string>(),
+      emailContacts: new Set<string>(),
       emailMessage: "",
       showUpdateRequestDialog: false,
       answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
@@ -290,20 +290,17 @@ export default defineComponent({
      * Trys to patch DataRequest, displays possible error message
      * @param dataRequestId DataRequest to be closed
      * @param requestStatusToPatch desired requestStatus
-     * @param requestMessageObject a potential updated message
+     * @param contacts set of email contacts
+     * @param message context of the email
      */
     async patchDataRequestStatus(
       dataRequestId: string,
       requestStatusToPatch: RequestStatus,
-      requestMessageObject?: StoredDataRequestMessageObject,
+      contacts?: Set<string>,
+      message?: string,
     ) {
       try {
-        await patchDataRequestStatus(
-          dataRequestId,
-          requestStatusToPatch,
-          requestMessageObject,
-          this.getKeycloakPromise,
-        );
+        await patchDataRequestStatus(dataRequestId, requestStatusToPatch, contacts, message, this.getKeycloakPromise);
       } catch (e) {
         let errorMessage =
           "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -359,19 +356,15 @@ export default defineComponent({
     async updateRequest() {
       if (!this.currentChosenDataRequestId) return;
       if (this.hasValidEmailForm) {
-        const storedDataRequestMessage: StoredDataRequestMessageObject = {
-          contacts: this.emailContact,
-          creationTimestamp: Date.now(),
-          message: this.emailMessage,
-        };
         await this.patchDataRequestStatus(
           this.currentChosenDataRequestId,
           RequestStatus.Open,
-          storedDataRequestMessage,
+          this.emailContacts,
+          this.emailMessage,
         );
         this.showUpdateRequestDialog = false;
       }
-      if (!this.hasValidEmailForm && this.emailContact.size == 0) {
+      if (!this.hasValidEmailForm && this.emailContacts.size == 0) {
         await this.patchDataRequestStatus(this.currentChosenDataRequestId, RequestStatus.Open);
         this.showUpdateRequestDialog = false;
       }
@@ -384,7 +377,7 @@ export default defineComponent({
      */
     updateEmailFields(hasValidForm: boolean, contacts: Set<string>, message: string) {
       this.hasValidEmailForm = hasValidForm;
-      this.emailContact = contacts;
+      this.emailContacts = contacts;
       this.emailMessage = message;
     },
   },

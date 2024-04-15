@@ -95,7 +95,7 @@
                 </div>
               </div>
             </div>
-            <div class="card" v-if="isWithdrawable()">
+            <div class="card" v-if="isWithdrawAble()">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
               <div>
@@ -125,7 +125,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { RequestStatus, type StoredDataRequest, type StoredDataRequestMessageObject } from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import type Keycloak from "keycloak-js";
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from "@/utils/StringFormatter";
 import { badgeClass, patchDataRequestStatus } from "@/utils/RequestUtils";
@@ -153,7 +153,7 @@ export default defineComponent({
       storedDataRequest: {} as StoredDataRequest,
       companyName: "",
       showNewMessageDialog: false,
-      emailContact: new Set<string>(),
+      emailContacts: new Set<string>(),
       emailMessage: "",
       hasValidEmailForm: false,
     };
@@ -180,7 +180,7 @@ export default defineComponent({
      */
     updateEmailFields(hasValidForm: boolean, contacts: Set<string>, message: string) {
       this.hasValidEmailForm = hasValidForm;
-      this.emailContact = contacts;
+      this.emailContacts = contacts;
       this.emailMessage = message;
     },
     /**
@@ -224,6 +224,7 @@ export default defineComponent({
         this.requestId,
         RequestStatus.Withdrawn as RequestStatus,
         undefined,
+        undefined,
         this.getKeycloakPromise,
       )
         .catch((error) => console.error(error))
@@ -235,14 +236,13 @@ export default defineComponent({
      */
     addMessage() {
       if (this.hasValidEmailForm) {
-        const storedDataRequestMessage: StoredDataRequestMessageObject = {
-          contacts: this.emailContact,
-          creationTimestamp: Date.now(),
-          message: this.emailMessage,
-        };
-        patchDataRequestStatus(this.requestId, undefined, storedDataRequestMessage, this.getKeycloakPromise).catch(
-          (error) => console.error(error),
-        );
+        patchDataRequestStatus(
+          this.requestId,
+          undefined,
+          this.emailContacts,
+          this.emailMessage,
+          this.getKeycloakPromise,
+        ).catch((error) => console.error(error));
         //.then(() => window.location.reload())
         //.catch((error) => console.error(error));
       }
@@ -251,7 +251,7 @@ export default defineComponent({
      * Method to check if request is withdrawAble
      * @returns boolean is withdrawAble
      */
-    isWithdrawable() {
+    isWithdrawAble() {
       return (
         this.storedDataRequest.requestStatus == RequestStatus.Open ||
         this.storedDataRequest.requestStatus == RequestStatus.Answered
