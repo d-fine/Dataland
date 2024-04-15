@@ -10,6 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
@@ -88,10 +89,15 @@ class RequestController(
 
     override fun patchDataRequestStatus(
         dataRequestId: UUID,
-        requestStatus: RequestStatus,
+        requestStatus: RequestStatus?,
+        requestMessageObject: StoredDataRequestMessageObject?,
     ): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(
-            dataRequestAlterationManager.patchDataRequestStatus(dataRequestId.toString(), requestStatus),
+            dataRequestAlterationManager.patchDataRequestStatus(
+                dataRequestId.toString(),
+                requestStatus,
+                requestMessageObject,
+            ),
         )
     }
 }

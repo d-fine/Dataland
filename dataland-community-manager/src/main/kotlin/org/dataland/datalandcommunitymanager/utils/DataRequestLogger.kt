@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.slf4j.LoggerFactory
@@ -101,5 +102,18 @@ class DataRequestLogger {
      */
     fun logMessageForPatchingRequestStatus(dataRequestId: String, requestStatus: RequestStatus) {
         singleDataRequestLogger.info("Patching request $dataRequestId with status $requestStatus")
+    }
+
+    /**
+     * Logs an appropriate message when the message of a data request is updated
+     */
+    fun logMessageForPatchingRequestMessage(
+        dataRequestId: String,
+        requestMessageObject: StoredDataRequestMessageObject,
+    ) {
+        singleDataRequestLogger.info(
+            "Patching request $dataRequestId " +
+                "with message ${requestMessageObject.message} to ${requestMessageObject.contacts.first()}",
+        )
     }
 }

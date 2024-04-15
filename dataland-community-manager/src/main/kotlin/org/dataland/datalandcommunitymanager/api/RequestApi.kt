@@ -14,6 +14,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -172,7 +173,8 @@ interface RequestApi {
     )
     fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus,
+        @RequestParam requestStatus: RequestStatus?,
+        @RequestParam requestMessageObject: StoredDataRequestMessageObject?,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
