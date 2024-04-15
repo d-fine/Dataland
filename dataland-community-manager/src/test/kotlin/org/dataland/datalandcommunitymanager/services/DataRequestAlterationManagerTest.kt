@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -32,6 +33,7 @@ class DataRequestAlterationManagerTest {
     private lateinit var dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
+    private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var metaDataControllerApi: MetaDataControllerApi
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
@@ -64,6 +66,7 @@ class DataRequestAlterationManagerTest {
 
     @BeforeEach
     fun setupDataRequestAlterationManager() {
+        singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         metaDataControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
@@ -90,6 +93,7 @@ class DataRequestAlterationManagerTest {
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
+            singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
         )
     }
 
@@ -111,6 +115,7 @@ class DataRequestAlterationManagerTest {
         dataRequestAlterationManager.patchDataRequestStatus(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Answered,
+            null,
         )
         fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
         verify(dataRequestedAnsweredEmailMessageSender, times(1))
@@ -126,6 +131,7 @@ class DataRequestAlterationManagerTest {
             dataRequestAlterationManager.patchDataRequestStatus(
                 dataRequestId = dataRequestId,
                 requestStatus = requestStatus,
+                null,
             )
         }
         verifyNoInteractions(dataRequestedAnsweredEmailMessageSender)

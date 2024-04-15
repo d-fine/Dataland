@@ -1,5 +1,9 @@
 import type Keycloak from "keycloak-js";
-import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
+import {
+  type ExtendedStoredDataRequest,
+  RequestStatus,
+  type StoredDataRequestMessageObject,
+} from "@clients/communitymanager";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type DataTypeEnum } from "@clients/backend";
 
@@ -41,11 +45,13 @@ export async function getAnsweredDataRequestsForViewPage(
  * Patches the RequestStatus of a StoredDataRequest
  * @param dataRequestId the dataland dataRequestId
  * @param requestStatus the desired requestStatus
+ * @param requestMessageObject
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
 export async function patchDataRequestStatus(
   dataRequestId: string,
-  requestStatus: RequestStatus,
+  requestStatus: RequestStatus | undefined,
+  requestMessageObject: StoredDataRequestMessageObject | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<void> {
   try {
@@ -53,6 +59,7 @@ export async function patchDataRequestStatus(
       await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequestStatus(
         dataRequestId,
         requestStatus,
+        requestMessageObject,
       );
     }
   } catch (error) {

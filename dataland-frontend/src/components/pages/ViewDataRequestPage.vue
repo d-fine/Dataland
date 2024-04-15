@@ -125,7 +125,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest, type StoredDataRequestMessageObject } from "@clients/communitymanager";
 import type Keycloak from "keycloak-js";
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from "@/utils/StringFormatter";
 import { badgeClass, patchDataRequestStatus } from "@/utils/RequestUtils";
@@ -220,7 +220,12 @@ export default defineComponent({
      * Method to withdraw the request when clicking on the button
      */
     withdrawRequest() {
-      patchDataRequestStatus(this.requestId, RequestStatus.Withdrawn as RequestStatus, this.getKeycloakPromise)
+      patchDataRequestStatus(
+        this.requestId,
+        RequestStatus.Withdrawn as RequestStatus,
+        undefined,
+        this.getKeycloakPromise,
+      )
         .catch((error) => console.error(error))
         .then(() => window.location.reload())
         .catch((error) => console.error(error));
@@ -229,12 +234,17 @@ export default defineComponent({
      * Method to update the request message when clicking on the button
      */
     addMessage() {
-      //todo adpat endpoint
       if (this.hasValidEmailForm) {
-        patchDataRequestStatus(this.requestId, null, this.getKeycloakPromise)
-          .catch((error) => console.error(error))
-          .then(() => window.location.reload())
-          .catch((error) => console.error(error));
+        const storedDataRequestMessage: StoredDataRequestMessageObject = {
+          contacts: this.emailContact,
+          creationTimestamp: Date.now(),
+          message: this.emailMessage,
+        };
+        patchDataRequestStatus(this.requestId, undefined, storedDataRequestMessage, this.getKeycloakPromise).catch(
+          (error) => console.error(error),
+        );
+        //.then(() => window.location.reload())
+        //.catch((error) => console.error(error));
       }
     },
     /**
