@@ -161,9 +161,17 @@
           {
             "name": "requestStatus",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "requestMessageObject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
             }
           }
         ],
@@ -917,6 +925,29 @@
           "Withdrawn"
         ]
       },
+      "StoredDataRequestMessageObject": {
+        "required": [
+          "contacts",
+          "creationTimestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
@@ -962,29 +993,6 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
-          }
-        }
-      },
-      "StoredDataRequestMessageObject": {
-        "required": [
-          "contacts",
-          "creationTimestamp"
-        ],
-        "type": "object",
-        "properties": {
-          "contacts": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "message": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },
