@@ -11,6 +11,15 @@ interface FrameworkFixtureModule {
 }
 
 /**
+ * Deterministically converts a string to a number using a standard hashing function (same as java string hash)
+ * @param str the string to hash
+ * @returns the java hashCode of the string
+ */
+function stringHashCode(str: string): number {
+  return str.split("").reduce((prevHash, currVal) => ((prevHash << 5) - prevHash + currVal.charCodeAt(0)) | 0, 0);
+}
+
+/**
  * The main entrypoint of the fake fixture generator
  */
 async function main(): Promise<void> {
@@ -19,16 +28,20 @@ async function main(): Promise<void> {
 
   exportCustomMocks();
 
-  const frameworkDirectoryContents = await readdir(__dirname + "/frameworks", { withFileTypes: true });
+  const frameworkDirectoryContents = (await readdir(__dirname + "/frameworks", { withFileTypes: true })).filter(
+    (entry) => entry.isDirectory(),
+  );
 
-  const frameworkFakeFixturePromises = frameworkDirectoryContents
-    .filter((entry) => entry.isDirectory())
-    .map(async (entry) => (await import("./frameworks/" + entry.name)) as FrameworkFixtureModule);
+  const frameworkFakeFixturePromises = frameworkDirectoryContents.map(
+    async (entry) => (await import("./frameworks/" + entry.name)) as FrameworkFixtureModule,
+  );
 
   const frameworkFixtureModules = await Promise.all(frameworkFakeFixturePromises);
 
-  for (const module of frameworkFixtureModules) {
-    faker.seed(FAKER_BASE_SEED);
+  for (let i = 0; i < frameworkFixtureModules.length; i++) {
+    const hashDelta = stringHashCode(frameworkDirectoryContents[i].name);
+    const module = frameworkFixtureModules[i];
+    faker.seed(FAKER_BASE_SEED + hashDelta);
     module.default();
   }
 }

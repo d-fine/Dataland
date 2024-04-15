@@ -2,100 +2,123 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Nya",
-			"headquartersPostalCode": "68896-7432",
-			"sector": null,
+			"headquarters": "Wolfberg",
+			"headquartersPostalCode": "83260",
+			"sector": "action-items",
 			"identifiers": {
-				"Lei": [
-					"jc2Lqpd9HidA5XQX37Ke"
-				],
+				"Lei": [],
 				"Isin": [
-					"B6UyYsJNpCSh"
+					"SHzGgjHeELK0",
+					"gBmBYz5NFfU7"
 				],
 				"PermId": [
-					"X5UXbnc4Mt"
+					"0E5iVr8YE7"
 				],
 				"Ticker": [
-					"2X1Zyud"
+					"6ylUr2l"
 				],
 				"Duns": [
-					"COkK8mZQf"
+					"kiCHDrBrI"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"Ne3alt64Yh8OtVt"
+					"Yb0ReqfoHW5nQYr"
 				]
 			},
-			"countryCode": "SC",
+			"countryCode": "TG",
 			"companyAlternativeNames": [
-				"Lehner LLC"
+				"Feeney - Turner",
+				"Hilll, Kutch and Keeling",
+				"VonRueden - Marquardt"
 			],
 			"companyLegalForm": null,
-			"website": "https://verifiable-deviation.com",
+			"website": "https://shy-peninsula.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-12-07",
+					"reportingDate": "2024-05-24",
 					"sectors": [
-						"08.99",
-						"16.21",
-						"28.25",
-						"68.10"
+						"17.29",
+						"20.17",
+						"46.90",
+						"56",
+						"97.0"
 					],
-					"numberOfEmployees": 7536,
-					"fiscalYearStart": "2024-03-24",
+					"numberOfEmployees": 5186,
+					"fiscalYearStart": "2024-04-08",
 					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-11-01",
+							"currency": "ANG"
+						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-03-24",
+							"currency": "SLE"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-26",
-							"currency": "SDG"
+							"reportDate": "2023-12-29",
+							"currency": "PYG"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-04",
+							"currency": "SBD"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 49350.66,
-					"operatingCostInEur": 13246.71,
-					"capitalAssetsInEur": 35653.45
+					"revenueInEur": 61544.91,
+					"operatingCostInEur": 79208.35,
+					"capitalAssetsInEur": 74183.07
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Over25Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 77037.59,
+						"value": 77217.03,
 						"dataSource": {
-							"page": 73,
-							"fileName": "IntegratedReport",
+							"page": 874,
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "models"
 						},
-						"comment": "calculate neural circuit",
-						"quality": "Audited"
+						"comment": "program cross-platform port",
+						"quality": "Incomplete"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 890.61,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 36401.5,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 79747.2,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 46955.83,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
-						"Snow"
+						"Flooding",
+						"Hail",
+						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]

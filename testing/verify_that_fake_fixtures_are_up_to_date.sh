@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+rm -f testing/data/*
+
 ./gradlew :dataland-frontend:npm_run_fakefixtures --no-daemon --stacktrace
 
 git add testing/data/*
