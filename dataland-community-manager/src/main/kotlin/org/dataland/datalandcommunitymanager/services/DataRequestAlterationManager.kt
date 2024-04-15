@@ -57,8 +57,9 @@ class DataRequestAlterationManager(
         }
         if (requestMessageObject != null) {
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId, requestMessageObject)
-            val newMessageEntity = MessageEntity(requestMessageObject, dataRequestEntity)
-            dataRequestEntity.messageHistory += listOf(newMessageEntity)
+            val newMessageHistory =
+                listOf(MessageEntity(requestMessageObject, dataRequestEntity)) + dataRequestEntity.messageHistory
+            dataRequestEntity.messageHistory = newMessageHistory
             this.sendSingleDataRequestEmail(dataRequestEntity, requestMessageObject)
         }
         dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
