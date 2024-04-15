@@ -56,13 +56,15 @@ import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/
 import {
   getCompanyDataForFrameworkDataSearchPage,
   type FrameworkDataSearchFilterInterface,
+  getNumberOfCompaniesForFrameworkDataSearchPage,
+  getCompanyDataForFrameworkDataSearchPageWithoutFilters,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { type BasicCompanyInformation } from "@clients/backend";
+import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -80,6 +82,14 @@ export default defineComponent({
     searchBarId: {
       type: String,
       default: "framework_data_search_bar_standard",
+    },
+    chunkSize: {
+      type: Number,
+      default: null,
+    },
+    currentPage: {
+      type: Number,
+      default: 0,
     },
     filter: {
       type: Object as () => FrameworkDataSearchFilterInterface,
@@ -122,6 +132,11 @@ export default defineComponent({
         void this.queryCompany();
       },
       deep: true,
+    },
+    currentPage() {
+      this.queryCompany(this.currentPage).catch(() => {
+        console.error(`Unable to load data for ${this.currentPage} page`);
+      });
     },
   },
 
@@ -203,19 +218,46 @@ export default defineComponent({
       }
     },
     /**
-     * Performs the company search if the parent component indicated it wants to receive the complete search results
+     * Performs the company search if the parent component indicated it wants to receive the given chunk of the
+     * complete search results
+     * and the total number of records
+     * @param chunkIndex the index of the requested chunk
      */
-    async queryCompany() {
+    async queryCompany(chunkIndex = 0) {
       if (this.emitSearchResultsArray) {
-        const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
-          this.searchBarInput,
-          new Set(this.filter?.frameworkFilter),
-          new Set(this.filter?.countryCodeFilter),
-          new Set(this.filter?.sectorFilter),
-          assertDefined(this.getKeycloakPromise)(),
-        );
-        this.$emit("companies-received", resultsArray);
+        const resultsArray = await this.getCompanies(chunkIndex);
+        const totalNumberOfCompanies = await this.getTotalNumberOfCompanies();
+        this.$emit("companies-received", resultsArray, chunkIndex, totalNumberOfCompanies);
       }
+    },
+    /**
+     * Performs the company search if the parent component indicated it wants to receive the complete search results
+     * @param chunkIndex the index of the requested chunk
+     * @returns chunk of companies
+     */
+    async getCompanies(chunkIndex: number) {
+      return await getCompanyDataForFrameworkDataSearchPage(
+        this.searchBarInput,
+        new Set(this.filter?.frameworkFilter),
+        new Set(this.filter?.countryCodeFilter),
+        new Set(this.filter?.sectorFilter),
+        assertDefined(this.getKeycloakPromise)(),
+        this.chunkSize,
+        chunkIndex,
+      );
+    },
+    /**
+     * Get the total number of copanies with the given filter
+     * @returns total number of companies
+     */
+    async getTotalNumberOfCompanies() {
+      return await getNumberOfCompaniesForFrameworkDataSearchPage(
+        this.searchBarInput,
+        new Set(this.filter?.frameworkFilter),
+        new Set(this.filter?.countryCodeFilter),
+        new Set(this.filter?.sectorFilter),
+        assertDefined(this.getKeycloakPromise)(),
+      );
     },
     /**
      * This function is called to obtain search suggestions for the dropdown. Uses the Dataland API to search
@@ -224,15 +266,46 @@ export default defineComponent({
      * @param companyName.query the query text entered into the search bar
      */
     async searchCompanyName(companyName: { query: string }) {
-      this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
-        companyName.query,
-        new Set(this.filter?.frameworkFilter),
-        new Set(this.filter?.countryCodeFilter),
-        new Set(this.filter?.sectorFilter),
-        assertDefined(this.getKeycloakPromise)(),
-      );
-      this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
+      if (
+        areAllFiltersDeactivated(
+          this.filter?.frameworkFilter,
+          this.filter?.countryCodeFilter,
+          this.filter?.sectorFilter,
+        )
+      ) {
+        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+          companyName.query,
+          assertDefined(this.getKeycloakPromise)(),
+          this.maxNumOfDisplayedAutocompleteEntries,
+        );
+      } else {
+        this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
+          companyName.query,
+          new Set(this.filter?.frameworkFilter),
+          new Set(this.filter?.countryCodeFilter),
+          new Set(this.filter?.sectorFilter),
+          assertDefined(this.getKeycloakPromise)(),
+          this.maxNumOfDisplayedAutocompleteEntries,
+          0,
+        );
+      }
+      this.autocompleteArrayDisplayed = this.autocompleteArray;
     },
   },
 });
+
+/**
+ * Checks if all filteres are deactivated. Is used for triggering a special case function
+ * @param frameworkFilter selection options of framework filter
+ * @param countryCodeFilter selection options of country code filter
+ * @param sectorFilter selection options of sector filter
+ * @returns boolean value representing check result
+ */
+function areAllFiltersDeactivated(
+  frameworkFilter: Array<DataTypeEnum>,
+  countryCodeFilter: Array<string>,
+  sectorFilter: Array<string>,
+): boolean {
+  return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
+}
 </script>

@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="flex flex-column ml-3">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter by data</span>
+      <span class="d-section-heading mb-2" v-if="showHeading">Filter for available data sets</span>
       <div class="flex flex-row align-items-center">
         <div class="d-separator-left" />
         <FrameworkDataSearchDropdownFilter
@@ -151,10 +151,10 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
+     * Resets all the filters to their default values (i.e., deselects everything)
      */
     resetFilters() {
-      this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
+      this.selectedFrameworksInt = [];
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },
