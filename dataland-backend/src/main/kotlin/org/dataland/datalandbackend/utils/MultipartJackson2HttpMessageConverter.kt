@@ -26,6 +26,10 @@ class MultipartJackson2HttpMessageConverter(
             "<org.dataland.datalandbackend.frameworks.sme.model.SmeData>"
     }
 
+    override fun canWrite(mediaType: MediaType?): Boolean {
+        return false
+    }
+
     override fun canRead(clazz: Class<*>, mediaType: MediaType?): Boolean {
         return false
     }
