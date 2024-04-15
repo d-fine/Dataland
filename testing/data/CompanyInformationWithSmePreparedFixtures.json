@@ -2,82 +2,64 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Jaskolskibury",
-			"headquartersPostalCode": "41180-5795",
+			"headquarters": "West Nya",
+			"headquartersPostalCode": "68896-7432",
 			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"jc2Lqpd9HidA5XQX37Ke"
+				],
 				"Isin": [
-					"bDAwpTKuU6iN",
-					"KJ2MSvFGqkge"
+					"B6UyYsJNpCSh"
 				],
-				"PermId": [],
+				"PermId": [
+					"X5UXbnc4Mt"
+				],
 				"Ticker": [
-					"25BCgwX"
+					"2X1Zyud"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"T0671jPcv"
+				"Duns": [
+					"COkK8mZQf"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Ne3alt64Yh8OtVt"
+				]
 			},
-			"countryCode": "GF",
+			"countryCode": "SC",
 			"companyAlternativeNames": [
-				"King, Strosin and Abshire",
-				"O'Hara Inc"
+				"Lehner LLC"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://aromatic-underneath.name",
+			"companyLegalForm": null,
+			"website": "https://verifiable-deviation.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-12-06",
+					"reportingDate": "2025-02-28",
 					"sectors": [
-						"01.23",
-						"01.47",
-						"20.5",
-						"30.4",
-						"91.02"
+						"08.99",
+						"16.21",
+						"28.25",
+						"68.10"
 					],
-					"numberOfEmployees": 6847,
-					"fiscalYearStart": "2025-01-29",
+					"numberOfEmployees": 7536,
+					"fiscalYearStart": "2024-06-14",
 					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-30",
-							"currency": "DJF"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-12",
-							"currency": "GHS"
-						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-02-28",
-							"currency": "CUP"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-05-26",
-							"currency": "BDT"
+							"reportDate": "2023-08-17",
+							"currency": "SDG"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 18668.84,
-					"operatingCostInEur": 38144.56,
-					"capitalAssetsInEur": 63775.04
+					"revenueInEur": 49350.66,
+					"operatingCostInEur": 13246.71,
+					"capitalAssetsInEur": 35653.45
 				}
 			},
 			"power": {
@@ -86,32 +68,34 @@
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 21697.2,
+						"value": 77037.59,
 						"dataSource": {
-							"page": 603,
+							"page": 73,
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "initiatives"
 						},
-						"comment": "quantify online bandwidth",
+						"comment": "calculate neural circuit",
 						"quality": "Audited"
 					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 40146.62,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 890.61,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 10220.71,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 79747.2,
 					"naturalHazardsCovered": [
-						"Hail"
+						"Avalanche",
+						"EarthQuake",
+						"Snow"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2021"
 	}
 ]
