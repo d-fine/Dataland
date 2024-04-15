@@ -76,7 +76,11 @@
             <div class="card">
               <span style="display: flex; align-items: center">
                 <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
-                <div style="cursor: pointer; display: flex; align-items: center" @click="openMessageDialog()">
+                <div
+                  v-if="allowNewMessage()"
+                  style="cursor: pointer; display: flex; align-items: center"
+                  @click="openMessageDialog()"
+                >
                   <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
                   <div style="font-weight: bold">NEW MESSAGE</div>
                 </div>
@@ -274,10 +278,11 @@ export default defineComponent({
       return this.storedDataRequest.requestStatus == RequestStatus.Answered;
     },
     /**
-     * Method to check if request status is answered
-     * @returns boolean if request status is answered
+     * Method to check if request status is answered or closed
+     * @returns boolean if request status is answered or closed
      */
     isDatasetAvailable() {
+      //todo check if dataset exists, not just by status
       return (
         this.storedDataRequest.requestStatus == RequestStatus.Answered ||
         this.storedDataRequest.requestStatus == RequestStatus.Closed
@@ -297,6 +302,13 @@ export default defineComponent({
      */
     openMessageDialog() {
       this.showNewMessageDialog = true;
+    },
+    /**
+     * Method to check if request status is open
+     * @returns boolean if request status is open
+     */
+    allowNewMessage() {
+      return this.storedDataRequest.requestStatus == RequestStatus.Open;
     },
   },
 });
