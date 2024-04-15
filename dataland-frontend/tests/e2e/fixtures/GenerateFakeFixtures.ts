@@ -16,7 +16,7 @@ interface FrameworkFixtureModule {
  * @returns the java hashCode of the string
  */
 function stringHashCode(str: string): number {
-  return str.split("").reduce((prevHash, currVal) => ((prevHash << 5) - prevHash + currVal.charCodeAt(0)) | 0, 0);
+  return str.split("").reduce((acc, toIntegrate) => ((acc << 5) - acc + toIntegrate.charCodeAt(0)) | 0, 0);
 }
 
 /**
