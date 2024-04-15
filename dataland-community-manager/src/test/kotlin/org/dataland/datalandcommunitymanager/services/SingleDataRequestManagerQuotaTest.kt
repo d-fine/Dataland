@@ -11,7 +11,6 @@ import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.e2etests.NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -39,7 +38,7 @@ class SingleDataRequestManagerQuotaTest(
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
 
-    val allowedRequestsPerDay = NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER
+    val allowedRequestsPerDay = 10
     val sampleRequest = SingleDataRequest(
         companyIdentifier = companyIdRegexSafeCompanyId,
         dataType = DataTypeEnum.lksg,
