@@ -242,9 +242,10 @@ export default defineComponent({
           this.emailContacts,
           this.emailMessage,
           this.getKeycloakPromise,
-        ).catch((error) => console.error(error));
-        //.then(() => window.location.reload())
-        //.catch((error) => console.error(error));
+        )
+          .catch((error) => console.error(error))
+          .then(() => window.location.reload())
+          .catch((error) => console.error(error));
       }
     },
     /**
