@@ -43,6 +43,7 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
+
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequest(singleDataRequest)
 
@@ -56,7 +57,10 @@ class SingleDataRequestManager(
                     DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
                 )
 
-            if (numberOfDataRequestsPerformedByUserFromTimestamp >= MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER) {
+            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
+
+            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+                > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER) {
                 throw InsufficientRightsApiException(
                     "The daily quota capacity has been reached.",
                     "The daily quota capacity has been reached.",
