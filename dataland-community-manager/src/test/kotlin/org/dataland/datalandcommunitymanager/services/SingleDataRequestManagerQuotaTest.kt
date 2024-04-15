@@ -79,6 +79,11 @@ class SingleDataRequestManagerQuotaTest(
             singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java),
             utils = mockDataRequestProcessingUtils(),
         )
+        authenticationMock = AuthenticationMock.mockJwtAuthentication(
+            "requester@example.com",
+            "1234-221-1111elf",
+            setOf(DatalandRealmRole.ROLE_USER),
+        )
         val mockSecurityContext = mock(SecurityContext::class.java)
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
@@ -87,12 +92,6 @@ class SingleDataRequestManagerQuotaTest(
 
     @Test
     fun `send single data requests as non-premium user and verify that the quota is met`() {
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@bigplayer.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
-
         for (i in 1..allowedRequestsPerDay) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
@@ -104,14 +103,21 @@ class SingleDataRequestManagerQuotaTest(
 
     @Test
     fun `send single data requests as premium user and verify that the quota is not met`() {
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@bigplayer.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
-        )
+        mockSecurityContext()
         for (i in 1..allowedRequestsPerDay + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
         }
     }
+}
+
+private fun mockSecurityContext() {
+    val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+        "mocked_uploader",
+        "dummy-id",
+        setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
+    )
+    val mockSecurityContext = mock(SecurityContext::class.java)
+    `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+    SecurityContextHolder.setContext(mockSecurityContext)
 }
