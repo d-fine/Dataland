@@ -167,11 +167,23 @@
             }
           },
           {
-            "name": "requestMessageObject",
+            "name": "contacts",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -925,29 +937,6 @@
           "Withdrawn"
         ]
       },
-      "StoredDataRequestMessageObject": {
-        "required": [
-          "contacts",
-          "creationTimestamp"
-        ],
-        "type": "object",
-        "properties": {
-          "contacts": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "message": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
@@ -993,6 +982,29 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
+      "StoredDataRequestMessageObject": {
+        "required": [
+          "contacts",
+          "creationTimestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
