@@ -32,7 +32,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-05",
+					"reportingDate": "2024-06-15",
 					"sectors": [
 						"07.2",
 						"09.90",
@@ -41,13 +41,13 @@
 						"78.10"
 					],
 					"numberOfEmployees": 202,
-					"fiscalYearStart": "2024-08-27",
+					"fiscalYearStart": "2024-06-06",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-11",
+							"reportDate": "2023-03-20",
 							"currency": "NOK"
 						},
 						"ESEFReport": {
@@ -61,7 +61,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-06-24",
+							"reportDate": "2023-04-02",
 							"currency": "KYD"
 						}
 					}
@@ -142,7 +142,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-03-06",
+					"reportingDate": "2024-12-14",
 					"sectors": [
 						"35.2",
 						"35.22",
@@ -151,13 +151,13 @@
 						"95.21"
 					],
 					"numberOfEmployees": 6995,
-					"fiscalYearStart": "2024-05-27",
+					"fiscalYearStart": "2024-03-06",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-24",
+							"reportDate": "2023-03-02",
 							"currency": "NZD"
 						}
 					}
@@ -238,7 +238,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-03-08",
+					"reportingDate": "2024-12-16",
 					"sectors": [
 						"20.42",
 						"36.0",
@@ -246,13 +246,13 @@
 						"97.00"
 					],
 					"numberOfEmployees": 6631,
-					"fiscalYearStart": "2025-03-12",
+					"fiscalYearStart": "2024-12-19",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-23",
+							"reportDate": "2023-10-02",
 							"currency": "QAR"
 						},
 						"AnnualReport": {
@@ -266,7 +266,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-11-01",
+							"reportDate": "2023-08-11",
 							"currency": "MGA"
 						}
 					}
@@ -347,13 +347,13 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-14",
+					"reportingDate": "2024-04-22",
 					"sectors": [
 						"32.4",
 						"65.3"
 					],
 					"numberOfEmployees": 5574,
-					"fiscalYearStart": "2025-02-12",
+					"fiscalYearStart": "2024-11-21",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
@@ -366,21 +366,21 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-02-27",
+							"reportDate": "2023-12-06",
 							"currency": "AWG"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-10-03",
+							"reportDate": "2023-07-13",
 							"currency": null
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-03-13",
+							"reportDate": "2023-12-22",
 							"currency": "PHP"
 						}
 					}
@@ -459,40 +459,40 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-04-06",
+					"reportingDate": "2025-01-13",
 					"sectors": [
 						"02.3",
 						"97.00"
 					],
 					"numberOfEmployees": 4090,
-					"fiscalYearStart": "2024-08-06",
+					"fiscalYearStart": "2024-05-16",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-01-20",
+							"reportDate": "2023-10-29",
 							"currency": null
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-11",
+							"reportDate": "2023-08-20",
 							"currency": "BAM"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-09-16",
+							"reportDate": "2023-06-26",
 							"currency": null
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-03-04",
+							"reportDate": "2023-12-12",
 							"currency": "NIO"
 						}
 					}
@@ -574,34 +574,34 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-26",
+					"reportingDate": "2024-08-04",
 					"sectors": [
 						"10",
 						"28.14",
 						"87.20"
 					],
 					"numberOfEmployees": 5027,
-					"fiscalYearStart": "2024-09-10",
+					"fiscalYearStart": "2024-06-20",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-12",
+							"reportDate": "2023-09-21",
 							"currency": "PKR"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-02-21",
+							"reportDate": "2023-11-30",
 							"currency": null
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-04-12",
+							"reportDate": "2024-01-21",
 							"currency": null
 						}
 					}
@@ -687,23 +687,23 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-15",
+					"reportingDate": "2024-02-22",
 					"sectors": [],
 					"numberOfEmployees": 7653,
-					"fiscalYearStart": "2024-05-08",
+					"fiscalYearStart": "2024-02-15",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-23",
+							"reportDate": "2023-04-02",
 							"currency": "LSL"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-03-05",
+							"reportDate": "2023-12-13",
 							"currency": "EUR"
 						}
 					}
@@ -782,37 +782,37 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-25",
+					"reportingDate": "2024-05-04",
 					"sectors": [],
 					"numberOfEmployees": 5244,
-					"fiscalYearStart": "2025-02-20",
+					"fiscalYearStart": "2024-11-29",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-03-11",
+							"reportDate": "2023-12-20",
 							"currency": "TZS"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-04-21",
+							"reportDate": "2023-01-28",
 							"currency": "SEK"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-25",
+							"reportDate": "2023-06-03",
 							"currency": "ERN"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-10-17",
+							"reportDate": "2023-07-26",
 							"currency": "PKR"
 						}
 					}
@@ -886,16 +886,16 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-11",
+					"reportingDate": "2024-03-21",
 					"sectors": [],
 					"numberOfEmployees": 3421,
-					"fiscalYearStart": "2024-11-22",
+					"fiscalYearStart": "2024-09-01",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-09-08",
+							"reportDate": "2023-06-18",
 							"currency": "RUB"
 						}
 					}
@@ -970,7 +970,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-06",
+					"reportingDate": "2024-07-15",
 					"sectors": [
 						"23.41",
 						"25.2",
@@ -978,34 +978,34 @@
 						"88.10"
 					],
 					"numberOfEmployees": 1509,
-					"fiscalYearStart": "2025-04-13",
+					"fiscalYearStart": "2025-01-20",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-09-22",
+							"reportDate": "2023-07-01",
 							"currency": "AUD"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-18",
+							"reportDate": "2023-03-28",
 							"currency": "RWF"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-07-20",
+							"reportDate": "2023-04-28",
 							"currency": "DOP"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-16",
+							"reportDate": "2023-09-24",
 							"currency": "BIF"
 						}
 					}
@@ -1091,20 +1091,20 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-06",
+					"reportingDate": "2024-03-15",
 					"sectors": [
 						"25.93",
 						"49",
 						"E"
 					],
 					"numberOfEmployees": 3261,
-					"fiscalYearStart": "2025-01-06",
+					"fiscalYearStart": "2024-10-15",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2024-01-21",
+							"reportDate": "2023-10-31",
 							"currency": null
 						},
 						"SustainabilityReport": {
@@ -1118,14 +1118,14 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-03",
+							"reportDate": "2023-08-12",
 							"currency": "GBP"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-02-29",
+							"reportDate": "2023-12-08",
 							"currency": null
 						}
 					}
@@ -1195,25 +1195,25 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-22",
+					"reportingDate": "2024-03-01",
 					"sectors": [
 						"30.3"
 					],
 					"numberOfEmployees": 1663,
-					"fiscalYearStart": "2024-07-25",
+					"fiscalYearStart": "2024-05-03",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-20",
+							"reportDate": "2023-08-29",
 							"currency": null
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-01-25",
+							"reportDate": "2023-11-04",
 							"currency": "PLN"
 						}
 					}
@@ -1290,7 +1290,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-27",
+					"reportingDate": "2024-04-06",
 					"sectors": [
 						"25.4",
 						"26.80",
@@ -1298,20 +1298,20 @@
 						"47.25"
 					],
 					"numberOfEmployees": 9805,
-					"fiscalYearStart": "2024-10-19",
+					"fiscalYearStart": "2024-07-28",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-03-15",
+							"reportDate": "2023-12-23",
 							"currency": "AZN"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-08-23",
+							"reportDate": "2023-06-02",
 							"currency": null
 						}
 					}
@@ -1396,7 +1396,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-15",
+					"reportingDate": "2024-06-25",
 					"sectors": [
 						"15.20",
 						"45.4",
@@ -1404,20 +1404,20 @@
 						"70.1"
 					],
 					"numberOfEmployees": 4712,
-					"fiscalYearStart": "2024-08-30",
+					"fiscalYearStart": "2024-06-08",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-01-19",
+							"reportDate": "2023-10-29",
 							"currency": "EUR"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-04-05",
+							"reportDate": "2024-01-14",
 							"currency": "BDT"
 						}
 					}
@@ -1487,23 +1487,23 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-08-06",
+					"reportingDate": "2024-05-15",
 					"sectors": [],
 					"numberOfEmployees": 5070,
-					"fiscalYearStart": "2025-03-12",
+					"fiscalYearStart": "2024-12-20",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-08-03",
+							"reportDate": "2023-05-12",
 							"currency": "LAK"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-12-13",
+							"reportDate": "2023-09-21",
 							"currency": "CZK"
 						}
 					}
@@ -1586,7 +1586,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-01-02",
+					"reportingDate": "2024-10-11",
 					"sectors": [
 						"28.99",
 						"64.20",
@@ -1594,13 +1594,13 @@
 						"88.99"
 					],
 					"numberOfEmployees": 7999,
-					"fiscalYearStart": "2024-10-03",
+					"fiscalYearStart": "2024-07-13",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-03-19",
+							"reportDate": "2023-12-28",
 							"currency": "LAK"
 						}
 					}
@@ -1678,20 +1678,20 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-29",
+					"reportingDate": "2024-08-07",
 					"sectors": [
 						"35.30",
 						"38.1",
 						"91.04"
 					],
 					"numberOfEmployees": 7999,
-					"fiscalYearStart": "2024-05-25",
+					"fiscalYearStart": "2024-03-04",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-07-06",
+							"reportDate": "2023-04-15",
 							"currency": "GIP"
 						},
 						"SustainabilityReport": {
@@ -1705,7 +1705,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-26",
+							"reportDate": "2023-06-04",
 							"currency": "BIF"
 						},
 						"ESEFReport": {
@@ -1798,23 +1798,23 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-11",
+					"reportingDate": "2024-04-19",
 					"sectors": [],
 					"numberOfEmployees": 7620,
-					"fiscalYearStart": "2024-07-23",
+					"fiscalYearStart": "2024-05-01",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2024-03-31",
+							"reportDate": "2024-01-09",
 							"currency": "MXN"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-09-09",
+							"reportDate": "2023-06-18",
 							"currency": null
 						}
 					}
@@ -1893,37 +1893,37 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-03-06",
+					"reportingDate": "2024-12-14",
 					"sectors": [],
 					"numberOfEmployees": 2237,
-					"fiscalYearStart": "2024-08-10",
+					"fiscalYearStart": "2024-05-20",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-11-10",
+							"reportDate": "2023-08-19",
 							"currency": "VES"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-10",
+							"reportDate": "2023-03-20",
 							"currency": null
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": null,
-							"reportDate": "2023-08-06",
+							"reportDate": "2023-05-15",
 							"currency": "SLE"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-02-22",
+							"reportDate": "2023-12-02",
 							"currency": "QAR"
 						}
 					}
@@ -2004,7 +2004,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-21",
+					"reportingDate": "2024-02-29",
 					"sectors": [
 						"21.10",
 						"25.2",
@@ -2013,27 +2013,27 @@
 						"47.42"
 					],
 					"numberOfEmployees": 1251,
-					"fiscalYearStart": "2024-08-26",
+					"fiscalYearStart": "2024-06-04",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": null,
-							"reportDate": "2023-06-09",
+							"reportDate": "2023-03-18",
 							"currency": "DZD"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-07-29",
+							"reportDate": "2023-05-08",
 							"currency": "LBP"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2024-02-23",
+							"reportDate": "2023-12-02",
 							"currency": "MGA"
 						}
 					}
@@ -2118,16 +2118,16 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-06",
+					"reportingDate": "2024-06-15",
 					"sectors": [],
 					"numberOfEmployees": 3755,
-					"fiscalYearStart": "2024-06-24",
+					"fiscalYearStart": "2024-04-02",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-03-28",
+							"reportDate": "2024-01-06",
 							"currency": "WST"
 						},
 						"AnnualReport": {
@@ -2141,7 +2141,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-10-04",
+							"reportDate": "2023-07-13",
 							"currency": "BND"
 						}
 					}
@@ -2219,12 +2219,12 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-26",
+					"reportingDate": "2024-05-04",
 					"sectors": [
 						"25.99"
 					],
 					"numberOfEmployees": 4720,
-					"fiscalYearStart": "2025-01-06",
+					"fiscalYearStart": "2024-10-16",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
@@ -2237,7 +2237,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-12-23",
+							"reportDate": "2023-10-02",
 							"currency": "EGP"
 						}
 					}
@@ -2315,33 +2315,33 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-10",
+					"reportingDate": "2024-06-20",
 					"sectors": [
 						"72.11",
 						"94.2"
 					],
 					"numberOfEmployees": 2835,
-					"fiscalYearStart": "2025-01-01",
+					"fiscalYearStart": "2024-10-11",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-09-30",
+							"reportDate": "2023-07-10",
 							"currency": "XPF"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-06-12",
+							"reportDate": "2023-03-22",
 							"currency": "QAR"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-02-03",
+							"reportDate": "2023-11-13",
 							"currency": "LSL"
 						},
 						"IntegratedReport": {
@@ -2432,7 +2432,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-04-14",
+					"reportingDate": "2025-01-21",
 					"sectors": [
 						"22.19",
 						"23.62",
@@ -2441,20 +2441,20 @@
 						"66.12"
 					],
 					"numberOfEmployees": 4896,
-					"fiscalYearStart": "2024-08-25",
+					"fiscalYearStart": "2024-06-03",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-07-12",
+							"reportDate": "2023-04-20",
 							"currency": "VUV"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-10-23",
+							"reportDate": "2023-08-02",
 							"currency": "MUR"
 						}
 					}
@@ -2525,7 +2525,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-04-18",
+					"reportingDate": "2024-01-26",
 					"sectors": [
 						"01.26",
 						"17.29",
@@ -2534,13 +2534,13 @@
 						"61.2"
 					],
 					"numberOfEmployees": 3780,
-					"fiscalYearStart": "2024-11-11",
+					"fiscalYearStart": "2024-08-21",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": null,
-							"reportDate": "2024-03-17",
+							"reportDate": "2023-12-26",
 							"currency": "SDG"
 						},
 						"AnnualReport": {
@@ -2624,20 +2624,20 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-04-17",
+					"reportingDate": "2024-01-25",
 					"sectors": [
 						"07.21",
 						"23.65",
 						"93.13"
 					],
 					"numberOfEmployees": 896,
-					"fiscalYearStart": "2024-10-05",
+					"fiscalYearStart": "2024-07-15",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-29",
+							"reportDate": "2023-04-08",
 							"currency": "GEL"
 						}
 					}
@@ -2727,7 +2727,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-03",
+					"reportingDate": "2024-07-13",
 					"sectors": [
 						"23.43",
 						"28.95",
@@ -2736,13 +2736,13 @@
 						"51.2"
 					],
 					"numberOfEmployees": 5577,
-					"fiscalYearStart": "2024-08-17",
+					"fiscalYearStart": "2024-05-26",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-07-27",
+							"reportDate": "2023-05-06",
 							"currency": "XPF"
 						}
 					}
@@ -2824,16 +2824,16 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-04",
+					"reportingDate": "2024-03-13",
 					"sectors": [],
 					"numberOfEmployees": 3687,
-					"fiscalYearStart": "2024-05-19",
+					"fiscalYearStart": "2024-02-26",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-07",
+							"reportDate": "2023-03-16",
 							"currency": null
 						}
 					}
@@ -2915,7 +2915,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-17",
+					"reportingDate": "2024-02-24",
 					"sectors": [
 						"59.2",
 						"75.00",
@@ -2923,20 +2923,20 @@
 						"95.22"
 					],
 					"numberOfEmployees": 113,
-					"fiscalYearStart": "2025-03-21",
+					"fiscalYearStart": "2024-12-28",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-31",
+							"reportDate": "2023-10-10",
 							"currency": "ZAR"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": null,
-							"reportDate": "2024-02-08",
+							"reportDate": "2023-11-17",
 							"currency": "TND"
 						}
 					}
@@ -3005,30 +3005,30 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-11",
+					"reportingDate": "2024-04-19",
 					"sectors": [],
 					"numberOfEmployees": 9016,
-					"fiscalYearStart": "2024-09-21",
+					"fiscalYearStart": "2024-06-30",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-02-25",
+							"reportDate": "2023-12-05",
 							"currency": "KZT"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": null,
-							"reportDate": "2023-07-06",
+							"reportDate": "2023-04-14",
 							"currency": "FJD"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-31",
+							"reportDate": "2023-03-10",
 							"currency": null
 						}
 					}
@@ -3099,41 +3099,41 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-18",
+					"reportingDate": "2024-03-27",
 					"sectors": [
 						"03.11",
 						"24.44",
 						"70.21"
 					],
 					"numberOfEmployees": 4113,
-					"fiscalYearStart": "2024-04-18",
+					"fiscalYearStart": "2024-01-26",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-07-22",
+							"reportDate": "2023-05-01",
 							"currency": "XAF"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-07-21",
+							"reportDate": "2023-04-30",
 							"currency": "MWK"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-06",
+							"reportDate": "2023-09-14",
 							"currency": "BSD"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-04-28",
+							"reportDate": "2023-02-05",
 							"currency": "IDR"
 						}
 					}
@@ -3218,20 +3218,20 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-05",
+					"reportingDate": "2024-06-14",
 					"sectors": [
 						"10.1",
 						"27.3",
 						"78.20"
 					],
 					"numberOfEmployees": 8939,
-					"fiscalYearStart": "2024-09-06",
+					"fiscalYearStart": "2024-06-15",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-04-29",
+							"reportDate": "2023-02-05",
 							"currency": "OMR"
 						},
 						"ESEFReport": {
@@ -3317,33 +3317,33 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-14",
+					"reportingDate": "2024-02-21",
 					"sectors": [
 						"43.13",
 						"46.76"
 					],
 					"numberOfEmployees": 5284,
-					"fiscalYearStart": "2025-02-23",
+					"fiscalYearStart": "2024-12-03",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-02-18",
+							"reportDate": "2023-11-27",
 							"currency": "ETB"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-02",
+							"reportDate": "2023-02-09",
 							"currency": "AUD"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2024-03-06",
+							"reportDate": "2023-12-15",
 							"currency": null
 						}
 					}
@@ -3420,7 +3420,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-03-01",
+					"reportingDate": "2024-12-08",
 					"sectors": [
 						"02",
 						"28.41",
@@ -3429,7 +3429,7 @@
 						"93"
 					],
 					"numberOfEmployees": 758,
-					"fiscalYearStart": "2025-04-04",
+					"fiscalYearStart": "2025-01-11",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
@@ -3442,7 +3442,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-08-21",
+							"reportDate": "2023-05-31",
 							"currency": "SGD"
 						}
 					}
@@ -3521,32 +3521,32 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-04-26",
+					"reportingDate": "2024-02-03",
 					"sectors": [
 						"59.12"
 					],
 					"numberOfEmployees": 1981,
-					"fiscalYearStart": "2025-02-24",
+					"fiscalYearStart": "2024-12-04",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-12-01",
+							"reportDate": "2023-09-10",
 							"currency": "YER"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-19",
+							"reportDate": "2023-03-28",
 							"currency": "KPW"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-05-09",
+							"reportDate": "2023-02-16",
 							"currency": "CHF"
 						}
 					}
@@ -3617,32 +3617,32 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-02-23",
+					"reportingDate": "2024-12-03",
 					"sectors": [
 						"01.23"
 					],
 					"numberOfEmployees": 994,
-					"fiscalYearStart": "2024-08-17",
+					"fiscalYearStart": "2024-05-26",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-03-11",
+							"reportDate": "2023-12-19",
 							"currency": null
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-05-24",
+							"reportDate": "2023-03-03",
 							"currency": "EGP"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-12-17",
+							"reportDate": "2023-09-25",
 							"currency": "KGS"
 						}
 					}
@@ -3725,19 +3725,19 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-03-05",
+					"reportingDate": "2024-12-12",
 					"sectors": [
 						"01.3",
 						"30.1"
 					],
 					"numberOfEmployees": 8448,
-					"fiscalYearStart": "2024-04-16",
+					"fiscalYearStart": "2024-01-24",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-24",
+							"reportDate": "2023-09-02",
 							"currency": "BDT"
 						}
 					}
@@ -3813,7 +3813,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-25",
+					"reportingDate": "2024-05-03",
 					"sectors": [
 						"01.21",
 						"19.2",
@@ -3822,20 +3822,20 @@
 						"85.31"
 					],
 					"numberOfEmployees": 6354,
-					"fiscalYearStart": "2024-08-16",
+					"fiscalYearStart": "2024-05-26",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-12-11",
+							"reportDate": "2023-09-19",
 							"currency": "OMR"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2024-02-03",
+							"reportDate": "2023-11-12",
 							"currency": "MDL"
 						},
 						"SustainabilityReport": {
@@ -3849,7 +3849,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-01-30",
+							"reportDate": "2023-11-08",
 							"currency": "MNT"
 						}
 					}
@@ -3932,40 +3932,40 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-02-24",
+					"reportingDate": "2024-12-04",
 					"sectors": [
 						"46.42",
 						"47.75"
 					],
 					"numberOfEmployees": 6126,
-					"fiscalYearStart": "2025-01-02",
+					"fiscalYearStart": "2024-10-11",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-07",
+							"reportDate": "2023-03-17",
 							"currency": "TWD"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-06-24",
+							"reportDate": "2023-04-02",
 							"currency": "EGP"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-09-28",
+							"reportDate": "2023-07-07",
 							"currency": "GIP"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-07-08",
+							"reportDate": "2023-04-16",
 							"currency": "TOP"
 						}
 					}
@@ -4038,26 +4038,26 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-08-31",
+					"reportingDate": "2024-06-09",
 					"sectors": [
 						"23.12",
 						"43.29"
 					],
 					"numberOfEmployees": 9882,
-					"fiscalYearStart": "2024-06-23",
+					"fiscalYearStart": "2024-04-01",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-10-09",
+							"reportDate": "2023-07-18",
 							"currency": "BOB"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-06-06",
+							"reportDate": "2023-03-16",
 							"currency": "TWD"
 						},
 						"IntegratedReport": {
@@ -4071,7 +4071,7 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": null,
-							"reportDate": "2023-04-29",
+							"reportDate": "2023-02-05",
 							"currency": null
 						}
 					}
@@ -4152,39 +4152,39 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-06-29",
+					"reportingDate": "2024-04-07",
 					"sectors": [
 						"03.2"
 					],
 					"numberOfEmployees": 6429,
-					"fiscalYearStart": "2024-07-23",
+					"fiscalYearStart": "2024-05-01",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-10-26",
+							"reportDate": "2023-08-04",
 							"currency": "AFN"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2024-01-04",
+							"reportDate": "2023-10-14",
 							"currency": "CLP"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-06-20",
+							"reportDate": "2023-03-30",
 							"currency": "KES"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "No",
-							"reportDate": "2023-07-08",
+							"reportDate": "2023-04-17",
 							"currency": "CHF"
 						}
 					}
@@ -4263,41 +4263,41 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-04-07",
+					"reportingDate": "2025-01-15",
 					"sectors": [
 						"01.45",
 						"35.1",
 						"74.9"
 					],
 					"numberOfEmployees": 2923,
-					"fiscalYearStart": "2024-06-16",
+					"fiscalYearStart": "2024-03-25",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-14",
+							"reportDate": "2023-09-22",
 							"currency": "KRW"
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-10-14",
+							"reportDate": "2023-07-24",
 							"currency": "KES"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-25",
+							"reportDate": "2023-03-04",
 							"currency": "JPY"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-01-28",
+							"reportDate": "2023-11-07",
 							"currency": null
 						}
 					}
@@ -4371,33 +4371,33 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-15",
+					"reportingDate": "2024-07-24",
 					"sectors": [
 						"01.11",
 						"20.6"
 					],
 					"numberOfEmployees": 7302,
-					"fiscalYearStart": "2025-02-17",
+					"fiscalYearStart": "2024-11-26",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-09-30",
+							"reportDate": "2023-07-10",
 							"currency": "SLE"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-07-17",
+							"reportDate": "2023-04-25",
 							"currency": null
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-07-17",
+							"reportDate": "2023-04-25",
 							"currency": "NAD"
 						},
 						"SustainabilityReport": {
@@ -4490,20 +4490,20 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-09",
+					"reportingDate": "2024-06-18",
 					"sectors": [
 						"10.61",
 						"46.37",
 						"81.1"
 					],
 					"numberOfEmployees": 157,
-					"fiscalYearStart": "2024-09-13",
+					"fiscalYearStart": "2024-06-22",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": null,
-							"reportDate": "2024-01-12",
+							"reportDate": "2023-10-22",
 							"currency": "ARS"
 						},
 						"ESEFReport": {
@@ -4592,34 +4592,34 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-04-16",
+					"reportingDate": "2024-01-25",
 					"sectors": [
 						"18.20",
 						"79.90",
 						"94"
 					],
 					"numberOfEmployees": 2027,
-					"fiscalYearStart": "2025-01-18",
+					"fiscalYearStart": "2024-10-27",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-16",
+							"reportDate": "2023-08-26",
 							"currency": null
 						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-09-18",
+							"reportDate": "2023-06-27",
 							"currency": "FJD"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-06",
+							"reportDate": "2023-08-16",
 							"currency": "MAD"
 						}
 					}
@@ -4701,7 +4701,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-08-13",
+					"reportingDate": "2024-05-23",
 					"sectors": [
 						"01.64",
 						"23.69",
@@ -4709,13 +4709,13 @@
 						"61.1"
 					],
 					"numberOfEmployees": 9242,
-					"fiscalYearStart": "2025-03-10",
+					"fiscalYearStart": "2024-12-18",
 					"referencedReports": {
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": null,
-							"reportDate": "2023-09-14",
+							"reportDate": "2023-06-23",
 							"currency": "ISK"
 						}
 					}
@@ -4794,32 +4794,32 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-11-27",
+					"reportingDate": "2024-09-05",
 					"sectors": [
 						"72.11"
 					],
 					"numberOfEmployees": 5896,
-					"fiscalYearStart": "2025-02-17",
+					"fiscalYearStart": "2024-11-26",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-07",
+							"reportDate": "2023-09-15",
 							"currency": null
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
 							"isGroupLevel": "No",
-							"reportDate": "2024-02-03",
+							"reportDate": "2023-11-12",
 							"currency": "VND"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2024-02-28",
+							"reportDate": "2023-12-08",
 							"currency": "DZD"
 						}
 					}
@@ -4899,7 +4899,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-19",
+					"reportingDate": "2024-02-26",
 					"sectors": [
 						"13.96",
 						"24",
@@ -4908,13 +4908,13 @@
 						"80.2"
 					],
 					"numberOfEmployees": 2123,
-					"fiscalYearStart": "2025-01-20",
+					"fiscalYearStart": "2024-10-29",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-11-10",
+							"reportDate": "2023-08-19",
 							"currency": "XOF"
 						}
 					}
@@ -5000,25 +5000,25 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-07-30",
+					"reportingDate": "2024-05-09",
 					"sectors": [
 						"50"
 					],
 					"numberOfEmployees": 4414,
-					"fiscalYearStart": "2024-08-27",
+					"fiscalYearStart": "2024-06-06",
 					"referencedReports": {
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-12",
+							"reportDate": "2023-05-21",
 							"currency": null
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": null,
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-06-08",
+							"reportDate": "2023-03-17",
 							"currency": "HNL"
 						}
 					}
@@ -5104,19 +5104,19 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-18",
+					"reportingDate": "2024-02-25",
 					"sectors": [
 						"74.30",
 						"93.29"
 					],
 					"numberOfEmployees": 3593,
-					"fiscalYearStart": "2024-08-27",
+					"fiscalYearStart": "2024-06-05",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-05-29",
+							"reportDate": "2023-03-07",
 							"currency": null
 						}
 					}

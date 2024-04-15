@@ -15,6 +15,8 @@ interface FrameworkFixtureModule {
  */
 async function main(): Promise<void> {
   faker.seed(FAKER_BASE_SEED);
+  faker.setDefaultRefDate(new Date("2024-01-24")); // Dataland launch date ;)
+
   exportCustomMocks();
 
   const frameworkDirectoryContents = await readdir(__dirname + "/frameworks", { withFileTypes: true });

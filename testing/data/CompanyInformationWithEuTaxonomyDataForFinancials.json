@@ -192,7 +192,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-06-11",
+					"reportDate": "2023-03-20",
 					"currency": "NOK"
 				},
 				"ESEFReport": {
@@ -206,7 +206,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-24",
+					"reportDate": "2023-04-02",
 					"currency": "KYD"
 				}
 			}
@@ -313,7 +313,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-10-02",
+			"fiscalYearEnd": "2023-07-12",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -333,7 +333,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-12-06",
+					"reportDate": "2023-09-14",
 					"currency": "SAR"
 				}
 			}
@@ -601,7 +601,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2024-04-06",
+			"fiscalYearEnd": "2024-01-15",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -616,14 +616,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-11-21",
+					"reportDate": "2023-08-30",
 					"currency": "BOB"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-05",
+					"reportDate": "2023-03-15",
 					"currency": "ZAR"
 				}
 			}
@@ -779,7 +779,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-07-25",
+			"fiscalYearEnd": "2023-05-03",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -799,21 +799,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-02",
+					"reportDate": "2023-06-12",
 					"currency": "BSD"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-01",
+					"reportDate": "2023-06-11",
 					"currency": "BTN"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-05-14",
+					"reportDate": "2023-02-20",
 					"currency": "TJS"
 				},
 				"SustainabilityReport": {
@@ -1133,7 +1133,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-10-08",
+					"reportDate": "2023-07-17",
 					"currency": "EUR"
 				},
 				"ESEFReport": {
@@ -1147,14 +1147,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-07",
+					"reportDate": "2023-03-16",
 					"currency": "KPW"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-19",
+					"reportDate": "2023-06-29",
 					"currency": "SLE"
 				}
 			}
@@ -1247,7 +1247,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-11-02",
+			"fiscalYearEnd": "2023-08-11",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -1427,7 +1427,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2023-04-19",
+			"fiscalYearEnd": "2023-01-26",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -1442,7 +1442,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-12",
+					"reportDate": "2023-10-22",
 					"currency": "DOP"
 				},
 				"SustainabilityReport": {
@@ -1456,14 +1456,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-10-17",
+					"reportDate": "2023-07-26",
 					"currency": null
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": null,
-					"reportDate": "2024-01-05",
+					"reportDate": "2023-10-15",
 					"currency": "LKR"
 				}
 			}
@@ -1544,7 +1544,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2024-04-10",
+			"fiscalYearEnd": "2024-01-18",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -1562,7 +1562,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-10-12",
+					"reportDate": "2023-07-21",
 					"currency": null
 				},
 				"ESEFReport": {
@@ -1727,7 +1727,7 @@
 				"taxonomyEligibleNonLifeInsuranceActivitiesInPercent": null
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-07-31",
+			"fiscalYearEnd": "2023-05-09",
 			"scopeOfEntities": null,
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -1747,28 +1747,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-20",
+					"reportDate": "2023-06-30",
 					"currency": null
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-12-29",
+					"reportDate": "2023-10-07",
 					"currency": "LAK"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-05-19",
+					"reportDate": "2023-02-26",
 					"currency": "DZD"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-10-19",
+					"reportDate": "2023-07-29",
 					"currency": "BSD"
 				}
 			}
@@ -2066,7 +2066,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-01-11",
+					"reportDate": "2023-10-20",
 					"currency": "AUD"
 				}
 			}
@@ -2185,7 +2185,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2024-04-05",
+			"fiscalYearEnd": "2024-01-14",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -2205,28 +2205,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2023-06-08",
+					"reportDate": "2023-03-17",
 					"currency": "KGS"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-06",
+					"reportDate": "2023-03-15",
 					"currency": "TOP"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-03-24",
+					"reportDate": "2024-01-01",
 					"currency": "HKD"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-08-04",
+					"reportDate": "2023-05-14",
 					"currency": "ZAR"
 				}
 			}
@@ -2320,7 +2320,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-12-28",
+					"reportDate": "2023-10-07",
 					"currency": "RSD"
 				}
 			}
@@ -2387,7 +2387,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2024-03-01",
+			"fiscalYearEnd": "2023-12-09",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -2407,7 +2407,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-03-17",
+					"reportDate": "2023-12-25",
 					"currency": null
 				}
 			}
@@ -2685,7 +2685,7 @@
 				"taxonomyEligibleNonLifeInsuranceActivitiesInPercent": null
 			},
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2024-04-09",
+			"fiscalYearEnd": "2024-01-17",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -2768,7 +2768,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-11-01",
+			"fiscalYearEnd": "2023-08-10",
 			"scopeOfEntities": null,
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": null,
@@ -2795,21 +2795,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-01-11",
+					"reportDate": "2023-10-20",
 					"currency": "ISK"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-27",
+					"reportDate": "2023-11-05",
 					"currency": null
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-03-17",
+					"reportDate": "2023-12-25",
 					"currency": "LRD"
 				}
 			}
@@ -2939,7 +2939,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-10-06",
+					"reportDate": "2023-07-15",
 					"currency": "NAD"
 				}
 			}
@@ -3057,7 +3057,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-12-07",
+					"reportDate": "2023-09-15",
 					"currency": "ALL"
 				},
 				"AnnualReport": {
@@ -3071,7 +3071,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-08",
+					"reportDate": "2023-10-17",
 					"currency": "GHS"
 				}
 			}
@@ -3179,7 +3179,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-06-25",
+			"fiscalYearEnd": "2023-04-03",
 			"scopeOfEntities": null,
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "No",
@@ -3190,14 +3190,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-03-17",
+					"reportDate": "2023-12-25",
 					"currency": "KES"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-04-01",
+					"reportDate": "2024-01-10",
 					"currency": null
 				}
 			}
@@ -3289,7 +3289,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2023-12-21",
+			"fiscalYearEnd": "2023-09-29",
 			"scopeOfEntities": null,
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "No",
@@ -3309,7 +3309,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-01-07",
+					"reportDate": "2023-10-16",
 					"currency": "RSD"
 				}
 			}
@@ -3509,7 +3509,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-05-05",
+			"fiscalYearEnd": "2023-02-11",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "No",
@@ -3536,14 +3536,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-11",
+					"reportDate": "2023-10-20",
 					"currency": "DKK"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-10-07",
+					"reportDate": "2023-07-17",
 					"currency": null
 				},
 				"ESEFReport": {
@@ -3732,7 +3732,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-10-29",
+			"fiscalYearEnd": "2023-08-07",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": null,
@@ -3754,7 +3754,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-09-10",
+					"reportDate": "2023-06-19",
 					"currency": null
 				},
 				"SustainabilityReport": {
@@ -3768,7 +3768,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-10",
+					"reportDate": "2023-10-20",
 					"currency": "LKR"
 				}
 			}
@@ -4072,14 +4072,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-03-11",
+					"reportDate": "2023-12-19",
 					"currency": "HUF"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-31",
+					"reportDate": "2023-03-10",
 					"currency": null
 				},
 				"SustainabilityReport": {
@@ -4240,7 +4240,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-12-17",
+					"reportDate": "2023-09-25",
 					"currency": "MYR"
 				}
 			}
@@ -4526,7 +4526,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-06-27",
+			"fiscalYearEnd": "2023-04-06",
 			"scopeOfEntities": null,
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "No",
@@ -4546,14 +4546,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2023-05-10",
+					"reportDate": "2023-02-16",
 					"currency": null
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2023-06-15",
+					"reportDate": "2023-03-25",
 					"currency": "CUP"
 				}
 			}
@@ -4700,14 +4700,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-07-30",
+					"reportDate": "2023-05-08",
 					"currency": "NAD"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-10-15",
+					"reportDate": "2023-07-24",
 					"currency": "EUR"
 				},
 				"SustainabilityReport": {
@@ -4721,7 +4721,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-11-18",
+					"reportDate": "2023-08-28",
 					"currency": "SCR"
 				}
 			}
@@ -4862,7 +4862,7 @@
 				"taxonomyEligibleNonLifeInsuranceActivitiesInPercent": null
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-09-06",
+			"fiscalYearEnd": "2023-06-15",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": null,
@@ -4882,28 +4882,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-03-29",
+					"reportDate": "2024-01-07",
 					"currency": "MYR"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-03",
+					"reportDate": "2023-06-12",
 					"currency": "SBD"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-10-17",
+					"reportDate": "2023-07-26",
 					"currency": "AWG"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-15",
+					"reportDate": "2023-02-21",
 					"currency": "SOS"
 				}
 			}
@@ -4984,14 +4984,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-02-19",
+					"reportDate": "2023-11-29",
 					"currency": "BSD"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-06",
+					"reportDate": "2023-03-15",
 					"currency": "BZD"
 				}
 			}
@@ -5144,7 +5144,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-06-27",
+			"fiscalYearEnd": "2023-04-05",
 			"scopeOfEntities": null,
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -5164,21 +5164,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-11-01",
+					"reportDate": "2023-08-10",
 					"currency": "CDF"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-03-12",
+					"reportDate": "2023-12-21",
 					"currency": "ALL"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-03-25",
+					"reportDate": "2024-01-02",
 					"currency": "GBP"
 				}
 			}
@@ -5274,7 +5274,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2024-03-18",
+			"fiscalYearEnd": "2023-12-27",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -5294,14 +5294,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-08-06",
+					"reportDate": "2023-05-15",
 					"currency": "GBP"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-05-14",
+					"reportDate": "2023-02-20",
 					"currency": "PHP"
 				}
 			}
@@ -5373,7 +5373,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-09-05",
+			"fiscalYearEnd": "2023-06-15",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -5388,28 +5388,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-02-15",
+					"reportDate": "2023-11-24",
 					"currency": "ILS"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-02-17",
+					"reportDate": "2023-11-27",
 					"currency": "AFN"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-11-24",
+					"reportDate": "2023-09-02",
 					"currency": "UZS"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-09",
+					"reportDate": "2023-10-18",
 					"currency": "SGD"
 				}
 			}
@@ -5525,7 +5525,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2024-01-13",
+			"fiscalYearEnd": "2023-10-22",
 			"scopeOfEntities": null,
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -5540,7 +5540,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-11-02",
+					"reportDate": "2023-08-11",
 					"currency": "AFN"
 				}
 			}
@@ -5654,7 +5654,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-10-20",
+			"fiscalYearEnd": "2023-07-30",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -5669,14 +5669,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2023-06-30",
+					"reportDate": "2023-04-09",
 					"currency": "KMF"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-06-28",
+					"reportDate": "2023-04-07",
 					"currency": "SHP"
 				}
 			}
@@ -5724,7 +5724,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2024-03-05",
+			"fiscalYearEnd": "2023-12-14",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -5739,28 +5739,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-12-01",
+					"reportDate": "2023-09-10",
 					"currency": "VND"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-03-12",
+					"reportDate": "2023-12-20",
 					"currency": "GBP"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-01-22",
+					"reportDate": "2023-11-01",
 					"currency": "LBP"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-11",
+					"reportDate": "2023-06-20",
 					"currency": "ISK"
 				}
 			}
@@ -5934,7 +5934,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2024-01-11",
+			"fiscalYearEnd": "2023-10-21",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -5945,7 +5945,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-10-02",
+					"reportDate": "2023-07-11",
 					"currency": "KYD"
 				},
 				"ESEFReport": {
@@ -5959,14 +5959,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2023-08-10",
+					"reportDate": "2023-05-20",
 					"currency": "TND"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-06-08",
+					"reportDate": "2023-03-17",
 					"currency": null
 				}
 			}
@@ -6078,7 +6078,7 @@
 				}
 			},
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2024-01-25",
+			"fiscalYearEnd": "2023-11-03",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -6089,21 +6089,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-29",
+					"reportDate": "2023-11-07",
 					"currency": "ILS"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-03-20",
+					"reportDate": "2023-12-29",
 					"currency": "CAD"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": null,
-					"reportDate": "2024-03-13",
+					"reportDate": "2023-12-22",
 					"currency": "AED"
 				}
 			}
@@ -6339,7 +6339,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-06-10",
+			"fiscalYearEnd": "2023-03-20",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "No",
@@ -6359,7 +6359,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-10-06",
+					"reportDate": "2023-07-15",
 					"currency": "PKR"
 				}
 			}
@@ -6431,14 +6431,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2024-03-02",
+					"reportDate": "2023-12-10",
 					"currency": "AOA"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-02-06",
+					"reportDate": "2023-11-15",
 					"currency": "ILS"
 				}
 			}
@@ -6663,7 +6663,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2024-02-21",
+			"fiscalYearEnd": "2023-11-30",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "No",
@@ -6683,7 +6683,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-12-27",
+					"reportDate": "2023-10-06",
 					"currency": "ZMW"
 				}
 			}
@@ -6774,7 +6774,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2023-07-31",
+			"fiscalYearEnd": "2023-05-09",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -6794,21 +6794,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-04-28",
+					"reportDate": "2023-02-04",
 					"currency": "QAR"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2024-01-30",
+					"reportDate": "2023-11-09",
 					"currency": "BAM"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-04-14",
+					"reportDate": "2024-01-23",
 					"currency": null
 				}
 			}
@@ -7095,7 +7095,7 @@
 				}
 			},
 			"fiscalYearDeviation": null,
-			"fiscalYearEnd": "2023-11-25",
+			"fiscalYearEnd": "2023-09-04",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": null,
@@ -7117,21 +7117,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-03-08",
+					"reportDate": "2023-12-16",
 					"currency": null
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-09-04",
+					"reportDate": "2023-06-13",
 					"currency": "LKR"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": null,
-					"reportDate": "2023-08-01",
+					"reportDate": "2023-05-10",
 					"currency": "KWD"
 				}
 			}
@@ -7372,7 +7372,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-12-23",
+			"fiscalYearEnd": "2023-10-01",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": null,
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -7387,28 +7387,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": null,
-					"reportDate": "2024-04-14",
+					"reportDate": "2024-01-22",
 					"currency": "WST"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-09-20",
+					"reportDate": "2023-06-30",
 					"currency": "FJD"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-01",
+					"reportDate": "2023-02-08",
 					"currency": "SLE"
 				},
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-11-25",
+					"reportDate": "2023-09-03",
 					"currency": "XOF"
 				}
 			}
@@ -7505,7 +7505,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-10-31",
+			"fiscalYearEnd": "2023-08-09",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -7520,14 +7520,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "SustainabilityReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-06-08",
+					"reportDate": "2023-03-18",
 					"currency": "GYD"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "No",
-					"reportDate": "2023-07-31",
+					"reportDate": "2023-05-09",
 					"currency": "TJS"
 				}
 			}
@@ -7731,7 +7731,7 @@
 			},
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2024-03-17",
+			"fiscalYearEnd": "2023-12-25",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": null,
@@ -7814,7 +7814,7 @@
 				"taxonomyEligibleNonLifeInsuranceActivitiesInPercent": null
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-07-22",
+			"fiscalYearEnd": "2023-04-30",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -7829,14 +7829,14 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": null,
-					"reportDate": "2023-07-02",
+					"reportDate": "2023-04-11",
 					"currency": "KRW"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-04-20",
+					"reportDate": "2023-01-27",
 					"currency": "MUR"
 				}
 			}
@@ -8038,7 +8038,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-08-02",
+			"fiscalYearEnd": "2023-05-12",
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "No",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -8058,21 +8058,21 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-12-10",
+					"reportDate": "2023-09-18",
 					"currency": "BAM"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-09-27",
+					"reportDate": "2023-07-07",
 					"currency": null
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-10-17",
+					"reportDate": "2023-07-26",
 					"currency": "AMD"
 				}
 			}
@@ -8241,7 +8241,7 @@
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-08-13",
+			"fiscalYearEnd": "2023-05-23",
 			"scopeOfEntities": null,
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "No",
@@ -8261,7 +8261,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-12-15",
+					"reportDate": "2023-09-23",
 					"currency": "RWF"
 				},
 				"AnnualReport": {
@@ -8282,7 +8282,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-29",
+					"reportDate": "2023-04-07",
 					"currency": "ERN"
 				}
 			}
@@ -8383,7 +8383,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-09-28",
+					"reportDate": "2023-07-08",
 					"currency": "AOA"
 				},
 				"ESEFReport": {
@@ -8495,7 +8495,7 @@
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-10-29",
+			"fiscalYearEnd": "2023-08-08",
 			"scopeOfEntities": "No",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": "Yes",
@@ -8515,7 +8515,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-04-14",
+					"reportDate": "2024-01-23",
 					"currency": "HUF"
 				}
 			}
@@ -8770,7 +8770,7 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2024-02-19",
+					"reportDate": "2023-11-29",
 					"currency": "TJS"
 				}
 			}
@@ -8893,7 +8893,7 @@
 			"investmentFirmKpis": null,
 			"insuranceKpis": null,
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-09-28",
+			"fiscalYearEnd": "2023-07-08",
 			"scopeOfEntities": "NA",
 			"nfrdMandatory": "Yes",
 			"euTaxonomyActivityLevelReporting": null,
@@ -8904,28 +8904,28 @@
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-11-08",
+					"reportDate": "2023-08-18",
 					"currency": "BTN"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "AnnualReport",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-10-11",
+					"reportDate": "2023-07-20",
 					"currency": "BBD"
 				},
 				"SustainabilityReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": null,
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-06-09",
+					"reportDate": "2023-03-18",
 					"currency": "AMD"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"fileName": "IntegratedReport",
 					"isGroupLevel": "No",
-					"reportDate": "2023-07-08",
+					"reportDate": "2023-04-16",
 					"currency": null
 				}
 			}

@@ -31,7 +31,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-08",
+					"dataDate": "2024-09-16",
 					"sectors": [
 						"Steel",
 						"Cement",
@@ -164,7 +164,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-16",
+					"dataDate": "2024-02-24",
 					"sectors": [
 						"HVCPlastics",
 						"Other",
@@ -269,8 +269,8 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": 66.99,
-					"naturalGasPhaseOut": "2025-01-27",
-					"coalPhaseOut": "2024-07-27",
+					"naturalGasPhaseOut": "2024-11-05",
+					"coalPhaseOut": "2024-05-05",
 					"storageCapacityExpansionInPercent": null
 				}
 			},
@@ -334,7 +334,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-23",
+					"dataDate": "2024-10-01",
 					"sectors": [
 						"ElectricityGeneration",
 						"Steel"
@@ -434,7 +434,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-04-21",
+					"dataDate": "2024-01-30",
 					"sectors": [
 						"ResidentialRealEstate",
 						"LivestockFarming",
@@ -611,7 +611,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-09-04",
+					"dataDate": "2024-06-13",
 					"sectors": [
 						"HVCPlastics",
 						"CommercialRealEstate",
@@ -757,7 +757,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-08-26",
+					"dataDate": "2024-06-04",
 					"sectors": [
 						"ResidentialRealEstate",
 						"Other"
@@ -859,7 +859,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-04-17",
+					"dataDate": "2024-01-25",
 					"sectors": [
 						"ElectricityGeneration",
 						"Cement",
@@ -923,7 +923,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 97.31,
-					"icAndHybridEnginePhaseOutDate": "2024-05-08",
+					"icAndHybridEnginePhaseOutDate": "2024-02-15",
 					"futureValueCreationStrategy": null
 				},
 				"materials": {
@@ -1021,7 +1021,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-27",
+					"dataDate": "2024-10-06",
 					"sectors": [
 						"CommercialRealEstate",
 						"Automotive"
@@ -1072,7 +1072,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 57.36,
-					"icAndHybridEnginePhaseOutDate": "2025-03-30",
+					"icAndHybridEnginePhaseOutDate": "2025-01-06",
 					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
@@ -1134,7 +1134,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-10-25",
+					"dataDate": "2024-08-03",
 					"sectors": [
 						"Cement",
 						"ResidentialRealEstate"
@@ -1248,7 +1248,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-13",
+					"dataDate": "2024-10-23",
 					"sectors": [
 						"LivestockFarming",
 						"Ammonia",
@@ -1314,7 +1314,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 22.58,
-					"icAndHybridEnginePhaseOutDate": "2025-01-14",
+					"icAndHybridEnginePhaseOutDate": "2024-10-24",
 					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
@@ -1410,7 +1410,7 @@
 				}
 			}
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -1442,7 +1442,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-09-17",
+					"dataDate": "2024-06-26",
 					"sectors": [
 						"Other",
 						"ElectricityGeneration"
@@ -1493,7 +1493,7 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": 77.92,
-					"naturalGasPhaseOut": "2024-10-11",
+					"naturalGasPhaseOut": "2024-07-21",
 					"coalPhaseOut": null,
 					"storageCapacityExpansionInPercent": 21.27
 				}
@@ -1533,7 +1533,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-18",
+					"dataDate": "2024-10-27",
 					"sectors": [
 						"CommercialRealEstate",
 						"Automotive",
@@ -1677,7 +1677,7 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": 11.46,
-					"naturalGasPhaseOut": "2024-07-30",
+					"naturalGasPhaseOut": "2024-05-09",
 					"coalPhaseOut": null,
 					"storageCapacityExpansionInPercent": null
 				}
@@ -1723,7 +1723,7 @@
 				}
 			}
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -1762,7 +1762,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-08-14",
+					"dataDate": "2024-05-24",
 					"sectors": [
 						"HVCPlastics",
 						"Other",
@@ -1900,7 +1900,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-11-01",
+					"dataDate": "2024-08-10",
 					"sectors": [
 						"Automotive",
 						"HVCPlastics",
@@ -1954,7 +1954,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2024-07-29",
+					"icAndHybridEnginePhaseOutDate": "2024-05-07",
 					"futureValueCreationStrategy": null
 				},
 				"materials": {
@@ -2050,7 +2050,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-04-03",
+					"dataDate": "2025-01-10",
 					"sectors": [
 						"Ammonia",
 						"CommercialRealEstate",
@@ -2111,7 +2111,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 44.31,
-					"icAndHybridEnginePhaseOutDate": "2025-01-09",
+					"icAndHybridEnginePhaseOutDate": "2024-10-18",
 					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
@@ -2207,7 +2207,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-10",
+					"dataDate": "2024-10-19",
 					"sectors": [
 						"HVCPlastics",
 						"Automotive",
@@ -2266,7 +2266,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 93.48,
-					"icAndHybridEnginePhaseOutDate": "2024-05-27",
+					"icAndHybridEnginePhaseOutDate": "2024-03-06",
 					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
@@ -2310,7 +2310,7 @@
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": {},
-					"icePhaseOut": "2025-03-25"
+					"icePhaseOut": "2025-01-01"
 				},
 				"energy": {
 					"fuelMixInPercent": 74.33
@@ -2328,7 +2328,7 @@
 			"livestockFarming": null,
 			"cement": null
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -2364,7 +2364,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-07-09",
+					"dataDate": "2024-04-17",
 					"sectors": [
 						"CommercialRealEstate",
 						"FreightTransportByRoad"
@@ -2476,7 +2476,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-15",
+					"dataDate": "2024-02-23",
 					"sectors": [
 						"Automotive",
 						"Cement",
@@ -2595,7 +2595,7 @@
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": null,
-					"icePhaseOut": "2025-01-09"
+					"icePhaseOut": "2024-10-18"
 				},
 				"energy": {
 					"fuelMixInPercent": 58.94
@@ -2659,7 +2659,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-02-15",
+					"dataDate": "2024-11-24",
 					"sectors": [
 						"CommercialRealEstate",
 						"FreightTransportByRoad",
@@ -2719,7 +2719,7 @@
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": null,
-					"icePhaseOut": "2024-12-04"
+					"icePhaseOut": "2024-09-12"
 				},
 				"energy": {
 					"fuelMixInPercent": 52.23
@@ -2729,15 +2729,15 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2025-01-07",
-					"coalPhaseOut": "2024-05-17",
+					"naturalGasPhaseOut": "2024-10-16",
+					"coalPhaseOut": "2024-02-24",
 					"storageCapacityExpansionInPercent": 32.99
 				}
 			},
 			"livestockFarming": null,
 			"cement": null
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -2769,7 +2769,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-22",
+					"dataDate": "2024-02-29",
 					"sectors": [
 						"LivestockFarming",
 						"FreightTransportByRoad",
@@ -2832,7 +2832,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 67.14,
-					"icAndHybridEnginePhaseOutDate": "2025-02-10",
+					"icAndHybridEnginePhaseOutDate": "2024-11-20",
 					"futureValueCreationStrategy": null
 				},
 				"materials": {
@@ -2965,7 +2965,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-24",
+					"dataDate": "2024-11-03",
 					"sectors": [
 						"LivestockFarming",
 						"ElectricityGeneration"
@@ -3046,7 +3046,7 @@
 			},
 			"cement": null
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -3086,7 +3086,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-01",
+					"dataDate": "2024-02-08",
 					"sectors": [
 						"FreightTransportByRoad",
 						"Other",
@@ -3152,7 +3152,7 @@
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": null,
-					"icePhaseOut": "2024-07-24"
+					"icePhaseOut": "2024-05-02"
 				},
 				"energy": {
 					"fuelMixInPercent": 81.44
@@ -3238,7 +3238,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-11-29",
+					"dataDate": "2024-09-07",
 					"sectors": [
 						"LivestockFarming",
 						"Automotive",
@@ -3289,7 +3289,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2025-03-14",
+					"icAndHybridEnginePhaseOutDate": "2024-12-21",
 					"futureValueCreationStrategy": "Yes"
 				},
 				"materials": {
@@ -3349,7 +3349,7 @@
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": null,
 					"naturalGasPhaseOut": null,
-					"coalPhaseOut": "2024-05-17",
+					"coalPhaseOut": "2024-02-25",
 					"storageCapacityExpansionInPercent": null
 				}
 			},
@@ -3433,7 +3433,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-07-17",
+					"dataDate": "2024-04-25",
 					"sectors": [
 						"HVCPlastics",
 						"Automotive",
@@ -3494,7 +3494,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 3.74,
-					"icAndHybridEnginePhaseOutDate": "2025-02-08",
+					"icAndHybridEnginePhaseOutDate": "2024-11-17",
 					"futureValueCreationStrategy": null
 				},
 				"materials": {
@@ -3586,7 +3586,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-24",
+					"dataDate": "2024-03-02",
 					"sectors": [
 						"LivestockFarming"
 					]
@@ -3700,7 +3700,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-01",
+					"dataDate": "2024-02-09",
 					"sectors": [
 						"FreightTransportByRoad",
 						"Cement"
@@ -3752,7 +3752,7 @@
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": null,
-					"icePhaseOut": "2024-12-14"
+					"icePhaseOut": "2024-09-23"
 				},
 				"energy": {
 					"fuelMixInPercent": 88.3
@@ -3819,7 +3819,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-26",
+					"dataDate": "2024-03-04",
 					"sectors": [
 						"LivestockFarming",
 						"ResidentialRealEstate"
@@ -3945,7 +3945,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-10-16",
+					"dataDate": "2024-07-25",
 					"sectors": [
 						"FreightTransportByRoad",
 						"Cement"
@@ -4050,7 +4050,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-06",
+					"dataDate": "2024-10-15",
 					"sectors": [
 						"ElectricityGeneration",
 						"HVCPlastics",
@@ -4099,7 +4099,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2025-03-04",
+					"icAndHybridEnginePhaseOutDate": "2024-12-11",
 					"futureValueCreationStrategy": "Yes"
 				},
 				"materials": {
@@ -4145,8 +4145,8 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2024-07-09",
-					"coalPhaseOut": "2025-01-19",
+					"naturalGasPhaseOut": "2024-04-17",
+					"coalPhaseOut": "2024-10-28",
 					"storageCapacityExpansionInPercent": 11.16
 				}
 			},
@@ -4169,7 +4169,7 @@
 				}
 			}
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -4207,7 +4207,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-20",
+					"dataDate": "2024-10-29",
 					"sectors": [
 						"FreightTransportByRoad",
 						"Automotive",
@@ -4310,7 +4310,7 @@
 			"freightTransportByRoad": {
 				"technology": {
 					"driveMixPerFleetSegment": null,
-					"icePhaseOut": "2024-11-08"
+					"icePhaseOut": "2024-08-17"
 				},
 				"energy": {
 					"fuelMixInPercent": null
@@ -4321,14 +4321,14 @@
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": null,
 					"naturalGasPhaseOut": null,
-					"coalPhaseOut": "2025-01-21",
+					"coalPhaseOut": "2024-10-31",
 					"storageCapacityExpansionInPercent": null
 				}
 			},
 			"livestockFarming": null,
 			"cement": null
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -4367,7 +4367,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-09",
+					"dataDate": "2024-10-18",
 					"sectors": [
 						"ElectricityGeneration",
 						"Ammonia",
@@ -4491,8 +4491,8 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": 508,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2024-09-29",
-					"coalPhaseOut": "2024-05-17",
+					"naturalGasPhaseOut": "2024-07-08",
+					"coalPhaseOut": "2024-02-25",
 					"storageCapacityExpansionInPercent": null
 				}
 			},
@@ -4537,7 +4537,7 @@
 				}
 			}
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -4574,7 +4574,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-08-11",
+					"dataDate": "2024-05-21",
 					"sectors": [
 						"Other",
 						"ElectricityGeneration",
@@ -4636,7 +4636,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2024-09-22",
+					"icAndHybridEnginePhaseOutDate": "2024-07-02",
 					"futureValueCreationStrategy": null
 				},
 				"materials": {
@@ -4715,7 +4715,7 @@
 							"totalAmountOfVehicles": null
 						}
 					},
-					"icePhaseOut": "2024-12-02"
+					"icePhaseOut": "2024-09-10"
 				},
 				"energy": {
 					"fuelMixInPercent": null
@@ -4725,7 +4725,7 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": null,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2024-11-26",
+					"naturalGasPhaseOut": "2024-09-04",
 					"coalPhaseOut": null,
 					"storageCapacityExpansionInPercent": null
 				}
@@ -4792,7 +4792,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-06-30",
+					"dataDate": "2024-04-08",
 					"sectors": [
 						"LivestockFarming",
 						"Ammonia",
@@ -4930,7 +4930,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-06-05",
+					"dataDate": "2024-03-15",
 					"sectors": [
 						"ResidentialRealEstate",
 						"Steel",
@@ -4998,7 +4998,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": 36.39,
-					"icAndHybridEnginePhaseOutDate": "2025-02-02",
+					"icAndHybridEnginePhaseOutDate": "2024-11-11",
 					"futureValueCreationStrategy": "Yes"
 				},
 				"materials": {
@@ -5083,7 +5083,7 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": 224,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2024-09-26",
+					"naturalGasPhaseOut": "2024-07-05",
 					"coalPhaseOut": null,
 					"storageCapacityExpansionInPercent": null
 				}
@@ -5153,7 +5153,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-10-06",
+					"dataDate": "2024-07-15",
 					"sectors": [
 						"LivestockFarming"
 					]
@@ -5264,7 +5264,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-09-11",
+					"dataDate": "2024-06-21",
 					"sectors": [
 						"CommercialRealEstate",
 						"ResidentialRealEstate"
@@ -5375,7 +5375,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-03-20",
+					"dataDate": "2024-12-27",
 					"sectors": [
 						"CommercialRealEstate",
 						"Ammonia",
@@ -5460,7 +5460,7 @@
 			"livestockFarming": null,
 			"cement": null
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -5499,7 +5499,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-04-03",
+					"dataDate": "2025-01-10",
 					"sectors": [
 						"Automotive",
 						"Cement",
@@ -5681,7 +5681,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-07-19",
+					"dataDate": "2024-04-27",
 					"sectors": [
 						"ElectricityGeneration",
 						"LivestockFarming",
@@ -5770,7 +5770,7 @@
 							"totalAmountOfVehicles": 9375
 						}
 					},
-					"icePhaseOut": "2025-01-07"
+					"icePhaseOut": "2024-10-16"
 				},
 				"energy": {
 					"fuelMixInPercent": null
@@ -5781,7 +5781,7 @@
 					"electricityMixEmissionsInCorrespondingUnit": 1847,
 					"shareOfRenewableElectricityInPercent": null,
 					"naturalGasPhaseOut": null,
-					"coalPhaseOut": "2025-01-15",
+					"coalPhaseOut": "2024-10-24",
 					"storageCapacityExpansionInPercent": 41.89
 				}
 			},
@@ -5848,7 +5848,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-04-05",
+					"dataDate": "2025-01-12",
 					"sectors": [
 						"Steel",
 						"Ammonia",
@@ -5973,7 +5973,7 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": 2613,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2024-11-17",
+					"naturalGasPhaseOut": "2024-08-26",
 					"coalPhaseOut": null,
 					"storageCapacityExpansionInPercent": null
 				}
@@ -6055,7 +6055,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-02-11",
+					"dataDate": "2024-11-21",
 					"sectors": [
 						"CommercialRealEstate",
 						"Cement",
@@ -6161,7 +6161,7 @@
 				}
 			}
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
@@ -6203,7 +6203,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-04-21",
+					"dataDate": "2024-01-30",
 					"sectors": [
 						"Other",
 						"Automotive",
@@ -6269,7 +6269,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2024-10-12",
+					"icAndHybridEnginePhaseOutDate": "2024-07-21",
 					"futureValueCreationStrategy": "Yes"
 				},
 				"materials": {
@@ -6317,7 +6317,7 @@
 					"electricityMixEmissionsInCorrespondingUnit": 6371,
 					"shareOfRenewableElectricityInPercent": null,
 					"naturalGasPhaseOut": null,
-					"coalPhaseOut": "2025-02-25",
+					"coalPhaseOut": "2024-12-04",
 					"storageCapacityExpansionInPercent": 59.36
 				}
 			},
@@ -6398,7 +6398,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-10-07",
+					"dataDate": "2024-07-16",
 					"sectors": [
 						"ResidentialRealEstate"
 					]
@@ -6497,7 +6497,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-04-25",
+					"dataDate": "2024-02-03",
 					"sectors": [
 						"Cement",
 						"Automotive",
@@ -6544,7 +6544,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2025-03-06",
+					"icAndHybridEnginePhaseOutDate": "2024-12-13",
 					"futureValueCreationStrategy": "Yes"
 				},
 				"materials": {
@@ -6581,7 +6581,7 @@
 							"totalAmountOfVehicles": null
 						}
 					},
-					"icePhaseOut": "2024-12-27"
+					"icePhaseOut": "2024-10-05"
 				},
 				"energy": {
 					"fuelMixInPercent": null
@@ -6640,7 +6640,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-09",
+					"dataDate": "2024-09-18",
 					"sectors": [
 						"LivestockFarming"
 					]
@@ -6749,7 +6749,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-03-31",
+					"dataDate": "2025-01-08",
 					"sectors": [
 						"LivestockFarming",
 						"Ammonia",
@@ -6881,7 +6881,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-07-06",
+					"dataDate": "2024-04-14",
 					"sectors": [
 						"Other",
 						"CommercialRealEstate",
@@ -7031,7 +7031,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-09-04",
+					"dataDate": "2024-06-13",
 					"sectors": [
 						"Cement",
 						"ResidentialRealEstate"
@@ -7152,7 +7152,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-27",
+					"dataDate": "2024-10-05",
 					"sectors": [
 						"Ammonia",
 						"ElectricityGeneration",
@@ -7281,7 +7281,7 @@
 							"totalAmountOfVehicles": 2915
 						}
 					},
-					"icePhaseOut": "2024-05-09"
+					"icePhaseOut": "2024-02-17"
 				},
 				"energy": {
 					"fuelMixInPercent": null
@@ -7357,7 +7357,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-02-23",
+					"dataDate": "2024-12-02",
 					"sectors": [
 						"Other",
 						"Steel",
@@ -7414,7 +7414,7 @@
 				},
 				"technologyValueCreation": {
 					"driveMixInPercent": null,
-					"icAndHybridEnginePhaseOutDate": "2025-02-13",
+					"icAndHybridEnginePhaseOutDate": "2024-11-23",
 					"futureValueCreationStrategy": "No"
 				},
 				"materials": {
@@ -7469,7 +7469,7 @@
 				"technology": {
 					"electricityMixEmissionsInCorrespondingUnit": 1859,
 					"shareOfRenewableElectricityInPercent": null,
-					"naturalGasPhaseOut": "2025-03-07",
+					"naturalGasPhaseOut": "2024-12-14",
 					"coalPhaseOut": null,
 					"storageCapacityExpansionInPercent": null
 				}
@@ -7518,6 +7518,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2025"
+		"reportingPeriod": "2024"
 	}
 ]

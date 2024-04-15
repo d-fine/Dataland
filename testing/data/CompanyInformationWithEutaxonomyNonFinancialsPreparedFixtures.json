@@ -40,7 +40,7 @@
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-09-19",
+				"fiscalYearEnd": "2024-06-29",
 				"scopeOfEntities": "No",
 				"nfrdMandatory": "Yes",
 				"euTaxonomyActivityLevelReporting": "No",
@@ -60,21 +60,21 @@
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "SustainabilityReport",
 						"isGroupLevel": "No",
-						"reportDate": "2024-03-16",
+						"reportDate": "2023-12-24",
 						"currency": "XAF"
 					},
 					"ESEFReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "ESEFReport",
 						"isGroupLevel": "Yes",
-						"reportDate": "2023-09-05",
+						"reportDate": "2023-06-15",
 						"currency": "XCD"
 					},
 					"AnnualReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "AnnualReport",
 						"isGroupLevel": "No",
-						"reportDate": "2023-08-03",
+						"reportDate": "2023-05-12",
 						"currency": "JMD"
 					}
 				}
@@ -788,7 +788,7 @@
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2025-02-20",
+				"fiscalYearEnd": "2024-11-30",
 				"scopeOfEntities": "NA",
 				"nfrdMandatory": "Yes",
 				"euTaxonomyActivityLevelReporting": "Yes",
@@ -808,7 +808,7 @@
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "SustainabilityReport",
 						"isGroupLevel": "No",
-						"reportDate": "2024-02-02",
+						"reportDate": "2023-11-11",
 						"currency": "CLP"
 					}
 				}
@@ -1522,7 +1522,7 @@
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-09-18",
+				"fiscalYearEnd": "2024-06-28",
 				"scopeOfEntities": "No",
 				"nfrdMandatory": "No",
 				"euTaxonomyActivityLevelReporting": "Yes",
@@ -1542,7 +1542,7 @@
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "ESEFReport",
 						"isGroupLevel": "Yes",
-						"reportDate": "2024-01-20",
+						"reportDate": "2023-10-30",
 						"currency": "AZN"
 					}
 				}

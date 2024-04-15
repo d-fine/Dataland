@@ -37,7 +37,7 @@
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2025-02-28",
+					"reportingDate": "2024-12-07",
 					"sectors": [
 						"08.99",
 						"16.21",
@@ -45,13 +45,13 @@
 						"68.10"
 					],
 					"numberOfEmployees": 7536,
-					"fiscalYearStart": "2024-06-14",
+					"fiscalYearStart": "2024-03-24",
 					"referencedReports": {
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-17",
+							"reportDate": "2023-05-26",
 							"currency": "SDG"
 						}
 					}
