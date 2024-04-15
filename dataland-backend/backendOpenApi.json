@@ -14211,10 +14211,10 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "sector": {
