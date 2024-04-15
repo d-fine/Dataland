@@ -4,7 +4,7 @@ import { readdir } from "fs/promises";
 import { faker } from "@faker-js/faker";
 
 export const FAKE_FIXTURES_PER_FRAMEWORK = 50;
-export const FAKER_BASE_SEED = 0;
+export const FAKER_BASE_SEED = 1;
 
 interface FrameworkFixtureModule {
   default: () => void;
