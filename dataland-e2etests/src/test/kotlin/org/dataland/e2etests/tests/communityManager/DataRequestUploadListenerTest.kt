@@ -242,13 +242,14 @@ class DataRequestUploadListenerTest {
         val newMessageAndOpenEndRangeDataRequest =
             requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, contacts, message)
         assertEquals(
-            2, newMessageAndOpenEndRangeDataRequest.messageHistory.size,
-            "The size of the message history is not correct.",
+            message, newMessageDataRequest.messageHistory.last().message,
+            "The message was not patched correctly.",
         )
         assertEquals(
-            RequestStatus.Open, newMessageAndOpenEndRangeDataRequest.requestStatus,
-            "The status of the previously answered data request is not 'open' after patching.",
+            contacts, newMessageDataRequest.messageHistory.last().contacts,
+            "The contacts were not patched correctly.",
         )
+        assertEquals(RequestStatus.Open, newMessageAndOpenEndRangeDataRequest.requestStatus)
     }
 
     @Test
