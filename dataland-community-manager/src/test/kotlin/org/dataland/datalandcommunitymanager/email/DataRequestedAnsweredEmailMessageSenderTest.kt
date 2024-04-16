@@ -28,6 +28,7 @@ import java.util.*
 class DataRequestedAnsweredEmailMessageSenderTest {
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
+    private lateinit var dataRequestId: String
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
     private val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
@@ -86,6 +87,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
                     objectMapper, keycloakUserControllerApiService, companyDataControllerMock,
                 )
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            dataRequestId = dataRequestEntity.dataRequestId
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
             reset(cloudEventMessageHandlerMock)
@@ -124,6 +126,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             assertEquals(dataTypeDescription, arg1.properties.getValue("dataTypeDescription"))
             assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
             assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
+            assertEquals(dataRequestId, arg1.properties.getValue("dataRequestId"))
             assertEquals(MessageType.SendTemplateEmail, arg2)
             assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SendEmail, arg4)
