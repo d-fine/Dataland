@@ -22,14 +22,16 @@ data class LksgEnvironmentalExportImportOfHazardousWasteBaselConvention(
     @field:Valid()
     val wastePolicy: BaseDataPoint<YesNo>? = null,
 
-    val hazardousWasteTransportPreventionOtherMeasures: YesNo? = null,
+    @field:Valid()
+    val hazardousWasteTransportPreventionOtherMeasures: BaseDataPoint<YesNo>? = null,
+
+    val hazardousWasteTransportPreventionOtherMeasuresDescription: String? = null,
 
     val hazardousWasteDisposal: YesNo? = null,
 
     val hazardousWasteDisposalRiskOfImport: YesNo? = null,
 
-    @field:Valid()
-    val hazardousWasteDisposalOtherWasteImport: BaseDataPoint<YesNo>? = null,
+    val hazardousWasteDisposalOtherWasteImport: YesNo? = null,
 
     val hazardousWasteDisposalOtherWasteImportDescription: String? = null,
 
