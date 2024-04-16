@@ -1,61 +1,67 @@
 <template>
-  <label for="Emails" class="label-with-optional">
-    <b>Emails</b><span v-if="isOptional" class="optional-text">Optional</span>
-  </label>
-  <FormKit
-    v-model="contactsAsString"
-    type="text"
-    name="contactDetails"
-    data-test="contactEmail"
-    @input="updateMessageVisibility"
-  />
-  <p v-if="displayConditionsNoEmailError" class="text-danger text-xs mt-2" data-test="emailErrorMessage">
-    You have to provide at least one valid email.
-  </p>
-  <p class="gray-text font-italic" style="text-align: left">
-    By specifying contacts your data request will be directed accordingly.<br />
-    You can specify multiple comma separated email addresses.<br />
-    This increases the chances of expediting the fulfillment of your request.
-  </p>
-  <br />
-  <p v-if="isOptional" class="gray-text font-italic" style="text-align: left">
-    If you don't have a specific contact person, no worries.<br />
-    We are committed to fulfilling your request to the best of our ability.
-  </p>
-  <br />
-  <label for="Message" class="label-with-optional">
-    <b>Message</b><span v-if="isOptional" class="optional-text">Optional</span>
-  </label>
-  <FormKit
-    v-model="dataRequesterMessage"
-    type="textarea"
-    name="dataRequesterMessage"
-    data-test="dataRequesterMessage"
-    v-bind:disabled="!allowAccessDataRequesterMessage"
-  />
-  <p class="gray-text font-italic" style="text-align: left">
-    I hereby declare that the recipient(s) stated above consented <br />
-    to being contacted by Dataland with regard to this data request.
-  </p>
-  <div v-if="allowAccessDataRequesterMessage">
-    <div class="mt-3 flex">
-      <input type="checkbox" class="ml-1" style="appearance: auto" v-model="consentToMessageDataUsageGiven" />
-      <label class="tex-sm ml-2">I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label>
-    </div>
-    <p
-      v-if="displayConditionsNotAcceptedError"
-      class="text-danger text-xs mt-2"
-      data-test="conditionNotAcceptedErrorMessage"
-    >
-      You have to accept the terms and conditions to add a message
+  <FormKit type="form" :actions="false" class="formkit-wrapper">
+    <label for="Emails" class="label-with-optional">
+      <b>Emails</b><span v-if="isOptional" class="optional-text">Optional</span>
+    </label>
+    <FormKit
+      v-model="contactsAsString"
+      type="text"
+      name="contactDetails"
+      data-test="contactEmail"
+      @input="updateMessageVisibility"
+    />
+    <p v-if="displayConditionsNoEmailError" class="text-danger text-xs mt-2" data-test="emailErrorMessage">
+      You have to provide at least one valid email.
     </p>
-  </div>
+    <p class="gray-text font-italic" style="text-align: left">
+      By specifying contacts your data request will be directed accordingly.<br />
+      You can specify multiple comma separated email addresses.<br />
+      This increases the chances of expediting the fulfillment of your request.
+    </p>
+    <br />
+    <p v-if="isOptional" class="gray-text font-italic" style="text-align: left">
+      If you don't have a specific contact person, no worries.<br />
+      We are committed to fulfilling your request to the best of our ability.
+    </p>
+    <br />
+    <label for="Message" class="label-with-optional">
+      <b>Message</b><span v-if="isOptional" class="optional-text">Optional</span>
+    </label>
+    <FormKit
+      v-model="dataRequesterMessage"
+      type="textarea"
+      name="dataRequesterMessage"
+      data-test="dataRequesterMessage"
+      v-bind:disabled="!allowAccessDataRequesterMessage"
+    />
+    <p class="gray-text font-italic" style="text-align: left">
+      I hereby declare that the recipient(s) stated above consented <br />
+      to being contacted by Dataland with regard to this data request.
+    </p>
+    <div v-if="allowAccessDataRequesterMessage">
+      <div class="mt-3 flex">
+        <input type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
+        <label class="tex-sm ml-2"
+          >I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label
+        >
+      </div>
+      <p
+        v-if="displayConditionsNotAcceptedError"
+        class="text-danger text-xs mt-2"
+        data-test="conditionNotAcceptedErrorMessage"
+      >
+        You have to accept the terms and conditions to add a message
+      </p>
+    </div>
+  </FormKit>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
   name: "EmailDetails",
+  components: { FormKit },
   props: {
     isOptional: {
       type: Boolean,

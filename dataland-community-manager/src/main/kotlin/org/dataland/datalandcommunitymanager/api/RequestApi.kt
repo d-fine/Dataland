@@ -145,7 +145,7 @@ interface RequestApi {
         value = ["/{dataRequestId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId)")
     fun getDataRequestById(@PathVariable dataRequestId: UUID): ResponseEntity<StoredDataRequest>
 
     /** Changes request status and message history of existing data request
