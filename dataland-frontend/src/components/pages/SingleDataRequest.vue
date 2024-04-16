@@ -137,8 +137,8 @@
                       </div>
                     </template>
                     <div class="text-block" style="margin: 15px">
-                      Your quota of 10 single data requests per day is exceeded. The quota will reset automatically
-                      tomorrow.
+                      Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER() }} single data requests per
+                      day is exceeded. The quota will reset automatically tomorrow.
                     </div>
                     <div class="text-block" style="margin: 15px">
                       To avoid quotas altogether, consider becoming a premium user.
@@ -221,6 +221,7 @@ import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import PrimeDialog from "primevue/dialog";
 import { openEmailClient } from "@/utils/Email";
+import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from "@/DatalandSettings";
 
 export default defineComponent({
   name: "SingleDataRequest",
@@ -295,6 +296,13 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Returns the constant
+     * @class
+     */
+    MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER() {
+      return MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER;
+    },
+    /**
      * Opens an Email regarding becoming a premium user
      */
     openBecomePremiumUserEmail() {
@@ -341,9 +349,7 @@ export default defineComponent({
 
       if (splitByEtAndDot.length < 2) return false;
       if (splitByEtAndDot[0] == "") return false;
-      if (splitByEtAndDot[splitByEtAndDot.length - 1] == "") return false;
-
-      return true;
+      return splitByEtAndDot[splitByEtAndDot.length - 1] != "";
     },
 
     /**
