@@ -34,7 +34,8 @@
     v-bind:disabled="!allowAccessDataRequesterMessage"
   />
   <p class="gray-text font-italic" style="text-align: left">
-    Let your contacts know what exactly your are looking for.
+    I hereby declare that the recipient(s) stated above consented to being contacted by Dataland with regard to this
+    data request.
   </p>
   <div v-if="allowAccessDataRequesterMessage">
     <div class="mt-3 flex">
