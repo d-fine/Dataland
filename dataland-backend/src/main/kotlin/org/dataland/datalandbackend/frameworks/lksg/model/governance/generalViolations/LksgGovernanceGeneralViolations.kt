@@ -8,12 +8,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the GeneralViolations section
  */
 data class LksgGovernanceGeneralViolations(
-    val responsibilitiesForFairWorkingConditions: YesNo? = null,
-
-    val responsibilitiesForTheEnvironment: YesNo? = null,
-
-    val responsibilitiesForOccupationalSafety: YesNo? = null,
-
     val legalProceedings: YesNo? = null,
 
     val humanRightsOrEnvironmentalViolations: YesNo? = null,

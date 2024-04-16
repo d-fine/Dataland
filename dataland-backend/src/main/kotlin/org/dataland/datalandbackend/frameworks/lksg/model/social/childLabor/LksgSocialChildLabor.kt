@@ -15,8 +15,6 @@ data class LksgSocialChildLabor(
 
     val employeeSUnder18InApprenticeship: YesNo? = null,
 
-    val worstFormsOfChildLabor: YesNo? = null,
-
     val worstFormsOfChildLaborProhibition: YesNo? = null,
 
     val worstFormsOfChildLaborForms: String? = null,
