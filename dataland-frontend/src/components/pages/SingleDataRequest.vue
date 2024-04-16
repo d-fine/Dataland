@@ -450,7 +450,6 @@ export default defineComponent({
               this.submitted = true;
               this.submittingSucceeded = false;
             }
-            console.log("Error:", error.toJSON());
           } else {
             this.submitted = true;
             this.submittingSucceeded = false;
