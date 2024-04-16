@@ -118,7 +118,6 @@
                   </div>
                   <PrimeDialog
                     v-model:visible="maxRequestReachedModalIsVisible"
-                    v-if="maxRequestReachedModalIsVisible"
                     id="successModal"
                     :dismissableMask="false"
                     :modal="true"
@@ -126,6 +125,7 @@
                     style="border-radius: 0.75rem; text-align: center; max-width: 400px"
                     :show-header="false"
                     :draggable="false"
+                    data-test="quotaReachedModal"
                   >
                     <template v-if="true">
                       <div class="text-center" style="display: flex; flex-direction: column">
@@ -151,6 +151,7 @@
                     </div>
                   </PrimeDialog>
 
+                  data-test="closeMaxRequestsReachedModalButton"
                   <div class="col-12 flex align-items-end">
                     <PrimeButton
                       type="submit"
