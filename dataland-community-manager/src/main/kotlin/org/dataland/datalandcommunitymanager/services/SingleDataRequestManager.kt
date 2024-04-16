@@ -47,25 +47,7 @@ class SingleDataRequestManager(
         validateSingleDataRequest(singleDataRequest)
 
         if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
-            val timestampMillisNow: Long = System.currentTimeMillis()
-            val timeStampConvertor = TimestampConvertor()
-            val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
-
-            val numberOfDataRequestsPerformedByUserFromTimestamp =
-                dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                    DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
-                )
-
-            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
-
-            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
-                > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
-            ) {
-                throw QuotaExceededException(
-                    "Quota has been reached.",
-                    "The daily quota capacity has been reached.",
-                )
-            }
+            performQuotaCheckForNonPremiumUser(singleDataRequest)
         }
 
         val correlationId = UUID.randomUUID().toString()
@@ -94,6 +76,28 @@ class SingleDataRequestManager(
         return buildResponseForSingleDataRequest(
             singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
         )
+    }
+
+    private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
+        val timestampMillisNow: Long = System.currentTimeMillis()
+        val timeStampConvertor = TimestampConvertor()
+        val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
+
+        val numberOfDataRequestsPerformedByUserFromTimestamp =
+            dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
+                DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
+            )
+
+        val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
+
+        if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+            > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
+        ) {
+            throw QuotaExceededException(
+                "Quota has been reached.",
+                "The daily quota capacity has been reached.",
+            )
+        }
     }
 
     private fun validateSingleDataRequest(singleDataRequest: SingleDataRequest) {
