@@ -34,12 +34,12 @@
     v-bind:disabled="!allowAccessDataRequesterMessage"
   />
   <p class="gray-text font-italic" style="text-align: left">
-    I hereby declare that the recipient(s) stated above consented to being contacted by Dataland with regard to this
-    data request.
+    I hereby declare that the recipient(s) stated above consented <br />
+    to being contacted by Dataland with regard to this data request.
   </p>
   <div v-if="allowAccessDataRequesterMessage">
     <div class="mt-3 flex">
-      <input type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
+      <input type="checkbox" class="ml-1" style="appearance: auto" v-model="consentToMessageDataUsageGiven" />
       <label class="tex-sm ml-2">I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label>
     </div>
     <p
