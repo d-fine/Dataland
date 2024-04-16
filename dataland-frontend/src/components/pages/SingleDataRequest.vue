@@ -147,11 +147,15 @@
                       premium membership.
                     </div>
                     <div style="margin: 10px">
-                      <PrimeButton label="CLOSE" @click="closeMaxRequestsReachedModal()" class="p-button-outlined" />
+                      <PrimeButton
+                        label="CLOSE"
+                        @click="closeMaxRequestsReachedModal()"
+                        class="p-button-outlined"
+                        data-test="closeMaxRequestsReachedModalButton"
+                      />
                     </div>
                   </PrimeDialog>
 
-                  data-test="closeMaxRequestsReachedModalButton"
                   <div class="col-12 flex align-items-end">
                     <PrimeButton
                       type="submit"
@@ -418,7 +422,7 @@ export default defineComponent({
         dataType: this.frameworkName,
         reportingPeriods: this.selectedReportingPeriods as Set<string>,
         contacts: this.selectedContacts as Set<string>,
-        message: this.dataRequesterMessage,
+        message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : "",
       };
     },
     /**
