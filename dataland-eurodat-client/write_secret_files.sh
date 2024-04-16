@@ -10,8 +10,20 @@ if [ ! -f "$secret_files_dir/keystore.jks" ] || [ ! -f "$secret_files_dir/test.j
     exit 1
 fi
 
-# Only actually sources envs when executed on remote-server during deployment
-source ../.env
+# Sourcing the .env file if running on remote server
+if [ -f "../.env" ]; then
+    source ../.env
+fi
+
+
+export EURODAT_CLIENT_TLS_CERT="$EURODAT_CLIENT_TLS_CERT"
+export EURODAT_BASE_URL="$EURODAT_BASE_URL"
+export KEY_STORE_FILE_PASSWORD="$KEY_STORE_FILE_PASSWORD"
+export QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD="$QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD"
+export QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD="$QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD"
+export QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD="${QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD}"
+export QUARKUS_OIDC_CLIENT_TLS_TRUST_STORE_PASSWORD="${QUARKUS_OIDC_CLIENT_TLS_TRUST_STORE_PASSWORD}"
+export QUARKUS_REST_CLIENT_TRUST_STORE_PASSWORD="${QUARKUS_REST_CLIENT_TRUST_STORE_PASSWORD}"
 
 # Write the missing two secret files.
 envsubst < ./secret_files_templates/tls.crt.template > ./$secret_files_dir/tls.crt

@@ -86,3 +86,23 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
+
+# Assure that EuroDaT-client is healthy
+echo "Performing EuroDaT-client health check..."
+health_check_url="https://localhost:12345/api/v1/client-controller/health"
+for ((i = 0; i < 10; i++)); do
+    if ssh ubuntu@"$target_server_url" "wget -nv -O- -t 1 --no-check-certificate \"$health_check_url\" | grep -q '\"status\": \"UP\"'"; then
+        echo "EuroDaT-client health check passed."
+        exit 0
+    else
+        echo "EuroDaT-client health check failed. Retrying in 15 seconds..."
+        sleep 15
+    fi
+done
+
+echo "EuroDaT-client health check failed after 5 minutes. Exiting..."
+exit 1
+
+#TODO write this cleaner and leaner?
+
+
