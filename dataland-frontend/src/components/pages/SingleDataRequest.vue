@@ -209,7 +209,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
@@ -442,7 +442,14 @@ export default defineComponent({
         } catch (error) {
           console.error(error);
           if (error instanceof AxiosError) {
-            this.openMaxRequestsReachedModal();
+            const errorJSON = error.toJSON();
+            if (errorJSON.status == 403) {
+              this.openMaxRequestsReachedModal();
+            } else {
+              const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+              this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
+            }
+            console.log("Error:", error.toJSON());
           } else {
             this.submitted = true;
             this.submittingSucceeded = false;

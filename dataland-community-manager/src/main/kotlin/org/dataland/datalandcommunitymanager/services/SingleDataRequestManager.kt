@@ -2,8 +2,8 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -61,7 +61,7 @@ class SingleDataRequestManager(
             if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
                 > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
             ) {
-                throw InsufficientRightsApiException(
+                throw QuotaExceededException(
                     "Quota has been reached.",
                     "The daily quota capacity has been reached.",
                 )
