@@ -103,6 +103,6 @@ done
 echo "EuroDaT-client health check failed after 5 minutes. Exiting..."
 exit 1
 
+#TODO write this cleaner and leaner?
 
-# Wait for backend to finish boot process
-wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
+
