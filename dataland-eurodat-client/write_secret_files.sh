@@ -10,6 +10,9 @@ if [ ! -f "$secret_files_dir/keystore.jks" ] || [ ! -f "$secret_files_dir/test.j
     exit 1
 fi
 
+# Only actually sources envs when executed on remote-server during deployment
+source ../.env
+
 # Write the missing two secret files.
 envsubst < ./secret_files_templates/tls.crt.template > ./$secret_files_dir/tls.crt
 envsubst < ./secret_files_templates/client.env.template > ./$secret_files_dir/client.env
