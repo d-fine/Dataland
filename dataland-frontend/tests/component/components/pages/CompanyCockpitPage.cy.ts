@@ -210,7 +210,7 @@ describe("Component test for the company cockpit", () => {
     const hasCompanyDataOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = false;
-    const isSingleDataRequestButtonExpected = false;
+    const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
       waitForRequestsOnMounted();
