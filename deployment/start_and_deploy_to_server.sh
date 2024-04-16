@@ -84,5 +84,14 @@ ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo do
 # Wait for all docker containers to become healthy
 wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 
+# Assure that EuroDaT-client is healthy
+if ssh ubuntu@dev3.dataland.com "wget -nv -O- -t 1 --no-check-certificate https://localhost:12345/api/v1/client-controller/health | grep -q '\"status\": \"UP\"'"; then
+    echo "EuroDaT-client health check passed."
+else
+    echo "EuroDaT-client health check failed. Exiting..."
+    exit 1
+fi
+
+
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
