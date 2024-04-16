@@ -63,8 +63,7 @@ class DataRequestAlterationManager(
         if (contacts != null) {
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
             val messageHistory =
-                listOf(StoredDataRequestMessageObject(contacts, message, modificationTime)) +
-                    dataRequestEntity.messageHistory.map { it.toStoredDataRequestMessageObject() }
+                listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)
             messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
