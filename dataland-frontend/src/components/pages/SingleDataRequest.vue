@@ -147,11 +147,7 @@
                       premium membership.
                     </div>
                     <div style="margin: 10px">
-                      <PrimeButton
-                        label="RETURN TO COMPANY SEARCH"
-                        @click="closeMaxRequestsReachedModal()"
-                        class="p-button-outlined"
-                      />
+                      <PrimeButton label="CLOSE" @click="closeMaxRequestsReachedModal()" class="p-button-outlined" />
                     </div>
                   </PrimeDialog>
 
@@ -320,8 +316,6 @@ export default defineComponent({
      */
     closeMaxRequestsReachedModal() {
       this.maxRequestReachedModalIsVisible = false;
-
-      void this.$router.push("/companies");
     },
     /**
      * Checks if the first email in a string of comma separated emails is valid
