@@ -442,6 +442,8 @@ export default defineComponent({
             } else {
               const responseMessages = (error.response?.data as ErrorResponse)?.errors;
               this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
+              this.submitted = true;
+              this.submittingSucceeded = false;
             }
             console.log("Error:", error.toJSON());
           } else {
@@ -451,7 +453,6 @@ export default defineComponent({
               "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
           }
         }
-        this.submitted = true;
       }
     },
     /**
