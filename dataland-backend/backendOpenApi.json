@@ -14205,6 +14205,10 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -14218,10 +14222,6 @@
             "type": "string"
           },
           "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "lei": {
             "type": "string",
             "nullable": true
           }

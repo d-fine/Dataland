@@ -451,6 +451,7 @@ export default defineComponent({
               "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
           }
         }
+        this.submitted = true;
       }
     },
     /**
