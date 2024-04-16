@@ -45,7 +45,7 @@ export async function getAnsweredDataRequestsForViewPage(
  * @param message context of the email
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
-export async function patchDataRequestStatus(
+export async function patchDataRequest(
   dataRequestId: string,
   requestStatus: RequestStatus | undefined,
   contacts: Set<string> | undefined,
@@ -54,7 +54,7 @@ export async function patchDataRequestStatus(
 ): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
-      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequestStatus(
+      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
         dataRequestId,
         requestStatus,
         contacts,

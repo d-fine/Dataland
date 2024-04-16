@@ -160,7 +160,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 import type Keycloak from "keycloak-js";
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from "@/utils/StringFormatter";
-import { badgeClass, patchDataRequestStatus } from "@/utils/RequestUtils";
+import { badgeClass, patchDataRequest } from "@/utils/RequestUtils";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
@@ -284,7 +284,7 @@ export default defineComponent({
      */
     async withdrawRequest() {
       try {
-        await patchDataRequestStatus(
+        await patchDataRequest(
           this.requestId,
           RequestStatus.Withdrawn as RequestStatus,
           undefined,
@@ -304,13 +304,7 @@ export default defineComponent({
     addMessage() {
       this.emailDetailsError = false;
       if (this.hasValidEmailForm) {
-        patchDataRequestStatus(
-          this.requestId,
-          undefined,
-          this.emailContacts,
-          this.emailMessage,
-          this.getKeycloakPromise,
-        )
+        patchDataRequest(this.requestId, undefined, this.emailContacts, this.emailMessage, this.getKeycloakPromise)
           .catch((error) => console.error(error))
           .then(() => window.location.reload())
           .catch((error) => console.error(error));

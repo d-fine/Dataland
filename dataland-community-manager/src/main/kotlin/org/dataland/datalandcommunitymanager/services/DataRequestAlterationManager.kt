@@ -44,7 +44,7 @@ class DataRequestAlterationManager(
      * @return the updated data request object
      */
     @Transactional
-    fun patchDataRequestStatus(
+    fun patchDataRequest(
         dataRequestId: String,
         requestStatus: RequestStatus? = null,
         contacts: Set<String>? = null,

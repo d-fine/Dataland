@@ -136,7 +136,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that a request answered email is send when a request status is patched to answered`() {
-        dataRequestAlterationManager.patchDataRequestStatus(
+        dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Answered,
             null,
@@ -152,7 +152,7 @@ class DataRequestAlterationManagerTest {
             if (requestStatus == RequestStatus.Answered) {
                 continue
             }
-            dataRequestAlterationManager.patchDataRequestStatus(
+            dataRequestAlterationManager.patchDataRequest(
                 dataRequestId = dataRequestId,
                 requestStatus = requestStatus,
                 null,
@@ -172,7 +172,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that the sending of a request email is triggered when a request message is added`() {
-        dataRequestAlterationManager.patchDataRequestStatus(
+        dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = null,
             dummyMessage.contacts,

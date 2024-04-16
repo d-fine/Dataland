@@ -107,7 +107,7 @@ class DataRequestUploadListenerTest {
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
+            requestControllerApi.patchDataRequest(dataRequestId, requestStatus)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
@@ -124,7 +124,7 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Closed)
+        val closedDataRequest = requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Closed)
         assertEquals(
             RequestStatus.Closed,
             closedDataRequest.requestStatus,
@@ -180,7 +180,7 @@ class DataRequestUploadListenerTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(nonExistingDataRequestId, RequestStatus.Answered)
+            requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.Answered)
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 

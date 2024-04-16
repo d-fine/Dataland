@@ -148,13 +148,13 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataRequestById(@PathVariable dataRequestId: UUID): ResponseEntity<StoredDataRequest>
 
-    /** Changes request status of existing data request
+    /** Changes request status and message history of existing data request
      * @return the modified data request
      */
 
     @Operation(
-        summary = "Update status of data request.",
-        description = "Updates status of data request given data request id.",
+        summary = "Updates a data request.",
+        description = "Updates status and message history of data request given data request id.",
     )
     @ApiResponses(
         value = [
@@ -170,7 +170,7 @@ interface RequestApi {
             "or (@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) " +
             "and @SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus))",
     )
-    fun patchDataRequestStatus(
+    fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus?,
         @RequestParam contacts: Set<String>?,

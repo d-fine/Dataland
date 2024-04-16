@@ -115,7 +115,7 @@
 import PrimeButton from "primevue/button";
 import { defineComponent, inject, type PropType } from "vue";
 import type Keycloak from "keycloak-js";
-import { getAnsweredDataRequestsForViewPage, patchDataRequestStatus } from "@/utils/RequestUtils";
+import { getAnsweredDataRequestsForViewPage, patchDataRequest } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
 import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
@@ -257,7 +257,7 @@ export default defineComponent({
         this.openReportingPeriodPanel(event);
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-          await this.patchDataRequestStatus(answeredRequest.dataRequestId, RequestStatus.Closed);
+          await this.patchDataRequest(answeredRequest.dataRequestId, RequestStatus.Closed);
         }
       }
     },
@@ -293,14 +293,14 @@ export default defineComponent({
      * @param contacts set of email contacts
      * @param message context of the email
      */
-    async patchDataRequestStatus(
+    async patchDataRequest(
       dataRequestId: string,
       requestStatusToPatch: RequestStatus,
       contacts?: Set<string>,
       message?: string,
     ) {
       try {
-        await patchDataRequestStatus(dataRequestId, requestStatusToPatch, contacts, message, this.getKeycloakPromise);
+        await patchDataRequest(dataRequestId, requestStatusToPatch, contacts, message, this.getKeycloakPromise);
       } catch (e) {
         let errorMessage =
           "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -334,7 +334,7 @@ export default defineComponent({
         this.currentChosenDataRequestId = dataRequestId;
         this.showUpdateRequestDialog = true;
       } else {
-        await this.patchDataRequestStatus(dataRequestId, requestStatusToPatch);
+        await this.patchDataRequest(dataRequestId, requestStatusToPatch);
       }
     },
     /**
@@ -356,7 +356,7 @@ export default defineComponent({
     async updateRequest() {
       if (!this.currentChosenDataRequestId) return;
       if (this.hasValidEmailForm) {
-        await this.patchDataRequestStatus(
+        await this.patchDataRequest(
           this.currentChosenDataRequestId,
           RequestStatus.Open,
           this.emailContacts,
@@ -366,7 +366,7 @@ export default defineComponent({
         this.showUpdateRequestDialog = false;
       }
       if (!this.hasValidEmailForm && this.emailContacts.size == 0) {
-        await this.patchDataRequestStatus(this.currentChosenDataRequestId, RequestStatus.Open);
+        await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
         this.showUpdateRequestDialog = false;
         console.log(this.emailContacts);
         console.log("case: inValidForm and no emailContacts");
