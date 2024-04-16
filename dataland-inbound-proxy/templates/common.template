@@ -24,6 +24,11 @@ location /internal-storage/actuator/health {
   include utils/proxy.conf;
 }
 
+location /external-storage/actuator/health {
+  proxy_pass http://external-storage:8080/external-storage/actuator/health;
+  include utils/proxy.conf;
+}
+
 location /qa/ {
   proxy_pass http://qa-service:8080/qa/;
   include utils/proxy.conf;
