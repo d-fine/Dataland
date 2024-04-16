@@ -19,7 +19,7 @@
     </template>
 
     <div v-if="activeTab === 'update request'">
-      <EmailDetails :is-optional="true" @has-valid-input="updateEmailFields" />
+      <EmailDetails :is-optional="true" @has-new-input="updateEmailFields" />
       <PrimeButton @click="updateRequest()" style="width: 100%; justify-content: center">
         <span class="d-letters pl-2" style="text-align: center"> UPDATE REQUEST </span>
       </PrimeButton>
@@ -362,11 +362,14 @@ export default defineComponent({
           this.emailContacts,
           this.emailMessage,
         );
+        console.log("case: ValidForm");
         this.showUpdateRequestDialog = false;
       }
       if (!this.hasValidEmailForm && this.emailContacts.size == 0) {
         await this.patchDataRequestStatus(this.currentChosenDataRequestId, RequestStatus.Open);
         this.showUpdateRequestDialog = false;
+        console.log(this.emailContacts);
+        console.log("case: inValidForm and no emailContacts");
       }
     },
     /**

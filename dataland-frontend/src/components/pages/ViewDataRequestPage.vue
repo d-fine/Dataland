@@ -1,6 +1,29 @@
 <template>
   <AuthenticationWrapper>
     <PrimeDialog
+      v-if="successModalIsVisible"
+      id="successModal"
+      :dismissableMask="true"
+      :modal="true"
+      v-model:visible="successModalIsVisible"
+      :closable="false"
+      style="border-radius: 0.75rem; text-align: center"
+      :show-header="false"
+    >
+      <div class="text-center" style="display: flex; flex-direction: column">
+        <div style="margin: 10px">
+          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+        </div>
+        <div style="margin: 10px">
+          <h2 class="m-0" data-test="successText">Success</h2>
+        </div>
+      </div>
+      <div class="text-block" style="margin: 15px; white-space: pre">You have successfully withdrawn your request.</div>
+      <div style="margin: 10px">
+        <PrimeButton label="CLOSE" @click="successModalIsVisible = false" class="p-button-outlined" />
+      </div>
+    </PrimeDialog>
+    <PrimeDialog
       :dismissableMask="true"
       :modal="true"
       v-model:visible="showNewMessageDialog"
@@ -11,7 +34,12 @@
       <template #header>
         <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
       </template>
-      <EmailDetails :is-optional="false" @has-valid-input="updateEmailFields" />
+      <EmailDetails
+        :is-optional="false"
+        :show-errors="emailDetailsError"
+        @has-new-input="updateEmailFields"
+        ref="emailDetailsRef"
+      />
       <PrimeButton @click="addMessage()" style="width: 100%; justify-content: center">
         <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
       </PrimeButton>
@@ -155,6 +183,8 @@ export default defineComponent({
   },
   data() {
     return {
+      emailDetailsError: false,
+      successModalIsVisible: false,
       isDatasetAvailable: false,
       storedDataRequest: {} as StoredDataRequest,
       companyName: "",
@@ -252,22 +282,27 @@ export default defineComponent({
     /**
      * Method to withdraw the request when clicking on the button
      */
-    withdrawRequest() {
-      patchDataRequestStatus(
-        this.requestId,
-        RequestStatus.Withdrawn as RequestStatus,
-        undefined,
-        undefined,
-        this.getKeycloakPromise,
-      )
-        .catch((error) => console.error(error))
-        .then(() => window.location.reload())
-        .catch((error) => console.error(error));
+    async withdrawRequest() {
+      try {
+        await patchDataRequestStatus(
+          this.requestId,
+          RequestStatus.Withdrawn as RequestStatus,
+          undefined,
+          undefined,
+          this.getKeycloakPromise,
+        );
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+      this.successModalIsVisible = true;
+      this.storedDataRequest.requestStatus = RequestStatus.Withdrawn;
     },
     /**
      * Method to update the request message when clicking on the button
      */
     addMessage() {
+      this.emailDetailsError = false;
       if (this.hasValidEmailForm) {
         patchDataRequestStatus(
           this.requestId,
@@ -279,6 +314,8 @@ export default defineComponent({
           .catch((error) => console.error(error))
           .then(() => window.location.reload())
           .catch((error) => console.error(error));
+      } else {
+        this.emailDetailsError = true;
       }
     },
     /**

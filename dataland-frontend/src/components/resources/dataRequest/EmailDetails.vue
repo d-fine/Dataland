@@ -9,6 +9,9 @@
     data-test="contactEmail"
     @input="updateMessageVisibility"
   />
+  <p v-if="displayConditionsNoEmailError" class="text-danger text-xs mt-2" data-test="emailErrorMessage">
+    You have to provide at least one valid email.
+  </p>
   <p class="gray-text font-italic" style="text-align: left">
     By specifying contacts your data request will be directed accordingly.<br />
     You can specify multiple comma separated email addresses.<br />
@@ -41,7 +44,7 @@
     <p
       v-if="displayConditionsNotAcceptedError"
       class="text-danger text-xs mt-2"
-      data-test="reportingPeriodErrorMessage"
+      data-test="conditionNotAcceptedErrorMessage"
     >
       You have to accept the terms and conditions to add a message
     </p>
@@ -57,10 +60,16 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    showErrors: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ["hasValidInput"],
+  emits: ["hasNewInput"],
   data() {
     return {
+      displayConditionsNotAcceptedError: false,
+      displayConditionsNoEmailError: false,
       allowAccessDataRequesterMessage: false,
       consentToMessageDataUsageGiven: false,
       dataRequesterMessage: "Please provide a valid email before entering a message",
@@ -70,9 +79,6 @@ export default defineComponent({
     };
   },
   computed: {
-    displayConditionsNotAcceptedError() {
-      return !this.consentToMessageDataUsageGiven && this.allowAccessDataRequesterMessage;
-    },
     hasValidInput() {
       return this.consentToMessageDataUsageGiven && this.areValidEmails(this.contactsAsString);
     },
@@ -84,11 +90,34 @@ export default defineComponent({
     },
   },
   watch: {
-    hasValidInput(newStatus: boolean) {
-      this.$emit("hasValidInput", newStatus, new Set<string>(this.selectedContacts), this.dataRequesterMessage);
+    hasValidInput() {
+      this.emitInput();
+    },
+    selectedContacts() {
+      this.emitInput();
+    },
+    dataRequesterMessage() {
+      this.emitInput();
+    },
+    showErrors() {
+      this.displayErrors();
     },
   },
   methods: {
+    /**
+     * Method to emit the provided Input
+     */
+    emitInput() {
+      this.$emit("hasNewInput", this.hasValidInput, new Set<string>(this.selectedContacts), this.dataRequesterMessage);
+    },
+    /**
+     * Enables the error messages
+     */
+    displayErrors() {
+      this.displayConditionsNoEmailError = !this.areValidEmails(this.contactsAsString);
+      this.displayConditionsNotAcceptedError =
+        !this.consentToMessageDataUsageGiven && this.allowAccessDataRequesterMessage;
+    },
     /**
      * Checks if the first email in a string of comma separated emails is valid
      * @param emails string of comma separated emails
@@ -115,9 +144,7 @@ export default defineComponent({
 
       if (splitByEtAndDot.length < 2) return false;
       if (splitByEtAndDot[0] == "") return false;
-      if (splitByEtAndDot[splitByEtAndDot.length - 1] == "") return false;
-
-      return true;
+      return splitByEtAndDot[splitByEtAndDot.length - 1] != "";
     },
 
     /**
