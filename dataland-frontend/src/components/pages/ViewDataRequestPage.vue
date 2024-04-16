@@ -47,7 +47,7 @@
             <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
           </div>
           <div
-            v-if="isDatasetAvailable()"
+            v-if="isDatasetAvailable"
             class="link claim-panel-text"
             style="font-weight: bold"
             @click="goToResolveDataRequestPage()"
@@ -137,6 +137,7 @@ import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
+import { type DataTypeEnum, QaStatus } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewDataRequest",
@@ -154,6 +155,7 @@ export default defineComponent({
   },
   data() {
     return {
+      isDatasetAvailable: false,
       storedDataRequest: {} as StoredDataRequest,
       companyName: "",
       showNewMessageDialog: false,
@@ -167,6 +169,7 @@ export default defineComponent({
       .catch((error) => console.error(error))
       .then(() => {
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
+        this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
       })
       .catch((error) => console.error(error));
   },
@@ -186,6 +189,32 @@ export default defineComponent({
       this.hasValidEmailForm = hasValidForm;
       this.emailContacts = contacts;
       this.emailMessage = message;
+    },
+    /**
+     * Method to check if there exist an approved dataset for a dataRequest
+     * @param storedDataRequest dataRequest
+     */
+    async checkForAvailableData(storedDataRequest: StoredDataRequest) {
+      try {
+        if (this.getKeycloakPromise) {
+          const dataset = await new ApiClientProvider(
+            this.getKeycloakPromise(),
+          ).backendClients.metaDataController.getListOfDataMetaInfo(
+            storedDataRequest.datalandCompanyId,
+            storedDataRequest.dataType as DataTypeEnum,
+            undefined,
+            storedDataRequest.reportingPeriod,
+          );
+          for (const dataMetaInfo of dataset.data) {
+            if (dataMetaInfo.qaStatus == QaStatus.Accepted) {
+              this.isDatasetAvailable = true;
+              return;
+            }
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
     /**
      * Method to get the request from the api
@@ -276,17 +305,6 @@ export default defineComponent({
      */
     isRequestStatusAnswered() {
       return this.storedDataRequest.requestStatus == RequestStatus.Answered;
-    },
-    /**
-     * Method to check if request status is answered or closed
-     * @returns boolean if request status is answered or closed
-     */
-    isDatasetAvailable() {
-      //todo check if dataset exists, not just by status
-      return (
-        this.storedDataRequest.requestStatus == RequestStatus.Answered ||
-        this.storedDataRequest.requestStatus == RequestStatus.Closed
-      );
     },
     /**
      * Method to transform set of string to one string representing the set elements seperated by ','
