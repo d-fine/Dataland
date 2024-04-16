@@ -102,8 +102,9 @@
                             data-test="acceptConditionsCheckbox"
                           />
                           <label class="tex-sm ml-2"
-                            >I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label
-                          >
+                            >I hereby declare that the recipient(s) stated above consented to being contacted by
+                            Dataland with regard to this data request
+                          </label>
                         </div>
                         <p
                           v-show="displayConditionsNotAcceptedError"
