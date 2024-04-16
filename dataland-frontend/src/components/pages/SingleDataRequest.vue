@@ -93,17 +93,22 @@
                       <p class="gray-text font-italic" style="text-align: left">
                         Let your contacts know what exactly your are looking for.
                       </p>
-                      <div v-if="allowAccessDataRequesterMessage">
+                      <div v-show="allowAccessDataRequesterMessage">
                         <div class="mt-3 flex">
-                          <input type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
+                          <input
+                            type="checkbox"
+                            class="ml-1"
+                            v-model="consentToMessageDataUsageGiven"
+                            data-test="acceptConditionsCheckbox"
+                          />
                           <label class="tex-sm ml-2"
                             >I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label
                           >
                         </div>
                         <p
-                          v-if="displayConditionsNotAcceptedError"
+                          v-show="displayConditionsNotAcceptedError"
                           class="text-danger text-xs mt-2"
-                          data-test="reportingPeriodErrorMessage"
+                          data-test="conditionsNotAcceptedErrorMessage"
                         >
                           You have to accept the terms and conditions to add a message
                         </p>
