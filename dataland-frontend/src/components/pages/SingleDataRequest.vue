@@ -128,7 +128,7 @@
                     :draggable="false"
                     data-test="quotaReachedModal"
                   >
-                    <template v-if="true">
+                    <template>
                       <div class="text-center" style="display: flex; flex-direction: column">
                         <div style="margin: 10px">
                           <em class="material-icons info-icon red-text" style="font-size: 2.5em"> error </em>
