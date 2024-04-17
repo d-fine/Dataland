@@ -212,7 +212,7 @@ describe("Component tests for the data requests search page", function (): void 
       cy.get(`table tbody:contains("SFDR")`).should("not.exist");
     });
   });
-  it("Check the function of rowclick event", function (): void {
+  it("Check the functionality of rowClick event", function (): void {
     cy.intercept("**community/requests/user", {
       body: mockDataRequests,
       status: 200,

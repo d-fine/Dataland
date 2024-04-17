@@ -309,10 +309,9 @@ export default defineComponent({
      * @param event.originalEvent needed to get the clicked cell
      * @returns the promise of the router push action
      */
-    onRowClick(event: { data: ExtendedStoredDataRequest; originalEvent: MouseEvent }) {
+    onRowClick(event: { data: ExtendedStoredDataRequest; originalEvent: MouseEvent | TouchEvent }) {
       const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick =
-        clickedElement.id === "resolveButton" || clickedElement.closest("#resolveButton") !== null;
+      const isResolveButtonClick = clickedElement.id === "resolveButton";
       if (!isResolveButtonClick) {
         const requestIdOfClickedRow = event.data.dataRequestId;
         return this.$router.push(`/requests/${requestIdOfClickedRow}`);
