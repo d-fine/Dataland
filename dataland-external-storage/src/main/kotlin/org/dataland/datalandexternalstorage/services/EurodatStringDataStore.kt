@@ -108,11 +108,9 @@ class EurodatStringDataStore(
         storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
 
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
-        logger.info("$documentHashesOfDocumentsToStore")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
-            val hash = hashAsArrayElement as String
             val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
-            storeBlobInEurodat(dataId, correlationId, hash, documentId, eurodatCredentials)
+            storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
         }
     }
 
@@ -159,6 +157,7 @@ class EurodatStringDataStore(
      * @param correlationId makes it possible to match the message to one specific storage process/thread
      */
     fun sendMessageAfterSuccessfulStorage(payload: String, correlationId: String) {
+        logger.info("Storing completed. Sending message that storing assignment is done.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
         )
