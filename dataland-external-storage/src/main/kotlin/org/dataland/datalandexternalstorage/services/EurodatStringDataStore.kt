@@ -4,9 +4,12 @@ import DatabaseConnection.getConnection
 import DatabaseConnection.insertByteArrayIntoSqlDatabase
 import DatabaseConnection.insertDataIntoSqlDatabase
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
+import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
 import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
+import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
 import org.dataland.datalandexternalstorage.entities.DataItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -42,11 +45,17 @@ class EurodatStringDataStore(
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
     @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
+    @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val eurodatAppName = "minaboApp"
+
+    @PostConstruct
+    fun init() {
+        createSafeDepositBox()
+    }
 
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
@@ -162,4 +171,20 @@ class EurodatStringDataStore(
             payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
         )
     }
+
+    fun createSafeDepositBox() {
+        logger.info("Creating safe-deposit-box in EuroDaT with appId $eurodatAppName")
+        val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
+        val safeDepositDataBaseResponse =
+            safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
+        if (safeDepositDataBaseResponse.response.contains("Database already exists")) {
+            logger.info("Safe-deposit-box in EuroDaT for appId $eurodatAppName already exists")
+        }
+        // TODO discuss with others, what to do if the creation process fails => currently an exception will be thrown
+        // TODO and the bean creation fails => is this how we want it?
+
+        // TODO include retry logic!
+    }
+
+    // TODO include a light-weight retry-logic to all the store-functions => if no success after retries, do nothing
 }
