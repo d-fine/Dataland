@@ -32,6 +32,8 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import kotlin.system.exitProcess
+
 // TODO Rename service at the end
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
@@ -124,6 +126,7 @@ class EurodatStringDataStore(
             storeBlobInEurodat(dataId, correlationId, hash, documentId, eurodatCredentials)
         }
     }
+    // TODO include a light-weight retry-logic to all the store-functions => if no success after retries, do nothing
 
     /**
      * Stores a Data Item in EuroDaT while ensuring that there is no active transaction.
@@ -174,18 +177,32 @@ class EurodatStringDataStore(
     }
 
     fun createSafeDepositBox() {
-        logger.info("Creating safe-deposit-box in EuroDaT with appId $eurodatAppName")
-        val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
-        val safeDepositDataBaseResponse =
-            safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
-        if (safeDepositDataBaseResponse.response.contains("Database already exists")) {
-            logger.info("Safe-deposit-box in EuroDaT for appId $eurodatAppName already exists")
+        val maxRetries = 8
+        val secondsBetweenRetries: Long = 15
+        var retryCount = 0
+        var databaseAlreadyExists = false
+
+        while (retryCount <= maxRetries && !databaseAlreadyExists) {
+            try {
+                logger.info("Trying to create safe-deposit-box in EuroDaT with appId $eurodatAppName")
+                val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
+                val safeDepositDataBaseResponse =
+                    safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
+                if (safeDepositDataBaseResponse.response.contains("Database already exists")) {
+                    logger.info("Safe-deposit-box in EuroDaT for appId $eurodatAppName already exists")
+                    databaseAlreadyExists = true
+                }
+            } catch (e: Exception) {
+                logger.error("An error occurred while creating safe-deposit-box: ${e.message}")
+            }
+            if (!databaseAlreadyExists) {
+                retryCount++
+                Thread.sleep(secondsBetweenRetries * 1000)
+            }
         }
-        // TODO discuss with others, what to do if the creation process fails => currently an exception will be thrown
-        // TODO and the bean creation fails => is this how we want it?
-
-        // TODO include retry logic!
+        if (!databaseAlreadyExists) {
+            logger.error("Failed to create safe-deposit-box, even after $maxRetries retries")
+            exitProcess(1) // TODO custom exception for the case EuroDaT-down?
+        }
     }
-
-    // TODO include a light-weight retry-logic to all the store-functions => if no success after retries, do nothing
 }
