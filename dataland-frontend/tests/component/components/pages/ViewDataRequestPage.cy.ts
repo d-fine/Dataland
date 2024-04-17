@@ -252,7 +252,7 @@ describe("Component tests for the view data request page", function (): void {
         .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
-  it.only("Check view data request page for withdrawn request without data renders as expected", function () {
+  it("Check view data request page for withdrawn request without data renders as expected", function () {
     interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Withdrawn, []));
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
