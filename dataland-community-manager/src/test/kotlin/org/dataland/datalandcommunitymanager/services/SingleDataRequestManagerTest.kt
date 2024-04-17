@@ -50,7 +50,6 @@ class SingleDataRequestManagerTest {
         contacts = setOf("testContact@example.com"),
         message = "Test message for non-premium user quota test",
     )
-
     private val testUtils = TestUtils()
 
     @BeforeEach
@@ -67,7 +66,14 @@ class SingleDataRequestManagerTest {
             requestsCount += 1
             return@then requestsCount - 1
         }
-        singleDataRequestManagerMock = mockSingleDataRequestManagerMock(mockCompanyApi)
+        singleDataRequestManagerMock = SingleDataRequestManager(
+            dataRequestLogger = mock(DataRequestLogger::class.java),
+            dataRequestRepository = dataRequestRepositoryMock,
+            companyApi = mockCompanyApi,
+            singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
+            utils = utilsMock,
+            maxRequestsForUser,
+        )
         `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
             listOf(
                 CompanyIdAndName(
@@ -78,23 +84,13 @@ class SingleDataRequestManagerTest {
         )
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@bigplayer.com", "1234-221-1111elf",
+            "requester@bigplayer.com",
+            "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    private fun mockSingleDataRequestManagerMock(mockCompanyApi: CompanyDataControllerApi): SingleDataRequestManager {
-        return SingleDataRequestManager(
-            dataRequestLogger = mock(DataRequestLogger::class.java),
-            dataRequestRepository = dataRequestRepositoryMock,
-            companyApi = mockCompanyApi,
-            singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
-            utils = utilsMock,
-            maxRequestsForUser,
-        )
     }
 
     private fun mockDataRequestProcessingUtils(): DataRequestProcessingUtils {
