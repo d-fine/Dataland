@@ -53,7 +53,7 @@ class SingleDataRequestManagerTest {
     private val testUtils = TestUtils()
 
     @BeforeEach
-    @Suppress("FunctionTooLong")
+    @Suppress("brain-overload")
     fun setupSingleDataRequestManager() {
         var requestsCount = 0
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
