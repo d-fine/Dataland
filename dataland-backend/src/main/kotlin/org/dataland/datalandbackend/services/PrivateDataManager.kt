@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.services.generateRandomDataId
+import org.dataland.datalandbackendutils.services.generateRandomUuid
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -56,7 +56,7 @@ class PrivateDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
-    private val documentHashesInMemoryStorage = mutableMapOf<String, MutableSet<String>>()
+    private val documentHashesInMemoryStorage = mutableMapOf<String, MutableMap<String, String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
 
     /**
@@ -85,14 +85,14 @@ class PrivateDataManager(
             reportingPeriod = companyAssociatedSmeData.reportingPeriod,
             data = companyAssociatedSmeData.data.toString(),
         )
-        val dataId = generateRandomDataId()
+        val dataId = generateRandomUuid()
 
         storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
         val documentHashes = documents?.takeIf { it.isNotEmpty() }
             ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
-            ?: mutableSetOf()
+            ?: mutableMapOf()
         sendReceptionMessage(dataId, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
@@ -136,17 +136,19 @@ class PrivateDataManager(
         dataId: String,
         documents: Array<MultipartFile>,
         correlationId: String,
-    ): MutableSet<String> {
+    ): MutableMap<String, String> {
         // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
         //  ==> Need to copy it to refer to it afterwards.
         //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
         //  Maybe we should use the same approach as in the other document service
         //  I changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
         //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
-        val documentHashes = mutableSetOf<String>()
+        val documentHashes = mutableMapOf<String, String>()
         for (document in documents) {
             val documentHash = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
-            documentHashes.add(documentHash)
+            // TODO rename to generateRandomUUID
+            val documentUuid = generateRandomUuid()
+            documentHashes[documentHash] = documentUuid
             val documentAsByteArray = convertMultipartFileToByteArray(document)
             documentInMemoryStorage[documentHash] = documentAsByteArray
         }
@@ -162,7 +164,11 @@ class PrivateDataManager(
         return multipartFile.bytes
     }
 
-    private fun sendReceptionMessage(dataId: String, correlationId: String, documentHashes: MutableSet<String>) {
+    private fun sendReceptionMessage(
+        dataId: String,
+        correlationId: String,
+        documentHashes: MutableMap<String, String>,
+    ) {
         logger.info(
             "Processed data to be stored in EuroDaT, sending message for dataId $dataId and " +
                 "correlationId $correlationId",
@@ -240,13 +246,16 @@ class PrivateDataManager(
         logger.info(
             "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
-        val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(dataId = dataId, assetId = "JSON")
+        val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(
+            dataId = dataId, assetId = "JSON",
+            eurodatId = "JSON",
+        )
         dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
         val documentHashes = documentHashesInMemoryStorage[dataId]
         if (!documentHashes.isNullOrEmpty()) {
             val dataIdToDocumentHashMappingEntities =
                 documentHashes.map { documentHash ->
-                    DataIdToAssetIdMappingEntity(dataId, documentHash)
+                    DataIdToAssetIdMappingEntity(dataId, documentHash.key, documentHash.value)
                 }
             dataIdToDocumentHashMappingEntities.forEach {
                     mappingEntity ->
@@ -264,8 +273,11 @@ class PrivateDataManager(
         metaDataManager.storeDataMetaInformation(dataMetaInfoToStore)
     }
 
-    private fun removeDocumentsAndHashesFromInMemoryStorages(dataId: String, documentHashes: MutableSet<String>) {
-        documentHashes.forEach { hash ->
+    private fun removeDocumentsAndHashesFromInMemoryStorages(
+        dataId: String,
+        documentHashes: MutableMap<String, String>,
+    ) {
+        documentHashes.keys.forEach { hash ->
             documentInMemoryStorage.remove(hash)
         }
         documentHashesInMemoryStorage.remove(dataId)

@@ -1,7 +1,8 @@
 package org.dataland.datalandexternalstorage.services
 
-import DatabaseConnection.executeMySQLQuery
 import DatabaseConnection.getConnection
+import DatabaseConnection.insertByteArrayIntoSqlDatabase
+import DatabaseConnection.insertDataIntoSqlDatabase
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
@@ -100,16 +101,18 @@ class EurodatStringDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        val eurodatCredentials = databaseCredentialResourceClient
+            .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
-        // TODO renamed to getReceivedPrivateJson
         storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
 
-        val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONArray("documentHashes")
-        documentHashesOfDocumentsToStore.forEach { hashAsArrayElement ->
+        val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
+        logger.info("$documentHashesOfDocumentsToStore")
+        documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
             val hash = hashAsArrayElement as String
-            storeBlobInEurodat(dataId, correlationId, hash)
+            val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
+            storeBlobInEurodat(dataId, correlationId, hash, documentId, eurodatCredentials)
         }
     }
 
@@ -123,7 +126,7 @@ class EurodatStringDataStore(
         logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
         val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        executeMySQLQuery(conn, insertStatement, dataItem.id, dataItem.data)
+        insertDataIntoSqlDatabase(conn, insertStatement, dataItem.id, dataItem.data)
     }
 
     /**
@@ -132,16 +135,24 @@ class EurodatStringDataStore(
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeBlobInEurodat(dataId: String, correlationId: String, hash: String) {
-        logger.info("Storing document with hash $hash in EuroDaT for dataId $dataId and correlationId $correlationId")
+    fun storeBlobInEurodat(
+        dataId: String,
+        correlationId: String,
+        hash: String,
+        documentId: String,
+        eurodatCredentials: Credentials,
+    ) {
+        logger.info(
+            "Storing document with hash $hash and documentId $documentId in EuroDaT for dataId $dataId and" +
+                " correlationId $correlationId",
+        )
         val resource = temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
         val resultByteArray = resource.readBytes()
-        // val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
-        // val insertStatement =  "INSERT INTO safedeposit.json (uuid_json, blob_pdf) VALUES(?, ?)"
-        // val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        //  executeMySQLQuery(conn, insertStatement, hash, resultByteArray)
+        val insertStatement = "INSERT INTO safedeposit.pdf (uuid_pdf, blob_pdf) VALUES(?, ?)"
+        val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
+        insertByteArrayIntoSqlDatabase(conn, insertStatement, documentId, resultByteArray)
     }
-    // TODO call to eurodat
+
     /**
      * Sends a message to the queue to inform other services that the storage to EuroDaT has been successful.
      * @param payload contains meta info about the stored assets (dataId and hashes)
@@ -153,10 +164,3 @@ class EurodatStringDataStore(
         )
     }
 }
-
-// TODO Insert statement into the safedepositbox looks like this:
-    /*
-    INSERT INTO safedeposit."json"
-    (uuid_json, blob_json)
-    VALUES('88edd44a-b9e8-49fa-a34b-8493077ee9fb', '2');
-    */

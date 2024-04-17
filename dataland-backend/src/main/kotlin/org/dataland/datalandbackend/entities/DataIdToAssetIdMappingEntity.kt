@@ -15,7 +15,7 @@ import org.dataland.datalandbackend.model.DataIdToAssetIdCompositeKey
 @Table(
     name = "data_document_mapping",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["dataId", "assetId"]),
+        UniqueConstraint(columnNames = ["dataId", "assetId", "eurodatId"]),
     ],
 )
 @IdClass(DataIdToAssetIdCompositeKey::class)
@@ -26,5 +26,8 @@ data class DataIdToAssetIdMappingEntity(
     @Id
     @Column(name = "asset_id")
     var assetId: String,
+    @Id
+    @Column(name = "eurodat_id")
+    var eurodatId: String,
 
 )
