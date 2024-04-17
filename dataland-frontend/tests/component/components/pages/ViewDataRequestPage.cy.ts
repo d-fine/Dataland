@@ -118,8 +118,6 @@ describe("Component tests for the view data request page", function (): void {
     interceptPatchRequest();
     cy.mountWithPlugins(ViewDataRequestPage, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       props: {
         requestId: requestId,
       },
