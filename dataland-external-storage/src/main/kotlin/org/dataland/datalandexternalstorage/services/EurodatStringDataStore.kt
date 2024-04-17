@@ -121,8 +121,6 @@ class EurodatStringDataStore(
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
         logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
-        // TODO remove logger
-        logger.info(eurodatCredentials.toString())
         val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         executeMySQLQuery(conn, insertStatement, dataItem.id, dataItem.data)
