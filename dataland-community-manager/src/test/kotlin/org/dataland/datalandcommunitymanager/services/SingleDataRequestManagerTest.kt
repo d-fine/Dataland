@@ -47,6 +47,7 @@ class SingleDataRequestManagerTest {
             companyApi = mockCompanyApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
+            10,
         )
         `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
             listOf(

@@ -3,22 +3,26 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
+import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -31,13 +35,14 @@ import java.util.*
 class SingleDataRequestManagerQuotaTest(
     @Autowired val dataRequestRepository: DataRequestRepository,
     @Autowired val messageRepository: MessageRepository,
+    @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}")
+    val maxRequestsForUser: Int,
 ) {
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var singleDataRequestManager: SingleDataRequestManager
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
 
-    val allowedRequestsPerDay = MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
     val sampleRequest = SingleDataRequest(
         companyIdentifier = companyIdRegexSafeCompanyId,
         dataType = DataTypeEnum.lksg,
@@ -68,7 +73,7 @@ class SingleDataRequestManagerQuotaTest(
         )
         return utils
     }
-    /*
+
     @BeforeEach
     fun setupSingleDataRequestManager() {
         singleDataRequestManager = SingleDataRequestManager(
@@ -77,6 +82,7 @@ class SingleDataRequestManagerQuotaTest(
             companyApi = mockCompanyApiWithSingleCompany(),
             singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java),
             utils = mockDataRequestProcessingUtils(),
+            maxRequestsForUser,
         )
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@example.com",
@@ -87,21 +93,19 @@ class SingleDataRequestManagerQuotaTest(
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
-    } */
+    }
 
     @Test
     fun `send single data requests as non premium user and verify that the quota is met`() {
-        assert(1 == 1)
-        /*
-        for (i in 1..allowedRequestsPerDay) {
+        for (i in 1..maxRequestsForUser) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
         }
         assertThrows<QuotaExceededException> {
             singleDataRequestManager.processSingleDataRequest(sampleRequest)
-        } */
+        }
     }
-    /*
+
     @Test
     fun `send single data requests as premium user and verify that the quota is not met`() {
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
@@ -110,11 +114,11 @@ class SingleDataRequestManagerQuotaTest(
             setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
         )
         mockSecurityContext()
-        for (i in 1..allowedRequestsPerDay + 1) {
+        for (i in 1..maxRequestsForUser + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
         }
-    } */
+    }
 }
 
 private fun mockSecurityContext() {

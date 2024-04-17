@@ -12,12 +12,12 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
 import org.dataland.datalandcommunitymanager.utils.TimestampConvertor
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -33,6 +33,7 @@ class SingleDataRequestManager(
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
@@ -88,7 +89,7 @@ class SingleDataRequestManager(
             val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
 
             if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
-                > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
+                > maxRequestsForUser
             ) {
                 throw QuotaExceededException(
                     "Quota has been reached.",
