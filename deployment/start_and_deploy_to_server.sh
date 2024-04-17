@@ -71,8 +71,10 @@ ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_KEYSTORE_INT_BASE64}" | 
 ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_TEST_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/test.jks"
 
 scp ./dataland-eurodat-client/write_secret_files.sh ubuntu@"$target_server_url":"$location"/dataland-eurodat-client
-ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-eurodat-client/write_secret_files.sh\""
-ssh ubuntu@"$target_server_url" "cd $location/dataland-eurodat-client; ./write_secret_files.sh"
+# TODO commit das script ausführbar
+# TODO scp -p (oder so)  mit Rechten kopieren
+#ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-eurodat-client/write_secret_files.sh\"" # TODO evtl. nicht mehr notwendig dann
+ssh ubuntu@"$target_server_url" "cd $location/dataland-eurodat-client; ./write_secret_files.sh" #TODO cd location kann hier weg wenn das skript selbst cdt
 
 
 echo "Starting docker compose stack."
