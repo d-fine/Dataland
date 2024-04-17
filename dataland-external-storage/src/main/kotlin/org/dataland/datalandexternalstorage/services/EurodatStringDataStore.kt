@@ -5,6 +5,7 @@ import DatabaseConnection.getConnection
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
+import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
 import org.dataland.datalandexternalstorage.entities.DataItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -27,7 +28,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-
+// TODO Rename service at the end
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
  * @param cloudEventMessageHandler service for managing CloudEvents messages
@@ -99,12 +100,11 @@ class EurodatStringDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        // TODO call the get /api/v1/client-controller/credential-service/database/safedeposit/{appId} for appID=minaboApp to get credentials
-        // val getAuthentication = DatabaseCredentialResourceApi. TODO
-
+        val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         // TODO renamed to getReceivedPrivateJson
-        storeJsonInEurodat(dataId, correlationId, DataItem(dataId, jsonToStore))
+        storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
 
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONArray("documentHashes")
         documentHashesOfDocumentsToStore.forEach { hashAsArrayElement ->
@@ -119,15 +119,11 @@ class EurodatStringDataStore(
      * @param dataItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeJsonInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
-        logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
-        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_pdf) VALUES(?, ?)"
+    fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
+        logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
+        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        executeMySQLQuery(conn, insertStatement, dataId, dataItem.data)
-        // TODO call to eurodat
-        // dataItemRepository.save(dataItem)
-        // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
+        executeMySQLQuery(conn, insertStatement, dataItem.id, dataItem.data)
     }
 
     /**

@@ -1,39 +1,61 @@
+import org.slf4j.LoggerFactory
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.util.Properties
+import java.util.UUID
 
 /**
- * Program to list databases in MySQL using Kotlin
+ * This object holds methods to establish a JDBC connection and do sql inserts into a database table
  */
 object DatabaseConnection {
-
-    // internal var conn: Connection? = null
-    // internal var username = "username" // provide the username
-    // internal var password = "password" // provide the corresponding password
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     fun executeMySQLQuery(conn: Connection?, sqlStatement: String, key: String, value: String) {
         var preparedStatement: PreparedStatement? = null
         if (conn != null) {
             try {
-                // Prepare the insert statement
                 preparedStatement = conn.prepareStatement(sqlStatement)
-                preparedStatement.setString(1, key)
+                preparedStatement.setObject(1, UUID.fromString(key))
                 preparedStatement.setString(2, value)
 
-                // Execute the insert statement
                 val rowsInserted = preparedStatement.executeUpdate()
-                if (rowsInserted > 0) println("A new row was inserted successfully.")
+                if (rowsInserted > 0) {
+                    logger.info("A new row was inserted successfully.")
+                }
             } catch (ex: SQLException) {
-                ex.printStackTrace()
+                logger.error("A sql exception was thronw: $ex")
             } finally {
-                // Close resources
                 try {
                     preparedStatement?.close()
                     conn?.close()
                 } catch (ex: SQLException) {
-                    ex.printStackTrace()
+                    logger.error("A sql exception was thronw: $ex")
+                }
+            }
+        }
+    }
+    fun executeMySQLQuery2(conn: Connection?, sqlStatement: String, key: String, value: ByteArray) {
+        var preparedStatement: PreparedStatement? = null
+        if (conn != null) {
+            try {
+                preparedStatement = conn.prepareStatement(sqlStatement)
+                preparedStatement.setObject(1, key)
+                preparedStatement.setBytes(2, value)
+
+                val rowsInserted = preparedStatement.executeUpdate()
+                if (rowsInserted > 0) {
+                    logger.info("A new row was inserted successfully.")
+                }
+            } catch (ex: SQLException) {
+                logger.error("A sql exception was thronw: $ex")
+            } finally {
+                try {
+                    preparedStatement?.close()
+                    conn?.close()
+                } catch (ex: SQLException) {
+                    logger.error("A sql exception was thronw: $ex")
                 }
             }
         }
@@ -46,20 +68,17 @@ object DatabaseConnection {
      */
     fun getConnection(username: String, password: String, databaseUrl: String): Connection? {
         val connectionProps = Properties()
-        connectionProps.put("user", username)
-        connectionProps.put("password", password)
+        connectionProps["user"] = username
+        connectionProps["password"] = password
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance()
             return DriverManager.getConnection(
                 databaseUrl,
                 connectionProps,
             )
         } catch (ex: SQLException) {
-            // handle any errors
-            ex.printStackTrace()
+            logger.error("A sql exception was thronw: $ex")
         } catch (ex: Exception) {
-            // handle any errors
-            ex.printStackTrace()
+            logger.error("An unexpected exception was thronw: $ex")
         }
         return null
     }
