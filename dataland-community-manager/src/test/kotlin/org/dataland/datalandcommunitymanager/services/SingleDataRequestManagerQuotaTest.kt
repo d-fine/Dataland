@@ -22,7 +22,6 @@ import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -35,13 +34,12 @@ import java.util.*
 class SingleDataRequestManagerQuotaTest(
     @Autowired val dataRequestRepository: DataRequestRepository,
     @Autowired val messageRepository: MessageRepository,
-    @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}")
-    val maxRequestsForUser: Int,
 ) {
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var singleDataRequestManager: SingleDataRequestManager
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
+    private val maxRequestsForUser = 10
 
     val sampleRequest = SingleDataRequest(
         companyIdentifier = companyIdRegexSafeCompanyId,
