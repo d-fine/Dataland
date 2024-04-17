@@ -9,6 +9,7 @@
       :closable="false"
       style="border-radius: 0.75rem; text-align: center"
       :show-header="false"
+      data-test="successModal"
     >
       <div class="text-center" style="display: flex; flex-direction: column">
         <div style="margin: 10px">
@@ -38,9 +39,9 @@
         :is-optional="false"
         :show-errors="emailDetailsError"
         @has-new-input="updateEmailFields"
-        ref="emailDetailsRef"
+        data-test="newMessageModal"
       />
-      <PrimeButton @click="addMessage()" style="width: 100%; justify-content: center">
+      <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
         <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
       </PrimeButton>
     </PrimeDialog>
@@ -54,7 +55,7 @@
     <div class="py-4 paper-section">
       <div class="grid col-9 justify-content-around">
         <div class="col-4">
-          <div class="card">
+          <div class="card" data-test="card_requestDetails">
             <div class="card__title">Request Details</div>
             <div class="card__separator" />
             <div class="card__subtitle">Company</div>
@@ -78,6 +79,7 @@
             v-if="isDatasetAvailable"
             class="link claim-panel-text"
             style="font-weight: bold"
+            data-test="viewDataset"
             @click="goToResolveDataRequestPage()"
           >
             VIEW DATASET
@@ -85,7 +87,7 @@
         </div>
         <div class="grid col-8 flex-direction-column">
           <div class="col-12">
-            <div class="card">
+            <div class="card" data-test="card_requestIs">
               <span style="display: flex; align-items: center">
                 <div class="card__title">Request is:</div>
                 <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
@@ -95,19 +97,24 @@
                   since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                 </div>
                 <div style="margin-left: auto">
-                  <PrimeButton v-if="isRequestStatusAnswered()" @click="goToResolveDataRequestPage()">
+                  <PrimeButton
+                    data-test="resolveRequestButton"
+                    v-if="isRequestStatusAnswered()"
+                    @click="goToResolveDataRequestPage()"
+                  >
                     <span class="d-letters pl-2"> Resolve Request </span>
                   </PrimeButton>
                 </div>
               </span>
             </div>
-            <div class="card">
+            <div class="card" data-test="card_providedContactDetails">
               <span style="display: flex; align-items: center">
                 <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
                 <div
                   v-if="allowNewMessage()"
                   style="cursor: pointer; display: flex; align-items: center"
                   @click="openMessageDialog()"
+                  data-test="newMessage"
                 >
                   <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
                   <div style="font-weight: bold">NEW MESSAGE</div>
@@ -127,7 +134,7 @@
                 </div>
               </div>
             </div>
-            <div class="card" v-if="isWithdrawAble()">
+            <div class="card" v-if="isWithdrawAble()" data-test="card_withdrawn">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
               <div>
@@ -343,7 +350,7 @@ export default defineComponent({
      * @returns string representing the elements of the set
      */
     formattedContacts(contacts: Set<string>) {
-      const contactsList = [...contacts];
+      const contactsList = Array.from(contacts);
       return contactsList.join(", ");
     },
     /**

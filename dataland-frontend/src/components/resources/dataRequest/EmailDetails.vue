@@ -40,7 +40,7 @@
     </p>
     <div v-if="allowAccessDataRequesterMessage">
       <div class="mt-3 flex">
-        <input type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
+        <input data-test="checkbox" type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
         <label class="tex-sm ml-2"
           >I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label
         >
