@@ -137,16 +137,9 @@ class PrivateDataManager(
         documents: Array<MultipartFile>,
         correlationId: String,
     ): MutableMap<String, String> {
-        // TODO: MultipartFiles refer to temporary files that only exist during the lifetime of the request
-        //  ==> Need to copy it to refer to it afterwards.
-        //  See: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
-        //  Maybe we should use the same approach as in the other document service
-        //  I changed it a bit, so that it now works for pdfs. Someone should double check if the approach now is fine
-        //  and we need to decide if we want to accept other types and how to handle/convert them - Stephan
         val documentHashes = mutableMapOf<String, String>()
         for (document in documents) {
             val documentHash = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
-            // TODO rename to generateRandomUUID
             val documentUuid = generateRandomUuid()
             documentHashes[documentHash] = documentUuid
             val documentAsByteArray = convertMultipartFileToByteArray(document)
