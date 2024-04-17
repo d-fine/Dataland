@@ -1,0 +1,3 @@
+package org.dataland.datalandemailservice.services
+
+class ClaimOwnershipSucessfullyEmailFactoryTest
