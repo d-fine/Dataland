@@ -10,9 +10,7 @@ mkdir -p ./local/certs
 scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
 
 # Write files necessary for the EuroDaT-client to work
-cd ./dataland-eurodat-client
-./write_secret_files.sh
-cd ..
+./dataland-eurodat-client/write_secret_files.sh
 
 rm ./*github_env.log || true
 ./build-utils/base_rebuild_gradle_dockerfile.sh
