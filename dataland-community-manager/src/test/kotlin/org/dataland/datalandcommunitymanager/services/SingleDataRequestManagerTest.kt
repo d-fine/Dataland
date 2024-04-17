@@ -36,6 +36,7 @@ class SingleDataRequestManagerTest {
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
 
     @BeforeEach
+    @Suppress("brain-overload")
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = mockDataRequestProcessingUtils()
