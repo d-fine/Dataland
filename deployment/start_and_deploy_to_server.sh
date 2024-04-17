@@ -67,15 +67,11 @@ fi
 ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-eurodat-client/secret_files"
 scp -r ./dataland-eurodat-client/secret_files_templates ubuntu@"$target_server_url":"$location"/dataland-eurodat-client/secret_files_templates
 
-keystore_base64="${EURODAT_CLIENT_KEYSTORE_INT_BASE64}"
-ssh ubuntu@"$target_server_url" "echo "$keystore_base64" | base64 -d > $location/dataland-eurodat-client/secret_files/keystore.jks"
-
-test_base64="${EURODAT_CLIENT_TEST_INT_BASE64}"
-ssh ubuntu@"$target_server_url" "echo "$test_base64" | base64 -d > $location/dataland-eurodat-client/secret_files/test.jks"
+ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_KEYSTORE_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/keystore.jks"
+ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_TEST_INT_BASE64}" | base64 -d > $location/dataland-eurodat-client/secret_files/test.jks"
 
 scp ./dataland-eurodat-client/write_secret_files.sh ubuntu@"$target_server_url":"$location"/dataland-eurodat-client
-ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-eurodat-client/write_secret_files.sh\""
-ssh ubuntu@"$target_server_url" "cd $location/dataland-eurodat-client; ./write_secret_files.sh"
+ssh ubuntu@"$target_server_url" "$location/dataland-eurodat-client/write_secret_files.sh"
 
 
 echo "Starting docker compose stack."
@@ -87,9 +83,9 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
-# Assure that EuroDaT-client is healthy
+# Assure that EuroDaT-client is healthy #TODO only for dev-purposes! at the end we should have HEALTHCHECK in the eurodat-client service itself
 echo "Performing EuroDaT-client health check..."
-health_check_url="https://localhost:12345/api/v1/client-controller/health"
+health_check_url="http://localhost:12345/api/v1/client-controller/health"
 for ((i = 0; i < 10; i++)); do
     if ssh ubuntu@"$target_server_url" "wget -nv -O- -t 1 --no-check-certificate \"$health_check_url\" | grep -q '\"status\": \"UP\"'"; then
         echo "EuroDaT-client health check passed."
@@ -103,6 +99,6 @@ done
 echo "EuroDaT-client health check failed after 5 minutes. Exiting..."
 exit 1
 
-#TODO write this cleaner and leaner?
+
 
 

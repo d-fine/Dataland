@@ -56,8 +56,8 @@
 [Environment]::SetEnvironmentVariable("BACKEND_LOCATION_CONFIG", "Dev", [System.EnvironmentVariableTarget]::User)
 
 # EuroDaT credentials - if value is not hardcoded here, look them up in our wiki
+[Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://int.dev3.gcp.dev.eurodat.org", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("EURODAT_CLIENT_TLS_CERT", "", [System.EnvironmentVariableTarget]::User)
-# [Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://int.dev3.gcp.dev.eurodat.org", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("KEY_STORE_FILE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
