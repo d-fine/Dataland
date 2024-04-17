@@ -5,9 +5,11 @@ import { DataTypeEnum } from "@clients/backend";
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
 const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED", "LAST UPDATED", "STATUS"];
+const dummyRequestId = "dummyRequestId";
 
 before(function () {
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     datalandCompanyId: "compA",
     companyName: "companyAnswered",
     dataType: DataTypeEnum.P2p,
@@ -17,6 +19,7 @@ before(function () {
     requestStatus: RequestStatus.Answered,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "companyNotAnsweredSME",
     dataType: DataTypeEnum.Sme,
     reportingPeriod: "2022",
@@ -25,6 +28,7 @@ before(function () {
     requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "z-company-that-will-always-be-sorted-to-bottom",
     dataType: DataTypeEnum.EutaxonomyFinancials,
     reportingPeriod: "3021",
@@ -33,6 +37,7 @@ before(function () {
     requestStatus: RequestStatus.Closed,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "companyNotAnsweredEU",
     dataType: DataTypeEnum.EutaxonomyNonFinancials,
     reportingPeriod: "2021",
@@ -41,6 +46,7 @@ before(function () {
     requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "a-company-that-will-always-be-sorted-to-top",
     dataType: DataTypeEnum.EsgQuestionnaire,
     reportingPeriod: "1021",
@@ -204,6 +210,20 @@ describe("Component tests for the data requests search page", function (): void 
         cy.get(`table tbody:contains(${value})`).should("exist");
       });
       cy.get(`table tbody:contains("SFDR")`).should("not.exist");
+    });
+  });
+  it("Check the function of rowclick event", function (): void {
+    cy.intercept("**community/requests/user", {
+      body: mockDataRequests,
+      status: 200,
+    }).as("UserRequests");
+    cy.mountWithPlugins(RequestedDatasetsPage, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      cy.get('[data-test="requested-Datasets-table"]').within(() => {
+        cy.get("tr:last").click();
+      });
+      cy.wrap(mounted.component).its("$route.path").should("eq", `/requests/${dummyRequestId}`);
     });
   });
 });

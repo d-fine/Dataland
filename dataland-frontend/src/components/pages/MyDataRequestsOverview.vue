@@ -112,6 +112,7 @@
                       class="text-right text-primary no-underline font-bold"
                     >
                       <span
+                        id="resolveButton"
                         style="cursor: pointer"
                         data-test="requested-Datasets-Resolve"
                         @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
@@ -305,11 +306,17 @@ export default defineComponent({
      * Navigates to the view dataRequest page
      * @param event contains column that was clicked
      * @param event.data extended stored data request
+     * @param event.originalEvent needed to get the clicked cell
      * @returns the promise of the router push action
      */
-    onRowClick(event: { data: ExtendedStoredDataRequest }) {
-      const requestIdOfClickedRow = event.data.dataRequestId;
-      return this.$router.push(`/requests/${requestIdOfClickedRow}`);
+    onRowClick(event: { data: ExtendedStoredDataRequest; originalEvent: MouseEvent }) {
+      const clickedElement = event.originalEvent.target as HTMLElement;
+      const isResolveButtonClick =
+        clickedElement.id === "resolveButton" || clickedElement.closest("#resolveButton") !== null;
+      if (!isResolveButtonClick) {
+        const requestIdOfClickedRow = event.data.dataRequestId;
+        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
+      }
     },
     /**
      * Sorts the list of storedDataRequests
