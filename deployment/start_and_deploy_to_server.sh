@@ -85,7 +85,7 @@ wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
 # Assure that EuroDaT-client is healthy #TODO only for dev-purposes! at the end we should have HEALTHCHECK in the eurodat-client service itself
 echo "Performing EuroDaT-client health check..."
-health_check_url="https://localhost:12345/api/v1/client-controller/health"
+health_check_url="http://localhost:12345/api/v1/client-controller/health"
 for ((i = 0; i < 10; i++)); do
     if ssh ubuntu@"$target_server_url" "wget -nv -O- -t 1 --no-check-certificate \"$health_check_url\" | grep -q '\"status\": \"UP\"'"; then
         echo "EuroDaT-client health check passed."
