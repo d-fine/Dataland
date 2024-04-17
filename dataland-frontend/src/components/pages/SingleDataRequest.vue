@@ -336,19 +336,9 @@ export default defineComponent({
      * @returns true if the email is valid, false otherwise
      */
     isValidEmail(email: string): boolean {
-      if (email == "") return false;
-
-      const splitByEt = email.split("@");
-
-      if (splitByEt.length != 2) return false;
-      if (splitByEt[0] == "") return false;
-      if (splitByEt[1] == "") return false;
-
-      const splitByEtAndDot = splitByEt[1].split(".");
-
-      if (splitByEtAndDot.length < 2) return false;
-      if (splitByEtAndDot[0] == "") return false;
-      return splitByEtAndDot[splitByEtAndDot.length - 1] != "";
+      const regex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return regex.test(email.toLowerCase());
     },
 
     /**
@@ -440,7 +430,7 @@ export default defineComponent({
           console.error(error);
           if (error instanceof AxiosError) {
             const errorJSON = error.toJSON();
-            if (errorJSON.status == 404) {
+            if (errorJSON.status == 403) {
               this.openMaxRequestsReachedModal();
             } else {
               const responseMessages = (error.response?.data as ErrorResponse)?.errors;
