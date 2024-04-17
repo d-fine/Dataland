@@ -3,15 +3,12 @@ import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.util.Properties
+import java.util.UUID
 
 /**
  * Program to list databases in MySQL using Kotlin
  */
 object DatabaseConnection {
-
-    // internal var conn: Connection? = null
-    // internal var username = "username" // provide the username
-    // internal var password = "password" // provide the corresponding password
 
     fun executeMySQLQuery(conn: Connection?, sqlStatement: String, key: String, value: String) {
         var preparedStatement: PreparedStatement? = null
@@ -19,7 +16,7 @@ object DatabaseConnection {
             try {
                 // Prepare the insert statement
                 preparedStatement = conn.prepareStatement(sqlStatement)
-                preparedStatement.setString(1, key)
+                preparedStatement.setObject(1, UUID.fromString(key))
                 preparedStatement.setString(2, value)
 
                 // Execute the insert statement
@@ -46,10 +43,10 @@ object DatabaseConnection {
      */
     fun getConnection(username: String, password: String, databaseUrl: String): Connection? {
         val connectionProps = Properties()
-        connectionProps.put("user", username)
-        connectionProps.put("password", password)
+        connectionProps["user"] = username
+        connectionProps["password"] = password
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance()
+            //   Class.forName("com.mysql.jdbc.Driver").newInstance()
             return DriverManager.getConnection(
                 databaseUrl,
                 connectionProps,
