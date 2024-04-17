@@ -104,6 +104,11 @@ class SingleDataRequestManagerQuotaTest(
 
     @Test
     fun `send single data requests as premium user and verify that the quota is not met`() {
+        authenticationMock = AuthenticationMock.mockJwtAuthentication(
+            "requester@example.com",
+            "1234-221-1111zwoelf",
+            setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
         mockSecurityContext()
         for (i in 1..allowedRequestsPerDay + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
