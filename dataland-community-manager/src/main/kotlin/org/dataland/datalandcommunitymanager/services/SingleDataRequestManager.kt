@@ -46,7 +46,6 @@ class SingleDataRequestManager(
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequest(singleDataRequest)
         performQuotaCheckForNonPremiumUser(singleDataRequest)
-
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,

@@ -92,7 +92,7 @@ class SingleDataRequestManagerQuotaTest(
     }
 
     @Test
-    fun `send single data requests as non-premium user and verify that the quota is met`() {
+    fun `send single data requests as non premium user and verify that the quota is met`() {
         for (i in 1..allowedRequestsPerDay) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
