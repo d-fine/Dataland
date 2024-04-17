@@ -205,25 +205,29 @@ describe("Component tests for the view data request page", function (): void {
         .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
-  it("Check view data request page for answered request and check the routing to data view page", function () {
-    const dummyRequest = getStoredDataRequest(RequestStatus.Answered, []);
-    interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
-    interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      props: {
-        requestId: requestId,
-      },
-    }).then((mounted) => {
-      checkBasicPageElements(dummyRequest.requestStatus);
-      cy.get('[data-test="resolveRequestButton"]').should("exist").click();
-      cy.wrap(mounted.component)
-        .its("$route.path")
-        .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
-    });
-  });
+  it(
+    "Check view data request page for answered request and " +
+      "check the routing to data view page on resolve request click",
+    function () {
+      const dummyRequest = getStoredDataRequest(RequestStatus.Answered, []);
+      interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
+      interceptUserAskForCompanyNameOnMounted();
+      interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+      interceptPatchRequest();
+      cy.mountWithPlugins(ViewDataRequestPage, {
+        keycloak: minimalKeycloakMock({}),
+        props: {
+          requestId: requestId,
+        },
+      }).then((mounted) => {
+        checkBasicPageElements(dummyRequest.requestStatus);
+        cy.get('[data-test="resolveRequestButton"]').should("exist").click();
+        cy.wrap(mounted.component)
+          .its("$route.path")
+          .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+      });
+    },
+  );
   it(
     "Check view data request page for open request and check that the message history is displayed " +
       "and that a user can add a new message",
@@ -241,27 +245,36 @@ describe("Component tests for the view data request page", function (): void {
         },
       }).then(() => {
         checkBasicPageElements(RequestStatus.Open);
-        const testEmail = "test1234@example.com";
-        const testMessage = "test message 1234";
         cy.get('[data-test="newMessage"]').should("exist").click();
-        cy.get('[data-test="newMessageModal"]')
-          .should("exist")
-          .should("be.visible")
-          .within(() => {
-            cy.get('[data-test="checkbox"]').should("not.exist");
-            cy.get('[data-test="contactEmail"]').should("exist").type(testEmail);
-            cy.get('[data-test="dataRequesterMessage"]').should("exist").type(testMessage);
-            cy.get('[data-test="checkbox"]').should("exist").should("be.visible");
-          });
-        cy.get('[data-test="addMessageButton"]').should("exist").click();
-        cy.get('[data-test="newMessageModal"]')
-          .should("exist")
-          .should("be.visible")
-          .contains("You have to accept the terms and conditions to add a message");
-        cy.get('[data-test="checkbox"]').should("exist").should("be.visible").click();
-        cy.get('[data-test="addMessageButton"]').should("exist").click();
+        checkEmailFieldsAndCheckBox("newMessageModal", "addMessageButton");
         cy.get('[data-test="newMessageModal"]').should("not.exist");
       });
     },
   );
+  /**
+   * Checks the existence and beahviour elements of the email details view
+   * @param dataTestParentComponent the parentComponent
+   * @param dataTestPatchButton the button that triggers the patch
+   */
+  function checkEmailFieldsAndCheckBox(dataTestParentComponent: string, dataTestPatchButton: string): void {
+    const testEmail = "test1234@example.com";
+    const testMessage = "test message 1234";
+    cy.get(`[data-test="${dataTestParentComponent}"]`)
+      .should("exist")
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-test="checkbox"]').should("not.exist");
+        cy.get('[data-test="contactEmail"]').should("exist").type(testEmail);
+        cy.get('[data-test="dataRequesterMessage"]').should("exist").type(testMessage);
+        cy.get('[data-test="checkbox"]').should("exist").should("be.visible");
+      });
+    cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click();
+    cy.get(`[data-test="${dataTestParentComponent}"]`)
+      .should("exist")
+      .should("be.visible")
+      .contains("You have to accept the terms and conditions to add a message");
+    cy.get('[data-test="checkbox"]').should("exist").should("be.visible").click();
+    cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click();
+    cy.get(`[data-test="${dataTestParentComponent}"]`).should("not.exist");
+  }
 });
