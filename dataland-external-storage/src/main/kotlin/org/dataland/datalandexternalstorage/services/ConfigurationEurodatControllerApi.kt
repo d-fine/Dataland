@@ -1,6 +1,7 @@
 package org.dataland.datalandexternalstorage.services
 
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
+import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,5 +21,10 @@ class ConfigurationEurodatControllerApi(
     @Bean
     fun getDatabaseCredentialResourceApiClient(): DatabaseCredentialResourceApi {
         return DatabaseCredentialResourceApi(basePath = eurodatClientBaseUrl)
+    }
+
+    @Bean
+    fun SafeDepositDatabaseResourceApiClient(): SafeDepositDatabaseResourceApi {
+        return SafeDepositDatabaseResourceApi(basePath = eurodatClientBaseUrl)
     }
 }
