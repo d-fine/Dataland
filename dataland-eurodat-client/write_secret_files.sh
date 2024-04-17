@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# set pipefail ex etc. noch setzen TODO
+
+#TODO hier code einführen um in das richtige dir zu gehen mit der $0 Variable
+
 secret_files_dir="secret_files"
 
 # Check if the two secret files keystore.jks and test.jks are already in the secret_files directory.
