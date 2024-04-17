@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
+import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -97,7 +97,7 @@ class SingleDataRequestManagerQuotaTest(
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManager.processSingleDataRequest(passedRequest) }
         }
-        assertThrows<InsufficientRightsApiException> {
+        assertThrows<QuotaExceededException> {
             singleDataRequestManager.processSingleDataRequest(sampleRequest)
         }
     }
