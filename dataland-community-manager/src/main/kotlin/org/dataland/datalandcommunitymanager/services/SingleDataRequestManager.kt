@@ -12,7 +12,6 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.TimestampConvertor
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -21,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 
 /**
@@ -77,14 +78,11 @@ class SingleDataRequestManager(
     }
 
     private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
-        if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
-            val timestampMillisNow: Long = System.currentTimeMillis()
-            val timeStampConvertor = TimestampConvertor()
-            val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
-
+        val userInfo = DatalandAuthentication.fromContext()
+        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
             val numberOfDataRequestsPerformedByUserFromTimestamp =
                 dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                    DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
+                    userInfo.userId, getEpochTimeStartOfDay(),
                 )
 
             val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
@@ -98,6 +96,15 @@ class SingleDataRequestManager(
                 )
             }
         }
+    }
+
+    private fun getEpochTimeStartOfDay(): Long {
+        val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
+        val zoneId = ZoneId.of("Europe/Berlin")
+        val instantNowZoned = instantNow.atZone(zoneId)
+        val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
+        val startOfDayTimestampMillis = startOfDay.toInstant().toEpochMilli()
+        return startOfDayTimestampMillis
     }
 
     private fun validateSingleDataRequest(singleDataRequest: SingleDataRequest) {

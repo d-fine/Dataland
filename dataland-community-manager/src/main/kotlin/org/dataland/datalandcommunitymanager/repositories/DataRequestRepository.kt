@@ -141,11 +141,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query
     (
         "SELECT COUNT(d.userId) FROM DataRequestEntity d " +
-            "WHERE " +
-            "(d.userId = :#{#userId})" +
-            "AND " +
-            "('d.creationTimestamp' >= :#{#timestamp})",
-
+            "WHERE (d.userId = :#{#userId})" +
+            "AND (d.creationTimestamp >= :#{#timestamp})",
     )
     fun getNumberOfDataRequestsPerformedByUserFromTimestamp(
         userId: String,
