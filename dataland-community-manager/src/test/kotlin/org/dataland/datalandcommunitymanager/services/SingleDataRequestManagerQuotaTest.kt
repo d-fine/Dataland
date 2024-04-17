@@ -41,6 +41,7 @@ class SingleDataRequestManagerQuotaTest(
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val maxRequestsForUser = 10
 
+    // ab
     val sampleRequest = SingleDataRequest(
         companyIdentifier = companyIdRegexSafeCompanyId,
         dataType = DataTypeEnum.lksg,
