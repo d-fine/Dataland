@@ -19,12 +19,15 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 @SpringBootTest(classes = [DatalandCommunityManager::class], properties = ["spring.profiles.active=nodb"])
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class SingleDataRequestManagerQuotaTest(
     @Autowired val dataRequestRepository: DataRequestRepository,
     @Autowired val messageRepository: MessageRepository,
