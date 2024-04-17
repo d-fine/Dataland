@@ -36,7 +36,6 @@ class SingleDataRequestManager(
      * @return the stored data request object
      */
     @Transactional
-    @Suppress("brain-overload")
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequest(singleDataRequest)
