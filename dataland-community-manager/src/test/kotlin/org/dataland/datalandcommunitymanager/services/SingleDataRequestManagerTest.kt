@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.datalandcommunitymanager.utils.TestUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -49,6 +50,7 @@ class SingleDataRequestManagerTest {
         contacts = setOf("testContact@example.com"),
         message = "Test message for non-premium user quota test",
     )
+    private val testUtils = TestUtils()
 
     @BeforeEach
     @Suppress("FunctionTooLong")
@@ -168,7 +170,7 @@ class SingleDataRequestManagerTest {
             "1234-221-1111zwoelf",
             setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
         )
-        mockSecurityContext()
+        testUtils.mockSecurityContext()
         for (i in 1..maxRequestsForUser + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
             assertDoesNotThrow { singleDataRequestManagerMock.processSingleDataRequest(passedRequest) }
@@ -207,16 +209,5 @@ class SingleDataRequestManagerTest {
                 any() ?: dummyMessageInformation,
                 anyString(),
             )
-    }
-
-    private fun mockSecurityContext() {
-        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-            "mocked_uploader",
-            "dummy-id",
-            setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
-        )
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        SecurityContextHolder.setContext(mockSecurityContext)
     }
 }

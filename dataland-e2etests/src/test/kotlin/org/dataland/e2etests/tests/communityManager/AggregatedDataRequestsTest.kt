@@ -48,7 +48,6 @@ class AggregatedDataRequestsTest {
         checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size, 0)
     }
 
-    // test
     @Test
     fun `post bulk data requests for different users and check that aggregation works properly`() {
         val identifierMap = generateMapWithOneRandomValueForEachIdentifierType()
