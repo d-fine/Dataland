@@ -84,6 +84,49 @@ describe("Component tests for the view data request page", function (): void {
       status: 200,
     }).as("fetchCompanyName");
   }
+
+  it("Check view data request page for closed request with data renders as expected", function () {
+    interceptUserAskForSingleDataRequestsOnMounted(
+      getStoredDataRequest(RequestStatus.Closed, [dummyMessageObject] as Array<StoredDataRequestMessageObject>),
+    );
+    interceptUserAskForCompanyNameOnMounted();
+    interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+    interceptPatchRequest();
+    cy.mountWithPlugins(ViewDataRequestPage, {
+      keycloak: minimalKeycloakMock({}),
+      props: {
+        requestId: requestId,
+      },
+    }).then((mounted) => {
+      checkBasicPageElements(RequestStatus.Closed);
+      cy.get('[data-test="newMessage"]').should("not.exist");
+      cy.get('[data-test="card_withdrawn"]').should("not.exist");
+      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
+
+      cy.get('[data-test="viewDataset"]').should("exist").click();
+      cy.wrap(mounted.component)
+        .its("$route.path")
+        .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+    });
+  });
+  it("Check view data request page for withdrawn request without data renders as expected", function () {
+    interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Withdrawn, []));
+    interceptUserAskForCompanyNameOnMounted();
+    interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
+    interceptPatchRequest();
+    cy.mountWithPlugins(ViewDataRequestPage, {
+      keycloak: minimalKeycloakMock({}),
+      props: {
+        requestId: requestId,
+      },
+    }).then(() => {
+      checkBasicPageElements(RequestStatus.Withdrawn);
+      cy.get('[data-test="newMessage"]').should("not.exist");
+      cy.get('[data-test="card_withdrawn"]').should("not.exist");
+      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
+      cy.get('[data-test="viewDataset"]').should("not.exist");
+    });
+  });
   /**
    * Checks the existence of basic elements of the page
    * @param requestStatus the request Status to check for
@@ -221,45 +264,4 @@ describe("Component tests for the view data request page", function (): void {
       });
     },
   );
-  it("Check view data request page for closed request with data renders as expected", function () {
-    interceptUserAskForSingleDataRequestsOnMounted(
-      getStoredDataRequest(RequestStatus.Closed, [dummyMessageObject] as Array<StoredDataRequestMessageObject>),
-    );
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
-    interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      props: {
-        requestId: requestId,
-      },
-    }).then((mounted) => {
-      checkBasicPageElements(RequestStatus.Closed);
-      cy.get('[data-test="newMessage"]').should("not.exist");
-      cy.get('[data-test="card_withdrawn"]').should("not.exist");
-      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
-      cy.get('[data-test="viewDataset"]').should("exist").click();
-      cy.wrap(mounted.component)
-        .its("$route.path")
-        .should("eq", `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
-    });
-  });
-  it("Check view data request page for withdrawn request without data renders as expected", function () {
-    interceptUserAskForSingleDataRequestsOnMounted(getStoredDataRequest(RequestStatus.Withdrawn, []));
-    interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
-    interceptPatchRequest();
-    cy.mountWithPlugins(ViewDataRequestPage, {
-      keycloak: minimalKeycloakMock({}),
-      props: {
-        requestId: requestId,
-      },
-    }).then(() => {
-      checkBasicPageElements(RequestStatus.Withdrawn);
-      cy.get('[data-test="newMessage"]').should("not.exist");
-      cy.get('[data-test="card_withdrawn"]').should("not.exist");
-      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
-      cy.get('[data-test="viewDataset"]').should("not.exist");
-    });
-  });
 });
