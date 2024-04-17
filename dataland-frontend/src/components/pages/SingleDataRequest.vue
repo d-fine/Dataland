@@ -95,15 +95,16 @@
                       </p>
                       <div v-show="allowAccessDataRequesterMessage">
                         <div class="mt-3 flex">
-                          <input
-                            type="checkbox"
-                            class="ml-1"
-                            v-model="consentToMessageDataUsageGiven"
-                            data-test="acceptConditionsCheckbox"
-                          />
-                          <label class="tex-sm ml-2"
-                            >I hereby declare that the recipient(s) stated above consented to being contacted by
-                            Dataland with regard to this data request
+                          <label class="tex-sm flex">
+                            <input
+                              type="checkbox"
+                              class="ml-2 mr-3 mt-1"
+                              style="min-width: 17px"
+                              v-model="consentToMessageDataUsageGiven"
+                              data-test="acceptConditionsCheckbox"
+                            />
+                            I hereby declare that the recipient(s) stated above consented to being contacted by Dataland
+                            with regard to this data request
                           </label>
                         </div>
                         <p
