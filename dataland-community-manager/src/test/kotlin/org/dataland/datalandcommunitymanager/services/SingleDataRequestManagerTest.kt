@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -15,9 +16,12 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
@@ -30,24 +34,43 @@ import java.util.UUID
 class SingleDataRequestManagerTest {
 
     private lateinit var singleDataRequestManagerMock: SingleDataRequestManager
+    private lateinit var dataRequestRepositoryMock: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSenderMock: SingleDataRequestEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var utilsMock: DataRequestProcessingUtils
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
+    private val maxRequestsForUser = 10
+
+    private val sampleRequest = SingleDataRequest(
+        companyIdentifier = companyIdRegexSafeCompanyId,
+        dataType = DataTypeEnum.lksg,
+        reportingPeriods = setOf("1969"),
+        contacts = setOf("testContact@example.com"),
+        message = "Test message for non-premium user quota test",
+    )
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
+        var requestsCount = 0
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = mockDataRequestProcessingUtils()
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
+        dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
+        `when`(
+            dataRequestRepositoryMock
+                .getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
+        ).then {
+            requestsCount += 1
+            return@then requestsCount - 1
+        }
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
-            dataRequestRepository = mock(DataRequestRepository::class.java),
+            dataRequestRepository = dataRequestRepositoryMock,
             companyApi = mockCompanyApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
-            10,
+            maxRequestsForUser,
         )
         `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
             listOf(
@@ -89,7 +112,6 @@ class SingleDataRequestManagerTest {
                 dataType = (it.arguments[1] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
                 userId = "user-id",
-
             )
         }
         `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString(), anyBoolean()))
@@ -127,6 +149,31 @@ class SingleDataRequestManagerTest {
         testWhichEmailMessageIsSentFor(setOf(), null, 1, 0)
     }
 
+    @Test
+    fun `send single data requests as non premium user and verify that the quota is met`() {
+        for (i in 1..maxRequestsForUser) {
+            val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
+            assertDoesNotThrow { singleDataRequestManagerMock.processSingleDataRequest(passedRequest) }
+        }
+        assertThrows<QuotaExceededException> {
+            singleDataRequestManagerMock.processSingleDataRequest(sampleRequest)
+        }
+    }
+
+    @Test
+    fun `send single data requests as premium user and verify that the quota is not applied`() {
+        authenticationMock = AuthenticationMock.mockJwtAuthentication(
+            "requester@example.com",
+            "1234-221-1111zwoelf",
+            setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
+        mockSecurityContext()
+        for (i in 1..maxRequestsForUser + 1) {
+            val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
+            assertDoesNotThrow { singleDataRequestManagerMock.processSingleDataRequest(passedRequest) }
+        }
+    }
+
     private fun testWhichEmailMessageIsSentFor(
         contacts: Set<String>?,
         message: String?,
@@ -159,5 +206,16 @@ class SingleDataRequestManagerTest {
                 any() ?: dummyMessageInformation,
                 anyString(),
             )
+    }
+
+    private fun mockSecurityContext() {
+        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+            "mocked_uploader",
+            "dummy-id",
+            setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
+        )
+        val mockSecurityContext = mock(SecurityContext::class.java)
+        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+        SecurityContextHolder.setContext(mockSecurityContext)
     }
 }
