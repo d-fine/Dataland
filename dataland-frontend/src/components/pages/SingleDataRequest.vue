@@ -250,10 +250,14 @@ export default defineComponent({
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
 
-    const becomePremiumUserEmailTemplate = content.pages
-      .find((page) => page.url === "/companies")
-      .sections.find((section) => section.title === "Single Data Request")
-      .cards.find((card) => card.title === "Interested in becoming a premium user");
+    const companiesPage = content.pages.find((page) => page.url === "/companies");
+    const singleDatRequestSection = companiesPage
+      ? companiesPage.sections.find((section) => section.title === "Single Data Request")
+      : undefined;
+    const becomePremiumUserEmailTemplate = singleDatRequestSection
+      ? singleDatRequestSection.cards?.find((card) => card.title === "Interested in becoming a premium user")
+      : undefined;
+
     return {
       singleDataRequestModel: {},
       footerContent,
