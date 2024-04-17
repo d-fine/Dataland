@@ -139,8 +139,8 @@
                       </div>
                     </template>
                     <div class="text-block" style="margin: 15px">
-                      Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER() }} single data requests per
-                      day is exceeded. The quota will reset automatically tomorrow.
+                      Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER }} single data requests per day
+                      is exceeded. The quota will reset automatically tomorrow.
                     </div>
                     <div class="text-block" style="margin: 15px">
                       To avoid quotas altogether, consider becoming a premium user.
@@ -283,6 +283,7 @@ export default defineComponent({
       submitted: false,
       maxRequestReachedModalIsVisible: false,
       becomePremiumUserEmailTemplate,
+      MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
     };
   },
   computed: {
@@ -302,13 +303,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Returns the constant
-     * @class
-     */
-    MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER() {
-      return MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER;
-    },
     /**
      * Opens an Email regarding becoming a premium user
      */
@@ -331,13 +325,9 @@ export default defineComponent({
      * Checks if the first email in a string of comma separated emails is valid
      * @returns true if valid, false otherwise
      */
-    areValidContacts(): boolean {
-      let contactsValid = false;
-      for (const selectedContact of this.selectedContacts) {
-        contactsValid = this.isValidEmail(selectedContact);
-        if (!contactsValid) break;
-      }
-      return contactsValid;
+    areContactsFilledAndValid(): boolean {
+      if (this.selectedContacts.length == 0) return false;
+      return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
     },
 
     /**
@@ -366,7 +356,7 @@ export default defineComponent({
      * and required, based on whether valid contacts have been provided
      */
     updateMessageVisibility(): void {
-      if (this.areValidContacts()) {
+      if (this.areContactsFilledAndValid()) {
         this.allowAccessDataRequesterMessage = true;
         if (this.dataRequesterMessage == this.dataRequesterMessageNotAllowedText) {
           this.dataRequesterMessage = this.dataRequesterMessageAllowedText;
@@ -450,7 +440,7 @@ export default defineComponent({
           console.error(error);
           if (error instanceof AxiosError) {
             const errorJSON = error.toJSON();
-            if (errorJSON.status == 403) {
+            if (errorJSON.status == 404) {
               this.openMaxRequestsReachedModal();
             } else {
               const responseMessages = (error.response?.data as ErrorResponse)?.errors;
