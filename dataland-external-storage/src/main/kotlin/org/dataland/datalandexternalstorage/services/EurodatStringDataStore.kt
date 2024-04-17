@@ -1,7 +1,5 @@
 package org.dataland.datalandexternalstorage.services
 
-import DatabaseConnection.executeMySQLQuery
-import DatabaseConnection.getConnection
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
@@ -122,9 +120,10 @@ class EurodatStringDataStore(
     fun storeJsonInEurodat(dataId: String, correlationId: String, dataItem: DataItem) {
         logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
         val eurodatCredentials = databaseCredentialResourceClient.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
-        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_pdf) VALUES(?, ?)"
-        val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        executeMySQLQuery(conn, insertStatement, dataId, dataItem.data)
+        logger.info("Credentials Received")
+        // val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_pdf) VALUES(?, ?)"
+        // val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
+        // executeMySQLQuery(conn, insertStatement, dataId, dataItem.data)
         // TODO call to eurodat
         // dataItemRepository.save(dataItem)
         // DatabaseCredentialResourceApi.apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet()
