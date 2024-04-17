@@ -504,17 +504,13 @@ services:
     networks:
       - internal
     expose:
-      - "8443"
+      - "8080" #TODO think about this at the end   might even be deleted
     ports:
-      - "127.0.0.1:12345:8443" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
+      - "127.0.0.1:12345:8080" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
     volumes:
       - ./dataland-eurodat-client/secret_files:/crt
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
-    healthcheck:
-      test: ["CMD-SHELL", "wget -nv -O- -t 1 --no-check-certificate https://localhost:12345/api/v1/client-controller/health | tee /dev/stderr | grep -q '\"status\": \"UP\"' || false"]
-      interval: 30s
-      timeout: 3s
 networks:
   internal:
   external:
