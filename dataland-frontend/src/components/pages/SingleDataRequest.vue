@@ -67,7 +67,7 @@
                         type="text"
                         name="contactDetails"
                         data-test="contactEmail"
-                        @input="updateMessageVisibility"
+                        @input="$nextTick(updateMessageVisibility)"
                       />
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying contacts your data request will be directed accordingly.<br />
@@ -329,11 +329,15 @@ export default defineComponent({
     },
     /**
      * Checks if the first email in a string of comma separated emails is valid
-     * @param emails string of comma separated emails
      * @returns true if valid, false otherwise
      */
-    areValidEmails(emails: string): boolean {
-      return this.isValidEmail(emails.split(",")[0]);
+    areValidContacts(): boolean {
+      let contactsValid = false;
+      for (const selectedContact of this.selectedContacts) {
+        contactsValid = this.isValidEmail(selectedContact);
+        if (!contactsValid) break;
+      }
+      return contactsValid;
     },
 
     /**
@@ -359,11 +363,10 @@ export default defineComponent({
 
     /**
      * Updates if the message block is active and if the accept terms and conditions checkmark below is visible
-     * and required, based on whether valid emails have been provided
-     * @param contactsAsString the emails string to check
+     * and required, based on whether valid contacts have been provided
      */
-    updateMessageVisibility(contactsAsString: string | undefined): void {
-      if (this.areValidEmails(<string>contactsAsString)) {
+    updateMessageVisibility(): void {
+      if (this.areValidContacts()) {
         this.allowAccessDataRequesterMessage = true;
         if (this.dataRequesterMessage == this.dataRequesterMessageNotAllowedText) {
           this.dataRequesterMessage = this.dataRequesterMessageAllowedText;
