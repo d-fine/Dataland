@@ -45,10 +45,7 @@ class SingleDataRequestManager(
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         utils.throwExceptionIfNotJwtAuth()
         validateSingleDataRequest(singleDataRequest)
-
-        if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
-            performQuotaCheckForNonPremiumUser(singleDataRequest)
-        }
+        performQuotaCheckForNonPremiumUser(singleDataRequest)
 
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
@@ -79,24 +76,26 @@ class SingleDataRequestManager(
     }
 
     private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
-        val timestampMillisNow: Long = System.currentTimeMillis()
-        val timeStampConvertor = TimestampConvertor()
-        val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
+        if (!DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+            val timestampMillisNow: Long = System.currentTimeMillis()
+            val timeStampConvertor = TimestampConvertor()
+            val startOfDayTimestampMillis = timeStampConvertor.getTimestampStartOfDay(timestampMillisNow)
 
-        val numberOfDataRequestsPerformedByUserFromTimestamp =
-            dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
-            )
+            val numberOfDataRequestsPerformedByUserFromTimestamp =
+                dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
+                    DatalandAuthentication.fromContext().userId, startOfDayTimestampMillis,
+                )
 
-        val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
+            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
 
-        if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
-            > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
-        ) {
-            throw QuotaExceededException(
-                "Quota has been reached.",
-                "The daily quota capacity has been reached.",
-            )
+            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+                > MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
+            ) {
+                throw QuotaExceededException(
+                    "Quota has been reached.",
+                    "The daily quota capacity has been reached.",
+                )
+            }
         }
     }
 
