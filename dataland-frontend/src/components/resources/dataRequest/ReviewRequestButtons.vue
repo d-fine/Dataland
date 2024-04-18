@@ -8,7 +8,7 @@
     :show-header="true"
   >
     <template #header>
-      <div class="tab-menu">
+      <div class="tab-menu" data-test="updateRequestTabMenu">
         <button :class="{ active: activeTab === 'update request' }" @click="activeTab = 'update request'">
           UPDATE REQUEST
         </button>
@@ -28,7 +28,7 @@
         <span class="d-letters pl-2" style="text-align: center"> UPDATE REQUEST </span>
       </PrimeButton>
     </div>
-    <div v-if="activeTab === 'message history'">
+    <div v-if="activeTab === 'message history'" data-test="viewHistoryModal">
       <div v-for="message in messageHistory" :key="message.creationTimestamp">
         <div style="color: black; font-weight: bold; font-size: small; text-align: left">
           {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
