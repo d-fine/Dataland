@@ -146,7 +146,7 @@ export default defineComponent({
      */
     handleContactsUpdate(): void {
       this.displayContactsNotValidError = false;
-      void this.$nextTick(() => this.updateMessageVisibility());
+      this.$nextTick(() => this.updateMessageVisibility()).catch((error) => console.error(error));
     },
 
     /**
@@ -161,6 +161,8 @@ export default defineComponent({
         }
       } else {
         this.allowAccessDataRequesterMessage = false;
+        this.consentToMessageDataUsageGiven = false;
+        this.displayConsentToMessageDateUsageNotGiven = false;
         if (this.contactsAsString == "" && this.dataRequesterMessage == "") {
           this.dataRequesterMessage = dataRequesterMessageAccessDisabledText;
         }
