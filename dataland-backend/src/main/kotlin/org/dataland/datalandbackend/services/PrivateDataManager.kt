@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.services.generateRandomUuid
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -85,7 +85,7 @@ class PrivateDataManager(
             reportingPeriod = companyAssociatedSmeData.reportingPeriod,
             data = companyAssociatedSmeData.data.toString(),
         )
-        val dataId = generateRandomUuid()
+        val dataId = IdUtils.generateUUID()
 
         storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
@@ -140,7 +140,7 @@ class PrivateDataManager(
         val documentHashes = mutableMapOf<String, String>()
         for (document in documents) {
             val documentHash = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
-            val documentUuid = generateRandomUuid()
+            val documentUuid = IdUtils.generateUUID()
             documentHashes[documentHash] = documentUuid
             val documentAsByteArray = convertMultipartFileToByteArray(document)
             documentInMemoryStorage[documentHash] = documentAsByteArray
@@ -160,7 +160,7 @@ class PrivateDataManager(
     private fun sendReceptionMessage(
         dataId: String,
         correlationId: String,
-        documentHashes: MutableMap<String, String>,
+        documentHashes: Map<String, String>,
     ) {
         logger.info(
             "Processed data to be stored in EuroDaT, sending message for dataId $dataId and " +

@@ -249,7 +249,7 @@
         },
         "responses": {
           "200": {
-            "description": "S.",
+            "description": "Successfully added data to the private data store.",
             "content": {
               "application/json": {
                 "schema": {
@@ -14163,21 +14163,21 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -14204,10 +14204,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
