@@ -39,7 +39,7 @@
     </p>
     <div v-show="allowAccessDataRequesterMessage">
       <div class="mt-3 flex">
-        <label class="tex-sm flex">
+        <label class="tex-sm flex uploadFormWrapper">
           <input
             type="checkbox"
             class="ml-2 mr-3 mt-1"
@@ -48,8 +48,8 @@
             data-test="acceptConditionsCheckbox"
             @click="displayContactsNotValidError = false"
           />
-          I hereby declare that the recipient(s) stated above consented to being contacted by Dataland with regard to
-          this data request
+          I hereby declare that the recipient(s) stated above consented to <br />
+          being contacted by Dataland with regard to this data request
         </label>
       </div>
       <p
