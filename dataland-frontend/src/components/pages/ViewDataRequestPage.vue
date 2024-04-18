@@ -1,7 +1,6 @@
 <template>
   <AuthenticationWrapper>
     <PrimeDialog
-      v-if="successModalIsVisible"
       id="successModal"
       :dismissableMask="true"
       :modal="true"
@@ -111,7 +110,7 @@
               <span style="display: flex; align-items: center">
                 <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
                 <div
-                  v-if="allowNewMessage()"
+                  v-if="isNewMessageAllowed()"
                   style="cursor: pointer; display: flex; align-items: center"
                   @click="openMessageDialog()"
                   data-test="newMessage"
@@ -126,7 +125,7 @@
                   {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
                 </div>
                 <div class="message">
-                  <div style="color: black">Sent to: {{ formattedContacts(message.contacts) }}</div>
+                  <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
                   <div class="card__separator" />
                   <div style="color: gray">
                     {{ message.message }}
@@ -134,7 +133,7 @@
                 </div>
               </div>
             </div>
-            <div class="card" v-if="isWithdrawAble()" data-test="card_withdrawn">
+            <div class="card" v-if="isRequestWithdrawable()" data-test="card_withdrawn">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
               <div>
@@ -323,7 +322,7 @@ export default defineComponent({
      * Method to check if request is withdrawAble
      * @returns boolean is withdrawAble
      */
-    isWithdrawAble() {
+    isRequestWithdrawable() {
       return (
         this.storedDataRequest.requestStatus == RequestStatus.Open ||
         this.storedDataRequest.requestStatus == RequestStatus.Answered
@@ -349,7 +348,7 @@ export default defineComponent({
      * @param contacts set of strings
      * @returns string representing the elements of the set
      */
-    formattedContacts(contacts: Set<string>) {
+    formatContactsToString(contacts: Set<string>) {
       const contactsList = Array.from(contacts);
       return contactsList.join(", ");
     },
@@ -363,7 +362,7 @@ export default defineComponent({
      * Method to check if request status is open
      * @returns boolean if request status is open
      */
-    allowNewMessage() {
+    isNewMessageAllowed() {
       return this.storedDataRequest.requestStatus == RequestStatus.Open;
     },
   },
