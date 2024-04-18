@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
+import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -39,6 +40,7 @@ class DataOwnersManagerTest {
             mockDataOwnersRepository,
             mockCompanyRepository,
             mock(DataOwnershipEmailMessageSender::class.java),
+            mock(DataOwnershipSuccessfullyEmailMessageSender::class.java),
         )
     }
 

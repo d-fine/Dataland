@@ -207,7 +207,20 @@ class CompanyDataController(
 
     override fun postDataOwner(companyId: UUID, userId: UUID): ResponseEntity<CompanyDataOwners> {
         logger.info("Received a request to post a data owner with Id $userId to company with Id $companyId.")
-        val companyDataOwnersEntity = dataOwnersManager.addDataOwnerToCompany(companyId.toString(), userId.toString())
+
+        val userAuthentication = DatalandAuthentication.fromContext()
+        val correlationId = UUID.randomUUID().toString()
+        val companyEntity = companyQueryManager.getCompanyById(companyId.toString())
+        val companyName = companyEntity.companyName
+
+        val companyDataOwnersEntity = dataOwnersManager.addDataOwnerToCompany(
+            companyId.toString(),
+            userId.toString(),
+            userAuthentication,
+            companyName,
+            "Data request ownership accepted",
+            correlationId,
+        )
         return ResponseEntity.ok(
             CompanyDataOwners(
                 companyId = companyDataOwnersEntity.companyId,
