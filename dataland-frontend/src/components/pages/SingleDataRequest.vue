@@ -162,7 +162,6 @@
                       label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
                       name="submit_request_button"
-                      @click="checkPreSubmitConditions()"
                     >
                       SUBMIT DATA REQUEST
                     </PrimeButton>
@@ -454,6 +453,7 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
+      this.checkPreSubmitConditions();
       if (!this.preSubmitConditionsFulfilled()) {
         return;
       }
