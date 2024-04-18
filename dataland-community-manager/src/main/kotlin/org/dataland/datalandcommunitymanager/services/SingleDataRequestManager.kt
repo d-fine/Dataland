@@ -45,7 +45,6 @@ class SingleDataRequestManager(
      * @return the stored data request object
      */
     @Transactional
-    @Suppress("LongMethod")
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
         checkSingleDataRequest(singleDataRequest)
         val correlationId = UUID.randomUUID().toString()
