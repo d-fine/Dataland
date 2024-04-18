@@ -1,158 +1,163 @@
 <template>
   <AuthenticationWrapper>
-    <PrimeDialog
-      id="successModal"
-      :dismissableMask="true"
-      :modal="true"
-      v-model:visible="successModalIsVisible"
-      :closable="false"
-      style="border-radius: 0.75rem; text-align: center"
-      :show-header="false"
-      data-test="successModal"
-    >
-      <div class="text-center" style="display: flex; flex-direction: column">
-        <div style="margin: 10px">
-          <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
-        </div>
-        <div style="margin: 10px">
-          <h2 class="m-0" data-test="successText">Success</h2>
-        </div>
-      </div>
-      <div class="text-block" style="margin: 15px; white-space: pre">You have successfully withdrawn your request.</div>
-      <div style="margin: 10px">
-        <PrimeButton label="CLOSE" @click="successModalIsVisible = false" class="p-button-outlined" />
-      </div>
-    </PrimeDialog>
-    <PrimeDialog
-      :dismissableMask="true"
-      :modal="true"
-      v-model:visible="showNewMessageDialog"
-      :closable="true"
-      style="text-align: center"
-      :show-header="true"
-    >
-      <template #header>
-        <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
-      </template>
-      <EmailDetails
-        :is-optional="false"
-        :show-errors="emailDetailsError"
-        @has-new-input="updateEmailFields"
-        data-test="newMessageModal"
-      />
-      <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
-        <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
-      </PrimeButton>
-    </PrimeDialog>
-    <TheHeader />
-    <div class="sheet">
-      <div class="headline">
+    <TheContent class="min-h-screen flex sheet">
+      <TheHeader />
+      <div class="headline" style="margin-left: 1rem; margin-top: 0.5rem">
         <BackButton />
-      </div>
-      <h1 class="text-left">Data Request</h1>
-    </div>
-    <div class="py-4 paper-section">
-      <div class="grid col-9 justify-content-around">
-        <div class="col-4">
-          <div class="card" data-test="card_requestDetails">
-            <div class="card__title">Request Details</div>
-            <div class="card__separator" />
-            <div class="card__subtitle">Company</div>
-            <div class="card__data">{{ companyName }}</div>
-            <div class="card__subtitle">Framework</div>
-            <div class="card__data">
-              {{ getFrameworkTitle(storedDataRequest.dataType) }}
 
-              <div
-                v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
-                style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-              >
-                <br />
-                {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
-              </div>
-            </div>
-            <div class="card__subtitle">Reporting year</div>
-            <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
+        <h1 class="text-left">Data Request</h1>
+      </div>
+
+      <PrimeDialog
+        id="successModal"
+        :dismissableMask="true"
+        :modal="true"
+        v-model:visible="successModalIsVisible"
+        :closable="false"
+        style="border-radius: 0.75rem; text-align: center"
+        :show-header="false"
+        data-test="successModal"
+      >
+        <div class="text-center" style="display: flex; flex-direction: column">
+          <div style="margin: 10px">
+            <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
           </div>
-          <div
-            v-show="isDatasetAvailable"
-            class="link claim-panel-text"
-            style="font-weight: bold"
-            data-test="viewDataset"
-            @click="goToResolveDataRequestPage()"
-          >
-            VIEW DATASET
+          <div style="margin: 10px">
+            <h2 class="m-0" data-test="successText">Success</h2>
           </div>
         </div>
-        <div class="grid col-8 flex-direction-column">
-          <div class="col-12">
-            <div class="card" data-test="card_requestIs">
-              <span style="display: flex; align-items: center">
-                <div class="card__title">Request is:</div>
-                <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
-                  {{ storedDataRequest.requestStatus }}
-                </div>
-                <div class="card__subtitle">
-                  since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
-                </div>
-                <div style="margin-left: auto">
-                  <PrimeButton
-                    data-test="resolveRequestButton"
-                    v-show="isRequestStatusAnswered()"
-                    @click="goToResolveDataRequestPage()"
-                  >
-                    <span class="d-letters pl-2"> Resolve Request </span>
-                  </PrimeButton>
-                </div>
-              </span>
-            </div>
-            <div class="card" data-test="card_providedContactDetails">
-              <span style="display: flex; align-items: center">
-                <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
-                <div
-                  v-show="isNewMessageAllowed()"
-                  style="cursor: pointer; display: flex; align-items: center"
-                  @click="openMessageDialog()"
-                  data-test="newMessage"
-                >
-                  <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
-                  <div style="font-weight: bold">NEW MESSAGE</div>
-                </div>
-              </span>
+        <div class="text-block" style="margin: 15px; white-space: pre">
+          You have successfully withdrawn your request.
+        </div>
+        <div style="margin: 10px">
+          <PrimeButton label="CLOSE" @click="successModalIsVisible = false" class="p-button-outlined" />
+        </div>
+      </PrimeDialog>
+      <PrimeDialog
+        :dismissableMask="true"
+        :modal="true"
+        v-model:visible="showNewMessageDialog"
+        :closable="true"
+        style="text-align: center"
+        :show-header="true"
+      >
+        <template #header>
+          <span style="font-weight: bold; margin-right: auto">NEW MESSAGE</span>
+        </template>
+        <EmailDetails
+          :is-optional="false"
+          :show-errors="emailDetailsError"
+          @has-new-input="updateEmailFields"
+          data-test="newMessageModal"
+        />
+        <PrimeButton data-test="addMessageButton" @click="addMessage()" style="width: 100%; justify-content: center">
+          <span class="d-letters pl-2" style="text-align: center"> SEND MESSAGE </span>
+        </PrimeButton>
+      </PrimeDialog>
+
+      <div class="py-4 paper-section">
+        <div class="grid col-9 justify-content-around">
+          <div class="col-4">
+            <div class="card" data-test="card_requestDetails">
+              <div class="card__title">Request Details</div>
               <div class="card__separator" />
-              <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
-                <div style="color: black; font-weight: bold; font-size: small">
-                  {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
+              <div class="card__subtitle">Company</div>
+              <div class="card__data">{{ companyName }}</div>
+              <div class="card__subtitle">Framework</div>
+              <div class="card__data">
+                {{ getFrameworkTitle(storedDataRequest.dataType) }}
+
+                <div
+                  v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
+                  style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                >
+                  <br />
+                  {{ getFrameworkSubtitle(storedDataRequest.dataType) }}
                 </div>
-                <div class="message">
-                  <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
-                  <div class="card__separator" />
-                  <div style="color: gray">
-                    {{ message.message }}
+              </div>
+              <div class="card__subtitle">Reporting year</div>
+              <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
+            </div>
+            <div
+              v-show="isDatasetAvailable"
+              class="link claim-panel-text"
+              style="font-weight: bold"
+              data-test="viewDataset"
+              @click="goToResolveDataRequestPage()"
+            >
+              VIEW DATASET
+            </div>
+          </div>
+          <div class="grid col-8 flex-direction-column">
+            <div class="col-12">
+              <div class="card" data-test="card_requestIs">
+                <span style="display: flex; align-items: center">
+                  <div class="card__title">Request is:</div>
+                  <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
+                    {{ storedDataRequest.requestStatus }}
+                  </div>
+                  <div class="card__subtitle">
+                    since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
+                  </div>
+                  <div style="margin-left: auto">
+                    <PrimeButton
+                      data-test="resolveRequestButton"
+                      v-show="isRequestStatusAnswered()"
+                      @click="goToResolveDataRequestPage()"
+                    >
+                      <span class="d-letters pl-2"> Resolve Request </span>
+                    </PrimeButton>
+                  </div>
+                </span>
+              </div>
+              <div class="card" data-test="card_providedContactDetails">
+                <span style="display: flex; align-items: center">
+                  <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
+                  <div
+                    v-show="isNewMessageAllowed()"
+                    style="cursor: pointer; display: flex; align-items: center"
+                    @click="openMessageDialog()"
+                    data-test="newMessage"
+                  >
+                    <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
+                    <div style="font-weight: bold">NEW MESSAGE</div>
+                  </div>
+                </span>
+                <div class="card__separator" />
+                <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
+                  <div style="color: black; font-weight: bold; font-size: small">
+                    {{ convertUnixTimeInMsToDateString(message.creationTimestamp) }}
+                  </div>
+                  <div class="message">
+                    <div style="color: black">Sent to: {{ formatContactsToString(message.contacts) }}</div>
+                    <div class="card__separator" />
+                    <div style="color: gray">
+                      {{ message.message }}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
-              <div class="card__title">Withdraw Request</div>
-              <div class="card__separator" />
-              <div>
-                Once a data request is withdrawn, it will be removed from your data request list. The data owner will
-                not be notified anymore.
-                <a
-                  class="link"
-                  style="display: inline-flex; font-weight: bold; color: black"
-                  @click="withdrawRequest()"
-                >
-                  Withdraw request.</a
-                >
+              <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
+                <div class="card__title">Withdraw Request</div>
+                <div class="card__separator" />
+                <div>
+                  Once a data request is withdrawn, it will be removed from your data request list. The data owner will
+                  not be notified anymore.
+                  <a
+                    class="link"
+                    style="display: inline-flex; font-weight: bold; color: black"
+                    @click="withdrawRequest()"
+                  >
+                    Withdraw request.</a
+                  >
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <TheFooter :is-light-version="true" />
+      <TheFooter :is-light-version="true" />
+    </TheContent>
   </AuthenticationWrapper>
 </template>
 
@@ -172,10 +177,20 @@ import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
 import { type DataTypeEnum, QaStatus } from "@clients/backend";
+import TheContent from "@/components/generics/TheContent.vue";
 
 export default defineComponent({
   name: "ViewDataRequest",
-  components: { EmailDetails, PrimeDialog, PrimeButton, BackButton, AuthenticationWrapper, TheHeader, TheFooter },
+  components: {
+    TheContent,
+    EmailDetails,
+    PrimeDialog,
+    PrimeButton,
+    BackButton,
+    AuthenticationWrapper,
+    TheHeader,
+    TheFooter,
+  },
   props: {
     requestId: {
       type: String,
