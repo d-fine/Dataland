@@ -29,7 +29,7 @@ object DatabaseConnection {
 
                 val rowsInserted = preparedStatement.executeUpdate()
                 if (rowsInserted > 0) {
-                    logger.info("A new row was inserted successfully.")
+                    logger.info("Data for $dataId was inserted successfully.")
                 }
             } catch (ex: SQLException) {
                 logger.error("A sql exception was thronw: $ex")
@@ -67,7 +67,7 @@ object DatabaseConnection {
 
                 val rowsInserted = preparedStatement.executeUpdate()
                 if (rowsInserted > 0) {
-                    logger.info("A new row was inserted successfully.")
+                    logger.info("A Document with the $documentId was inserted successfully.")
                 }
             } catch (ex: SQLException) {
                 logger.error("A sql exception was thronw: $ex")
