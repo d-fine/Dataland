@@ -158,18 +158,24 @@ describe("Component tests for the data request review buttons", function (): voi
       .should("exist")
       .should("be.visible")
       .within(() => {
-        messageHistory.forEach((message) => {
-          message.contacts.forEach((contact) => {
-            cy.contains(contact).should("exist");
-          });
-          cy.contains(message.message).should("exist");
-          cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should("exist");
-        });
+        checkMessageHistory();
       });
     cy.get('[data-test="updateRequestTabMenu"]')
       .contains("button", "UPDATE REQUEST")
       .should("exist")
       .click({ force: true });
     checkEmailFieldsAndCheckBox(parentComponentOfEmailDetails, triggerComponentForEmailDetails);
+  }
+  /**
+   * Checks the message history
+   */
+  function checkMessageHistory(): void {
+    messageHistory.forEach((message) => {
+      message.contacts.forEach((contact) => {
+        cy.contains(contact).should("exist");
+      });
+      cy.contains(message.message).should("exist");
+      cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should("exist");
+    });
   }
 });
