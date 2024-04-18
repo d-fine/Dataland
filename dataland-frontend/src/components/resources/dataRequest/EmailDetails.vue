@@ -8,10 +8,10 @@
       type="text"
       name="contactDetails"
       data-test="contactEmail"
-      @input="updateMessageVisibility"
+      @input="handlesContactsUpdate"
     />
-    <p v-if="displayConditionsNoEmailError" class="text-danger text-xs mt-2" data-test="emailErrorMessage">
-      You have to provide at least one valid email.
+    <p v-show="displayContactsNotValidError" class="text-danger text-xs" data-test="contactsNotValidErrorMessage">
+      You have to provide valid contacts to add a message to the request
     </p>
     <p class="gray-text font-italic" style="text-align: left">
       By specifying contacts your data request will be directed accordingly.<br />
@@ -35,22 +35,29 @@
       v-bind:disabled="!allowAccessDataRequesterMessage"
     />
     <p class="gray-text font-italic" style="text-align: left">
-      I hereby declare that the recipient(s) stated above consented <br />
-      to being contacted by Dataland with regard to this data request.
+      Let your contacts know what exactly your are looking for.
     </p>
-    <div v-if="allowAccessDataRequesterMessage">
+    <div v-show="allowAccessDataRequesterMessage">
       <div class="mt-3 flex">
-        <label class="tex-sm ml-2">
-          <input data-test="checkbox" type="checkbox" class="ml-1" v-model="consentToMessageDataUsageGiven" />
-          I agree with the <a class="text-primary" href="/terms">Terms and Conditions</a></label
-        >
+        <label class="tex-sm flex">
+          <input
+            type="checkbox"
+            class="ml-2 mr-3 mt-1"
+            style="min-width: 17px"
+            v-model="consentToMessageDataUsageGiven"
+            data-test="acceptConditionsCheckbox"
+            @click="displayContactsNotValidError = false"
+          />
+          I hereby declare that the recipient(s) stated above consented to being contacted by Dataland with regard to
+          this data request
+        </label>
       </div>
       <p
-        v-if="displayConditionsNotAcceptedError"
+        v-show="displayContactsNotValidError"
         class="text-danger text-xs mt-2"
-        data-test="conditionNotAcceptedErrorMessage"
+        data-test="conditionsNotAcceptedErrorMessage"
       >
-        You have to accept the terms and conditions to add a message
+        You have to declare that the recipient(s) consented in order to add a message
       </p>
     </div>
   </FormKit>
@@ -75,7 +82,7 @@ export default defineComponent({
   emits: ["hasNewInput"],
   data() {
     return {
-      displayConditionsNotAcceptedError: false,
+      displayContactsNotValidError: false,
       displayConditionsNoEmailError: false,
       allowAccessDataRequesterMessage: false,
       consentToMessageDataUsageGiven: false,
@@ -121,7 +128,7 @@ export default defineComponent({
      * Enables the error messages
      */
     displayErrors() {
-      this.displayConditionsNotAcceptedError = !this.consentToMessageDataUsageGiven;
+      this.displayContactsNotValidError = !this.consentToMessageDataUsageGiven;
       this.displayConditionsNoEmailError = !this.areValidEmails(this.contactsAsString);
     },
     /**
@@ -158,7 +165,7 @@ export default defineComponent({
      * and required, based on whether valid emails have been provided
      * @param contactsAsString the emails string to check
      */
-    updateMessageVisibility(contactsAsString: string | undefined): void {
+    handlesContactsUpdate(contactsAsString: string | undefined): void {
       if (this.areValidEmails(<string>contactsAsString)) {
         this.allowAccessDataRequesterMessage = true;
         if (this.dataRequesterMessage == this.dataRequesterMessageNotAllowedText) {
