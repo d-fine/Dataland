@@ -10,6 +10,7 @@ import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialRe
 import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
 import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
+import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
 import org.dataland.datalandexternalstorage.entities.DataItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -27,12 +28,12 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import kotlin.system.exitProcess
 
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
@@ -49,13 +50,49 @@ class EurodatDataStore(
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
+    @Value("\${dataland.eurodatclient.app-name}")
+    private val eurodatAppName: String,
+    @Value("\${dataland.eurodatclient.max-retries-connecting}")
+    private val maxRetriesConnectingToEurodat: Int,
+    @Value("\${dataland.eurodatclient.seconds-between-retries}")
+    private val secondsBetweenRetriesConnectingToEurodat: Int,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val eurodatAppName = "minaboApp"
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    /**
+     * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and
+     * then throws a final exception after the retries are used up.
+     */
     @PostConstruct
-    fun init() {
-        createSafeDepositBox()
+    fun createSafeDepositBox() {
+        var retryCount = 0
+
+        while (retryCount <= maxRetriesConnectingToEurodat) {
+            try {
+                logger.info("Trying to create safe-deposit-box in EuroDaT with appId $eurodatAppName")
+                if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
+                    logger.info("Safe-deposit-box in EuroDaT for appId $eurodatAppName already exists")
+                    break
+                }
+            } catch (e: Exception) {
+                logger.error("An error occurred while creating safe-deposit-box: ${e.message}")
+                if (retryCount == maxRetriesConnectingToEurodat) {
+                    logger.error("Failed to create safe-deposit-box, even after $maxRetriesConnectingToEurodat retries")
+                    throw e
+                }
+            }
+            retryCount++
+            Thread.sleep(secondsBetweenRetriesConnectingToEurodat.toLong() * 1000)
+        }
+    }
+
+    /**
+     * Sends a POST request to the safe deposit box creation endpoint of the EuroDaT client.
+     */
+    fun postSafeDepositBoxCreationRequest(): SafeDepositDatabaseResponse {
+        val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
+        return safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
     }
 
     /**
@@ -172,35 +209,5 @@ class EurodatDataStore(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
         )
-    }
-
-    fun createSafeDepositBox() {
-        val maxRetries = 8
-        val secondsBetweenRetries: Long = 15
-        var retryCount = 0
-        var databaseAlreadyExists = false
-
-        while (retryCount <= maxRetries && !databaseAlreadyExists) {
-            try {
-                logger.info("Trying to create safe-deposit-box in EuroDaT with appId $eurodatAppName")
-                val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
-                val safeDepositDataBaseResponse =
-                    safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
-                if (safeDepositDataBaseResponse.response.contains("Database already exists")) {
-                    logger.info("Safe-deposit-box in EuroDaT for appId $eurodatAppName already exists")
-                    databaseAlreadyExists = true
-                }
-            } catch (e: Exception) {
-                logger.error("An error occurred while creating safe-deposit-box: ${e.message}")
-            }
-            if (!databaseAlreadyExists) {
-                retryCount++
-                Thread.sleep(secondsBetweenRetries * 1000)
-            }
-        }
-        if (!databaseAlreadyExists) {
-            logger.error("Failed to create safe-deposit-box, even after $maxRetries retries")
-            exitProcess(1) // TODO custom exception for the case EuroDaT-down?
-        }
     }
 }

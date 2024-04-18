@@ -16,15 +16,18 @@ class ConfigurationEurodatControllerApi(
     private val eurodatClientBaseUrl: String,
 ) {
     /**
-     * The bean to configure the eurodat client CredentialControllerApi
+     * The bean to configure the client for database credential retrieval from EuroDaT
      */
     @Bean
     fun getDatabaseCredentialResourceApiClient(): DatabaseCredentialResourceApi {
         return DatabaseCredentialResourceApi(basePath = eurodatClientBaseUrl)
     }
 
+    /**
+     * The bean to configure the client for safe deposit box creation in EuroDaT
+     */
     @Bean
-    fun SafeDepositDatabaseResourceApiClient(): SafeDepositDatabaseResourceApi {
+    fun getSafeDepositDatabaseResourceApiClient(): SafeDepositDatabaseResourceApi {
         return SafeDepositDatabaseResourceApi(basePath = eurodatClientBaseUrl)
     }
 }
