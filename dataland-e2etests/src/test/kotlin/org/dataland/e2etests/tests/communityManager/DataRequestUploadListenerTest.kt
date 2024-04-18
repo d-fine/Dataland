@@ -219,7 +219,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `add a message to an open or add a message to an answered request + patch to open, assert success`() {
+    fun `add a message to an open request do not change the status and assert success`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         val message = "test message"
         val contacts = setOf("test@example.com", "test2@example.com")
@@ -234,22 +234,27 @@ class DataRequestUploadListenerTest {
             contacts, newMessageDataRequest.messageHistory.first().contacts,
             "The contacts were not patched correctly.",
         )
+    }
 
+    @Test
+    fun `add a message to an answered request do change the status to open and assert success`() {
+        val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
-
+        val message = "test message"
+        val contacts = setOf("test@example.com", "test2@example.com")
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val newMessageAndOpenEndRangeDataRequest =
+        val newMessageAndOpenDataRequest =
             requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, contacts, message)
         assertEquals(
-            message, newMessageDataRequest.messageHistory.last().message,
+            message, newMessageAndOpenDataRequest.messageHistory.last().message,
             "The message was not patched correctly.",
         )
         assertEquals(
-            contacts, newMessageDataRequest.messageHistory.last().contacts,
+            contacts, newMessageAndOpenDataRequest.messageHistory.last().contacts,
             "The contacts were not patched correctly.",
         )
-        assertEquals(RequestStatus.Open, newMessageAndOpenEndRangeDataRequest.requestStatus)
+        assertEquals(RequestStatus.Open, newMessageAndOpenDataRequest.requestStatus)
     }
 
     @Test
