@@ -3,11 +3,11 @@ import { type FrameworkDataApi, translateFrameworkApi } from "@/utils/api/Unifie
 import {
   type Configuration,
   DataTypeEnum,
-  EuTaxonomyDataForFinancialsControllerApi,
-  EutaxonomyNonFinancialsDataControllerApi,
-  LksgDataControllerApi,
-  P2pDataControllerApi,
-  SfdrDataControllerApi,
+  EuTaxonomyPublicDataForFinancialsControllerApi,
+  EutaxonomyNonFinancialsPublicDataControllerApi,
+  LksgPublicDataControllerApi,
+  P2PPublicDataControllerApi,
+  SfdrPublicDataControllerApi,
   //SmeDataControllerApi,
 } from "@clients/backend";
 import { assertNever } from "@/utils/TypeScriptUtils";
@@ -29,17 +29,17 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
     case DataTypeEnum.Lksg:
       return translateFrameworkApi<typeof DataTypeEnum.Lksg>(
         "LksgData",
-        new LksgDataControllerApi(configuration, undefined, axiosInstance),
+        new LksgPublicDataControllerApi(configuration, undefined, axiosInstance),
       );
     case DataTypeEnum.Sfdr:
       return translateFrameworkApi<typeof DataTypeEnum.Sfdr>(
         "SfdrData",
-        new SfdrDataControllerApi(configuration, undefined, axiosInstance),
+        new SfdrPublicDataControllerApi(configuration, undefined, axiosInstance),
       );
     case DataTypeEnum.P2p:
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(
         "P2pData",
-        new P2pDataControllerApi(configuration, undefined, axiosInstance),
+        new P2PPublicDataControllerApi(configuration, undefined, axiosInstance),
       );
     /*case DataTypeEnum.Sme:
        return translateFrameworkApi<typeof DataTypeEnum.Sme>(
@@ -50,12 +50,12 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
     case DataTypeEnum.EutaxonomyFinancials:
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
         "EuTaxonomyDataForFinancials",
-        new EuTaxonomyDataForFinancialsControllerApi(configuration, undefined, axiosInstance),
+        new EuTaxonomyPublicDataForFinancialsControllerApi(configuration, undefined, axiosInstance),
       );
     case DataTypeEnum.EutaxonomyNonFinancials:
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
         "EutaxonomyNonFinancialsData",
-        new EutaxonomyNonFinancialsDataControllerApi(configuration, undefined, axiosInstance),
+        new EutaxonomyNonFinancialsPublicDataControllerApi(configuration, undefined, axiosInstance),
       );
     default:
       return assertNever(framework);
