@@ -6,7 +6,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EsgQuestionnaireData,
-  EsgQuestionnaireDataControllerApi,
+  EsgQuestionnairePublicDataControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -76,7 +76,7 @@ describeIf(
                     cy.url().should("eq", getBaseUrl() + "/datasets");
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
-                    return new EsgQuestionnaireDataControllerApi(new Configuration({ accessToken: token }))
+                    return new EsgQuestionnairePublicDataControllerApi(new Configuration({ accessToken: token }))
                       .getCompanyAssociatedEsgQuestionnaireData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedEsgQuestionnaireDataset = axiosResponse.data.data;
