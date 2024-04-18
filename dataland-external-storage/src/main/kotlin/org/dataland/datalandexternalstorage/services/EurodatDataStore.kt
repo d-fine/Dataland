@@ -42,7 +42,7 @@ import kotlin.system.exitProcess
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
-class EurodatStringDataStore(
+class EurodatDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
