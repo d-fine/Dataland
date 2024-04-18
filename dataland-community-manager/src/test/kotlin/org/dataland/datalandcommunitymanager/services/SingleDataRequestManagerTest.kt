@@ -55,9 +55,9 @@ class SingleDataRequestManagerTest {
     @BeforeEach
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
-        utilsMock = getDataRequestProcessingUtilsMock()
+        utilsMock = createDataRequestProcessingUtilsMock()
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
-        dataRequestRepositoryMock = getDataRequestRepositoryMock()
+        dataRequestRepositoryMock = createDataRequestRepositoryMock()
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
@@ -74,11 +74,11 @@ class SingleDataRequestManagerTest {
                 ),
             ),
         )
-        val mockSecurityContext = getSecurityContextMock()
+        val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    private fun getSecurityContextMock(): SecurityContext {
+    private fun createSecurityContextMock(): SecurityContext {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",
@@ -90,7 +90,7 @@ class SingleDataRequestManagerTest {
         return mockSecurityContext
     }
 
-    private fun getDataRequestRepositoryMock(): DataRequestRepository {
+    private fun createDataRequestRepositoryMock(): DataRequestRepository {
         var requestsCount = 0
         val dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
         `when`(
@@ -103,7 +103,7 @@ class SingleDataRequestManagerTest {
         return dataRequestRepositoryMock
     }
 
-    private fun getDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
+    private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(

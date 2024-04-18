@@ -352,6 +352,7 @@ export default defineComponent({
      * @returns true if the email is valid, false otherwise
      */
     isValidEmail(email: string): boolean {
+      // This RegEx should be kept consistent with the validation rules used by the community service in the backend
       const regex = /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-z]{2,}$/;
       return regex.test(email.toLowerCase());
     },
