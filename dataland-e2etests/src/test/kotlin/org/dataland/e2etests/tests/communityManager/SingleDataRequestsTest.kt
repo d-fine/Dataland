@@ -292,13 +292,6 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `assert that a request patch from a finalized status is forbidden`() {
-        // TODO create a closed request and patch it to withdrawn
-        // TODO optionally check if a patch from closed to closed or withdrawn to withdrawn is forbidden,
-        //  since it is explicity coded that way
-    }
-
-    @Test
     fun `query the data requests as an uploader and assert that it is forbidden`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
