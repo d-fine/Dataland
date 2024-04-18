@@ -257,6 +257,8 @@ export default defineComponent({
       ? singleDatRequestSection.cards?.find((card) => card.title === "Interested in becoming a premium user")
       : undefined;
 
+    const dataRequesterMessageAccessDisabledText = "Please provide a valid email before entering a message";
+
     return {
       singleDataRequestModel: {},
       footerContent,
@@ -265,9 +267,8 @@ export default defineComponent({
       frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
       contactsAsString: "",
       allowAccessDataRequesterMessage: false,
-      dataRequesterMessage: "Please provide a valid email before entering a message",
-      dataRequesterMessageNotAllowedText: "Please provide a valid email before entering a message",
-      dataRequesterMessageAllowedText: "",
+      dataRequesterMessage: dataRequesterMessageAccessDisabledText,
+      dataRequesterMessageAccessDisabledText,
       consentToMessageDataUsageGiven: false,
       errorMessage: "",
       selectedReportingPeriodsError: false,
@@ -362,14 +363,13 @@ export default defineComponent({
     updateMessageVisibility(): void {
       if (this.areContactsFilledAndValid()) {
         this.allowAccessDataRequesterMessage = true;
-        if (this.dataRequesterMessage == this.dataRequesterMessageNotAllowedText) {
-          this.dataRequesterMessage = this.dataRequesterMessageAllowedText;
+        if (this.dataRequesterMessage == this.dataRequesterMessageAccessDisabledText) {
+          this.dataRequesterMessage = "";
         }
       } else {
         this.allowAccessDataRequesterMessage = false;
-        if (this.dataRequesterMessage != this.dataRequesterMessageNotAllowedText) {
-          this.dataRequesterMessageAllowedText = this.dataRequesterMessage;
-          this.dataRequesterMessage = this.dataRequesterMessageNotAllowedText;
+        if (this.contactsAsString == "" && this.dataRequesterMessage == "") {
+          this.dataRequesterMessage = this.dataRequesterMessageAccessDisabledText;
         }
       }
     },
