@@ -120,17 +120,20 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
             assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
             assertEquals(userEmail, arg1.receiver)
-            assertEquals(companyId, arg1.properties.getValue("companyId"))
-            assertEquals(companyName, arg1.properties.getValue("companyName"))
-            assertEquals(dataType, arg1.properties.getValue("dataType"))
-            assertEquals(dataTypeDescription, arg1.properties.getValue("dataTypeDescription"))
-            assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
-            assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
-            assertEquals(dataRequestId, arg1.properties.getValue("dataRequestId"))
+            checkProperties(arg1.properties, dataType, dataTypeDescription)
             assertEquals(MessageType.SendTemplateEmail, arg2)
             assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SendEmail, arg4)
             assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
+    }
+    private fun checkProperties(properties: Map<String, String?>, dataType: String, dataTypeDescription: String) {
+        assertEquals(companyId, properties.getValue("companyId"))
+        assertEquals(companyName, properties.getValue("companyName"))
+        assertEquals(dataType, properties.getValue("dataType"))
+        assertEquals(dataTypeDescription, properties.getValue("dataTypeDescription"))
+        assertEquals(reportingPeriod, properties.getValue("reportingPeriod"))
+        assertEquals(creationTimestampAsDate, properties.getValue("creationDate"))
+        assertEquals(dataRequestId, properties.getValue("dataRequestId"))
     }
 }
