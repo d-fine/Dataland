@@ -160,7 +160,7 @@ class PrivateDataManager(
     private fun sendReceptionMessage(
         dataId: String,
         correlationId: String,
-        documentHashes: MutableMap<String, String>,
+        documentHashes: Map<String, String>,
     ) {
         logger.info(
             "Processed data to be stored in EuroDaT, sending message for dataId $dataId and " +

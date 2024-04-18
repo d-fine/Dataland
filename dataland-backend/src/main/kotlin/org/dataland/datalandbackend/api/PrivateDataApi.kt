@@ -22,18 +22,19 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-oauth")
 interface PrivateDataApi {
     /**
-     * TODO
+     * A method to store private data via Dataland into a data store
      */
     // TODO activate at the end to allow only owners
             /*@PreAuthorize("(hasRole('ROLE_USER') " +
                     "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
     @Operation(
-        summary = "a", // TODO
-        description = "b", // TODO
+        summary = "Upload new private data set.",
+        description = "The uploaded private data is added to the private data store, the generated data id is " +
+            "returned.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "S."), // TODO
+            ApiResponse(responseCode = "200", description = "Successfully added data to the private data store."),
         ],
     )
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
