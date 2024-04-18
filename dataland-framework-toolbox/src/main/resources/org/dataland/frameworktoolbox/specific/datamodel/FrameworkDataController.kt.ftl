@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
-class ${frameworkIdentifier?cap_first}PublicDataController(
+class ${frameworkDataType.shortenedQualifier?replace('Data','')}PublicDataController(
     @Autowired var myPublicDataManager: PublicDataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
