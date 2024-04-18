@@ -417,33 +417,34 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      if (this.preSubmitConditionsFulfilled()) {
-        try {
-          const singleDataRequestObject = this.collectDataToSend();
-          const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-            .requestController;
-          const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
-          this.errorMessage = response.statusText;
-          this.submitted = true;
-          this.submittingSucceeded = true;
-        } catch (error) {
-          console.error(error);
-          if (error instanceof AxiosError) {
-            const errorJSON = error.toJSON();
-            if (errorJSON.status == 403) {
-              this.openMaxRequestsReachedModal();
-            } else {
-              const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-              this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
-              this.submitted = true;
-              this.submittingSucceeded = false;
-            }
+      if (!this.preSubmitConditionsFulfilled()) {
+        return;
+      }
+      try {
+        const singleDataRequestObject = this.collectDataToSend();
+        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .requestController;
+        const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
+        this.errorMessage = response.statusText;
+        this.submitted = true;
+        this.submittingSucceeded = true;
+      } catch (error) {
+        console.error(error);
+        if (error instanceof AxiosError) {
+          const errorJSON = error.toJSON();
+          if (errorJSON.status == 403) {
+            this.openMaxRequestsReachedModal();
           } else {
+            const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+            this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
             this.submitted = true;
             this.submittingSucceeded = false;
-            this.errorMessage =
-              "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
           }
+        } else {
+          this.submitted = true;
+          this.submittingSucceeded = false;
+          this.errorMessage =
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
         }
       }
     },
