@@ -67,8 +67,15 @@
                         type="text"
                         name="contactDetails"
                         data-test="contactEmail"
-                        @input="$nextTick(updateMessageVisibility)"
+                        @input="handleContactsUpdate"
                       />
+                      <p
+                        v-show="displayContactsNotValidError"
+                        class="text-danger text-xs"
+                        data-test="contectsNotValidErrorMessage"
+                      >
+                        You have to provide valid contacts to add a message to the request
+                      </p>
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying contacts your data request will be directed accordingly.<br />
                         You can specify multiple comma separated email addresses.<br />
@@ -264,6 +271,7 @@ export default defineComponent({
       errorMessage: "",
       selectedReportingPeriodsError: false,
       displayConditionsNotAcceptedError: false,
+      displayContactsNotValidError: false,
       reportingPeriodOptions: [
         { name: "2023", value: false },
         { name: "2022", value: false },
@@ -313,16 +321,31 @@ export default defineComponent({
       this.maxRequestReachedModalIsVisible = false;
     },
     /**
-     * Checks if the first email in a string of comma separated emails is valid
-     * @returns true if valid, false otherwise
+     * Checks if the provided contacts are accepted
+     * @returns true if all the provided emails are valid and at least one has been provided, false otherwise
      */
     areContactsFilledAndValid(): boolean {
       if (this.selectedContacts.length == 0) return false;
+      return this.areContactsValid();
+    },
+    /**
+     * Checks if each of the provided contacts is a valid email
+     * @returns true if the provided emails are all valid (therefor also if there are none), false otherwise
+     */
+    areContactsValid(): boolean {
       return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
     },
 
     /**
-     * Checks if an email string is a valid email by checking for _@_._
+     * updates the messagebox visibility and stops displaying the contacts not valid error
+     */
+    handleContactsUpdate(): void {
+      this.displayContactsNotValidError = false;
+      void this.$nextTick(() => this.updateMessageVisibility());
+    },
+
+    /**
+     * Checks if an email string is a valid email using regex
      * @param email the email string to check
      * @returns true if the email is valid, false otherwise
      */
@@ -361,19 +384,10 @@ export default defineComponent({
     },
 
     /**
-     * checks if the forms are filled out correctly and updates the displayed warnings accordingly
+     * Updates if an error should be displayed and submitting should be disabled because the provided contacts are not valid
      */
-    checkPreSubmitConditions(): void {
-      this.checkIfAtLeastOneReportingPeriodSelected();
-      this.updateConditionsNotAcceptedError();
-    },
-
-    /**
-     * Returns if the forms are filled out correctly
-     * @returns true if they are filled out correctly, false otherwise
-     */
-    preSubmitConditionsFulfilled(): boolean {
-      return !this.displayConditionsNotAcceptedError && !this.selectedReportingPeriodsError;
+    updateContactsNotValidError(): void {
+      this.displayContactsNotValidError = !this.areContactsValid();
     },
 
     /**
@@ -383,6 +397,27 @@ export default defineComponent({
       if (!this.selectedReportingPeriods.length) {
         this.selectedReportingPeriodsError = true;
       }
+    },
+
+    /**
+     * checks if the forms are filled out correctly and updates the displayed warnings accordingly
+     */
+    checkPreSubmitConditions(): void {
+      this.checkIfAtLeastOneReportingPeriodSelected();
+      this.updateConditionsNotAcceptedError();
+      this.updateContactsNotValidError();
+    },
+
+    /**
+     * Returns if the forms are filled out correctly
+     * @returns true if they are filled out correctly, false otherwise
+     */
+    preSubmitConditionsFulfilled(): boolean {
+      return (
+        !this.displayConditionsNotAcceptedError &&
+        !this.selectedReportingPeriodsError &&
+        !this.displayContactsNotValidError
+      );
     },
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
