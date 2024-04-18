@@ -375,6 +375,22 @@
                     ]
                 }
             ]
+        },
+        {
+            "title": "Companies",
+            "url": "/companies",
+            "sections": [
+                {
+                    "title": "Single Data Request",
+                    "cards": [
+                        {
+                            "icon": "erik.breen@dataland.com",
+                            "title": "Interested in becoming a premium user",
+                            "text": "Hi Erik,\n\nI'd like to receive some information about the premium user role on Dataland.\nThank you, and I look forward to hearing from you.\n\nBest regards,\n\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
