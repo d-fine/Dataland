@@ -227,17 +227,17 @@ class DataRequestUploadListenerTest {
         val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, null, contacts, message)
 
         assertEquals(
-            message, newMessageDataRequest.messageHistory.first().message,
+            message, newMessageDataRequest.messageHistory.last().message,
             "The message was not patched correctly.",
         )
         assertEquals(
-            contacts, newMessageDataRequest.messageHistory.first().contacts,
+            contacts, newMessageDataRequest.messageHistory.last().contacts,
             "The contacts were not patched correctly.",
         )
     }
 
     @Test
-    fun `add a message to an answered request do change the status to open and assert success`() {
+    fun `add a message to an answered request and change the status to open and assert success`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
