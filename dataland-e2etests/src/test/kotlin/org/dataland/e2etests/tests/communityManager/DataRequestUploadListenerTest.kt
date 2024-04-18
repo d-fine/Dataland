@@ -35,6 +35,8 @@ class DataRequestUploadListenerTest {
 
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
+    private val message = "test message"
+    private val contacts = setOf("test@example.com", "test2@example.com")
 
     @Test
     fun `post single data request and provide data and check that status has changed to answered`() {
@@ -221,8 +223,6 @@ class DataRequestUploadListenerTest {
     @Test
     fun `add a message to an open request do not change the status and assert success`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
-        val message = "test message"
-        val contacts = setOf("test@example.com", "test2@example.com")
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, null, contacts, message)
 
@@ -241,8 +241,7 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
-        val message = "test message"
-        val contacts = setOf("test@example.com", "test2@example.com")
+
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val newMessageAndOpenDataRequest =
             requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, contacts, message)
@@ -260,8 +259,6 @@ class DataRequestUploadListenerTest {
     @Test
     fun `patch the message history of an not open request and assert that it is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
-        val message = "test message"
-        val contacts = setOf("test@example.com")
 
         RequestStatus.entries.filter { it != RequestStatus.Open }.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
