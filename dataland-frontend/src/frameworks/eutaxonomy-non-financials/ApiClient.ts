@@ -5,16 +5,16 @@ import {
   type Configuration,
   type DataMetaInformation,
   type EutaxonomyNonFinancialsData,
-  EutaxonomyNonFinancialsDataControllerApi,
+  EutaxonomyNonFinancialsPublicDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export class EutaxonomyNonFinancialsApiClient implements FrameworkDataApi<EutaxonomyNonFinancialsData> {
-  private readonly openApiDataController: EutaxonomyNonFinancialsDataControllerApi;
+  private readonly openApiDataController: EutaxonomyNonFinancialsPublicDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new EutaxonomyNonFinancialsDataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new EutaxonomyNonFinancialsPublicDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(

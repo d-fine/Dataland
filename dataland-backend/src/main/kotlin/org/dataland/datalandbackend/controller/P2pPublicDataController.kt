@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RequestMapping("/data/p2p")
 @RestController
-class P2PPublicDataController(
+class P2pPublicDataController(
     @Autowired var myPublicDataManager: PublicDataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,

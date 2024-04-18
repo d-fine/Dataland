@@ -1,15 +1,15 @@
 import {
   type DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForFinancialsControllerApi,
+  type EuTaxonomyPublicDataForFinancialsControllerApi,
   type EutaxonomyNonFinancialsData,
-  type EutaxonomyNonFinancialsDataControllerApi,
+  type EutaxonomyNonFinancialsPublicDataControllerApi,
   type LksgData,
-  type LksgDataControllerApi,
-  type P2pDataControllerApi,
+  type LksgPublicDataControllerApi,
+  type P2pPublicDataControllerApi,
   type PathwaysToParisData,
   type SfdrData,
-  type SfdrDataControllerApi,
+  type SfdrPublicDataControllerApi,
   //type SmeData,
   //type SmeDataControllerApi,
 } from "@clients/backend";
@@ -18,7 +18,7 @@ export type FrameworkDataTypes = {
   [DataTypeEnum.P2p]: {
     data: PathwaysToParisData;
     apiSuffix: "P2pData";
-    api: P2pDataControllerApi;
+    api: P2pPublicDataControllerApi;
   };
   /*[DataTypeEnum.Sme]: {
     data: SmeData;
@@ -30,21 +30,21 @@ export type FrameworkDataTypes = {
   [DataTypeEnum.Lksg]: {
     data: LksgData;
     apiSuffix: "LksgData";
-    api: LksgDataControllerApi;
+    api: LksgPublicDataControllerApi;
   };
   [DataTypeEnum.Sfdr]: {
     data: SfdrData;
     apiSuffix: "SfdrData";
-    api: SfdrDataControllerApi;
+    api: SfdrPublicDataControllerApi;
   };
   [DataTypeEnum.EutaxonomyFinancials]: {
     data: EuTaxonomyDataForFinancials;
     apiSuffix: "EuTaxonomyDataForFinancials";
-    api: EuTaxonomyDataForFinancialsControllerApi;
+    api: EuTaxonomyPublicDataForFinancialsControllerApi;
   };
   [DataTypeEnum.EutaxonomyNonFinancials]: {
     data: EutaxonomyNonFinancialsData;
     apiSuffix: "EutaxonomyNonFinancialsData";
-    api: EutaxonomyNonFinancialsDataControllerApi;
+    api: EutaxonomyNonFinancialsPublicDataControllerApi;
   };
 };

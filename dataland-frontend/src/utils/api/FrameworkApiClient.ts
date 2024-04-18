@@ -6,7 +6,7 @@ import {
   EuTaxonomyPublicDataForFinancialsControllerApi,
   EutaxonomyNonFinancialsPublicDataControllerApi,
   LksgPublicDataControllerApi,
-  P2PPublicDataControllerApi,
+  P2pPublicDataControllerApi,
   SfdrPublicDataControllerApi,
   //SmeDataControllerApi,
 } from "@clients/backend";
@@ -39,7 +39,7 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
     case DataTypeEnum.P2p:
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(
         "P2pData",
-        new P2PPublicDataControllerApi(configuration, undefined, axiosInstance),
+        new P2pPublicDataControllerApi(configuration, undefined, axiosInstance),
       );
     /*case DataTypeEnum.Sme:
        return translateFrameworkApi<typeof DataTypeEnum.Sme>(

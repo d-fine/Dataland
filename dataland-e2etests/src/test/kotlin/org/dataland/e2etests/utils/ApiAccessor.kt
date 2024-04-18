@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyPublicDataForFin
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.P2PPublicDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.P2pPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
@@ -108,7 +108,7 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForP2pData = P2PPublicDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val dataControllerApiForP2pData = P2pPublicDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForP2pData = FrameworkTestDataProvider(PathwaysToParisData::class.java)
     fun p2pUploaderFunction(
         companyId: String,
