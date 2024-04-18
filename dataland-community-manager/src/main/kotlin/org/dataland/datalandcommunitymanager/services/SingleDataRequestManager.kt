@@ -47,9 +47,7 @@ class SingleDataRequestManager(
     @Transactional
     @Suppress("LongMethod")
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-        utils.throwExceptionIfNotJwtAuth()
-        validateSingleDataRequest(singleDataRequest)
-        performQuotaCheckForNonPremiumUser(singleDataRequest)
+        checkSingleDataRequest(singleDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
@@ -76,6 +74,12 @@ class SingleDataRequestManager(
         return buildResponseForSingleDataRequest(
             singleDataRequest, reportingPeriodsOfStoredDataRequests, reportingPeriodsOfDuplicateDataRequests,
         )
+    }
+
+    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest) {
+        utils.throwExceptionIfNotJwtAuth()
+        validateSingleDataRequestContent(singleDataRequest)
+        performQuotaCheckForNonPremiumUser(singleDataRequest)
     }
 
     private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
@@ -108,7 +112,7 @@ class SingleDataRequestManager(
         return startOfDayTimestampMillis
     }
 
-    private fun validateSingleDataRequest(singleDataRequest: SingleDataRequest) {
+    private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
         if (singleDataRequest.reportingPeriods.isEmpty()) {
             throw InvalidInputApiException(
                 "The list of reporting periods must not be empty.",

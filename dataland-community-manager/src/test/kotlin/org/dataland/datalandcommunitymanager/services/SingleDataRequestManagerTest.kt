@@ -53,20 +53,11 @@ class SingleDataRequestManagerTest {
     private val testUtils = TestUtils()
 
     @BeforeEach
-    @Suppress("LongMethod")
     fun setupSingleDataRequestManager() {
-        var requestsCount = 0
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = mockDataRequestProcessingUtils()
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
-        dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
-        `when`(
-            dataRequestRepositoryMock
-                .getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
-        ).then {
-            requestsCount += 1
-            return@then requestsCount - 1
-        }
+        dataRequestRepositoryMock = mockDataRequestRepository()
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
@@ -92,6 +83,19 @@ class SingleDataRequestManagerTest {
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    private fun mockDataRequestRepository(): DataRequestRepository {
+        var requestsCount = 0
+        val dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
+        `when`(
+            dataRequestRepositoryMock
+                .getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
+        ).then {
+            requestsCount += 1
+            return@then requestsCount - 1
+        }
+        return dataRequestRepositoryMock
     }
 
     private fun mockDataRequestProcessingUtils(): DataRequestProcessingUtils {
