@@ -414,6 +414,17 @@ export default defineComponent({
       };
     },
     /**
+     * Sets state variables
+     * @param errorMessage sets error message
+     * @param submitted sets submitted state
+     * @param submittingSucceded sets succeded submit state
+     */
+    editStateVariables(errorMessage: string, submitted: boolean, submittingSucceded: boolean): void {
+      this.errorMessage = errorMessage;
+      this.submitted = submitted;
+      this.submittingSucceeded = submittingSucceded;
+    },
+    /**
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
@@ -425,9 +436,7 @@ export default defineComponent({
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
         const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
-        this.errorMessage = response.statusText;
-        this.submitted = true;
-        this.submittingSucceeded = true;
+        this.editStateVariables(response.statusText, true, true);
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
@@ -436,15 +445,14 @@ export default defineComponent({
             this.openMaxRequestsReachedModal();
           } else {
             const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-            this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
-            this.submitted = true;
-            this.submittingSucceeded = false;
+            this.editStateVariables(responseMessages ? responseMessages[0].message : error.message, true, false);
           }
         } else {
-          this.submitted = true;
-          this.submittingSucceeded = false;
-          this.errorMessage =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+          this.editStateVariables(
+            "An unexpected error occurred." + " Please try again or contact the support team if the issue persists.",
+            true,
+            false,
+          );
         }
       }
     },
