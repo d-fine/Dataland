@@ -40,6 +40,15 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 - [ ] Update package versions in `dataland-automated-qa-service/requirements.txt`
 
+### Dataland Analytics
+
+- [ ] Update the backend API file
+  - [ ] Go to https://dataland.com/api/v3/api-docs/public and copy the backend api JSON
+  - [ ] Convert the JSON to a .yaml file preferably using an online-converter (https://jsonformatter.org/json-to-yaml)
+  - [ ] Paste the .yaml output into "datasets_open_api.yaml"
+- [ ] Accordingly, update the document API file (documents_open_api.yaml)
+- [ ] Accordingly, update the community API file (requests_open_api.yaml)
+
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
