@@ -311,7 +311,6 @@ export default defineComponent({
       this.emailDetailsError = false;
       if (this.hasValidEmailForm) {
         patchDataRequest(this.requestId, undefined, this.emailContacts, this.emailMessage, this.getKeycloakPromise)
-          .catch((error) => console.error(error))
           .then(() => window.location.reload())
           .catch((error) => console.error(error));
       } else {
