@@ -3,10 +3,10 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsPublicDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.PublicDataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -55,17 +55,17 @@ internal class DataControllerTest(
         buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
 
     lateinit var mockSecurityContext: SecurityContext
-    lateinit var mockDataManager: DataManager
+    lateinit var mockPublicDataManager: PublicDataManager
     lateinit var mockDataMetaInformationManager: DataMetaInformationManager
-    lateinit var dataController: EutaxonomyNonFinancialsDataController
+    lateinit var dataController: EutaxonomyNonFinancialsPublicDataController
 
     @BeforeEach
     fun resetMocks() {
         mockSecurityContext = mock(SecurityContext::class.java)
-        mockDataManager = mock(DataManager::class.java)
+        mockPublicDataManager = mock(PublicDataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
         dataController =
-            EutaxonomyNonFinancialsDataController(mockDataManager, mockDataMetaInformationManager, objectMapper)
+            EutaxonomyNonFinancialsPublicDataController(mockPublicDataManager, mockDataMetaInformationManager, objectMapper)
     }
 
     @Test
@@ -96,7 +96,7 @@ internal class DataControllerTest(
     }
 
     private fun mockDataManager() {
-        `when`(mockDataManager.getDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
+        `when`(mockPublicDataManager.getDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
             StorableDataSet(
                 "",
                 testDataType,

@@ -3,12 +3,12 @@ package org.dataland.e2etests.utils
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyPublicDataForFinancialsControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsPublicDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.LksgPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.P2pPublicDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.SfdrPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
@@ -54,7 +54,7 @@ class ApiAccessor {
     val generalTestDataProvider = GeneralTestDataProvider()
 
     val dataControllerApiForEuTaxonomyNonFinancials =
-        EutaxonomyNonFinancialsDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+        EutaxonomyNonFinancialsPublicDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EutaxonomyNonFinancialsData::class.java)
@@ -77,7 +77,7 @@ class ApiAccessor {
     }
 
     val dataControllerApiForEuTaxonomyFinancials =
-        EuTaxonomyDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+        EuTaxonomyPublicDataForFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderEuTaxonomyForFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
 
@@ -94,7 +94,7 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForLksgData = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val dataControllerApiForLksgData = LksgPublicDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForLksgData = FrameworkTestDataProvider(LksgData::class.java)
     fun lksgUploaderFunction(
         companyId: String,
@@ -108,7 +108,7 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val dataControllerApiForP2pData = P2pPublicDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForP2pData = FrameworkTestDataProvider(PathwaysToParisData::class.java)
     fun p2pUploaderFunction(
         companyId: String,
@@ -122,7 +122,7 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val dataControllerApiForSfdrData = SfdrPublicDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData = FrameworkTestDataProvider(SfdrData::class.java)
     fun sfdrUploaderFunction(
         companyId: String,

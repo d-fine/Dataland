@@ -5,16 +5,16 @@ import {
   type Configuration,
   type DataMetaInformation,
   type HeimathafenData,
-  HeimathafenDataControllerApi,
+  HeimathafenPublicDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export class HeimathafenApiClient implements FrameworkDataApi<HeimathafenData> {
-  private readonly openApiDataController: HeimathafenDataControllerApi;
+  private readonly openApiDataController: HeimathafenPublicDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new HeimathafenDataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new HeimathafenPublicDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(

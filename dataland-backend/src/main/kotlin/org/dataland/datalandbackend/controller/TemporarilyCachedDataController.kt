@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.TemporarilyCachedDataApi
-import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.PublicDataManager
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +17,7 @@ import java.io.ByteArrayInputStream
  */
 @RestController
 class TemporarilyCachedDataController(
-    @Autowired var publicDataManager: DataManager,
+    @Autowired var publicDataManager: PublicDataManager,
     @Autowired var privateDataManager: PrivateDataManager,
 ) : TemporarilyCachedDataApi {
 

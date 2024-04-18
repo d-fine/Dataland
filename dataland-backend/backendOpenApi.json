@@ -292,7 +292,7 @@
     "/data/sfdr": {
       "post": {
         "tags": [
-          "sfdr-data-controller"
+          "sfdr-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedSfdrData",
         "parameters": [
@@ -361,7 +361,7 @@
     "/data/p2p": {
       "post": {
         "tags": [
-          "p-2p-data-controller"
+          "p-2p-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedP2pData",
         "parameters": [
@@ -430,7 +430,7 @@
     "/data/lksg": {
       "post": {
         "tags": [
-          "lksg-data-controller"
+          "lksg-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedLksgData",
         "parameters": [
@@ -499,7 +499,7 @@
     "/data/heimathafen": {
       "post": {
         "tags": [
-          "heimathafen-data-controller"
+          "heimathafen-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedHeimathafenData",
         "parameters": [
@@ -568,7 +568,7 @@
     "/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
-          "eutaxonomy-non-financials-data-controller"
+          "eutaxonomy-non-financials-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
@@ -637,7 +637,7 @@
     "/data/eutaxonomy-financials": {
       "post": {
         "tags": [
-          "eu-taxonomy-data-for-financials-controller"
+          "eu-taxonomy-public-data-for-financials-controller"
         ],
         "operationId": "postCompanyAssociatedEuTaxonomyDataForFinancials",
         "parameters": [
@@ -706,7 +706,7 @@
     "/data/esg-questionnaire": {
       "post": {
         "tags": [
-          "esg-questionnaire-data-controller"
+          "esg-questionnaire-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedEsgQuestionnaireData",
         "parameters": [
@@ -1897,7 +1897,7 @@
     "/data/sfdr/{dataId}": {
       "get": {
         "tags": [
-          "sfdr-data-controller"
+          "sfdr-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedSfdrData",
         "parameters": [
@@ -1955,7 +1955,7 @@
     "/data/sfdr/companies/{companyId}": {
       "get": {
         "tags": [
-          "sfdr-data-controller"
+          "sfdr-public-data-controller"
         ],
         "operationId": "getAllCompanySfdrData",
         "parameters": [
@@ -2033,7 +2033,7 @@
     "/data/p2p/{dataId}": {
       "get": {
         "tags": [
-          "p-2p-data-controller"
+          "p-2p-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedP2pData",
         "parameters": [
@@ -2091,7 +2091,7 @@
     "/data/p2p/companies/{companyId}": {
       "get": {
         "tags": [
-          "p-2p-data-controller"
+          "p-2p-public-data-controller"
         ],
         "operationId": "getAllCompanyP2pData",
         "parameters": [
@@ -2169,7 +2169,7 @@
     "/data/lksg/{dataId}": {
       "get": {
         "tags": [
-          "lksg-data-controller"
+          "lksg-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedLksgData",
         "parameters": [
@@ -2227,7 +2227,7 @@
     "/data/lksg/companies/{companyId}": {
       "get": {
         "tags": [
-          "lksg-data-controller"
+          "lksg-public-data-controller"
         ],
         "operationId": "getAllCompanyLksgData",
         "parameters": [
@@ -2305,7 +2305,7 @@
     "/data/heimathafen/{dataId}": {
       "get": {
         "tags": [
-          "heimathafen-data-controller"
+          "heimathafen-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedHeimathafenData",
         "parameters": [
@@ -2363,7 +2363,7 @@
     "/data/heimathafen/companies/{companyId}": {
       "get": {
         "tags": [
-          "heimathafen-data-controller"
+          "heimathafen-public-data-controller"
         ],
         "operationId": "getAllCompanyHeimathafenData",
         "parameters": [
@@ -2441,7 +2441,7 @@
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
-          "eutaxonomy-non-financials-data-controller"
+          "eutaxonomy-non-financials-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
@@ -2499,7 +2499,7 @@
     "/data/eutaxonomy-non-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eutaxonomy-non-financials-data-controller"
+          "eutaxonomy-non-financials-public-data-controller"
         ],
         "operationId": "getAllCompanyEutaxonomyNonFinancialsData",
         "parameters": [
@@ -2577,7 +2577,7 @@
     "/data/eutaxonomy-financials/{dataId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-data-for-financials-controller"
+          "eu-taxonomy-public-data-for-financials-controller"
         ],
         "operationId": "getCompanyAssociatedEuTaxonomyDataForFinancials",
         "parameters": [
@@ -2635,7 +2635,7 @@
     "/data/eutaxonomy-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-data-for-financials-controller"
+          "eu-taxonomy-public-data-for-financials-controller"
         ],
         "operationId": "getAllCompanyEuTaxonomyDataForFinancials",
         "parameters": [
@@ -2713,7 +2713,7 @@
     "/data/esg-questionnaire/{dataId}": {
       "get": {
         "tags": [
-          "esg-questionnaire-data-controller"
+          "esg-questionnaire-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedEsgQuestionnaireData",
         "parameters": [
@@ -2771,7 +2771,7 @@
     "/data/esg-questionnaire/companies/{companyId}": {
       "get": {
         "tags": [
-          "esg-questionnaire-data-controller"
+          "esg-questionnaire-public-data-controller"
         ],
         "operationId": "getAllCompanyEsgQuestionnaireData",
         "parameters": [
@@ -14163,21 +14163,21 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -14204,10 +14204,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
