@@ -55,9 +55,9 @@ class SingleDataRequestManagerTest {
     @BeforeEach
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
-        utilsMock = mockDataRequestProcessingUtils()
+        utilsMock = getDataRequestProcessingUtilsMock()
         val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
-        dataRequestRepositoryMock = mockDataRequestRepository()
+        dataRequestRepositoryMock = getDataRequestRepositoryMock()
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
@@ -74,6 +74,11 @@ class SingleDataRequestManagerTest {
                 ),
             ),
         )
+        val mockSecurityContext = getSecurityContextMock()
+        SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    private fun getSecurityContextMock(): SecurityContext {
         val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",
@@ -82,10 +87,10 @@ class SingleDataRequestManagerTest {
         )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
+        return mockSecurityContext
     }
 
-    private fun mockDataRequestRepository(): DataRequestRepository {
+    private fun getDataRequestRepositoryMock(): DataRequestRepository {
         var requestsCount = 0
         val dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
         `when`(
@@ -98,7 +103,7 @@ class SingleDataRequestManagerTest {
         return dataRequestRepositoryMock
     }
 
-    private fun mockDataRequestProcessingUtils(): DataRequestProcessingUtils {
+    private fun getDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(
