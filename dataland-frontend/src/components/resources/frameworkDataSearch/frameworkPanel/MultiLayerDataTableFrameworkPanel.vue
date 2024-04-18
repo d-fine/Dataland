@@ -20,10 +20,9 @@
     />
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
+      :inReviewMode="inReviewMode"
       :config="
-        hideEmptyFields
-          ? displayConfiguration
-          : editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
@@ -36,7 +35,7 @@
 <script setup generic="FrameworkDataType" lang="ts">
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { computed, inject, ref, shallowRef, watch } from "vue";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
@@ -45,15 +44,15 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForNonFinancials,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
-import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { type FrameworkDefinition } from "@/frameworks/FrameworkDefinition";
+import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -87,7 +86,7 @@ const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
       return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForNonFinancials).general?.referencedReports,
+        (mldtDataset) => (mldtDataset.dataset as EutaxonomyNonFinancialsData).general?.referencedReports,
       );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
@@ -144,9 +143,9 @@ async function loadDataForDisplay(
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-  const frameworkDefinition = getFrameworkDefinition(
+  const frameworkDefinition = getFrontendFrameworkDefinition(
     props.frameworkIdentifier,
-  ) as FrameworkDefinition<FrameworkDataType>;
+  ) as FrontendFrameworkDefinition<FrameworkDataType>;
   let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
   if (frameworkDefinition) {
     dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);

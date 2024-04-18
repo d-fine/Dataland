@@ -1,4 +1,5 @@
 package org.dataland.e2etests
+
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 const val BASE_PATH_TO_DATALAND_BACKEND = "https://local-dev.dataland.com:443/api"
@@ -31,6 +32,11 @@ const val UPLOADER_USER_NAME = "data_uploader"
 const val UPLOADER_USER_ID = "c5ef10b1-de23-4a01-9005-e62ea226ee83"
 val UPLOADER_USER_PASSWORD: String = System.getenv("KEYCLOAK_UPLOADER_PASSWORD")
 val UPLOADER_EXTENDED_ROLES = listOf("ROLE_UPLOADER")
+
+const val PREMIUM_USER_NAME = "data_premium_user"
+const val PREMIUM_USER_ID = "68129cce-52e5-473e-bec9-90046eebc619"
+val PREMIUM_USER_PASSWORD: String = System.getenv("KEYCLOAK_PREMIUM_USER_PASSWORD")
+val PREMIUM_USER_EXTENDED_ROLES = listOf("ROLE_PREMIUM_USER")
 
 const val READER_USER_NAME = "data_reader"
 const val READER_USER_ID = "18b67ecc-1176-4506-8414-1e81661017ca"

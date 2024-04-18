@@ -1,8 +1,14 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <CompanyInfoSheet :company-id="companyID" @fetched-company-information="handleFetchedCompanyInformation" />
-    <div v-if="isDataProcessedSuccesfully">
+    <CompanyInfoSheet
+      :company-id="companyID"
+      @fetched-company-information="handleFetchedCompanyInformation"
+      :show-single-data-request-button="true"
+      :framework="dataType"
+      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
+    />
+    <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
         style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
@@ -24,10 +30,7 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
-            <div
-              class="flex align-content-start align-items-center pl-3"
-              v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
-            >
+            <div class="flex align-content-start align-items-center pl-3" v-if="dataType !== DataTypeEnum.Sme">
               <InputSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
@@ -46,6 +49,7 @@
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />
+
             <PrimeButton
               v-if="isEditableByCurrentUser"
               class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
@@ -73,7 +77,11 @@
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
-            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+            <SelectReportingPeriodDialog
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              :action-on-click="ReportingPeriodTableActions.EditDataset"
+              @selected-reporting-period="handleReportingPeriodSelection"
+            />
           </OverlayPanel>
         </div>
       </MarginWrapper>
@@ -95,12 +103,12 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { computed, defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject, type PropType, ref } from "vue";
 
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { type DataMetaInformation, type CompanyInformation, DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
@@ -109,6 +117,8 @@ import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -132,7 +142,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: true,
     },
     singleDataMetaInfoToDisplay: {
@@ -162,7 +172,7 @@ export default defineComponent({
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
-      isDataProcessedSuccesfully: true,
+      isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
@@ -176,6 +186,9 @@ export default defineComponent({
     };
   },
   computed: {
+    ReportingPeriodTableActions() {
+      return ReportingPeriodTableActions;
+    },
     DataTypeEnum() {
       return DataTypeEnum;
     },
@@ -185,7 +198,7 @@ export default defineComponent({
     isEditableByCurrentUser() {
       return (
         this.hasUserUploaderRights &&
-        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
+        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType) &&
         (!this.singleDataMetaInfoToDisplay ||
           this.singleDataMetaInfoToDisplay.currentlyActive ||
           this.singleDataMetaInfoToDisplay.qaStatus === "Rejected")
@@ -199,16 +212,7 @@ export default defineComponent({
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
 
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
-      })
-      .catch((error) => console.log(error));
-    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
-      .then((hasUserReviewerRights) => {
-        this.hasUserReviewerRights = hasUserReviewerRights;
-      })
-      .catch((error) => console.log(error));
+    void this.setViewPageAttributesForUser();
 
     window.addEventListener("scroll", this.windowScrollHandler);
   },
@@ -220,7 +224,6 @@ export default defineComponent({
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
-
     /**
      * Opens Overlay Panel for selecting a reporting period to edit data for
      * @param event event
@@ -240,7 +243,7 @@ export default defineComponent({
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
           assertDefined(this.companyID),
-          this.dataType as DataTypeEnum,
+          this.dataType,
           Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId,
         );
       }
@@ -348,11 +351,41 @@ export default defineComponent({
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod,
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
-        this.isDataProcessedSuccesfully = true;
+        this.isDataProcessedSuccessfully = true;
       } catch (error) {
-        this.isDataProcessedSuccesfully = false;
+        this.isDataProcessedSuccessfully = false;
         console.error(error);
       }
+    },
+    /**
+     * Set if the user is allowed to upload data for the current company
+     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
+     */
+    async setViewPageAttributesForUser(): Promise<void> {
+      return checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+        .then((hasUserReviewerRights) => {
+          this.hasUserReviewerRights = hasUserReviewerRights;
+        })
+        .then(() => {
+          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+            this.hasUserUploaderRights = hasUserUploaderRights;
+          });
+        })
+        .then(() => {
+          if (!this.hasUserUploaderRights) {
+            return isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+              this.hasUserUploaderRights = hasUserUploaderRights;
+            });
+          }
+        });
+    },
+    /**
+     * Handles the selection of the reporting period in th dropdown panel
+     * @param reportingPeriodTableEntry object, which was chosen
+     * @returns a router push to the edit url of the chosen dataset
+     */
+    handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
+      return this.$router.push(reportingPeriodTableEntry.editUrl);
     },
   },
   watch: {

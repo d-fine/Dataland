@@ -14,7 +14,7 @@
       <UserProfileDropDown />
     </div>
     <div class="col-4 flex justify-content-end" v-if="!authenticated">
-      <AuthSection :is-landing-Page="false" />
+      <AuthSection :is-landing-page="false" />
     </div>
   </div>
   <!-- This is a spacer div whose only purpose is to ensure that no elements get hidden behind the header -->

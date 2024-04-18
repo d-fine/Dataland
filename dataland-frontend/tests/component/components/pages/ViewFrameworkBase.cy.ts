@@ -1,6 +1,6 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
@@ -98,35 +98,6 @@ describe("Component test for ViewFrameworkBase", () => {
         });
         cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");
         cy.get("button[data-test=editDatasetButton]").should("exist");
-      });
-    },
-  );
-
-  it(
-    "Should display the add new dataset button, but not the edit button " +
-      "on framework-view-pages for which no edit functionality has been implemented",
-    () => {
-      const keycloakMock = minimalKeycloakMock({
-        roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
-      });
-      cy.intercept("**/api/metadata**", []);
-      cy.mountWithPlugins(ViewFrameworkBase, {
-        keycloak: keycloakMock,
-        global: {
-          stubs: ["CompanyInformation"],
-        },
-      }).then((mounted) => {
-        void mounted.wrapper.setProps({
-          dataType: DataTypeEnum.Sme,
-          companyID: "mock-company-id",
-        });
-        cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");
-        cy.get("a[data-test=gotoNewDatasetButton]").should(
-          "have.attr",
-          "href",
-          "/companies/mock-company-id/frameworks/upload",
-        );
-        cy.get("button[data-test=editDatasetButton]").should("not.exist");
       });
     },
   );

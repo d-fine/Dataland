@@ -19,23 +19,26 @@ plugins {
     jacoco
     id("org.springframework.boot")
     kotlin("kapt")
+    id("com.gorylenko.gradle-git-properties")
 }
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.moshi.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.jackson.kotlin)
     implementation(libs.okhttp)
     implementation(libs.commons.io)
-    testImplementation(Spring.boot.test)
     implementation(Spring.boot.security)
+    implementation(Spring.boot.web)
+    testImplementation(Spring.boot.test)
 }
 
 tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 jacoco {
@@ -43,9 +46,11 @@ jacoco {
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
-    outputDir.set("$buildDir/clients/backend")
+    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")
@@ -58,13 +63,15 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
     configOptions.set(
         mapOf(
-            "dateLibrary" to "java17",
+            "dateLibrary" to "java21",
             "useTags" to "true",
         ),
     )
 }
 
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateBackendClient")
 }
 
@@ -78,7 +85,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
 }
 
 ktlint {
@@ -88,10 +95,16 @@ ktlint {
 }
 
 tasks.register<Copy>("getTestData") {
+    description = "Task to copy required testing data."
+    group = "verification"
     from("$rootDir/testing/data")
-    into("$buildDir/resources/test")
+    into(layout.buildDirectory.dir("resources/test"))
 }
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
+}
+
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

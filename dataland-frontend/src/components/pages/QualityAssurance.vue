@@ -64,12 +64,14 @@
         </AuthorizationWrapper>
       </DatasetsTabMenu>
     </TheContent>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -87,7 +89,7 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
@@ -112,6 +114,9 @@ export default defineComponent({
     };
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       dataIdList: [] as Array<string>,
       displayDataOfPage: [] as QaDataObject[],
@@ -123,6 +128,7 @@ export default defineComponent({
       metaDataInformationControllerApi: undefined as undefined | MetaDataControllerApiInterface,
       companyDataControllerApi: undefined as undefined | CompanyDataControllerApiInterface,
       currentPage: 0,
+      footerContent,
     };
   },
   mounted() {

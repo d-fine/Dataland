@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <RadioButtonsFormElement
+    <CheckboxesListFormElement
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
@@ -14,12 +14,12 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
+import CheckboxesListFormElement from "@/components/forms/parts/elements/basic/CheckboxesListFormElement.vue";
 import { OptionsFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "RadioButtonsFormField",
-  components: { RadioButtonsFormElement, UploadFormHeader },
+  components: { CheckboxesListFormElement, UploadFormHeader },
   props: OptionsFormFieldProps,
 });
 </script>

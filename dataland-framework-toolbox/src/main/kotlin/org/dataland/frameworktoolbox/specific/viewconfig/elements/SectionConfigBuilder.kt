@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.specific.viewconfig.elements
 
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * An In-Memory representation of a MLDTSectionConfig
@@ -20,7 +21,7 @@ data class SectionConfigBuilder(
     var labelBadgeColor: LabelBadgeColor? = null,
 ) : ViewConfigElement {
 
-    override val imports: Set<String>
+    override val imports: Set<TypeScriptImport>
         get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
 
     /**

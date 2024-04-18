@@ -4,7 +4,7 @@ import type Keycloak from "keycloak-js";
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
  * and returns the Keycloak-promise
- * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Ppomise
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  * @returns the Keycloak-promise returned by the getter-function
  */
 export async function waitForAndReturnResolvedKeycloakPromise(
@@ -25,10 +25,12 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
     return resolvedKeycloakPromise.realmAccess.roles;
   } else return [];
 }
+
 export const KEYCLOAK_ROLE_USER = "ROLE_USER";
 export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
 export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
 export const KEYCLOAK_ROLE_ADMIN = "ROLE_ADMIN";
+export const KEYCLOAK_ROLE_PREMIUM_USER = "ROLE_PREMIUM_USER";
 
 /**
  * Derives the roles from the resolved Keycloak-promise of a logged in user
@@ -81,4 +83,18 @@ export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
   const baseUrl = window.location.origin;
   const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
+}
+
+/**
+ * Gets the user id
+ * @param getKeycloakPromise the keycloak promise
+ * @returns the user id as string or undefined
+ */
+export async function getUserId(getKeycloakPromise: () => Promise<Keycloak>): Promise<string | undefined> {
+  const parsedIdToken = (await getKeycloakPromise()).idTokenParsed;
+  if (parsedIdToken) {
+    return parsedIdToken.sub;
+  } else {
+    return undefined;
+  }
 }

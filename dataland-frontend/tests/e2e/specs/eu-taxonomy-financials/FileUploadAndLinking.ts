@@ -7,12 +7,12 @@ import {
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { UploadReports } from "@sharedUtils/components/UploadReports";
 
 describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",
@@ -22,6 +22,7 @@ describeIf(
   },
   function () {
     let euTaxoFinancialsFixture: FixtureData<EuTaxonomyDataForFinancials>;
+    const uploadReports = new UploadReports();
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
@@ -66,15 +67,15 @@ describeIf(
             });
             cy.get("h1").should("contain", euTaxoFinancialsFixture.companyInformation.companyName);
 
-            uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
-            uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
-            uploadDocuments.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+            uploadReports.selectFile(TEST_PDF_FILE_NAME);
+            uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+            uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
 
-            uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
-            uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
-            uploadDocuments.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
+            uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+            uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
+            uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
 
-            uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
+            uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
             cy.get(`[data-test="assetManagementKpis"]`)
               .find(`[data-test="banksAndIssuersInPercent"]`)
               .find('select[name="fileName"]')
@@ -108,11 +109,11 @@ describeIf(
             cy.get('[data-test="datasets-table"]').should("be.visible");
             checkIfLinkedReportsAreDownloadable(storedCompanyId);
             gotoEditForm(storedCompanyId, true);
-            uploadDocuments.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
+            uploadReports.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
             cy.get(".p-dialog.p-component").should("exist").get('[data-pc-section="closebutton"]').click();
             cy.get(".p-dialog.p-component").should("not.exist");
 
-            uploadDocuments.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
+            uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
               areBothDocumentsStillUploaded = false;
             });
 

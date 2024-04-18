@@ -1,10 +1,14 @@
 <template>
   <!-- Select company reports -->
-  <div id="uploadReports" class="uploaded-files" style="padding: 0; margin-left: 0">
+  <div
+    id="uploadReports"
+    class="uploaded-files"
+    style="padding: 0; margin-left: 0"
+    :data-test="`upload-documents-${name}`"
+  >
     <FileUpload
       name="fileUpload"
       ref="fileUpload"
-      accept=".pdf"
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
         DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR
@@ -143,7 +147,7 @@ export default defineComponent({
       indexesOfFilesToRemove.sort((a, b) => b - a);
       const sortedIndexes = [...indexesOfFilesToRemove];
       [...new Set(sortedIndexes)].forEach((indexOfFileToRemove) => {
-        ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
+        ((this.$refs.fileUpload as FileUpload)?.remove as (index: number) => void)(indexOfFileToRemove);
         this.documentsToUpload.splice(indexOfFileToRemove, 1);
       });
       this.emitUpdatedDocumentsSelectionEvent();
@@ -168,9 +172,9 @@ export default defineComponent({
     prefillFileUpload() {
       if (this.fileNamesForPrefill) {
         this.fileNamesForPrefill.forEach((name) => {
-          const dummyFile = new File([] as BlobPart[], name);
+          const dummyFile = new File([] as BlobPart[], name as string);
 
-          ((this.$refs.fileUpload as FileUpload).files as File[]).push(dummyFile);
+          ((this.$refs.fileUpload as FileUpload)?.files as File[])?.push(dummyFile);
         });
       }
     },

@@ -169,7 +169,7 @@ function viewRecentlyUploadedDatasetsInQaTable(): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
-  cy.intercept("**/api/companies?dataTypes=*").as("getMyDatasets");
+  cy.intercept("**/api/users/**").as("getMyDatasets");
   cy.visitAndCheckAppMount("/datasets");
   cy.wait("@getMyDatasets");
 

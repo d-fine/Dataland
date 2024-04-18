@@ -4,7 +4,7 @@ import {
   type Configuration,
   DataTypeEnum,
   EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApi,
+  EutaxonomyNonFinancialsDataControllerApi,
   LksgDataControllerApi,
   P2pDataControllerApi,
   SfdrDataControllerApi,
@@ -53,8 +53,8 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
       );
     case DataTypeEnum.EutaxonomyNonFinancials:
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
-        "EuTaxonomyDataForNonFinancials",
-        new EuTaxonomyDataForNonFinancialsControllerApi(configuration, undefined, axiosInstance),
+        "EutaxonomyNonFinancialsData",
+        new EutaxonomyNonFinancialsDataControllerApi(configuration, undefined, axiosInstance),
       );
     default:
       return assertNever(framework);

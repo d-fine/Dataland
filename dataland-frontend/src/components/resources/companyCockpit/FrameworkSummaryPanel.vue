@@ -1,5 +1,8 @@
 <template>
-  <div :class="`summary-panel${hasAccessibleViewPage && !useMobileView ? '--interactive' : ''}`" @click="onClickPanel">
+  <div
+    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView ? 'summary-panel--interactive' : ''}`"
+    @click="onClickPanel"
+  >
     <div>
       <div class="summary-panel__title">
         {{ title }}
@@ -33,12 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, ref } from "vue";
+import { computed, inject } from "vue";
 import { DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import type Keycloak from "keycloak-js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -47,6 +48,7 @@ const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
+  isUserAllowedToUpload: boolean | undefined;
 }>();
 
 const euTaxonomyFrameworks = new Set<DataTypeEnum>([
@@ -73,17 +75,8 @@ const subtitle = computed(() => {
 const injectedUseMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-const isUserUploader = ref<boolean>();
-onBeforeMount(() => {
-  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
-    .then((result) => {
-      isUserUploader.value = result;
-    })
-    .catch((error) => console.log(error));
-});
 const showProvideDataButton = computed(() => {
-  return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
+  return props.isUserAllowedToUpload && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
 
 const authenticated = inject<{ value: boolean }>("authenticated");
@@ -125,18 +118,29 @@ function onCursorLeaveProvideButton(): void {
 <style scoped lang="scss">
 .summary-panel {
   width: 100%;
-  max-width: 339px;
-  height: 282px;
   background-color: var(--surface-card);
-  padding: 24px;
-  border-radius: 8px;
+  padding: $spacing-md;
+  border-radius: $radius-xxs;
   text-align: left;
-  box-shadow: 0 0 12px #9494943d;
+  box-shadow: 0 0 12px var(--gray-300);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 282px;
 
-  @media only screen and (min-width: $small) {
+  &--interactive {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 32px 8px #1e1e1e14;
+
+      .summary-panel__separator {
+        border-bottom-color: var(--primary-color);
+      }
+    }
+  }
+
+  @media only screen and (max-width: $small) {
     &--interactive {
       width: 339px;
       height: 282px;
@@ -152,6 +156,7 @@ function onCursorLeaveProvideButton(): void {
 
       &:hover {
         box-shadow: 0 0 32px 8px #1e1e1e14;
+
         .summary-panel__separator {
           border-bottom-color: var(--primary-color);
         }

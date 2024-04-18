@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.companies
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
 
 /**
  * --- Generic API model ---
@@ -17,5 +18,6 @@ data class CompanyAssociatedData<T> (
     val reportingPeriod: String,
 
     @field:JsonProperty(required = true)
+    @field:Valid
     val data: T,
 )

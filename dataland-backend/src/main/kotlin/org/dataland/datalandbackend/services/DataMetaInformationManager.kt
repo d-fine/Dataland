@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -88,5 +89,26 @@ class DataMetaInformationManager(
         )
 
         return dataMetaInformationRepositoryInterface.searchDataMetaInformation(filter)
+    }
+
+    /**
+     * Method to delete the data meta information for a given dataId
+     * @param dataId of the dataset that should be deleted
+     */
+    fun deleteDataMetaInfo(
+        dataId: String,
+    ) {
+        val dataMetaInformation = getDataMetaInformationByDataId(dataId)
+        dataMetaInformationRepositoryInterface.delete(dataMetaInformation)
+    }
+
+    /**
+     * Queries the meta information for datasets uploaded by a specific user
+     * @param userId the id of the user for whom to query data meta information
+     * @returns the data meta information uploaded by the specified user
+     */
+    fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? {
+        return dataMetaInformationRepositoryInterface.getUserUploadsDataMetaInfos(userId)
+            .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
     }
 }

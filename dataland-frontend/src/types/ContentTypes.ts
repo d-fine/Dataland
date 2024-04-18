@@ -18,7 +18,11 @@ export interface Section {
 export interface Card {
   thumbnail?: string;
   icon?: string;
-  text: string;
+  text?: string;
   title?: string;
   date?: string;
+  links?: Array<{
+    text: string;
+    url: string;
+  }>;
 }

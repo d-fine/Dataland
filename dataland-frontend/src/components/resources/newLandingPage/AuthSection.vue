@@ -1,13 +1,13 @@
 <template>
   <template v-if="isLandingPage">
-    <div class="header__authsection">
-      <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
-      <ButtonComponent
-        label="Sign Up"
-        ariaLabel="Sign up to preview account"
-        name="signup_dataland_button"
-        @click="register"
-      />
+    <div v-if="isUserLoggedIn == true" data-test="backToPlatformLink">
+      <a class="fw-semi-bold vertical-middle cursor-pointer" @click="backToPlatform"
+        >BACK TO PLATFORM <i class="material-icons pl-1" aria-hidden="true" alt="arrow_forward">arrow_forward</i></a
+      >
+    </div>
+    <div v-if="isUserLoggedIn == false" class="header__authsection">
+      <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
+      <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
     </div>
   </template>
   <template v-else>
@@ -15,14 +15,14 @@
       <ButtonComponent
         label="Log in"
         buttonType="login-button"
-        ariaLabel="Login to preview account"
+        ariaLabel="Login to account"
         name="login_dataland_button"
         @click="login"
       />
       <ButtonComponent
         label="Sign Up"
         buttonType="registration-button"
-        ariaLabel="Sign up to preview account"
+        ariaLabel="Sign up to account"
         name="signup_dataland_button"
         @click="register"
       />
@@ -31,13 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, onMounted, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import type Keycloak from "keycloak-js";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+const isUserLoggedIn = ref<undefined | boolean>(undefined);
 const { isLandingPage } = defineProps<{
   isLandingPage: boolean;
 }>();
@@ -53,6 +56,21 @@ const login = (): void => {
     })
     .catch((error) => console.log(error));
 };
+
+/**
+ * Sends the user to back to the platform
+ */
+const backToPlatform = (): void => {
+  void router.push({ path: "/companies" });
+};
+
+onMounted(() => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      isUserLoggedIn.value = keycloak.authenticated;
+    })
+    .catch((error) => console.log(error));
+});
 
 /**
  * Sends the user to the keycloak register page (if not authenticated already)
@@ -111,22 +129,10 @@ const register = (): void => {
 }
 @media only screen and (max-width: $small) {
   .header {
-    &__authsection {
-      display: none;
-      flex-direction: row-reverse;
-      &-login {
-        font-size: 0;
-        color: transparent;
-        &:hover {
-          font-size: 0;
-          color: transparent;
-          border-bottom: 2px solid transparent;
-          &::before {
-            content: "";
-          }
-        }
-      }
-    }
+    padding: 16px;
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
   }
 }
 </style>

@@ -22,7 +22,13 @@
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
-          <MultiLayerDataTableBody :mldtDatasets="mldtDatasets" :config="config" :isTopLevel="true" :isVisible="true" />
+          <MultiLayerDataTableBody
+            :mldtDatasets="mldtDatasets"
+            :inReviewMode="inReviewMode"
+            :config="config"
+            :isTopLevel="true"
+            :isVisible="true"
+          />
         </tbody>
       </table>
     </div>
@@ -44,5 +50,6 @@ defineProps<{
   config: MLDTConfig<T>;
   mldtDatasets: Array<MLDTDataset<T>>;
   ariaLabel?: string;
+  inReviewMode: boolean;
 }>();
 </script>

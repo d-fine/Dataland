@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.specific.viewconfig.elements
 
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * An In-Memory representation of a MLDTCellConfig.
@@ -17,6 +18,6 @@ class CellConfigBuilder(
     var shouldDisplay: FrameworkBooleanLambda,
     var valueGetter: FrameworkDisplayValueLambda,
 ) : ViewConfigElement {
-    override val imports: Set<String>
+    override val imports: Set<TypeScriptImport>
         get() = valueGetter.imports
 }

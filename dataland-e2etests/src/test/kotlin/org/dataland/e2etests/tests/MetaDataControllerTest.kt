@@ -26,7 +26,9 @@ class MetaDataControllerTest {
     private val listOfTestCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
-
+    companion object {
+        private const val SLEEP_DURATION_MS: Long = 1000
+    }
     fun buildAcceptedAndActiveDataMetaInformation(
         dataId: String,
         companyId: String,
@@ -34,7 +36,7 @@ class MetaDataControllerTest {
         uploadTime: Long,
     ) = DataMetaInformation(
         dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime,
-        reportingPeriod = "", currentlyActive = true, qaStatus = QaStatus.accepted, uploaderUserId = null,
+        reportingPeriod = "", currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = null,
     )
 
     @Test
@@ -75,6 +77,7 @@ class MetaDataControllerTest {
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
             numberOfDataSetsToPostPerCompany,
         )
+        Thread.sleep(SLEEP_DURATION_MS)
         val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = false)
         val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDataSetsPerFramework
         assertEquals(
@@ -129,6 +132,7 @@ class MetaDataControllerTest {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfTestCompanyInformation), numberOfDataSetsToPostPerCompany,
         )
+        Thread.sleep(SLEEP_DURATION_MS)
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
             listOfUploadInfo[0].actualStoredCompany.companyId,
             testDataType,
@@ -170,11 +174,11 @@ class MetaDataControllerTest {
             "The active result is not the one with the highest upload time.",
         )
         val retrievedDataset =
-            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEutaxonomyNonFinancialsData(
                 activeDatasets[0].dataId,
             )
         assertTrue(
-            (retrievedDataset.data!!.general!!.numberOfEmployees == newNumberOfEmployees),
+            (retrievedDataset.data.general!!.numberOfEmployees == newNumberOfEmployees),
             "The active dataset does not have numberOfEmployees of the old one plus 1.",
         )
     }
@@ -182,7 +186,8 @@ class MetaDataControllerTest {
     private fun uploadTwoDataSetsForACompany(): Triple<String, String, BigDecimal> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
+        val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)[0]
         val reportingPeriod = "2022"
         apiAccessor.uploadWithWait(
             companyId = companyId,

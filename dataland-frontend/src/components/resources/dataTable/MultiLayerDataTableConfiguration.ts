@@ -74,7 +74,9 @@ function isCellSectionVisible<FrameworkDataType>(
 ): boolean {
   const shouldShowSection = mldtDatasets.some((mldtDataset) => sectionConfig.shouldDisplay(mldtDataset.dataset));
 
-  if (!shouldShowSection) return false;
+  if (!shouldShowSection) {
+    return false;
+  }
 
   const anyChildrenVisible = sectionConfig.children.some((child) => isCellOrSectionVisible(child, mldtDatasets));
 

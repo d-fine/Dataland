@@ -34,21 +34,18 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    testImplementation(Spring.boot.test)
-    testImplementation(Spring.rabbitTest)
-
+    implementation(project(":dataland-keycloak-adapter"))
+    implementation(Spring.boot.validation)
+    implementation(libs.json)
+    implementation(Spring.boot.oauth2ResourceServer)
     implementation(Spring.boot.security)
     implementation(libs.springdoc.openapi.ui)
     implementation(Spring.boot.data.jpa)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
-    implementation(project(":dataland-keycloak-adapter"))
-    implementation(Spring.boot.validation)
-    implementation(libs.json)
-
-    // TODO added swaggerui for testing purposes only, first
+    testImplementation(Spring.boot.test)
+    testImplementation(Spring.rabbitTest)
     kapt(Spring.boot.configurationProcessor)
-    implementation(Spring.boot.oauth2ResourceServer)
 }
 
 openApi {
@@ -64,7 +61,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 

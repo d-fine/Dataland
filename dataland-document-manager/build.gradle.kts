@@ -27,6 +27,16 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.jodconverter.core)
+    implementation(libs.jodconverter.local)
+    implementation(libs.itext.core)
+    implementation(libs.layout)
+    implementation(libs.tika.core)
+    implementation(libs.tika.parsers)
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
+    implementation(libs.poi.scratchpad)
+    implementation(libs.simple.odf)
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
@@ -45,16 +55,18 @@ dependencies {
     implementation(Spring.boot.validation)
     implementation(Spring.boot.oauth2ResourceServer)
     implementation(Spring.boot.amqp)
+    implementation(Spring.boot.security)
+    implementation(project(":dataland-keycloak-adapter"))
+    implementation(project(":dataland-message-queue-utils"))
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
-    implementation(Spring.boot.security)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
     testImplementation(Spring.security.spring_security_test)
-    implementation(project(":dataland-keycloak-adapter"))
-    implementation(project(":dataland-message-queue-utils"))
 }
 
 openApi {
@@ -70,7 +82,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("clients/jacoco/jacoco.exec").get().asFile)
     }
 }
 

@@ -13,7 +13,12 @@ interface ComponentGroupApi {
      * Create a new subcomponent. Throws an exception when the identifier is already in use
      * or the provided class cannot be constructed.
      */
-    fun <T : ComponentBase> create(identifier: String, clazz: KClass<T>, init: (T.() -> Unit)? = null): T
+    fun <T : ComponentBase> create(
+        identifier: String,
+        insertBeforeIdentifier: String? = null,
+        clazz: KClass<T>,
+        init: (T.() -> Unit)? = null,
+    ): T
 
     /**
      * Edit an existing subcomponent. Throws an exception when the identifier is not existent or
@@ -28,6 +33,12 @@ interface ComponentGroupApi {
     fun <T : ComponentBase> getOrNull(identifier: String, clazz: KClass<T>): T?
 
     /**
+     * Get an existing subcomponent. Throws an exception when the identified element has a different type
+     * than specified or does not exist.
+     */
+    fun <T : ComponentBase> get(identifier: String, clazz: KClass<T>): T
+
+    /**
      * Delete an existing subcomponent. Throws an exception when the identifier is not existent or
      * the identified element has a different type than specified.
      */
@@ -40,9 +51,10 @@ interface ComponentGroupApi {
  */
 inline fun <reified T : ComponentBase> ComponentGroupApi.create(
     identifier: String,
+    insertBeforeIdentifier: String? = null,
     noinline init: (T.() -> Unit)? = null,
 ): T {
-    return this.create(identifier, T::class, init)
+    return this.create(identifier, insertBeforeIdentifier, T::class, init)
 }
 
 /**
@@ -70,4 +82,12 @@ inline fun <reified T : ComponentBase> ComponentGroupApi.delete(identifier: Stri
  */
 inline fun <reified T : ComponentBase> ComponentGroupApi.getOrNull(identifier: String): T? {
     return this.getOrNull(identifier, T::class)
+}
+
+/**
+ * Get an existing subcomponent. Throws an exception when the identified element has a different type
+ * than specified or does not exist.getOrNull
+ */
+inline fun <reified T : ComponentBase> ComponentGroupApi.get(identifier: String): T {
+    return this.get(identifier, T::class)
 }

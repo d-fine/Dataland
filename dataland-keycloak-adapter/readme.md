@@ -1,5 +1,5 @@
 ## Keycloak Adapter
-This librarary encapsulates everything that is needed to integrate Keycloak with a Spring Service.
+This library encapsulates everything that is needed to integrate Keycloak with a Spring Service.
 
 ## Usage
 To use this library, do the following:

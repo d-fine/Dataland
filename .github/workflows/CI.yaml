@@ -12,10 +12,11 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
+          task: "log-everything"
           github: ${{ toJSON(github) }}
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
@@ -32,10 +33,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "frontend-component-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -44,10 +46,10 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: Frontend component testing
         run: timeout -v 15m ./testing/execute_frontend_component_tests.sh
@@ -57,29 +59,30 @@ jobs:
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: lcovResults
+          name: lcovResults-frontend
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
   framework-toolbox-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "framework-toolbox-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -88,27 +91,28 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: Execute framework-toolbox integrationTest
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
   gradle-based-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "gradle-based-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -117,10 +121,10 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: assemble project
         run: ./gradlew assemble --no-daemon --stacktrace
@@ -128,11 +132,15 @@ jobs:
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
       - name: Execute unit tests for all spring services
-        run: ./gradlew :dataland-backend:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-framework-toolbox:test --no-daemon --stacktrace
+        run: |
+          sudo apt install libreoffice
+          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
+          NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
+          NOTIFICATION_INTERNAL_CC: ""
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
@@ -144,6 +152,8 @@ jobs:
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
       - name: verify OpenApi Files
         if: always()
+        env:
+          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
@@ -151,7 +161,7 @@ jobs:
           ! grep -ri "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: GradleReports
           path: |
@@ -159,14 +169,65 @@ jobs:
             ./**/coverage
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsUnitTests
+          name: JaCoCoResultsUnitTests-Gradle
           path: ./**/*.exec
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
           subfolder: 'unit-tests-backend'
+  python-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "python-tests"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - name: Prepare python environment
+        if: always()
+        run: | 
+          cd ./dataland-automated-qa-service
+          pip install --no-cache-dir -r requirements.txt
+          pip install -e .
+          openapi-python-client generate --path ../dataland-document-manager/documentManagerOpenApi.json
+          openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
+          pip install --no-cache-dir ./dataland-backend-api-documentation-client
+          pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
+      - name: Python linting
+        if: always()
+        run: |
+          pip install ruff
+          ruff check --preview ./dataland-automated-qa-service/src
+      - name: Execute python unit tests and measure coverage
+        if: always()
+        run: |
+          cd ./dataland-automated-qa-service
+          coverage run --source="./src/main" -m pytest -o log_cli=true -o log_cli_level=INFO
+          coverage xml
+          mv ./coverage.xml ./automated-qa-service-unit-test.xml
+        env:
+          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
+          RABBITMQ_USER: "dummy"
+          RABBITMQ_PASS: "dummy"
+          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      - name: Upload Python Unit Test Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PythonUnitTestCoverage
+          path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -189,11 +250,12 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: e2e-tests-${{ matrix.testGroup }}
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -223,6 +285,8 @@ jobs:
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "password"
           KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_READER_PASSWORD: "password"
@@ -232,6 +296,9 @@ jobs:
           KEYCLOAK_REVIEWER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_REVIEWER_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_REVIEWER_PASSWORD: "password"
+          KEYCLOAK_PREMIUM_USER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+          KEYCLOAK_PREMIUM_USER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+          KEYCLOAK_PREMIUM_USER_PASSWORD: "password"
           KEYCLOAK_ADMIN: "admin"
           KEYCLOAK_ADMIN_PASSWORD: "password"
           KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
@@ -246,38 +313,44 @@ jobs:
           DOCKER_BUILDKIT: 1
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: "dummy.mail@dataland.com"
-          NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: "dummy.mail2@dataland.com"
+          NOTIFICATION_INTERNAL_RECEIVERS: "anotherDummyCI@example.com"
+          NOTIFICATION_INTERNAL_CC: "anotherDummyCI2@example.com"
           RABBITMQ_USER: "admin"
           RABBITMQ_PASS: "dataland"
           RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
           FRONTEND_LOCATION_CONFIG: "Test"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: JaCoCoResultsE2ETest
+          name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
           path: ./*.exec
+      - name: Upload Python Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PythonE2eTestCoverage-${{ matrix.testGroup }}
+          path: ./*.xml
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: lcovResults
+          name: lcovResults-${{ matrix.testGroup }}
           path: ./*.info
       - name: Upload E2E Test and Cypress Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: e2eTestReports
+          name: e2eTestReports-${{ matrix.testGroup }}
           path: |
             ./cypress
             ./coverage
             ./reports
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: e2eTestDatabaseDumps
+          name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
           path: ./dbdumps/
       - uses: ./.github/workflows/dockerLogs
         if: always()
@@ -290,14 +363,16 @@ jobs:
       - e2e-tests
       - gradle-based-tests
       - frontend-component-tests
+      - python-tests
       - framework-toolbox-tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
+          task: "sonar"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -306,24 +381,45 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           cache: gradle
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
+        name: PythonUnitTestCoverage
+        with:
+          pattern: PythonUnitTestCoverage
+          path: python-coverage
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        name: PythonE2eTestCoverage
+        with:
+          pattern: PythonE2eTestCoverage-*
+          path: python-coverage
+          merge-multiple: true
+      - name: Convert Python coverage paths
+        if: always()
+        run: |
+          cd ./python-coverage
+          sed -i "s%src/main%/home/runner/work/Dataland/Dataland/dataland-automated-qa-service/src/main%g" ./*.xml
+          sed -i "s%.//home%/home%g" ./*.xml
+      - uses: actions/download-artifact@v4
         name: JaCoCoResultsUnitTests
         with:
-          name: JaCoCoResultsUnitTests
-      - uses: actions/download-artifact@v3
+          pattern: JaCoCoResultsUnitTests-*
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
         name: JaCoCoResultsE2ETest
         with:
-          name: JaCoCoResultsE2ETest
-      - uses: actions/download-artifact@v3
+          pattern: JaCoCoResultsE2ETest-*
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
         name: lcovResults
         with:
-          name: lcovResults
+          pattern: lcovResults-*
           path: fe-coverage
+          merge-multiple: true
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
@@ -350,23 +446,91 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload Reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SonarStageReports
           path: ./build/reports
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
-        run: git log --since $(date -d "- 28 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
+        run: git log --since $(date -d "- 35 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
+  merge-artefacts:
+    runs-on: ubuntu-latest
+    needs:
+      - sonar
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Merge Parameters Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: parameters
+          pattern: parameters-*
+          delete-merged: true
+      - name: Merge Docker Logs Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: dockerLogs
+          pattern: dockerLogs-*
+          delete-merged: true
+      - name: Merge Jacoco E2E Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: JaCoCoResultsE2ETest
+          pattern: JaCoCoResultsE2ETest-*
+          delete-merged: true
+      - name: Merge Python Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: PythonE2eTestCoverage
+          pattern: PythonE2eTestCoverage-*
+          delete-merged: true
+      - name: Merge lcovResults Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: lcovResults
+          pattern: lcovResults-*
+          delete-merged: true
+      - name: Merge E2E Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: e2eTestReports
+          pattern: e2eTestReports-*
+          delete-merged: true
+      - name: Merge E2E DB dump Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: e2eTestDatabaseDumps
+          pattern: e2eTestDatabaseDumps-*
+          delete-merged: true
+      - name: Merge Jacoco Unit Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: JaCoCoResultsUnitTests
+          pattern: JaCoCoResultsUnitTests-*
+          delete-merged: true
+      - name: Merge Docker Image Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: dockerImageVersions
+          pattern: dockerImageVersions-*
+          delete-merged: true
   summary:
     runs-on: ubuntu-latest
     if: success()
     needs:
-      - sonar
+      - merge-artefacts
       - manual-maintenance-check
     steps:
       - name: Summary of this workflow's overall outcome

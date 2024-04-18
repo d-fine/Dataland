@@ -1,8 +1,15 @@
 <template>
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
-      <BackButton />
-      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" class="w-8 mt-2" />
+      <div class="headline">
+        <BackButton />
+      </div>
+
+      <CompaniesOnlySearchBar
+        v-if="showSearchBar"
+        @select-company="$router.push(`/companies/${$event.companyId}`)"
+        class="w-8 mt-2"
+      />
     </template>
     <template v-else>
       <div class="mobile-header">
@@ -14,7 +21,10 @@
     </template>
     <CompanyInformationBanner
       :companyId="companyId"
+      :show-single-data-request-button="showSingleDataRequestButton"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+      :framework="framework"
+      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
       class="w-12"
     />
   </div>
@@ -32,8 +42,8 @@
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import { type CompanyInformation } from "@clients/backend";
-import { computed, inject, onMounted, onUnmounted, ref } from "vue";
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
+import { computed, inject, onMounted, onUnmounted, type PropType, ref } from "vue";
 
 const injectedMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
@@ -41,13 +51,31 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId } = defineProps<{
-  companyId: string;
-}>();
+const { companyId, showSearchBar, showSingleDataRequestButton, framework, mapOfReportingPeriodToActiveDataset } =
+  defineProps({
+    companyId: {
+      type: String,
+      required: true,
+    },
+    showSearchBar: {
+      type: Boolean,
+      default: true,
+    },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
+    },
+    framework: {
+      type: String as PropType<DataTypeEnum>,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map as PropType<Map<string, DataMetaInformation>>,
+      required: false,
+    },
+  });
 
-const emit = defineEmits<{
-  fetchedCompanyInformation: [companyInformation: CompanyInformation];
-}>();
+const emit = defineEmits(["fetchedCompanyInformation"]);
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"
@@ -78,6 +106,7 @@ function onScroll(): void {
   sheetRect.value = sheet.value!.getBoundingClientRect();
   attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
 }
+
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
 });
@@ -116,6 +145,14 @@ const isCollapsed = computed<boolean>(() => {
 
 .visuals-hidden {
   visibility: hidden;
+}
+
+.headline {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mobile-header {

@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.datapoints
 
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.model.TemplateDocumentSupport
@@ -29,6 +30,12 @@ sealed interface DocumentSupport {
      * @param nullable true iff the datapoint should be nullable
      */
     fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference
+
+    /**
+     * Calculate a list of annotations that must be applied to JVM-types in the backend using this
+     * document-support class.
+     */
+    fun getJvmAnnotations(): List<Annotation>
 
     /**
      * Calculate a Framework Display Lambda for a datapoint with original lambda innerLambda given the current

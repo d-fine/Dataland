@@ -15,6 +15,8 @@
             class="pl-4 m-0"
             v-model="currentSearchBarInput"
             :filter="currentCombinedFilter"
+            :chunk-size="rowsPerPage"
+            :current-page="currentPage"
             :searchBarId="searchBarId"
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
@@ -54,28 +56,30 @@
             </div>
 
             <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-              <RequestDataButton />
+              <BulkDataRequestButton />
               <NewDatasetButton v-if="hasUserUploaderRights" />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
         </div>
 
-        <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
+        <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading...</p>
           <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
         </div>
 
         <FrameworkDataSearchResults
-          v-if="!waitingForSearchResults"
+          v-if="!waitingForDataToDisplay"
           ref="searchResults"
+          :total-records="totalRecords"
+          :previous-records="previousRecords"
           :rows-per-page="rowsPerPage"
           :data="resultsArray"
-          @update:first="setFirstShownRow"
+          @page-update="handlePageUpdate"
         />
       </TheContent>
     </DatasetsTabMenu>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -83,23 +87,22 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import {
-  type FrameworkDataSearchFilterInterface,
-  type DataSearchStoredCompany,
-} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { defineComponent, inject, ref } from "vue";
-import { type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum, type BasicCompanyInformation } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
-import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import BulkDataRequestButton from "@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
@@ -117,7 +120,7 @@ export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     NewDatasetButton,
-    RequestDataButton,
+    BulkDataRequestButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
@@ -138,14 +141,18 @@ export default defineComponent({
     this.scanQueryParams(this.route);
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      resultsArray: [] as Array<DataSearchStoredCompany>,
+      footerContent,
+      resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: <FrameworkDataSearchFilterInterface>{
@@ -157,9 +164,11 @@ export default defineComponent({
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarId: "search_bar_top",
-      indexOfFirstShownRow: 0,
       rowsPerPage: 100,
-      waitingForSearchResults: true,
+      currentPage: 0,
+      totalRecords: 0,
+      previousRecords: 0,
+      waitingForDataToDisplay: true,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -191,13 +200,12 @@ export default defineComponent({
   },
   computed: {
     currentlyVisiblePageText(): string {
-      const totalSearchResults = this.resultsArray.length;
-
-      if (!this.waitingForSearchResults) {
+      const totalSearchResults = this.totalRecords;
+      if (!this.waitingForDataToDisplay) {
         if (totalSearchResults === 0) {
           return "No results";
         } else {
-          const startIndex = this.indexOfFirstShownRow;
+          const startIndex = this.currentPage * this.rowsPerPage;
           const endIndex =
             startIndex + (this.rowsPerPage - 1) >= totalSearchResults
               ? totalSearchResults - 1
@@ -211,11 +219,16 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Updates the local variable indicating which row of the datatable is currently displayed at the top
-     * @param value the index of the new row displayed on top
+     * Updates the current page.
+     * An update of the currentPage automatically triggers a data Update
+     * @param pageNumber the new page index
      */
-    setFirstShownRow(value: number) {
-      this.indexOfFirstShownRow = value;
+    handlePageUpdate(pageNumber: number) {
+      if (pageNumber != this.currentPage) {
+        this.waitingForDataToDisplay = true;
+        this.currentPage = pageNumber;
+        this.previousRecords = this.currentPage * this.rowsPerPage;
+      }
     },
     /**
      * Called when the window is scrolled.
@@ -251,17 +264,17 @@ export default defineComponent({
     /**
      * Parses the framework filter query parameters.
      * @param route the current route
-     * @returns an array of framework filters from the URL or an array of all frameworks if no filter is defined
+     * @returns an array of framework filters from the URL or an empty array if no filter is defined
      */
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
-      if (queryFrameworks !== undefined) {
+      if (queryFrameworks) {
         const allowedDataTypeEnumValues = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
           allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam),
         ) as Array<DataTypeEnum>;
       } else {
-        return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE;
+        return [];
       }
     },
     /**
@@ -311,7 +324,7 @@ export default defineComponent({
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
-        this.waitingForSearchResults = true;
+        this.waitingForDataToDisplay = true;
         this.currentCombinedFilter = {
           sectorFilter: this.currentFilteredSectors,
           frameworkFilter: this.currentFilteredFrameworks,
@@ -330,7 +343,6 @@ export default defineComponent({
       const queryCountryCodes = this.getQueryCountryCodes(route);
       const querySectors = this.getQuerySectors(route);
       const queryInput = this.getQueryInput(route);
-
       if (
         !arraySetEquals(this.currentFilteredFrameworks, queryFrameworks) ||
         !arraySetEquals(this.currentFilteredCountryCodes, queryCountryCodes) ||
@@ -346,25 +358,26 @@ export default defineComponent({
     /**
      * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
-     * @param companiesReceived the received companies
+     * @param companiesReceived the received chunk of companies
+     * @param chunkIndex the index of the chunk
+     * @param totalNumberOfCompanies the total number of companies
      * @returns the promise of the router push with the new query parameters
      */
-    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
+    handleCompanyQuery(
+      companiesReceived: Array<BasicCompanyInformation>,
+      chunkIndex: number,
+      totalNumberOfCompanies: number,
+    ) {
+      this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
-      this.setFirstShownRow(0);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.searchResults?.resetPagination();
-      this.waitingForSearchResults = false;
+      if (chunkIndex == 0) this.handlePageUpdate(0);
+      this.waitingForDataToDisplay = false;
       this.searchBarToggled = false;
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.every((frameworkAsDataTypeEnum) =>
-        this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum),
-      );
-      let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
-      if (allFrameworksSelected) queryFrameworks = undefined;
-      if (this.currentFilteredFrameworks.length == 0) queryFrameworks = null;
+      const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
 
       const queryCountryCodes =
         this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
@@ -386,7 +399,7 @@ export default defineComponent({
      * @param companyNameFilter the new search filter
      */
     handleSearchConfirmed(companyNameFilter: string) {
-      this.waitingForSearchResults = true;
+      this.waitingForDataToDisplay = true;
       this.currentSearchBarInput = companyNameFilter;
     },
     /**

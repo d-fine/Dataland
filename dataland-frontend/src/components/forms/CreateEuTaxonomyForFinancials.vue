@@ -56,9 +56,9 @@
                 <UploadReports
                   name="UploadReports"
                   ref="UploadReports"
-                  :isEuTaxonomy="true"
+                  :isMountedForEuTaxoFinancialsUploadPage="true"
                   :referencedReportsForPrefill="templateDataset?.referencedReports ?? undefined"
-                  @reportsUpdated="handleChangeOfReferenceableReportNamesAndReferences"
+                  @reportsUpdated="updateReportsSelection"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -110,7 +110,7 @@
 
                       <!-- Data source -->
                       <div class="form-field">
-                        <FormKit type="group" name="dataSource">
+                        <FormKit type="group" name="dataSource" ignore="true">
                           <h4 class="mt-0">Data source</h4>
                           <div class="next-to-each-other">
                             <div class="flex-1">
@@ -121,14 +121,13 @@
                               />
                               <FormKit
                                 type="select"
-                                name="fileName"
+                                ignore="true"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
                                 v-model="currentReportValue"
-                                :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
+                                :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
-                              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
                             </div>
                             <div>
                               <UploadFormHeader
@@ -139,14 +138,21 @@
                                 outer-class="w-100"
                                 type="number"
                                 name="page"
+                                v-model="reportPageNumber"
                                 placeholder="Page"
                                 validation-label="Page"
                                 validation="min:0"
                                 step="1"
                                 min="0"
+                                ignore="true"
                               />
                             </div>
                           </div>
+                        </FormKit>
+                        <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
+                          <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+                          <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+                          <FormKit type="hidden" name="page" v-model="reportPageNumber" />
                         </FormKit>
                       </div>
                     </FormKit>
@@ -309,7 +315,7 @@ import MultiSelect from "primevue/multiselect";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
@@ -342,6 +348,7 @@ import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   setup() {
@@ -369,11 +376,12 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      isMounted: false,
       formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
-      currentReportValue: "",
+      currentReportValue: "" as string,
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
@@ -386,6 +394,8 @@ export default defineComponent({
       route: useRoute(),
       waitingForData: false,
       editMode: false,
+      noReportLabel: noReportLabel,
+      reportPageNumber: undefined as string | undefined,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
@@ -429,7 +439,12 @@ export default defineComponent({
       message: "",
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
+      isValidFileName: isValidFileName,
+      documentsToUpload: [] as DocumentToUpload[],
     };
+  },
+  mounted() {
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     reportingPeriodYear(): number {
@@ -497,6 +512,9 @@ export default defineComponent({
           if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
             this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
           }
+          if (companyAssociatedEuTaxonomyData.data?.assurance?.dataSource?.fileName) {
+            this.currentReportValue = companyAssociatedEuTaxonomyData.data.assurance.dataSource.fileName;
+          }
           this.templateDataset = companyAssociatedEuTaxonomyData.data;
 
           this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
@@ -541,7 +559,7 @@ export default defineComponent({
           return item;
         })
         .filter((item) => Object.values(item)[0])
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
     },
 
     /**
@@ -589,7 +607,7 @@ export default defineComponent({
           const field = section[financialServiceType];
           return { [financialServiceType]: field };
         })
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
 
       const kpis = Object.keys(kpiSections)
         .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
@@ -603,7 +621,7 @@ export default defineComponent({
           }
           return kpi;
         })
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
 
       return { eligibilityKpis, ...kpis };
     },
@@ -618,10 +636,12 @@ export default defineComponent({
         this.messageCount++;
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
-        const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
+        const clonedFormInputsModel = JSON.parse(
+          JSON.stringify(this.formInputsModel),
+        ) as unknown as CompanyAssociatedDataEuTaxonomyDataForFinancials;
         const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
         delete (clonedFormInputsModel.data as ObjectType).kpiSections;
-        clonedFormInputsModel.data = {
+        (clonedFormInputsModel.data as ObjectType) = {
           ...(clonedFormInputsModel.data as ObjectType),
           ...this.convertKpis(kpiSections as ObjectType),
         };
@@ -630,18 +650,12 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
         );
-
-        await uploadFiles(
-          (this.$refs.UploadReports.$data as { documentsToUpload: DocumentToUpload[] }).documentsToUpload,
-          assertDefined(this.getKeycloakPromise),
-        );
-
+        await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
-          clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-        );
+        this.postEuTaxonomyDataForFinancialsResponse =
+          await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
         this.$emit("datasetCreated");
       } catch (error) {
         this.messageCount++;
@@ -685,11 +699,15 @@ export default defineComponent({
       this.postEuTaxonomyDataForFinancialsProcessed = true;
     },
     /**
-     * Updates the local list of names of referenceable reports
-     * @param reportNamesAndReferences new list of the referenceable reports' names and references
+     * Sets the object containing the names of all stored and to-be-uploaded reports as keys, and their respective
+     * fileReferences as values, and then sets the selection of reports that are to be uploaded.
+     * @param reportsNamesAndReferences contains the names of all stored and to-be-uploaded reports as keys,
+     * and their respective fileReferences as values
+     * @param reportsToUpload contains the actual selection of reports that are to be uploaded
      */
-    handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
-      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
+    updateReportsSelection(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
+      this.documentsToUpload = [...reportsToUpload];
     },
   },
 });

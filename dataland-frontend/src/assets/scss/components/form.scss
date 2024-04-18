@@ -403,6 +403,37 @@ input[type="radio"] {
   }
 }
 
+.p-inputswitch-singlecolor {
+  width: 2.1rem;
+  height: 1.2rem;
+  .p-inputswitch-slider {
+    background: $inputswitch-singlecolor-slider-bg;
+    transition:
+            background-color 0.2s,
+            color 0.2s,
+            border-color 0.2s,
+            box-shadow 0.2s;
+    border-radius: 30px;
+    &::before {
+      background: $bg-text-primary;
+      width: 1rem;
+      height: 1rem;
+      margin-top: -0.5rem;
+      border-radius: 50%;
+      transition-duration: 0.2s;
+    }
+  }
+  &.p-inputswitch-checked {
+    .p-inputswitch-slider {
+      background: $inputswitch-singlecolor-slider-bg;
+      &::before {
+        background: $bg-text-primary;
+        transform: translateX(1rem);
+      }
+    }
+  }
+}
+
 .p-tooltip {
   .p-tooltip-text {
     background: $input-label-color;
@@ -470,15 +501,21 @@ input[type="radio"] {
     border: 2px solid $input-checked-color;
     border-radius: 2px;
   }
-  input[type="checkbox"]:checked {
+  input[type="checkbox"]:not(.p-radiobutton):checked {
     background-color: $input-checked-color;
   }
-  input[type="radio"] {
+  input[type="radio"],
+  input.p-radiobutton {
     background-color: white;
     border: 2px solid $input-label-color;
     border-radius: 15px;
     cursor: pointer;
     margin-right: 10px;
+  }
+  input.p-radiobutton:hover,
+  input.p-radiobutton:active,
+  input.p-radiobutton:checked {
+    border: 3px solid $input-label-color;
   }
   input[type="checkbox"]::before,
   input[type="radio"]::before {
@@ -494,7 +531,8 @@ input[type="radio"] {
     border-style: solid;
     border-color: $input-text-bg;
   }
-  input[type="radio"]::before {
+  input[type="radio"]::before,
+  input.p-radiobutton::before {
     border-style: solid;
     border-color: $input-label-color;
   }
@@ -503,7 +541,8 @@ input[type="radio"] {
     display: block;
   }
   label[data-checked="true"] {
-    input[type="radio"]::before {
+    input[type="radio"]::before,
+    input.p-radiobutton::before {
       display: block;
     }
   }
@@ -674,7 +713,7 @@ input[type="radio"] {
         padding: 1rem;
         align-items: center;
         .file-upload-item {
-          margin: 2rem 0;
+          margin: 1rem 0;
         }
         button {
           margin-left: auto;

@@ -1,4 +1,3 @@
-import Chainable = Cypress.Chainable;
 import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
 /**
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
@@ -13,7 +12,7 @@ export function logout(): void {
     .click()
     .url()
     .should("eq", getBaseUrl() + "/")
-    .get("a[aria-label='Login to preview account']")
+    .get("a[aria-label='Login to account']")
     .should("exist")
     .should("be.visible");
 }
@@ -30,7 +29,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
-    .get("a[aria-label='Login to preview account']")
+    .get("a[aria-label='Login to account']")
     .click()
     .get("#username")
     .should("exist")
@@ -100,7 +99,7 @@ export function getKeycloakToken(
   username = reader_name,
   password = reader_pw,
   client_id = "dataland-public",
-): Chainable<string> {
+): Cypress.Chainable<string> {
   return (
     cy
       .request({

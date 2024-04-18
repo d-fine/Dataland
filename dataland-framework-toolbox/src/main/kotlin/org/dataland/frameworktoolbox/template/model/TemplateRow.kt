@@ -23,7 +23,13 @@ data class TemplateRow(
     var fieldName: String,
 
     @JsonProperty("Tooltip")
-    var tooltip: String,
+    var combinedTooltip: String?,
+
+    @JsonProperty("Tooltip - upload page")
+    val uploadPageTooltip: String? = null,
+
+    @JsonProperty("Tooltip - view page (if different from upload page)")
+    val viewPageTooltip: String? = null,
 
     @JsonProperty("Component")
     var component: String,

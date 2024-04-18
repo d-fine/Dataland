@@ -18,7 +18,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
-    id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     id("org.jetbrains.kotlin.plugin.jpa")
 }
@@ -34,6 +33,16 @@ dependencies {
     implementation(libs.jakarta.servlet.api)
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
+    implementation(libs.mailjet.client)
+    testImplementation(Spring.boot.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
+    }
 }
 
 tasks.bootJar {
@@ -42,8 +51,4 @@ tasks.bootJar {
 
 jacoco {
     toolVersion = jacocoVersion
-}
-
-gitProperties {
-    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

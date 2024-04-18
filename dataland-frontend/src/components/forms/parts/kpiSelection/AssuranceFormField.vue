@@ -36,42 +36,47 @@
 
     <!-- Data source -->
     <div class="form-field">
-      <FormKit type="group" name="dataSource">
-        <h4 class="mt-0">Data source</h4>
-        <div class="next-to-each-other">
-          <div class="flex-1">
-            <UploadFormHeader
-              :label="euTaxonomyKpiNameMappings.report ?? ''"
-              :description="euTaxonomyKpiInfoMappings.report ?? ''"
-              :is-required="true"
-            />
-            <FormKit
-              type="select"
-              name="fileName"
-              v-model="currentReportValue"
-              placeholder="Select a report"
-              :options="['None...', ...reportsName]"
-            />
-            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-          </div>
-          <div>
-            <UploadFormHeader
-              :label="euTaxonomyKpiNameMappings.page ?? ''"
-              :description="euTaxonomyKpiInfoMappings.page ?? ''"
-            />
-            <FormKit
-              outer-class="w-100"
-              type="number"
-              name="page"
-              placeholder="Page"
-              validation-label="Page"
-              validation="min:0"
-              step="1"
-              min="0"
-            />
-          </div>
+      <h4 class="mt-0">Data source</h4>
+      <div class="next-to-each-other">
+        <div class="flex-1">
+          <UploadFormHeader
+            :label="euTaxonomyKpiNameMappings.report ?? ''"
+            :description="euTaxonomyKpiInfoMappings.report ?? ''"
+            :is-required="true"
+          />
+          <FormKit
+            type="select"
+            ignore="true"
+            v-model="currentReportValue"
+            placeholder="Select a report"
+            :options="[noReportLabel, ...reportsName]"
+            name="fileName"
+          />
         </div>
-      </FormKit>
+        <div>
+          <UploadFormHeader
+            :label="euTaxonomyKpiNameMappings.page ?? ''"
+            :description="euTaxonomyKpiInfoMappings.page ?? ''"
+          />
+          <FormKit
+            name="page"
+            v-model="reportPageNumber"
+            outer-class="w-100"
+            type="number"
+            placeholder="Page"
+            validation-label="Page"
+            validation="min:0"
+            step="1"
+            min="0"
+            ignore="true"
+          />
+          <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
+            <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+            <FormKit type="hidden" name="page" v-model="reportPageNumber" />
+          </FormKit>
+        </div>
+      </div>
     </div>
   </FormKit>
 </template>
@@ -85,10 +90,11 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { AssuranceDataPointValueEnum } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "AssuranceFormField",
@@ -101,6 +107,7 @@ export default defineComponent({
   components: { FormKit, UploadFormHeader },
   data() {
     return {
+      isMounted: false,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       assuranceData: {
@@ -109,7 +116,13 @@ export default defineComponent({
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
       currentReportValue: "",
+      reportPageNumber: undefined as string | undefined,
+      noReportLabel: noReportLabel,
+      isValidFileName: isValidFileName,
     };
+  },
+  mounted() {
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {

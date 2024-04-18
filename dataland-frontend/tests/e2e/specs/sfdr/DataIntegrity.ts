@@ -3,13 +3,14 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { DataTypeEnum, type SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
+import { selectSingleReportAndFillWithData } from "@e2e/utils/UploadUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type ExtendedDataPoint } from "@/utils/DataPoint";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -87,6 +88,27 @@ describeIf(
     }
 
     /**
+     * Check if YesNoExtendedDataPointFormField component contain proper fields
+     * @param fieldData Data for field
+     */
+    function testYesNoExtendedDataPointFormField(fieldData: ExtendedDataPoint<string>): void {
+      cy.get('[data-test="protectedAreasExposure"]')
+        .find('div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", fieldData.quality);
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", fieldData.quality);
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", fieldData.quality);
+    }
+
+    /**
      * Removes the first high impact climate sector and checks that it has actually disappeared
      */
     function testRemovingOfHighImpactClimateSector(): void {
@@ -105,7 +127,6 @@ describeIf(
       cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]')
         .find('select[name="quality"]')
         .select(3);
-      cy.get('[data-test="protectedAreasExposure"]').find('select[name="quality"]').select(3);
       cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
     }
 
@@ -132,10 +153,13 @@ describeIf(
           );
           cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.get("h1").should("contain", companyName);
-          selectsReportsForUploadInSfdrForm();
+          selectSingleReportAndFillWithData();
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
+          );
+          testYesNoExtendedDataPointFormField(
+            testSfdrCompany.t.environmental?.biodiversity?.protectedAreasExposure as ExtendedDataPoint<string>,
           );
           testRemovingOfHighImpactClimateSector();
           submitButton.clickButton();

@@ -46,7 +46,7 @@ export default defineComponent({
         },
         {
           name: "Climate change adaptation",
-          key: "ClimateChangeAdaption",
+          key: "ClimateChangeAdaptation",
         },
         {
           name: "Sustainable use and protection of water and marine resources",

@@ -9,16 +9,25 @@
       :min-length="3"
       option-label="companyName"
       :auto-option-focus="false"
-      placeholder="Search company by name or identifier"
+      placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
       :input-class="inputClass"
-      panel-class="d-framework-searchbar-panel"
-      style="z-index: 10"
+      panel-class="d-framework-searchbar-panel search__autocomplete"
+      append-to="self"
       @complete="searchCompanyName($event)"
       @item-select="$emit('selectCompany', $event.value)"
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     >
       <template #option="slotProps">
         <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
         <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+      </template>
+      <template #footer>
+        <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= resultLimit">
+          <li class="p-autocomplete-item">
+            <span class="font-medium pl-3"> Only showing {{ resultLimit }} results, please refine your query.</span>
+          </li>
+        </ul>
       </template>
     </AutoComplete>
   </div>
@@ -45,7 +54,9 @@ export default defineComponent({
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
     const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
-    inputOfAutocompleteComponent.focus();
+    if (window.innerWidth > 768) {
+      inputOfAutocompleteComponent.focus();
+    }
   },
 
   data: function () {
@@ -53,6 +64,7 @@ export default defineComponent({
       searchBarInput: "",
       latestValidSearchString: "",
       autocompleteArray: [] as Array<CompanyIdAndName>,
+      resultLimit: 100,
     };
   },
   props: {
@@ -75,7 +87,7 @@ export default defineComponent({
       this.saveCurrentSearchStringIfValid(newValue);
     },
   },
-  emits: ["selectCompany"],
+  emits: ["focus", "blur", "selectCompany"],
   methods: {
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
@@ -94,7 +106,10 @@ export default defineComponent({
       try {
         const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
           .companyDataController;
-        const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
+        const response = await companyDataControllerApi.getCompaniesBySearchString(
+          autoCompleteCompleteEvent.query,
+          this.resultLimit,
+        );
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);

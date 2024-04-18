@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 
 /**
@@ -13,6 +14,7 @@ class Framework(
     val identifier: String,
     val label: String,
     val explanation: String,
+    val order: Int,
 ) {
     val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
 
@@ -38,6 +40,17 @@ class Framework(
             it.generateViewConfig(frameworkViewConfigBuilder.rootSectionConfigBuilder)
         }
         return frameworkViewConfigBuilder
+    }
+
+    /**
+     * Generate a TypeScript UploadModel for this framework In-Memory.
+     */
+    fun generateUploadModel(): FrameworkUploadConfigBuilder {
+        val frameworkUploadConfigBuilder = FrameworkUploadConfigBuilder(this)
+        root.children.forEach {
+            it.generateUploadConfig(frameworkUploadConfigBuilder.rootSectionConfigBuilder)
+        }
+        return frameworkUploadConfigBuilder
     }
 
     /**

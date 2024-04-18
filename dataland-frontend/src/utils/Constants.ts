@@ -1,15 +1,12 @@
 import { DataTypeEnum } from "@clients/backend";
 
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
-  DataTypeEnum.P2p,
-  DataTypeEnum.EutaxonomyFinancials,
-  DataTypeEnum.Sfdr,
-  DataTypeEnum.Lksg,
-  DataTypeEnum.EutaxonomyNonFinancials,
-];
+export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
+
+export const ARRAY_OF_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
 
 // - Keycloak and session management related settings
 
@@ -34,4 +31,5 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-export const NO_DATA_PROVIDED: string = "No data provided";
+export const NO_DATA_PROVIDED = "No data provided";
+export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";

@@ -1,11 +1,12 @@
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import {
   type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForNonFinancials,
+  type EsgQuestionnaireData,
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
   type SmeData,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 
 export interface Category {
@@ -23,13 +24,13 @@ export interface Subcategory {
 }
 
 export interface Field {
-  showIf: (dataModel?: FrameworkData) => boolean;
   name: string;
   label: string;
   description: string;
   unit?: string;
   component: string;
   dependency?: string;
+  showIf: (dataModel?: FrameworkData) => boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;
@@ -45,8 +46,9 @@ export interface Field {
 
 export type FrameworkData =
   | EuTaxonomyDataForFinancials
-  | EuTaxonomyDataForNonFinancials
+  | EutaxonomyNonFinancialsData
   | LksgData
   | SfdrData
   | SmeData
+  | EsgQuestionnaireData
   | PathwaysToParisData;

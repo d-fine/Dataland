@@ -52,7 +52,9 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :shouldDisableCheckboxes="true"
-                          @reportsUpdated="updateDocumentList"
+                          @field-specific-documents-updated="
+                            updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                           :ref="field.name"
                         />
                       </FormKit>
@@ -102,9 +104,8 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { AxiosError } from "axios";
-import { type CompanyAssociatedDataLksgData, DataTypeEnum } from "@clients/backend";
+import { lksgDataModel } from "@/frameworks/lksg/UploadConfig";
+import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -121,6 +122,7 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
+import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
@@ -134,6 +136,15 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import { getFilledKpis } from "@/utils/DataPoint";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
+import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
+import RiskAssessmentsFormField from "@/components/forms/parts/fields/RiskAssessmentsFormField.vue";
+import GeneralViolationsAssessmentsFormField from "@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue";
+import GrievanceMechanismAssessmentsFormField from "@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -163,16 +174,22 @@ export default defineComponent({
     RadioButtonsFormField,
     PercentageFormField,
     ProductionSitesFormField,
+    RiskAssessmentsFormField,
+    GeneralViolationsAssessmentsFormField,
+    GrievanceMechanismAssessmentsFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
     CurrencyDataPointFormField,
+    AmountWithCurrencyFormField,
     YesNoFormField,
     YesNoNaFormField,
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    BigDecimalBaseDataPointFormField,
+    LksgSubcontractingCompaniesFormField,
   },
   emits: ["datasetCreated"],
   data() {
@@ -189,7 +206,8 @@ export default defineComponent({
       postLkSGDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
+      fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
+      listOfFilledKpis: [] as Array<string>,
     };
   },
   computed: {
@@ -232,16 +250,21 @@ export default defineComponent({
      */
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const lkSGDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
-
-      const lksgDataset = (await lkSGDataControllerApi.getFrameworkData(dataId)).data;
-      const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
-      if (dataDateFromDataset) {
-        this.dataDate = new Date(dataDateFromDataset);
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
+      let lksgDataControllerApi: FrameworkDataApi<LksgData>;
+      if (frameworkDefinition) {
+        lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+        const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
+        const lksgResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
+        this.companyAssociatedLksgData = objectDropNull(
+          lksgResponseData as ObjectType,
+        ) as CompanyAssociatedDataLksgData;
+      } else {
+        throw TypeError("The framework seems to be undefined as the corresponding DataTypeEnum entry was not found");
       }
-      this.companyAssociatedLksgData = objectDropNull(lksgDataset as ObjectType) as CompanyAssociatedDataLksgData;
+
       this.waitingForData = false;
     },
     /**
@@ -250,21 +273,24 @@ export default defineComponent({
     async postLkSGData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+        if (this.fieldSpecificDocuments.size > 0) {
+          await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
-        const lkSGDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
-        await lkSGDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
+        let lksgDataControllerApi: FrameworkDataApi<LksgData>;
+        if (frameworkDefinition) {
+          lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+          await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
+        }
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+        if (error.message) {
+          this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -274,7 +300,6 @@ export default defineComponent({
         this.postLkSGDataProcessed = true;
       }
     },
-
     /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
      * @param fieldName the name of the formfield as a key
@@ -282,17 +307,19 @@ export default defineComponent({
      */
     updateDocumentList(fieldName: string, document: DocumentToUpload) {
       if (document) {
-        this.documents.set(fieldName, document);
+        this.fieldSpecificDocuments.set(fieldName, document);
       } else {
-        this.documents.delete(fieldName);
+        this.fieldSpecificDocuments.delete(fieldName);
       }
     },
   },
   provide() {
     return {
-      productsServicesCategoriesPurchased: computed(() => {
-        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations
-          ?.productsServicesCategoriesPurchased;
+      selectedProcurementCategories: computed(() => {
+        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
+      }),
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
       }),
     };
   },

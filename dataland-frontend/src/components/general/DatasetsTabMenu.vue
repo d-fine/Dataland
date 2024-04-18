@@ -38,7 +38,7 @@ export default defineComponent({
   data: () => ({
     tabs: [
       {
-        label: "AVAILABLE DATASETS",
+        label: "COMPANIES",
         route: "/companies",
         isVisible: true,
       },
@@ -50,6 +50,11 @@ export default defineComponent({
       {
         label: "QA",
         route: "/qualityassurance",
+        isVisible: true,
+      },
+      {
+        label: "MY DATA REQUESTS",
+        route: "/requests",
         isVisible: true,
       },
     ] as Tab[],

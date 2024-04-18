@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -60,29 +61,26 @@ interface CompanyApi {
         ResponseEntity<StoredCompany>
 
     /**
-     * A method to retrieve specific companies with framework data identified by different filters
+     * A method to retrieve just the basic information about specific companies
      * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
-     * @param dataTypes this function only returns companies that have data for the specified dataTypes.
-     * if none is specified, it is filtered all data types are allowed
+     * @param dataTypes this function only returns companies that have data for a specified dataType.
      * @param countryCodes If set & non-empty,
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
-     * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
-     * @param onlyWithDataFromCurrentUser boolean determining if the search should only find companies with datasets
      * uploaded by the current user
-     * @return information about all companies with framework data matching the search criteria
+     * @return basic information about all companies with approved framework data matching the search criteria
      */
     @Operation(
-        summary = "Retrieve specific companies with framework data by different filters" +
-            " or just all companies from the data store.",
-        description = "Companies with associated framework data identified via the provided company name/identifier" +
+        summary = "Retrieve just the basic information about specific companies.",
+        description = "The basic information about companies" +
+            " via the provided company name/identifier" +
             " are retrieved and filtered by countryCode, sector and available framework data." +
             " Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved companies."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved basic company information."),
         ],
     )
     @GetMapping(
@@ -94,15 +92,52 @@ interface CompanyApi {
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
-        @RequestParam onlyCompanyNames: Boolean = false,
-        @RequestParam onlyWithDataFromCurrentUser: Boolean = false,
+        @RequestParam chunkSize: Int? = null,
+        @RequestParam chunkIndex: Int? = null,
     ):
-        ResponseEntity<List<StoredCompany>>
+        ResponseEntity<List<BasicCompanyInformation>>
+
+    /**
+     * A method to retrieve just the number of companies identified by different filters
+     * If the filters are not set, all companies in the data store are returned
+     * @param searchString string used for substring matching
+     * @param dataTypes If set & non-empty, this function only counts companies that have data for a dataType in the set
+     * @param countryCodes If set & non-empty,
+     * this function only counts companies that have a country code contained in the set
+     * @param sectors If set & non-empty, this function only counts companies that belong to a sector in the set
+     * uploaded by the current user
+     * @return the number of companies matching the search criteria
+     */
+    @Operation(
+        summary = "Retrieve the number of companies" +
+            " satisfying different filters.",
+        description = "The number of companies" +
+            " via the provided company name/identifier" +
+            " are retrieved and filtered by countryCode, sector and available framework data." +
+            " Empty/Unspecified filters are ignored.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved number of companies."),
+        ],
+    )
+    @GetMapping(
+        value = ["/numberOfCompanies"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getNumberOfCompanies(
+        @RequestParam searchString: String? = null,
+        @RequestParam dataTypes: Set<DataType>? = null,
+        @RequestParam countryCodes: Set<String>? = null,
+        @RequestParam sectors: Set<String>? = null,
+    ): ResponseEntity<Int>
 
     /**
      * A method to retrieve companies with names or identifiers matching a search string
      * @param searchString string used for substring matching in the name and the identifiers of a company
-     * @return names of the first 100 companies matching the search criteria
+     * @param resultLimit number of search results to be retrieved
+     * @return names of the first [resultLimit] companies matching the search criteria
      */
     @Operation(
         summary = "Retrieve specific companies by searching their names and identifiers",
@@ -119,6 +154,7 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
+        @RequestParam(defaultValue = "100") resultLimit: Int,
     ):
         ResponseEntity<List<CompanyIdAndName>>
 

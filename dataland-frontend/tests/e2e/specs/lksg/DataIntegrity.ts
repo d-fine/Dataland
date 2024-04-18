@@ -29,7 +29,7 @@ describeIf(
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
         lksgFixtureWithNoNullFields = getPreparedFixture("lksg-all-fields", preparedFixturesLksg);
-        lksgFixtureWithMinimalFields = getPreparedFixture("lksg-a-lot-of-nulls", preparedFixturesLksg);
+        lksgFixtureWithMinimalFields = getPreparedFixture("lksg-almost-only-nulls", preparedFixturesLksg);
       });
     });
 
@@ -57,15 +57,23 @@ describeIf(
                   return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
-                      const frontendSubmittedP2pDataset = axiosGetResponse.data.data as unknown as Record<
-                        string,
-                        object
-                      >;
-                      const originallyUploadedP2pDataset = lksgFixtureWithNoNullFields.t as unknown as Record<
-                        string,
-                        object
-                      >;
-                      compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
+                      let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
+                      let originallyUploadedLksgDataset = lksgFixtureWithNoNullFields.t;
+
+                      frontendSubmittedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
+                      frontendSubmittedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                      frontendSubmittedLksgDataset = sortComplaintsRiskObject(frontendSubmittedLksgDataset);
+                      frontendSubmittedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+
+                      originallyUploadedLksgDataset.general?.productionSpecific?.specificProcurement?.sort();
+                      originallyUploadedLksgDataset.governance?.riskManagementOwnOperations?.identifiedRisks?.sort();
+                      originallyUploadedLksgDataset = sortComplaintsRiskObject(originallyUploadedLksgDataset);
+                      originallyUploadedLksgDataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.sort();
+
+                      compareObjectKeysAndValuesDeep(
+                        originallyUploadedLksgDataset as unknown as Record<string, object>,
+                        frontendSubmittedLksgDataset as unknown as Record<string, object>,
+                      );
                     });
                 },
               );
@@ -102,6 +110,23 @@ describeIf(
         times: 1,
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
+    }
+
+    /**
+     * Sorts the complaintsRiskPosition Array in respect to an index inside the Object
+     * @param dataset frontend dataset to modify
+     * @returns sorted frontend object
+     */
+    function sortComplaintsRiskObject(dataset: LksgData): LksgData {
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.forEach((element) =>
+        element.riskPositions.sort(),
+      );
+      dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.sort((a, b) => {
+        const comparisonA = a.specifiedComplaint;
+        const comparisonB = b.specifiedComplaint;
+        return comparisonA.localeCompare(comparisonB);
+      });
+      return dataset;
     }
 
     it(

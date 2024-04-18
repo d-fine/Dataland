@@ -2,22 +2,24 @@
   <div data-test="select-reporting-period-dialog">
     <h4 class="title">SELECT YEAR</h4>
     <div class="three-in-row" data-test="reporting-periods">
-      <router-link v-for="(el, index) in dataTableContents" :key="index" class="link" :to="el.editUrl">{{
-        el.reportingPeriod
-      }}</router-link>
+      <a
+        v-for="(element, index) in dataTableContents"
+        :class="element.isClickable ? 'link' : ''"
+        :key="index"
+        @click="element.isClickable ? $emit('selectedReportingPeriod', element) : () => {}"
+      >
+        {{ element.reportingPeriod }}</a
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import { type DataMetaInformation } from "@clients/backend";
 import { compareReportingPeriods } from "@/utils/DataTableDisplay";
-
-interface ReportingPeriodTableEntry {
-  reportingPeriod: string;
-  editUrl: string;
-}
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import { type StoredDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "SelectReportingPeriodDialog",
@@ -28,9 +30,17 @@ export default defineComponent({
   },
   props: {
     mapOfReportingPeriodToActiveDataset: {
-      type: Map,
+      type: Map as PropType<Map<string, DataMetaInformation>>,
+    },
+    answeredDataRequests: {
+      type: Object as () => StoredDataRequest[],
+    },
+    actionOnClick: {
+      type: String as () => ReportingPeriodTableActions,
+      required: true,
     },
   },
+  emits: ["selectedReportingPeriod"],
   mounted() {
     this.setReportingPeriodDataTableContents();
   },
@@ -41,14 +51,31 @@ export default defineComponent({
      */
     setReportingPeriodDataTableContents(): void {
       if (this.mapOfReportingPeriodToActiveDataset) {
-        const sortedReportingPeriodMetaInfoPairs = Array.from(
-          (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
-        ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
+        const sortedReportingPeriodMetaInfoPairs = Array.from(this.mapOfReportingPeriodToActiveDataset.entries()).sort(
+          (firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0]),
+        );
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
+          const answeredDataRequestIds = this.answeredDataRequests
+            ?.filter((answeredDataRequest: StoredDataRequest) => {
+              return answeredDataRequest.reportingPeriod == key;
+            })
+            .map((answeredDataRequest: StoredDataRequest) => {
+              return answeredDataRequest.dataRequestId;
+            });
+          let isClickable;
+          if (this.actionOnClick == ReportingPeriodTableActions.EditDataset) {
+            isClickable = true;
+          } else {
+            isClickable = answeredDataRequestIds && answeredDataRequestIds.length > 0;
+          }
+
           this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
-          });
+            dataRequestId: answeredDataRequestIds,
+            actionOnClick: this.actionOnClick,
+            isClickable: isClickable,
+          } as ReportingPeriodTableEntry);
         }
       }
     },

@@ -1,0 +1,189 @@
+{
+  "general": {
+    "fiscalYearDeviation": "Deviation",
+    "fiscalYearEnd": "2024-01-24",
+    "scopeOfEntities": "Yes",
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": "Yes",
+    "assurance": {
+      "value": "None",
+      "dataSource": {
+        "page": 0,
+        "tagName": "string",
+        "fileName": "string",
+        "fileReference": "string"
+      },
+      "provider": "string"
+    },
+    "numberOfEmployees": 0,
+    "referencedReports": {
+      "string": {
+        "fileReference": "string",
+        "fileName": "string",
+        "isGroupLevel": "Yes",
+        "reportDate": "2023-10-12",
+        "currency": "string"
+      }
+    }
+  },
+  "revenue": {
+    "totalAmount": {
+      "value": 0,
+      "quality": "Audited",
+      "comment": "string",
+      "dataSource": {
+        "page": 0,
+        "tagName": "string",
+        "fileName": "string",
+        "fileReference": "string"
+      },
+      "currency": "string"
+    },
+    "nonEligibleShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "eligibleShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "nonAlignedShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "nonAlignedActivities": [
+      {
+        "activityName": "Afforestation",
+        "naceCodes": [
+          "string"
+        ],
+        "share": {
+          "relativeShareInPercent": 0,
+          "absoluteShare": {
+            "amount": 0,
+            "currency": "string"
+          }
+        }
+      }
+    ],
+    "alignedShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": 0,
+    "substantialContributionToClimateChangeAdaptationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0,
+    "substantialContributionToTransitionToACircularEconomyInPercent": 0,
+    "substantialContributionToPollutionPreventionAndControlInPercent": 0,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0,
+    "alignedActivities": null,
+    "enablingShareInPercent": 0,
+    "transitionalShareInPercent": 0
+  },
+  "capex": {
+    "totalAmount": {
+      "value": 0,
+      "quality": "Audited",
+      "comment": "string",
+      "dataSource": {
+        "page": 0,
+        "tagName": "string",
+        "fileName": "string",
+        "fileReference": "string"
+      },
+      "currency": "string"
+    },
+    "nonEligibleShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "eligibleShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "nonAlignedShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "nonAlignedActivities": [
+      {
+        "activityName": "Afforestation",
+        "naceCodes": [
+          "string"
+        ],
+        "share": {
+          "relativeShareInPercent": 0,
+          "absoluteShare": {
+            "amount": 0,
+            "currency": "string"
+          }
+        }
+      }
+    ],
+    "alignedShare": {
+      "relativeShareInPercent": 0,
+      "absoluteShare": {
+        "amount": 0,
+        "currency": "string"
+      }
+    },
+    "substantialContributionToClimateChangeMitigationInPercent": 0,
+    "substantialContributionToClimateChangeAdaptationInPercent": 0,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0,
+    "substantialContributionToTransitionToACircularEconomyInPercent": 0,
+    "substantialContributionToPollutionPreventionAndControlInPercent": 0,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0,
+    "alignedActivities": [
+      {
+        "activityName": "Afforestation",
+        "naceCodes": [
+          "string"
+        ],
+        "share": {
+          "relativeShareInPercent": 0,
+          "absoluteShare": {
+            "amount": 0,
+            "currency": "string"
+          }
+        },
+        "substantialContributionToClimateChangeMitigationInPercent": 0,
+        "substantialContributionToClimateChangeAdaptationInPercent": 0,
+        "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0,
+        "substantialContributionToTransitionToACircularEconomyInPercent": 0,
+        "substantialContributionToPollutionPreventionAndControlInPercent": 0,
+        "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 0,
+        "dnshToClimateChangeMitigation": "Yes",
+        "dnshToClimateChangeAdaptation": "Yes",
+        "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+        "dnshToTransitionToACircularEconomy": "Yes",
+        "dnshToPollutionPreventionAndControl": "Yes",
+        "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+        "minimumSafeguards": "Yes"
+      }
+    ],
+    "enablingShareInPercent": 0,
+    "transitionalShareInPercent": 0
+  },
+  "opex": null
+}

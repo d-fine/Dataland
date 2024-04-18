@@ -45,7 +45,7 @@ describeIf(
           cy.contains(`${uploadIds.dataId}`).click();
           cy.wait("@getPostedDataset");
           cy.get('[data-test="qaRejectButton"').click();
-          cy.intercept("**/api/companies*").as("getMyDatasets");
+          cy.intercept("**/api/users/**").as("getMyDatasets");
           cy.visit(`/datasets`);
           cy.wait("@getMyDatasets");
           cy.get(`a[href="/companies/${uploadIds.companyId}/frameworks/lksg/${uploadIds.dataId}"]`)

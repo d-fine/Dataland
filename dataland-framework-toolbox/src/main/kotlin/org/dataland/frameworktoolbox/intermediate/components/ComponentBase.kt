@@ -5,10 +5,17 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.utils.Naming
+import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
  * A component is a higher-level abstraction for framework elements. Components are arranged in a hierarchy
@@ -20,6 +27,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
+    var fullyQualifiedNameOfKotlinType: String = "",
 ) : TreeNode<FieldNodeParent> {
 
     /**
@@ -28,9 +36,16 @@ open class ComponentBase(
     var label: String? = null
 
     /**
-     * The explanation of a component is a longer description of the component
+     * The explanation of a component is a longer description of the component. This variant will be displayed on the
+     * upload page.
      */
-    var explanation: String? = null
+    var uploadPageExplanation: String? = null
+
+    /**
+     * The explanation of a component is a longer description. If set, it will overwrite the explanation of the
+     * upload page. If unset, it will default to the upload page explanation.
+     */
+    var viewPageExplanation: String? = null
 
     /**
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
@@ -43,6 +58,12 @@ open class ComponentBase(
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
 
     /**
+     * The uploadConfigGenerator allows users to overwrite the UploadConfig generation of
+     * this specific component instance
+     */
+    var uploadConfigGenerator: ((uploadCategoryBuilder: UploadCategoryBuilder) -> Unit)? = null
+
+    /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
      * of this specific component isntance
      */
@@ -52,6 +73,13 @@ open class ComponentBase(
      * True iff this component is optional / accepts null values
      */
     var isNullable: Boolean = true
+
+    /**
+     * True iff this component is required (just a pointer to !isNullable for convenience)
+     */
+    var isRequired: Boolean
+        get() = !isNullable
+        set(value) { isNullable = !value }
 
     /**
      * A logical condition that decides whether this component is available / shown to users
@@ -79,12 +107,30 @@ open class ComponentBase(
         }
     }
 
+    val camelCaseComponentIdentifier: String
+        get() {
+            return parents()
+                .toList()
+                .reversed()
+                .mapNotNull {
+                    when (it) {
+                        is ComponentGroup -> Naming.getNameFromLabel(it.identifier).capitalizeEn()
+                        is TopLevelComponentGroup -> Naming.getNameFromLabel(it.parent.identifier).capitalizeEn()
+                        else -> null
+                    }
+                }.joinToString("") + identifier.capitalizeEn()
+        }
+
     /**
      * Build this component instance into the provided Kotlin DataClass using the default
-     * generator for this component
+     * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        throw NotImplementedError("This component did not implement data model conversion.")
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
+            identifier,
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+        )
     }
 
     /**
@@ -103,10 +149,26 @@ open class ComponentBase(
     }
 
     /**
+     * Build this component instance into the provided upload-section configuration
+     * using the default generator for this component
+     */
+    open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        throw NotImplementedError("This component did not implement upload config conversion.")
+    }
+
+    /**
      * Build this component instance into the provided view-section configuration
      */
     fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided upload-section configuration
+     */
+    fun generateUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        return uploadConfigGenerator?.let { it(uploadCategoryBuilder) }
+            ?: generateDefaultUploadConfig(uploadCategoryBuilder)
     }
 
     /**

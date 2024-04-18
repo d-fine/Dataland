@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.datapoints
 
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
@@ -33,5 +34,9 @@ data object NoDocumentSupport : DocumentSupport {
         } else {
             fixtureExpression
         }
+    }
+
+    override fun getJvmAnnotations(): List<Annotation> {
+        return emptyList()
     }
 }

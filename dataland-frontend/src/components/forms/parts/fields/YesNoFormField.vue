@@ -1,12 +1,13 @@
 <template>
   <div :class="classes" :data-test="name">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <RadioButtonsFormElement
+    <CheckboxesListFormElement
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
+      :validation-messages="validationMessages"
       :options="HumanizedYesNo"
-      :data-test="radioButtonsDataTest"
+      @update-checkbox-value="(newValue) => $emit('updateYesNoValue', newValue)"
     />
   </div>
 </template>
@@ -14,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
+import CheckboxesListFormElement from "@/components/forms/parts/elements/basic/CheckboxesListFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { HumanizedYesNo } from "@/utils/YesNoNa";
 
@@ -25,14 +26,17 @@ export default defineComponent({
       return HumanizedYesNo;
     },
   },
-  components: { RadioButtonsFormElement, UploadFormHeader },
+  components: { CheckboxesListFormElement, UploadFormHeader },
   props: {
     ...BaseFormFieldProps,
-    radioButtonsDataTest: String,
+    validationMessages: {
+      type: Object as () => { is: string },
+    },
     classes: {
       type: String,
       default: "form-field",
     },
   },
+  emits: ["updateYesNoValue"],
 });
 </script>

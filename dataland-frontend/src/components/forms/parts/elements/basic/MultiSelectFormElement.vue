@@ -38,6 +38,7 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 export default defineComponent({
   name: "MultiSelectFormElement",
   components: { FormKit, MultiSelect, FormKitMessages },
+  inheritAttrs: false,
   setup() {
     return {
       formkitMultiSelectFormElement: ref(),

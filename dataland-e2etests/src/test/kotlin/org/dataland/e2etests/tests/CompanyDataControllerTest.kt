@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -81,8 +81,8 @@ class CompanyDataControllerTest {
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformationToUpload)
         val patchObject = CompanyInformationPatch(
             identifiers = mapOf(
-                IdentifierType.lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
-                IdentifierType.duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+                IdentifierType.Lei.value to listOf("Test-Lei1${UUID.randomUUID()}", "Test-Lei2${UUID.randomUUID()}"),
+                IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
             ),
         )
         val updatedCompany =
@@ -90,15 +90,15 @@ class CompanyDataControllerTest {
         val oldIdentifiers = uploadedCompany.companyInformation.identifiers
         val newIdentifiers = updatedCompany.companyInformation.identifiers
         assertEquals(
-            oldIdentifiers[IdentifierType.isin.value], newIdentifiers[IdentifierType.isin.value],
+            oldIdentifiers[IdentifierType.Isin.value], newIdentifiers[IdentifierType.Isin.value],
             "Unpatched identifiers should remain the same",
         )
         assertEquals(
-            patchObject.identifiers!![IdentifierType.lei.value], newIdentifiers[IdentifierType.lei.value],
+            patchObject.identifiers!![IdentifierType.Lei.value], newIdentifiers[IdentifierType.Lei.value],
             "The update should work as expected",
         )
         assertEquals(
-            patchObject.identifiers!![IdentifierType.duns.value], newIdentifiers[IdentifierType.duns.value],
+            patchObject.identifiers!![IdentifierType.Duns.value], newIdentifiers[IdentifierType.Duns.value],
             "The update should work as expected",
         )
     }
@@ -129,7 +129,7 @@ class CompanyDataControllerTest {
             companyName = "Updated Name${UUID.randomUUID()}",
             headquarters = "Updated HQ${UUID.randomUUID()}",
             companyAlternativeNames = listOf("Alt-Name-1${UUID.randomUUID()}", "Alt-Name-2${UUID.randomUUID()}"),
-            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
+            identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
             countryCode = "DE",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -147,7 +147,10 @@ class CompanyDataControllerTest {
                 updatedCompany.companyInformation.companyAlternativeNames!!.toSet(),
             "The company alternative names should have been updated",
         )
-        assertEquals(null, updatedCompany.companyInformation.sector, "The sector should have been deleted")
+        assertEquals(
+            null, updatedCompany.companyInformation.sector,
+            "The sector should have been deleted",
+        )
     }
 
     @Test
@@ -158,26 +161,26 @@ class CompanyDataControllerTest {
             companyName = "Name",
             headquarters = "HQ",
             identifiers = mapOf(
-                IdentifierType.duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
+                IdentifierType.Duns.value to listOf("Test-Duns${UUID.randomUUID()}", "Test-Duns2${UUID.randomUUID()}"),
             ),
             countryCode = "DE",
         )
         val put2CompanyInformation = put1CompanyInformation.copy(
-            identifiers = mapOf(IdentifierType.lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
+            identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
         assertTrue(
-            put1CompanyInformation.identifiers[IdentifierType.duns.value]!!.toSet() ==
-                updatedCompany.companyInformation.identifiers[IdentifierType.duns.value]!!.toSet() &&
-                updatedCompany.companyInformation.identifiers[IdentifierType.lei.value]!!.isEmpty(),
+            put1CompanyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() &&
+                updatedCompany.companyInformation.identifiers[IdentifierType.Lei.value]!!.isEmpty(),
             "The Duns identifiers should have been updated and the Lei identifiers should still be empty",
         )
         updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put2CompanyInformation)
         assertTrue(
-            put2CompanyInformation.identifiers[IdentifierType.lei.value]!!.toSet() ==
-                updatedCompany.companyInformation.identifiers[IdentifierType.lei.value]!!.toSet() &&
-                updatedCompany.companyInformation.identifiers[IdentifierType.duns.value]!!.isEmpty(),
+            put2CompanyInformation.identifiers[IdentifierType.Lei.value]!!.toSet() ==
+                updatedCompany.companyInformation.identifiers[IdentifierType.Lei.value]!!.toSet() &&
+                updatedCompany.companyInformation.identifiers[IdentifierType.Duns.value]!!.isEmpty(),
             "The Lei identifiers should have been updated and the Duns identifiers should have been deleted",
         )
     }
@@ -214,23 +217,6 @@ class CompanyDataControllerTest {
         assertTrue(
             distinctValues.countryCodes.containsAll(listOfTestCompanyInformation.map { it.countryCode }),
             "The list of all occurring country codes does not contain the country codes of the posted companies.",
-        )
-    }
-
-    @Test
-    fun `post dummy companies with frontendExcluded framework data and check if the distinct endpoint ignores`() {
-        val mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation = apiAccessor.generalTestDataProvider
-            .generateOneCompanyInformationPerBackendOnlyFramework()
-        apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation,
-            1,
-        )
-        val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
-        assertTrue(
-            distinctValues.sectors.intersect(
-                mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation.map { it.value[0].sector }.toSet(),
-            ).isEmpty(),
-            "At least one sector of the frontend-excluded data sets appears in the distinct sector value list.",
         )
     }
 
@@ -352,19 +338,19 @@ class CompanyDataControllerTest {
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = mapOf(
-                IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
+                IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
             ),
         )
         return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
     }
 
-    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEutaxonomyNonFinancialsData(
         companyId = "placeholder",
         reportingPeriod = "placeholder",
         data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
     )
     private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
             bypassQa,
         )
@@ -377,21 +363,18 @@ class CompanyDataControllerTest {
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         sleep(100)
-        val expectedMap = mapOf(
-            DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(
-                numberOfProvidedReportingPeriods = 0,
-            ),
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to AggregatedFrameworkDataSummary(
-                numberOfProvidedReportingPeriods = 2,
-            ),
-            DataTypeEnum.lksg.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.p2p.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.sfdr.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.sme.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-        )
+        val exceptionMap: Map<DataTypeEnum, Long> = mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2)
+        val expectedMap = DataTypeEnum.entries.associate {
+                framework ->
+            val numOfReportingPeriods = exceptionMap[framework] ?: 0
+            framework.toString() to AggregatedFrameworkDataSummary(
+                numberOfProvidedReportingPeriods = numOfReportingPeriods,
+            )
+        }
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
-        )
+        ).toSortedMap()
+
         assertEquals(
             expectedMap,
             aggregatedFrameworkDataSummary,

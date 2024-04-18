@@ -1,12 +1,13 @@
-import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyNonFinancials from "@/components/forms/CreateEuTaxonomyNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
-import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
+import { UploadReports } from "@sharedUtils/components/UploadReports";
 
 describe("Component tests for the Eu Taxonomy for non financials that test dependent fields", () => {
+  const uploadReports = new UploadReports("referencedReports");
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
    * whose name equals the one of a file selected before
@@ -14,12 +15,12 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
   function checkFileWithExistingFilenameIsNotBeingAdded(): void {
     const reportThatCanBeUploaded = "test-report";
     const reportThatAlreadyExists = TEST_PDF_FILE_NAME;
-    uploadDocuments.selectFile(reportThatCanBeUploaded, "referencedReports");
-    uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportThatCanBeUploaded);
-    uploadDocuments.selectFile(reportThatAlreadyExists, "referencedReports");
-    uploadDocuments.validateReportIsListedAsAlreadyUploaded(reportThatAlreadyExists);
-    uploadDocuments.validateReportIsNotInFileSelectorAndHasNoInfoForm(reportThatAlreadyExists);
-    uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
+    uploadReports.selectFile(reportThatCanBeUploaded);
+    uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportThatCanBeUploaded);
+    uploadReports.selectFile(reportThatAlreadyExists);
+    uploadReports.validateReportIsListedAsAlreadyUploaded(reportThatAlreadyExists);
+    uploadReports.validateReportIsNotInFileSelectorAndHasNoInfoForm(reportThatAlreadyExists);
+    uploadReports.validateNumberOfReportsSelectedForUpload(1);
   }
 
   /**
@@ -27,7 +28,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name equals the one of a file selected before
    */
   function checkFileWithExistingFilenameOpensDialogWithWarning(): void {
-    uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+    uploadReports.selectFile(TEST_PDF_FILE_NAME);
     cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
     cy.get("input[type=file]").selectFile(
       `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
@@ -43,7 +44,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name contains an illegal character
    */
   function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
-    uploadDocuments.selectDummyFile("Invalid:Filename", 400, "referencedReports");
+    uploadReports.selectDummyFile("Invalid:Filename", 400);
     cy.get(".p-dialog-content").should("contain.text", "File names containing illegal characters");
     cy.get(".p-dialog-header-close").click();
     cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should("not.exist");
@@ -56,22 +57,22 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
   function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
     const reportNameA = TEST_PDF_FILE_NAME;
     const reportNameB = `${TEST_PDF_FILE_NAME}2`;
-    uploadDocuments.selectFile(reportNameB, "referencedReports");
+    uploadReports.selectFile(reportNameB);
 
     cy.get(".p-dialog-content").should("not.exist");
-    uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameA);
-    uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameB);
+    uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameA);
+    uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameB);
 
-    uploadDocuments.removeReportFromSelectionForUpload(TEST_PDF_FILE_NAME);
+    uploadReports.removeReportFromSelectionForUpload(TEST_PDF_FILE_NAME);
 
-    uploadDocuments.validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportNameA);
-    uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameB);
-    uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
+    uploadReports.validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportNameA);
+    uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameB);
+    uploadReports.validateNumberOfReportsSelectedForUpload(1);
 
-    uploadDocuments.removeReportFromSelectionForUpload(reportNameB);
+    uploadReports.removeReportFromSelectionForUpload(reportNameB);
 
-    uploadDocuments.validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportNameB);
-    uploadDocuments.validateNumberOfReportsSelectedForUpload(0);
+    uploadReports.validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportNameB);
+    uploadReports.validateNumberOfReportsSelectedForUpload(0);
   }
 
   /**
@@ -79,7 +80,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * if a report is not referenced
    */
   function checkThatFilesMustBeReferenced(): void {
-    uploadDocuments.fillAllFormsOfReportsSelectedForUpload();
+    uploadReports.fillAllFormsOfReportsSelectedForUpload();
     submitButton.clickButton();
     cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
     cy.get('[data-test="failedUploadMessage"]')
@@ -100,22 +101,22 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("11")').click();
     cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
-    cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
+    cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"]').check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
-    cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
-    cy.get('input[name="euTaxonomyActivityLevelReporting"][value="Yes"]').check();
+    cy.get('div[data-test="scopeOfEntities"]').find('input[value="Yes"]').check();
+    cy.get('div[data-test="euTaxonomyActivityLevelReporting"]').find('input[value="Yes"]').check();
     cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
-    cy.get('input[name="nfrdMandatory"][value="Yes"]').check();
+    cy.get('div[data-test="nfrdMandatory"]').find('input[value="Yes"]').check();
     cy.get('select[name="value"]').select(2);
     cy.get('input[name="provider"]').clear().type("Assurance Provider");
     cy.get('div[label="General"] select[name="fileName"]').select(reports);
-    cy.get('div[label="General"] input[name="page"]').clear().type("-13");
+    cy.get('div[label="General"] input[name="page"]').first().clear().type("-13");
     cy.get('div[label="General"] em[title="Page"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
-    cy.get('div[label="General"] input[name="page"]').clear().type("3");
+    cy.get('div[label="General"] input[name="page"]').first().clear().type("3");
   }
 
   /**
@@ -123,6 +124,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateOtherSections(reports: string[]): void {
+    cy.get('div[label="Revenue"] [data-test="dataPointToggleButton"]').click();
     cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
     cy.get('div[label="Revenue"] select[data-test="datapoint-currency"]').select(1);
     cy.get('div[label="Revenue"] select[name="fileName"]').select(reports[0]);
@@ -162,7 +164,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
       .clear()
       .type("15");
     cy.get(
@@ -176,7 +178,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercent"]')
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptionInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
       .clear()
       .type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
@@ -193,7 +195,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
    */
-  function createMockCompanyAssociatedDataEuTaxoNonFinancials(): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+  function createMockCompanyAssociatedDataEutaxoNonFinancials(): CompanyAssociatedDataEutaxonomyNonFinancialsData {
     return {
       companyId: "abc",
       reportingPeriod: "2020",
@@ -272,12 +274,12 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     };
   }
 
-  const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
+  const companyAssociatedDataEutaxoNonFinancials = createMockCompanyAssociatedDataEutaxoNonFinancials();
 
   it("Check that warning appears if two pdf files with same name or illegal character are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
-      CreateEuTaxonomyForNonFinancials,
+      CreateEuTaxonomyNonFinancials,
       {
         keycloak: minimalKeycloakMock({}),
       },
@@ -289,14 +291,14 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+  it("Open upload page prefilled and assure that new file needs unique name and has to be referenced ", () => {
     cy.stub(DataPointFormWithToggle);
-    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
+    cy.mountWithPlugins(CreateEuTaxonomyNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
-          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
+          referencedReportsForPrefill: companyAssociatedDataEutaxoNonFinancials?.data?.general?.referencedReports,
+          companyAssociatedEutaxonomyNonFinancialsData: companyAssociatedDataEutaxoNonFinancials,
         };
       },
     }).then(() => {
@@ -307,16 +309,16 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
 
   it("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
-    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
+    cy.mountWithPlugins(CreateEuTaxonomyNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
-          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
+          referencedReportsForPrefill: companyAssociatedDataEutaxoNonFinancials?.data?.general?.referencedReports,
+          companyAssociatedEutaxonomyNonFinancialsData: companyAssociatedDataEutaxoNonFinancials,
         };
       },
     }).then(() => {
-      uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+      uploadReports.selectFile(TEST_PDF_FILE_NAME);
       fillAndValidateGeneralSection([TEST_PDF_FILE_NAME]);
       fillAndValidateOtherSections([TEST_PDF_FILE_NAME]);
     });

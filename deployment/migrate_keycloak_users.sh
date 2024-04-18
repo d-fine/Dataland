@@ -23,6 +23,7 @@ volume=$(search_volume "$keycloak_volume_name")
 if [[ -n $volume ]]; then
   echo "Found existing Keycloak volume. Exporting Users."
   sudo docker compose run keycloak-initializer export
+  sudo docker compose --profile init down
   sudo docker compose down --remove-orphans
   delete_docker_volume "$volume"
   cp "$keycloak_user_dir"/*-users-*.json "$keycloak_backup_dir"

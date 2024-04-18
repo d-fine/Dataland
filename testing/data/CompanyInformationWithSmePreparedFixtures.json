@@ -1,359 +1,107 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "SME-year-2023",
-			"headquarters": "Fort Billytown",
-			"headquartersPostalCode": "15054",
-			"sector": "metrics",
-			"identifiers": {
-				"Lei": [
-					"m7KURWXO3DEKUw71zipo"
-				],
-				"Isin": [
-					"ZJlGhxAFK0GQ"
-				],
-				"PermId": [
-					"J7adT0E1lt"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"EANxC2uunnCFdyg"
-				]
-			},
-			"countryCode": "GR",
-			"companyAlternativeNames": [
-				"Zemlak Group"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://monumental-environment.org/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"01.63",
-						"T"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Samson Landing 7364",
-						"postalCode": "10311",
-						"city": "Maggioshire",
-						"state": "Iowa",
-						"country": "MK"
-					},
-					"numberOfEmployees": 8055,
-					"fiscalYearStart": "2024-05-03"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 0,
-					"operatingCostInEUR": 1000000,
-					"capitalAssetsInEUR": 2000000
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Fantastic Frozen Pizza",
-							"shareOfTotalRevenueInPercent": 94.6956
-						},
-						{
-							"name": "Awesome Rubber Fish",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Modern Concrete Pizza",
-							"shareOfTotalRevenueInPercent": 68.7122
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 1069,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 43,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23006533,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding",
-						"Snow",
-						"Wind",
-						"EarthQuake",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Hagenesbury",
-			"headquartersPostalCode": "61910-8396",
+			"companyName": "Sme-dataset-with-no-null-fields",
+			"headquarters": "Rauboro",
+			"headquartersPostalCode": "63395-3744",
 			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"v5yEcW23W1QWJdn5Qwaw"
+					"Ry7Ld5NIj3oMNnxoMub8"
 				],
 				"Isin": [
-					"eqYvZQ6QTARp",
-					"q2Jwhjqiou8E"
+					"nU43UqBzw2K5",
+					"sw23nPMDtVBw"
 				],
-				"PermId": [],
+				"PermId": [
+					"n5APzjYxps"
+				],
 				"Ticker": [
-					"w1VDkU7"
+					"sB2qf5P"
 				],
 				"Duns": [
-					"7OOXHQLn1"
+					"ebyelOYRI"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"3JASocVDZ"
+				],
+				"CompanyRegistrationNumber": [
+					"ZapnBdDHWb0RSk2"
+				]
 			},
-			"countryCode": "GW",
+			"countryCode": "IO",
 			"companyAlternativeNames": [
-				"Beatty and Sons",
-				"McDermott - Welch"
+				"McLaughlin - Mante",
+				"Simonis, Waelchi and Abernathy"
 			],
-			"companyLegalForm": null,
-			"website": "https://overlooked-squash.org/",
+			"companyLegalForm": "AG",
+			"website": "https://left-professional.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"sector": [
-						"47.25"
+					"reportingDate": "2024-05-19",
+					"sectors": [
+						"06.1",
+						"24.52"
 					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 5137,
-					"fiscalYearStart": "2024-10-31"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 46017457,
-					"operatingCostInEUR": 5959919,
-					"capitalAssetsInEUR": null
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": null
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Elegant Soft Fish",
-							"shareOfTotalRevenueInPercent": 2.8186
+					"numberOfEmployees": 1951,
+					"fiscalYearStart": "2024-06-11",
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-07-21",
+							"currency": "CAD"
 						},
-						{
-							"name": "Bespoke Soft Pants",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Elegant Rubber Towels",
-							"shareOfTotalRevenueInPercent": 87.7296
-						},
-						{
-							"name": "Sleek Cotton Cheese",
-							"shareOfTotalRevenueInPercent": 67.1598
-						},
-						{
-							"name": "Gorgeous Rubber Shoes",
-							"shareOfTotalRevenueInPercent": 1.6732
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2024-01-05",
+							"currency": "MVR"
 						}
-					]
+					}
+				},
+				"financialInformation": {
+					"revenueInEur": 87126.42,
+					"operatingCostInEur": 85375.89,
+					"capitalAssetsInEur": 24714.35
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 546,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMwh": {
+						"value": 68304.55,
+						"dataSource": {
+							"page": 1008,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "parse 1080p system",
+						"quality": "Incomplete"
+					},
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 95204.62,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19331720,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88457.93,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
 						"EarthQuake",
+						"Hail",
 						"Snow",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Port Ellsworth",
-			"headquartersPostalCode": null,
-			"sector": "interfaces",
-			"identifiers": {
-				"Lei": [
-					"lAkPilFQYt92fH9BjUrB"
-				],
-				"Isin": [
-					"bubISAcHKpTa",
-					"Ykhs8CKpW4Bz"
-				],
-				"PermId": [
-					"FiN0dkO4c4"
-				],
-				"Ticker": [
-					"1QvyFTE"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"5n6LOMTCfNyGQhR"
-				]
-			},
-			"countryCode": "AS",
-			"companyAlternativeNames": [
-				"Bogan LLC",
-				"Yost LLC"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"17.22"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 4310,
-					"fiscalYearStart": "2024-04-03"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 83297052,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 11496907
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Walker Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Silver Street 5711",
-								"postalCode": "30700",
-								"city": "Lehnerfield",
-								"state": "Michigan",
-								"country": "AL"
-							},
-							"shareOfTotalRevenueInPercent": 36.6851
-						},
-						{
-							"nameOfProductionSite": "Dickinson Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dickinson Land 2083",
-								"postalCode": "34239",
-								"city": "Littelside",
-								"state": null,
-								"country": "AG"
-							},
-							"shareOfTotalRevenueInPercent": 0.6435
-						},
-						{
-							"nameOfProductionSite": "Swift - Considine",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cross Lane 296",
-								"postalCode": null,
-								"city": "East Isobel",
-								"state": null,
-								"country": "AM"
-							},
-							"shareOfTotalRevenueInPercent": 7.3752
-						},
-						{
-							"nameOfProductionSite": "Brekke, Stark and Christiansen",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Willow Grove 670",
-								"postalCode": "03327",
-								"city": "Myrticestead",
-								"state": "Delaware",
-								"country": "GU"
-							},
-							"shareOfTotalRevenueInPercent": 16.2473
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Practical Concrete Car",
-							"shareOfTotalRevenueInPercent": 3.2815
-						},
-						{
-							"name": "Sleek Fresh Ball",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 445,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21426064,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Hail"
+						"Wind"
 					]
 				}
 			}

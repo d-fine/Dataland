@@ -39,16 +39,17 @@ dependencies {
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
-    runtimeOnly(libs.postgresql)
-    runtimeOnly(libs.h2)
     implementation(libs.kotlin.reflect)
     implementation(Spring.boot.amqp)
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(Square.okHttp3)
     implementation(libs.json)
-    testImplementation(Spring.boot.test)
     implementation(libs.flyway)
+    implementation(libs.flyway.core)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
+    testImplementation(Spring.boot.test)
 }
 
 openApi {
@@ -64,7 +65,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 
@@ -77,10 +78,11 @@ gitProperties {
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
-        .path
-    outputDir.set("$buildDir/clients/backend")
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")
@@ -100,6 +102,8 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 }
 
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateBackendClient")
 }
 
@@ -113,7 +117,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
 }
 
 ktlint {

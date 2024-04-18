@@ -1,6 +1,6 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { formatNumberToReadableFormat, formatPercentageNumberAsString } from "@/utils/Formatter";
 
 /**

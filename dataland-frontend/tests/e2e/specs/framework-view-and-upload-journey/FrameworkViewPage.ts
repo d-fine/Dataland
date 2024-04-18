@@ -11,7 +11,7 @@ import {
   type SmeData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { getCellValueContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
@@ -98,7 +98,10 @@ describeIf(
       isOnViewPage: boolean,
     ): void {
       const searchBarSelector = isOnViewPage ? "input#company_search_bar_standard" : "input#search_bar_top";
-      cy.intercept({ url: `/api/companies${isOnViewPage ? "/names" : ""}?*`, times: 1 }).as("autocompleteSuggestions");
+      cy.intercept({
+        url: `/api/companies${isOnViewPage ? "/names" : ""}?*`,
+        times: 1,
+      }).as("autocompleteSuggestions");
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
       cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
@@ -292,13 +295,7 @@ describeIf(
             );
           })
           .then(() => {
-            return uploadFrameworkData(
-              DataTypeEnum.Sme,
-              token,
-              companyIdOfAlpha,
-              "2015",
-              getPreparedFixture("SME-year-2023", smePreparedFixtures).t,
-            );
+            return uploadFrameworkData(DataTypeEnum.Sme, token, companyIdOfAlpha, "2015", smeFixtures[0].t);
           });
       });
     }
@@ -321,19 +318,13 @@ describeIf(
             );
           })
           .then(async () => {
-            return uploadFrameworkData(
-              DataTypeEnum.Sme,
-              token,
-              companyIdOfBeta,
-              "2014",
-              getPreparedFixture("SME-year-2023", smePreparedFixtures).t,
-            );
+            return uploadFrameworkData(DataTypeEnum.Sme, token, companyIdOfBeta, "2014", smeFixtures[1].t);
           });
       });
     }
 
     let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-    let smePreparedFixtures: Array<FixtureData<SmeData>>;
+    let smeFixtures: Array<FixtureData<SmeData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
@@ -341,8 +332,8 @@ describeIf(
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
-      cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
-        smePreparedFixtures = jsonContent as Array<FixtureData<SmeData>>;
+      cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+        smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
       });
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -415,6 +406,7 @@ describeIf(
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
+      getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
 
       cy.visit(
         `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
@@ -422,6 +414,7 @@ describeIf(
 
       getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
       getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
+      getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
 
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 

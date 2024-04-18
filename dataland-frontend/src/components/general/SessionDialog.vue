@@ -4,7 +4,7 @@
   <div class="mt-5 flex flex-row-reverse flex-wrap">
     <PrimeButton
       v-if="sessionDialogMode === SessionDialogMode.ExternalLogout"
-      label="Login to preview account"
+      label="Login to account"
       class="p-button-sm uppercase d-letters w-15rem"
       name="login_dataland_button_on_session_modal"
       @click="login"

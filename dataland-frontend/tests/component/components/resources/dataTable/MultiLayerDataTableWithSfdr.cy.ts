@@ -7,18 +7,16 @@ import {
   type SfdrData,
 } from "@clients/backend";
 
-import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
-import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   mountMLDTFrameworkPanelFromFakeFixture,
   mountMLDTFrameworkPanel,
 } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 import { getCellValueContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { sfdrViewConfiguration } from "@/frameworks/sfdr/ViewConfig";
 
 describe("Component tests for SfdrPanel", () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
-  const sfdrDisplayConfiguration = convertDataModelToMLDTConfig(sfdrDataModel) as MLDTConfig<SfdrData>;
+  const sfdrDisplayConfiguration = sfdrViewConfiguration;
   before(function () {
     cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
@@ -82,7 +80,7 @@ describe("Component tests for SfdrPanel", () => {
 
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    cy.contains("span", "marker-for-test").should("exist");
+    cy.contains("span", "2023-01-01").should("exist");
     cy.contains("td.headers-bg", "Data Date").should("exist");
   });
 });

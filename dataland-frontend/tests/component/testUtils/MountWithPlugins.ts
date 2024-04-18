@@ -97,7 +97,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
       return Promise.resolve(options.keycloak as Keycloak);
     };
-    options.global.provide.authenticated = true;
+    options.global.provide.authenticated = options.keycloak.authenticated;
   }
 
   options.global.plugins.push({

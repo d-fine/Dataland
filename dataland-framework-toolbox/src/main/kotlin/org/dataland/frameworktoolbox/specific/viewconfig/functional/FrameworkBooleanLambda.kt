@@ -1,9 +1,11 @@
 package org.dataland.frameworktoolbox.specific.viewconfig.functional
 
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
+
 /**
  * A TypeScript lambda of the format (dataset: FrameworkDataType): boolean => BODY
  */
-class FrameworkBooleanLambda(lambdaBody: String, imports: Set<String> = emptySet()) : FrameworkLambda(
+class FrameworkBooleanLambda(lambdaBody: String, imports: Set<TypeScriptImport> = emptySet()) : FrameworkLambda(
     lambdaBody = lambdaBody,
     returnParameter = "boolean",
     imports = imports,

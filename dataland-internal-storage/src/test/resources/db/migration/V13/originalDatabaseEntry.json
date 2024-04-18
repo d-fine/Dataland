@@ -1,0 +1,43 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2023-12-18",
+      "fiscalYearDeviation": "Deviation",
+      "fiscalYearEnd": "2023-12-18",
+      "referencedReports": {
+        "dummyReport": {
+          "fileReference": "dummyFileReference",
+          "fileName": "dummyFileName"
+        }
+      }
+    }
+  },
+  "environmental": {
+    "energyPerformance": {
+      "applicableHighImpactClimateSectors": {
+        "NaceCodeA": {
+          "highImpactClimateSectorEnergyConsumptionInGWh": {
+            "value": 100,
+            "quality": "Audited",
+            "dataSource": {
+              "fileName": "dummyFileName1",
+              "fileReference": ""
+            }
+          }
+        }
+      }
+    }
+  },
+  "social": {
+    "socialAndEmployeeMatters": {
+      "humanRightsLegalProceedings": {
+        "value": "Yes",
+        "quality": "Audited",
+        "dataSource": {
+          "fileName": "dummyFileName2",
+          "fileReference": ""
+        }
+      }
+    }
+  }
+}

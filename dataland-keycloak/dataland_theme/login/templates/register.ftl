@@ -3,7 +3,7 @@
 <#import "components/social_login.ftl" as socialLogin>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('email','username','password','password-confirm'); section>
     <#if section = "header">
-        Create a preview account
+        Create an account
     <#elseif section = "backUrl">/
     <#elseif section = "backName">HOME
     <#elseif section = "form">
@@ -50,7 +50,7 @@
                 <input id="user.attributes.receive_updates" name="user.attributes.receive_updates" type="checkbox">
                 <label for="user.attributes.receive_updates" class="tex-sm ml-2" tabindex="4">Sign me up for updates (optional)</label>
             </div>
-            <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="5" name="register" type="submit" value="CREATE A PREVIEW ACCOUNT"/>
+            <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="5" name="register" type="submit" value="CREATE AN ACCOUNT"/>
         </form>
 
         <@socialLogin.dala prefix="TEST DATALAND WITH"/>
@@ -61,7 +61,7 @@
                     class="p-button uppercase text-primary justify-content-center bg-white-alpha-10 cursor-pointer font-semibold mt-1"
                     name="login_button"
                     onclick="location.href='${url.loginUrl}'">
-                LOGIN TO PREVIEW ACCOUNT
+                LOGIN TO ACCOUNT
             </Button>
         </div>
         <script type="text/javascript" src="${url.resourcesPath}/passwordStrength.js"></script>

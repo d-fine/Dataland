@@ -8,7 +8,6 @@ import { type ObjectType } from "@/utils/UpdateObjectUtils";
 export interface DocumentToUpload {
   file: File;
   fileNameWithoutSuffix: string;
-
   fileReference: string;
 }
 export interface StoredReport extends CompanyReport {
@@ -25,10 +24,15 @@ export async function uploadFiles(
   getKeycloakPromise: () => Promise<Keycloak>,
 ): Promise<void> {
   const documentControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.documentController;
+  const alreadyUploadedFileReferences = new Set<string>();
   for (const fileToUpload of files) {
+    if (alreadyUploadedFileReferences.has(fileToUpload.fileReference)) {
+      continue;
+    }
     let fileIsAlreadyInStorage: boolean;
     try {
       await documentControllerApi.checkDocument(fileToUpload.fileReference);
+      alreadyUploadedFileReferences.add(fileToUpload.fileReference);
       fileIsAlreadyInStorage = true;
     } catch (error) {
       if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status == 404) {
@@ -42,6 +46,7 @@ export async function uploadFiles(
       if (fileToUpload.fileReference !== backendComputedHash) {
         throw Error("Locally computed document hash does not concede with the one received by the upload request!");
       }
+      alreadyUploadedFileReferences.add(fileToUpload.fileReference);
     }
   }
 }

@@ -94,7 +94,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -120,6 +120,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+      DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION:-1}
     depends_on:
       - document-manager-db
   document-manager-db:
@@ -127,7 +128,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -161,7 +162,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -193,6 +194,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
+      KEYCLOAK_PREMIUM_USER_PASSWORD: ${KEYCLOAK_PREMIUM_USER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
@@ -209,8 +211,8 @@ services:
     # don't work anymore after a certain amount of requests
     # https://github.com/docker/for-win/issues/8861
     restart: always
-    profiles: ["development"]
-    image: node:20.9.0
+    profiles: [ "development" ]
+    image: node:20.11.1
     networks:
       internal:
         aliases:
@@ -251,7 +253,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -268,7 +270,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -318,11 +320,15 @@ services:
       KEYCLOAK_READER_SALT: ${KEYCLOAK_READER_SALT}
       KEYCLOAK_REVIEWER_VALUE: ${KEYCLOAK_REVIEWER_VALUE}
       KEYCLOAK_REVIEWER_SALT: ${KEYCLOAK_REVIEWER_SALT}
+      KEYCLOAK_PREMIUM_USER_VALUE: ${KEYCLOAK_PREMIUM_USER_VALUE}
+      KEYCLOAK_PREMIUM_USER_SALT: ${KEYCLOAK_PREMIUM_USER_SALT}
       KEYCLOAK_UPLOADER_VALUE: ${KEYCLOAK_UPLOADER_VALUE}
       KEYCLOAK_UPLOADER_SALT: ${KEYCLOAK_UPLOADER_SALT}
       KEYCLOAK_DATALAND_ADMIN_VALUE: ${KEYCLOAK_DATALAND_ADMIN_VALUE}
       KEYCLOAK_DATALAND_ADMIN_SALT: ${KEYCLOAK_DATALAND_ADMIN_SALT}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
+      DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
+      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
@@ -379,6 +385,23 @@ services:
         limits:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
+  automated-qa-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service_test:${DATALAND_AUTOMATED_QA_SERVICE_TEST_VERSION}}
+    networks:
+      - internal
+    expose:
+      - "8080"
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+    depends_on:
+      - qa-service
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -399,7 +422,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -436,12 +459,12 @@ services:
     expose:
       - "8080"
     environment:
-      <<: *mailjet-api-id-and-secret
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
-      NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: ${NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST}
-      NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: ${NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST}
+      COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
+      DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
     depends_on:
       - community-manager-db
   community-manager-db:
@@ -449,7 +472,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.4
+    image: postgres:15.5
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -461,6 +484,18 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  email-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_test:${DATALAND_EMAIL_SERVICE_TEST_VERSION}}
+    networks:
+      - internal
+    environment:
+      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
+      NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
+      DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
 networks:
   internal:
   external:

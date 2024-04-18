@@ -6,9 +6,10 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
 import { type ApiClientConstructor, uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
-import { getAllFrameworkIdentifiers, getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { getAllFrameworkIdentifiers, getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
+import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
 const chunkSize = 15;
 
@@ -69,22 +70,32 @@ describe(
             });
           });
 
-          it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-            const expectedNumberOfCompanies = fixtureData.length;
-            cy.getKeycloakToken(admin_name, admin_pw)
-              .then((token) =>
-                wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
-              )
-              .then((response) => {
-                assert(
-                  response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                    response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                  `Found ${response.numberOfCompaniesForDataType} companies having 
+          it(
+            "Checks that all the uploaded company ids and data ids can be retrieved",
+            {
+              retries: {
+                runMode: 5,
+                openMode: 5,
+              },
+            },
+            () => {
+              const expectedNumberOfCompanies = fixtureData.length;
+              cy.wait(2000);
+              cy.getKeycloakToken(admin_name, admin_pw)
+                .then((token) =>
+                  wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
+                )
+                .then((response) => {
+                  assert(
+                    response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+                      response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+                    `Found ${response.numberOfCompaniesForDataType} companies having 
             ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
             but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
-                );
-              });
-          });
+                  );
+                });
+            },
+          );
         },
       );
     }
@@ -101,10 +112,11 @@ describe(
 
     // Prepopulation for frameworks of the framework-registry
     for (const framework of getAllFrameworkIdentifiers()) {
+      const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework);
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
-        (config) => getFrameworkDefinition(framework)!.getFrameworkApiClient(config),
-        `CompanyInformationWith${framework.charAt(0).toUpperCase() + framework.slice(1)}Data`,
+        (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
+        `CompanyInformationWith${dataTypeInPascalCase}Data`.replace("-", ""),
       );
     }
   },

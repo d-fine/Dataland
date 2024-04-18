@@ -1,5 +1,7 @@
 package org.dataland.frameworktoolbox.specific.viewconfig.functional
 
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
+
 /**
  * A base-class for TypeScript Lambdas of the format (dataset: FrameworkDataType): T => BODY
  * @param lambdaBody the body of the lambda function
@@ -9,7 +11,7 @@ package org.dataland.frameworktoolbox.specific.viewconfig.functional
 open class FrameworkLambda(
     var lambdaBody: String,
     var returnParameter: String,
-    var imports: Set<String>,
+    var imports: Set<TypeScriptImport>,
 ) {
     val usesDataset: Boolean
         get() = lambdaBody.contains("dataset")

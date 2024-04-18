@@ -5,15 +5,17 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
+import org.dataland.frameworktoolbox.template.components.ComponentFactoryContainer
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.utils.DatalandRepository
+import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
-import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
@@ -22,18 +24,23 @@ import java.io.File
  * A PavedRoadFramework is the simplest way to integrate a new framework into Dataland or
  * update an existing one! It provides a template for implementing frameworks.
  */
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 abstract class PavedRoadFramework(
     val identifier: String,
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
+    val order: Int,
+    val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) {
     val framework = Framework(
         identifier = identifier,
         label = label,
         explanation = explanation,
+        order = order,
     )
+
+    val logger by LoggerDelegate()
 
     /**
      * Can be overwritten to configure the diagnosticManager (to e.g., suppress issues)
@@ -64,7 +71,8 @@ abstract class PavedRoadFramework(
     open fun getComponentFactoriesForIntermediateRepresentation(
         context: ApplicationContext,
     ): List<TemplateComponentFactory> {
-        return context.getBeansOfType<TemplateComponentFactory>().values.toList()
+        val containerBean = context.getBean<ComponentFactoryContainer>()
+        return containerBean.factories.reversed()
     }
 
     /**
@@ -117,10 +125,25 @@ abstract class PavedRoadFramework(
     }
 
     /**
+     * Generate the upload-model for the framework
+     */
+    open fun generateUploadModel(framework: Framework): FrameworkUploadConfigBuilder {
+        return framework.generateUploadModel()
+    }
+
+    /**
      * Can be overwritten to programmatically customize the viewModel
      * (to e.g, change the way certain fields are displayed in the frontend)
      */
     open fun customizeViewModel(viewModel: FrameworkViewConfigBuilder) {
+        // Empty as it's just a customization endpoint
+    }
+
+    /**
+     * Can be overwritten to programmatically customize the uploadModel
+     * (to e.g, change the way certain fields are displayed in the frontend)
+     */
+    open fun customizeUploadModel(uploadModel: FrameworkUploadConfigBuilder) {
         // Empty as it's just a customization endpoint
     }
 
@@ -139,6 +162,43 @@ abstract class PavedRoadFramework(
         // Empty as it's just a customization endpoint
     }
 
+    private fun compileDataModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
+            return
+        }
+        val dataModel = generateDataModel(framework)
+        customizeDataModel(dataModel)
+
+        dataModel.build(into = datalandProject)
+    }
+
+    private fun compileViewModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.ViewPage)) {
+            return
+        }
+        val viewConfig = generateViewModel(framework)
+        customizeViewModel(viewConfig)
+        viewConfig.build(into = datalandProject)
+    }
+
+    private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.FakeFixtures)) {
+            return
+        }
+        val fixtureGenerator = generateFakeFixtureGenerator(framework)
+        customizeFixtureGenerator(fixtureGenerator)
+        fixtureGenerator.build(into = datalandProject)
+    }
+
+    private fun compileUploadModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.UploadPage)) {
+            return
+        }
+        val uploadConfig = generateUploadModel(framework)
+        customizeUploadModel(uploadConfig)
+        uploadConfig.build(into = datalandProject)
+    }
+
     /**
      * Compiles a framework following the template and integrates it into the dataland repository
      */
@@ -147,7 +207,7 @@ abstract class PavedRoadFramework(
         val diagnostics = context.getBean<DiagnosticManager>()
 
         configureDiagnostics(diagnostics)
-        val excelTemplate = ExcelTemplate.fromCsv(frameworkTemplateCsvFile)
+        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
         val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
@@ -158,19 +218,13 @@ abstract class PavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-        val dataModel = generateDataModel(framework)
-        customizeDataModel(dataModel)
-        dataModel.build(into = datalandProject)
-
-        val viewConfig = generateViewModel(framework)
-        customizeViewModel(viewConfig)
-        viewConfig.build(into = datalandProject)
-
-        val fixtureGenerator = generateFakeFixtureGenerator(framework)
-        customizeFixtureGenerator(fixtureGenerator)
-        fixtureGenerator.build(into = datalandProject)
+        compileDataModel(datalandProject)
+        compileViewModel(datalandProject)
+        compileUploadModel(datalandProject)
+        compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         diagnostics.finalizeDiagnosticStream()
+        logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }

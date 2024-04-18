@@ -58,7 +58,8 @@
 </template>
 
 <script lang="ts">
-import Tree, { type TreeNode } from "primevue/tree";
+import Tree from "primevue/tree";
+import { type TreeNode } from "primevue/treenode";
 import OverlayPanel from "primevue/overlaypanel";
 import { defineComponent, ref } from "vue";
 import RadioButton from "primevue/radiobutton";

@@ -33,8 +33,8 @@ class EuTaxonomyFinancials {
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
         Assertions.assertEquals(
             euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes,
-            downloadedAssociatedData.data?.copy(
-                financialServicesTypes = downloadedAssociatedData.data?.financialServicesTypes?.sorted(),
+            downloadedAssociatedData.data.copy(
+                financialServicesTypes = downloadedAssociatedData.data.financialServicesTypes?.sorted(),
             ),
         )
     }

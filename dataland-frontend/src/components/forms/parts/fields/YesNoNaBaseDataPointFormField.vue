@@ -5,7 +5,8 @@
       :description="description"
       :label="label"
       :required="required"
-      @reports-updated="reportsUpdated"
+      :options="HumanizedYesNoNa"
+      @field-specific-documents-updated="fieldSpecificDocumentsUpdated"
     >
       <YesNoNaFormField
         name="value"
@@ -26,21 +27,26 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
+import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "YesNoNaBaseDataPointFormField",
   components: { YesNoNaFormField, BaseDataPointFormField },
   inheritAttrs: false,
   props: { ...BaseFormFieldProps },
-  emits: ["reportsUpdated"],
+  emits: ["fieldSpecificDocumentsUpdated"],
+  data() {
+    return {
+      HumanizedYesNoNa,
+    };
+  },
   methods: {
     /**
      * Emits event that the selected document changed
-     * @param documentName the name of the new referenced document
      * @param referencedDocument the new referenced document
      */
-    reportsUpdated(documentName: string, referencedDocument: DocumentToUpload | undefined) {
-      this.$emit("reportsUpdated", documentName, referencedDocument);
+    fieldSpecificDocumentsUpdated(referencedDocument: DocumentToUpload | undefined) {
+      this.$emit("fieldSpecificDocumentsUpdated", referencedDocument);
     },
   },
 });

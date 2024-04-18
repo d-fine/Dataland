@@ -1,19 +1,14 @@
 import fs from "fs";
 import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from "@e2e/fixtures/custom_mocks/CustomMetaDataFormatFixtures";
 import { generateMetaInfoDataForOneCompany } from "@e2e/fixtures/custom_mocks/DataMetaInformationFaker";
-import { generateEuTaxonomyForNonFinancials } from "@e2e/fixtures/custom_mocks/EuTaxonomyDataForNonFinancialsFaker";
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from "@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker";
 import { generateListOfDataSearchStoredCompany } from "@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker";
+import { generateStoredDataRequests } from "@e2e/fixtures/custom_mocks/StoredDataRequestsFaker";
 
 /**
  * Generates mocks that are not only dataset mocks
  */
 export function exportCustomMocks(): void {
-  fs.writeFileSync(
-    "../testing/data/EuTaxonomyForNonFinancialsMocks.json",
-    JSON.stringify(generateEuTaxonomyForNonFinancials(), null, "\t"),
-  );
-
   const metaInfoDataForOneCompany = generateMetaInfoDataForOneCompany();
   fs.writeFileSync(
     "../testing/data/MetaInfoDataMocksForOneCompany.json",
@@ -32,5 +27,14 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     "../testing/data/DataSearchStoredCompanyMocks.json",
     JSON.stringify(generateListOfDataSearchStoredCompany(), null, "\t"),
+  );
+  fs.writeFileSync(
+    "../testing/data/DataRequestsMock.json",
+    JSON.stringify(
+      generateStoredDataRequests(),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      (_key, value) => (value instanceof Set ? Array.from(value) : value),
+      "\t",
+    ),
   );
 }

@@ -1,13 +1,14 @@
-import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
+import { searchBasicCompanyInformationForDataType } from "@e2e//utils/GeneralApiUtils";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type BasicCompanyInformation } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { describeIf } from "@e2e/support/TestUtility";
+import { describeIf, type ExecutionEnvironment } from "@e2e/support/TestUtility";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+const executionEnvironments: ExecutionEnvironment[] = ["developmentLocal", "ci", "developmentCd"];
 
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
@@ -21,7 +22,7 @@ beforeEach(function () {
 describeIf(
   "As a user, I expect the search functionality on the /companies page to show me the desired results",
   {
-    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    executionEnvironments: executionEnvironments,
   },
   () => {
     /**
@@ -41,54 +42,63 @@ describeIf(
       cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
     }
 
-    it(
-      "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
-      { scrollBehavior: false },
+    describeIf(
+      "",
+      {
+        executionEnvironments: executionEnvironments,
+        onlyExecuteOnDatabaseReset: true,
+      },
       () => {
-        /**
-         * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
-         */
-        function checkPermIdToolTip(): void {
-          const expectedTextInToolTip = "Permanent Identifier (PermID)";
-          cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-          cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
-          cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
-          cy.get(".p-tooltip").should("not.exist");
-        }
+        it(
+          "Check Lei tooltip, execute company search by name, check result table and assure VIEW button works",
+          { scrollBehavior: false },
+          () => {
+            /**
+             * Verifies that the tooltip of the Lei in the search table header contains the expected text
+             */
+            function checkPermIdToolTip(): void {
+              const expectedTextInToolTip = "The Legal Entity Identifier (LEI)";
+              cy.get('.material-icons[title="LEI"]').trigger("mouseenter", "center");
+              cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
+              cy.get('.material-icons[title="LEI"]').trigger("mouseleave");
+              cy.get(".p-tooltip").should("not.exist");
+            }
 
-        /**
-         * Verifies that the view button redirects to the view framework data page
-         */
-        function clickFirstSearchResult(): void {
-          cy.get("table.p-datatable-table").contains("td", "VIEW").click();
-        }
+            /**
+             * Verifies that the view button redirects to the view framework data page
+             */
+            function clickFirstSearchResult(): void {
+              cy.get("table.p-datatable-table").contains("td", "VIEW").click();
+            }
 
-        cy.visitAndCheckAppMount("/companies");
-        verifySearchResultTableExists();
-        const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
-        checkPermIdToolTip();
-        executeCompanySearchWithStandardSearchBar(testCompanyName);
-        clickFirstSearchResult();
-        cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
-        cy.get('[data-test="back-button"]').should("be.visible").click({ force: true });
-        cy.get("input[id=search_bar_top]").should("contain.value", testCompanyName);
-        clickFirstSearchResult();
-        cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
+            cy.visitAndCheckAppMount("/companies");
+            verifySearchResultTableExists();
+            const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
+            checkPermIdToolTip();
+            executeCompanySearchWithStandardSearchBar(testCompanyName);
+            clickFirstSearchResult();
+            cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
+            cy.get('[data-test="back-button"]').should("be.visible").click({ force: true });
+            cy.get("input[id=search_bar_top]").should("contain.value", testCompanyName);
+            clickFirstSearchResult();
+            cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
+          },
+        );
+
+        it("Execute a company Search by identifier and assure that the company is found", () => {
+          cy.visitAndCheckAppMount("/companies");
+          const testCompanyInformation = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
+          const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
+          const testCompanyIdentifierTypeWithExistingValues = assertDefined(
+            Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0),
+          );
+          const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
+          const expectedCompanyName = testCompanyInformation.companyName;
+          executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
+          cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
+        });
       },
     );
-
-    it("Execute a company Search by identifier and assure that the company is found", () => {
-      cy.visitAndCheckAppMount("/companies");
-      const testCompanyInformation = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
-      const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
-      const testCompanyIdentifierTypeWithExistingValues = assertDefined(
-        Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0),
-      );
-      const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
-      const expectedCompanyName = testCompanyInformation.companyName;
-      executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
-      cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
-    });
 
     /**
      * Returns the first company from the fake fixture that has at least one alternative name
@@ -113,14 +123,14 @@ describeIf(
     });
 
     it("Visit framework data view page and assure that title is present and a Company Search Bar exists", () => {
-      const placeholder = "Search company by name or identifier";
+      const placeholder = "Search company by name or identifier (e.g. PermID, LEI, ...)";
       const inputValue = "A company name";
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies: Array<StoredCompany>) => {
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
             cy.get("input[id=company_search_bar_standard]")
               .should("not.be.disabled")
@@ -133,23 +143,25 @@ describeIf(
       });
     });
 
-    it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+    it("Search with autocompletion for companies with 'abs' in it, click and use arrow keys, find searched company in recommendation", () => {
       const primevueHighlightedSuggestionClass = "p-focus";
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
+      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "abs";
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies: Array<StoredCompany>) => {
-            const testCompany = storedCompanies[0];
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
+            const testCompany = basicCompanyInformations[0];
             cy.visitAndCheckAppMount("/companies");
 
             verifySearchResultTableExists();
-            cy.get("input[id=search_bar_top]").type("b");
+            cy.get("input[id=search_bar_top]").type("abs");
             cy.get(".p-autocomplete-item").contains("View all results").click();
 
             verifySearchResultTableExists();
-            cy.url().should("include", "/companies?input=b");
+            cy.url().should("include", "/companies?input=abs");
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
+              .type("{backspace}")
+              .type("{backspace}")
               .type("{backspace}")
               .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
             cy.get("ul[class=p-autocomplete-items]").should("exist");
@@ -165,13 +177,12 @@ describeIf(
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
               .type("{backspace}")
-              .type(testCompany.companyInformation.companyName);
-            cy.get(".p-autocomplete-item")
-              .eq(0)
-              .should("contain.text", testCompany.companyInformation.companyName)
-              .click({ force: true });
+              .type("{backspace}")
+              .type("{backspace}")
+              .type(testCompany.companyName);
+            cy.get(".p-autocomplete-item").eq(0).should("contain.text", testCompany.companyName).click({ force: true });
 
-            validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
+            validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
           },
         );
       });

@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="flex flex-column ml-3">
-      <span class="d-section-heading mb-2" v-if="showHeading">Filter by data</span>
+      <span class="d-section-heading mb-2" v-if="showHeading">Filter for available data sets</span>
       <div class="flex flex-row align-items-center">
         <div class="d-separator-left" />
         <FrameworkDataSearchDropdownFilter
@@ -61,7 +61,7 @@ import { type ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { type DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import {
@@ -69,7 +69,7 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
@@ -151,10 +151,10 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
+     * Resets all the filters to their default values (i.e., deselects everything)
      */
     resetFilters() {
-      this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
+      this.selectedFrameworksInt = [];
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },
@@ -179,16 +179,21 @@ export default defineComponent({
       const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
-        return {
-          countryCode: countryCode,
-          displayName: getCountryNameFromCountryCode(countryCode) as string,
-          disabled: false,
-        };
-      });
-      this.availableSectors = [...(availableSearchFilters.data.sectors ?? [])].map((sector) => {
-        return { displayName: sector, disabled: false };
-      });
+      this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])]
+        .map((countryCode) => {
+          return {
+            countryCode: countryCode,
+            displayName: getCountryNameFromCountryCode(countryCode) as string,
+            disabled: false,
+          };
+        })
+        .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+      this.availableSectors = [...(availableSearchFilters.data.sectors ?? [])]
+        .map((sector) => {
+          return { displayName: sector, disabled: false };
+        })
+        .sort((a, b) => a.displayName.localeCompare(b.displayName));
     },
     /**
      * Populates the availableFrameworks property in the format expected by the dropdown filter
@@ -196,7 +201,7 @@ export default defineComponent({
     retrieveAvailableFrameworks() {
       this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
-        const frameworkDefinition = getFrameworkDefinition(dataTypeEnum);
+        const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {
           displayName = frameworkDefinition.label;
         }

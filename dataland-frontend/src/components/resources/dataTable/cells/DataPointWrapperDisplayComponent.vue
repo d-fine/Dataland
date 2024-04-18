@@ -1,22 +1,37 @@
 <template>
   <div class="flex">
-    <slot></slot>
-    <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
-      ><em class="pl-2 material-icons" aria-label="View datapoint details"> description </em>
+    <a
+      v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
+      @click="$dialog.open(DataPointDataTable, modalOptions)"
+      class="link"
+    >
+      <slot></slot>
+      <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
     </a>
+    <DocumentLink
+      v-else-if="dataPointProperties.dataSource"
+      :label="dataPointProperties.value"
+      :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
+      :file-reference="dataPointProperties.dataSource.fileReference"
+      show-icon
+    />
+    <div v-else><slot></slot></div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import {
-  type MLDTDisplayComponentName,
+  MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import { type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
+  components: { DocumentLink },
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
@@ -37,17 +52,30 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          dataPointDisplay: this.convertedValueForModal,
+          dataPointDisplay: this.dataPointProperties,
         },
       };
     },
-    convertedValueForModal() {
+    dataPointProperties() {
       const content = this.content.displayValue;
+      let valueOption = undefined;
+      if (content.innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
+        valueOption = content.innerContents.displayValue;
+      }
       return {
+        value: valueOption,
         quality: content.quality,
         dataSource: content.dataSource,
         comment: content.comment,
       };
+    },
+    isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
+      const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
+      const comment = this.dataPointProperties.comment;
+      const quality = this.dataPointProperties.quality;
+      return (
+        comment != undefined || (quality != undefined && quality != QualityOptions.Na) || dataSource?.page != undefined
+      );
     },
   },
 });

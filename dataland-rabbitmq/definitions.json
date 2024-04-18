@@ -42,7 +42,7 @@
   ],
   "exchanges": [
     {
-      "name": "dataReceived",
+      "name": "requestReceived",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
@@ -78,7 +78,25 @@
       "arguments": {}
     },
     {
+      "name": "manualQaRequested",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
       "name": "deadLetter",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "sendEmail",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,

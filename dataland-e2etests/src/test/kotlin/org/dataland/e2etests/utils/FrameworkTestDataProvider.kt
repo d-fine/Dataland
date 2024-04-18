@@ -9,7 +9,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
@@ -39,8 +39,8 @@ object LocalDateAdapter {
 class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
-        EuTaxonomyDataForNonFinancials::class.java to
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
+        EutaxonomyNonFinancialsData::class.java to
+            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json"),
         EuTaxonomyDataForFinancials::class.java to
             File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
         LksgData::class.java to
@@ -77,9 +77,19 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
             .map {
                 it.companyInformation.copy(
-                    identifiers = IdentifierType.values().map { id -> id.value }.associateWith { emptyList() },
+                    identifiers = IdentifierType.entries.map { id -> id.value }.associateWith { emptyList() },
                 )
             }
+    }
+
+    private fun companyListForTestingSfdrSpecificValidation(): List<CompanyInformationWithT<T>> {
+        return convertJsonToList(File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"))
+    }
+
+    fun getSpecificCompanyByNameFromPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
+        return companyListForTestingSfdrSpecificValidation().find {
+            it.companyInformation.companyName == companyName
+        }
     }
 
     fun getCompanyInformationWithRandomIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
@@ -87,7 +97,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             .map {
                 it.companyInformation.copy(
                     identifiers = mapOf(
-                        IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
+                        IdentifierType.Isin.value to listOf(UUID.randomUUID().toString()),
                     ),
                 )
             }

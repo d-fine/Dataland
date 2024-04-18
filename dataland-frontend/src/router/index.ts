@@ -1,6 +1,8 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
+
 const CompanyCockpitPage = (): Promise<RouteComponent> => import("@/components/pages/CompanyCockpitPage.vue");
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
+import AboutPage from "@/components/pages/AboutPage.vue";
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
@@ -12,9 +14,11 @@ const TheImprint = (): Promise<RouteComponent> => import("@/components/pages/The
 const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/DataPrivacy.vue");
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
-const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
+const BulkDataRequest = (): Promise<RouteComponent> => import("@/components/pages/BulkDataRequest.vue");
+const SingleDataRequest = (): Promise<RouteComponent> => import("@/components/pages/SingleDataRequest.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
+const MyDataRequestsOverview = (): Promise<RouteComponent> => import("@/components/pages/MyDataRequestsOverview.vue");
 const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
@@ -28,6 +32,11 @@ const routes = [
     path: "/",
     name: "Welcome to Dataland",
     component: NewLandingPage,
+  },
+  {
+    path: "/about",
+    name: "About Page",
+    component: AboutPage,
   },
   {
     path: "/preview",
@@ -92,8 +101,19 @@ const routes = [
   },
   {
     path: "/requests",
-    name: "Request Data",
-    component: RequestData,
+    name: "MyDataRequestsOverview",
+    component: MyDataRequestsOverview,
+  },
+  {
+    path: "/bulkdatarequest",
+    name: "Bulk Data Request",
+    component: BulkDataRequest,
+  },
+  {
+    path: "/singledatarequest/:companyId",
+    name: "Single Data Request",
+    props: true,
+    component: SingleDataRequest,
   },
   {
     path: "/api-key",

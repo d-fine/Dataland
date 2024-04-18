@@ -4,8 +4,39 @@
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
-      <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
+    <div v-else-if="companyInformation && !waitingForData" class="company-details">
+      <div class="company-details__headline">
+        <div class="left-elements">
+          <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
+          <div
+            class="p-badge badge-light-green outline rounded"
+            data-test="verifiedDataOwnerBadge"
+            v-if="hasCompanyDataOwner"
+          >
+            <span class="material-icons-outlined fs-sm">verified</span>
+            Verified Data Owner
+          </div>
+        </div>
+        <div class="right-elements">
+          <ReviewRequestButtons
+            v-if="showReviewRequestButtons"
+            :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
+            :framework="framework"
+            :company-id="companyId"
+          />
+          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
+          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
+        </div>
+      </div>
+
+      <ClaimOwnershipDialog
+        :company-id="companyId"
+        :company-name="companyInformation.companyName"
+        :dialog-is-open="dialogIsOpen"
+        :claim-is-submitted="claimIsSubmitted"
+        @claim-submitted="onClaimSubmitted"
+        @close-dialog="onCloseDialog"
+      />
 
       <div class="company-details__separator" />
 
@@ -32,16 +63,24 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import { type CompanyInformation, IdentifierType } from "@clients/backend";
+import { defineComponent, inject, type PropType } from "vue";
+import { type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import { getErrorMessage } from "@/utils/ErrorMessageUtils";
+import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
+import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
+  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton, ReviewRequestButtons },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
     };
   },
   emits: ["fetchedCompanyInformation"],
@@ -50,6 +89,10 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
+      isUserDataOwner: false,
+      hasCompanyDataOwner: false,
+      dialogIsOpen: false,
+      claimIsSubmitted: false,
     };
   },
   computed: {
@@ -63,22 +106,70 @@ export default defineComponent({
     displayIsin() {
       return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
     },
+    contextMenuItems() {
+      const listOfItems = [];
+      if (!this.isUserDataOwner && this.authenticated) {
+        listOfItems.push({
+          label: "Claim Company Dataset Ownership",
+          command: () => {
+            this.dialogIsOpen = true;
+          },
+        });
+      }
+      return listOfItems;
+    },
+    showReviewRequestButtons() {
+      return this.framework != undefined;
+    },
   },
   props: {
     companyId: {
       type: String,
       required: true,
     },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
+    },
+    framework: {
+      type: String as PropType<DataTypeEnum>,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map,
+      required: false,
+    },
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.setDataOwnershipStatus();
+    void this.updateHasCompanyDataOwner();
   },
   watch: {
-    companyId() {
-      void this.getCompanyInformation();
+    async companyId(newCompanyId) {
+      try {
+        void this.setDataOwnershipStatus();
+        void this.getCompanyInformation();
+        this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(newCompanyId as string, this.getKeycloakPromise);
+        this.claimIsSubmitted = false;
+      } catch (error) {
+        console.error("Error fetching data for new company:", error);
+      }
     },
   },
   methods: {
+    /**
+     * Updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
+    },
+    /**
+     * Handles the close button click event of the dialog
+     */
+    onCloseDialog() {
+      this.dialogIsOpen = false;
+    },
     /**
      * Uses the dataland API to retrieve information about the company identified by the local
      * companyId object.
@@ -95,21 +186,28 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
-        if (this.getErrorMessage(error).includes("404")) {
+        if (getErrorMessage(error).includes("404")) {
           this.companyIdDoesNotExist = true;
         }
         this.waitingForData = false;
         this.companyInformation = null;
       }
     },
+
     /**
-     * Tries to find a message in an error
-     * @param error the error to extract a message from
-     * @returns the extracted message
+     * Set the data-ownership status of current user
+     * @returns a void promise so that the setter-function can be awaited
      */
-    getErrorMessage(error: unknown) {
-      const noStringMessage = error instanceof Error ? error.message : "";
-      return typeof error === "string" ? error : noStringMessage;
+    async setDataOwnershipStatus(): Promise<void> {
+      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
+        this.isUserDataOwner = result;
+      });
+    },
+    /**
+     * Handles the emitted claim event
+     */
+    onClaimSubmitted() {
+      this.claimIsSubmitted = true;
     },
   },
 });
@@ -120,10 +218,21 @@ export default defineComponent({
   width: 450px;
 }
 
+.rounded {
+  border-radius: 0.5rem;
+}
+
 .company-details {
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  &__headline {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+  }
 
   &__separator {
     @media only screen and (max-width: $small) {
@@ -147,5 +256,16 @@ export default defineComponent({
       padding-right: 40px;
     }
   }
+}
+
+.left-elements,
+.right-elements {
+  display: flex;
+  align-items: center;
+}
+
+.fs-sm {
+  font-size: $fs-sm;
+  margin-right: 0.25rem;
 }
 </style>

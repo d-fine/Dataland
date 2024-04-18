@@ -1,12 +1,14 @@
 package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.template.model.TemplateYesNo
 import org.dataland.frameworktoolbox.utils.Naming
+import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.springframework.stereotype.Component
 
 /**
@@ -42,9 +44,45 @@ open class ComponentGenerationUtils {
      */
     open fun setCommonProperties(row: TemplateRow, component: ComponentBase) {
         component.label = row.fieldName
-        component.explanation = if (row.tooltip.isNotBlank()) row.tooltip else null
+        component.uploadPageExplanation =
+            if (row.combinedTooltip?.isNotBlank() == true) {
+                row.combinedTooltip
+            } else if (row.uploadPageTooltip?.isNotBlank() == true) {
+                row.uploadPageTooltip
+            } else {
+                null
+            }
+
+        component.viewPageExplanation =
+            if (row.viewPageTooltip?.isNotBlank() == true) {
+                row.viewPageTooltip
+            } else {
+                null
+            }
+
         component.isNullable = row.mandatoryField == TemplateYesNo.No
         component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)
+    }
+
+    /**
+     * Loads the options column required for some components (e.g. drop-downs)
+     */
+    open fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
+        val stringOptions = row.options
+            .split("|")
+            .map { it.trim() }
+
+        val mappedOptions = stringOptions.map {
+            SelectionOption(
+                identifier = Naming.getNameFromLabel(it).capitalizeEn(),
+                label = it,
+            )
+        }.toSet()
+
+        require(mappedOptions.isNotEmpty()) {
+            "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."
+        }
+        return mappedOptions
     }
 
     /**
