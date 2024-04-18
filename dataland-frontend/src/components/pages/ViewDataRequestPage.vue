@@ -64,7 +64,7 @@
               {{ getFrameworkTitle(storedDataRequest.dataType) }}
 
               <div
-                v-if="frameworkHasSubTitle(storedDataRequest.dataType)"
+                v-show="frameworkHasSubTitle(storedDataRequest.dataType)"
                 style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
               >
                 <br />
@@ -75,7 +75,7 @@
             <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
           </div>
           <div
-            v-if="isDatasetAvailable"
+            v-show="isDatasetAvailable"
             class="link claim-panel-text"
             style="font-weight: bold"
             data-test="viewDataset"
@@ -98,7 +98,7 @@
                 <div style="margin-left: auto">
                   <PrimeButton
                     data-test="resolveRequestButton"
-                    v-if="isRequestStatusAnswered()"
+                    v-show="isRequestStatusAnswered()"
                     @click="goToResolveDataRequestPage()"
                   >
                     <span class="d-letters pl-2"> Resolve Request </span>
@@ -110,7 +110,7 @@
               <span style="display: flex; align-items: center">
                 <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
                 <div
-                  v-if="isNewMessageAllowed()"
+                  v-show="isNewMessageAllowed()"
                   style="cursor: pointer; display: flex; align-items: center"
                   @click="openMessageDialog()"
                   data-test="newMessage"
@@ -133,7 +133,7 @@
                 </div>
               </div>
             </div>
-            <div class="card" v-if="isRequestWithdrawable()" data-test="card_withdrawn">
+            <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
               <div class="card__title">Withdraw Request</div>
               <div class="card__separator" />
               <div>

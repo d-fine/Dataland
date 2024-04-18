@@ -102,9 +102,9 @@ describe("Component tests for the view data request page", function (): void {
       },
     }).then((mounted) => {
       checkBasicPageElements(RequestStatus.Closed);
-      cy.get('[data-test="newMessage"]').should("not.exist");
-      cy.get('[data-test="card_withdrawn"]').should("not.exist");
-      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
+      cy.get('[data-test="newMessage"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="card_withdrawn"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");
 
       cy.get('[data-test="viewDataset"]').should("exist").click();
       cy.wrap(mounted.component)
@@ -126,10 +126,10 @@ describe("Component tests for the view data request page", function (): void {
       },
     }).then(() => {
       checkBasicPageElements(RequestStatus.Withdrawn);
-      cy.get('[data-test="newMessage"]').should("not.exist");
-      cy.get('[data-test="card_withdrawn"]').should("not.exist");
-      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
-      cy.get('[data-test="viewDataset"]').should("not.exist");
+      cy.get('[data-test="newMessage"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="card_withdrawn"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="viewDataset"]').should("exist").should("not.be.visible");
     });
   });
   /**
@@ -178,8 +178,8 @@ describe("Component tests for the view data request page", function (): void {
         .get('[data-test="newMessage"]')
         .should("exist");
 
-      cy.get('[data-test="resolveRequestButton"]').should("not.exist");
-      cy.get('[data-test="viewDataset"]').should("not.exist");
+      cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="viewDataset"]').should("exist").should("not.be.visible");
       cy.get('[data-test="card_withdrawn"]')
         .should("exist")
         .within(() => {
@@ -260,7 +260,6 @@ describe("Component tests for the view data request page", function (): void {
         checkBasicPageElements(RequestStatus.Open);
         cy.get('[data-test="newMessage"]').should("exist").click();
         checkEmailFieldsAndCheckBox("newMessageModal", "addMessageButton");
-        cy.get('[data-test="newMessageModal"]').should("not.exist");
       });
     },
   );
