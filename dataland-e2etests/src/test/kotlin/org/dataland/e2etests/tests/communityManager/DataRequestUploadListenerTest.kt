@@ -157,7 +157,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `patch your own open or closed request as premium user, check that its forbidden except open to withdrawn`() {
+    fun `patch own open or closed request as premium user and check that its forbidden except open to withdrawn`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         RequestStatus.entries.filter { it != RequestStatus.Withdrawn }
