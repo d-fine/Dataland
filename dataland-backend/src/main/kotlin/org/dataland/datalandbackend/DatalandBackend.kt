@@ -31,4 +31,3 @@ class DatalandBackend : OpenAPIConfiguration
 fun main(args: Array<String>) {
     runApplication<DatalandBackend>(args = args)
 }
-// TODO Make call to eurodat to generate the safedepositbox for minaboapp

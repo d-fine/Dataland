@@ -48,7 +48,6 @@ dependencies {
     implementation(Square.okHttp3)
     implementation(libs.json)
     testImplementation(Spring.boot.test)
-    implementation(JetBrains.exposed.core)
 }
 
 openApi {

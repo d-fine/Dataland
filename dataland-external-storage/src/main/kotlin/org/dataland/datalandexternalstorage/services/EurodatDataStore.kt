@@ -34,7 +34,6 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import kotlin.system.exitProcess
 
-// TODO Rename service at the end
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
  * @param cloudEventMessageHandler service for managing CloudEvents messages
