@@ -361,7 +361,7 @@
     "/data/p2p": {
       "post": {
         "tags": [
-          "p-2-p-public-data-controller"
+          "p-2p-public-data-controller"
         ],
         "operationId": "postCompanyAssociatedP2pData",
         "parameters": [
@@ -2033,7 +2033,7 @@
     "/data/p2p/{dataId}": {
       "get": {
         "tags": [
-          "p-2-p-public-data-controller"
+          "p-2p-public-data-controller"
         ],
         "operationId": "getCompanyAssociatedP2pData",
         "parameters": [
@@ -2091,7 +2091,7 @@
     "/data/p2p/companies/{companyId}": {
       "get": {
         "tags": [
-          "p-2-p-public-data-controller"
+          "p-2p-public-data-controller"
         ],
         "operationId": "getAllCompanyP2pData",
         "parameters": [
@@ -14163,25 +14163,25 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "lei": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -14204,10 +14204,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
