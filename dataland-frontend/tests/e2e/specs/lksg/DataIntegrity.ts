@@ -150,7 +150,7 @@ describeIf(
                 (postInterception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new LksgDataControllerApi(new Configuration({ accessToken: token }))
+                  return new LksgPublicDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
                       assert(axiosGetResponse.status == 200);
