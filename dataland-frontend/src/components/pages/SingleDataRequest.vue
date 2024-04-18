@@ -128,16 +128,7 @@
                     :draggable="false"
                     data-test="quotaReachedModal"
                   >
-                    <template>
-                      <div class="text-center" style="display: flex; flex-direction: column">
-                        <div style="margin: 10px">
-                          <em class="material-icons info-icon red-text" style="font-size: 2.5em"> error </em>
-                        </div>
-                        <div style="margin: 10px">
-                          <h2 class="m-0" data-test="successText">Quota exceeded</h2>
-                        </div>
-                      </div>
-                    </template>
+                    <em class="material-icons info-icon red-text" style="font-size: 3em">error</em>
                     <div class="text-block" style="margin: 15px">
                       Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER }} single data requests per day
                       is exceeded. The quota will reset automatically tomorrow.
