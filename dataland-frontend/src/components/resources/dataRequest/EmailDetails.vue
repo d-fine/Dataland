@@ -53,7 +53,7 @@
         </label>
       </div>
       <p
-        v-show="displayContactsNotValidError"
+        v-show="displayConsentToMessageDateUsageNotGiven"
         class="text-danger text-xs mt-2"
         data-test="conditionsNotAcceptedErrorMessage"
       >
@@ -84,6 +84,7 @@ export default defineComponent({
   data() {
     return {
       displayContactsNotValidError: false,
+      displayConsentToMessageDateUsageNotGiven: false,
       allowAccessDataRequesterMessage: false,
       consentToMessageDataUsageGiven: false,
       dataRequesterMessage: "Please provide a valid email before entering a message",
@@ -127,7 +128,7 @@ export default defineComponent({
      */
     displayErrors() {
       this.updateContactsNotValidError();
-      this.displayContactsNotValidError = !this.consentToMessageDataUsageGiven;
+      this.displayConsentToMessageDateUsageNotGiven = !this.consentToMessageDataUsageGiven;
     },
     /**
      * Checks if an email string is a valid email using regex

@@ -19,7 +19,7 @@
     </template>
 
     <div v-if="activeTab === 'update request'" data-test="updateRequestModal">
-      <EmailDetails :is-optional="true" @has-new-input="updateEmailFields" :show-errors="emailDetailsError" />
+      <EmailDetails :is-optional="true" @has-new-input="updateEmailFields" :show-errors="toggleEmailDetailsError" />
       <PrimeButton
         @click="updateRequest()"
         style="width: 100%; justify-content: center"
@@ -179,7 +179,7 @@ export default defineComponent({
   },
   data() {
     return {
-      emailDetailsError: false,
+      toggleEmailDetailsError: false,
       activeTab: "update request",
       hasValidEmailForm: false,
       emailContacts: new Set<string>(),
@@ -359,7 +359,6 @@ export default defineComponent({
      * Handles the click on update request
      */
     async updateRequest() {
-      this.emailDetailsError = false;
       if (!this.currentChosenDataRequestId) return;
       if (this.hasValidEmailForm) {
         await this.patchDataRequest(
@@ -375,7 +374,7 @@ export default defineComponent({
         await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
         this.showUpdateRequestDialog = false;
       } else {
-        this.emailDetailsError = true;
+        this.toggleEmailDetailsError = !this.toggleEmailDetailsError;
       }
     },
     /**

@@ -46,7 +46,7 @@
         </template>
         <EmailDetails
           :is-optional="false"
-          :show-errors="emailDetailsError"
+          :show-errors="toggleEmailDetailsError"
           @has-new-input="updateEmailFields"
           data-test="newMessageModal"
         />
@@ -204,7 +204,7 @@ export default defineComponent({
   },
   data() {
     return {
-      emailDetailsError: false,
+      toggleEmailDetailsError: false,
       successModalIsVisible: false,
       isDatasetAvailable: false,
       storedDataRequest: {} as StoredDataRequest,
@@ -323,13 +323,12 @@ export default defineComponent({
      * Method to update the request message when clicking on the button
      */
     addMessage() {
-      this.emailDetailsError = false;
       if (this.hasValidEmailForm) {
         patchDataRequest(this.requestId, undefined, this.emailContacts, this.emailMessage, this.getKeycloakPromise)
           .then(() => window.location.reload())
           .catch((error) => console.error(error));
       } else {
-        this.emailDetailsError = true;
+        this.toggleEmailDetailsError = !this.toggleEmailDetailsError;
       }
     },
     /**
