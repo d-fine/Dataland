@@ -5,16 +5,16 @@ import {
   type Configuration,
   type DataMetaInformation,
   type ${frameworkBaseName}Data,
-  ${frameworkBaseName}DataControllerApi,
+  ${frameworkBaseName}PublicDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export class ${frameworkBaseName}ApiClient implements FrameworkDataApi<${frameworkBaseName}Data> {
-  private readonly openApiDataController: ${frameworkBaseName}DataControllerApi;
+  private readonly openApiDataController: ${frameworkBaseName}PublicDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new ${frameworkBaseName}DataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new ${frameworkBaseName}PublicDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(
