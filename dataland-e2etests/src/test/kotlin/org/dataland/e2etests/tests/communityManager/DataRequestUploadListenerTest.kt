@@ -117,7 +117,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `patch your own data request as a premium user to closed and check that this is allowed if answered before`() {
+    fun `as a premium user assert that patching the status of a non answered request to closed is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
@@ -159,15 +159,16 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `patch own open or closed request as premium user and check that its forbidden except open to withdrawn`() {
+    fun `assert that patching an open or withdrawn request status is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
 
-        RequestStatus.entries.filter { it != RequestStatus.Withdrawn }
-            .forEach {
-                authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-                    TechnicalUser.PremiumUser, dataRequestId, it,
-                )
-            }
+        RequestStatus.entries.forEach {
+            authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
+                TechnicalUser.PremiumUser, dataRequestId, it,
+            )
+        }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
@@ -196,7 +197,7 @@ class DataRequestUploadListenerTest {
     }
 
     @Test
-    fun `patch a open or answered data request to withdrawn and assert success`() {
+    fun `patch an open or answered data request to withdrawn and assert success`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
