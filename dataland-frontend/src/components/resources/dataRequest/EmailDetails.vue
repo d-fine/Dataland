@@ -8,7 +8,7 @@
       type="text"
       name="contactDetails"
       data-test="contactEmail"
-      @input="handlesContactsUpdate"
+      @input="handleContactsUpdate"
     />
     <p v-show="displayContactsNotValidError" class="text-danger text-xs" data-test="contactsNotValidErrorMessage">
       You have to provide valid contacts to add a message to the request
@@ -65,6 +65,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
+const dataRequesterMessageAccessDisabledText = "Please provide a valid email before entering a message";
 
 export default defineComponent({
   name: "EmailDetails",
@@ -83,18 +84,15 @@ export default defineComponent({
   data() {
     return {
       displayContactsNotValidError: false,
-      displayConditionsNoEmailError: false,
       allowAccessDataRequesterMessage: false,
       consentToMessageDataUsageGiven: false,
       dataRequesterMessage: "Please provide a valid email before entering a message",
-      dataRequesterMessageNotAllowedText: "Please provide a valid email before entering a message",
-      dataRequesterMessageAllowedText: "",
       contactsAsString: "",
     };
   },
   computed: {
     hasValidInput() {
-      return this.consentToMessageDataUsageGiven && this.areValidEmails(this.contactsAsString);
+      return this.consentToMessageDataUsageGiven && this.areContactsValid();
     },
     selectedContacts(): string[] {
       return this.contactsAsString
@@ -128,56 +126,65 @@ export default defineComponent({
      * Enables the error messages
      */
     displayErrors() {
+      this.updateContactsNotValidError();
       this.displayContactsNotValidError = !this.consentToMessageDataUsageGiven;
-      this.displayConditionsNoEmailError = !this.areValidEmails(this.contactsAsString);
     },
     /**
-     * Checks if the first email in a string of comma separated emails is valid
-     * @param emails string of comma separated emails
-     * @returns true if valid, false otherwise
-     */
-    areValidEmails(emails: string): boolean {
-      return this.isValidEmail(emails.split(",")[0]);
-    },
-    /**
-     * Checks if an email string is a valid email by checking for _@_._
+     * Checks if an email string is a valid email using regex
      * @param email the email string to check
      * @returns true if the email is valid, false otherwise
      */
     isValidEmail(email: string): boolean {
-      if (email == "") return false;
+      // This RegEx should be kept consistent with the validation rules used by the community service in the backend
+      const regex = /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-z]{2,}$/;
+      return regex.test(email.toLowerCase());
+    },
 
-      const splitByEt = email.split("@");
-
-      if (splitByEt.length != 2) return false;
-      if (splitByEt[0] == "") return false;
-      if (splitByEt[1] == "") return false;
-
-      const splitByEtAndDot = splitByEt[1].split(".");
-
-      if (splitByEtAndDot.length < 2) return false;
-      if (splitByEtAndDot[0] == "") return false;
-      return splitByEtAndDot[splitByEtAndDot.length - 1] != "";
+    /**
+     * updates the messagebox visibility and stops displaying the contacts not valid error
+     */
+    handleContactsUpdate(): void {
+      this.displayContactsNotValidError = false;
+      void this.$nextTick(() => this.updateMessageVisibility());
     },
 
     /**
      * Updates if the message block is active and if the accept terms and conditions checkmark below is visible
-     * and required, based on whether valid emails have been provided
-     * @param contactsAsString the emails string to check
+     * and required, based on whether valid contacts have been provided
      */
-    handlesContactsUpdate(contactsAsString: string | undefined): void {
-      if (this.areValidEmails(<string>contactsAsString)) {
+    updateMessageVisibility(): void {
+      if (this.areContactsFilledAndValid()) {
         this.allowAccessDataRequesterMessage = true;
-        if (this.dataRequesterMessage == this.dataRequesterMessageNotAllowedText) {
-          this.dataRequesterMessage = this.dataRequesterMessageAllowedText;
+        if (this.dataRequesterMessage == dataRequesterMessageAccessDisabledText) {
+          this.dataRequesterMessage = "";
         }
       } else {
         this.allowAccessDataRequesterMessage = false;
-        if (this.dataRequesterMessage != this.dataRequesterMessageNotAllowedText) {
-          this.dataRequesterMessageAllowedText = this.dataRequesterMessage;
-          this.dataRequesterMessage = this.dataRequesterMessageNotAllowedText;
+        if (this.contactsAsString == "" && this.dataRequesterMessage == "") {
+          this.dataRequesterMessage = dataRequesterMessageAccessDisabledText;
         }
       }
+    },
+    /**
+     * Checks if the provided contacts are accepted
+     * @returns true if all the provided emails are valid and at least one has been provided, false otherwise
+     */
+    areContactsFilledAndValid(): boolean {
+      if (this.selectedContacts.length == 0) return false;
+      return this.areContactsValid();
+    },
+    /**
+     * Updates if an error should be displayed and submitting should be disabled because the provided contacts are not valid
+     */
+    updateContactsNotValidError(): void {
+      this.displayContactsNotValidError = !this.areContactsValid();
+    },
+    /**
+     * Checks if each of the provided contacts is a valid email
+     * @returns true if the provided emails are all valid (therefor also if there are none), false otherwise
+     */
+    areContactsValid(): boolean {
+      return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
     },
   },
 });

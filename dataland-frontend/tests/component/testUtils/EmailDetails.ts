@@ -10,8 +10,8 @@ export function checkEmailFieldsAndCheckBox(dataTestParentComponent: string, dat
     .should("exist")
     .should("be.visible")
     .within(() => {
-      cy.get('[data-test="acceptConditionsCheckbox"]').should("not.exist");
-      cy.get('[data-test="contactsNotValidErrorMessage"]').should("exist").type(testEmail);
+      cy.get('[data-test="acceptConditionsCheckbox"]').should("exist").should("not.be.visible");
+      cy.get('[data-test="contactEmail"]').should("exist").type(testEmail);
       cy.get('[data-test="dataRequesterMessage"]').should("exist").type(testMessage);
       cy.get('[data-test="acceptConditionsCheckbox"]').should("exist").should("be.visible");
     });
@@ -19,7 +19,7 @@ export function checkEmailFieldsAndCheckBox(dataTestParentComponent: string, dat
   cy.get(`[data-test="${dataTestParentComponent}"]`)
     .should("exist")
     .should("be.visible")
-    .contains("You have to accept the terms and conditions to add a message");
+    .contains("You have to declare that the recipient(s) consented in order to add a message");
   cy.get('[data-test="acceptConditionsCheckbox"]').should("exist").should("be.visible").click();
   cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click({ force: true });
   cy.get(`[data-test="${dataTestParentComponent}"]`).should("not.exist");
