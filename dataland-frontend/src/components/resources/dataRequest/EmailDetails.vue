@@ -121,9 +121,8 @@ export default defineComponent({
      * Enables the error messages
      */
     displayErrors() {
+      this.displayConditionsNotAcceptedError = !this.consentToMessageDataUsageGiven;
       this.displayConditionsNoEmailError = !this.areValidEmails(this.contactsAsString);
-      this.displayConditionsNotAcceptedError =
-        !this.consentToMessageDataUsageGiven && this.allowAccessDataRequesterMessage;
     },
     /**
      * Checks if the first email in a string of comma separated emails is valid

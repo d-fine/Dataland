@@ -2,8 +2,11 @@ import ReviewRequestButtonsComponent from "@/components/resources/dataRequest/Re
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { checkEmailFieldsAndCheckBox } from "@ct/testUtils/EmailDetails";
 describe("Component tests for the data request review buttons", function (): void {
   const mockCompanyId: string = "Mock-Company-Id";
+  const parentComponentOfEmailDetails = "updateRequestModal";
+  const triggerComponentForEmailDetails = "updateRequestButton";
   let mockedRequests: StoredDataRequest[];
   before(() => {
     cy.fixture("DataRequestsMock").then((jsonContent) => {
@@ -57,6 +60,7 @@ describe("Component tests for the data request review buttons", function (): voi
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
 
     cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    checkEmailFieldsAndCheckBox(parentComponentOfEmailDetails, triggerComponentForEmailDetails);
     cy.get(popUpdataTestId).should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   }
@@ -76,6 +80,8 @@ describe("Component tests for the data request review buttons", function (): voi
     cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
     cy.get('[data-test="reporting-periods"] a').contains("2021").should("not.have.class", "link");
     cy.get('[data-test="reporting-periods"] a').contains("2022").should("have.class", "link").click();
+    if (buttonToClick == "reOpenRequestButton")
+      checkEmailFieldsAndCheckBox(parentComponentOfEmailDetails, triggerComponentForEmailDetails);
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   }
   /**
@@ -96,7 +102,7 @@ describe("Component tests for the data request review buttons", function (): voi
       } as StoredDataRequest,
       status: 200,
     }).as("closeUserRequest");
-    cy.intercept(`**/requestStatus?requestStatus=Open`, {
+    cy.intercept(`**/requestStatus?requestStatus=Open**`, {
       body: {
         requestStatus: RequestStatus.Open,
       } as StoredDataRequest,

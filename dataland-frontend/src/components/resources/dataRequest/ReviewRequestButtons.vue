@@ -18,9 +18,13 @@
       </div>
     </template>
 
-    <div v-if="activeTab === 'update request'">
-      <EmailDetails :is-optional="true" @has-new-input="updateEmailFields" />
-      <PrimeButton @click="updateRequest()" style="width: 100%; justify-content: center">
+    <div v-if="activeTab === 'update request'" data-test="updateRequestModal">
+      <EmailDetails :is-optional="true" @has-new-input="updateEmailFields" :show-errors="emailDetailsError" />
+      <PrimeButton
+        @click="updateRequest()"
+        style="width: 100%; justify-content: center"
+        data-test="updateRequestButton"
+      >
         <span class="d-letters pl-2" style="text-align: center"> UPDATE REQUEST </span>
       </PrimeButton>
     </div>
@@ -175,6 +179,7 @@ export default defineComponent({
   },
   data() {
     return {
+      emailDetailsError: false,
       activeTab: "update request",
       hasValidEmailForm: false,
       emailContacts: new Set<string>(),
@@ -354,6 +359,7 @@ export default defineComponent({
      * Handles the click on update request
      */
     async updateRequest() {
+      this.emailDetailsError = false;
       if (!this.currentChosenDataRequestId) return;
       if (this.hasValidEmailForm) {
         await this.patchDataRequest(
@@ -362,14 +368,14 @@ export default defineComponent({
           this.emailContacts,
           this.emailMessage,
         );
-        console.log("case: ValidForm");
         this.showUpdateRequestDialog = false;
-      }
-      if (!this.hasValidEmailForm && this.emailContacts.size == 0) {
-        await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
-        this.showUpdateRequestDialog = false;
-        console.log(this.emailContacts);
-        console.log("case: inValidForm and no emailContacts");
+      } else {
+        if (this.emailContacts.size == 0) {
+          await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
+          this.showUpdateRequestDialog = false;
+        } else {
+          this.emailDetailsError = true;
+        }
       }
     },
     /**

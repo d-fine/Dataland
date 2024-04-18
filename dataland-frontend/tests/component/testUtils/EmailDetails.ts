@@ -15,12 +15,12 @@ export function checkEmailFieldsAndCheckBox(dataTestParentComponent: string, dat
       cy.get('[data-test="dataRequesterMessage"]').should("exist").type(testMessage);
       cy.get('[data-test="checkbox"]').should("exist").should("be.visible");
     });
-  cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click();
+  cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click({ force: true });
   cy.get(`[data-test="${dataTestParentComponent}"]`)
     .should("exist")
     .should("be.visible")
     .contains("You have to accept the terms and conditions to add a message");
   cy.get('[data-test="checkbox"]').should("exist").should("be.visible").click();
-  cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click();
+  cy.get(`[data-test="${dataTestPatchButton}"]`).should("exist").click({ force: true });
   cy.get(`[data-test="${dataTestParentComponent}"]`).should("not.exist");
 }
