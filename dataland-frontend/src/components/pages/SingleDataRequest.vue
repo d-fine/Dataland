@@ -109,6 +109,7 @@
                               style="min-width: 17px"
                               v-model="consentToMessageDataUsageGiven"
                               data-test="acceptConditionsCheckbox"
+                              @click="displayConditionsNotAcceptedError = false"
                             />
                             I hereby declare that the recipient(s) stated above consented to being contacted by Dataland
                             with regard to this data request
@@ -119,7 +120,7 @@
                           class="text-danger text-xs mt-2"
                           data-test="conditionsNotAcceptedErrorMessage"
                         >
-                          You have to accept the terms and conditions to add a message
+                          You have to declare that the recipient(s) consented in order to add a message
                         </p>
                       </div>
                     </BasicFormSection>
