@@ -369,13 +369,13 @@ export default defineComponent({
           this.emailMessage,
         );
         this.showUpdateRequestDialog = false;
+        return;
+      }
+      if (this.emailContacts.size == 0) {
+        await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
+        this.showUpdateRequestDialog = false;
       } else {
-        if (this.emailContacts.size == 0) {
-          await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
-          this.showUpdateRequestDialog = false;
-        } else {
-          this.emailDetailsError = true;
-        }
+        this.emailDetailsError = true;
       }
     },
     /**
