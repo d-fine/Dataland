@@ -12,7 +12,11 @@
         <button :class="{ active: activeTab === 'update request' }" @click="activeTab = 'update request'">
           UPDATE REQUEST
         </button>
-        <button :class="{ active: activeTab === 'message history' }" @click="activeTab = 'message history'">
+        <button
+          :class="{ active: activeTab === 'message history' }"
+          @click="activeTab = 'message history'"
+          v-show="messageHistory.length > 0"
+        >
           VIEW HISTORY
         </button>
       </div>
