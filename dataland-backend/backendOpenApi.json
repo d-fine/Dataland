@@ -221,35 +221,31 @@
         "tags": [
           "sme-data-controller"
         ],
-        "operationId": "postSmeJsonAndDocuments",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "companyAssociatedSmeData",
-                  "documents"
-                ],
-                "type": "object",
-                "properties": {
-                  "companyAssociatedSmeData": {
-                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
-                  },
-                  "documents": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
-                }
-              }
+        "operationId": "postCompanyAssociatedSmeData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+              }
+            }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully added data to the private data store.",
+            "description": "Successfully added data to the data store.",
             "content": {
               "application/json": {
                 "schema": {
@@ -292,7 +288,7 @@
     "/data/sfdr": {
       "post": {
         "tags": [
-          "sfdr-public-data-controller"
+          "sfdr-data-controller"
         ],
         "operationId": "postCompanyAssociatedSfdrData",
         "parameters": [
@@ -361,7 +357,7 @@
     "/data/p2p": {
       "post": {
         "tags": [
-          "p-2p-public-data-controller"
+          "p-2p-data-controller"
         ],
         "operationId": "postCompanyAssociatedP2pData",
         "parameters": [
@@ -430,7 +426,7 @@
     "/data/lksg": {
       "post": {
         "tags": [
-          "lksg-public-data-controller"
+          "lksg-data-controller"
         ],
         "operationId": "postCompanyAssociatedLksgData",
         "parameters": [
@@ -499,7 +495,7 @@
     "/data/heimathafen": {
       "post": {
         "tags": [
-          "heimathafen-public-data-controller"
+          "heimathafen-data-controller"
         ],
         "operationId": "postCompanyAssociatedHeimathafenData",
         "parameters": [
@@ -568,7 +564,7 @@
     "/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
-          "eutaxonomy-non-financials-public-data-controller"
+          "eutaxonomy-non-financials-data-controller"
         ],
         "operationId": "postCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
@@ -637,7 +633,7 @@
     "/data/eutaxonomy-financials": {
       "post": {
         "tags": [
-          "eu-taxonomy-public-data-for-financials-controller"
+          "eu-taxonomy-data-for-financials-controller"
         ],
         "operationId": "postCompanyAssociatedEuTaxonomyDataForFinancials",
         "parameters": [
@@ -706,7 +702,7 @@
     "/data/esg-questionnaire": {
       "post": {
         "tags": [
-          "esg-questionnaire-public-data-controller"
+          "esg-questionnaire-data-controller"
         ],
         "operationId": "postCompanyAssociatedEsgQuestionnaireData",
         "parameters": [
@@ -1737,14 +1733,14 @@
         ]
       }
     },
-    "/internal/cached/public/{dataId}": {
+    "/internal/cached/{dataId}": {
       "get": {
         "tags": [
           "temporarily-cached-data-controller"
         ],
         "summary": "Retrieve specific data from the cache store of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedPublicData",
+        "operationId": "getReceivedData",
         "parameters": [
           {
             "name": "dataId",
@@ -1789,14 +1785,12 @@
         }
       }
     },
-    "/internal/cached/private/{dataId}": {
+    "/data/sme/{dataId}": {
       "get": {
         "tags": [
-          "temporarily-cached-data-controller"
+          "sme-data-controller"
         ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedPrivateJson",
+        "operationId": "getCompanyAssociatedSmeData",
         "parameters": [
           {
             "name": "dataId",
@@ -1813,7 +1807,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
                 }
               }
             }
@@ -1838,22 +1832,45 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
-    "/internal/cached/private/document/{hash}": {
+    "/data/sme/companies/{companyId}": {
       "get": {
         "tags": [
-          "temporarily-cached-data-controller"
+          "sme-data-controller"
         ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided sha256 hash is retrieved.",
-        "operationId": "getReceivedPrivateDocument",
+        "operationId": "getAllCompanySmeData",
         "parameters": [
           {
-            "name": "hash",
+            "name": "companyId",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -1861,12 +1878,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved blob.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
+                  }
                 }
               }
             }
@@ -1891,13 +1910,21 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
     "/data/sfdr/{dataId}": {
       "get": {
         "tags": [
-          "sfdr-public-data-controller"
+          "sfdr-data-controller"
         ],
         "operationId": "getCompanyAssociatedSfdrData",
         "parameters": [
@@ -1955,7 +1982,7 @@
     "/data/sfdr/companies/{companyId}": {
       "get": {
         "tags": [
-          "sfdr-public-data-controller"
+          "sfdr-data-controller"
         ],
         "operationId": "getAllCompanySfdrData",
         "parameters": [
@@ -2033,7 +2060,7 @@
     "/data/p2p/{dataId}": {
       "get": {
         "tags": [
-          "p-2p-public-data-controller"
+          "p-2p-data-controller"
         ],
         "operationId": "getCompanyAssociatedP2pData",
         "parameters": [
@@ -2091,7 +2118,7 @@
     "/data/p2p/companies/{companyId}": {
       "get": {
         "tags": [
-          "p-2p-public-data-controller"
+          "p-2p-data-controller"
         ],
         "operationId": "getAllCompanyP2pData",
         "parameters": [
@@ -2169,7 +2196,7 @@
     "/data/lksg/{dataId}": {
       "get": {
         "tags": [
-          "lksg-public-data-controller"
+          "lksg-data-controller"
         ],
         "operationId": "getCompanyAssociatedLksgData",
         "parameters": [
@@ -2227,7 +2254,7 @@
     "/data/lksg/companies/{companyId}": {
       "get": {
         "tags": [
-          "lksg-public-data-controller"
+          "lksg-data-controller"
         ],
         "operationId": "getAllCompanyLksgData",
         "parameters": [
@@ -2305,7 +2332,7 @@
     "/data/heimathafen/{dataId}": {
       "get": {
         "tags": [
-          "heimathafen-public-data-controller"
+          "heimathafen-data-controller"
         ],
         "operationId": "getCompanyAssociatedHeimathafenData",
         "parameters": [
@@ -2363,7 +2390,7 @@
     "/data/heimathafen/companies/{companyId}": {
       "get": {
         "tags": [
-          "heimathafen-public-data-controller"
+          "heimathafen-data-controller"
         ],
         "operationId": "getAllCompanyHeimathafenData",
         "parameters": [
@@ -2441,7 +2468,7 @@
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
-          "eutaxonomy-non-financials-public-data-controller"
+          "eutaxonomy-non-financials-data-controller"
         ],
         "operationId": "getCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
@@ -2499,7 +2526,7 @@
     "/data/eutaxonomy-non-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eutaxonomy-non-financials-public-data-controller"
+          "eutaxonomy-non-financials-data-controller"
         ],
         "operationId": "getAllCompanyEutaxonomyNonFinancialsData",
         "parameters": [
@@ -2577,7 +2604,7 @@
     "/data/eutaxonomy-financials/{dataId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-public-data-for-financials-controller"
+          "eu-taxonomy-data-for-financials-controller"
         ],
         "operationId": "getCompanyAssociatedEuTaxonomyDataForFinancials",
         "parameters": [
@@ -2635,7 +2662,7 @@
     "/data/eutaxonomy-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-public-data-for-financials-controller"
+          "eu-taxonomy-data-for-financials-controller"
         ],
         "operationId": "getAllCompanyEuTaxonomyDataForFinancials",
         "parameters": [
@@ -2713,7 +2740,7 @@
     "/data/esg-questionnaire/{dataId}": {
       "get": {
         "tags": [
-          "esg-questionnaire-public-data-controller"
+          "esg-questionnaire-data-controller"
         ],
         "operationId": "getCompanyAssociatedEsgQuestionnaireData",
         "parameters": [
@@ -2771,7 +2798,7 @@
     "/data/esg-questionnaire/companies/{companyId}": {
       "get": {
         "tags": [
-          "esg-questionnaire-public-data-controller"
+          "esg-questionnaire-data-controller"
         ],
         "operationId": "getAllCompanyEsgQuestionnaireData",
         "parameters": [
@@ -14049,6 +14076,21 @@
           }
         }
       },
+      "DataAndMetaInformationSmeData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SmeData"
+          }
+        }
+      },
       "DataAndMetaInformationSfdrData": {
         "required": [
           "data",
@@ -14169,10 +14211,10 @@
           "headquarters": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "sector": {
@@ -14204,10 +14246,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

@@ -117,7 +117,7 @@ class QueryDataRequestsTest {
         assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
         assertEquals("2023", storedDataRequestB.reportingPeriod)
 
-        requestControllerApi.patchDataRequestStatus(dataRequestIdB, RequestStatus.Answered)
+        requestControllerApi.patchDataRequest(dataRequestIdB, RequestStatus.Answered)
 
         val answeredDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Answered).filter {
             it.creationTimestamp > timestampBeforePost

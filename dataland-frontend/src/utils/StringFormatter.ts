@@ -4,6 +4,7 @@
 
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
+import { DataTypeEnum } from "@clients/backend";
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -92,4 +93,55 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
   return resultOfCustomMappingHumanisation == ""
     ? convertCamelCaseToSentenceCase(rawInput)
     : resultOfCustomMappingHumanisation;
+}
+/**
+ * Return the title of a framework
+ * @param framework dataland framework
+ * @returns title of framework
+ */
+export function getFrameworkTitle(framework: string): string {
+  switch (framework) {
+    case DataTypeEnum.EutaxonomyFinancials:
+      return "EU Taxonomy";
+    case DataTypeEnum.EutaxonomyNonFinancials:
+      return "EU Taxonomy";
+    case DataTypeEnum.P2p:
+      return "WWF";
+    case DataTypeEnum.EsgQuestionnaire:
+      return "ESG Questionnaire";
+    default:
+      return humanizeStringOrNumber(framework);
+  }
+}
+/**
+ * Checks the existence of subtitle for framework
+ * @param framework dataland framework
+ * @returns boolean if framework has subtitle
+ */
+export function frameworkHasSubTitle(framework: string): boolean {
+  return (
+    framework == DataTypeEnum.P2p ||
+    framework == DataTypeEnum.EutaxonomyFinancials ||
+    framework == DataTypeEnum.EutaxonomyNonFinancials ||
+    framework == DataTypeEnum.EsgQuestionnaire
+  );
+}
+/**
+ * Return the subtitle of a framework
+ * @param framework dataland framework
+ * @returns subtitle of framework
+ */
+export function getFrameworkSubtitle(framework: string): string {
+  switch (framework) {
+    case DataTypeEnum.EutaxonomyFinancials:
+      return "for financial companies";
+    case DataTypeEnum.EutaxonomyNonFinancials:
+      return "for non-financial companies";
+    case DataTypeEnum.P2p:
+      return "Pathways to Paris";
+    case DataTypeEnum.EsgQuestionnaire:
+      return "für Corporate Schuldscheindarlehen";
+    default:
+      return "";
+  }
 }
