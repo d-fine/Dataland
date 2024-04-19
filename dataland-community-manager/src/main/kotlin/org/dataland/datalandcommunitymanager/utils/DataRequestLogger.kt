@@ -102,4 +102,16 @@ class DataRequestLogger {
     fun logMessageForPatchingRequestStatus(dataRequestId: String, requestStatus: RequestStatus) {
         singleDataRequestLogger.info("Patching request $dataRequestId with status $requestStatus")
     }
+
+    /**
+     * Logs an appropriate message when the message of a data request is updated
+     */
+    fun logMessageForPatchingRequestMessage(
+        dataRequestId: String,
+    ) {
+        singleDataRequestLogger.info(
+            "Patching request $dataRequestId " +
+                "with new message.",
+        )
+    }
 }
