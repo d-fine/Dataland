@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -29,6 +30,7 @@ class DataOwnersManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
     @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
+    @Autowired private val dataRequestRepository: DataRequestRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -48,6 +50,7 @@ class DataOwnersManager(
         correlationId: String,
     ): CompanyDataOwnersEntity {
         checkIfCompanyIsValid(companyId)
+
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
@@ -56,25 +59,33 @@ class DataOwnersManager(
                 )
                 dataOwnersForCompany
             } else {
+                val numberOfOpenDataRequestsForCompany =
+                    dataRequestRepository.getNumberOfOpenDataRequestsForCompany(companyId)
                 dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
                     userAuthentication = userAuthentication as DatalandJwtAuthentication,
                     datalandCompanyId = companyId,
                     companyName = companyName,
                     comment = comment,
+                    numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
                     correlationId = correlationId,
                 )
+
                 logger.info("New data owner with Id $userId added to company with Id $companyId.")
                 dataOwnersForCompany.dataOwners.add(userId)
                 dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
+            val numberOfOpenDataRequestsForCompany =
+                dataRequestRepository.getNumberOfOpenDataRequestsForCompany(companyId)
             dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
                 userAuthentication = userAuthentication as DatalandJwtAuthentication,
                 datalandCompanyId = companyId,
                 companyName = companyName,
                 comment = comment,
+                numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
                 correlationId = correlationId,
             )
+
             logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
             dataOwnerRepository.save(
                 CompanyDataOwnersEntity(
