@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/data/sme") // TODO not final!
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface PrivateDataApi {
+fun interface PrivateDataApi {
     /**
      * A method to store private data via Dataland into a data store
      */
