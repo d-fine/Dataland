@@ -101,7 +101,7 @@ export default defineComponent({
   },
   computed: {
     hasValidInput() {
-      return this.consentToMessageDataUsageGiven && this.areContactsValid() && this.dataRequesterMessage.length > 0;
+      return this.areAllFieldsFilledCorrectly() || (this.isOptional && this.contactsAsString.length == 0);
     },
     selectedContacts(): string[] {
       return this.contactsAsString
@@ -129,7 +129,14 @@ export default defineComponent({
      * Method to emit the provided Input
      */
     emitInput() {
-      this.$emit("hasNewInput", this.hasValidInput, new Set<string>(this.selectedContacts), this.dataRequesterMessage);
+      const contacts = ((): Set<string> | null => {
+        if (this.areContactsValid()) {
+          return new Set<string>(this.selectedContacts);
+        } else {
+          return null;
+        }
+      })();
+      this.$emit("hasNewInput", this.hasValidInput, contacts, this.dataRequesterMessage);
     },
     /**
      * Enables the error messages
@@ -197,6 +204,13 @@ export default defineComponent({
      */
     areContactsValid(): boolean {
       return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
+    },
+    /**
+     * Checks if all fields are filled correctly
+     * @returns true if the provided emails are all valid (therefor also if there are none), false otherwise
+     */
+    areAllFieldsFilledCorrectly(): boolean {
+      return this.consentToMessageDataUsageGiven && this.areContactsValid() && this.dataRequesterMessage.length > 0;
     },
   },
 });

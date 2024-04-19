@@ -2,6 +2,7 @@
   <PrimeDialog
     :dismissableMask="true"
     :modal="true"
+    v-if="showUpdateRequestDialog"
     v-model:visible="showUpdateRequestDialog"
     :closable="true"
     style="text-align: center"
@@ -363,7 +364,11 @@ export default defineComponent({
      * Handles the click on update request
      */
     async updateRequest() {
-      if (!this.currentChosenDataRequestId) return;
+      console.log(this.emailContacts);
+      if (!this.currentChosenDataRequestId) {
+        console.log(this.currentChosenDataRequestId);
+        return;
+      }
       if (this.hasValidEmailForm) {
         await this.patchDataRequest(
           this.currentChosenDataRequestId,
@@ -371,11 +376,6 @@ export default defineComponent({
           this.emailContacts,
           this.emailMessage,
         );
-        this.showUpdateRequestDialog = false;
-        return;
-      }
-      if (this.emailContacts.size == 0) {
-        await this.patchDataRequest(this.currentChosenDataRequestId, RequestStatus.Open);
         this.showUpdateRequestDialog = false;
       } else {
         this.toggleEmailDetailsError = !this.toggleEmailDetailsError;

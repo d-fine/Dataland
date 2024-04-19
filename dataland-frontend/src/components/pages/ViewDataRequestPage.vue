@@ -36,6 +36,7 @@
       <PrimeDialog
         :dismissableMask="true"
         :modal="true"
+        v-if="showNewMessageDialog"
         v-model:visible="showNewMessageDialog"
         :closable="true"
         style="text-align: center"
@@ -210,7 +211,7 @@ export default defineComponent({
       storedDataRequest: {} as StoredDataRequest,
       companyName: "",
       showNewMessageDialog: false,
-      emailContacts: new Set<string>(),
+      emailContacts: null as Set<string> | null,
       emailMessage: "",
       hasValidEmailForm: false,
     };
@@ -325,7 +326,10 @@ export default defineComponent({
     addMessage() {
       if (this.hasValidEmailForm) {
         patchDataRequest(this.requestId, undefined, this.emailContacts, this.emailMessage, this.getKeycloakPromise)
-          .then(() => window.location.reload())
+          .then(() => {
+            this.getRequest().catch((error) => console.log(error));
+            this.showNewMessageDialog = false;
+          })
           .catch((error) => console.error(error));
       } else {
         this.toggleEmailDetailsError = !this.toggleEmailDetailsError;
