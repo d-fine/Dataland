@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.openApiClient.api.LksgPublicDataControllerAp
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pPublicDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrPublicDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
@@ -24,7 +23,6 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsD
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -136,21 +134,6 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSmeData = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSmeData = FrameworkTestDataProvider(SmeData::class.java)
-   /* fun smeUploaderFunction(
-        companyId: String,
-        smeData: SmeData,
-        reportingPeriod: String,
-        bypassQa: Boolean = true,
-    ): DataMetaInformation {
-        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, reportingPeriod, smeData)
-        return dataControllerApiForSmeData.postCompanyAssociatedSmeData(
-            companyAssociatedSmeData, bypassQa,
-        )
-    }
-    */
-
     /**
      * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
      * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
@@ -236,12 +219,6 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForSfdrData,
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
             )
-
-            /*DataTypeEnum.sme -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderForSmeData,
-                frameworkDataUploadFunction = this::smeUploaderFunction,
-            )
-             */
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForEuTaxonomyDataForNonFinancials,
