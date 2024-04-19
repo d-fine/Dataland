@@ -34,6 +34,13 @@
       data-test="dataRequesterMessage"
       v-bind:disabled="!allowAccessDataRequesterMessage"
     />
+    <p
+      v-show="displayNoMessageError && allowAccessDataRequesterMessage"
+      class="text-danger text-xs"
+      data-test="noMessageErrorMessage"
+    >
+      You have not provided a message yet.
+    </p>
     <p class="gray-text font-italic" style="text-align: left">
       Let your contacts know what exactly your are looking for.
     </p>
@@ -83,6 +90,7 @@ export default defineComponent({
   emits: ["hasNewInput"],
   data() {
     return {
+      displayNoMessageError: false,
       displayContactsNotValidError: false,
       displayConsentToMessageDateUsageNotGiven: false,
       allowAccessDataRequesterMessage: false,
@@ -93,7 +101,7 @@ export default defineComponent({
   },
   computed: {
     hasValidInput() {
-      return this.consentToMessageDataUsageGiven && this.areContactsValid();
+      return this.consentToMessageDataUsageGiven && this.areContactsValid() && this.dataRequesterMessage.length > 0;
     },
     selectedContacts(): string[] {
       return this.contactsAsString
@@ -129,6 +137,7 @@ export default defineComponent({
     displayErrors() {
       this.updateContactsNotValidError();
       this.displayConsentToMessageDateUsageNotGiven = !this.consentToMessageDataUsageGiven;
+      this.displayNoMessageError = this.dataRequesterMessage.length == 0;
     },
     /**
      * Checks if an email string is a valid email using regex
