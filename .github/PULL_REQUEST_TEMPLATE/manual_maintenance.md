@@ -50,6 +50,8 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
   - [ ] Copy from https://dataland.com/documents/v3/api-docs/public to documents_open_api.yaml
 - [ ] Accordingly, update the community API file
   - [ ] Copy from https://dataland.com/community/v3/api-docs/public to requests_open_api.yaml
+- [ ] Accordingly, update the QA API file
+  - [ ] Copy from https://dataland.com/qa/v3/api-docs/public to requests_open_api.yaml
 
 
 ### Dockerfile updates
