@@ -33,7 +33,10 @@ class ClaimOwnershipSucessfullyEmailFactory(
     override val optionalProperties = setOf<String>();
     override val templateFile = "/claimed_ownership_successfully.html.ftl"
 
-    override val subject = "A message from Dataland: Your data ownership claim is confirmed!"
+    override fun buildSubject(properties: Map<String, String?>): String{
+        return "Your data ownership claim for" +
+                " ${properties[keys.companyName]}" + " is confirmed!"
+    }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         return StringBuilder()
