@@ -1,23 +1,31 @@
 <template>
-  <FormKit
-    type="select"
-    :validation-label="validationLabel"
-    :validation="validation"
+  <Dropdown
+    :options="options"
+    v-model="selectedOption"
     :placeholder="placeholder"
     :name="name"
-    :options="options"
-    outer-class="short"
+    class="w-full md:w-14rem short"
+    showClear
+    option-label="label"
+    option-value="value"
   />
 </template>
 
 <script lang="ts">
-import { type ComponentPropsOptions, defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
+import { defineComponent } from "vue";
+import Dropdown from "primevue/dropdown";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
-  components: { FormKit },
-  props: { ...DropdownOptionFormFieldProps } as Readonly<ComponentPropsOptions>,
+  components: { Dropdown },
+  props: {
+    ...DropdownOptionFormFieldProps,
+  },
+  data() {
+    return {
+      selectedOption: null,
+    };
+  },
 });
 </script>
