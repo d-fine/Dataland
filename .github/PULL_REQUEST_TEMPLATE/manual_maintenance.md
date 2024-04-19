@@ -44,7 +44,11 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 - [ ] Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with the currently used version 
   of the client.
-  How to do this: With a running stack, visit https://localhost:12345/api/v1/client-controller/openapi 
+  Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
+  then update the version number used in docker-compose.
+  Then start the eurodat client as described in the internal wiki
+  https://github.com/d-fine/DatalandInternal/wiki/Connect-the-eurodat-clientand and visit 
+  http://localhost:8080/api/v1/client-controller/openapi 
   This should trigger an automated download of the openApiSpec. The content of this file will be in YAML format.
   Therefore convert its content to JSON with this converter: https://jsonformatter.org/yaml-to-json
   Then replace the content of eurodatClientOpenApi.json in the repo with the converted JSON from the converter.
