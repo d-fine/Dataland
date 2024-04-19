@@ -33,6 +33,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         datalandCompanyId: String,
         companyName: String,
         comment: String?,
+        numberOfOpenDataRequestsForCompany: Int,
         correlationId: String,
     ) {
         val properties = mapOf(
@@ -40,6 +41,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
             "Company (Dataland ID)" to datalandCompanyId,
             "Company Name" to companyName,
             "Comment" to comment,
+            "Number of data requests open" to numberOfOpenDataRequestsForCompany.toString(),
         )
         val message = InternalEmailMessage(
             "Dataland Data Ownership Request Acceptance",
