@@ -462,6 +462,11 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - sonar
+      - e2e-tests
+      - gradle-based-tests
+      - frontend-component-tests
+      - python-tests
+      - framework-toolbox-tests
     if: ${{ !cancelled() }}
     steps:
       - name: Merge Parameters Artifacts
