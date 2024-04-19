@@ -109,6 +109,8 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`

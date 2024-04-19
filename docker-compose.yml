@@ -499,18 +499,39 @@ services:
      - "host.docker.internal:host-gateway"
   eurodat-client:
     restart: always
-    profiles: [ "production", "development" ]
+    profiles: [ "production" ] #TODO readd development later
     image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.31
     networks:
       - internal
     expose:
       - "8080" #TODO think about this at the end   might even be deleted
     ports:
-      - "127.0.0.1:12345:8080" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
+      - "127.0.0.1:12345:8443" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
     volumes:
       - ./dataland-eurodat-client/secret_files:/crt
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
+  dummy-eurodat-client:
+    restart: always
+    profiles: [ "testing", "development" ] #TODO remove development at the end
+    image: ghcr.io/d-fine/dataland/dataland_dummy_eurodat_client_test:${DATALAND_DUMMY_EURODAT_CLIENT_TEST_VERSION}
+    networks:
+      - internal
+    expose:
+      - "8080"
+    ports:
+      - "127.0.0.1:12345:8080" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
+  dummy-eurodat-db:
+    restart: always
+    profiles: [ "testing", "development" ] #TODO remove development at the end
+    image: postgres:alpine  # TODO Using lightweight Alpine-based image
+    networks:
+      - internal
+    tmpfs: /var/lib/postgresql/data  # TODO Mounts a temporary file system to /var/lib/postgresql/data for in-memory storage
+    environment:
+      POSTGRES_DB: eurodat_db_name
+      POSTGRES_USER: eurodat_db_user
+      POSTGRES_PASSWORD: eurodat_db_password
 networks:
   internal:
   external:

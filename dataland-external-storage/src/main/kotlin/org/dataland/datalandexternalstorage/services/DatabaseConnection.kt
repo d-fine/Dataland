@@ -32,7 +32,7 @@ object DatabaseConnection {
                     logger.info("Data for $dataId was inserted successfully.")
                 }
             } catch (ex: SQLException) {
-                logger.error("A sql exception was thronw: $ex")
+                logger.error("A sql exception was thronw: $ex") // TODO wenn hier ein error entsteht, denkt aktuell unser EurodatDataStore dass alles ok ist und schickt eine success message auf die queue => nicht gut, oder?
             } finally {
                 try {
                     preparedStatement?.close()
