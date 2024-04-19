@@ -70,7 +70,7 @@ interface PublicDataApi<T> {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @PublicDataManager.isDataSetPublic(#dataId)")
     fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<T>>
 
