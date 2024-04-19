@@ -169,7 +169,9 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or " +
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(#dataRequestId, #requestStatus, #contacts))",
+            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
+            "#dataRequestId, #requestStatus, #contacts,#message)" +
+            ")",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,

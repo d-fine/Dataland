@@ -62,10 +62,11 @@ class SecurityUtilsService(
         requestId: UUID,
         requestStatusToPatch: RequestStatus?,
         contacts: Set<String>?,
+        message: String?,
     ): Boolean {
         if (contacts == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-        return (
+        return message != null && (
             currentRequestStatus == RequestStatus.Open ||
                 (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
             )
