@@ -21,7 +21,6 @@ class ClaimOwnershipSucessfullyEmailFactory(
         val companyId = "companyId"
         val companyName = "companyName"
         val requesterEmail = "requesterEmail"
-        val message = "message"
     }
 
     override val builderForType = TemplateEmailMessage.Type.ClaimedOwershipSucessfully
@@ -31,7 +30,7 @@ class ClaimOwnershipSucessfullyEmailFactory(
         keys.requesterEmail,
     )
 
-    override val optionalProperties = setOf(keys.message)
+    override val optionalProperties = setOf<String>();
     override val templateFile = "/claimed_ownership_successfully.html.ftl"
 
     override val subject = "A message from Dataland: Your data ownership claim is confirmed!"
@@ -39,16 +38,12 @@ class ClaimOwnershipSucessfullyEmailFactory(
     override fun buildTextContent(properties: Map<String, String?>): String {
         return StringBuilder()
             .append("Great news!\n")
-            .append("You've been successfully claimed data ownership for ${properties[keys.companyName]}\n\n")
+            .append("You've been successfully claimed data ownership for " +
+                    "${properties[keys.companyName]}\n\n")
             .append(
-                "Now, take the next step to access your company overview, view your data requests, and provide data",
+                "Now, take the next step to access your company overview, view your data requests," +
+                        " and provide data",
             )
-            .also {
-                if (!properties[keys.message].isNullOrBlank()) {
-                    it.append("User ${properties[keys.requesterEmail]} sent the following message:\n")
-                    it.append(properties[keys.message])
-                }
-            }
             .toString()
     }
 }
