@@ -64,8 +64,10 @@ internal class PublicDataControllerTest(
         mockSecurityContext = mock(SecurityContext::class.java)
         mockPublicDataManager = mock(PublicDataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController =
-            EutaxonomyNonFinancialsPublicDataController(mockPublicDataManager, mockDataMetaInformationManager, objectMapper)
+        dataController = EutaxonomyNonFinancialsPublicDataController(
+            mockPublicDataManager,
+            mockDataMetaInformationManager, objectMapper,
+        )
     }
 
     @Test
