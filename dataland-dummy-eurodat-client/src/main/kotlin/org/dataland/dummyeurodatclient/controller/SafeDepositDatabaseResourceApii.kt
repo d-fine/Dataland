@@ -16,12 +16,20 @@ import org.dataland.dummyeurodatclient.openApiServer.model.SafeDepositDatabaseRe
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 
+/**
+ * Dummy implementaiton of the eurodat SafeDepositDatabaseRessourceApi
+ */
 @Validated
 @RequestMapping("\${api.base-path:}")
 interface SafeDepositDatabaseResourceApii {
-
+    /**
+     * Dummy implementation of the delete endpoint of the SafeDepositDatabaseRessourceApi
+     */
     @Operation(
         tags = ["Safe Deposit Database Resource"],
         summary = "",
@@ -32,6 +40,7 @@ interface SafeDepositDatabaseResourceApii {
                 implementation = SafeDepositDatabaseResponse::class))]),
         ],
     )
+
     @RequestMapping(
         method = [RequestMethod.DELETE],
         value = ["/api/v1/client-controller/database-service/{appId}"],
@@ -44,7 +53,9 @@ interface SafeDepositDatabaseResourceApii {
     ): ResponseEntity<SafeDepositDatabaseResponse> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
-
+    /**
+     * Dummy implementation of the post endpoint of the SafeDepositDatabaseRessourceApi
+     */
     @Operation(
         tags = ["Safe Deposit Database Resource"],
         summary = "",

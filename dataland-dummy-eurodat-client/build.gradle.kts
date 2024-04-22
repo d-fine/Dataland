@@ -58,7 +58,10 @@ jacoco {
 
 val dummyEurodatClientServerDestinationPackage = "org.dataland.dummyeurodatclient.openApiServer"
 
-tasks.register("generateDummyEurodatClientService", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+tasks.register(
+    "generateDummyEurodatClientService",
+    org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class,
+) {
     description = "Task to generate a Spring web server based on the specification"
     group = "server"
     input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path

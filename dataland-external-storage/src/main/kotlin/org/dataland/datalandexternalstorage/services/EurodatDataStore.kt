@@ -56,6 +56,8 @@ class EurodatDataStore(
     @Value("\${dataland.eurodatclient.max-retries-connecting}")
     private val maxRetriesConnectingToEurodat: Int,
     @Value("\${dataland.eurodatclient.seconds-between-retries}")
+    private val conversionFactor: Int,
+    @Value("\${dataland.eurodatclient.conversion-factor}")
     private val secondsBetweenRetriesConnectingToEurodat: Int,
 ) {
 
@@ -84,7 +86,7 @@ class EurodatDataStore(
                 }
             }
             retryCount++
-            Thread.sleep(secondsBetweenRetriesConnectingToEurodat.toLong() * 1000)
+            Thread.sleep(secondsBetweenRetriesConnectingToEurodat.toLong() * conversionFactor)
         }
     }
 
