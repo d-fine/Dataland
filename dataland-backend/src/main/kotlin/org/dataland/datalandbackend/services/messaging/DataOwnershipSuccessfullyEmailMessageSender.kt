@@ -37,15 +37,16 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         correlationId: String,
     ) {
         val properties = mapOf(
-            "User" to userAuthentication.userDescription,
-            "Company (Dataland ID)" to datalandCompanyId,
-            "Company Name" to companyName,
-            "Comment" to comment,
-            "Number of data requests open" to numberOfOpenDataRequestsForCompany.toString(),
+            // "User" to userAuthentication.userDescription,
+            "companyId" to datalandCompanyId,
+            "companyName" to companyName,
+            // "Comment" to comment,
+            // "Number of data requests open" to numberOfOpenDataRequestsForCompany.toString(),
+            "requesterEmail" to "requesterEmail",
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.ClaimedOwershipSucessfully,
-            "A data ownership request has been accepted",
+            "brunoneumanns@gmail.com",
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
