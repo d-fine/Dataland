@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.services.KeycloakUserControllerApiService
+import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -21,6 +23,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+    @Autowired private val requestControllerApi: RequestControllerApi,
 ) {
     /**
      * Function that generates the message object for data ownership request acceptance mails
@@ -33,9 +36,12 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         newDataOwnerId: String,
         datalandCompanyId: String,
         companyName: String,
-//        numberOfOpenDataRequestsForCompany: Int,
         correlationId: String,
     ) {
+        val numberOfOpenDataRequestsForCompany = requestControllerApi.getAggregatedDataRequests(
+            identifierValue = datalandCompanyId, status = RequestStatus.Open,
+        ).filter { it.count > 0 }.size
+        println(numberOfOpenDataRequestsForCompany)
         val newDataOwnerEmail = keycloakUserControllerApiService.getEmailAddress(newDataOwnerId)
         val properties = mapOf(
             "companyId" to datalandCompanyId,

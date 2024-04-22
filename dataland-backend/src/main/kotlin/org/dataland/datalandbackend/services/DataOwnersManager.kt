@@ -9,7 +9,6 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -30,7 +29,6 @@ class DataOwnersManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
     @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
-    @Autowired private val requestControllerApi: RequestControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -48,12 +46,6 @@ class DataOwnersManager(
         correlationId: String,
     ): CompanyDataOwnersEntity {
         checkIfCompanyIsValid(companyId)
-
-        val numberOfOpenDataRequestsForCompany = requestControllerApi.getAggregatedDataRequests(
-            identifierValue = companyId, status = RequestStatus.Open,
-        ).filter { it.count > 0 }.size
-        println(numberOfOpenDataRequestsForCompany)
-
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
@@ -66,7 +58,6 @@ class DataOwnersManager(
                     newDataOwnerId = userId,
                     datalandCompanyId = companyId,
                     companyName = companyName,
-//                    numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
                     correlationId = correlationId,
                 )
 
@@ -79,7 +70,6 @@ class DataOwnersManager(
                 newDataOwnerId = userId,
                 datalandCompanyId = companyId,
                 companyName = companyName,
-//                numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
                 correlationId = correlationId,
             )
 
