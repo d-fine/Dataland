@@ -70,7 +70,7 @@ class EurodatDataStore(
     @PostConstruct
     fun createSafeDepositBox() {
         logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-        retryLogic() {
+        retryLogic("createSafeDepositBox") {
             isSafeDepositBoxAvailable()
         }
         logger.info("Safe deposit box is ready.")
@@ -79,16 +79,19 @@ class EurodatDataStore(
     /**
      * This method will rerun a given method if an exeption is thrown while running it
      */
-    fun <T> retryLogic(block: () -> T): T {
+    fun <T> retryLogic(inputMethod: String, block: () -> T): T {
         var retryCount = 0
         while (retryCount <= maxRetriesConnectingToEurodat) {
             try {
-                logger.info("Trying to run the method. Try number ${retryCount + 1}.")
+                logger.info("Trying to run the method $inputMethod. Try number ${retryCount + 1}.")
                 return block()
             } catch (e: Exception) {
-                logger.error("An error occurred while executing the method: ${e.message}. Trying again")
+                logger.error("An error occurred while executing the method $inputMethod: ${e.message}. Trying again")
                 if (retryCount == maxRetriesConnectingToEurodat) {
-                    logger.error("An error occurred while executing the method: ${e.message}. Process terminated")
+                    logger.error(
+                        "An error occurred while executing the method $inputMethod: ${e.message}. " +
+                            "Process terminated",
+                    )
                     throw e
                 }
             }
@@ -172,21 +175,21 @@ class EurodatDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = retryLogic() {
+        val eurodatCredentials = retryLogic("getEurodatCredentials") {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
         logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         logger.info("Data from temporary storage retrieved.")
-        retryLogic() {
+        retryLogic("storeJsonInEurodat") {
             storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
         }
         logger.info("Data stored in eurodat storage.")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
             val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
-            retryLogic() {
+            retryLogic("storeBlobInEurodat") {
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
             }
         }
@@ -203,7 +206,7 @@ class EurodatDataStore(
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
         logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
-        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
+        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob2_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlReturn = insertDataIntoSqlDatabase(conn, insertStatement, dataItem.id, dataItem.data)
         if (!sqlReturn) {
