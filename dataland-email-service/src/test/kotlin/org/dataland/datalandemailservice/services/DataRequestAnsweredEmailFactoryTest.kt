@@ -6,6 +6,7 @@ import org.dataland.datalandemailservice.services.templateemail.DataRequestAnswe
 import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class DataRequestAnsweredEmailFactoryTest {
     private val proxyPrimaryUrl = "local-dev.dataland.com"
@@ -18,6 +19,7 @@ class DataRequestAnsweredEmailFactoryTest {
     private val dataType = "sfdr"
     private val dataTypeDescription = "SFDR"
     private val creationTimestampAsDate = "07 Mar 2024, 15:03"
+    private val dataRequestId = UUID.randomUUID().toString()
     private val closedInDays = "100 days"
 
     private fun buildTestEmail(
@@ -26,6 +28,7 @@ class DataRequestAnsweredEmailFactoryTest {
         var properties = mapOf(
             "companyId" to companyId,
             "companyName" to companyName,
+            "dataRequestId" to dataRequestId,
             "dataType" to dataType,
             "reportingPeriod" to reportingPeriod,
             "creationDate" to creationTimestampAsDate,
@@ -56,12 +59,13 @@ class DataRequestAnsweredEmailFactoryTest {
         validateEmailHtmlFormat(basicEmail)
         validateEmailHtmlFormatContainsDefaultProperties(basicEmail)
 
-        validateEmailHtmlFormat(emailWithOptionalProperties)
         validateEmailHtmlFormatContainsOptionalProperties(emailWithOptionalProperties)
+        validateEmailHtmlFormat(emailWithOptionalProperties)
     }
 
     private fun validateEmailHtmlFormatContainsDefaultProperties(email: Email) {
         assertTrue(email.content.htmlContent.contains("some days"))
+        assertTrue(email.content.htmlContent.contains(dataType))
     }
     private fun validateEmailHtmlFormatContainsOptionalProperties(email: Email) {
         assertTrue(email.content.htmlContent.contains(closedInDays))
@@ -82,14 +86,12 @@ class DataRequestAnsweredEmailFactoryTest {
         assertTrue(email.content.htmlContent.contains("Review the provided data."))
         assertTrue(email.content.htmlContent.contains("Close or reopen your data request."))
         assertTrue(email.content.htmlContent.contains("Copyright"))
-
         assertTrue(email.content.htmlContent.contains(companyName))
-        assertTrue(email.content.htmlContent.contains(dataType))
         assertTrue(email.content.htmlContent.contains(reportingPeriod))
         assertTrue(email.content.htmlContent.contains(creationTimestampAsDate))
         assertTrue(
             email.content.htmlContent.contains(
-                "href=\"https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType\"",
+                "href=\"https://$proxyPrimaryUrl/requests/$dataRequestId\"",
             ),
         )
     }
@@ -113,9 +115,11 @@ class DataRequestAnsweredEmailFactoryTest {
             email.content.textContent.contains("Request created: $creationTimestampAsDate \n\n"),
         )
         assertTrue(email.content.textContent.contains("Review the provided data:\n"))
+
         assertTrue(
-            email.content.textContent.contains("$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType"),
+            email.content.textContent.contains("$proxyPrimaryUrl/requests/$dataRequestId"),
         )
+
         assertTrue(
             email.content.textContent.contains(
                 "\nWithout any actions, your data request will be set to closed automatically in some days.",
