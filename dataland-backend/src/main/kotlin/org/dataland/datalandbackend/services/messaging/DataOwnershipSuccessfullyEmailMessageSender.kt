@@ -46,7 +46,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         val properties = mapOf(
             "companyId" to datalandCompanyId,
             "companyName" to companyName,
-            // "Number of data requests open" to numberOfOpenDataRequestsForCompany.toString(),
+            "numberOfOpenDataRequestsForCompany" to numberOfOpenDataRequestsForCompany.toString(),
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.ClaimedOwershipSucessfully,

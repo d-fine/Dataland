@@ -20,6 +20,7 @@ class ClaimOwnershipSucessfullyEmailFactory(
     private val keys = object {
         val companyId = "companyId"
         val companyName = "companyName"
+        val numberOfOpenDataRequestsForCompany = "numberOfOpenDataRequestsForCompany"
     }
 
     override val builderForType = TemplateEmailMessage.Type.ClaimedOwershipSucessfully
