@@ -59,6 +59,8 @@ class EurodatDataStore(
     private val conversionFactor: Int,
     @Value("\${dataland.eurodatclient.conversion-factor}")
     private val secondsBetweenRetriesConnectingToEurodat: Int,
+    @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
+    private val initializeSafeDepositBox: Boolean,
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -69,11 +71,12 @@ class EurodatDataStore(
      */
     @PostConstruct
     fun createSafeDepositBox() {
+        if (initializeSafeDepositBox){
         logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
         retryLogic("createSafeDepositBox") {
             isSafeDepositBoxAvailable()
+            }
         }
-        logger.info("Safe deposit box is ready.")
     }
 
     /**

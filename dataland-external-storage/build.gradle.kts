@@ -53,7 +53,7 @@ dependencies {
 openApi {
     apiDocsUrl.set("http://localhost:8488/external-storage/v3/api-docs")
     customBootRun {
-        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8488"))
+        args.set(listOf("--spring.profiles.active=isolated", "--server.port=8488"))
     }
     outputFileName.set("$projectDir/externalStorageOpenApi.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
