@@ -82,7 +82,6 @@ class PublicDataManagerTest(
         )
     }
 
-    // TODO FAILED
     @Test
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
@@ -100,7 +99,6 @@ class PublicDataManagerTest(
         )
     }
 
-    // TODO FAILED
     @Test
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
@@ -117,7 +115,6 @@ class PublicDataManagerTest(
         assertEquals("No dataset with the id: $dataId could be found in the data store.", thrown.message)
     }
 
-// TODO FAILED
     @Test
     fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
@@ -149,7 +146,6 @@ class PublicDataManagerTest(
         return expectedDataTypeName
     }
 
-// TODO FAILED
     @Test
     fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
         val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
@@ -201,7 +197,6 @@ class PublicDataManagerTest(
         assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
 
-    // TODO FAILED
     @Test
     fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
