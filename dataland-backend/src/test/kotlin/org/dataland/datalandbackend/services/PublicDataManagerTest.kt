@@ -37,9 +37,12 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.DirtiesContext.ClassMode
 import java.time.Instant
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 class PublicDataManagerTest(
@@ -198,8 +201,6 @@ class PublicDataManagerTest(
     fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        // TODO check that its fine to delete this
-        // `when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
 
         val payload = JSONObject(
             mapOf(

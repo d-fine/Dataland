@@ -34,6 +34,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.sql.SQLException
 
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
@@ -134,8 +135,12 @@ class EurodatDataStore(
         messageUtils.rejectMessageOnException {
             val actionType = JSONObject(payload).getString("actionType")
             if (actionType == ActionType.StorePrivateDataAndDocuments) {
-                storeDataInEurodat(dataId, correlationId, payload)
-                sendMessageAfterSuccessfulStorage(payload, correlationId)
+                try {
+                    storeDataInEurodat(dataId, correlationId, payload)
+                    sendMessageAfterSuccessfulStorage(payload, correlationId)
+                } catch (ex: SQLException) {
+                    logger.error("A sql exception was thronw: $ex")
+                }
             }
         }
     }

@@ -31,7 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-internal class DataControllerTest(
+internal class PublicDataControllerTest(
     @Autowired @Spy
     var objectMapper: ObjectMapper,
 ) {
@@ -64,8 +64,10 @@ internal class DataControllerTest(
         mockSecurityContext = mock(SecurityContext::class.java)
         mockPublicDataManager = mock(PublicDataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController =
-            EutaxonomyNonFinancialsPublicDataController(mockPublicDataManager, mockDataMetaInformationManager, objectMapper)
+        dataController = EutaxonomyNonFinancialsPublicDataController(
+            mockPublicDataManager,
+            mockDataMetaInformationManager, objectMapper,
+        )
     }
 
     @Test
