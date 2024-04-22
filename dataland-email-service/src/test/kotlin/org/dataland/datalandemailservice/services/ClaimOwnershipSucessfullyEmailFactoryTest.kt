@@ -20,7 +20,7 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
         val properties = mapOf(
             "companyId" to companyId,
             "companyName" to companyName,
-            "requesterEmail" to requesterEmail
+            "requesterEmail" to requesterEmail,
         )
 
         val email = ClaimOwnershipSucessfullyEmailFactory(
@@ -48,15 +48,16 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
         assertTrue(email.content.htmlContent.contains("DATALAND"))
         assertTrue(email.content.htmlContent.contains("Great news!"))
         assertTrue(
-            email.content.htmlContent.contains("You've successfully claimed data " +
-                        "ownership for"
-            )
+            email.content.htmlContent.contains(
+                "You've successfully claimed data " +
+                    "ownership for",
+            ),
         )
         assertTrue(
             email.content.htmlContent.contains(
                 "Now, take the next step to access your " +
-                        "company overview, view your data requests, and provide data."
-            )
+                    "company overview, view your data requests, and provide data.",
+            ),
         )
         assertTrue(email.content.htmlContent.contains("Copyright"))
         assertTrue(email.content.htmlContent.contains(companyName))
@@ -66,7 +67,6 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
             ),
         )
     }
-
 
     @Test
     fun `validate that default text content of the claim ownership succesfully mail is correctly formatted`() {
@@ -82,14 +82,14 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
         assertTrue(
             email.content.textContent.contains(
                 "You've successfully claimed data " +
-                        "ownership for"
-            )
+                    "ownership for",
+            ),
         )
         assertTrue(
             email.content.textContent.contains(
                 "Now, take the next step to access your " +
-                        "company overview, view your data requests, and provide data."
-            )
+                    "company overview, view your data requests, and provide data.",
+            ),
         )
         assertTrue(email.content.textContent.contains(companyName))
         assertTrue(
