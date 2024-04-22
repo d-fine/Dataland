@@ -50,7 +50,7 @@ export default defineComponent({
      * or a simple array
      */
     setOptionLabelValue(): void {
-      if (Array.isArray(this.options) && (this.options as undefined[]).every((element) => typeof element == "object")) {
+      if (Array.isArray(this.options) && (this.options as unknown[]).every((element) => typeof element == "object")) {
         this.optionLabel = "label";
         this.optionValue = "value";
       }
