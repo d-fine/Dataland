@@ -9,6 +9,7 @@
     option-label="label"
     option-value="value"
   />
+  <FormKit type="hidden" :name="name" v-model="selectedOption" />
 </template>
 
 <script lang="ts">
