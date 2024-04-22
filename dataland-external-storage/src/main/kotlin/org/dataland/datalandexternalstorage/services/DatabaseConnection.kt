@@ -19,7 +19,7 @@ object DatabaseConnection {
      * @param data the data to be inserted
      */
     fun insertDataIntoSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String, data: String) {
-        var preparedStatement: PreparedStatement? = null
+        var preparedStatement: PreparedStatement?
         if (conn != null) {
             preparedStatement = conn.prepareStatement(sqlStatement)
             preparedStatement.setObject(1, UUID.fromString(dataId))
@@ -48,7 +48,7 @@ object DatabaseConnection {
         documentId: String,
         document: ByteArray,
     ) {
-        var preparedStatement: PreparedStatement? = null
+        var preparedStatement: PreparedStatement?
         if (conn != null) {
             preparedStatement = conn.prepareStatement(sqlStatement)
             preparedStatement.setObject(1, UUID.fromString(documentId))
