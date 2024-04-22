@@ -41,7 +41,6 @@ dependencies { // TODO At the end: Reduce one by one and check if still works
     implementation(Spring.boot.validation)
     runtimeOnly(libs.h2)
     implementation(libs.kotlin.reflect)
-    implementation(Spring.boot.amqp)
     implementation(Square.okHttp3)
     implementation(libs.json)
 }
