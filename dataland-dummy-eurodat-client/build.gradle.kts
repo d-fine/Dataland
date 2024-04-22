@@ -26,6 +26,7 @@ plugins {
 
 dependencies { // TODO At the end: Reduce one by one and check if still works
     implementation(libs.springdoc.openapi.ui)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)

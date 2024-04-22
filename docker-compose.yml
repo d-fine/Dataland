@@ -495,6 +495,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://dummy-eurodat-client:8080}
     extra_hosts:
      - "host.docker.internal:host-gateway"
   eurodat-client:
@@ -504,9 +505,7 @@ services:
     networks:
       - internal
     expose:
-      - "8080" #TODO think about this at the end   might even be deleted
-    ports:
-      - "127.0.0.1:12345:8443" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
+      - "8080"
     volumes:
       - ./dataland-eurodat-client/secret_files:/crt
     env_file:
@@ -519,19 +518,23 @@ services:
       - internal
     expose:
       - "8080"
-    ports:
-      - "127.0.0.1:12345:8080" # TODO: At the end we might delete this port-mapping to the host. It is only to be able to visit the swagger UI from the host during dev.
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing", "development" ] #TODO remove development at the end
-    image: postgres:alpine  # TODO Using lightweight Alpine-based image
+    image: postgres:alpine
     networks:
       - internal
-    tmpfs: /var/lib/postgresql/data  # TODO Mounts a temporary file system to /var/lib/postgresql/data for in-memory storage
+    tmpfs: /var/lib/postgresql/data
+    volumes:
+      - ./dataland-dummy-eurodat-db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: eurodat_db_name
       POSTGRES_USER: eurodat_db_user
       POSTGRES_PASSWORD: eurodat_db_password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
 networks:
   internal:
   external:

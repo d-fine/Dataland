@@ -1,7 +1,7 @@
 package org.dataland.dummyeurodatclient.controller
 
-import org.dataland.dummyeurodatclient.openApiServer.api.SafeDepositDatabaseResourceApii
-import org.dataland.dummyeurodatclient.openApiServer.model.SafeDepositDatabaseRequestt
+import org.dataland.dummyeurodatclient.openApiServer.api.SafeDepositDatabaseResourceApi
+import org.dataland.dummyeurodatclient.openApiServer.model.SafeDepositDatabaseRequest
 import org.dataland.dummyeurodatclient.openApiServer.model.SafeDepositDatabaseResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController
  * Controller for the safe deposit box api
  */
 @RestController
-class SafeDepositDatabaseController : SafeDepositDatabaseResourceApii {
-    override fun apiV1ClientControllerDatabaseServicePost(safeDepositDatabaseRequest: SafeDepositDatabaseRequestt?):
+class SafeDepositDatabaseController : SafeDepositDatabaseResourceApi {
+    override fun apiV1ClientControllerDatabaseServicePost(safeDepositDatabaseRequest: SafeDepositDatabaseRequest?):
             ResponseEntity<SafeDepositDatabaseResponse> {
         val response = SafeDepositDatabaseResponse("Database already exists")
         return ResponseEntity.ok(response)
