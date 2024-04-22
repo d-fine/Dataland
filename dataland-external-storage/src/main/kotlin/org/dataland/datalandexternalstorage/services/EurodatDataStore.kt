@@ -71,10 +71,10 @@ class EurodatDataStore(
      */
     @PostConstruct
     fun createSafeDepositBox() {
-        if (initializeSafeDepositBox){
-        logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-        retryLogic("createSafeDepositBox") {
-            isSafeDepositBoxAvailable()
+        if (initializeSafeDepositBox) {
+            logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
+            retryLogic("createSafeDepositBox") {
+                isSafeDepositBoxAvailable()
             }
         }
     }
