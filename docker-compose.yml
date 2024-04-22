@@ -532,6 +532,7 @@ services:
       POSTGRES_DB: eurodat_db_name
       POSTGRES_USER: eurodat_db_user
       POSTGRES_PASSWORD: eurodat_db_password
+    # TODO: Healthcheck?
 networks:
   internal:
   external:
