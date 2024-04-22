@@ -5,7 +5,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -43,18 +43,17 @@ class DataOwnershipSuccessfullyEmailMessageSender(
             "Comment" to comment,
             "Number of data requests open" to numberOfOpenDataRequestsForCompany.toString(),
         )
-        val message = InternalEmailMessage(
-            "Dataland Data Ownership Request Acceptance",
+        val message = TemplateEmailMessage(
+            TemplateEmailMessage.Type.ClaimedOwershipSucessfully,
             "A data ownership request has been accepted",
-            "Data Ownership Request Acceptance",
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendInternalEmail,
+            MessageType.SendTemplateEmail,
             correlationId,
             ExchangeName.SendEmail,
-            RoutingKeyNames.internalEmail,
+            RoutingKeyNames.templateEmail,
         )
     }
 }
