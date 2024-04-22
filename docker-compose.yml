@@ -495,7 +495,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL}
+      INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://dummy-eurodat-client:8080}
     extra_hosts:
      - "host.docker.internal:host-gateway"
   eurodat-client:
