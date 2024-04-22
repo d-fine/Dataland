@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class ApiClients(
-    @Value("dataland.community-manager.base-url") private val communitymanagerBaseUrl: String,
+    @Value("\${dataland.community-manager.base-url}") private val communitymanagerBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the RequestControllerApi of the community manager
