@@ -41,7 +41,7 @@ class ClaimOwnershipSucessfullyEmailFactory(
     override fun buildTextContent(properties: Map<String, String?>): String {
         return StringBuilder()
             .append("Great news!\n")
-            .append("You've been successfully claimed data ownership for " +
+            .append("You've successfully claimed data ownership for " +
                     "${properties[keys.companyName]}\n\n"
             ).append(
                 "Now, take the next step to access your company overview, view your data requests," +
