@@ -325,7 +325,7 @@
 					},
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 73,
 							"absoluteShare": {
@@ -375,7 +375,7 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 13.83,
 							"absoluteShare": {

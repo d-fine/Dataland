@@ -188,7 +188,7 @@
 					},
 					{
 						"activityName": "StorageOfElectricity",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 12.22,
 							"absoluteShare": {
@@ -2539,7 +2539,7 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 55.37,
 							"absoluteShare": {
@@ -2587,7 +2587,7 @@
 					},
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 70.04,
 							"absoluteShare": {
@@ -2916,7 +2916,7 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 77.25,
 							"absoluteShare": {
@@ -3135,7 +3135,7 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 44.92,
 							"absoluteShare": {
@@ -4568,7 +4568,7 @@
 				"alignedActivities": [
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 50.2,
 							"absoluteShare": {
@@ -6709,7 +6709,7 @@
 					},
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 75.74,
 							"absoluteShare": {
@@ -6858,7 +6858,7 @@
 				"alignedActivities": [
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 72.45,
 							"absoluteShare": null
@@ -7621,7 +7621,7 @@
 				"nonAlignedActivities": [
 					{
 						"activityName": "StorageOfElectricity",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": null,
 							"absoluteShare": {
@@ -7857,7 +7857,7 @@
 				"nonAlignedActivities": [
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 52.6,
 							"absoluteShare": {
@@ -9196,7 +9196,7 @@
 					},
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": null,
 							"absoluteShare": null
@@ -9763,7 +9763,7 @@
 					},
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 2.89,
 							"absoluteShare": {
@@ -12867,7 +12867,7 @@
 					},
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": null,
 							"absoluteShare": null
@@ -17116,7 +17116,7 @@
 				"nonAlignedActivities": [
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 38.5,
 							"absoluteShare": {
@@ -17673,7 +17673,7 @@
 					},
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": null,
 							"absoluteShare": {
@@ -19334,7 +19334,7 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 51.89,
 							"absoluteShare": {
@@ -19859,7 +19859,7 @@
 					},
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 47.34,
 							"absoluteShare": {
@@ -20571,7 +20571,7 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 13.32,
 							"absoluteShare": {
@@ -21001,7 +21001,7 @@
 					},
 					{
 						"activityName": "StorageOfElectricity",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 8.77,
 							"absoluteShare": null
@@ -21370,7 +21370,7 @@
 					},
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 75,
 							"absoluteShare": {
@@ -22932,7 +22932,7 @@
 					},
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 58.93,
 							"absoluteShare": {
@@ -25942,7 +25942,7 @@
 				"nonAlignedActivities": [
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 72.2,
 							"absoluteShare": {
@@ -26968,7 +26968,7 @@
 				"nonAlignedActivities": [
 					{
 						"activityName": "StorageOfHydrogen",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": 95.63,
 							"absoluteShare": {
@@ -27265,7 +27265,7 @@
 					},
 					{
 						"activityName": "RestorationOfWetlands",
-						"naceCodes": null,
+						"naceCodes": [],
 						"share": {
 							"relativeShareInPercent": null,
 							"absoluteShare": null
