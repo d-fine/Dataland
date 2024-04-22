@@ -5,11 +5,11 @@
 */
 package org.dataland.dummyeurodatclient.openApiServer.api
 
-import io.swagger.v3.oas.annotations.*
-import io.swagger.v3.oas.annotations.enums.*
-import io.swagger.v3.oas.annotations.media.*
-import io.swagger.v3.oas.annotations.responses.*
-import io.swagger.v3.oas.annotations.security.*
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.validation.Valid
 import org.dataland.dummyeurodatclient.openApiServer.model.SafeDepositDatabaseRequestt
 import org.dataland.dummyeurodatclient.openApiServer.model.SafeDepositDatabaseResponse
