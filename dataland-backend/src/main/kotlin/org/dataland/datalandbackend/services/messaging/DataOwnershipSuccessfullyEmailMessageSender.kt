@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.services.KeycloakUserControllerApiService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -20,33 +20,31 @@ import org.springframework.stereotype.Component
 class DataOwnershipSuccessfullyEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
 ) {
     /**
      * Function that generates the message object for data ownership request acceptance mails
-     * @param userAuthentication the DatalandAuthentication of the user who becomes a data owner
+     * @param newDataOwnerId the id of the user promoted to data owner
      * @param datalandCompanyId identifier of the company in dataland
-     * @param comment the personal message from the user process
+     * @param companyName the name of the company
      * @param correlationId the correlation ID of the current user process
      */
     fun sendDataOwnershipAcceptanceInternalEmailMessage(
-        userAuthentication: DatalandJwtAuthentication,
+        newDataOwnerId: String,
         datalandCompanyId: String,
         companyName: String,
-        comment: String?,
-        numberOfOpenDataRequestsForCompany: Int,
+//        numberOfOpenDataRequestsForCompany: Int,
         correlationId: String,
     ) {
+        val newDataOwnerEmail = keycloakUserControllerApiService.getEmailAddress(newDataOwnerId)
         val properties = mapOf(
-            // "User" to userAuthentication.userDescription,
             "companyId" to datalandCompanyId,
             "companyName" to companyName,
-            // "Comment" to comment,
             // "Number of data requests open" to numberOfOpenDataRequestsForCompany.toString(),
-            "requesterEmail" to "requesterEmail",
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.ClaimedOwershipSucessfully,
-            "brunoneumanns@gmail.com",
+            newDataOwnerEmail,
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

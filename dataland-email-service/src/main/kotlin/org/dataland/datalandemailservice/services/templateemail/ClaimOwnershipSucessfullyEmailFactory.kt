@@ -20,14 +20,12 @@ class ClaimOwnershipSucessfullyEmailFactory(
     private val keys = object {
         val companyId = "companyId"
         val companyName = "companyName"
-        val requesterEmail = "requesterEmail"
     }
 
     override val builderForType = TemplateEmailMessage.Type.ClaimedOwershipSucessfully
 
     override val requiredProperties = setOf(
         keys.companyId, keys.companyName,
-        keys.requesterEmail,
     )
 
     override val optionalProperties = setOf<String>()

@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiExcepti
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -45,9 +44,7 @@ class DataOwnersManager(
     fun addDataOwnerToCompany(
         companyId: String,
         userId: String,
-        userAuthentication: DatalandAuthentication,
         companyName: String,
-        comment: String?,
         correlationId: String,
     ): CompanyDataOwnersEntity {
         checkIfCompanyIsValid(companyId)
@@ -55,6 +52,7 @@ class DataOwnersManager(
         val numberOfOpenDataRequestsForCompany = requestControllerApi.getAggregatedDataRequests(
             identifierValue = companyId, status = RequestStatus.Open,
         ).filter { it.count > 0 }.size
+        println(numberOfOpenDataRequestsForCompany)
 
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
@@ -65,11 +63,10 @@ class DataOwnersManager(
                 dataOwnersForCompany
             } else {
                 dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
-                    userAuthentication = userAuthentication as DatalandJwtAuthentication,
+                    newDataOwnerId = userId,
                     datalandCompanyId = companyId,
                     companyName = companyName,
-                    comment = comment,
-                    numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
+//                    numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
                     correlationId = correlationId,
                 )
 
@@ -79,11 +76,10 @@ class DataOwnersManager(
             }
         } else {
             dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
-                userAuthentication = userAuthentication as DatalandJwtAuthentication,
+                newDataOwnerId = userId,
                 datalandCompanyId = companyId,
                 companyName = companyName,
-                comment = comment,
-                numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
+//                numberOfOpenDataRequestsForCompany = numberOfOpenDataRequestsForCompany,
                 correlationId = correlationId,
             )
 

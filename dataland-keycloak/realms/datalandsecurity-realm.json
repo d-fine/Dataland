@@ -703,6 +703,9 @@
       "ROLE_USER",
       "default-roles-datalandsecurity"
     ],
+    "clientRoles": {
+      "realm-management": ["view-users"]
+    },
     "notBefore": 0,
     "groups": []
   }
