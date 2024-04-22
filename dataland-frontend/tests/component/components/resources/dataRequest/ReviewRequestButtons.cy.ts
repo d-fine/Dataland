@@ -17,7 +17,7 @@ describe("Component tests for the data request review buttons", function (): voi
   ];
   let mockedRequests: StoredDataRequest[];
   before(() => {
-    cy.fixture("DataRequestsMock").then((jsonContent) => {
+    cy.fixture("StoredDataRequestsMock").then((jsonContent) => {
       mockedRequests = jsonContent as Array<StoredDataRequest>;
     });
   });

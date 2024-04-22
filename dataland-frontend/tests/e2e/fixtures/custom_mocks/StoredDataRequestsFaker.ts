@@ -1,10 +1,10 @@
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import {RequestStatus, SingleDataRequest, type StoredDataRequest} from "@clients/communitymanager";
 import { DataTypeEnum } from "@clients/backend";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateStoredDataRequestMessage } from "@e2e/fixtures/custom_mocks/StoredDataRequestMessageFaker";
 import { faker } from "@faker-js/faker";
-import { generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import {generateArray, pickOneElement, pickSubsetOfElements} from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Creates a list of stored data requests
@@ -51,6 +51,27 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
   );
   return storedDataRequests;
 }
+
+export function generateSingleDataRequests(): SingleDataRequest[] {
+  const singleDataRequests = [];
+  singleDataRequests.push(
+      generateSingleDataRequest()
+  );
+  return singleDataRequests
+}
+
+
+function generateSingleDataRequest(): SingleDataRequest {
+  return {
+    companyIdentifier: faker.string.uuid(),
+    dataType: pickOneElement(Object.values(DataTypeEnum)),
+    reportingPeriods: new Set(generateArray(() => generateReportingPeriod(), 1, 4)),
+    contacts: new Set(generateArray(() => faker.internet.email({ provider: "example.com"}), 1)),
+    message: faker.git.commitMessage(),
+  }
+}
+
+
 
 /**
  * Creates a default stored data request

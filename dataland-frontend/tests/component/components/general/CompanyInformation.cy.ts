@@ -12,7 +12,7 @@ describe("Component tests for the company info sheet", function (): void {
       const smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
       companyInformationForTest = smeFixtures[0].companyInformation;
     });
-    cy.fixture("DataRequestsMock").then(function (jsonContent) {
+    cy.fixture("StoredDataRequestsMock").then(function (jsonContent) {
       mockedStoredDataRequests = jsonContent as Array<StoredDataRequest>;
     });
   });

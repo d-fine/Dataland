@@ -10,6 +10,9 @@ import { getAllFrameworkIdentifiers, getBaseFrameworkDefinition } from "@/framew
 import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
+import {SingleDataRequest, StoredDataRequest} from "@clients/communitymanager";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
 
 const chunkSize = 15;
 
@@ -54,6 +57,7 @@ describe(
               fixtureData = jsonContent as typeof fixtureData;
             });
           });
+
 
           it(`Upload data for framework ${frameworkIdentifier}`, () => {
             cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
@@ -119,5 +123,23 @@ describe(
         `CompanyInformationWith${dataTypeInPascalCase}Data`.replace("-", ""),
       );
     }
+
+
+    const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+        .requestController;
+    //Prepopulation for data requests
+    describeIf("Prepopulation of data requests",
+        { executionEnvironments: ["developmentLocal", "ci", "developmentCd"] }, () => {
+          let fixtureData: Array<SingleDataRequest>
+        before(function () {
+          cy.fixture("DataRequestsMock").then(function (jsonContent) {
+            fixtureData = jsonContent as typeof fixtureData;
+          });
+        })
+          it("Upload data requests", async () => {
+            const storedRequest = await requestDataControllerApi.postSingleDataRequest(fixtureData[0])
+          })
+        }
+    )
   },
 );
