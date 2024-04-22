@@ -18,20 +18,22 @@ object DatabaseConnection {
      * @param dataId the dataId of the data to be inserted
      * @param data the data to be inserted
      */
-    fun insertDataIntoSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String, data: String) {
-        var preparedStatement: PreparedStatement?
+    fun insertDataIntoSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String, data: String): Boolean {
+        val preparedStatement: PreparedStatement?
+        var rowsInserted = 0
         if (conn != null) {
             preparedStatement = conn.prepareStatement(sqlStatement)
             preparedStatement.setObject(1, UUID.fromString(dataId))
             preparedStatement.setString(2, data)
 
-            val rowsInserted = preparedStatement.executeUpdate()
+            rowsInserted = preparedStatement.executeUpdate()
             if (rowsInserted > 0) {
                 logger.info("Data for $dataId was inserted successfully.")
             }
             preparedStatement?.close()
             conn?.close()
         }
+        return rowsInserted > 0
     }
 
     /**
@@ -47,20 +49,22 @@ object DatabaseConnection {
         sqlStatement: String,
         documentId: String,
         document: ByteArray,
-    ) {
-        var preparedStatement: PreparedStatement?
+    ): Boolean {
+        val preparedStatement: PreparedStatement?
+        var rowsInserted = 0
         if (conn != null) {
             preparedStatement = conn.prepareStatement(sqlStatement)
             preparedStatement.setObject(1, UUID.fromString(documentId))
             preparedStatement.setBytes(2, document)
 
-            val rowsInserted = preparedStatement.executeUpdate()
+            rowsInserted = preparedStatement.executeUpdate()
             if (rowsInserted > 0) {
                 logger.info("A Document with the $documentId was inserted successfully.")
             }
             preparedStatement?.close()
             conn?.close()
         }
+        return rowsInserted > 0
     }
 
     /**

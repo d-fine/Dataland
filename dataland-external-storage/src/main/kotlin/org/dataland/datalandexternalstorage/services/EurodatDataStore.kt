@@ -69,24 +69,41 @@ class EurodatDataStore(
      */
     @PostConstruct
     fun createSafeDepositBox() {
-        var retryCount = 0
+        logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
+        retryLogic() {
+            isSafeDepositBoxAvailable()
+        }
+        logger.info("Safe deposit box is ready.")
+    }
 
+    /**
+     * This method will rerun a given method if an exeption is thrown while running it
+     */
+    fun <T> retryLogic(block: () -> T): T {
+        var retryCount = 0
         while (retryCount <= maxRetriesConnectingToEurodat) {
             try {
-                logger.info("Trying to create safe-deposit-box in EuroDaT with appId $eurodatAppName")
-                if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
-                    logger.info("Safe-deposit-box in EuroDaT for appId $eurodatAppName already exists")
-                    break
-                }
+                logger.info("Trying to run the method. Try number ${retryCount + 1}.")
+                return block()
             } catch (e: Exception) {
-                logger.error("An error occurred while creating safe-deposit-box: ${e.message}")
+                logger.error("An error occurred while executing the method: ${e.message}. Trying again")
                 if (retryCount == maxRetriesConnectingToEurodat) {
-                    logger.error("Failed to create safe-deposit-box, even after $maxRetriesConnectingToEurodat retries")
+                    logger.error("An error occurred while executing the method: ${e.message}. Process terminated")
                     throw e
                 }
             }
             retryCount++
             Thread.sleep(secondsBetweenRetriesConnectingToEurodat.toLong() * conversionFactor)
+        }
+        return block()
+    }
+
+    // TODO check the if condition for the first time a deposit box was created
+    private fun isSafeDepositBoxAvailable() {
+        if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
+            logger.info("Safe deposit box exists.")
+        } else {
+            throw Exception("Service not there.")
         }
     }
 
@@ -155,18 +172,27 @@ class EurodatDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = databaseCredentialResourceClient
-            .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        val eurodatCredentials = retryLogic() {
+            databaseCredentialResourceClient
+                .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        }
         logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
-        storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
-
+        logger.info("Data from temporary storage retrieved.")
+        retryLogic() {
+            storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
+        }
+        logger.info("Data stored in eurodat storage.")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
             val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
-            storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
+            retryLogic() {
+                storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
+            }
         }
+        logger.info("Documents stored in eurodat storage.")
     }
+
     // TODO include a light-weight retry-logic to all the store-functions => if no success after retries, do nothing
 
     /**
@@ -179,7 +205,10 @@ class EurodatDataStore(
         logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
         val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        insertDataIntoSqlDatabase(conn, insertStatement, dataItem.id, dataItem.data)
+        val sqlReturn = insertDataIntoSqlDatabase(conn, insertStatement, dataItem.id, dataItem.data)
+        if (!sqlReturn) {
+            throw Exception("An error occured while storing dataId ${dataItem.id} with correlationId $correlationId")
+        }
     }
 
     /**
@@ -203,7 +232,13 @@ class EurodatDataStore(
         val resultByteArray = resource.readBytes()
         val insertStatement = "INSERT INTO safedeposit.pdf (uuid_pdf, blob_pdf) VALUES(?, ?)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        insertByteArrayIntoSqlDatabase(conn, insertStatement, documentId, resultByteArray)
+        val sqlReturn = insertByteArrayIntoSqlDatabase(conn, insertStatement, documentId, resultByteArray)
+        if (!sqlReturn) {
+            throw Exception(
+                "An error occured while storing document hash $hash, documentId $documentId and " +
+                    "correlationId $correlationId",
+            )
+        }
     }
 
     /**
