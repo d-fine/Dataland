@@ -49,36 +49,23 @@ class DataOwnersManager(
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                logger.info(
-                    "User with Id $userId is already data owner of company with Id $companyId.",
-                )
+                logger.info("User with Id $userId is already data owner of company with Id $companyId.")
                 dataOwnersForCompany
             } else {
                 dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
-                    newDataOwnerId = userId,
-                    datalandCompanyId = companyId,
-                    companyName = companyName,
-                    correlationId = correlationId,
+                    userId, companyId, companyName, correlationId,
                 )
-
                 logger.info("New data owner with Id $userId added to company with Id $companyId.")
                 dataOwnersForCompany.dataOwners.add(userId)
                 dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
             dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
-                newDataOwnerId = userId,
-                datalandCompanyId = companyId,
-                companyName = companyName,
-                correlationId = correlationId,
+                userId, companyId, companyName, correlationId,
             )
-
             logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
             dataOwnerRepository.save(
-                CompanyDataOwnersEntity(
-                    companyId = companyId,
-                    dataOwners = mutableListOf(userId),
-                ),
+                CompanyDataOwnersEntity(companyId = companyId, dataOwners = mutableListOf(userId)),
             )
         }
     }
