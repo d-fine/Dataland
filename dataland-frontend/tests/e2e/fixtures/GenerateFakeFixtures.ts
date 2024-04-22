@@ -13,6 +13,8 @@ interface FrameworkFixtureModule {
  * The main entrypoint of the fake fixture generator
  */
 async function main(): Promise<void> {
+  const customMockSeed = setupDeterministicFakerEnvironmentForFramework("custom-mocks");
+  console.log(`Hash seed for custom mocks is '${customMockSeed}'`);
   exportCustomMocks();
 
   const frameworkDirectoryContents = (await readdir(__dirname + "/frameworks", { withFileTypes: true })).filter(
