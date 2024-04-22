@@ -3,9 +3,7 @@ package org.dataland.datalandemailservice.services
 import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.services.templateemail.ClaimOwnershipSucessfullyEmailFactory
-import org.dataland.datalandemailservice.services.templateemail.DataRequestedClaimOwnershipEmailFactory
 import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -38,7 +36,7 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
     }
 
     @Test
-    fun `validate that the output of the claim ownership mail is correctly formatted`() {
+    fun `validate that the output of the succesfully claimed ownership mail is correctly formatted`() {
         val email = buildTestEmail()
 
         assertEmailContactInformationEquals(
@@ -49,15 +47,54 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
         )
         assertTrue(email.content.htmlContent.contains("DATALAND"))
         assertTrue(email.content.htmlContent.contains("Great news!"))
-        assertTrue(email.content.htmlContent.contains("You've successfully claimed data " +
-                "ownership for"))
-        assertTrue(email.content.htmlContent.contains("Now, take the next step to access your " +
-                "company overview, view your data requests, and provide data."))
+        assertTrue(
+            email.content.htmlContent.contains("You've successfully claimed data " +
+                        "ownership for"
+            )
+        )
+        assertTrue(
+            email.content.htmlContent.contains(
+                "Now, take the next step to access your " +
+                        "company overview, view your data requests, and provide data."
+            )
+        )
         assertTrue(email.content.htmlContent.contains("Copyright"))
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(
             email.content.htmlContent.contains(
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId\"",
+            ),
+        )
+    }
+
+
+    @Test
+    fun `validate that default text content of the claim ownership succesfully mail is correctly formatted`() {
+        val email = buildTestEmail()
+
+        assertEmailContactInformationEquals(
+            EmailContact(senderEmail, senderName),
+            setOf(EmailContact(receiverEmail)),
+            emptySet(),
+            email,
+        )
+        assertTrue(email.content.textContent.contains("Great news!"))
+        assertTrue(
+            email.content.textContent.contains(
+                "You've successfully claimed data " +
+                        "ownership for"
+            )
+        )
+        assertTrue(
+            email.content.textContent.contains(
+                "Now, take the next step to access your " +
+                        "company overview, view your data requests, and provide data."
+            )
+        )
+        assertTrue(email.content.textContent.contains(companyName))
+        assertTrue(
+            email.content.textContent.contains(
+                "$proxyPrimaryUrl/companies/$companyId",
             ),
         )
     }
