@@ -61,3 +61,10 @@ val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = if (valueFromEnv.isNull
 } else {
     valueFromEnv.toInt()
 }
+
+private val quotaValueFromEnv = System.getenv("NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER")
+val NUMBER_OF_SINGLE_DATA_REQUESTS_PER_DAY_AS_NON_PREMIUM_USER = if (quotaValueFromEnv.isNullOrEmpty()) {
+    10
+} else {
+    quotaValueFromEnv.toInt()
+}

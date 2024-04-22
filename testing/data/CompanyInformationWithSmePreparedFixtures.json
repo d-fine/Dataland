@@ -2,123 +2,124 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Wolfberg",
-			"headquartersPostalCode": "83260",
-			"sector": "action-items",
+			"headquarters": "West Korey",
+			"headquartersPostalCode": "91575",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"CZgxycKSMys5zmyoQG34"
+				],
 				"Isin": [
-					"SHzGgjHeELK0",
-					"gBmBYz5NFfU7"
+					"DNgRQ1c4ekMr"
 				],
-				"PermId": [
-					"0E5iVr8YE7"
-				],
+				"PermId": [],
 				"Ticker": [
-					"6ylUr2l"
+					"TdeV72P"
 				],
 				"Duns": [
-					"kiCHDrBrI"
+					"vbSk8rrkF"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"Yb0ReqfoHW5nQYr"
+					"y4yWlyQMldFQllT"
 				]
 			},
-			"countryCode": "TG",
+			"countryCode": "PH",
 			"companyAlternativeNames": [
-				"Feeney - Turner",
-				"Hilll, Kutch and Keeling",
-				"VonRueden - Marquardt"
+				"Berge Group",
+				"Feeney Inc",
+				"Prohaska Group",
+				"Sporer - Reichel"
 			],
-			"companyLegalForm": null,
-			"website": "https://shy-peninsula.biz/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://fumbling-secretion.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-24",
+					"reportingDate": "2024-10-29",
 					"sectors": [
-						"17.29",
-						"20.17",
-						"46.90",
-						"56",
-						"97.0"
+						"49.39",
+						"85.10",
+						"86"
 					],
-					"numberOfEmployees": 5186,
-					"fiscalYearStart": "2024-04-08",
+					"numberOfEmployees": 1754,
+					"fiscalYearStart": "2024-10-15",
 					"referencedReports": {
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-01",
-							"currency": "ANG"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-03-24",
-							"currency": "SLE"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-12-29",
-							"currency": "PYG"
-						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-05-04",
+							"reportDate": "2023-01-29",
+							"currency": "PEN"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-02-19",
 							"currency": "SBD"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-09-20",
+							"currency": "AOA"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-05-06",
+							"currency": "HUF"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 61544.91,
-					"operatingCostInEur": 79208.35,
-					"capitalAssetsInEur": 74183.07
+					"revenueInEur": 68985.05,
+					"operatingCostInEur": 13441.8,
+					"capitalAssetsInEur": 80362.61
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 77217.03,
+						"value": 78809.71,
 						"dataSource": {
-							"page": 874,
+							"page": 45,
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "ROI"
 						},
-						"comment": "program cross-platform port",
-						"quality": "Incomplete"
+						"comment": "parse online port",
+						"quality": "Estimated"
 					},
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 36401.5,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 46955.83,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
 					"naturalHazardsCovered": [
+						"Avalanche",
+						"EarthQuake",
 						"Flooding",
 						"Hail",
+						"Snow",
 						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]

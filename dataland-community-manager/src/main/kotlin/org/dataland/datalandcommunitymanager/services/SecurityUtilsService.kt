@@ -27,20 +27,48 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns true if the request status is requested to be changed from answered to either closed or open
+     * Returns true if the request status is subject to change and conditions are met.
+     * This is the case when the request is to be changed from answered to either closed or open
+     * or if the status is changed to withdrawn.
      */
     @Transactional
     fun isRequestStatusChangeableByUser(
         requestId: UUID,
-        requestStatusToPatch: RequestStatus,
+        requestStatusToPatch: RequestStatus?,
     ): Boolean {
+        if (requestStatusToPatch == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
+        val statusChangeFromAnsweredToClosed =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Closed
+        val statusChangeFromAnsweredToOpen =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open
+        val statusChangeFromAnsweredToWithdrawn =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Withdrawn
+        val statusChangeFromOpenToWithdrawn =
+            currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
         return (
-            (currentRequestStatus == RequestStatus.Answered) &&
-                (
-                    requestStatusToPatch == RequestStatus.Closed ||
-                        requestStatusToPatch == RequestStatus.Open
-                    )
+            statusChangeFromAnsweredToClosed || statusChangeFromAnsweredToOpen ||
+                statusChangeFromAnsweredToWithdrawn || statusChangeFromOpenToWithdrawn
+            )
+    }
+
+    /**
+     * Returns true if the request message history is subject to change and conditions are met.
+     * This is the case when no contacts are provided or
+     * the request status is open or answered and patched to open as well
+     */
+    @Transactional
+    fun isRequestMessageHistoryChangeableByUser(
+        requestId: UUID,
+        requestStatusToPatch: RequestStatus?,
+        contacts: Set<String>?,
+        message: String?,
+    ): Boolean {
+        if (contacts == null) return true
+        val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
+        return message != null && (
+            currentRequestStatus == RequestStatus.Open ||
+                (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
             )
     }
 }

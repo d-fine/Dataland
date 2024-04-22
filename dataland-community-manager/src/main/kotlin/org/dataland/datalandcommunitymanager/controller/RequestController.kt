@@ -61,7 +61,9 @@ class RequestController(
     override fun postSingleDataRequest(
         singleDataRequest: SingleDataRequest,
     ): ResponseEntity<SingleDataRequestResponse> {
-        return ResponseEntity.ok(singleDataRequestManager.processSingleDataRequest(singleDataRequest))
+        return ResponseEntity.ok(
+            singleDataRequestManager.processSingleDataRequest(singleDataRequest),
+        )
     }
 
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
@@ -86,12 +88,19 @@ class RequestController(
         )
     }
 
-    override fun patchDataRequestStatus(
+    override fun patchDataRequest(
         dataRequestId: UUID,
-        requestStatus: RequestStatus,
+        requestStatus: RequestStatus?,
+        contacts: Set<String>?,
+        message: String?,
     ): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(
-            dataRequestAlterationManager.patchDataRequestStatus(dataRequestId.toString(), requestStatus),
+            dataRequestAlterationManager.patchDataRequest(
+                dataRequestId.toString(),
+                requestStatus,
+                contacts,
+                message,
+            ),
         )
     }
 }

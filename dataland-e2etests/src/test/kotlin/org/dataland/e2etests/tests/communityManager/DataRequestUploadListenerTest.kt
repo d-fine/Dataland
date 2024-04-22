@@ -35,6 +35,8 @@ class DataRequestUploadListenerTest {
 
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
+    private val message = "test message"
+    private val contacts = setOf("test@example.com", "test2@example.com")
 
     @Test
     fun `post single data request and provide data and check that status has changed to answered`() {
@@ -100,23 +102,25 @@ class DataRequestUploadListenerTest {
         return dataRequestId
     }
 
-    private fun authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
+    private fun authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
         technicalUser: TechnicalUser,
         dataRequestId: UUID,
-        requestStatus: RequestStatus,
+        requestStatus: RequestStatus?,
+        contacts: Set<String>? = null,
+        message: String? = null,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(dataRequestId, requestStatus)
+            requestControllerApi.patchDataRequest(dataRequestId, requestStatus, contacts, message)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
 
     @Test
-    fun `patch your own data request as a premium user to closed and check that this is allowed if answered before`() {
+    fun `as a premium user assert that patching the status of a non answered request to closed is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
-        authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
+        authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
             TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Closed,
         )
 
@@ -124,7 +128,7 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val closedDataRequest = requestControllerApi.patchDataRequestStatus(dataRequestId, RequestStatus.Closed)
+        val closedDataRequest = requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Closed)
         assertEquals(
             RequestStatus.Closed,
             closedDataRequest.requestStatus,
@@ -136,7 +140,7 @@ class DataRequestUploadListenerTest {
     fun `patch a data request as a reader and check that it is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         RequestStatus.entries.forEach {
-            authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
+            authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 TechnicalUser.Reader, dataRequestId, it,
             )
         }
@@ -149,17 +153,19 @@ class DataRequestUploadListenerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
-        authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
+        authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
             TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Closed,
         )
     }
 
     @Test
-    fun `patch your own open or closed data request as a premium user and check that both is forbidden`() {
+    fun `assert that patching an open or withdrawn request status is forbidden`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
 
         RequestStatus.entries.forEach {
-            authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
+            authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 TechnicalUser.PremiumUser, dataRequestId, it,
             )
         }
@@ -168,7 +174,7 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
 
         RequestStatus.entries.forEach {
-            authenticateAsTechnicalUserAndAssertThatPatchingStatusOfDataRequestIsForbidden(
+            authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 TechnicalUser.PremiumUser, dataRequestId, it,
             )
         }
@@ -180,7 +186,7 @@ class DataRequestUploadListenerTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequestStatus(nonExistingDataRequestId, RequestStatus.Answered)
+            requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.Answered)
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
@@ -188,5 +194,80 @@ class DataRequestUploadListenerTest {
         Assertions.assertTrue(
             responseBody.contains("Dataland does not know the Data request ID $nonExistingDataRequestId"),
         )
+    }
+
+    @Test
+    fun `patch an open or answered data request to withdrawn and assert success`() {
+        val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        val openToWithdrawnDataRequest = requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Withdrawn)
+        assertEquals(
+            RequestStatus.Withdrawn,
+            openToWithdrawnDataRequest.requestStatus,
+            "The status of the previously open data request is not 'withdrawn' after patching.",
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        val answeredToWithdrawnDataRequest =
+            requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Withdrawn)
+        assertEquals(
+            RequestStatus.Withdrawn,
+            answeredToWithdrawnDataRequest.requestStatus,
+            "The status of the previously answered data request is not 'withdrawn' after patching.",
+        )
+    }
+
+    @Test
+    fun `add a message to an open request do not change the status and assert success`() {
+        val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, null, contacts, message)
+
+        assertEquals(
+            message, newMessageDataRequest.messageHistory.last().message,
+            "The message was not patched correctly.",
+        )
+        assertEquals(
+            contacts, newMessageDataRequest.messageHistory.last().contacts,
+            "The contacts were not patched correctly.",
+        )
+    }
+
+    @Test
+    fun `add a message to an answered request and change the status to open and assert success`() {
+        val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        val newMessageAndOpenDataRequest =
+            requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, contacts, message)
+        assertEquals(
+            message, newMessageAndOpenDataRequest.messageHistory.last().message,
+            "The message was not patched correctly.",
+        )
+        assertEquals(
+            contacts, newMessageAndOpenDataRequest.messageHistory.last().contacts,
+            "The contacts were not patched correctly.",
+        )
+        assertEquals(RequestStatus.Open, newMessageAndOpenDataRequest.requestStatus)
+    }
+
+    @Test
+    fun `patch the message history of an not open request and assert that it is forbidden`() {
+        val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
+
+        RequestStatus.entries.filter { it != RequestStatus.Open }.forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, it)
+
+            authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
+                TechnicalUser.PremiumUser, dataRequestId, null, contacts, message,
+            )
+        }
     }
 }

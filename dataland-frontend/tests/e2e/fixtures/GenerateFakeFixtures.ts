@@ -1,31 +1,20 @@
 import { exportCustomMocks } from "@e2e/fixtures/custom_mocks";
 import { exit } from "process";
 import { readdir } from "fs/promises";
-import { faker } from "@faker-js/faker";
+import { setupDeterministicFakerEnvironmentForFramework } from "@e2e/fixtures/ReproducibilityConfiguration";
 
 export const FAKE_FIXTURES_PER_FRAMEWORK = 50;
-export const FAKER_BASE_SEED = 0;
 
 interface FrameworkFixtureModule {
   default: () => void;
 }
 
 /**
- * Deterministically converts a string to a number using a standard hashing function (same as java string hash)
- * @param str the string to hash
- * @returns the java hashCode of the string
- */
-function stringHashCode(str: string): number {
-  return str.split("").reduce((acc, toIntegrate) => ((acc << 5) - acc + toIntegrate.charCodeAt(0)) | 0, 0);
-}
-
-/**
  * The main entrypoint of the fake fixture generator
  */
 async function main(): Promise<void> {
-  faker.seed(FAKER_BASE_SEED);
-  faker.setDefaultRefDate(new Date("2024-01-24")); // Dataland launch date ;)
-
+  const customMockSeed = setupDeterministicFakerEnvironmentForFramework("custom-mocks");
+  console.log(`Hash seed for custom mocks is '${customMockSeed}'`);
   exportCustomMocks();
 
   const frameworkDirectoryContents = (await readdir(__dirname + "/frameworks", { withFileTypes: true })).filter(
@@ -39,9 +28,10 @@ async function main(): Promise<void> {
   const frameworkFixtureModules = await Promise.all(frameworkFakeFixturePromises);
 
   for (let i = 0; i < frameworkFixtureModules.length; i++) {
-    const hashDelta = stringHashCode(frameworkDirectoryContents[i].name);
     const module = frameworkFixtureModules[i];
-    faker.seed(FAKER_BASE_SEED + hashDelta);
+    const frameworkName = frameworkDirectoryContents[i].name;
+    const seed = setupDeterministicFakerEnvironmentForFramework(frameworkName);
+    console.log(`Hash seed for framework '${frameworkName}' is '${seed}'`);
     module.default();
   }
 }
