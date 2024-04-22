@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessage
 import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -41,6 +42,7 @@ class DataOwnersManagerTest {
             mockCompanyRepository,
             mock(DataOwnershipEmailMessageSender::class.java),
             mock(DataOwnershipSuccessfullyEmailMessageSender::class.java),
+            mock(RequestControllerApi::class.java),
         )
     }
 

@@ -9,7 +9,8 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -30,7 +31,7 @@ class DataOwnersManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
     @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
-    @Autowired private val dataRequestRepository: DataRequestRepository,
+    @Autowired private val requestControllerApi: RequestControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -51,6 +52,10 @@ class DataOwnersManager(
     ): CompanyDataOwnersEntity {
         checkIfCompanyIsValid(companyId)
 
+        val numberOfOpenDataRequestsForCompany = requestControllerApi.getAggregatedDataRequests(
+            identifierValue = companyId, status = RequestStatus.Open,
+        ).filter { it.count > 0 }.size
+
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
@@ -59,8 +64,6 @@ class DataOwnersManager(
                 )
                 dataOwnersForCompany
             } else {
-                val numberOfOpenDataRequestsForCompany =
-                    dataRequestRepository.getNumberOfOpenDataRequestsForCompany(companyId)
                 dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
                     userAuthentication = userAuthentication as DatalandJwtAuthentication,
                     datalandCompanyId = companyId,
@@ -75,8 +78,6 @@ class DataOwnersManager(
                 dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
-            val numberOfOpenDataRequestsForCompany =
-                dataRequestRepository.getNumberOfOpenDataRequestsForCompany(companyId)
             dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
                 userAuthentication = userAuthentication as DatalandJwtAuthentication,
                 datalandCompanyId = companyId,
