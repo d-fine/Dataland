@@ -4,10 +4,14 @@
     v-model="selectedOption"
     :placeholder="placeholder"
     :name="name"
-    class="w-full md:w-14rem short"
-    showClear
-    option-label="label"
-    option-value="value"
+    :showClear="!isRequired"
+    :option-label="optionLabel"
+    :option-value="optionValue"
+    :class="{
+      'bottom-line': true,
+      'input-class': true, // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      'no-selection': !selectedOption,
+    }"
   />
   <FormKit type="hidden" :name="name" v-model="selectedOption" />
 </template>
@@ -22,11 +26,47 @@ export default defineComponent({
   components: { Dropdown },
   props: {
     ...DropdownOptionFormFieldProps,
+    isRequired: { type: Boolean },
   },
   data() {
     return {
       selectedOption: null,
+      optionLabel: "",
+      optionValue: "",
     };
+  },
+  created() {
+    this.setOptionLabelValue();
+  },
+  emits: ["valueSelected"],
+  watch: {
+    selectedOption(newValue) {
+      this.$emit("valueSelected", newValue);
+    },
+  },
+  methods: {
+    /**
+     * Sets the values of optionLabel and optionValue depending on whether the options are [{label: ... , value: ...}]
+     * or a simple array
+     */
+    setOptionLabelValue(): void {
+      if (Array.isArray(this.options) && (this.options as undefined[]).every((element) => typeof element == "object")) {
+        this.optionLabel = "label";
+        this.optionValue = "value";
+      }
+    },
   },
 });
 </script>
+
+<style>
+.bottom-line {
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: #958d7c;
+}
+
+.no-selection {
+  color: #767676;
+}
+</style>
