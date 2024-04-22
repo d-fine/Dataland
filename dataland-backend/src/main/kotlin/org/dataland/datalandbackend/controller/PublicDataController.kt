@@ -117,7 +117,10 @@ abstract class PublicDataController<T>(
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId)
             logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
-            val dataAsString = publicDataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+            val dataAsString = publicDataManager.getDataSet(
+                it.dataId, DataType.valueOf(it.dataType),
+                correlationId,
+            ).data
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),

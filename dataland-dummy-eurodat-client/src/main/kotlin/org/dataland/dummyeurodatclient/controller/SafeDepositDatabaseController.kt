@@ -17,7 +17,8 @@ class SafeDepositDatabaseController : SafeDepositDatabaseResourceApi {
         return ResponseEntity.ok(response)
     }
 
-    override fun apiV1ClientControllerDatabaseServiceAppIdDelete(appId: String): ResponseEntity<SafeDepositDatabaseResponse> {
+    override fun apiV1ClientControllerDatabaseServiceAppIdDelete(appId: String):
+            ResponseEntity<SafeDepositDatabaseResponse> {
         return ResponseEntity.ok(SafeDepositDatabaseResponse("dummy"))
     }
 }

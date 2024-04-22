@@ -72,7 +72,7 @@ object DatabaseConnection {
     fun getConnection(username: String, password: String, databaseUrl: String): Connection? {
         val connectionProps = Properties()
         connectionProps["user"] = username
-        connectionProps["password"] = "password"
+        connectionProps["password"] = password
         return DriverManager.getConnection(
             databaseUrl,
             connectionProps,

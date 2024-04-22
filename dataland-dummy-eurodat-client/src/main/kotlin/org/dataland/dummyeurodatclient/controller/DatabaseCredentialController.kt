@@ -16,11 +16,13 @@ class DatabaseCredentialController : DatabaseCredentialResourceApi {
         "eurodat_db_password" //TODO get from app props
     )
 
-    override fun apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(appId: String): ResponseEntity<Credentials> {
+    override fun apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(appId: String):
+            ResponseEntity<Credentials> {
         return ResponseEntity.ok(credentials)
     }
 
-    override fun apiV1ClientControllerCredentialServiceDatabaseExternalTransactionIdGet(transactionId: String): ResponseEntity<Credentials> {
+    override fun apiV1ClientControllerCredentialServiceDatabaseExternalTransactionIdGet(transactionId: String):
+            ResponseEntity<Credentials> {
         return ResponseEntity.ok(credentials)
     }
 }
