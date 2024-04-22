@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class SafeDepositDatabaseController : SafeDepositDatabaseResourceApii {
-    override fun apiV1ClientControllerDatabaseServicePost(safeDepositDatabaseRequest: SafeDepositDatabaseRequestt?): ResponseEntity<SafeDepositDatabaseResponse> {
+    override fun apiV1ClientControllerDatabaseServicePost(safeDepositDatabaseRequest: SafeDepositDatabaseRequestt?):
+            ResponseEntity<SafeDepositDatabaseResponse> {
         val response = SafeDepositDatabaseResponse("Database already exists")
         return ResponseEntity.ok(response)
     }
 
-    override fun apiV1ClientControllerDatabaseServiceAppIdDelete(appId: String): ResponseEntity<SafeDepositDatabaseResponse> {
+    override fun apiV1ClientControllerDatabaseServiceAppIdDelete(appId: String):
+            ResponseEntity<SafeDepositDatabaseResponse> {
         return ResponseEntity.ok(SafeDepositDatabaseResponse("dummy"))
     }
 }

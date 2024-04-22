@@ -28,7 +28,8 @@ interface SafeDepositDatabaseResourceApii {
         operationId = "apiV1ClientControllerDatabaseServiceAppIdDelete",
         description = """""",
         responses = [
-            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = SafeDepositDatabaseResponse::class))]),
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(
+                implementation = SafeDepositDatabaseResponse::class))]),
         ],
     )
     @RequestMapping(
@@ -50,7 +51,8 @@ interface SafeDepositDatabaseResourceApii {
         operationId = "apiV1ClientControllerDatabaseServicePost",
         description = """""",
         responses = [
-            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = SafeDepositDatabaseResponse::class))]),
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(
+                implementation = SafeDepositDatabaseResponse::class))]),
         ],
     )
     @RequestMapping(

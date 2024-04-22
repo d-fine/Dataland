@@ -239,7 +239,12 @@ class PublicDataManagerTest(
             objectMapper, companyQueryManager, mockDataMetaInformationManager,
             mockStorageClient, mockCloudEventMessageHandler, messageUtils,
         )
-        assertThrows<ResourceNotFoundApiException> { publicDataManager.getDataSet(mockMetaInfo.dataId, DataType("lksg"), "") }
+        assertThrows<ResourceNotFoundApiException> {
+            publicDataManager.getDataSet(
+                mockMetaInfo.dataId,
+                DataType("lksg"), "",
+            )
+        }
         assertThrows<ResourceNotFoundApiException> {
             publicDataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
