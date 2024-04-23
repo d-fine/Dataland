@@ -335,51 +335,42 @@ describe("As a user, I expect the search functionality on the /companies page to
         });
       }
 
-      it(
-        "Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
-          "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
-        () => {
-          const companyNameFinancialPrefix = "CompanyWithFinancial";
-          const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
+        it("Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
+            "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
+            () => {
+                const companyNameFinancialPrefix = "CompanyWithFinancial";
+                const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
 
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
-            getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
-              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
-                (storedCompany) => {
-                  return uploadFrameworkData(
-                    DataTypeEnum.EutaxonomyFinancials,
-                    token,
-                    storedCompany.companyId,
-                    fixtureData.reportingPeriod,
-                    fixtureData.t,
-                  );
-                },
-              );
+                const companyNameSfdrPrefix = "CompanyWithSfdr";
+                const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
+
+                getKeycloakToken(admin_name, admin_pw).then((token) => {
+                        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then((storedCompany) => {
+                        const fixtureData = companiesWithEuTaxonomyDataForFinancials[0];
+                        return uploadFrameworkData(
+                            DataTypeEnum.EutaxonomyFinancials,
+                            token,
+                            storedCompany.companyId,
+                            fixtureData.reportingPeriod,
+                            fixtureData.t,
+                        );
+                    }).then(() => {
+                        checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
+                        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameSfdr));
+                    }).then((storedCompany) => {
+                        const sfdrFixture = companiesWithSfdrData[0];
+                        return uploadFrameworkData(
+                            DataTypeEnum.Sfdr,
+                            token,
+                            storedCompany.companyId,
+                            sfdrFixture.reportingPeriod,
+                            sfdrFixture.t,
+                        );
+                    }).then(() => {
+                        checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sfdr);
+                    })
+                });
             });
-          });
-          checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
-
-          const companyNameSfdrPrefix = "CompanyWithSfdr";
-          const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
-
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameSfdr)).then(
-              (storedCompany) => {
-                const sfdrFixture = companiesWithSfdrData[0];
-                return uploadFrameworkData(
-                  DataTypeEnum.Sfdr,
-                  token,
-                  storedCompany.companyId,
-                  sfdrFixture.reportingPeriod,
-                  sfdrFixture.t,
-                );
-              },
-            );
-          });
-
-          checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
-        },
-      );
     },
   );
 });
