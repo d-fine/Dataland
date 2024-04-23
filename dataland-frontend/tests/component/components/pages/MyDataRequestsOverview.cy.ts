@@ -20,8 +20,8 @@ before(function () {
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
     dataRequestId: dummyRequestId,
-    companyName: "companyNotAnsweredSME",
-    dataType: DataTypeEnum.Sme,
+    companyName: "companyNotAnsweredSfdr",
+    dataType: DataTypeEnum.Sfdr,
     reportingPeriod: "2022",
     creationTimestamp: 1709204495770,
     lastModifiedDate: 1709204495770,
@@ -128,7 +128,7 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check the content of the data table", function (): void {
     const expectedCompanys = [
       "companyAnswered",
-      "companyNotAnsweredSME",
+      "companyNotAnsweredSfdr",
       "companyNotAnsweredEU",
       "z-company-that-will-always-be-sorted-to-bottom",
       "a-company-that-will-always-be-sorted-to-top",
@@ -182,7 +182,7 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check filter functionality and reset button", function (): void {
     const expectedFrameworks = [
       "WWF",
-      "SME",
+      "SFDR",
       "EU Taxonomy",
       "Pathways to Paris",
       "for financial companies",
@@ -209,7 +209,7 @@ describe("Component tests for the data requests search page", function (): void 
       expectedFrameworks.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should("exist");
       });
-      cy.get(`table tbody:contains("SFDR")`).should("not.exist");
+      cy.get(`table tbody:contains("SME")`).should("not.exist");
     });
   });
   it("Check the functionality of rowClick event", function (): void {
