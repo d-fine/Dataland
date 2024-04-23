@@ -49,7 +49,8 @@ class ClaimOwnershipSucessfullyEmailFactory(
                     " and provide data.",
             ).append("$proxyPrimaryUrl/companies/${properties[keys.companyId]}"
             ).append("Please note, that ${properties[keys.companyName]} has " +
-                    "${properties[keys.numberOfOpenDataRequestsForCompany]} un-resolved data requests.")
+                    "${properties[keys.numberOfOpenDataRequestsForCompany]}" +
+                    " un-resolved data requests.")
             .toString()
     }
 }
