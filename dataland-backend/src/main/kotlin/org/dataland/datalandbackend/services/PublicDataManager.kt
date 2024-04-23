@@ -45,7 +45,7 @@ import java.util.*
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param messageUtils contains utils to be used to handle messages for the message queue
 */
-@Component("DataManager")
+@Component("PublicDataManager")
 class PublicDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyQueryManager: CompanyQueryManager,
