@@ -3,8 +3,8 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
-  type SmeData,
   type DataTypeEnum,
+  type HeimathafenData,
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
@@ -18,9 +18,9 @@ describe("Component test for the company cockpit", () => {
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
 
   before(function () {
-    cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-      const smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
-      companyInformationForTest = smeFixtures[0].companyInformation;
+    cy.fixture("CompanyInformationWithHeimathafenData").then(function (jsonContent) {
+      const heimathafenFixtures = jsonContent as Array<FixtureData<HeimathafenData>>;
+      companyInformationForTest = heimathafenFixtures[0].companyInformation;
     });
     cy.fixture("MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock").then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
@@ -145,7 +145,7 @@ describe("Component test for the company cockpit", () => {
         );
 
         if (isProvideDataButtonExpected) {
-          if (frameworkName != "sme") {
+          if (frameworkName != "heimathafen") {
             cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
               "exist",
             );
