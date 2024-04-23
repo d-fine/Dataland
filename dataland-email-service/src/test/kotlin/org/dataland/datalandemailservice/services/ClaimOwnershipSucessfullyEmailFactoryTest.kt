@@ -60,8 +60,9 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
             ),
         )
         assertTrue(
-            email.content.htmlContent.contains("Please note, that "))
-        assertTrue(email.content.htmlContent.contains( "un-resolved data requests"))
+            email.content.htmlContent.contains("Please note, that "),
+        )
+        assertTrue(email.content.htmlContent.contains("un-resolved data requests"))
         assertTrue(email.content.htmlContent.contains(numberOfOpenDataRequestsForCompany))
         assertTrue(email.content.htmlContent.contains("Copyright"))
         assertTrue(email.content.htmlContent.contains(companyName))
@@ -96,8 +97,9 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
             ),
         )
         assertTrue(
-            email.content.textContent.contains("Please note, that "))
-        assertTrue(email.content.textContent.contains( "un-resolved data requests"))
+            email.content.textContent.contains("Please note, that "),
+        )
+        assertTrue(email.content.textContent.contains("un-resolved data requests"))
         assertTrue(email.content.textContent.contains(numberOfOpenDataRequestsForCompany))
         assertTrue(email.content.textContent.contains(companyName))
         assertTrue(
