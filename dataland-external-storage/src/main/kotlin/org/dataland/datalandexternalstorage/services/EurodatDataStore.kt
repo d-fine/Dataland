@@ -110,6 +110,7 @@ class EurodatDataStore(
     }
 
     // TODO check the if condition for the first time a deposit box was created
+    @Suppress("TooGenericExceptionThrown")
     private fun isSafeDepositBoxAvailable() {
         if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
             logger.info("Safe deposit box exists.")
@@ -213,6 +214,7 @@ class EurodatDataStore(
      * @param dataItem the DataItem to be stored
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
+    @Suppress("TooGenericExceptionThrown")
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
         logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
@@ -233,6 +235,7 @@ class EurodatDataStore(
      * @param documentId the documentId in the UUID format of the document to be stored
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
+    @Suppress("TooGenericExceptionThrown")
     @Transactional(propagation = Propagation.NEVER)
     fun storeBlobInEurodat(
         dataId: String,
