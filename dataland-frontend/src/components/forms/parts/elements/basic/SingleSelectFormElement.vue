@@ -8,11 +8,7 @@
     :showClear="!isRequired"
     :option-label="optionLabel"
     :option-value="optionValue"
-    :class="{
-      'bottom-line': true,
-      'input-class': true, // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      'no-selection': !selectedOption,
-    }"
+    :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
     :disabled="disabled"
   />
   <FormKit
@@ -28,22 +24,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { type ComponentPropsOptions, defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
   components: { Dropdown },
-  props: {
-    ...DropdownOptionFormFieldProps,
+  props: Object.assign(deepCopyObject(DropdownOptionFormFieldProps as ObjectType), {
+    inputClass: { type: String, default: "long" },
     isRequired: { type: Boolean },
     disabled: {
       type: Boolean,
       default: false,
     },
     modelValue: String,
-  },
+  }) as Readonly<ComponentPropsOptions>,
   data() {
     return {
       selectedOption: null as null | string,
@@ -96,9 +93,5 @@ export default defineComponent({
   border-style: solid;
   border-width: 0 0 1px 0;
   border-color: #958d7c;
-}
-
-.no-selection {
-  color: #767676;
 }
 </style>
