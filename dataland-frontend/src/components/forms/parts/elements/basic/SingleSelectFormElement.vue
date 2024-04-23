@@ -5,10 +5,14 @@
     @update:model-value="handleInputChange($event)"
     :placeholder="placeholder"
     :name="name"
-    class="w-full md:w-14rem short"
-    showClear
-    option-label="label"
-    option-value="value"
+    :showClear="!isRequired"
+    :option-label="optionLabel"
+    :option-value="optionValue"
+    :class="{
+      'bottom-line': true,
+      'input-class': true, // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      'no-selection': !selectedOption,
+    }"
     :disabled="disabled"
   />
   <FormKit
@@ -33,6 +37,7 @@ export default defineComponent({
   components: { Dropdown },
   props: {
     ...DropdownOptionFormFieldProps,
+    isRequired: { type: Boolean },
     disabled: {
       type: Boolean,
       default: false,
@@ -41,15 +46,34 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedOption: undefined as undefined | string,
+      selectedOption: null as null | string,
+      optionLabel: "",
+      optionValue: "",
     };
   },
+  created() {
+    this.setOptionLabelValue();
+  },
+  emits: ["valueSelected", "update:model-value"],
   watch: {
+    selectedOption(newValue) {
+      this.$emit("valueSelected", newValue);
+    },
     modelValue(newValue: string) {
       this.selectedOption = newValue;
     },
   },
   methods: {
+    /**
+     * Sets the values of optionLabel and optionValue depending on whether the options are [{label: ... , value: ...}]
+     * or a simple array
+     */
+    setOptionLabelValue(): void {
+      if (Array.isArray(this.options) && (this.options as unknown[]).every((element) => typeof element == "object")) {
+        this.optionLabel = "label";
+        this.optionValue = "value";
+      }
+    },
     /**
      * Handler for changes in the dropdown component
      * @param newInput the new value in the dropdown
@@ -69,3 +93,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.bottom-line {
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: #958d7c;
+}
+
+.no-selection {
+  color: #767676;
+}
+</style>

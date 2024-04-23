@@ -69,19 +69,17 @@
               />
             </div>
             <div>
-              <UploadFormHeader
-                :label="companyDataNames.countryCode"
-                :description="companyDataExplanations.countryCode"
-                :is-required="true"
-              />
-              <FormKit
+              <SingleSelectFormField
+                container-class=""
                 name="countryCode"
-                v-model="countryCode"
-                type="select"
                 placeholder="Select"
                 validation="required"
                 validation-label="Country Code"
                 :options="allCountryCodes"
+                :label="companyDataNames.countryCode"
+                :description="companyDataExplanations.countryCode"
+                required
+                @value-selected="countryCode = $event"
               />
             </div>
           </div>
@@ -190,8 +188,14 @@
 
           <h4>GICS classification</h4>
 
-          <UploadFormHeader :label="companyDataNames.sector" :description="companyDataExplanations.sector" />
-          <FormKit name="sector" v-model="sector" type="select" placeholder="Please choose" :options="gicsSectors" />
+          <SingleSelectFormField
+            :label="companyDataNames.sector"
+            :description="companyDataExplanations.sector"
+            name="sector"
+            placeholder="Please choose"
+            :options="gicsSectors"
+            @value-selected="sector = $event"
+          />
 
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
@@ -226,10 +230,12 @@ import {
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
 import { type FormKitNode } from "@formkit/core";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "CreateCompany",
   components: {
+    SingleSelectFormField,
     UploadFormHeader,
     Card,
     FormKit,
