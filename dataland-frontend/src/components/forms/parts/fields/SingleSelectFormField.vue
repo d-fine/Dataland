@@ -8,7 +8,8 @@
       :placeholder="placeholder"
       :options="options"
       :input-class="inputClass"
-      :isRequired="required"
+      :is-required="required"
+      :class="containerClass"
       @update:model-value="$emit('valueSelected', $event)"
     />
   </div>
