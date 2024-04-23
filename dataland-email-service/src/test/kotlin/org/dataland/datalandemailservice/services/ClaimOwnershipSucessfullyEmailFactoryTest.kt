@@ -13,14 +13,14 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
     private val senderName = "Test"
     private val companyName = "Test Inc."
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
-    private val requesterEmail = "requester@bigplayer.com"
     private val receiverEmail = "testReceiver@somewhere.com"
+    private val numberOfOpenDataRequestsForCompany = "3"
 
     private fun buildTestEmail(): Email {
         val properties = mapOf(
             "companyId" to companyId,
             "companyName" to companyName,
-            "requesterEmail" to requesterEmail,
+            "numberOfOpenDataRequestsForCompany" to numberOfOpenDataRequestsForCompany,
         )
 
         val email = ClaimOwnershipSucessfullyEmailFactory(
@@ -36,7 +36,7 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
     }
 
     @Test
-    fun `validate that the output of the succesfully claimed ownership mail is correctly formatted`() {
+    fun `validate that the output of the successfully claimed ownership mail is correctly formatted`() {
         val email = buildTestEmail()
 
         assertEmailContactInformationEquals(
@@ -59,6 +59,10 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
                     "company overview, view your data requests, and provide data.",
             ),
         )
+        assertTrue(
+            email.content.htmlContent.contains("Please note, that "))
+        assertTrue(email.content.htmlContent.contains( "un-resolved data requests"))
+        assertTrue(email.content.htmlContent.contains(numberOfOpenDataRequestsForCompany))
         assertTrue(email.content.htmlContent.contains("Copyright"))
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(
@@ -69,7 +73,7 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
     }
 
     @Test
-    fun `validate that default text content of the claim ownership succesfully mail is correctly formatted`() {
+    fun `validate that default text content of the claim ownership successfully mail is correctly formatted`() {
         val email = buildTestEmail()
 
         assertEmailContactInformationEquals(
@@ -91,6 +95,10 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
                     "company overview, view your data requests, and provide data.",
             ),
         )
+        assertTrue(
+            email.content.textContent.contains("Please note, that "))
+        assertTrue(email.content.textContent.contains( "un-resolved data requests"))
+        assertTrue(email.content.textContent.contains(numberOfOpenDataRequestsForCompany))
         assertTrue(email.content.textContent.contains(companyName))
         assertTrue(
             email.content.textContent.contains(

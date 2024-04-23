@@ -27,6 +27,7 @@ class ClaimOwnershipSucessfullyEmailFactory(
 
     override val requiredProperties = setOf(
         keys.companyId, keys.companyName,
+        keys.numberOfOpenDataRequestsForCompany
     )
 
     override val optionalProperties = setOf<String>()
@@ -46,7 +47,10 @@ class ClaimOwnershipSucessfullyEmailFactory(
             ).append(
                 "Now, take the next step to access your company overview, view your data requests," +
                     " and provide data.",
-            ).append("$proxyPrimaryUrl/companies/${properties[keys.companyId]}")
+            ).append("$proxyPrimaryUrl/companies/${properties[keys.companyId]}"
+            ).append("Please note, that ${properties[keys.companyName]} has " +
+                    "${properties[keys.numberOfOpenDataRequestsForCompany]}" +
+                    " un-resolved data requests.")
             .toString()
     }
 }
