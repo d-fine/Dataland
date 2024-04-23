@@ -38,15 +38,11 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         companyName: String,
         correlationId: String,
     ) {
-        val numberOfOpenDataRequestsForCompany = requestControllerApi.getAggregatedDataRequests(
-            identifierValue = datalandCompanyId, status = RequestStatus.Open,
-        ).filter { it.count > 0 }.size
-        println(numberOfOpenDataRequestsForCompany)
         val newDataOwnerEmail = keycloakUserControllerApiService.getEmailAddress(newDataOwnerId)
         val properties = mapOf(
             "companyId" to datalandCompanyId,
             "companyName" to companyName,
-            "numberOfOpenDataRequestsForCompany" to numberOfOpenDataRequestsForCompany.toString(),
+            "numberOfOpenDataRequestsForCompany" to getNumberOfOpenDataRequestsForCompany(datalandCompanyId).toString(),
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.ClaimedOwershipSucessfully,
@@ -60,5 +56,16 @@ class DataOwnershipSuccessfullyEmailMessageSender(
             ExchangeName.SendEmail,
             RoutingKeyNames.templateEmail,
         )
+    }
+
+    /**
+     * Function that counts the number of data requests that a company has open
+     * @param datalandCompanyId identifier of the company in dataland
+     * @return the number of opened data requests
+     */
+    private fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
+        return requestControllerApi.getAggregatedDataRequests(
+            identifierValue = datalandCompanyId, status = RequestStatus.Open,
+        ).filter { it.count > 0 }.size
     }
 }
