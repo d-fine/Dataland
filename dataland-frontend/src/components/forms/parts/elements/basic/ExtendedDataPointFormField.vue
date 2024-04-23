@@ -60,13 +60,12 @@
                 :label="`${label} Report`"
                 description="Select a report as a reference for this data point."
               />
-              <FormKit
-                type="select"
+              <SingleSelectFormElement
                 name="fileName"
                 v-model="currentReportValue"
                 placeholder="Select a report"
                 :options="[noReportLabel, ...reportsName]"
-                ignore="true"
+                ignore
               />
             </div>
             <div class="col-4">

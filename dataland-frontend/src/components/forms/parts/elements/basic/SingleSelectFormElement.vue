@@ -24,6 +24,7 @@
     outer-class="hidden-input"
     :validation-label="validationLabel"
     :validation="validation"
+    :ignore="ignore"
   />
 </template>
 
@@ -43,6 +44,10 @@ export default defineComponent({
       default: false,
     },
     modelValue: String,
+    ignore: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
