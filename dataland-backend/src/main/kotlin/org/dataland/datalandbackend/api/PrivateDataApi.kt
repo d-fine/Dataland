@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 /**
  * Defines the restful dataland-backend API regarding private sme company data.
  */
-@RequestMapping("/data/sme") // TODO not final!
+@RequestMapping("/data/sme")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface PrivateDataApi {

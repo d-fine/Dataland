@@ -55,14 +55,12 @@ class EurodatDataStore(
     private val eurodatAppName: String,
     @Value("\${dataland.eurodatclient.max-retries-connecting}")
     private val maxRetriesConnectingToEurodat: Int,
-    @Value("\${dataland.eurodatclient.seconds-between-retries}")
-    private val conversionFactor: Int,
-    @Value("\${dataland.eurodatclient.conversion-factor}")
-    private val secondsBetweenRetriesConnectingToEurodat: Int,
+    @Value("\${dataland.eurodatclient.milliseconds-between-retries}")
+    private val millisecondsBetweenRetriesConnectingToEurodat: Int,
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
     private val initializeSafeDepositBox: Boolean,
 ) {
-
+    // TODO try to move the variables here
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -73,16 +71,17 @@ class EurodatDataStore(
     fun createSafeDepositBox() {
         if (initializeSafeDepositBox) {
             logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-            retryLogic("createSafeDepositBox") {
+            retryWrapperMethod("createSafeDepositBox") {
                 isSafeDepositBoxAvailable()
             }
         }
     }
 
     /**
-     * This method will rerun a given method if an exeption is thrown while running it
+     * This method will rerun a given method if an exception is thrown while running it
+     * @param inputMethod to specify in the logs which method should be rerun
      */
-    fun <T> retryLogic(inputMethod: String, block: () -> T): T {
+    fun <T> retryWrapperMethod(inputMethod: String, block: () -> T): T {
         var retryCount = 0
         while (retryCount <= maxRetriesConnectingToEurodat) {
             try {
@@ -99,7 +98,7 @@ class EurodatDataStore(
                 }
             }
             retryCount++
-            Thread.sleep(secondsBetweenRetriesConnectingToEurodat.toLong() * conversionFactor)
+            Thread.sleep(millisecondsBetweenRetriesConnectingToEurodat.toLong())
         }
         return block()
     }
@@ -178,21 +177,21 @@ class EurodatDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = retryLogic("getEurodatCredentials") {
+        val eurodatCredentials = retryWrapperMethod("getEurodatCredentials") {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
         logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         logger.info("Data from temporary storage retrieved.")
-        retryLogic("storeJsonInEurodat") {
+        retryWrapperMethod("storeJsonInEurodat") {
             storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
         }
         logger.info("Data stored in eurodat storage.")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
             val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
-            retryLogic("storeBlobInEurodat") {
+            retryWrapperMethod("storeBlobInEurodat") {
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
             }
         }
@@ -204,7 +203,9 @@ class EurodatDataStore(
     /**
      * Stores a Data Item in EuroDaT while ensuring that there is no active transaction.
      * This will guarantee that the write is commited after exit of this method.
+     * @param correlationId the correlationId of the storage request
      * @param dataItem the DataItem to be stored
+     * @param eurodatCredentials the credentials to log into the eurodat storage
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
@@ -220,7 +221,11 @@ class EurodatDataStore(
     /**
      * Stores a Blob Item in EuroDaT while ensuring that there is no active transaction.
      * This will guarantee that the write is commited after exit of this method.
-     * @param dataItem the DataItem to be stored
+     * @param dataId the DataId connected to the document which should be stored
+     * @param correlationId the correlationId of the storage request
+     * @param hash the hash of the document to be stored
+     * @param documentId the documentId in the UUID format of the document to be stored
+     * @param eurodatCredentials the credentials to log into the eurodat storage
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeBlobInEurodat(
