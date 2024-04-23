@@ -9,7 +9,7 @@
       :options="options"
       :input-class="inputClass"
       :isRequired="required"
-      @valueSelected="$emit('valueSelected', $event)"
+      @update:model-value="$emit('valueSelected', $event)"
     />
   </div>
 </template>

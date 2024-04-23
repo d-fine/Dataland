@@ -54,11 +54,8 @@ export default defineComponent({
   created() {
     this.setOptionLabelValue();
   },
-  emits: ["valueSelected", "update:model-value"],
+  emits: ["update:model-value"],
   watch: {
-    selectedOption(newValue) {
-      this.$emit("valueSelected", newValue);
-    },
     modelValue(newValue: string) {
       this.selectedOption = newValue;
     },
