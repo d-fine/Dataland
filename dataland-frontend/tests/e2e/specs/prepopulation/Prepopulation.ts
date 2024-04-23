@@ -125,18 +125,20 @@ describe(
     }
 
 
-    const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-        .requestController;
+
     //Prepopulation for data requests
     describeIf("Prepopulation of data requests",
         { executionEnvironments: ["developmentLocal", "ci", "developmentCd"] }, () => {
           let fixtureData: Array<SingleDataRequest>
         before(function () {
-          cy.fixture("DataRequestsMock").then(function (jsonContent) {
+          cy.getKeycloakToken(admin_name, admin_pw);
+          cy.fixture("SingleDataRequestsMock").then(function (jsonContent) {
             fixtureData = jsonContent as typeof fixtureData;
           });
         })
           it("Upload data requests", async () => {
+            const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+                .requestController;
             const storedRequest = await requestDataControllerApi.postSingleDataRequest(fixtureData[0])
           })
         }

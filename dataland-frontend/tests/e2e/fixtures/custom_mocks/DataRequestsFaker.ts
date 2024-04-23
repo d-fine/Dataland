@@ -2,9 +2,9 @@ import {RequestStatus, SingleDataRequest, type StoredDataRequest} from "@clients
 import { DataTypeEnum } from "@clients/backend";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { generateStoredDataRequestMessage } from "@e2e/fixtures/custom_mocks/StoredDataRequestMessageFaker";
+import { generateStoredDataRequestMessage } from "@e2e/fixtures/custom_mocks/DataRequestMessageFaker";
 import { faker } from "@faker-js/faker";
-import {generateArray, pickOneElement, pickSubsetOfElements} from "@e2e/fixtures/FixtureUtils";
+import { generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Creates a list of stored data requests
