@@ -66,6 +66,7 @@
                 placeholder="Select a report"
                 :options="[noReportLabel, ...reportsName]"
                 ignore
+                input-class="w-12"
               />
             </div>
             <div class="col-4">
@@ -106,6 +107,7 @@
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
+              isRequired
             />
           </div>
           <div class="form-field">
