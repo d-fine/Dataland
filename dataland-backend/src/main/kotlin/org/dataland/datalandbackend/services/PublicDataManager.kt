@@ -43,6 +43,7 @@ import java.util.*
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param messageUtils contains utils to be used to handle messages for the message queue
 */
 @Component("DataManager")
 class PublicDataManager(
@@ -81,6 +82,7 @@ class PublicDataManager(
      * relevant message queues
      * @param storableDataSet contains all the inputs needed by Dataland
      * @param bypassQa whether the data should be sent to QA or not
+     * @param correlationId the correlationId of the request
      * @return ID of the newly stored data in the data store
      */
     fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(

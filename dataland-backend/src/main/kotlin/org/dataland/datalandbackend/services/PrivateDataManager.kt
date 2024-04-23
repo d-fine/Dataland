@@ -43,6 +43,8 @@ import java.util.*
  * @param companyQueryManager service for managing company data
  * @param metaDataManager service for managing metadata
  * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param messageUtils contains util methods for messages used on the message queue
+ * @param dataIdToAssetIdMappingRepository the repository to map dataId to document hashes and document Ids
 */
 @Component("PrivateDataManager")
 class PrivateDataManager(
@@ -184,7 +186,10 @@ class PrivateDataManager(
     }
 
     /**
-     *
+     * This method
+     * @param payload the paylod of the received message from the message queue
+     * @param correlationId the correlationId of the request
+     * @param type the type of the message
      */
     @RabbitListener(
         bindings = [
@@ -292,7 +297,8 @@ class PrivateDataManager(
     }
 
     /**
-     * Retrieves the data identified by the given hash from the in-memory store.
+     * Retrieves the document identified by the given hash from the in-memory store.
+     * @param hash of the document which should be retrieved
      */
     fun getDocumentFromInMemoryStore(hash: String): ByteArray? {
         return documentInMemoryStorage[hash]

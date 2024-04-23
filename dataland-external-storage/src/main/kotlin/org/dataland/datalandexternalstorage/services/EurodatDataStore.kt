@@ -40,7 +40,12 @@ import java.sql.SQLException
  * Simple implementation of a data storing service using the EuroDaT data trustee
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
+ * @param temporarilyCachedDocumentClient the service for retrieven documents from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param databaseCredentialResourceClient the service to retrieve eurodat storage credentials
+ * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
+ * on eurodat
+ * @param messageUtils contains utils connected to the messages on the message queue
  */
 @Component
 class EurodatDataStore(
@@ -171,9 +176,9 @@ class EurodatDataStore(
 
     /**
      * Method that triggers the storage processes of the JSON and the associated documents in EuroDaT
-     * @param payload the content of the message
-     * @param correlationId of the current storage process
      * @param dataId the Dataland dataId of the dataset to be stored
+     * @param correlationId of the current storage process
+     * @param payload the content of the message
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
