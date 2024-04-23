@@ -99,10 +99,9 @@
               description="The level of confidence associated to the value."
               :is-required="isDataQualityRequired"
             />
-            <FormKit
-              type="select"
-              v-model="qualityValue"
+            <SingleSelectFormElement
               name="quality"
+              v-model="qualityValue"
               :disabled="!isDataQualityRequired"
               :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
@@ -137,10 +136,11 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
-  components: { UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
   inject: {
     injectReportsNameAndReferences: {
       from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
