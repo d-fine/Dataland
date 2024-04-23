@@ -86,6 +86,7 @@ class EurodatDataStore(
      * This method will rerun a given method if an exception is thrown while running it
      * @param inputMethod to specify in the logs which method should be rerun
      */
+    @Suppress("TooGenericExceptionCaught")
     fun <T> retryWrapperMethod(inputMethod: String, block: () -> T): T {
         var retryCount = 0
         while (retryCount <= maxRetriesConnectingToEurodat) {
