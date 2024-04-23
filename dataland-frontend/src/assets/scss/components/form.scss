@@ -591,6 +591,9 @@ input[type="radio"] {
   .long {
     width: 100%;
   }
+  .no-selection .p-dropdown-label {
+    color: #767676;
+  }
   .yes-no-radio {
     fieldset.formkit-fieldset {
       border: 0;
