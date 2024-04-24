@@ -30,9 +30,9 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
-import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
-import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
+import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
+import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
+import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
 
