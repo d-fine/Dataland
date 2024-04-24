@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 
 export const FAKER_BASE_SEED = 0;
-
+export const HASH_MULTIPLIER = 31;
 /**
  * Deterministically converts a string to a number using a standard hashing function (same as java string hash)
  * @param str the string to hash
@@ -19,7 +19,7 @@ function stringHashCode(str: string): number {
 function combineHashCodes(...codes: number[]): number {
   let hash = 1;
   for (const code of codes) {
-    hash = 31 * hash + code;
+    hash = HASH_MULTIPLIER * hash + code;
   }
   return hash;
 }
