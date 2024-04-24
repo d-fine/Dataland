@@ -1,12 +1,12 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from "@e2e/utils/Cypress";
 import { getKeycloakToken, login, logout } from "@e2e/utils/Auth";
-import { CompanyDataControllerApi, type CompanyDataOwners, Configuration } from "@clients/backend";
+import { CompanyDataControllerApi, type CompanyDataOwners, Configuration, type StoredCompany } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM } from "@/utils/Constants";
 
 describeIf(
-  "As a user, I expect to be able to upload data for one company for which I am data owner",
+  "As a user, I expect to claim data ownership and be able to upload data for one company for which I am data owner",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -22,12 +22,36 @@ describeIf(
         cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
       });
     }
+    /**
+     * This method verifies that a non-authenticated user is redirect to the company cockpit page after claiming ownership
+     * @param storedCompany stored Company
+     * @param companyName company Name
+     */
+    function checkClaimOwnership(storedCompany: StoredCompany, companyName: string): void {
+      logout();
+      cy.visitAndCheckAppMount("/companies/" + storedCompany.companyId);
+      cy.get("[data-test='claimOwnershipPanelLink']").should("have.text", " Claim company dataset ownership. ").click();
+      cy.contains("button", "LOGIN TO ACCOUNT").should("exist").should("be.visible").click();
+
+      cy.get("#username")
+        .should("exist")
+        .type(admin_name, { force: true })
+        .get("#password")
+        .should("exist")
+        .type(admin_pw, { force: true })
+
+        .get("#kc-login")
+        .should("exist")
+        .click();
+      cy.get("[data-test='companyNameTitle']").should("have.text", companyName);
+    }
     it("Upload a company, set a user as the data owner and then verify that the upload pages are displayed for that user", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-Data-Owner-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          checkClaimOwnership(storedCompany, testCompanyName);
           cy.intercept("**/api/companies/" + storedCompany.companyId + "/data-owners/*").as("postDataOwner");
           void postDataOwner(token, reader_userId, storedCompany.companyId);
           cy.wait("@postDataOwner", { timeout: Cypress.env("medium_timeout_in_ms") as number });
