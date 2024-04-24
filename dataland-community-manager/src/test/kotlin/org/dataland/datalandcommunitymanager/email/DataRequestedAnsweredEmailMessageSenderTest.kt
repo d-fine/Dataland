@@ -28,6 +28,7 @@ import java.util.*
 class DataRequestedAnsweredEmailMessageSenderTest {
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
+    private lateinit var dataRequestId: String
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
     private val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
@@ -86,6 +87,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
                     objectMapper, keycloakUserControllerApiService, companyDataControllerMock,
                 )
             val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            dataRequestId = dataRequestEntity.dataRequestId
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
             reset(cloudEventMessageHandlerMock)
@@ -118,16 +120,20 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
             assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
             assertEquals(userEmail, arg1.receiver)
-            assertEquals(companyId, arg1.properties.getValue("companyId"))
-            assertEquals(companyName, arg1.properties.getValue("companyName"))
-            assertEquals(dataType, arg1.properties.getValue("dataType"))
-            assertEquals(dataTypeDescription, arg1.properties.getValue("dataTypeDescription"))
-            assertEquals(reportingPeriod, arg1.properties.getValue("reportingPeriod"))
-            assertEquals(creationTimestampAsDate, arg1.properties.getValue("creationDate"))
+            checkProperties(arg1.properties, dataType, dataTypeDescription)
             assertEquals(MessageType.SendTemplateEmail, arg2)
             assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SendEmail, arg4)
             assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
+    }
+    private fun checkProperties(properties: Map<String, String?>, dataType: String, dataTypeDescription: String) {
+        assertEquals(companyId, properties.getValue("companyId"))
+        assertEquals(companyName, properties.getValue("companyName"))
+        assertEquals(dataType, properties.getValue("dataType"))
+        assertEquals(dataTypeDescription, properties.getValue("dataTypeDescription"))
+        assertEquals(reportingPeriod, properties.getValue("reportingPeriod"))
+        assertEquals(creationTimestampAsDate, properties.getValue("creationDate"))
+        assertEquals(dataRequestId, properties.getValue("dataRequestId"))
     }
 }

@@ -2,103 +2,117 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Rauboro",
-			"headquartersPostalCode": "63395-3744",
-			"sector": "communities",
+			"headquarters": "West Korey",
+			"headquartersPostalCode": "91575",
+			"sector": "lifetime value",
 			"identifiers": {
 				"Lei": [
-					"Ry7Ld5NIj3oMNnxoMub8"
+					"CZgxycKSMys5zmyoQG34"
 				],
 				"Isin": [
-					"nU43UqBzw2K5",
-					"sw23nPMDtVBw"
+					"DNgRQ1c4ekMr"
 				],
-				"PermId": [
-					"n5APzjYxps"
-				],
+				"PermId": [],
 				"Ticker": [
-					"sB2qf5P"
+					"TdeV72P"
 				],
 				"Duns": [
-					"ebyelOYRI"
+					"vbSk8rrkF"
 				],
-				"VatNumber": [
-					"3JASocVDZ"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"ZapnBdDHWb0RSk2"
+					"y4yWlyQMldFQllT"
 				]
 			},
-			"countryCode": "IO",
+			"countryCode": "PH",
 			"companyAlternativeNames": [
-				"McLaughlin - Mante",
-				"Simonis, Waelchi and Abernathy"
+				"Berge Group",
+				"Feeney Inc",
+				"Prohaska Group",
+				"Sporer - Reichel"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://left-professional.biz",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://fumbling-secretion.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-05-19",
+					"reportingDate": "2024-10-29",
 					"sectors": [
-						"06.1",
-						"24.52"
+						"49.39",
+						"85.10",
+						"86"
 					],
-					"numberOfEmployees": 1951,
-					"fiscalYearStart": "2024-06-11",
+					"numberOfEmployees": 1754,
+					"fiscalYearStart": "2024-10-15",
 					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-01-29",
+							"currency": "PEN"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-02-19",
+							"currency": "SBD"
+						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-07-21",
-							"currency": "CAD"
+							"reportDate": "2023-09-20",
+							"currency": "AOA"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
-							"isGroupLevel": "No",
-							"reportDate": "2024-01-05",
-							"currency": "MVR"
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-05-06",
+							"currency": "HUF"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 87126.42,
-					"operatingCostInEur": 85375.89,
-					"capitalAssetsInEur": 24714.35
+					"revenueInEur": 68985.05,
+					"operatingCostInEur": 13441.8,
+					"capitalAssetsInEur": 80362.61
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 68304.55,
+						"value": 78809.71,
 						"dataSource": {
-							"page": 1008,
-							"fileName": "ESEFReport",
+							"page": 45,
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "ROI"
 						},
-						"comment": "parse 1080p system",
-						"quality": "Incomplete"
+						"comment": "parse online port",
+						"quality": "Estimated"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 95204.62,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88457.93,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
 					"naturalHazardsCovered": [
+						"Avalanche",
 						"EarthQuake",
+						"Flooding",
 						"Hail",
 						"Snow",
 						"Wind"
@@ -106,6 +120,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	}
 ]

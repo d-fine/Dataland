@@ -3,19 +3,25 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 
 /**
@@ -24,9 +30,12 @@ import java.util.*
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
+    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
+    Int,
 ) {
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
@@ -37,8 +46,7 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-        utils.throwExceptionIfNotJwtAuth()
-        validateSingleDataRequest(singleDataRequest)
+        checkSingleDataRequest(singleDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForReceivingSingleDataRequest(
             singleDataRequest.companyIdentifier, DatalandAuthentication.fromContext().userId, correlationId,
@@ -67,7 +75,43 @@ class SingleDataRequestManager(
         )
     }
 
-    private fun validateSingleDataRequest(singleDataRequest: SingleDataRequest) {
+    private fun checkSingleDataRequest(singleDataRequest: SingleDataRequest) {
+        utils.throwExceptionIfNotJwtAuth()
+        validateSingleDataRequestContent(singleDataRequest)
+        performQuotaCheckForNonPremiumUser(singleDataRequest)
+    }
+
+    private fun performQuotaCheckForNonPremiumUser(singleDataRequest: SingleDataRequest) {
+        val userInfo = DatalandAuthentication.fromContext()
+        if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+            val numberOfDataRequestsPerformedByUserFromTimestamp =
+                dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
+                    userInfo.userId, getEpochTimeStartOfDay(),
+                )
+
+            val numberOfReportingPeriodsInCurrentDataRequest = singleDataRequest.reportingPeriods.size
+
+            if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriodsInCurrentDataRequest
+                > maxRequestsForUser
+            ) {
+                throw QuotaExceededException(
+                    "Quota has been reached.",
+                    "The daily quota capacity has been reached.",
+                )
+            }
+        }
+    }
+
+    private fun getEpochTimeStartOfDay(): Long {
+        val instantNow = Instant.ofEpochMilli(System.currentTimeMillis())
+        val zoneId = ZoneId.of("Europe/Berlin")
+        val instantNowZoned = instantNow.atZone(zoneId)
+        val startOfDay = instantNowZoned.toLocalDate().atStartOfDay(zoneId)
+        val startOfDayTimestampMillis = startOfDay.toInstant().toEpochMilli()
+        return startOfDayTimestampMillis
+    }
+
+    private fun validateSingleDataRequestContent(singleDataRequest: SingleDataRequest) {
         if (singleDataRequest.reportingPeriods.isEmpty()) {
             throw InvalidInputApiException(
                 "The list of reporting periods must not be empty.",

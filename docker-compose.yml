@@ -458,6 +458,8 @@ services:
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
     depends_on:
       - community-manager-db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   community-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]

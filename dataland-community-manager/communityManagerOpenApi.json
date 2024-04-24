@@ -145,9 +145,9 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Update status of data request.",
-        "description": "Updates status of data request given data request id.",
-        "operationId": "patchDataRequestStatus",
+        "summary": "Updates a data request.",
+        "description": "Updates status and message history of data request given data request id.",
+        "operationId": "patchDataRequest",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -161,9 +161,29 @@
           {
             "name": "requestStatus",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "contacts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -913,7 +933,8 @@
         "enum": [
           "Open",
           "Answered",
-          "Closed"
+          "Closed",
+          "Withdrawn"
         ]
       },
       "StoredDataRequest": {

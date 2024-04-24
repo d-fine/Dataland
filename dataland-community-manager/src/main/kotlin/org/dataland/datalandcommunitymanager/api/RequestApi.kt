@@ -122,7 +122,7 @@ interface RequestApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_PREMIUM_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun postSingleDataRequest(
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
@@ -145,16 +145,16 @@ interface RequestApi {
         value = ["/{dataRequestId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId)")
     fun getDataRequestById(@PathVariable dataRequestId: UUID): ResponseEntity<StoredDataRequest>
 
-    /** Changes request status of existing data request
+    /** Changes request status and message history of existing data request
      * @return the modified data request
      */
 
     @Operation(
-        summary = "Update status of data request.",
-        description = "Updates status of data request given data request id.",
+        summary = "Updates a data request.",
+        description = "Updates status and message history of data request given data request id.",
     )
     @ApiResponses(
         value = [
@@ -166,13 +166,18 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') " +
-            "or (@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) " +
-            "and @SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus))",
+        "hasRole('ROLE_ADMIN') or " +
+            "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
+            "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
+            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
+            "#dataRequestId, #requestStatus, #contacts,#message)" +
+            ")",
     )
-    fun patchDataRequestStatus(
+    fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus,
+        @RequestParam requestStatus: RequestStatus?,
+        @RequestParam contacts: Set<String>?,
+        @RequestParam message: String?,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
