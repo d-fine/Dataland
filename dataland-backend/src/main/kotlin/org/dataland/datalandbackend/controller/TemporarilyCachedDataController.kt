@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.TemporarilyCachedDataApi
 import org.dataland.datalandbackend.services.PrivateDataManager
-import org.dataland.datalandbackend.services.PublicDataManager
+import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -13,16 +13,16 @@ import java.io.ByteArrayInputStream
 
 /**
  * Implementation of the controller for delivering and removing temporarily stored data
- * @param publicDataManager service to manage data storage
+ * @param dataManager service to manage data storage
  */
 @RestController
 class TemporarilyCachedDataController(
-    @Autowired var publicDataManager: PublicDataManager,
+    @Autowired var dataManager: DataManager,
     @Autowired var privateDataManager: PrivateDataManager,
 ) : TemporarilyCachedDataApi {
 
     override fun getReceivedPublicData(dataId: String): ResponseEntity<String> {
-        return ResponseEntity.ok(publicDataManager.selectPublicDataSetFromTemporaryStorage(dataId))
+        return ResponseEntity.ok(dataManager.selectPublicDataSetFromTemporaryStorage(dataId))
     }
 
     override fun getReceivedPrivateJson(dataId: String): ResponseEntity<String> {

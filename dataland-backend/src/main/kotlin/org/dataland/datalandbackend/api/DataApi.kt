@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface PublicDataApi<T> {
+interface DataApi<T> {
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored
@@ -70,7 +70,7 @@ interface PublicDataApi<T> {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @PublicDataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<T>>
 

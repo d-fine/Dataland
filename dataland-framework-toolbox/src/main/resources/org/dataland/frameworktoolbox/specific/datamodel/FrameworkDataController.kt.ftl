@@ -3,11 +3,11 @@ package org.dataland.datalandbackend.frameworks.${frameworkPackageName}
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.PublicDataController
+import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.PublicDataManager
+import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the ${frameworkIdentifier} framework endpoints
- * @param myPublicDataManager data manager to be used
+ * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
-class ${frameworkDataType.shortenedQualifier?replace('Data','')}PublicDataController(
-    @Autowired var myPublicDataManager: PublicDataManager,
+class ${frameworkDataType.shortenedQualifier}Controller(
+    @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-) : PublicDataController<${frameworkDataType.shortenedQualifier}>(
-    myPublicDataManager,
+) : DataController<${frameworkDataType.shortenedQualifier}>(
+    myDataManager,
     myMetaDataManager,
     myObjectMapper,
     ${frameworkDataType.shortenedQualifier}::class.java,

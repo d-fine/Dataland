@@ -3,13 +3,13 @@ package org.dataland.datalandbackend.frameworks.lksg
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.PublicDataController
+import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.PublicDataManager
+import org.dataland.datalandbackend.services.DataManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the lksg framework endpoints
- * @param myPublicDataManager data manager to be used
+ * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RequestMapping("/data/lksg")
 @RestController
-class LksgPublicDataController(
-    @Autowired var myPublicDataManager: PublicDataManager,
+class LksgDataController(
+    @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-) : PublicDataController<LksgData>(
-    myPublicDataManager,
+) : DataController<LksgData>(
+    myDataManager,
     myMetaDataManager,
     myObjectMapper,
     LksgData::class.java,

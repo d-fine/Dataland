@@ -2,14 +2,14 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.LogMessageBuilder
-import org.dataland.datalandbackend.api.PublicDataApi
+import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.PublicDataManager
+import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.utils.canUserBypassQa
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -21,17 +21,17 @@ import java.util.UUID.randomUUID
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
- * @param publicDataManager service to handle data
+ * @param dataManager service to handle data
  * @param dataMetaInformationManager service for handling data meta information
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
 
-abstract class PublicDataController<T>(
-    var publicDataManager: PublicDataManager,
+abstract class DataController<T>(
+    var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-) : PublicDataApi<T> {
+) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
@@ -48,7 +48,7 @@ abstract class PublicDataController<T>(
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
-        val dataIdOfPostedData = publicDataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
+        val dataIdOfPostedData = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
             datasetToStore,
             bypassQa, correlationId,
         )
@@ -94,7 +94,7 @@ abstract class PublicDataController<T>(
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = objectMapper.readValue(publicDataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
+            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -117,7 +117,7 @@ abstract class PublicDataController<T>(
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId)
             logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
-            val dataAsString = publicDataManager.getDataSet(
+            val dataAsString = dataManager.getDataSet(
                 it.dataId, DataType.valueOf(it.dataType),
                 correlationId,
             ).data

@@ -69,6 +69,6 @@ interface MetaDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @PublicDataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
 }

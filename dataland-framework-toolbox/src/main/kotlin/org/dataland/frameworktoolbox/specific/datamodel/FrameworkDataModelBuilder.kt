@@ -49,8 +49,8 @@ class FrameworkDataModelBuilder(
         logger.trace("Building the framework-specific API Controller")
         val targetPath = into.backendKotlinSrc /
             frameworkBasePackageQualifier.replace(".", "/") /
-            "${rootDataModelClass.name.replace("Data","")}PublicDataController.kt"
-// TODO Emanuel what do you think about this change here and in FrameworkDataController.kt.ftl
+            "${rootDataModelClass.name}Controller.kt"
+
         logger.trace("Building framework API controller for '{}' into '{}'", framework.identifier, targetPath)
 
         val freemarkerTemplate = FreeMarker.configuration
