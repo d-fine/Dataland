@@ -56,7 +56,7 @@ kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-co
 
 kotlin-scripting-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-scripting-compiler-embeddable", version.ref = "kotlin" }
 
-ktlint = "com.pinterest:ktlint:0.51.0-FINAL"
+ktlint = "com.pinterest:ktlint:0.48.2"
 
 springdoc-openapi-starter-webmvc-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
 
@@ -199,8 +199,8 @@ poi-scratchpad = "org.apache.poi:poi-scratchpad:5.2.5"
 
 simple-odf = "org.odftoolkit:simple-odf:0.9.0"
 
-ktlint-reporter-baseline = "com.pinterest.ktlint:ktlint-reporter-baseline:0.51.0-FINAL"
+ktlint-reporter-baseline = "com.pinterest.ktlint:ktlint-reporter-baseline:0.48.2"
 
-ktlint-ruleset-standard = "com.pinterest.ktlint:ktlint-ruleset-standard:1.2.1"
+ktlint-ruleset-standard = "com.pinterest.ktlint:ktlint-ruleset-standard:0.48.2"
 
 gradle-tooling-api = "org.gradle:gradle-tooling-api:8.7"
