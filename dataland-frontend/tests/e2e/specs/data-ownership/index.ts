@@ -3,4 +3,5 @@
  */
 describe("Test for the data ownership user journey", () => {
   require("./DataOwnershipUserJourney");
+  require("./ClaimDataOwnershipUserJorney");
 });
