@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests.frameworks
-
-import org.dataland.datalandbackend.openApiClient.model.SmeData
+// TODO should be delete this completely and reintroduce it in the download story or leave it commented out
 /*
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions

@@ -218,7 +218,7 @@ class EurodatDataStore(
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
         logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
-        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob2_json) VALUES(?, ?::jsonb)"
+        val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlReturn = insertDataIntoSqlDatabase(conn, insertStatement, dataItem.id, dataItem.data)
         if (!sqlReturn) {
