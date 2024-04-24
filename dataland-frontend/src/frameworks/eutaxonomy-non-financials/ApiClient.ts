@@ -14,11 +14,7 @@ export class EutaxonomyNonFinancialsApiClient implements FrameworkDataApi<Eutaxo
   private readonly openApiDataController: EutaxonomyNonFinancialsDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new EutaxonomyNonFinancialsDataControllerApi(
-      configuration,
-      undefined,
-      axiosInstance,
-    );
+    this.openApiDataController = new EutaxonomyNonFinancialsDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(
