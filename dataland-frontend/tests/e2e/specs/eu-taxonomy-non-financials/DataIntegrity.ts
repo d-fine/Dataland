@@ -7,7 +7,7 @@ import {
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
-  EutaxonomyNonFinancialsPublicDataControllerApi,
+  EutaxonomyNonFinancialsDataControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -80,7 +80,7 @@ describeIf(
                 (interception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-                  return new EutaxonomyNonFinancialsPublicDataControllerApi(new Configuration({ accessToken: token }))
+                  return new EutaxonomyNonFinancialsDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedEutaxonomyNonFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosResponse) => {
                       const reuploadedDatasetFromBackend = axiosResponse.data.data;

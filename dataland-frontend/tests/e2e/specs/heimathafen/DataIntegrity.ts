@@ -6,7 +6,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type HeimathafenData,
-  HeimathafenPublicDataControllerApi,
+  HeimathafenDataControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -75,7 +75,7 @@ describeIf(
                     cy.url().should("eq", getBaseUrl() + "/datasets");
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
-                    return new HeimathafenPublicDataControllerApi(new Configuration({ accessToken: token }))
+                    return new HeimathafenDataControllerApi(new Configuration({ accessToken: token }))
                       .getCompanyAssociatedHeimathafenData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
                         const frontendSubmittedHeimathafenDataset = axiosResponse.data.data;

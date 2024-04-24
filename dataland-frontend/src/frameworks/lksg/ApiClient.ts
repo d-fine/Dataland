@@ -5,16 +5,16 @@ import {
   type Configuration,
   type DataMetaInformation,
   type LksgData,
-  LksgPublicDataControllerApi,
+  LksgDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export class LksgApiClient implements FrameworkDataApi<LksgData> {
-  private readonly openApiDataController: LksgPublicDataControllerApi;
+  private readonly openApiDataController: LksgDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new LksgPublicDataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new LksgDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(

@@ -5,16 +5,16 @@ import {
   type Configuration,
   type DataMetaInformation,
   type SfdrData,
-  SfdrPublicDataControllerApi,
+  SfdrDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export class SfdrApiClient implements FrameworkDataApi<SfdrData> {
-  private readonly openApiDataController: SfdrPublicDataControllerApi;
+  private readonly openApiDataController: SfdrDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new SfdrPublicDataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new SfdrDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(

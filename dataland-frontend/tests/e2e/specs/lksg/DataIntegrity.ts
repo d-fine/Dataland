@@ -6,7 +6,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
-  LksgPublicDataControllerApi,
+  LksgDataControllerApi,
   type StoredCompany,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -54,7 +54,7 @@ describeIf(
                 (postInterception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new LksgPublicDataControllerApi(new Configuration({ accessToken: token }))
+                  return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
                       let frontendSubmittedLksgDataset = axiosGetResponse.data.data;
@@ -150,7 +150,7 @@ describeIf(
                 (postInterception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new LksgPublicDataControllerApi(new Configuration({ accessToken: token }))
+                  return new LksgDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedLksgData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
                       assert(axiosGetResponse.status == 200);

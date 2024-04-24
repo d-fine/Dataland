@@ -5,7 +5,7 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  P2pPublicDataControllerApi,
+  P2pDataControllerApi,
   type PathwaysToParisData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -67,7 +67,7 @@ describeIf(
                 (postInterception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new P2pPublicDataControllerApi(new Configuration({ accessToken: token }))
+                  return new P2pDataControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedP2pData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosGetResponse) => {
                       const frontendSubmittedP2pDataset = axiosGetResponse.data.data as unknown as Record<

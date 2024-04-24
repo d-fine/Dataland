@@ -5,16 +5,16 @@ import {
   type Configuration,
   type DataMetaInformation,
   type EsgQuestionnaireData,
-  EsgQuestionnairePublicDataControllerApi,
+  EsgQuestionnaireDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export class EsgQuestionnaireApiClient implements FrameworkDataApi<EsgQuestionnaireData> {
-  private readonly openApiDataController: EsgQuestionnairePublicDataControllerApi;
+  private readonly openApiDataController: EsgQuestionnaireDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new EsgQuestionnairePublicDataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new EsgQuestionnaireDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(

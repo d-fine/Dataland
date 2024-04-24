@@ -6,7 +6,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  EuTaxonomyPublicDataForFinancialsControllerApi,
+  EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
@@ -72,7 +72,7 @@ describeIf(
                 (postInterception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new EuTaxonomyPublicDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
+                  return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosResponse) => {
                       const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
