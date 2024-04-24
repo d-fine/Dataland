@@ -39,15 +39,15 @@ dependencies {
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
-    runtimeOnly(libs.postgresql)
-    runtimeOnly(libs.h2)
     implementation(libs.kotlin.reflect)
     implementation(Spring.boot.amqp)
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(Square.okHttp3)
     implementation(libs.json)
-    testImplementation(Spring.boot.test)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
+    testImplementation(Spring.boot.test) // TODO probably not needed
 }
 
 openApi {
@@ -63,7 +63,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        setDestinationFile(layout.buildDirectory.dir("jacoco/jacoco.exec").get().asFile)
     }
 }
 
@@ -76,12 +76,11 @@ gitProperties {
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    description = "Task to generate clients for the backend client."
+    description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
-        .path
-    outputDir.set("$buildDir/clients/backend")
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")
@@ -105,7 +104,7 @@ tasks.register("generateEurodatClient", org.openapitools.generator.gradle.plugin
     group = "clients"
     val eurodatClientDestinationPackage = "org.dataland.datalandeurodatclient.openApiClient"
     input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
-    outputDir.set("$buildDir/clients/eurodatclient")
+    outputDir.set(layout.buildDirectory.dir("clients/eurodatclient").get().toString())
     packageName.set(eurodatClientDestinationPackage)
     modelPackage.set("$eurodatClientDestinationPackage.model")
     apiPackage.set("$eurodatClientDestinationPackage.api")
@@ -138,8 +137,8 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
-    main.kotlin.srcDir("$buildDir/clients/eurodatclient/src/main/kotlin")
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/eurodatclient/src/main/kotlin"))
 }
 
 ktlint {
