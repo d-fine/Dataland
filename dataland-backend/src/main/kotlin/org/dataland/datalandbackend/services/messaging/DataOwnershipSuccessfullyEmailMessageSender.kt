@@ -32,7 +32,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
      * @param newDataOwnerId the id of the user promoted to data owner
      * @param datalandCompanyId identifier of the company in dataland
      * @param companyName the name of the company
-     * @param correlationId the correlation ID of the current user process
+     * @param correlationId the correlation ID of the current user process.
      */
     fun sendDataOwnershipAcceptanceInternalEmailMessage(
         newDataOwnerId: String,
