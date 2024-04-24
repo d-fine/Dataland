@@ -51,7 +51,7 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
   );
   return storedDataRequests;
 }
-//abc
+
 /**
  * Creates a default stored data request
  * @returns The request
