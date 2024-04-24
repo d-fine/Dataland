@@ -452,7 +452,7 @@ export default defineComponent({
       this.submittingSucceeded = submittingSucceded;
     },
     /**
-     * Submits the data request to the request service abc
+     * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
       if (!this.preSubmitConditionsFulfilled()) {
