@@ -1,6 +1,7 @@
 import { exportCustomMocks } from "@e2e/fixtures/custom_mocks";
 import { exit } from "process";
 import { readdir } from "fs/promises";
+import { setupDeterministicFakerEnvironmentForFramework } from "@e2e/fixtures/ReproducibilityConfiguration";
 
 export const FAKE_FIXTURES_PER_FRAMEWORK = 50;
 
@@ -12,18 +13,27 @@ interface FrameworkFixtureModule {
  * The main entrypoint of the fake fixture generator
  */
 async function main(): Promise<void> {
+  const customMockSeed = setupDeterministicFakerEnvironmentForFramework("custom-mocks");
+  console.log(`Hash seed for custom mocks is '${customMockSeed}'`);
   exportCustomMocks();
 
-  const frameworkDirectoryContents = await readdir(__dirname + "/frameworks", { withFileTypes: true });
+  const frameworkDirectoryContents = (await readdir(__dirname + "/frameworks", { withFileTypes: true })).filter(
+    (entry) => entry.isDirectory(),
+  );
 
-  const frameworkFakeFixturePromises = frameworkDirectoryContents
-    .filter((entry) => entry.isDirectory())
-    .map(async (entry) => {
-      const module = (await import("./frameworks/" + entry.name)) as FrameworkFixtureModule;
-      module.default();
-    });
+  const frameworkFakeFixturePromises = frameworkDirectoryContents.map(
+    async (entry) => (await import("./frameworks/" + entry.name)) as FrameworkFixtureModule,
+  );
 
-  await Promise.all(frameworkFakeFixturePromises);
+  const frameworkFixtureModules = await Promise.all(frameworkFakeFixturePromises);
+
+  for (let i = 0; i < frameworkFixtureModules.length; i++) {
+    const module = frameworkFixtureModules[i];
+    const frameworkName = frameworkDirectoryContents[i].name;
+    const seed = setupDeterministicFakerEnvironmentForFramework(frameworkName);
+    console.log(`Hash seed for framework '${frameworkName}' is '${seed}'`);
+    module.default();
+  }
 }
 
 main().catch((ex) => {

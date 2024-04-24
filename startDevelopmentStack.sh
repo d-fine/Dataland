@@ -19,7 +19,15 @@ source ./*github_env.log
 source ./environments/.env.uncritical
 set +o allexport
 
-find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" ! -name "*backend*" -exec bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
+if [ $# -ge 1 ] && [ "$1" == "parallel" ]; then
+  echo "Building docker images in parallel for unrivaled speed! (Does not work in Windows Git Bash)"
+  find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" ! -name "*backend*" -print0 |
+    parallel -0 --tmux 'eval "{}" && echo "SUCCESS - execution of {} was successful" || echo "ERROR - could not execute {}"'
+else
+  echo "Building docker images sequentially!"
+  find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" ! -name "*backend*" -exec \
+    bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
+fi
 
 set -o allexport
 source ./*github_env.log
