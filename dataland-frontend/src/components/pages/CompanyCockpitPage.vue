@@ -54,9 +54,7 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
     isClaimPanelVisible() {
-      return (
-        !this.isUserDataOwner && this.authenticated && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner
-      );
+      return !this.isUserDataOwner && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner;
     },
   },
   watch: {
