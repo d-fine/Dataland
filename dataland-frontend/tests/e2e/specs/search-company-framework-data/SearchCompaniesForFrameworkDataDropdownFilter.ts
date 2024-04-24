@@ -9,7 +9,7 @@ import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadCompanyAndFrameworkData, uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
@@ -363,20 +363,15 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
 
           getKeycloakToken(admin_name, admin_pw).then((token) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameSfdr)).then(
-              (storedCompany) => {
-                const sfdrFixture = companiesWithSfdrData[0];
-                return uploadFrameworkData(
-                  DataTypeEnum.Sfdr,
-                  token,
-                  storedCompany.companyId,
-                  sfdrFixture.reportingPeriod,
-                  sfdrFixture.t,
-                );
-              },
+            const sfdrFixture = companiesWithSfdrData[0];
+            void uploadCompanyAndFrameworkData(
+              DataTypeEnum.Sfdr,
+              token,
+              generateDummyCompanyInformation(companyNameSfdr),
+              sfdrFixture.t,
+              sfdrFixture.reportingPeriod,
             );
           });
-
           checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
         },
       );
