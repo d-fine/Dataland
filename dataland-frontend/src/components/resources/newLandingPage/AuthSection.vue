@@ -57,7 +57,7 @@ const login = (): void => {
         keycloak.login().catch((error) => console.error(error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 };
 
 /**
@@ -72,7 +72,7 @@ onMounted(() => {
     .then((keycloak) => {
       isUserLoggedIn.value = keycloak.authenticated;
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 });
 
 /**
@@ -88,7 +88,7 @@ const register = (): void => {
         keycloak.register().catch((error) => console.error(error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 };
 </script>
 <style scoped lang="scss">
