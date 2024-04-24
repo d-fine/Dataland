@@ -47,6 +47,7 @@ import java.sql.SQLException
  * on eurodat
  * @param messageUtils contains utils connected to the messages on the message queue
  */
+@Suppress("LongParameterList") // TODO explain to Siegfried
 @Component
 class EurodatDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
