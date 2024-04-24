@@ -22,7 +22,7 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
     const randomActivityName: Activity = pickOneElement(Object.values(Activity));
     return {
       activityName: randomActivityName,
-      naceCodes: this.valueOrNull(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
+      naceCodes: this.valueOrNull(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName) ?? []),
       share: {
         relativeShareInPercent: this.randomPercentageValue(),
         absoluteShare: this.valueOrNull(this.generateAmountWithCurrency()),

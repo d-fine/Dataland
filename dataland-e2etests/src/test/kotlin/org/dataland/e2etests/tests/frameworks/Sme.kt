@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -11,6 +12,16 @@ class Sme {
     private val listOfOneSmeDataSet = apiAccessor.testDataProviderForSmeData.getTData(1)
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSmeData
         .getCompanyInformationWithoutIdentifiers(1)
+
+    private fun sortNaturalHazardsCovered(dataset: SmeData): SmeData {
+        return dataset.copy(
+            insurances = dataset.insurances?.copy(
+                naturalHazards = dataset.insurances?.naturalHazards?.copy(
+                    naturalHazardsCovered = dataset.insurances?.naturalHazards?.naturalHazardsCovered?.sorted(),
+                ),
+            ),
+        )
+    }
 
     @Test
     fun `post a company with SME data and check if the data can be retrieved correctly`() {
@@ -27,6 +38,10 @@ class Sme {
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        Assertions.assertEquals(listOfOneSmeDataSet[0], downloadedAssociatedData.data)
+
+        Assertions.assertEquals(
+            sortNaturalHazardsCovered(listOfOneSmeDataSet[0]),
+            sortNaturalHazardsCovered(downloadedAssociatedData.data),
+        )
     }
 }
