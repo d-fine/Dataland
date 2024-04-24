@@ -31,7 +31,7 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
  * @returns the value or null
  */
 export function valueOrNull<T>(value: T, nullProbability = DEFAULT_PROBABILITY): T | null {
-  return Math.random() > nullProbability ? value : null;
+  return faker.datatype.boolean(nullProbability) ? null : value;
 }
 
 export class Generator {

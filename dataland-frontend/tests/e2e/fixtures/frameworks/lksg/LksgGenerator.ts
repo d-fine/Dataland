@@ -99,6 +99,6 @@ export class LksgGenerator extends Generator {
    * @returns random array of goods or services
    */
   guaranteedListOfGoodsOrServices(): string[] {
-    return this.guaranteedArray(() => faker.commerce.productName(), 1);
+    return generateNaceCodes(1);
   }
 }
