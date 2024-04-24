@@ -33,10 +33,10 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import type Keycloak from "keycloak-js";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 import { useRouter } from "vue-router";
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 
 const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
@@ -51,7 +51,11 @@ const login = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        loginAndRedirectToSearchPage(keycloak);
+        if (window.location.pathname == "/") {
+          loginAndRedirectToSearchPage(keycloak);
+        } else {
+          keycloak.login().catch((error) => console.error(error));
+        }
       }
     })
     .catch((error) => console.log(error));
@@ -79,7 +83,11 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        registerAndRedirectToSearchPage(keycloak);
+        if (window.location.pathname == "/") {
+          registerAndRedirectToSearchPage(keycloak);
+        } else {
+          keycloak.register().catch((error) => console.error(error));
+        }
       }
     })
     .catch((error) => console.log(error));
