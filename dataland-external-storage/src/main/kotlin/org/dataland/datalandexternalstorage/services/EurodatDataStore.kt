@@ -205,8 +205,6 @@ class EurodatDataStore(
         logger.info("Documents stored in eurodat storage.")
     }
 
-    // TODO include a light-weight retry-logic to all the store-functions => if no success after retries, do nothing
-
     /**
      * Stores a Data Item in EuroDaT while ensuring that there is no active transaction.
      * This will guarantee that the write is commited after exit of this method.
