@@ -10,7 +10,7 @@ describe("Component tests for the data request review buttons", function (): voi
   const triggerComponentForEmailDetails = "updateRequestButton";
   const messageHistory = [
     {
-      contacts: ["Franz69@yahoo.com"],
+      contacts: ["Franz69@example.com"],
       message: "navigate online bandwidth",
       creationTimestamp: 2710,
     },
@@ -95,7 +95,10 @@ describe("Component tests for the data request review buttons", function (): voi
    * Mocks the community-manager answer for the request of the users data requests
    */
   function interceptUserRequestsOnMounted(): void {
-    cy.intercept(`**/community/requests/1**`, {
+    const requestFor2022 = mockedRequests.find((it) => it.reportingPeriod == "2022");
+    assert(requestFor2022 !== undefined);
+
+    cy.intercept(`**/community/requests/${requestFor2022!.dataRequestId}`, {
       body: {
         messageHistory: messageHistory,
       },
