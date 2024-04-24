@@ -31,7 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-internal class PublicDataControllerTest(
+internal class DataControllerTest(
     @Autowired @Spy
     var objectMapper: ObjectMapper,
 ) {
