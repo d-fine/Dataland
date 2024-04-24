@@ -141,7 +141,7 @@ class PrivateDataManager(
     ): MutableMap<String, String> {
         val documentHashes = mutableMapOf<String, String>()
         for (document in documents) {
-            val documentHash = document.bytes.sha256() // TODO needs to be the same as in Frontend! (one-off) test?
+            val documentHash = document.bytes.sha256()
             val documentUuid = IdUtils.generateUUID()
             documentHashes[documentHash] = documentUuid
             val documentAsByteArray = convertMultipartFileToByteArray(document)
