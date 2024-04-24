@@ -13,7 +13,7 @@ is_infrastructure_up () {
   services["api-key-manager"]=http://local-dev.dataland.com/api-keys/actuator/health/ping
   services["qa-service"]=http://local-dev.dataland.com/qa/actuator/health/ping
   services["community-manager"]=http://local-dev.dataland.com/community/actuator/health/ping
-
+  services["external-storage"]=http://local-dev.dataland.com/external-storage/actuator/health/ping
 
   for service in "${!services[@]}"; do
     if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive\|datalandsecurity'; then
