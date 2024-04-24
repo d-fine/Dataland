@@ -1,6 +1,6 @@
 <template>
   <Dropdown
-    :options="options"
+    :options="displayOptions"
     v-bind:model-value="selectedOption"
     @update:model-value="handleInputChange($event)"
     :placeholder="placeholder"
@@ -29,6 +29,7 @@ import { type ComponentPropsOptions, defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
+import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
@@ -49,30 +50,32 @@ export default defineComponent({
   data() {
     return {
       selectedOption: null as null | string,
-      optionLabel: "",
-      optionValue: "",
+      optionLabel: "label",
+      optionValue: "value",
     };
-  },
-  created() {
-    this.setOptionLabelValue();
   },
   emits: ["update:model-value"],
   watch: {
     modelValue(newValue: string) {
       this.selectedOption = newValue;
     },
+    options() {
+      if(!(this.displayOptions as (DropdownOption | undefined)[])
+          .map((entry) => entry?.value).includes(this.selectedOption ?? undefined)) {
+        this.selectedOption = null;
+      }
+    }
+  },
+  computed: {
+    displayOptions() {
+      if(Array.isArray(this.options)) {
+        if((this.options as unknown[]).every((element) => typeof element == "object")) { return this.options; }
+        else { return this.options.map((entry) => ({value: entry, label: entry})); }
+      }
+      return Object.entries(this.options).map((entry) => ({value: entry[0], label: entry[1]}));
+    }
   },
   methods: {
-    /**
-     * Sets the values of optionLabel and optionValue depending on whether the options are [{label: ... , value: ...}]
-     * or a simple array
-     */
-    setOptionLabelValue(): void {
-      if (Array.isArray(this.options) && (this.options as unknown[]).every((element) => typeof element == "object")) {
-        this.optionLabel = "label";
-        this.optionValue = "value";
-      }
-    },
     /**
      * Handler for changes in the dropdown component
      * @param newInput the new value in the dropdown
