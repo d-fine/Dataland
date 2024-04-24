@@ -111,10 +111,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
-tasks.withType<com.autonomousapps.tasks.CodeSourceExploderTask> {
-    dependsOn("generateClients")
-}
-
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateClients")
 }

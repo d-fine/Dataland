@@ -32,8 +32,6 @@ org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.
 
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.23" }
 
-com-autonomousapps-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.31.0" }
-
 [versions]
 
 kotlin = "1.9.23"

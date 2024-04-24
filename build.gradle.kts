@@ -57,7 +57,6 @@ dependencies {
 java.sourceCompatibility = jvmVersion
 
 plugins {
-    id("com.autonomousapps.dependency-analysis")
     id("com.github.jk1.dependency-license-report")
     id("io.gitlab.arturbosch.detekt")
     id("com.github.node-gradle.node") apply false
