@@ -24,6 +24,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
+tasks.withType<com.autonomousapps.tasks.CodeSourceExploderTask> {
+    dependsOn("generateClients")
+}
+
 tasks.withType<NpmTask> {
     dependsOn("generateClients")
 }

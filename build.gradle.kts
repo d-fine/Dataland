@@ -57,6 +57,7 @@ dependencies {
 java.sourceCompatibility = jvmVersion
 
 plugins {
+    id("com.autonomousapps.dependency-analysis")
     id("com.github.jk1.dependency-license-report")
     id("io.gitlab.arturbosch.detekt")
     id("com.github.node-gradle.node") apply false
@@ -64,7 +65,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     kotlin("jvm")
     kotlin("plugin.spring") apply false
-    id("org.sonarqube") version "4.3.0.3225"
+    id("org.sonarqube")
     jacoco
     id("org.springdoc.openapi-gradle-plugin") apply false
     id("com.gorylenko.gradle-git-properties") apply false
