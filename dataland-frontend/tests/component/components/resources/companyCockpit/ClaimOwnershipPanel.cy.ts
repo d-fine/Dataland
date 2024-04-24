@@ -42,6 +42,11 @@ describe("Component test for ClaimOwnershipPanel", () => {
         "Responsible for TestClaimOwnershipPanelCompany?",
       );
       cy.get("[data-test='claimOwnershipPanelLink']").should("have.text", " Claim company dataset ownership. ").click();
+      cy.get("[data-test='claimOwnershipPanelLink']")
+        .should("have.text", " Claim company dataset ownership. ")
+        .click()
+        .get("#claimOwnerShipDialog")
+        .should("not.exist");
       cy.wrap(registerSpy).should("have.been.called");
     });
   });
