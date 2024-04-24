@@ -147,9 +147,9 @@ jobs:
       - name: Keycloak theme linting
         run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
         if: always()
-      - name: Execute Frontend Scripts to check if they run successfully
+      - name: Verify that Fake Fixtures are Up-To-Date
         if: always()
-        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
+        run: testing/verify_that_fake_fixtures_are_up_to_date.sh
       - name: verify OpenApi Files
         if: always()
         env:
