@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component
  * A class that manages generating emails messages when data ownership request is accepted
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @oaram keycloakUserControllerApiService object for using keycloak
+ * @param requestControllerApi object for using request services
  */
 
 @Component
