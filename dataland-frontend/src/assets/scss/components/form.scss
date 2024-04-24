@@ -591,6 +591,14 @@ input[type="radio"] {
   .long {
     width: 100%;
   }
+  .shortish-hard {
+    width: 45%;
+    min-width: 45%;
+    max-width: 45%;
+  }
+  .normal-line-height {
+    line-height: normal;
+  }
   .no-selection .p-dropdown-label {
     color: #767676;
   }
