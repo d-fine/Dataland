@@ -50,12 +50,11 @@ const { isLandingPage } = defineProps<{
 const login = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      if (!keycloak.authenticated) {
-        if (window.location.pathname == "/") {
-          loginAndRedirectToSearchPage(keycloak);
-        } else {
-          keycloak.login().catch((error) => console.error(error));
-        }
+      if (keycloak.authenticated) return;
+      if (window.location.pathname == "/") {
+        loginAndRedirectToSearchPage(keycloak);
+      } else {
+        keycloak.login().catch((error) => console.error(error));
       }
     })
     .catch((error) => console.log(error));
@@ -82,12 +81,11 @@ onMounted(() => {
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      if (!keycloak.authenticated) {
-        if (window.location.pathname == "/") {
-          registerAndRedirectToSearchPage(keycloak);
-        } else {
-          keycloak.register().catch((error) => console.error(error));
-        }
+      if (keycloak.authenticated) return;
+      if (window.location.pathname == "/") {
+        registerAndRedirectToSearchPage(keycloak);
+      } else {
+        keycloak.register().catch((error) => console.error(error));
       }
     })
     .catch((error) => console.log(error));
