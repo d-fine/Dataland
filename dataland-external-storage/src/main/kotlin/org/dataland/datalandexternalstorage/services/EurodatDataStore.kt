@@ -66,7 +66,6 @@ class EurodatDataStore(
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
     private val initializeSafeDepositBox: Boolean,
 ) {
-    // TODO try to move the variables here
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**

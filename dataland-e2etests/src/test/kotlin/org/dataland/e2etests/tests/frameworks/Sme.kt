@@ -45,7 +45,7 @@ class Sme {
     }
 
     @Test
-    fun `post a company with SME data, including documents, and check if it has been persisted successfully`() {
+    fun `post a company with SME data, including documents and check if it has been persisted successfully`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
 
