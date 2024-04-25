@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 /**
  * Controller for the sme framework endpoints
@@ -43,6 +44,11 @@ class SmeDataController(
         bypassQa: Boolean,
     ):
         ResponseEntity<DataMetaInformation> {
+        val someArray = mutableListOf("apples", "bananas", "grapes")
+        someArray.forEach { println(it) }
+        someArray.remove("apples")
+        someArray.forEach { println(it) }
+        someArray.forEach { it.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() } }
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
