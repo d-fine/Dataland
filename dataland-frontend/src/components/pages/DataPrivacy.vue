@@ -175,8 +175,10 @@
           auslösen kann.
         </p>
         <p>
-          YouTube verarbeitet Daten, u.a. auch in den USA. Als Grundlage für die Datenverarbeitung in den USA dient der
-          Angemessenheitsbeschluss der Europäischen Kommission vom 10. Juli 2023.
+          YouTube verarbeitet Daten, u.a. auch in den USA. Für die USA hat die Europäische Kommission am 10. Juli 2023
+          ihren Angemessenheitsbeschluss erlassen. Dort wird festgelegt, dass die USA ein angemessenes Datenschutzniveau
+          für Transfers innerhalb dieses Rahmens gewährleisten. Google LLC ist nach dem EU-US Data Privacy Framework
+          zertifiziert und es kann ein angemessenes Datenschutzniveau angenommen werden.
         </p>
         <p>
           Rechtsgrundlage für die Verarbeitung ist ihre Einwilligung, Art. 6 Abs. 1 lit. a DS-GVO, welche Sie jederzeit
@@ -243,6 +245,12 @@
           Beiträge, Kommentare) und Nutzungsdaten (z.B. Klickverhalten, Verweildauer). Informationen und Daten, die auf
           LinkedIn angezeigt oder geteilt werden, können für LinkedIn, dessen Nutzer oder beauftragte Dienstleister
           zugänglich sein.
+        </p>
+        <p>
+          Die LinkedIn Corporation verarbeitet Daten, u.a. auch in den USA. Für die USA hat die Europäische Kommission
+          am 10. Juli 2023 ihren Angemessenheitsbeschluss erlassen. Dort wird festgelegt, dass die USA ein angemessenes
+          Datenschutzniveau für Transfers innerhalb dieses Rahmens gewährleisten. LinkedIn ist nach dem EU-US Data
+          Privacy Framework zertifiziert und es kann ein angemessenes Datenschutzniveau angenommen werden.
         </p>
         <p>
           Die Rechtsgrundlage für die Verarbeitung der Daten ist unser berechtigtes Interesse an der Analyse von
@@ -371,7 +379,24 @@
       </div>
     </div>
     <div>
-      <h2>3. Empfänger und Empfängerkategorien</h2>
+      <h2>3. Cookiebot by Usercentrics Consent Manager</h2>
+      <p>
+        Wir nutzen die Consent Management Plattform (CMP) „Cookiebot“ der Usercentrics A/S, Havnegade 39, 1058
+        Kopenhagen, Dänemark. Über das Tool haben Sie die Möglichkeit bequem Ihre Einwilligungen in das Setzen technisch
+        nicht erforderlicher Cookies zu verwalten und diesbzgl. Änderungen – etwa Widerrufe erteilter Einwilligungen
+        oder Widersprüche- über das Tool vorzunehmen.
+      </p>
+      <p>
+        Des Weiteren können Sie die nach Art.13 DS-GVO erforderlichen Informationen zur Verarbeitung Ihrer
+        personenbeziehbaren Daten durch die Cookiebot CMP sowie durch technisch nicht erforderliche Cookies dem Tool
+        entnehmen.
+      </p>
+      <p>
+        Sie erreichen die Einstellungen unserer CMP durch Anklicken des Icons in der unteren linken Hälfte der Webseite.
+      </p>
+    </div>
+    <div>
+      <h2>4. Empfänger und Empfängerkategorien</h2>
       <p>
         Innerhalb unseres Unternehmens erhalten diejenigen Stellen Zugriff auf Ihre Daten, die diese zur Erfüllung der
         vertraglichen und gesetzlichen Pflichten brauchen. Auch von uns eingesetzte Dienstleister und Erfüllungsgehilfen
@@ -399,7 +424,7 @@
       <p>Im Übrigen gelten die in den übrigen Abschnitten aufgeführten Datenweitergaben.</p>
     </div>
     <div>
-      <h2>4. Übermittlung in Drittstaaten</h2>
+      <h2>5. Übermittlung in Drittstaaten</h2>
       <p>
         Eine Datenübermittlung an Stellen in Staaten außerhalb der Europäischen Union (sogenannte Drittstaaten) findet
         statt, soweit
@@ -408,10 +433,6 @@
         <li>es gesetzlich vorgeschrieben ist (z.B. steuerrechtliche Meldepflichten) oder</li>
         <li>Sie uns Ihre Einwilligung erteilt haben.</li>
       </ul>
-      <p>
-        Des Weiteren kann eine Übermittlung an Stellen in Drittstaaten zur Aufrechterhaltung und Sicherstellung des
-        IT-Betriebs und der IT-Sicherheit des Unternehmens nicht ausgeschlossen werden.
-      </p>
       <p>
         Bitte beachten Sie, dass in den USA aufgrund des Angemessenheitsbeschlusses grundsätzlich ein mit der EU und des
         EWR vergleichbares Datenschutzniveau besteht. Eine Datenübertragung ist hingegen erst dann zulässig, wenn der
@@ -424,7 +445,7 @@
       </p>
     </div>
     <div>
-      <h2>5. Speicherdauer</h2>
+      <h2>6. Speicherdauer</h2>
       <p>
         Wir verarbeiten und speichern Ihre personenbezogenen Daten, solange es für die Erfüllung unserer vertraglichen
         Pflichten und Wahrnehmung unserer Rechte erforderlich ist.
@@ -440,7 +461,7 @@
       </p>
     </div>
     <div>
-      <h2>6. Datensicherheit</h2>
+      <h2>7. Datensicherheit</h2>
       <p>
         Auf unserem Onlineangebot ist aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte, wie
         zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL-bzw.
@@ -456,7 +477,7 @@
       </p>
     </div>
     <div>
-      <h2>7. Betroffenenrechte</h2>
+      <h2>8. Betroffenenrechte</h2>
       <p>
         Jede betroffene Person hat das <em class="underline">Recht auf Auskunft</em> nach Art. 15 DS-GVO, das
         <em class="underline">Recht auf Berichtigung</em> nach Art. 16 DS-GVO, das
@@ -491,7 +512,7 @@
       </p>
     </div>
     <div>
-      <h2>8. Pflicht zur Bereitstellung von Daten</h2>
+      <h2>9. Pflicht zur Bereitstellung von Daten</h2>
       <p>
         Im Rahmen unseres Onlineangebots sind wir auf die Verarbeitung solcher Nutzungsdaten angewiesen, die für die
         Durchführung und Beendigung des Dienstes und zur Erfüllung der damit verbundenen Pflichten erforderlich sind.
@@ -501,15 +522,15 @@
       </p>
     </div>
     <div>
-      <h2>9. Profiling</h2>
+      <h2>10. Profiling</h2>
       <p>
         Wir verarbeiten Ihre personenbezogenen Daten nicht automatisiert in einer Weise, dass sie Ihnen gegenüber
         rechtliche Wirkung entfaltet oder sie in ähnlicher Weise erheblich beeinträchtigt.
       </p>
     </div>
     <div>
-      <h2>10. Aktualität und Änderung dieser Datenschutzerklärung</h2>
-      <p>Diese Datenschutzerklärung ist aktuell gültig und wurde das letzte Mal im Oktober 2023 aktualisiert.</p>
+      <h2>11. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+      <p>Diese Datenschutzerklärung ist aktuell gültig und wurde das letzte Mal im April 2024 aktualisiert.</p>
     </div>
   </LegalPage>
 </template>
