@@ -22,14 +22,14 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-oauth")
 interface SmeDataApi {
     /**
-     * A method to store private data via Dataland into a data store
+     * A method to store private sme data via Dataland into a data store
      */
     // TODO activate at the end to allow only owners
             /*@PreAuthorize("(hasRole('ROLE_USER') " +
                     "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
     @Operation(
-        summary = "Upload new private data set.",
-        description = "The uploaded private data is added to the private data store, the generated data id is " +
+        summary = "Upload a new private sme data set.",
+        description = "The uploaded private sme data is added to the private data store, the generated data id is " +
             "returned.",
     )
     @ApiResponses(
