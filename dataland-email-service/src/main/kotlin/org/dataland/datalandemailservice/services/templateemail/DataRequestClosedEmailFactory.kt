@@ -48,7 +48,7 @@ class DataRequestClosedEmailFactory(
             .append("Company: ${properties[keys.companyName]} \n")
             .append("Framework: ${properties[keys.dataType]} \n")
             .append("Reporting period: ${properties[keys.reportingPeriod]} \n\n")
-            .append("Request created: ${properties[keys.creationDate]} \n\n")
+            .append("Request last modified: ${properties[keys.creationDate]} \n\n")
             .append("To my data request:\n")
             .append("$proxyPrimaryUrl/requests/${properties[keys.dataRequestId]}")
             .toString()

@@ -106,7 +106,7 @@ class DataRequestClosedEmailFactoryTest {
         assertTrue(email.content.textContent.contains("Reporting period: $reportingPeriod \n\n"))
         assertTrue(email.content.textContent.contains("Framework: $dataType \n"))
         assertTrue(
-            email.content.textContent.contains("Request created: $creationTimestampAsDate \n\n"),
+            email.content.textContent.contains("Request last modified: $creationTimestampAsDate \n\n"),
         )
 
         assertTrue(
