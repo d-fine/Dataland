@@ -38,7 +38,7 @@ import java.util.*
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param companyManager service for managing company data
+ * @param companyQueryManager service for managing query regarding company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
@@ -91,6 +91,7 @@ class DataManager(
         val dataId = generateRandomDataId()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
+        logger.info("Just a Test.")
         return dataId
     }
 
