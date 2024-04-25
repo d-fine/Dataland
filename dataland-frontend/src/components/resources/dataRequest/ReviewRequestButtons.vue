@@ -89,7 +89,7 @@
   <div v-if="isVisible">
     <PrimeButton
       class="uppercase p-button-outlined p-button p-button-sm d-letters"
-      aria-label="CLOSE REQUEST"
+      aria-label="RESOLVE REQUEST"
       @click="resolveRequest"
       data-test="closeRequestButton"
     >
