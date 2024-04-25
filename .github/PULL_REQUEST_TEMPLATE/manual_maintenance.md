@@ -115,7 +115,7 @@ Update versions in the following dockerfiles
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
-  service that is not covered by the tasks above)
+  service that is not covered by the tasks above )
 
 ## Server updates
 
