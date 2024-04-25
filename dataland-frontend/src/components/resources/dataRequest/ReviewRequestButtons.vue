@@ -187,8 +187,8 @@ export default defineComponent({
       toggleEmailDetailsError: false,
       activeTab: "update request",
       hasValidEmailForm: false,
-      emailContacts: new Set<string>(),
-      emailMessage: "",
+      emailContacts: undefined as Set<string> | undefined,
+      emailMessage: undefined as string | undefined,
       showUpdateRequestDialog: false,
       answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
       dialogIsVisible: false,
@@ -364,9 +364,7 @@ export default defineComponent({
      * Handles the click on update request
      */
     async updateRequest() {
-      console.log(this.emailContacts);
       if (!this.currentChosenDataRequestId) {
-        console.log(this.currentChosenDataRequestId);
         return;
       }
       if (this.hasValidEmailForm) {

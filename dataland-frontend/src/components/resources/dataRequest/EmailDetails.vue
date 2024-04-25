@@ -110,6 +110,9 @@ export default defineComponent({
         .filter((email) => email);
     },
   },
+  mounted() {
+    this.emitInput();
+  },
   watch: {
     hasValidInput() {
       this.emitInput();
@@ -129,14 +132,21 @@ export default defineComponent({
      * Method to emit the provided Input
      */
     emitInput() {
-      const contacts = ((): Set<string> | null => {
+      const contacts = ((): Set<string> | undefined => {
         if (this.areContactsValid()) {
           return new Set<string>(this.selectedContacts);
         } else {
-          return null;
+          return undefined;
         }
       })();
-      this.$emit("hasNewInput", this.hasValidInput, contacts, this.dataRequesterMessage);
+      const message = ((): string | undefined => {
+        if (contacts) {
+          return this.dataRequesterMessage;
+        } else {
+          return undefined;
+        }
+      })();
+      this.$emit("hasNewInput", this.hasValidInput, contacts, message);
     },
     /**
      * Enables the error messages
@@ -203,7 +213,10 @@ export default defineComponent({
      * @returns true if the provided emails are all valid (therefor also if there are none), false otherwise
      */
     areContactsValid(): boolean {
-      return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
+      return (
+        this.contactsAsString.length > 0 &&
+        this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact))
+      );
     },
     /**
      * Checks if all fields are filled correctly
