@@ -99,7 +99,7 @@ jobs:
       - name: Execute framework-toolbox integrationTest
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
         env:
-          BACKEND_URL: ${{secrets.BACKEND_URL}}
+          DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
