@@ -17,6 +17,10 @@ x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
 x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
   MAILJET_API_SECRET: ${MAILJET_API_SECRET}
   MAILJET_API_ID: ${MAILJET_API_ID}
+x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
+  POSTGRES_DB: eurodat_db_name
+  POSTGRES_USER: eurodat_db_user
+  POSTGRES_PASSWORD: eurodat_db_password
 
 
 services:
@@ -521,6 +525,8 @@ services:
       - internal
     expose:
       - "8080"
+    environment:
+      <<: *dummy-eurodat-db-settings
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing", "development" ] #TODO remove development at the end
@@ -531,9 +537,7 @@ services:
     volumes:
       - ./dataland-dummy-eurodat-db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
-      POSTGRES_DB: eurodat_db_name
-      POSTGRES_USER: eurodat_db_user
-      POSTGRES_PASSWORD: eurodat_db_password
+      <<: *dummy-eurodat-db-settings
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
