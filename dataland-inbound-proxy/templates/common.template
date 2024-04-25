@@ -10,7 +10,7 @@ location /api/internal/ {
 
 location /api/ {
   client_max_body_size ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}M;
-  proxy_pass ${INTERNAL_BACKEND_URL};
+  proxy_pass ${BACKEND_URL};
   include utils/proxy.conf;
   include utils/apiErrors.conf;
 }

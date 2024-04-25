@@ -44,7 +44,7 @@ services:
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       #TODO if dev environment than use dev config otherwise do nothing
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      BACKEND_URL: ${BACKEND_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
   admin-proxy:
