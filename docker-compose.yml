@@ -43,6 +43,7 @@ services:
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
+      BACKEND_URL: ${BACKEND_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
   admin-proxy:

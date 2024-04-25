@@ -225,8 +225,6 @@ class PrivateDataManager(
             persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId, correlationId)
             removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
-            // TODO mach mal einen one-off Test am Ende mit print-statements und check ob wirklich alles wieder leer
-            // TODO ist nach dem removal Prozess
         }
     }
 
