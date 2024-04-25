@@ -98,6 +98,8 @@ jobs:
           cache: gradle
       - name: Execute framework-toolbox integrationTest
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
+        env:
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -141,6 +143,7 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
           NOTIFICATION_INTERNAL_CC: ""
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
