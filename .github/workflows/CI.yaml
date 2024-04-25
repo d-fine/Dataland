@@ -320,6 +320,7 @@ jobs:
           RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
           FRONTEND_LOCATION_CONFIG: "Test"
           INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
+          BACKEND_URL: ${{secrets.BACKEND_URL]}
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
