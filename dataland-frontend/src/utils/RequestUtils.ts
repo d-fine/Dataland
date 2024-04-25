@@ -81,8 +81,9 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return "p-badge badge-light-green outline rounded";
     case "Withdrawn":
       return "p-badge badge-gray outline rounded";
-    case "Closed":
-      return "p-badge badge-brown outline rounded";
+    //todo
+    // case "Closed":
+    // return "p-badge badge-brown outline rounded";
     default:
       return "p-badge outline rounded";
   }
