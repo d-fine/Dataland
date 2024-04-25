@@ -112,7 +112,7 @@ describe("Component tests for the data request review buttons", function (): voi
    * Mocks the answer for patching the request status
    */
   function interceptPatchRequestsOnMounted(): void {
-    cy.intercept(`**/requestStatus?requestStatus=Closed`, {
+    cy.intercept(`**/requestStatus?requestStatus=Resolved`, {
       body: {
         requestStatus: RequestStatus.Resolved,
       } as StoredDataRequest,
