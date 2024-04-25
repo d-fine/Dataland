@@ -1,4 +1,6 @@
 import { DataTypeEnum } from "@clients/backend";
+import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
+import { logout } from "@e2e/utils/Auth";
 
 describe("As a user I expect to be redirected to the login page if I am unauthenticated", () => {
   const pages = [
@@ -13,6 +15,52 @@ describe("As a user I expect to be redirected to the login page if I am unauthen
     it(`Test Login Redirect for ${page}`, () => {
       cy.visit(page);
       cy.get("input[name=login]").should("exist").url().should("contain", "keycloak");
+    });
+  });
+});
+
+describe("As an unauthenticated user I expect to be redirected to the page I started the login process on", () => {
+  const pages = ["/companies/:companyID"];
+
+  pages.forEach((page) => {
+    it(`Test Login Redirect to ${page}`, () => {
+      cy.visitAndCheckAppMount(page);
+      cy.get('button.login-button[name="login_dataland_button"]').should("exist").click();
+
+      cy.get("#username")
+        .should("exist")
+        .type(reader_name, { force: true })
+        .get("#password")
+        .should("exist")
+        .type(reader_pw, { force: true })
+
+        .get("#kc-login")
+        .should("exist")
+        .click();
+
+      cy.url().should("eq", getBaseUrl() + page);
+      logout();
+    });
+
+    it(`Test Register Redirect to ${page}`, () => {
+      cy.visitAndCheckAppMount(page);
+      cy.get('button.registration-button[name="signup_dataland_button"]').should("exist").click();
+
+      cy.contains("button", "LOGIN TO ACCOUNT").should("exist").should("be.visible").click();
+
+      cy.get("#username")
+        .should("exist")
+        .type(reader_name, { force: true })
+        .get("#password")
+        .should("exist")
+        .type(reader_pw, { force: true })
+
+        .get("#kc-login")
+        .should("exist")
+        .click();
+
+      cy.url().should("eq", getBaseUrl() + page);
+      logout();
     });
   });
 });
