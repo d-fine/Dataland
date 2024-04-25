@@ -91,7 +91,7 @@
       class="uppercase p-button-outlined p-button p-button-sm d-letters"
       aria-label="RESOLVE REQUEST"
       @click="resolveRequest"
-      data-test="closeRequestButton"
+      data-test="resolveRequestButton"
     >
       <span class="px-2">RESOLVE REQUEST</span>
       <span class="material-icons-outlined no-line-height" v-if="mapOfReportingPeriodToActiveDataset.size > 1">

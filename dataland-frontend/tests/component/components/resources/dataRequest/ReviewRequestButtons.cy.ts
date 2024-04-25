@@ -53,9 +53,9 @@ describe("Component tests for the data request review buttons", function (): voi
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
 
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod("resolveRequestButton", "reOpenRequestButton");
 
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "resolveRequestButton");
   });
   /**
    * Checks for pop up modal
@@ -63,7 +63,7 @@ describe("Component tests for the data request review buttons", function (): voi
    */
   function checkForReviewButtonsPopUpModal(expectedPopUp: string): void {
     const popUpdataTestId = `[data-test="${expectedPopUp}"]`;
-    cy.get('[data-test="closeRequestButton"]').should("exist").click();
+    cy.get('[data-test="resolveRequestButton"]').should("exist").click();
     cy.get(popUpdataTestId).should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
 
