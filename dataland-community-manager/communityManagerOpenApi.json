@@ -933,7 +933,7 @@
         "enum": [
           "Open",
           "Answered",
-          "Closed",
+          "Resolved",
           "Withdrawn"
         ]
       },
