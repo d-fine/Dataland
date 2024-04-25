@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.api.PrivateDataApi
+import org.dataland.datalandbackend.api.SmeDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile
 class SmeDataController(
     @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
-) : PrivateDataApi {
+) : SmeDataApi {
 
     @Operation(operationId = "postSmeJsonAndDocuments")
     override fun postSmeJsonAndDocuments(

@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/data/sme")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface PrivateDataApi {
+interface SmeDataApi {
     /**
      * A method to store private data via Dataland into a data store
      */
@@ -43,5 +43,3 @@ interface PrivateDataApi {
         @RequestPart(value = "documents") documents: Array<MultipartFile>? = null,
     ): ResponseEntity<DataMetaInformation>
 }
-
-// TODO nginx beschwert sich noch wenn die pdfs zu groß sind!  dort musst du auch die maxxfile size einstellen
