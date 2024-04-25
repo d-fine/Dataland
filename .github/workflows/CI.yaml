@@ -439,9 +439,9 @@ jobs:
       - name: Run Sonar
         if: ${{ !cancelled() }}
         run: |
-          ls -lisa /home/runner/work/Dataland/Dataland/dataland-backend/src/main/kotlin/org/dataland/datalandbackend/services/*
+          cp /home/runner/work/Dataland/Dataland/backend-bootRun-0.exec /home/runner/work/Dataland/Dataland/dataland-backend/build/jacoco/jacoco.exec
+          ls -lisa /home/runner/work/Dataland/Dataland/dataland-backend/build/jacoco
           touch ./build/reports/sonarProperties.txt
-          ls -lisa /home/runner/work/Dataland/Dataland/*
           ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace
           ./gradlew sonar --no-daemon --stacktrace
         env:
