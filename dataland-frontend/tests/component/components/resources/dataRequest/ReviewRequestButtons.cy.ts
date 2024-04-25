@@ -114,7 +114,7 @@ describe("Component tests for the data request review buttons", function (): voi
   function interceptPatchRequestsOnMounted(): void {
     cy.intercept(`**/requestStatus?requestStatus=Closed`, {
       body: {
-        requestStatus: RequestStatus.Closed,
+        requestStatus: RequestStatus.Resolved,
       } as StoredDataRequest,
       status: 200,
     }).as("closeUserRequest");

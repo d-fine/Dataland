@@ -121,16 +121,16 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Closed,
+            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val closedDataRequest = requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Closed)
+        val closedDataRequest = requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Resolved)
         assertEquals(
-            RequestStatus.Closed,
+            RequestStatus.Resolved,
             closedDataRequest.requestStatus,
             "The status of the patched data request is not 'Closed' although this was expected.",
         )
@@ -154,7 +154,7 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
-            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Closed,
+            TechnicalUser.PremiumUser, dataRequestId, RequestStatus.Resolved,
         )
     }
 
@@ -171,7 +171,7 @@ class DataRequestUploadListenerTest {
         }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Resolved)
 
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(

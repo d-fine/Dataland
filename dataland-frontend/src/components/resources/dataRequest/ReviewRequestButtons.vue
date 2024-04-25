@@ -90,7 +90,7 @@
     <PrimeButton
       class="uppercase p-button-outlined p-button p-button-sm d-letters"
       aria-label="CLOSE REQUEST"
-      @click="closeRequest"
+      @click="resolveRequest"
       data-test="closeRequestButton"
     >
       <span class="px-2">CLOSE REQUEST</span>
@@ -261,13 +261,13 @@ export default defineComponent({
      * Method to close the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
      */
-    async closeRequest(event: Event) {
-      this.actionOnClick = ReportingPeriodTableActions.CloseRequest;
+    async resolveRequest(event: Event) {
+      this.actionOnClick = ReportingPeriodTableActions.ResolveRequest;
       if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
         this.openReportingPeriodPanel(event);
       } else {
         for (const answeredRequest of this.answeredDataRequestsForViewPage) {
-          await this.patchDataRequest(answeredRequest.dataRequestId, RequestStatus.Closed);
+          await this.patchDataRequest(answeredRequest.dataRequestId, RequestStatus.Resolved);
         }
       }
     },
@@ -326,8 +326,8 @@ export default defineComponent({
         case RequestStatus.Open:
           this.openSuccessModal("Request reopened successfully.");
           return;
-        case RequestStatus.Closed:
-          this.openSuccessModal("Request closed successfully.");
+        case RequestStatus.Resolved:
+          this.openSuccessModal("Request resolved successfully.");
           return;
       }
     },
@@ -354,8 +354,8 @@ export default defineComponent({
      */
     mapActionToStatus(actionOnClick: ReportingPeriodTableActions) {
       switch (actionOnClick) {
-        case ReportingPeriodTableActions.CloseRequest:
-          return RequestStatus.Closed;
+        case ReportingPeriodTableActions.ResolveRequest:
+          return RequestStatus.Resolved;
         case ReportingPeriodTableActions.ReopenRequest:
           return RequestStatus.Open;
       }

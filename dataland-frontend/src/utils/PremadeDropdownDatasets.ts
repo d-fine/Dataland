@@ -91,7 +91,7 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
 
 export enum ReportingPeriodTableActions {
   EditDataset = "editDataset",
-  CloseRequest = "closeRequest",
+  ResolveRequest = "resolveRequest", //todo check if close -> resolve works
   ReopenRequest = "reOpenRequest",
 }
 export interface ReportingPeriodTableEntry {
