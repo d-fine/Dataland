@@ -13,20 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * Manage sending emails to user regarding data requests answered
+ * Manage sending emails to user regarding data request closed
  */
-@Service("DataRequestedAnsweredEmailSender")
-class DataRequestedAnsweredEmailMessageSender(
+@Service("DataRequestClosedEmailSender")
+class DataRequestClosedEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) : DataRequestResponseEmailSenderBase(keycloakUserControllerApiService, companyDataControllerApi) {
     /**
-     * Method to informs user by mail that his request is answered.
+     * Method to informs user by mail that his request is closed
      * @param dataRequestEntity the dataRequestEntity
      */
-    fun sendDataRequestedAnsweredEmail(
+    fun sendDataRequestClosedEmail(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
@@ -38,10 +38,10 @@ class DataRequestedAnsweredEmailMessageSender(
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
             "dataRequestId" to dataRequestEntity.dataRequestId,
-            "closedIn" to "X" + " days", // todo change X to constant
+            "closedInDays" to "X", // todo change to constant
         )
         val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
+            emailTemplateType = TemplateEmailMessage.Type.DataRequestClosed,
             receiver = getUserEmailById(dataRequestEntity.userId),
             properties = properties,
         )
