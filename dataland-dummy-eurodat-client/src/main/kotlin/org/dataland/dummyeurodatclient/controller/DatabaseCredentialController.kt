@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.RestController
  * Controller for the database credential api
  */
 @RestController
-class DatabaseCredentialController(@Value("\${dataland.eurodatdummyclient.jdbc-url}")
-                                   private val eurodatJdbcUrl: String,
-                                   @Value("\${dataland.eurodatdummyclient.jdbc-username}")
-                                   private val eurodatUsername: String,
-                                   @Value("\${dataland.eurodatdummyclient.jdbc-password}")
-                                   private val eurodatPassword: String,
-    ) : DatabaseCredentialResourceApi {
+class DatabaseCredentialController(
+    @Value("\${dummy.eurodat.db.postgres-db}")
+    private val postgresDb: String,
+    @Value("\${dummy.eurodat.db.postgres-user}")
+    private val postgresUser: String,
+    @Value("\${dummy.eurodat.db.postgres-password}")
+    private val postgresPassword: String,
+) : DatabaseCredentialResourceApi {
     val credentials = Credentials(
-        eurodatJdbcUrl,
-        eurodatUsername,
-        eurodatPassword
+        "jdbc:postgresql://dummy-eurodat-db:5432/$postgresDb",
+        postgresUser,
+        postgresPassword
     )
 
     override fun apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(appId: String):
