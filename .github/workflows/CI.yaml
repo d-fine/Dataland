@@ -436,7 +436,11 @@ jobs:
         if: ${{ !cancelled() }}
         # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
         # the build.gradle.kts only looks for .class files at start of gradle (and not at start of task).
-        run: ./gradlew jacocoTestReport --no-daemon --stacktrace
+        run: |
+          # the next line  at some point fixed the problem of missing coverage reports on our java processes
+          # we left it here, even though removing it again did not break the coverage reports for java processes
+          for file in *.exec; do if [[ -f $file ]]; then project=$(echo $file | awk -F '-bootRun-' '{print $1}'); mkdir -p ./dataland-$project/build/jacoco; mv $file ./dataland-$project/build/jacoco/$file; fi; done
+          ./gradlew jacocoTestReport --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Sonar
