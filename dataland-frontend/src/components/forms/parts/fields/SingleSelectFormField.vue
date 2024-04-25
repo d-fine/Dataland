@@ -10,7 +10,9 @@
       :input-class="inputClass"
       :is-required="required"
       :class="containerClass"
-      @update:model-value="$emit('valueSelected', $event)"
+      :ignore="ignore"
+      v-bind:model-value="selectedOption"
+      @update:model-value="handleInputChange"
     />
   </div>
 </template>
@@ -28,7 +30,29 @@ export default defineComponent({
   props: Object.assign(deepCopyObject(DropdownOptionFormFieldProps as ObjectType), {
     inputClass: { type: String, default: "long" },
     containerClass: { type: String, default: "form-field" },
+    ignore: { type: Boolean, default: false },
+    modelValue: String,
   }) as Readonly<ComponentPropsOptions>,
-  emits: ["valueSelected"],
+  emits: ["update:model-value"],
+  data() {
+    return {
+      selectedOption: null as null | string,
+    };
+  },
+  watch: {
+    modelValue(newValue: string) {
+      this.selectedOption = newValue;
+    },
+  },
+  methods: {
+    /**
+     * Handler for changes in the dropdown component
+     * @param newInput the new value in the dropdown
+     */
+    handleInputChange(newInput: string) {
+      this.selectedOption = newInput;
+      this.$emit("update:model-value", this.selectedOption);
+    },
+  },
 });
 </script>
