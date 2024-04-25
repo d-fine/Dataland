@@ -4,14 +4,11 @@
   <FormKit name="assurance" type="group">
     <!-- Level of assurance -->
     <div class="form-field">
-      <UploadFormHeader
-        :label="euTaxonomyKpiNameMappings.assurance ?? ''"
-        :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
-        :is-required="true"
-      />
-      <div class="lg:col-4 md:col-6 col-12 p-0">
-        <FormKit
-          type="select"
+      <div class="lg:col-4 md:col-6 col-12 p-0 formkit-outer normal-line-height">
+        <SingleSelectFormField
+          :label="euTaxonomyKpiNameMappings.assurance ?? ''"
+          :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
+          :required="true"
           name="value"
           placeholder="Please choose..."
           :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
@@ -39,14 +36,10 @@
       <h4 class="mt-0">Data source</h4>
       <div class="next-to-each-other">
         <div class="flex-1">
-          <UploadFormHeader
+          <SingleSelectFormField
             :label="euTaxonomyKpiNameMappings.report ?? ''"
             :description="euTaxonomyKpiInfoMappings.report ?? ''"
-            :is-required="true"
-          />
-          <FormKit
-            type="select"
-            ignore="true"
+            :required="true"
             v-model="currentReportValue"
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
@@ -95,6 +88,7 @@ import { AssuranceDataPointValueEnum } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "AssuranceFormField",
@@ -104,7 +98,7 @@ export default defineComponent({
       default: {} as ObjectType,
     },
   },
-  components: { FormKit, UploadFormHeader },
+  components: { SingleSelectFormField, FormKit, UploadFormHeader },
   data() {
     return {
       isMounted: false,
