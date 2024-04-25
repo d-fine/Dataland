@@ -93,7 +93,7 @@
       @click="resolveRequest"
       data-test="closeRequestButton"
     >
-      <span class="px-2">CLOSE REQUEST</span>
+      <span class="px-2">RESOLVE REQUEST</span>
       <span class="material-icons-outlined no-line-height" v-if="mapOfReportingPeriodToActiveDataset.size > 1">
         arrow_drop_down
       </span>
