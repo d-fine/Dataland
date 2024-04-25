@@ -83,7 +83,7 @@
                           :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
                           :is-required="true"
                         />
-                        <div class="lg:col-4 md:col-6 col-12 p-0">
+                        <div class="lg:col-4 md:col-6 col-12 p-0" data-test="assuranceDataSingleSelect">
                           <SingleSelectFormElement
                             name="value"
                             placeholder="Please choose..."
@@ -112,7 +112,7 @@
                         <FormKit type="group" name="dataSource" ignore="true">
                           <h4 class="mt-0">Data source</h4>
                           <div class="next-to-each-other">
-                            <div class="flex-1">
+                            <div class="flex-1" data-test="companyReportsSingleSelect">
                               <UploadFormHeader
                                 :label="euTaxonomyKpiNameMappings.report ?? ''"
                                 :description="euTaxonomyKpiInfoMappings.report ?? ''"
