@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/data/sme")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface SmeDataApi {
+fun interface SmeDataApi {
     /**
      * A method to store private sme data via Dataland into a data store
      */
@@ -42,6 +42,6 @@ interface SmeDataApi {
     )
     fun postSmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
-        @RequestPart(value = "documents") documents: Array<MultipartFile>? = null,
+        @RequestPart(value = "documents") documents: Array<MultipartFile>?,
     ): ResponseEntity<DataMetaInformation>
 }

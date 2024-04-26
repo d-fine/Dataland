@@ -20,22 +20,34 @@ object DatabaseConnection {
      */
     fun insertDataIntoSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String, data: String): Boolean {
         val preparedStatement: PreparedStatement?
-        var rowsInserted = 0
+        var successFlag = false
+        val loggingMessage = "Data for $dataId was inserted successfully."
         if (conn != null) {
             preparedStatement = conn.prepareStatement(sqlStatement)
             preparedStatement.setObject(1, UUID.fromString(dataId))
             preparedStatement.setString(2, data)
 
-            rowsInserted = preparedStatement.executeUpdate()
-            if (rowsInserted > 0) {
-                logger.info("Data for $dataId was inserted successfully.")
-            }
-            preparedStatement?.close()
+            successFlag = executeSqlStatement(preparedStatement, loggingMessage)
             conn?.close()
         }
-        return rowsInserted > 0
+        return successFlag
     }
 
+    private fun executeSqlStatement(
+        preparedStatement: PreparedStatement,
+        loggingMessage: String,
+    ): Boolean {
+        var successFlag = false
+        val rowsInserted = preparedStatement.executeUpdate()
+        if (rowsInserted == 1) {
+            logger.info(loggingMessage)
+            successFlag = true
+        } else {
+            logger.info("Unexpexted number of changed rows. Expected was 1, actual was $rowsInserted .")
+        }
+        preparedStatement?.close()
+        return successFlag
+    }
     /**
      * The method prepares and executes a sql statement to insert a pair of documentId and document into an
      * external database
@@ -51,20 +63,17 @@ object DatabaseConnection {
         document: ByteArray,
     ): Boolean {
         val preparedStatement: PreparedStatement?
-        var rowsInserted = 0
+        var successFlag = false
+        val loggingMessage = "A Document with the $documentId was inserted successfully."
         if (conn != null) {
             preparedStatement = conn.prepareStatement(sqlStatement)
             preparedStatement.setObject(1, UUID.fromString(documentId))
             preparedStatement.setBytes(2, document)
 
-            rowsInserted = preparedStatement.executeUpdate()
-            if (rowsInserted > 0) {
-                logger.info("A Document with the $documentId was inserted successfully.")
-            }
-            preparedStatement?.close()
+            successFlag = executeSqlStatement(preparedStatement, loggingMessage)
             conn?.close()
         }
-        return rowsInserted > 0
+        return successFlag
     }
 
     /**
