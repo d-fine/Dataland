@@ -170,7 +170,7 @@ class EurodatDataStore(
                     storeDataInEurodat(dataId, correlationId, payload)
                     sendMessageAfterSuccessfulStorage(payload, correlationId)
                 } catch (ex: SQLException) {
-                    logger.error("A sql exception was thronw: $ex")
+                    logger.error("A sql exception was thrown: $ex")
                 }
             }
         }
