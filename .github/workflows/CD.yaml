@@ -173,6 +173,7 @@ jobs:
         run: ./deployment/verifyImagesRemote.sh
         env:
           TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
+          DATALAND_BACKEND_CLIENT_SECRET: ${{ secrets.DATALAND_BACKEND_CLIENT_SECRET }}
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
