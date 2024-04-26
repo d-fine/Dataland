@@ -11,6 +11,7 @@
       :is-required="required"
       :class="containerClass"
       :ignore="ignore"
+      :data-test="dataTest"
       v-bind:model-value="selectedOption"
       @update:model-value="handleInputChange"
     />
@@ -32,6 +33,7 @@ export default defineComponent({
     containerClass: { type: String, default: "form-field" },
     ignore: { type: Boolean, default: false },
     modelValue: String,
+    dataTest: String,
   }) as Readonly<ComponentPropsOptions>,
   emits: ["update:model-value"],
   data() {
