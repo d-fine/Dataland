@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SmeData
+import org.dataland.e2etests.UPLOADER_USER_ID
 import org.dataland.e2etests.UPLOADER_USER_NAME
 import org.dataland.e2etests.UPLOADER_USER_PASSWORD
 import org.dataland.e2etests.customApiControllers.CustomSmeDataControllerApi
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Sme {
@@ -48,6 +50,10 @@ class Sme {
     @Test
     fun `post a company with SME data including documents and check if it has been persisted successfully`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        apiAccessor.companyDataControllerApi.postDataOwner(
+            UUID.fromString(companyId),
+            UUID.fromString(UPLOADER_USER_ID),
+        )
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
 
         val initialDataMetaInfo = customSmeDataControllerApi.postCompanyAssociatedDataSmeData(

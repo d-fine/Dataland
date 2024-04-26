@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
@@ -24,9 +25,6 @@ interface SmeDataApi {
     /**
      * A method to store private sme data via Dataland into a data store
      */
-    // TODO activate at the end to allow only owners
-            /*@PreAuthorize("(hasRole('ROLE_USER') " +
-                    "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",)*/
     @Operation(
         summary = "Upload a new private sme data set.",
         description = "The uploaded private sme data is added to the private data store, the generated data id is " +
@@ -38,6 +36,10 @@ interface SmeDataApi {
         ],
     )
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",
+    )
     fun postSmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         @RequestPart(value = "documents") documents: Array<MultipartFile>? = null,
