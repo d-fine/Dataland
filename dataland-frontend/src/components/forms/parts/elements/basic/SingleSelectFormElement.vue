@@ -1,4 +1,7 @@
 <template>
+  <div :data-test="dataTest">
+
+
   <Dropdown
     :options="displayOptions"
     v-bind:model-value="selectedOption"
@@ -11,7 +14,9 @@
     :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
     :disabled="disabled"
   />
+<!--  FormKit component only used to parse the selected value in nested FormKits  -->
   <FormKit
+    v-show="false"
     type="text"
     :disabled="disabled"
     :name="name"
@@ -22,6 +27,7 @@
     :validation="validation"
     :ignore="ignore"
   />
+  </div>
 </template>
 
 <script lang="ts">
@@ -46,6 +52,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    dataTest: String,
   }) as Readonly<ComponentPropsOptions>,
   data() {
     return {
