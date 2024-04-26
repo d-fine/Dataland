@@ -25,7 +25,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
     kotlin("plugin.serialization")
 }
-// TODO check the dependencies
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.jackson.module.kotlin)
@@ -33,13 +32,11 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
-    implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
-    implementation(libs.pdfbox)
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
@@ -68,7 +65,7 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
-    outputFileName.set("$projectDir/backendOpenApi.json")
+    outputFileName.set("$projectDir/backendOpenApi79.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
