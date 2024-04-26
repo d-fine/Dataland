@@ -54,7 +54,7 @@ open class DataRequestResponseEmailSenderBase(
             "lksg" -> "LkSG"
             "sfdr" -> "SFDR"
             "sme" -> "SME"
-            "p2p" -> "WWF Pathway to Paris"
+            "p2p" -> "WWF Pathways to Paris"
             "esg-questionnaire" -> "ESG Questionnaire"
             "heimathafen" -> "Heimathafen"
             else -> dataType

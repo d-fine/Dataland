@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
@@ -21,6 +22,8 @@ class DataRequestedAnsweredEmailMessageSender(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
+    private val staleDaysThreshold: String,
 ) : DataRequestResponseEmailSenderBase(keycloakUserControllerApiService, companyDataControllerApi) {
     /**
      * Method to informs user by mail that his request is answered.
@@ -38,7 +41,7 @@ class DataRequestedAnsweredEmailMessageSender(
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
             "dataRequestId" to dataRequestEntity.dataRequestId,
-            "closedIn" to "X" + " days", // todo change X to constant
+            "closedIn" to "$staleDaysThreshold days",
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
