@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service
 import java.lang.reflect.Type
 
 /**
- * A HttpMessage converter that accepts application/octet-stream Multipart chunks
- * and converts them using Jackson. The implementation is restricted to only work for the
- * SmeData parameter in the SmeDataController. This workaround is required to make the Swagger-UI work
- * as it does not send the correct Content-Type for the Json. Once the Swagger-UI has been fixed, this workaround
- * can be safely deleted: https://github.com/swagger-api/swagger-ui/issues/6462. But as the issue was open
- * for 4 years at the time of writing, this may never happen.
+ * A HttpMessage converter that accepts application/octet-stream Multipart chunks and converts them using Jackson.
+ * The implementation is restricted to only work for the SmeData parameter in the SmeDataController.
+ * This workaround is required to make the Swagger-UI work as it does not send the correct Content-Type for the Json.
+ * The issue in the Swagger-Ui GitHub repo is still open. There is a Dataland-backlog item to follow up on this.
  */
 @Service
 class MultipartJackson2HttpMessageConverter(

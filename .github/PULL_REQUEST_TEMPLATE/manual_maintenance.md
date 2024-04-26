@@ -9,9 +9,9 @@ creation URL (or simply copy this md file into the description)
 
 ### Problematic updates
 
-See the list of known issue on the internal wiki https://github.com/d-fine/DatalandInternal/wiki/Problematic-updates
-Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem
-If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog 
+See the list of known issues on the internal Dataland Wiki.
+Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem.
+If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog.
 
 ### Gradle update
 
@@ -46,8 +46,7 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
   of the client.
   Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
   then update the version number used in docker-compose.
-  Then start the eurodat client as described in the internal wiki
-  https://github.com/d-fine/DatalandInternal/wiki/Connect-the-eurodat-clientand and visit 
+  Then start the eurodat client as described in the internal Dataland wiki and visit 
   http://localhost:8080/api/v1/client-controller/openapi 
   This should trigger an automated download of the openApiSpec. The content of this file will be in YAML format.
   Therefore convert its content to JSON with this converter: https://jsonformatter.org/yaml-to-json
