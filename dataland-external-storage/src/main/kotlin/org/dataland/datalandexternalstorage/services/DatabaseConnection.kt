@@ -33,21 +33,6 @@ object DatabaseConnection {
         return successFlag
     }
 
-    private fun executeSqlStatement(
-        preparedStatement: PreparedStatement,
-        loggingMessage: String,
-    ): Boolean {
-        var successFlag = false
-        val rowsInserted = preparedStatement.executeUpdate()
-        if (rowsInserted == 1) {
-            logger.info(loggingMessage)
-            successFlag = true
-        } else {
-            logger.info("Unexpexted number of changed rows. Expected was 1, actual was $rowsInserted .")
-        }
-        preparedStatement?.close()
-        return successFlag
-    }
     /**
      * The method prepares and executes a sql statement to insert a pair of documentId and document into an
      * external database
@@ -73,6 +58,21 @@ object DatabaseConnection {
             successFlag = executeSqlStatement(preparedStatement, loggingMessage)
             conn?.close()
         }
+        return successFlag
+    }
+    private fun executeSqlStatement(
+        preparedStatement: PreparedStatement,
+        loggingMessage: String,
+    ): Boolean {
+        var successFlag = false
+        val rowsInserted = preparedStatement.executeUpdate()
+        if (rowsInserted == 1) {
+            logger.info(loggingMessage)
+            successFlag = true
+        } else {
+            logger.info("Unexpexted number of changed rows. Expected was 1, actual was $rowsInserted .")
+        }
+        preparedStatement?.close()
         return successFlag
     }
 
