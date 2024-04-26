@@ -10,6 +10,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -40,8 +41,8 @@ class Sme {
 
     @AfterAll
     fun deleteDummyFiles() {
-        dummyFileAlpha.delete()
-        dummyFileBeta.delete()
+        assertTrue(dummyFileAlpha.delete())
+        assertTrue(dummyFileBeta.delete())
     }
 
     @Test

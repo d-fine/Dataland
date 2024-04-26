@@ -507,7 +507,7 @@ services:
      - "host.docker.internal:host-gateway"
   eurodat-client:
     restart: always
-    profiles: [ "production" ] #TODO readd development later
+    profiles: [ "production", "development" ]
     image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.31
     networks:
       - internal
@@ -519,7 +519,7 @@ services:
       - ./dataland-eurodat-client/secret_files/client.env
   dummy-eurodat-client:
     restart: always
-    profiles: [ "testing", "development" ] #TODO remove development at the end
+    profiles: [ "testing" ]
     image: ghcr.io/d-fine/dataland/dataland_dummy_eurodat_client_test:${DATALAND_DUMMY_EURODAT_CLIENT_TEST_VERSION}
     networks:
       - internal
@@ -529,7 +529,7 @@ services:
       <<: *dummy-eurodat-db-settings
   dummy-eurodat-db:
     restart: always
-    profiles: [ "testing", "development" ] #TODO remove development at the end
+    profiles: [ "testing" ]
     image: postgres:alpine
     networks:
       - internal
