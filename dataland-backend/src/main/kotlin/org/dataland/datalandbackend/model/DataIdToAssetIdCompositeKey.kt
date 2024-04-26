@@ -13,6 +13,6 @@ data class DataIdToAssetIdCompositeKey(
     var eurodatId: String,
 ) : Serializable {
     companion object {
-        private const val serialVersionUID: Long = 138765
+        private const val serialVersionUID: Long = 1
     }
 }
