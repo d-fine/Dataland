@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks
 
-import java.util.*
+import java.util.Collections
 
 /**
  * An enum that contains different features available during code generation.
