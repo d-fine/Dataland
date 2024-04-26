@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -27,26 +27,26 @@ class DataRequestClosedEmailMessageSender(
 ) : DataRequestResponseEmailSenderBase(keycloakUserControllerApiService, companyDataControllerApi) {
     /**
      * Method to informs user by mail that his request is closed
-     * @param storedDataRequest the dataRequestEntity
+     * @param dataRequestEntity the dataRequestEntity
      * @param correlationId correlation id
      */
     fun sendDataRequestClosedEmail(
-        storedDataRequest: StoredDataRequest,
+        dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
         val properties = mapOf(
-            "companyId" to storedDataRequest.datalandCompanyId,
-            "companyName" to getCompanyNameById(storedDataRequest.datalandCompanyId),
-            "dataType" to storedDataRequest.dataType,
-            "reportingPeriod" to storedDataRequest.reportingPeriod,
-            "creationDate" to convertUnitTimeInMsToDate(storedDataRequest.creationTimestamp),
-            "dataTypeDescription" to getDataTypeDescription(storedDataRequest.dataType),
-            "dataRequestId" to storedDataRequest.dataRequestId,
+            "companyId" to dataRequestEntity.datalandCompanyId,
+            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
+            "dataType" to dataRequestEntity.dataType,
+            "reportingPeriod" to dataRequestEntity.reportingPeriod,
+            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
+            "dataRequestId" to dataRequestEntity.dataRequestId,
             "closedInDays" to staleDaysThreshold,
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestClosed,
-            receiver = getUserEmailById(storedDataRequest.userId),
+            receiver = getUserEmailById(dataRequestEntity.userId),
             properties = properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

@@ -1,7 +1,9 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestClosedEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -14,7 +16,7 @@ import java.util.UUID
  * Implementation of a time scheduler for data requests
  * @param alterationManager DataRequestAlterationManager
  * @param dataRequestClosedEmailMessageSender DataRequestClosedEmailMessageSender
- * @param dataRequestQueryManager DataRequestQueryManager
+ * @param dataRequestRepository DataRequestRepository,
  * @param staleDaysThreshold limit for answered request to remain answered
  */
 
@@ -22,7 +24,7 @@ import java.util.UUID
 class DataRequestTimeScheduler(
     @Autowired private val alterationManager: DataRequestAlterationManager,
     @Autowired private val dataRequestClosedEmailMessageSender: DataRequestClosedEmailMessageSender,
-    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
+    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: Long,
 ) {
@@ -38,10 +40,11 @@ class DataRequestTimeScheduler(
         val correlationId = UUID.randomUUID().toString()
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
+        val searchFilterForAnsweredDataRequests = GetDataRequestsSearchFilter("", "", RequestStatus.Answered, "", "")
         val staleAnsweredRequests =
-            dataRequestQueryManager.getDataRequests(null, null, RequestStatus.Answered, null, null)
-                ?.filter { it.lastModifiedDate < thresholdTime }
-        staleAnsweredRequests?.forEach {
+            dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
+                .filter { it.lastModifiedDate < thresholdTime }
+        staleAnsweredRequests.forEach {
             logger.info(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
