@@ -192,7 +192,6 @@ class DataOwnerControllerTest {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
-        // val userId = UUID.randomUUID()
         val userId = UUID.fromString(
             TechnicalUser.Reader.technicalUserId,
         )

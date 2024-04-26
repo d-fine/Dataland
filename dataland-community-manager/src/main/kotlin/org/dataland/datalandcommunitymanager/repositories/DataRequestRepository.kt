@@ -67,22 +67,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         @Param("status") status: RequestStatus?,
     ): List<AggregatedDataRequestEntity>
 
-    /** This method counts the number of open request for a company
-     * @param datalandCompanyId to check for
-     * @returns the number of open requests.
-     */
-    @Query(
-        "SELECT COUNT(DISTINCT d.datalandCompanyId) FROM DataRequestEntity d " +
-            "WHERE " +
-            "d.datalandCompanyId = :#{#datalandCompanyId} " +
-            "AND " +
-            "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} ",
-
-    )
-    fun getNumberOfOpenDataRequestsForCompany(
-        @Param("datalandCompanyId") datalandCompanyId: String,
-    ): Int
-
     /**
      * A function for searching for data request information by dataType, userID, requestID, requestStatus,
      * reportingPeriod or dataRequestCompanyIdentifierValue

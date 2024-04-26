@@ -14,6 +14,6 @@ data class TemplateEmailMessage(
     enum class Type {
         ClaimOwnership,
         DataRequestedAnswered,
-        ClaimedOwershipSucessfully,
+        SuccessfullyClaimedOwnership,
     }
 }

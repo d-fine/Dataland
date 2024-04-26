@@ -43,8 +43,8 @@ class DataOwnersManager(
         companyId: String,
         userId: String,
         companyName: String,
-        correlationId: String,
     ): CompanyDataOwnersEntity {
+        val correlationId = UUID.randomUUID().toString()
         checkIfCompanyIsValid(companyId)
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
@@ -52,7 +52,7 @@ class DataOwnersManager(
                 logger.info("User with Id $userId is already data owner of company with Id $companyId.")
                 dataOwnersForCompany
             } else {
-                dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
+                dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
                     userId, companyId, companyName, correlationId,
                 )
                 logger.info("New data owner with Id $userId added to company with Id $companyId.")
@@ -60,7 +60,7 @@ class DataOwnersManager(
                 dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
-            dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceInternalEmailMessage(
+            dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
                 userId, companyId, companyName, correlationId,
             )
             logger.info("A first data owner with Id $userId is added to company with Id $companyId.")

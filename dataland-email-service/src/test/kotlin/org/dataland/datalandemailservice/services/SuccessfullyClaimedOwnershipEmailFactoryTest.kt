@@ -2,12 +2,12 @@ package org.dataland.datalandemailservice.services
 
 import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
-import org.dataland.datalandemailservice.services.templateemail.ClaimOwnershipSucessfullyEmailFactory
+import org.dataland.datalandemailservice.services.templateemail.SuccessfullyClaimedOwnershipEmailFactory
 import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class ClaimOwnershipSucessfullyEmailFactoryTest {
+class SuccessfullyClaimedOwnershipEmailFactoryTest {
     private val proxyPrimaryUrl = "local-dev.dataland.com"
     private val senderEmail = "sender@example.com"
     private val senderName = "Test"
@@ -23,7 +23,7 @@ class ClaimOwnershipSucessfullyEmailFactoryTest {
             "numberOfOpenDataRequestsForCompany" to numberOfOpenDataRequestsForCompany,
         )
 
-        val email = ClaimOwnershipSucessfullyEmailFactory(
+        val email = SuccessfullyClaimedOwnershipEmailFactory(
             proxyPrimaryUrl = proxyPrimaryUrl,
             senderEmail = senderEmail,
             senderName = senderName,

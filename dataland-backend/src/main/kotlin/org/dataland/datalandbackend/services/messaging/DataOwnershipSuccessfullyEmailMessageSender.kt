@@ -34,7 +34,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
      * @param companyName the name of the company
      * @param correlationId the correlation ID of the current user process.
      */
-    fun sendDataOwnershipAcceptanceInternalEmailMessage(
+    fun sendDataOwnershipAcceptanceExternalEmailMessage(
         newDataOwnerId: String,
         datalandCompanyId: String,
         companyName: String,
@@ -47,7 +47,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
             "numberOfOpenDataRequestsForCompany" to getNumberOfOpenDataRequestsForCompany(datalandCompanyId).toString(),
         )
         val message = TemplateEmailMessage(
-            TemplateEmailMessage.Type.ClaimedOwershipSucessfully,
+            TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
             newDataOwnerEmail,
             properties,
         )

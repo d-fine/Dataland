@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
  * Generate an email to inform a user has become company owner
  */
 @Component
-class ClaimOwnershipSucessfullyEmailFactory(
+class SuccessfullyClaimedOwnershipEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
@@ -23,7 +23,7 @@ class ClaimOwnershipSucessfullyEmailFactory(
         val numberOfOpenDataRequestsForCompany = "numberOfOpenDataRequestsForCompany"
     }
 
-    override val builderForType = TemplateEmailMessage.Type.ClaimedOwershipSucessfully
+    override val builderForType = TemplateEmailMessage.Type.SuccessfullyClaimedOwnership
 
     override val requiredProperties = setOf(
         keys.companyId, keys.companyName,
