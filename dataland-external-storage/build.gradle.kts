@@ -27,7 +27,6 @@ plugins {
 
 dependencies {
     implementation(libs.springdoc.openapi.ui)
-    implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation(libs.logback.classic)
@@ -127,6 +126,10 @@ tasks.register("generateClients") {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
+}
+
+tasks.withType<com.autonomousapps.tasks.CodeSourceExploderTask> {
     dependsOn("generateClients")
 }
 
