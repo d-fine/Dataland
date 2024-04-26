@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.json)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
-    testImplementation(Spring.boot.test) // TODO probably not needed
 }
 
 openApi {
