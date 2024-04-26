@@ -121,6 +121,8 @@ tasks.register("generateEurodatClient", org.openapitools.generator.gradle.plugin
     )
 }
 tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateEurodatClient")
 }
