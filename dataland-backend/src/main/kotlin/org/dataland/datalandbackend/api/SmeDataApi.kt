@@ -38,7 +38,7 @@ fun interface SmeDataApi {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",
+            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
     )
     fun postSmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
