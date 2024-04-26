@@ -109,7 +109,6 @@ class EurodatDataStore(
         return block()
     }
 
-    // TODO check the if condition for the first time a deposit box was created
     @Suppress("TooGenericExceptionThrown")
     private fun isSafeDepositBoxAvailable() {
         if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
