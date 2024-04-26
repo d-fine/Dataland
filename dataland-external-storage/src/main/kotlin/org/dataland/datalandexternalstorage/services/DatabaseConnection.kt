@@ -28,7 +28,7 @@ object DatabaseConnection {
             preparedStatement.setString(2, data)
 
             successFlag = executeSqlStatement(preparedStatement, loggingMessage)
-            conn?.close()
+            conn.close()
         }
         return successFlag
     }
@@ -56,7 +56,7 @@ object DatabaseConnection {
             preparedStatement.setBytes(2, document)
 
             successFlag = executeSqlStatement(preparedStatement, loggingMessage)
-            conn?.close()
+            conn.close()
         }
         return successFlag
     }
@@ -72,7 +72,7 @@ object DatabaseConnection {
         } else {
             logger.info("Unexpexted number of changed rows. Expected was 1, actual was $rowsInserted .")
         }
-        preparedStatement?.close()
+        preparedStatement.close()
         return successFlag
     }
 
