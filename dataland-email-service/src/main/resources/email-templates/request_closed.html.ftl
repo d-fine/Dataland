@@ -79,7 +79,7 @@
                     <td style="height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>Request last modified</td>
+                    <td>Request created</td>
                 </tr>
                 <tr>
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
