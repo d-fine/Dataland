@@ -45,6 +45,10 @@ class SuccessfullyClaimedOwnershipEmailFactoryTest {
             emptySet(),
             email,
         )
+        this.assertTrueForEmailContentForSuccessfullyClaimedOwnership(email)
+    }
+
+    private fun assertTrueForEmailContentForSuccessfullyClaimedOwnership(email: Email) {
         assertTrue(email.content.htmlContent.contains("DATALAND"))
         assertTrue(email.content.htmlContent.contains("Great news!"))
         assertTrue(
@@ -69,42 +73,6 @@ class SuccessfullyClaimedOwnershipEmailFactoryTest {
         assertTrue(
             email.content.htmlContent.contains(
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId\"",
-            ),
-        )
-    }
-
-    @Test
-    fun `validate that default text content of the claim ownership successfully mail is correctly formatted`() {
-        val email = buildTestEmail()
-
-        assertEmailContactInformationEquals(
-            EmailContact(senderEmail, senderName),
-            setOf(EmailContact(receiverEmail)),
-            emptySet(),
-            email,
-        )
-        assertTrue(email.content.textContent.contains("Great news!"))
-        assertTrue(
-            email.content.textContent.contains(
-                "You've successfully claimed data " +
-                    "ownership for",
-            ),
-        )
-        assertTrue(
-            email.content.textContent.contains(
-                "Now, take the next step to access your " +
-                    "company overview, view your data requests, and provide data.",
-            ),
-        )
-        assertTrue(
-            email.content.textContent.contains("Please note, that "),
-        )
-        assertTrue(email.content.textContent.contains("un-resolved data requests"))
-        assertTrue(email.content.textContent.contains(numberOfOpenDataRequestsForCompany))
-        assertTrue(email.content.textContent.contains(companyName))
-        assertTrue(
-            email.content.textContent.contains(
-                "$proxyPrimaryUrl/companies/$companyId",
             ),
         )
     }

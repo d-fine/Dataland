@@ -60,8 +60,8 @@
                     </BasicFormSection>
                     <BasicFormSection header="Information about company ownership">
                       <p v-if="hasCompanyDataOwner">
-                        This company has a company owner. <br />
-                        The company owner will be informed about your data request.
+                        This company has at least one company owner. <br />
+                        The company owner(s) will be informed about your data request.
                       </p>
                       <p v-else>This company does not have a company owner yet.</p>
                     </BasicFormSection>
@@ -521,7 +521,7 @@ export default defineComponent({
   },
   mounted() {
     this.retrieveFrameworkOptions();
-    void this.updateHasCompanyDataOwner();
+    this.updateHasCompanyDataOwner().catch((error) => console.error(error));
   },
 });
 </script>

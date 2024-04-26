@@ -686,6 +686,28 @@
     "realmRoles" : [ "ROLE_REVIEWER", "default-roles-datalandsecurity" ],
     "notBefore" : 0,
     "groups" : [ ]
+  },
+  {
+    "id": "a82d0809-2bc2-4244-9ca3-947b7ba817b8",
+    "createdTimestamp": 1713789577905,
+    "username": "service-account-dataland-backend",
+    "enabled": true,
+    "totp": false,
+    "emailVerified": false,
+    "serviceAccountClientId": "dataland-backend",
+    "disableableCredentialTypes": [],
+    "requiredActions": [
+      "TERMS_AND_CONDITIONS"
+    ],
+    "realmRoles": [
+      "ROLE_USER",
+      "default-roles-datalandsecurity"
+    ],
+    "clientRoles": {
+      "realm-management": ["view-users"]
+    },
+    "notBefore": 0,
+    "groups": []
   }
   ],
   "scopeMappings": [
