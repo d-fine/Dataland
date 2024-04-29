@@ -33,16 +33,7 @@ class DataRequestedAnsweredEmailMessageSender(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val properties = mapOf(
-            "companyId" to dataRequestEntity.datalandCompanyId,
-            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
-            "dataType" to dataRequestEntity.dataType,
-            "reportingPeriod" to dataRequestEntity.reportingPeriod,
-            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
-            "dataRequestId" to dataRequestEntity.dataRequestId,
-            "closedInDays" to staleDaysThreshold,
-        )
+        val properties = getProperties(dataRequestEntity, staleDaysThreshold)
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
             receiver = getUserEmailById(dataRequestEntity.userId),

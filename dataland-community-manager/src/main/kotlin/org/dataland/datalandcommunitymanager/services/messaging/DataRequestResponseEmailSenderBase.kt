@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +19,7 @@ open class DataRequestResponseEmailSenderBase(
      * @param companyId dataland companyId
      * @returns companyName as string
      */
-    protected fun getCompanyNameById(companyId: String): String {
+    private fun getCompanyNameById(companyId: String): String {
         return companyDataControllerApi.getCompanyInfo(companyId).companyName.ifEmpty { companyId }
     }
 
@@ -27,7 +28,7 @@ open class DataRequestResponseEmailSenderBase(
      * @param creationTimestamp unix time in ms
      * @returns human-readable date as string
      */
-    protected fun convertUnitTimeInMsToDate(creationTimestamp: Long): String {
+    private fun convertUnitTimeInMsToDate(creationTimestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
         return dateFormat.format(creationTimestamp)
@@ -47,7 +48,7 @@ open class DataRequestResponseEmailSenderBase(
      * @param dataType dataland dataType
      * @returns human-readable dataType as string
      */
-    protected fun getDataTypeDescription(dataType: String): String {
+    private fun getDataTypeDescription(dataType: String): String {
         return when (dataType) {
             "eutaxonomy-financials" -> "EU Taxonomy for financial companies"
             "eutaxonomy-non-financials" -> "EU Taxonomy for non-financial companies"
@@ -59,5 +60,18 @@ open class DataRequestResponseEmailSenderBase(
             "heimathafen" -> "Heimathafen"
             else -> dataType
         }
+    }
+
+    protected fun getProperties(dataRequestEntity: DataRequestEntity, staleDaysThreshold: String): Map<String, String> {
+        return mapOf(
+            "companyId" to dataRequestEntity.datalandCompanyId,
+            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
+            "dataType" to dataRequestEntity.dataType,
+            "reportingPeriod" to dataRequestEntity.reportingPeriod,
+            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
+            "dataRequestId" to dataRequestEntity.dataRequestId,
+            "closedInDays" to staleDaysThreshold,
+        )
     }
 }
