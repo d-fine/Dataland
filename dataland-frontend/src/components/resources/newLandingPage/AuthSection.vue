@@ -33,10 +33,10 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import type Keycloak from "keycloak-js";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 import { useRouter } from "vue-router";
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 
 const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
@@ -50,11 +50,14 @@ const { isLandingPage } = defineProps<{
 const login = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      if (!keycloak.authenticated) {
+      if (keycloak.authenticated) return;
+      if (window.location.pathname == "/") {
         loginAndRedirectToSearchPage(keycloak);
+      } else {
+        keycloak.login().catch((error) => console.error(error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 };
 
 /**
@@ -69,7 +72,7 @@ onMounted(() => {
     .then((keycloak) => {
       isUserLoggedIn.value = keycloak.authenticated;
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 });
 
 /**
@@ -78,11 +81,14 @@ onMounted(() => {
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      if (!keycloak.authenticated) {
+      if (keycloak.authenticated) return;
+      if (window.location.pathname == "/") {
         registerAndRedirectToSearchPage(keycloak);
+      } else {
+        keycloak.register().catch((error) => console.error(error));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 };
 </script>
 <style scoped lang="scss">
