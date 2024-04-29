@@ -71,7 +71,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
      * @param datalandCompanyId identifier of the company in dataland
      * @return the number of opened data requests
      */
-    private fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
+    fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
         return requestControllerApi.getAggregatedDataRequests(
             identifierValue = datalandCompanyId, status = RequestStatus.Open,
         ).filter { it.count > 0 }.size
