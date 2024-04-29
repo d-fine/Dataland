@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.email
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.datalandcommunitymanager.utils.RequestResonseEmailSenderUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -23,7 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 class DataRequestedAnsweredEmailMessageSenderTest {
-    private val testUtils = TestUtils()
+    private val requestResponseEmailSenderUtils = RequestResonseEmailSenderUtils()
     private val objectMapper = jacksonObjectMapper()
     private lateinit var dataRequestId: String
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
@@ -32,7 +32,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
     private val userId = "1234-221-1111elf"
     private val userEmail = "$userId@example.com"
     private val staleDaysThreshold = "some Number"
-    private val dataTypes = testUtils.getListOfAllDataTypes()
+    private val dataTypes = requestResponseEmailSenderUtils.getListOfAllDataTypes()
 
     @BeforeEach
     fun setupAuthentication() {
@@ -56,9 +56,9 @@ class DataRequestedAnsweredEmailMessageSenderTest {
                 DataRequestedAnsweredEmailMessageSender(
                     cloudEventMessageHandlerMock,
                     objectMapper, keycloakUserControllerApiService,
-                    testUtils.getCompanyDataControllerMock(), staleDaysThreshold,
+                    requestResponseEmailSenderUtils.getCompanyDataControllerMock(), staleDaysThreshold,
                 )
-            val dataRequestEntity = testUtils.getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = requestResponseEmailSenderUtils.getDataRequestEntityWithDataType(it[0])
             dataRequestId = dataRequestEntity.dataRequestId
             dataRequestedAnsweredEmailMessageSender
                 .sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
@@ -83,7 +83,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             val arg5 = it.getArgument<String>(4)
             assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
             assertEquals(userEmail, arg1.receiver)
-            testUtils.checkPropertiesOfDataRequestResponseEmail(
+            requestResponseEmailSenderUtils.checkPropertiesOfDataRequestResponseEmail(
                 dataRequestId, arg1.properties, dataType, dataTypeDescription, staleDaysThreshold,
             )
             assertEquals(MessageType.SendTemplateEmail, arg2)
