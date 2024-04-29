@@ -4,7 +4,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { DataTypeEnum } from "@clients/backend";
 import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
-import { selectItemFromDropdownByValue } from "@ct/testUtils/Dropdown";
+import { selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
 const createSfdrDataset = {
   fillRequiredFields(): void {
