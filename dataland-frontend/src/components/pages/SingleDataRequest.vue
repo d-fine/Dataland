@@ -58,10 +58,10 @@
                         :data-test="'datapoint-framework'"
                       />
                     </BasicFormSection>
-                    <BasicFormSection header="Information about company ownership">
+                    <BasicFormSection header="Information about company data ownership">
                       <p v-if="hasCompanyDataOwner">
-                        This company has at least one company owner. <br />
-                        The company owner(s) will be informed about your data request.
+                        This company has at least one company data owner. <br />
+                        The company data owner(s) will be informed about your data request.
                       </p>
                       <p v-else>This company does not have a company owner yet.</p>
                     </BasicFormSection>

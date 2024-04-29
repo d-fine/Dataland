@@ -66,7 +66,7 @@ class SuccessfullyClaimedOwnershipEmailFactoryTest {
         assertTrue(
             email.content.htmlContent.contains("Please note, that "),
         )
-        assertTrue(email.content.htmlContent.contains("un-resolved data requests"))
+        assertTrue(email.content.htmlContent.contains("open data requests"))
         assertTrue(email.content.htmlContent.contains(numberOfOpenDataRequestsForCompany))
         assertTrue(email.content.htmlContent.contains("Copyright"))
         assertTrue(email.content.htmlContent.contains(companyName))

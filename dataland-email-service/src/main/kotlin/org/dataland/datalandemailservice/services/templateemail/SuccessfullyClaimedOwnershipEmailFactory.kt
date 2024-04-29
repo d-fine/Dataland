@@ -52,7 +52,7 @@ class SuccessfullyClaimedOwnershipEmailFactory(
             ).append(
                 "Please note, that ${properties[keys.companyName]} has " +
                     "${properties[keys.numberOfOpenDataRequestsForCompany]}" +
-                    " un-resolved data requests.",
+                    " open data requests.",
             )
             .toString()
     }
