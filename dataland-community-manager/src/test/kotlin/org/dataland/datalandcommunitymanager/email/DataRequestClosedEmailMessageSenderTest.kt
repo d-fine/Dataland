@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.email
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestClosedEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.DataRequestResonseEmailSenderUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestResponseEmailSenderUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -19,7 +19,7 @@ import org.mockito.Mockito.`when`
 import java.util.*
 
 class DataRequestClosedEmailMessageSenderTest {
-    private val requestResponseEmailSenderUtils = DataRequestResonseEmailSenderUtils()
+    private val requestResponseEmailSenderUtils = DataRequestResponseEmailSenderUtils()
     private val objectMapper = jacksonObjectMapper()
     private lateinit var dataRequestId: String
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)

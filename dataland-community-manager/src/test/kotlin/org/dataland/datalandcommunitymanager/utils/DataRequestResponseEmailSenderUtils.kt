@@ -12,7 +12,7 @@ import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
-class DataRequestResonseEmailSenderUtils {
+class DataRequestResponseEmailSenderUtils {
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
