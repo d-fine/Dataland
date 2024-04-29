@@ -86,9 +86,8 @@ class DataRequestClosedEmailMessageSenderTest {
             assertEquals(TemplateEmailMessage.Type.DataRequestClosed, arg1.emailTemplateType)
             assertEquals(userEmail, arg1.receiver)
             testUtils.checkPropertiesOfDataRequestResponseEmail(
-                dataRequestId, arg1.properties, dataType, dataTypeDescription,
+                dataRequestId, arg1.properties, dataType, dataTypeDescription, staleDaysThreshold,
             )
-            assertEquals(staleDaysThreshold, arg1.properties.getValue("closedInDays"))
             assertEquals(MessageType.SendTemplateEmail, arg2)
             assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SendEmail, arg4)

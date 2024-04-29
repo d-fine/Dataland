@@ -86,7 +86,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             assertEquals(TemplateEmailMessage.Type.DataRequestedAnswered, arg1.emailTemplateType)
             assertEquals(userEmail, arg1.receiver)
             testUtils.checkPropertiesOfDataRequestResponseEmail(
-                dataRequestId, arg1.properties, dataType, dataTypeDescription,
+                dataRequestId, arg1.properties, dataType, dataTypeDescription, staleDaysThreshold,
             )
             assertEquals(MessageType.SendTemplateEmail, arg2)
             assertEquals(correlationId, arg3)

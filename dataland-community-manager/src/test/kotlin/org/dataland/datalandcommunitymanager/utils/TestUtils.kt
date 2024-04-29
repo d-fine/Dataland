@@ -42,6 +42,7 @@ class TestUtils {
         properties: Map<String, String?>,
         dataType: String,
         dataTypeDescription: String,
+        staleDaysThreshold: String,
     ) {
         Assertions.assertEquals(companyId, properties.getValue("companyId"))
         Assertions.assertEquals(companyName, properties.getValue("companyName"))
@@ -50,6 +51,7 @@ class TestUtils {
         Assertions.assertEquals(reportingPeriod, properties.getValue("reportingPeriod"))
         Assertions.assertEquals(creationTimestampAsDate, properties.getValue("creationDate"))
         Assertions.assertEquals(dataRequestId, properties.getValue("dataRequestId"))
+        Assertions.assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
     }
     fun getCompanyDataControllerMock(): CompanyDataControllerApi {
         val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
