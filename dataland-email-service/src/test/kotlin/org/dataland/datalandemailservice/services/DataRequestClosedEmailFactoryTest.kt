@@ -17,7 +17,6 @@ class DataRequestClosedEmailFactoryTest {
     private val senderEmail = "sender@dataland.com"
     private val senderName = "Dataland"
     private val receiverEmail = "user@testemail.com"
-    private val closedInDays = "100"
 
     private fun buildTestEmail(
         setOptionalProperties: Boolean,
@@ -54,9 +53,7 @@ class DataRequestClosedEmailFactoryTest {
             emptySet(),
             email,
         )
-        assertTrue(email.content.htmlContent.contains("DATALAND"))
         assertTrue(email.content.htmlContent.contains("Your answered data request has been automatically closed"))
-        assertTrue(email.content.htmlContent.contains("Copyright"))
 
         validateHtmlContentOfBasicRequestResponseProperties(email)
     }
@@ -76,7 +73,7 @@ class DataRequestClosedEmailFactoryTest {
         )
         println(email.content.textContent)
         assertTrue(
-            email.content.textContent.contains("as no action was taken within the last $closedInDays days."),
+            email.content.textContent.contains("as no action was taken within the last "),
         )
     }
 }

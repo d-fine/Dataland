@@ -44,6 +44,9 @@ fun validateTextContentOfBasicRequestResponseProperties(email: Email) {
     )
 }
 fun validateHtmlContentOfBasicRequestResponseProperties(email: Email) {
+    assertTrue(email.content.htmlContent.contains("DATALAND"))
+    assertTrue(email.content.htmlContent.contains("Copyright"))
+
     assertTrue(email.content.htmlContent.contains("$CLOSED_IN_DAYS days"))
     assertTrue(email.content.htmlContent.contains(COMPANY_NAME))
     assertTrue(email.content.htmlContent.contains(REPORTING_PERIOD))
