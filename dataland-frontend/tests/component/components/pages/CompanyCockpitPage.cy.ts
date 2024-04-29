@@ -185,7 +185,7 @@ describe("Component test for the company cockpit", () => {
 
   it("Check for expected elements from a non-logged-in users perspective for a company without data owner", () => {
     const hasCompanyDataOwner = false;
-    const isClaimOwnershipPanelExpected = false;
+    const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
     mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
