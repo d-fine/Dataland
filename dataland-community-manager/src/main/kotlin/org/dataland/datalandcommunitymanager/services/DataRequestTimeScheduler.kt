@@ -43,7 +43,6 @@ class DataRequestTimeScheduler(
             dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
                 .filter { it.lastModifiedDate < thresholdTime }
         staleAnsweredRequests.forEach {
-            println(it.requestStatus)
             logger.info(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
