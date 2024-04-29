@@ -9,7 +9,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -26,7 +25,6 @@ import java.util.*
 class DataRequestedAnsweredEmailMessageSenderTest {
     private val testUtils = TestUtils()
     private val objectMapper = jacksonObjectMapper()
-    private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestId: String
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
@@ -39,7 +37,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
+        val authenticationMock = AuthenticationMock.mockJwtAuthentication(
             userEmail,
             userId,
             setOf(DatalandRealmRole.ROLE_USER),
