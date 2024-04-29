@@ -1,16 +1,24 @@
 package org.dataland.datalandcommunitymanager.utils
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.*
 
 class DataRequestResponseEmailSenderUtils {
     private val reportingPeriod = "2022"
@@ -20,6 +28,9 @@ class DataRequestResponseEmailSenderUtils {
     private val creationTimestamp = 1709820187875
     private val creationTimestampAsDate = "07 Mar 2024, 15:03"
     private val companyName = "Test Inc."
+    private val objectMapper = jacksonObjectMapper()
+    private val correlationId = UUID.randomUUID().toString()
+    private val staleDaysThreshold = "some number"
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         val authenticationMock = AuthenticationMock.mockJwtAuthentication(
@@ -45,12 +56,11 @@ class DataRequestResponseEmailSenderUtils {
             datalandCompanyId = companyId,
         )
     }
-    fun checkPropertiesOfDataRequestResponseEmail(
+    private fun checkPropertiesOfDataRequestResponseEmail(
         dataRequestId: String,
         properties: Map<String, String?>,
         dataType: String,
         dataTypeDescription: String,
-        staleDaysThreshold: String,
     ) {
         assertEquals(companyId, properties.getValue("companyId"))
         assertEquals(companyName, properties.getValue("companyName"))
@@ -87,7 +97,45 @@ class DataRequestResponseEmailSenderUtils {
             listOf("heimathafen", "Heimathafen"),
         )
     }
-    fun checkUserEmail(receiver: String) {
-        assertEquals(userEmail, receiver)
+    fun getCorrelationId(): String {
+        return correlationId
+    }
+    fun getStaleInDays(): String {
+        return staleDaysThreshold
+    }
+
+    fun getMockCloudEventMessageHandlerAndSetChecks(
+        dataType: String,
+        dataTypeDescription: String,
+        dataRequestId: String,
+        emailMessageType: TemplateEmailMessage.Type,
+    ): CloudEventMessageHandler {
+        val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
+        `when`(
+            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(),
+            ),
+        ).then() {
+            val arg1 =
+                objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
+            val arg2 = it.getArgument<String>(1)
+            val arg3 = it.getArgument<String>(2)
+            val arg4 = it.getArgument<String>(3)
+            val arg5 = it.getArgument<String>(4)
+            assertEquals(emailMessageType, arg1.emailTemplateType)
+            assertEquals(userEmail, arg1.receiver)
+            checkPropertiesOfDataRequestResponseEmail(
+                dataRequestId, arg1.properties, dataType, dataTypeDescription,
+            )
+            assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(correlationId, arg3)
+            assertEquals(ExchangeName.SendEmail, arg4)
+            assertEquals(RoutingKeyNames.templateEmail, arg5)
+        }
+        return cloudEventMessageHandlerMock
     }
 }
