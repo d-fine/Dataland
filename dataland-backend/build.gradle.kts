@@ -65,7 +65,7 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
-    outputFileName.set("$projectDir/backendOpenApi79.json")
+    outputFileName.set("$projectDir/backendOpenApi.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
