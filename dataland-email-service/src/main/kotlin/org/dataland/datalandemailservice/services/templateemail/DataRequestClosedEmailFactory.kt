@@ -43,7 +43,7 @@ class DataRequestClosedEmailFactory(
         return StringBuilder()
             .append(
                 "Your answered data request has been automatically closed " +
-                    "as no action was taken within the last ${properties[keys.closedInDays]}days.\n\n",
+                    "as no action was taken within the last ${properties[keys.closedInDays]} days.\n\n",
             )
             .append("Company: ${properties[keys.companyName]} \n")
             .append("Framework: ${properties[keys.dataType]} \n")
