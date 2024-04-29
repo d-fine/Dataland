@@ -58,7 +58,10 @@
                         :data-test="'datapoint-framework'"
                       />
                     </BasicFormSection>
-                    <BasicFormSection header="Information about company data ownership">
+                    <BasicFormSection
+                      :data-test="'informationDataOwnership'"
+                      header="Information about company data ownership"
+                    >
                       <p v-if="hasCompanyDataOwner">
                         This company has at least one company data owner. <br />
                         The company data owner(s) will be informed about your data request.
