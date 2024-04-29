@@ -52,12 +52,10 @@ class DataManager(
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private  val datamanagerUtils: DatamanagerUtils,
+    @Autowired private val datamanagerUtils: DatamanagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val publicDataInMemoryStorage = mutableMapOf<String, String>()
-
-
 
     /**
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
@@ -254,7 +252,7 @@ class DataManager(
      */
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation,correlationId)
+        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
         lateinit var dataAsString: String
         try {
             dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
@@ -266,8 +264,6 @@ class DataManager(
         dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
         return dataAsStorableDataSet
     }
-
-
 
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
         return publicDataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)

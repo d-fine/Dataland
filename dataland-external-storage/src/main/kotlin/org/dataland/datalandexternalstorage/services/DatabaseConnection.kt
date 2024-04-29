@@ -91,4 +91,15 @@ object DatabaseConnection {
             connectionProps,
         )
     }
+    fun selectDataFromSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String): String {
+        val preparedStatement: PreparedStatement?
+        var data = String()
+        if (conn != null) {
+            preparedStatement = conn.prepareStatement(sqlStatement)
+            "SELECT jsob_blob FROM safedeposit.pdf WHERE uuid_pdf = $dataId"
+            data = preparedStatement.executeQuery(sqlStatement).toString()
+            conn.close()
+        }
+        return data
+    }
 }

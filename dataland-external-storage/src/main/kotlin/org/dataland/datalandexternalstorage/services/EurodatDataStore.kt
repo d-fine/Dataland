@@ -3,6 +3,7 @@ package org.dataland.datalandexternalstorage.services
 import DatabaseConnection.getConnection
 import DatabaseConnection.insertByteArrayIntoSqlDatabase
 import DatabaseConnection.insertDataIntoSqlDatabase
+import DatabaseConnection.selectDataFromSqlDatabase
 import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
@@ -58,10 +59,12 @@ class EurodatDataStore(
     private val eurodatAppName: String,
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
     private val initializeSafeDepositBox: Boolean,
+    @Value("\${dataland.eurodatclient.max-retries-connecting}")
+    private val maxRetriesConnectingToEurodat: Int,
+    @Value("\${dataland.eurodatclient.milliseconds-between-retries}")
+    private val millisecondsBetweenRetriesConnectingToEurodat: Int,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val maxRetriesConnectingToEurodat = 8
-    private val millisecondsBetweenRetriesConnectingToEurodat = 15000
 
     /**
      * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and
@@ -263,5 +266,19 @@ class EurodatDataStore(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
         )
+    }
+
+    /**
+     * Select a data object from the eurodat storage by its dataId
+     */
+    fun selectPrivateDataSet(dataId: String, correlationId: String): String {
+        logger.info("Select data for data $dataId from eurodat storage.CorrelationId $correlationId")
+        val eurodatCredentials = retryWrapperMethod("getEurodatCredentials") {
+            databaseCredentialResourceClient
+                .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        }
+        val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
+        val sqlStatement = "SELECT jsob_blob FROM safedeposit.pdf WHERE uuid_pdf = $dataId"
+        return selectDataFromSqlDatabase(conn, sqlStatement, dataId)
     }
 }

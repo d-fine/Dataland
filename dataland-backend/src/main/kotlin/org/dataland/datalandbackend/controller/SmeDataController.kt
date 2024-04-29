@@ -30,6 +30,7 @@ class SmeDataController(
 ) : SmeDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
+
     @Operation(operationId = "postSmeJsonAndDocuments")
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
@@ -41,6 +42,7 @@ class SmeDataController(
         )
         return ResponseEntity.ok(dataMetaInformation)
     }
+
     @Operation(operationId = "getCompanyAssociatedSmeData")
     override fun getCompanyAssociatedSmeData(dataId: String): ResponseEntity<CompanyAssociatedData<SmeData>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
@@ -48,14 +50,15 @@ class SmeDataController(
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
-        //val correlationId = generateCorrelationId(companyId)
-        val correlationId="12312"
+        // val correlationId = generateCorrelationId(companyId)
+        val correlationId = "12312"
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = myObjectMapper.readValue(privateDataManager.getPrivateDataSet(dataId, correlationId).data,
-                SmeData::class.java
+            data = myObjectMapper.readValue(
+                privateDataManager.getPrivateDataSet(dataId, correlationId).data,
+                SmeData::class.java,
             ),
         )
         logger.info(

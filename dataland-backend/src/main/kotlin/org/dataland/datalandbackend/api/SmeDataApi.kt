@@ -10,7 +10,11 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -42,6 +46,7 @@ interface SmeDataApi {
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         @RequestPart(value = "documents") documents: Array<MultipartFile>?,
     ): ResponseEntity<DataMetaInformation>
+
     /**
      * A method to retrieve specific data identified by its ID
      * @param dataId identifier used to uniquely specify data in the data store
@@ -62,8 +67,8 @@ interface SmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-                "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
+            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
     )
     fun getCompanyAssociatedSmeData(@PathVariable("dataId") dataId: String):
-            ResponseEntity<CompanyAssociatedData<SmeData>>
+        ResponseEntity<CompanyAssociatedData<SmeData>>
 }

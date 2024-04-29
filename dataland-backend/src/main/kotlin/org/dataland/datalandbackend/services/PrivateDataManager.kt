@@ -58,7 +58,7 @@ class PrivateDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
-    @Autowired private  val datamanagerUtils: DatamanagerUtils,
+    @Autowired private val datamanagerUtils: DatamanagerUtils,
     @Autowired private val storageClient: ExternalStorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -307,12 +307,16 @@ class PrivateDataManager(
     fun getDocumentFromInMemoryStore(hash: String): ByteArray? {
         return documentInMemoryStorage[hash]
     }
+
     /**
      * Retrieves a private sme data object from the private storage
      */
-    fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet{
+    fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(dataId, DataType.of(SmeData::class.java), dataMetaInformation, correlationId)
+        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(
+            dataId, DataType.of(SmeData::class.java),
+            dataMetaInformation, correlationId,
+        )
         lateinit var dataAsString: String
         try {
             dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
@@ -336,7 +340,7 @@ class PrivateDataManager(
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +
-                        " ${e.message}. Correlation ID: $correlationId",
+                    " ${e.message}. Correlation ID: $correlationId",
             )
             throw e
         }

@@ -2,7 +2,6 @@ package org.dataland.datalandbackend
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
@@ -25,17 +24,17 @@ class DatamanagerUtils {
      * @param correlationId the correlationId of the request which caused the exception to be thrown
      */
     fun handleStorageClientException(e: ClientException, dataId: String, correlationId: String) {
-    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-        logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
-        throw ResourceNotFoundApiException(
-            "Dataset not found",
-            "No dataset with the id: $dataId could be found in the data store.",
-            e,
-        )
-    } else {
-        throw e
+        if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
+            throw ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
+                e,
+            )
+        } else {
+            throw e
+        }
     }
-}
     fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
         dataType: DataType,
@@ -46,13 +45,13 @@ class DatamanagerUtils {
             throw InvalidInputApiException(
                 "Requested data $dataId not of type $dataType",
                 "The data with the id: $dataId is registered as type" +
-                        " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
-                        " type $dataType.",
+                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
+                    " type $dataType.",
             )
         }
         logger.info(
             "Requesting Data with ID $dataId and expected type $dataType from framework data storage. " +
-                    "Correlation ID: $correlationId",
+                "Correlation ID: $correlationId",
         )
     }
 }
