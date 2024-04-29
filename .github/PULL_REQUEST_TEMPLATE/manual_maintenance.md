@@ -149,6 +149,11 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to dataland@d-fine.com
   contains the right attachments and is displayed correctly.
 
+## Check e-mails sent by community manager
+
+- [ ] Check that the data request answered e-mail is sent and displayed correctly
+- [ ] Check that the data request closed e-mail is sent and displayed correctly
+
 ## Check RabbitMQ dead letter queue and disk space
 
 - [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
