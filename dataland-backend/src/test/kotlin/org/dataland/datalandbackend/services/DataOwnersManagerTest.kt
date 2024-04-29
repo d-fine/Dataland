@@ -17,6 +17,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import java.rmi.ServerException
 import java.util.*
 
 class DataOwnersManagerTest {
@@ -24,6 +25,7 @@ class DataOwnersManagerTest {
     lateinit var dataOwnersManager: DataOwnersManager
     lateinit var mockDataOwnersRepository: DataOwnerRepository
     lateinit var mockCompanyRepository: StoredCompanyRepository
+    lateinit var dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender
 
     private val testUserId = UUID.randomUUID().toString()
     private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
@@ -36,11 +38,12 @@ class DataOwnersManagerTest {
     fun initializeDataOwnersManager() {
         mockDataOwnersRepository = mock(DataOwnerRepository::class.java)
         mockCompanyRepository = mock(StoredCompanyRepository::class.java)
+        dataOwnershipSuccessfullyEmailMessageSender = mock(DataOwnershipSuccessfullyEmailMessageSender::class.java)
         dataOwnersManager = DataOwnersManager(
             mockDataOwnersRepository,
             mockCompanyRepository,
             mock(DataOwnershipEmailMessageSender::class.java),
-            mock(DataOwnershipSuccessfullyEmailMessageSender::class.java),
+            dataOwnershipSuccessfullyEmailMessageSender,
         )
     }
 
@@ -77,5 +80,26 @@ class DataOwnersManagerTest {
             )
         }
         assertTrue(exception.summary.contains("User is already a data owner for company."))
+    }
+
+    @Test
+    fun `check that email generated for users becoming company data owner are generated`() {
+        val mockStoredCompany = mock(StoredCompanyEntity::class.java)
+        val correlationId = UUID.randomUUID().toString()
+
+        `when`(mockStoredCompany.companyName).thenReturn("Weihnachtsmann & Co. KG")
+        `when`(mockStoredCompany.companyId).thenReturn(UUID.randomUUID().toString())
+
+        try {
+            dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
+                testUserId,
+                mockStoredCompany.companyId,
+                mockStoredCompany.companyName,
+                correlationId,
+            )
+        } catch (error: ServerException) {
+            println("ServerException was thrown")
+            throw error
+        }
     }
 }
