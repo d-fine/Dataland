@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.DatamanagerUtils
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -28,7 +28,6 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
@@ -53,29 +52,12 @@ class DataManager(
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
+    @Autowired private  val datamanagerUtils: DatamanagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val publicDataInMemoryStorage = mutableMapOf<String, String>()
 
-    private fun assertActualAndExpectedDataTypeForIdMatch(
-        dataId: String,
-        dataType: DataType,
-        correlationId: String,
-    ) {
-        val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
-            throw InvalidInputApiException(
-                "Requested data $dataId not of type $dataType",
-                "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
-                    " type $dataType.",
-            )
-        }
-        logger.info(
-            "Requesting Data with ID $dataId and expected type $dataType from framework data storage. " +
-                "Correlation ID: $correlationId",
-        )
-    }
+
 
     /**
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
@@ -271,13 +253,13 @@ class DataManager(
      * @return data set associated with the data ID provided in the input
      */
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation,correlationId)
         lateinit var dataAsString: String
         try {
             dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
         } catch (e: ClientException) {
-            handleInternalStorageClientException(e, dataId, correlationId)
+            datamanagerUtils.handleStorageClientException(e, dataId, correlationId)
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
@@ -285,18 +267,7 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
-    private fun handleInternalStorageClientException(e: ClientException, dataId: String, correlationId: String) {
-        if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
-            throw ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store.",
-                e,
-            )
-        } else {
-            throw e
-        }
-    }
+
 
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
         return publicDataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)

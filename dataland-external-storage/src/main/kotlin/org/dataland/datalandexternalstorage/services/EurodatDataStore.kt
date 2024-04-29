@@ -3,7 +3,6 @@ package org.dataland.datalandexternalstorage.services
 import DatabaseConnection.getConnection
 import DatabaseConnection.insertByteArrayIntoSqlDatabase
 import DatabaseConnection.insertDataIntoSqlDatabase
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
@@ -41,7 +40,6 @@ import java.sql.SQLException
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param temporarilyCachedDocumentClient the service for retrieven documents from the temporary storage
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param databaseCredentialResourceClient the service to retrieve eurodat storage credentials
  * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
  * on eurodat
@@ -55,18 +53,15 @@ class EurodatDataStore(
     @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
     @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
-    @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Value("\${dataland.eurodatclient.app-name}")
     private val eurodatAppName: String,
-    @Value("\${dataland.eurodatclient.max-retries-connecting}")
-    private val maxRetriesConnectingToEurodat: Int,
-    @Value("\${dataland.eurodatclient.milliseconds-between-retries}")
-    private val millisecondsBetweenRetriesConnectingToEurodat: Int,
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
     private val initializeSafeDepositBox: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val maxRetriesConnectingToEurodat = 8
+    private val millisecondsBetweenRetriesConnectingToEurodat = 15000
 
     /**
      * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and

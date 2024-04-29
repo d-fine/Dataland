@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.DatamanagerUtils
 import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
@@ -13,6 +14,9 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
+import org.dataland.datalandexternalstorage.openApiClient.api.ExternalStorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -54,6 +58,8 @@ class PrivateDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
+    @Autowired private  val datamanagerUtils: DatamanagerUtils,
+    @Autowired private val storageClient: ExternalStorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
@@ -300,5 +306,40 @@ class PrivateDataManager(
      */
     fun getDocumentFromInMemoryStore(hash: String): ByteArray? {
         return documentInMemoryStorage[hash]
+    }
+    /**
+     * Retrieves a private sme data object from the private storage
+     */
+    fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet{
+        val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(dataId, DataType.of(SmeData::class.java), dataMetaInformation, correlationId)
+        lateinit var dataAsString: String
+        try {
+            dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
+        } catch (e: ClientException) {
+            datamanagerUtils.handleStorageClientException(e, dataId, correlationId)
+        }
+        logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
+        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
+        dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
+        return dataAsStorableDataSet
+    }
+    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
+        return jsonDataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
+    }
+
+    private fun getDataFromStorageService(dataId: String, correlationId: String): String {
+        val dataAsString: String
+        logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
+        try {
+            dataAsString = storageClient.selectDataById(dataId, correlationId)
+        } catch (e: ServerException) {
+            logger.error(
+                "Error requesting data. Received ServerException with Message:" +
+                        " ${e.message}. Correlation ID: $correlationId",
+            )
+            throw e
+        }
+        return dataAsString
     }
 }

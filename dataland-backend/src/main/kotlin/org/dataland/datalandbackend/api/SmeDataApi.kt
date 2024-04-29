@@ -10,9 +10,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestPart
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -21,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/data/sme")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-fun interface SmeDataApi {
+interface SmeDataApi {
     /**
      * A method to store private sme data via Dataland into a data store
      */
@@ -44,4 +42,28 @@ fun interface SmeDataApi {
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         @RequestPart(value = "documents") documents: Array<MultipartFile>?,
     ): ResponseEntity<DataMetaInformation>
+    /**
+     * A method to retrieve specific data identified by its ID
+     * @param dataId identifier used to uniquely specify data in the data store
+     * @return the complete data stored under the provided data ID with the associated company ID
+     */
+    @Operation(
+        summary = "Retrieve specific data from the private data store.",
+        description = "Data identified by the provided data ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+                "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
+    )
+    fun getCompanyAssociatedSmeData(@PathVariable("dataId") dataId: String):
+            ResponseEntity<CompanyAssociatedData<SmeData>>
 }
