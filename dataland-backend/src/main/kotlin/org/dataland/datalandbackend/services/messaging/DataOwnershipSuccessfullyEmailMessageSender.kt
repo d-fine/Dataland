@@ -1,7 +1,10 @@
 package org.dataland.datalandbackend.services.messaging
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.services.KeycloakUserControllerApiService
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -10,6 +13,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -24,8 +29,9 @@ import org.springframework.stereotype.Component
 class DataOwnershipSuccessfullyEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val requestControllerApi: RequestControllerApi,
+    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
+    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
     /**
      * Function that generates the message object for data ownership request acceptance mails
@@ -40,7 +46,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         companyName: String,
         correlationId: String,
     ) {
-        val newDataOwnerEmail = keycloakUserControllerApiService.getEmailAddress(newDataOwnerId)
+        val newDataOwnerEmail = this.getEmailAddressDataOwner(newDataOwnerId)
         val properties = mapOf(
             "companyId" to datalandCompanyId,
             "companyName" to companyName,
@@ -69,5 +75,31 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         return requestControllerApi.getAggregatedDataRequests(
             identifierValue = datalandCompanyId, status = RequestStatus.Open,
         ).filter { it.count > 0 }.size
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private data class User(
+        @JsonProperty("email")
+        val email: String?,
+
+        @JsonProperty("id")
+        val userId: String,
+    )
+
+    /**
+     * gets the email address of a new data owner in keycloak given the user id
+     * @param userIdDataOwner the userId of the new data owner
+     * @returns the email address
+     */
+    fun getEmailAddressDataOwner(userIdDataOwner: String): String {
+        val request = Request.Builder()
+            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userIdDataOwner")
+            .build()
+        val response = authenticatedOkHttpClient.newCall(request).execute()
+        val parsedResponseBody = objectMapper.readValue(
+            response.body!!.string(),
+            User::class.java,
+        )
+        return parsedResponseBody.email ?: ""
     }
 }
