@@ -11,12 +11,8 @@ import org.junit.jupiter.api.Test
 
 class DataRequestedAnsweredEmailMessageSenderTest {
     private val requestResponseEmailSenderUtils = DataRequestResponseEmailSenderUtils()
-    private val objectMapper = jacksonObjectMapper()
-    private lateinit var dataRequestId: String
     private lateinit var cloudEventMessageHandlerMock: CloudEventMessageHandler
     private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
-    private val correlationId = requestResponseEmailSenderUtils.getCorrelationId()
-    private val staleDaysThreshold = requestResponseEmailSenderUtils.getStaleInDays()
     private val dataTypes = requestResponseEmailSenderUtils.getListOfAllDataTypes()
 
     @BeforeEach
@@ -29,7 +25,7 @@ class DataRequestedAnsweredEmailMessageSenderTest {
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
             val dataRequestEntity = requestResponseEmailSenderUtils.getDataRequestEntityWithDataType(it[0])
-            dataRequestId = dataRequestEntity.dataRequestId
+            val dataRequestId = dataRequestEntity.dataRequestId
             cloudEventMessageHandlerMock =
                 requestResponseEmailSenderUtils.getMockCloudEventMessageHandlerAndSetChecks(
                     it[0],
@@ -41,11 +37,12 @@ class DataRequestedAnsweredEmailMessageSenderTest {
             val dataRequestedAnsweredEmailMessageSender =
                 DataRequestedAnsweredEmailMessageSender(
                     cloudEventMessageHandlerMock,
-                    objectMapper, keycloakUserControllerApiService,
-                    requestResponseEmailSenderUtils.getCompanyDataControllerMock(), staleDaysThreshold,
+                    jacksonObjectMapper(), keycloakUserControllerApiService,
+                    requestResponseEmailSenderUtils.getCompanyDataControllerMock(),
+                    requestResponseEmailSenderUtils.getStaleInDays(),
                 )
             dataRequestedAnsweredEmailMessageSender
-                .sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
+                .sendDataRequestedAnsweredEmail(dataRequestEntity, requestResponseEmailSenderUtils.getCorrelationId())
         }
     }
 }
