@@ -1,4 +1,5 @@
 import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { selectItemFromDropdownByValue } from "@ct/testUtils/Dropdown";
 
 export class UploadReports extends UploadDocuments {
   private uploadReportsSelector: string;
@@ -13,7 +14,7 @@ export class UploadReports extends UploadDocuments {
       cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
       cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
       cy.get("div.p-datepicker").find(`span:contains("12")`).click();
-      cy.wrap(element).find("select[name=currency]").select("EUR");
+      selectItemFromDropdownByValue(cy.wrap(element).find("div[name=currency]"), "EUR", true);
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   }
