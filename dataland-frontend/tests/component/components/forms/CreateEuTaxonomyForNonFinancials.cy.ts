@@ -5,6 +5,7 @@ import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from "@clients/
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
+import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@ct/testUtils/Dropdown";
 
 describe("Component tests for the Eu Taxonomy for non financials that test dependent fields", () => {
   const uploadReports = new UploadReports("referencedReports");
@@ -110,9 +111,9 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
     cy.get('div[data-test="nfrdMandatory"]').find('input[value="Yes"]').check();
-    cy.get('select[name="value"]').select(2);
+    selectItemFromDropdownByIndex(cy.get('div[name="value"'), 2);
     cy.get('input[name="provider"]').clear().type("Assurance Provider");
-    cy.get('div[label="General"] select[name="fileName"]').select(reports);
+    selectItemFromDropdownByValue(cy.get('div[label="General"] div[name="fileName"]'), reports[0]);
     cy.get('div[label="General"] input[name="page"]').first().clear().type("-13");
     cy.get('div[label="General"] em[title="Page"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
@@ -124,13 +125,17 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateOtherSections(reports: string[]): void {
-    cy.get('div[label="Revenue"] [data-test="dataPointToggleButton"]').click();
-    cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
-    cy.get('div[label="Revenue"] select[data-test="datapoint-currency"]').select(1);
-    cy.get('div[label="Revenue"] select[name="fileName"]').select(reports[0]);
-    cy.get('div[label="Revenue"] input[name="page"]').clear().type("5");
-    cy.get('div[label="Revenue"] select[name="quality"]').select(2);
-    cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] [data-test="dataPointToggleButton"]').click();
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="value"]').clear().type("130000");
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="currency"]'), 1);
+    selectItemFromDropdownByValue(
+      cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="fileName"]'),
+      reports[0],
+    );
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="page"]').clear().type("5");
+    selectItemFromDropdownByIndex(cy.get('div[data-test="totalAmount"] div[name="quality"]'), 2);
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type("just a comment");
+
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
@@ -143,10 +148,10 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       .should("exist");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("25");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type("5000");
-    cy.get('div[label="Revenue"] select[name="currency"]').eq(0).select(5);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(0), 5);
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
-    cy.get('div[label="Revenue"] select[name="currency"]').eq(1).select(51);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
       .type("a");
@@ -183,10 +188,10 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       .type("15");
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
-    cy.get('div[label="Revenue"] select[name="currency"]').eq(2).select(51);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(2), 51);
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type("13");
     cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type("13000");
-    cy.get('div[label="Revenue"] select[name="currency"]').eq(3).select(53);
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(3), 53);
     cy.get('div[label="Revenue"] input[name="enablingShareInPercent"]').clear().type("12");
     cy.get('div[label="Revenue"] input[name="transitionalShareInPercent"]').clear().type("12");
   }
