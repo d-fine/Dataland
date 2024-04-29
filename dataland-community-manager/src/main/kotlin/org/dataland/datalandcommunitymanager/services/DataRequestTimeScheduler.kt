@@ -36,7 +36,7 @@ class DataRequestTimeScheduler(
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 12 * * *")
-    private fun patchStaleAnsweredRequestToClosed() {
+    fun patchStaleAnsweredRequestToClosed() {
         val correlationId = UUID.randomUUID().toString()
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
@@ -45,6 +45,7 @@ class DataRequestTimeScheduler(
             dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
                 .filter { it.lastModifiedDate < thresholdTime }
         staleAnsweredRequests.forEach {
+            println(it.requestStatus)
             logger.info(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
