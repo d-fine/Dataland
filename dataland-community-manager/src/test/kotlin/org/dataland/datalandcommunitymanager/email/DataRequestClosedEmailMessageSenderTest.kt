@@ -4,20 +4,13 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestClosedEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestResponseEmailSenderUtils
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class DataRequestClosedEmailMessageSenderTest {
     private val requestResponseEmailSenderUtils = DataRequestResponseEmailSenderUtils()
-    private val objectMapper = jacksonObjectMapper()
-    private lateinit var dataRequestId: String
-    private lateinit var cloudEventMessageHandlerMock: CloudEventMessageHandler
     private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
-    private val correlationId = requestResponseEmailSenderUtils.getCorrelationId()
-    private val staleDaysThreshold = requestResponseEmailSenderUtils.getStaleInDays()
-    private val dataTypes = requestResponseEmailSenderUtils.getListOfAllDataTypes()
 
     @BeforeEach
     fun setupAuthentication() {
@@ -27,10 +20,11 @@ class DataRequestClosedEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
+        val dataTypes = requestResponseEmailSenderUtils.getListOfAllDataTypes()
         dataTypes.forEach {
             val dataRequestEntity = requestResponseEmailSenderUtils.getDataRequestEntityWithDataType(it[0])
-            dataRequestId = dataRequestEntity.dataRequestId
-            cloudEventMessageHandlerMock =
+            val dataRequestId = dataRequestEntity.dataRequestId
+            val cloudEventMessageHandlerMock =
                 requestResponseEmailSenderUtils.getMockCloudEventMessageHandlerAndSetChecks(
                     it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
                 )
@@ -38,11 +32,12 @@ class DataRequestClosedEmailMessageSenderTest {
             val dataRequestClosedEmailMessageSender =
                 DataRequestClosedEmailMessageSender(
                     cloudEventMessageHandlerMock,
-                    objectMapper, keycloakUserControllerApiService,
-                    requestResponseEmailSenderUtils.getCompanyDataControllerMock(), staleDaysThreshold,
+                    jacksonObjectMapper(), keycloakUserControllerApiService,
+                    requestResponseEmailSenderUtils.getCompanyDataControllerMock(),
+                    requestResponseEmailSenderUtils.getStaleInDays(),
                 )
             dataRequestClosedEmailMessageSender
-                .sendDataRequestClosedEmail(dataRequestEntity, correlationId)
+                .sendDataRequestClosedEmail(dataRequestEntity, requestResponseEmailSenderUtils.getCorrelationId())
         }
     }
 }
