@@ -24,16 +24,16 @@ class DataRequestAnsweredEmailFactory(
         val reportingPeriod = "reportingPeriod"
         val creationDate = "creationDate"
         val dataRequestId = "dataRequestId"
-        val closedIn = "closedIn"
+        val closedInDays = "closedInDays"
         val dataTypeDescription = "dataTypeDescription"
     }
 
     override val builderForType = TemplateEmailMessage.Type.DataRequestedAnswered
     override val requiredProperties = setOf(
         keys.companyId, keys.companyName, keys.dataType, keys.reportingPeriod, keys.creationDate,
-        keys.dataRequestId,
+        keys.dataRequestId, keys.closedInDays,
     )
-    override val optionalProperties = setOf(keys.closedIn, keys.dataTypeDescription)
+    override val optionalProperties = setOf(keys.dataTypeDescription)
 
     override val templateFile = "/request_answered.html.ftl"
     override val subject = "Your data request has been answered!"
@@ -50,7 +50,10 @@ class DataRequestAnsweredEmailFactory(
             .append("Request created: ${properties[keys.creationDate]} \n\n")
             .append("Review the provided data:\n")
             .append("$proxyPrimaryUrl/requests/${properties[keys.dataRequestId]}")
-            .append("\nWithout any actions, your data request will be set to closed automatically in some days.")
+            .append(
+                "\nWithout any actions, your data request will be set to closed " +
+                    "automatically in ${properties[keys.closedInDays]} days.",
+            )
             .toString()
     }
 }

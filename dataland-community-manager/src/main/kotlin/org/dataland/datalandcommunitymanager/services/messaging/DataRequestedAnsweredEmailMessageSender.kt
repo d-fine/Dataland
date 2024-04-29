@@ -41,7 +41,7 @@ class DataRequestedAnsweredEmailMessageSender(
             "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
             "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
             "dataRequestId" to dataRequestEntity.dataRequestId,
-            "closedIn" to "$staleDaysThreshold days",
+            "closedInDays" to staleDaysThreshold,
         )
         val message = TemplateEmailMessage(
             emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,

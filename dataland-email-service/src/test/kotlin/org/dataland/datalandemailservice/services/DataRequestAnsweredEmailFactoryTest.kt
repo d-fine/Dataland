@@ -32,10 +32,10 @@ class DataRequestAnsweredEmailFactoryTest {
             "dataType" to dataType,
             "reportingPeriod" to reportingPeriod,
             "creationDate" to creationTimestampAsDate,
+            "closedInDays" to closedInDays,
         )
         if (setOptionalProperties) {
             properties = properties + mapOf(
-                "closedIn" to closedInDays,
                 "dataTypeDescription" to dataTypeDescription,
             )
         }
@@ -64,11 +64,9 @@ class DataRequestAnsweredEmailFactoryTest {
     }
 
     private fun validateEmailHtmlFormatContainsDefaultProperties(email: Email) {
-        assertTrue(email.content.htmlContent.contains("some days"))
         assertTrue(email.content.htmlContent.contains(dataType))
     }
     private fun validateEmailHtmlFormatContainsOptionalProperties(email: Email) {
-        assertTrue(email.content.htmlContent.contains(closedInDays))
         assertTrue(email.content.htmlContent.contains(dataTypeDescription))
     }
     private fun validateEmailHtmlFormat(email: Email) {
@@ -86,6 +84,7 @@ class DataRequestAnsweredEmailFactoryTest {
         assertTrue(email.content.htmlContent.contains("Review the provided data."))
         assertTrue(email.content.htmlContent.contains("Close or reopen your data request."))
         assertTrue(email.content.htmlContent.contains("Copyright"))
+        assertTrue(email.content.htmlContent.contains(closedInDays))
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(email.content.htmlContent.contains(reportingPeriod))
         assertTrue(email.content.htmlContent.contains(creationTimestampAsDate))
@@ -122,7 +121,7 @@ class DataRequestAnsweredEmailFactoryTest {
 
         assertTrue(
             email.content.textContent.contains(
-                "\nWithout any actions, your data request will be set to closed automatically in some days.",
+                "\nWithout any actions, your data request will be set to closed automatically in $closedInDays days.",
             ),
         )
     }
