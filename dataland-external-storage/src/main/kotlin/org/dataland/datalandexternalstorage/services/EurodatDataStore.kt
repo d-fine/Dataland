@@ -58,10 +58,12 @@ class EurodatDataStore(
     private val eurodatAppName: String,
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
     private val initializeSafeDepositBox: Boolean,
+    @Value("\${dataland.eurodatclient.max-retries-connecting}")
+    private val maxRetriesConnectingToEurodat: Int,
+    @Value("\${dataland.eurodatclient.milliseconds-between-retries}")
+    private val millisecondsBetweenRetriesConnectingToEurodat: Int,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val maxRetriesConnectingToEurodat = 8
-    private val millisecondsBetweenRetriesConnectingToEurodat = 15000
 
     /**
      * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and
