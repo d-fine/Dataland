@@ -6,8 +6,9 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.Assertions
-import org.mockito.Mockito
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -20,20 +21,19 @@ class DataRequestResonseEmailSenderUtils {
     private val creationTimestampAsDate = "07 Mar 2024, 15:03"
     private val companyName = "Test Inc."
     fun setupAuthentication() {
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        val mockSecurityContext = mock(SecurityContext::class.java)
         val authenticationMock = AuthenticationMock.mockJwtAuthentication(
             userEmail,
             userId,
             setOf(DatalandRealmRole.ROLE_USER),
         )
-        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        Mockito.`when`(authenticationMock.credentials).thenReturn("")
+        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
+        `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
-
     }
     fun getKeycloakControllerApiService(): KeycloakUserControllerApiService {
-        val keycloakUserControllerApiService = Mockito.mock(KeycloakUserControllerApiService::class.java)
-        Mockito.`when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
+        val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
+        `when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
         return keycloakUserControllerApiService
     }
     fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
@@ -52,18 +52,18 @@ class DataRequestResonseEmailSenderUtils {
         dataTypeDescription: String,
         staleDaysThreshold: String,
     ) {
-        Assertions.assertEquals(companyId, properties.getValue("companyId"))
-        Assertions.assertEquals(companyName, properties.getValue("companyName"))
-        Assertions.assertEquals(dataType, properties.getValue("dataType"))
-        Assertions.assertEquals(dataTypeDescription, properties.getValue("dataTypeDescription"))
-        Assertions.assertEquals(reportingPeriod, properties.getValue("reportingPeriod"))
-        Assertions.assertEquals(creationTimestampAsDate, properties.getValue("creationDate"))
-        Assertions.assertEquals(dataRequestId, properties.getValue("dataRequestId"))
-        Assertions.assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
+        assertEquals(companyId, properties.getValue("companyId"))
+        assertEquals(companyName, properties.getValue("companyName"))
+        assertEquals(dataType, properties.getValue("dataType"))
+        assertEquals(dataTypeDescription, properties.getValue("dataTypeDescription"))
+        assertEquals(reportingPeriod, properties.getValue("reportingPeriod"))
+        assertEquals(creationTimestampAsDate, properties.getValue("creationDate"))
+        assertEquals(dataRequestId, properties.getValue("dataRequestId"))
+        assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
     }
     fun getCompanyDataControllerMock(): CompanyDataControllerApi {
-        val companyDataControllerMock = Mockito.mock(CompanyDataControllerApi::class.java)
-        Mockito.`when`(companyDataControllerMock.getCompanyInfo(companyId))
+        val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
+        `when`(companyDataControllerMock.getCompanyInfo(companyId))
             .thenReturn(
                 CompanyInformation(
                     companyName = companyName,
@@ -87,7 +87,7 @@ class DataRequestResonseEmailSenderUtils {
             listOf("heimathafen", "Heimathafen"),
         )
     }
-    fun checkUserEmail(receiver : String){
-        Assertions.assertEquals(userEmail, receiver)
+    fun checkUserEmail(receiver: String) {
+        assertEquals(userEmail, receiver)
     }
 }
