@@ -95,16 +95,11 @@ class DataOwnersManagerTest {
 
     @Test
     fun `check that email for users becoming company data owner is not generated if company does not exist`() {
-        val mockStoredCompany = mock(StoredCompanyEntity::class.java)
-
-        `when`(mockStoredCompany.companyName).thenReturn(testCompanyName)
-        `when`(mockStoredCompany.companyId).thenReturn(UUID.randomUUID().toString())
-
         val exception = assertThrows<ResourceNotFoundApiException> {
             dataOwnersManager.addDataOwnerToCompany(
-                companyId = mockStoredCompany.companyId,
+                companyId = UUID.randomUUID().toString(),
                 userId = testUserId,
-                companyName = mockStoredCompany.companyName,
+                companyName = testCompanyName,
             )
         }
         assertTrue(exception.summary.contains("Company is invalid"))
@@ -112,28 +107,28 @@ class DataOwnersManagerTest {
 
     @Test
     fun `check that email generated for users becoming company data owner are generated`() {
-        val mockStoredCompany = mock(StoredCompanyEntity::class.java)
+        // val mockStoredCompany = mock(StoredCompanyEntity::class.java)
         val companyId = UUID.randomUUID().toString()
 
-        `when`(mockStoredCompany.companyName).thenReturn(testCompanyName)
-        `when`(mockStoredCompany.companyId).thenReturn(companyId)
-        `when`(mockCompanyRepository.existsById(mockStoredCompany.companyId)).thenReturn(true)
-        `when`(mockDataOwnersRepository.existsById(mockStoredCompany.companyId)).thenReturn(false)
+        // `when`(mockStoredCompany.companyName).thenReturn(testCompanyName)
+        // `when`(mockStoredCompany.companyId).thenReturn(companyId)
+        `when`(mockCompanyRepository.existsById(companyId)).thenReturn(true)
+        `when`(mockDataOwnersRepository.existsById(companyId)).thenReturn(false)
         `when`(
             dataOwnershipSuccessfullyEmailMessageSender.getNumberOfOpenDataRequestsForCompany(
-                mockStoredCompany.companyId,
+                companyId,
             ),
         ).thenReturn(5)
         `when`(dataOwnershipSuccessfullyEmailMessageSender.getEmailAddressDataOwner(testUserId))
-            .thenReturn("test@test.com")
+            .thenReturn("test@example.com")
         val mockCompanyDataOwnersEntity = mock(CompanyDataOwnersEntity::class.java)
         `when`(mockDataOwnersRepository.save(any(CompanyDataOwnersEntity::class.java)))
             .thenReturn(mockCompanyDataOwnersEntity)
 
         dataOwnersManager.addDataOwnerToCompany(
-            companyId = mockStoredCompany.companyId,
+            companyId = companyId,
             userId = testUserId,
-            companyName = mockStoredCompany.companyName,
+            companyName = testCompanyName,
         )
 
         Mockito.verify(dataOwnershipSuccessfullyEmailMessageSender, Mockito.times(1))
