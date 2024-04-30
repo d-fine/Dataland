@@ -1,10 +1,11 @@
-package org.dataland.datalandcommunitymanager.utils
+package org.dataland.datalandcommunitymanager.email
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -13,6 +14,8 @@ import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -20,7 +23,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
-class DataRequestResponseEmailSenderUtils {
+class DataRequestResponseEmailSenderTest {
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
@@ -31,6 +34,10 @@ class DataRequestResponseEmailSenderUtils {
     private val objectMapper = jacksonObjectMapper()
     private val correlationId = UUID.randomUUID().toString()
     private val staleDaysThreshold = "some number"
+    private val dataTypes = getListOfAllDataTypes()
+    private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
+
+    @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         val authenticationMock = AuthenticationMock.mockJwtAuthentication(
@@ -41,13 +48,14 @@ class DataRequestResponseEmailSenderUtils {
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
+        keycloakUserControllerApiService = getKeycloakControllerApiService()
     }
-    fun getKeycloakControllerApiService(): KeycloakUserControllerApiService {
+    private fun getKeycloakControllerApiService(): KeycloakUserControllerApiService {
         val keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
         `when`(keycloakUserControllerApiService.getEmailAddress(userId)).thenReturn(userEmail)
         return keycloakUserControllerApiService
     }
-    fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
+    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
         return DataRequestEntity(
             userId = userId,
             creationTimestamp = creationTimestamp,
@@ -71,7 +79,7 @@ class DataRequestResponseEmailSenderUtils {
         assertEquals(dataRequestId, properties.getValue("dataRequestId"))
         assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
     }
-    fun getCompanyDataControllerMock(): CompanyDataControllerApi {
+    private fun getCompanyDataControllerMock(): CompanyDataControllerApi {
         val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
         `when`(companyDataControllerMock.getCompanyInfo(companyId))
             .thenReturn(
@@ -85,7 +93,7 @@ class DataRequestResponseEmailSenderUtils {
         return companyDataControllerMock
     }
 
-    fun getListOfAllDataTypes(): List<List<String>> {
+    private fun getListOfAllDataTypes(): List<List<String>> {
         return listOf(
             listOf("p2p", "WWF Pathways to Paris"),
             listOf("eutaxonomy-financials", "EU Taxonomy for financial companies"),
@@ -97,14 +105,8 @@ class DataRequestResponseEmailSenderUtils {
             listOf("heimathafen", "Heimathafen"),
         )
     }
-    fun getCorrelationId(): String {
-        return correlationId
-    }
-    fun getStaleInDays(): String {
-        return staleDaysThreshold
-    }
 
-    fun getMockCloudEventMessageHandlerAndSetChecks(
+    private fun getMockCloudEventMessageHandlerAndSetChecks(
         dataType: String,
         dataTypeDescription: String,
         dataRequestId: String,
@@ -137,5 +139,51 @@ class DataRequestResponseEmailSenderUtils {
             assertEquals(RoutingKeyNames.templateEmail, arg5)
         }
         return cloudEventMessageHandlerMock
+    }
+
+    @Test
+    fun `validate that the output of the closed request email message sender is correctly build for all frameworks`() {
+        dataTypes.forEach {
+            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestId = dataRequestEntity.dataRequestId
+            val cloudEventMessageHandlerMock =
+                getMockCloudEventMessageHandlerAndSetChecks(
+                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
+                )
+
+            val dataRequestClosedEmailMessageSender =
+                DataRequestResponseEmailSender(
+                    cloudEventMessageHandlerMock,
+                    jacksonObjectMapper(), keycloakUserControllerApiService,
+                    getCompanyDataControllerMock(),
+                    staleDaysThreshold,
+                )
+            dataRequestClosedEmailMessageSender.sendDataRequestResponseEmail(
+                dataRequestEntity, TemplateEmailMessage.Type.DataRequestClosed, correlationId,
+            )
+        }
+    }
+
+    @Test
+    fun `check that the output of the answered request email message sender is correctly build for all frameworks`() {
+        dataTypes.forEach {
+            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestId = dataRequestEntity.dataRequestId
+            val cloudEventMessageHandlerMock =
+                getMockCloudEventMessageHandlerAndSetChecks(
+                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestedAnswered,
+                )
+
+            val dataRequestClosedEmailMessageSender =
+                DataRequestResponseEmailSender(
+                    cloudEventMessageHandlerMock,
+                    jacksonObjectMapper(), keycloakUserControllerApiService,
+                    getCompanyDataControllerMock(),
+                    staleDaysThreshold,
+                )
+            dataRequestClosedEmailMessageSender.sendDataRequestResponseEmail(
+                dataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
+            )
+        }
     }
 }

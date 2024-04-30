@@ -9,10 +9,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -30,7 +31,7 @@ import kotlin.jvm.optionals.getOrElse
 class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender,
+    @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val messageRepository: MessageRepository,
@@ -68,11 +69,37 @@ class DataRequestAlterationManager(
             messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
         }
-        if (requestStatus == RequestStatus.Answered) {
-            val correlationId = UUID.randomUUID().toString()
-            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
+        if (requestStatus != null) {
+            sendEmailBecauseOfStatusChanged(dataRequestEntity, requestStatus)
         }
         return dataRequestEntity.toStoredDataRequest()
+    }
+
+    /**
+     * Method to send email if the status changed
+     * @param dataRequestEntity the id of the request entity
+     * @param status the patched request status
+     */
+    private fun sendEmailBecauseOfStatusChanged(
+        dataRequestEntity: DataRequestEntity,
+        status: RequestStatus,
+        correlationId: String = UUID.randomUUID().toString(),
+    ) {
+        when (status) {
+            RequestStatus.Answered -> {
+                dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
+                    dataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
+                )
+            }
+            RequestStatus.Closed -> {
+                dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
+                    dataRequestEntity, TemplateEmailMessage.Type.DataRequestClosed, correlationId,
+                )
+            }
+            else -> {
+                return
+            }
+        }
     }
 
     /**
@@ -118,7 +145,7 @@ class DataRequestAlterationManager(
             metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
         )
         dataRequestEntities.forEach {
-            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(it, correlationId)
+            sendEmailBecauseOfStatusChanged(it, RequestStatus.Answered, correlationId)
         }
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +
