@@ -1,5 +1,6 @@
-package org.dataland.frameworktoolbox.frameworks.sfdr
+package org.dataland.frameworktoolbox.frameworks.sme
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.springframework.stereotype.Component
 import java.io.File
@@ -14,4 +15,5 @@ class SmeFramework : PavedRoadFramework(
     explanation = "Small and medium-sized enterprises questionnaire",
     File("./dataland-framework-toolbox/inputs/sme/sme.xlsx"),
     order = 6,
+    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.BackendApiController),
 )

@@ -8,7 +8,7 @@ import {
   type EuTaxonomyDataForFinancials,
   type LksgData,
   type SfdrData,
-  type SmeData,
+  type PathwaysToParisData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
@@ -26,7 +26,7 @@ describeIf(
     const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types-" + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
-      humanizeStringOrNumber(DataTypeEnum.Sme),
+      humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
     ]);
@@ -295,7 +295,7 @@ describeIf(
             );
           })
           .then(() => {
-            return uploadFrameworkData(DataTypeEnum.Sme, token, companyIdOfAlpha, "2015", smeFixtures[0].t);
+            return uploadFrameworkData(DataTypeEnum.P2p, token, companyIdOfAlpha, "2015", p2pFixtures[0].t);
           });
       });
     }
@@ -318,13 +318,13 @@ describeIf(
             );
           })
           .then(async () => {
-            return uploadFrameworkData(DataTypeEnum.Sme, token, companyIdOfBeta, "2014", smeFixtures[1].t);
+            return uploadFrameworkData(DataTypeEnum.P2p, token, companyIdOfBeta, "2014", p2pFixtures[1].t);
           });
       });
     }
 
     let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-    let smeFixtures: Array<FixtureData<SmeData>>;
+    let p2pFixtures: Array<FixtureData<PathwaysToParisData>>;
     let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
     let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
@@ -332,8 +332,8 @@ describeIf(
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
-      cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-        smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
+      cy.fixture("CompanyInformationWithP2pData").then(function (jsonContent) {
+        p2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
       });
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
@@ -361,12 +361,12 @@ describeIf(
 
     it("Check that clicking a search result on the search page or an autocomplete suggestion on the view page redirects the user to the company cockpit", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
-      visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Sme, nameOfCompanyAlpha);
+      visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
 
       validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
-      validateFrameworkSummaryPanel(DataTypeEnum.Sme, 1, true);
+      validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
 
-      validateChosenFramework(DataTypeEnum.Sme);
+      validateChosenFramework(DataTypeEnum.P2p);
       selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
       validateChosenFramework(DataTypeEnum.Sfdr);
@@ -382,10 +382,10 @@ describeIf(
       validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
-      selectFrameworkInDropdown(DataTypeEnum.Sme);
+      selectFrameworkInDropdown(DataTypeEnum.P2p);
 
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.Sme);
+      validateChosenFramework(DataTypeEnum.P2p);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.Lksg);
@@ -397,7 +397,7 @@ describeIf(
       clickBackButton();
 
       validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.Sme);
+      validateChosenFramework(DataTypeEnum.P2p);
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 

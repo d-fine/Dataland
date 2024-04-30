@@ -1,0 +1,10 @@
+Bag Attributes
+    friendlyName: certificate
+    localKeyID: 54 69 6D 65 20 31 37 31 31 30 31 35 32 38 33 33 35 36 
+subject=C = DE, ST = Hessen, L = Frankfurt am Main, O = Dataland GmbH, OU = Dataland GmbH, CN = Dataland GmbH
+
+issuer=C = DE, ST = Hessen, L = Frankfurt am Main, O = Dataland GmbH, OU = Dataland GmbH, CN = Dataland GmbH
+
+-----BEGIN CERTIFICATE-----
+${EURODAT_CLIENT_TLS_CERT}
+-----END CERTIFICATE-----

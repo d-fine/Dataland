@@ -12,4 +12,6 @@ object ExchangeName {
     const val DeadLetter = "deadLetter"
     const val ManualQaRequested = "manualQaRequested"
     const val SendEmail = "sendEmail"
+    const val PrivateItemStored = "privateItemStored"
+    const val PrivateRequestReceived = "privateRequestReceived"
 }
