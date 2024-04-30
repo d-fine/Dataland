@@ -84,8 +84,6 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
                 companyName = companyName,
                 correlationId = correlationId,
             )
-
-        Mockito.reset(cloudEventMessageHandlerMock)
     }
 
     private fun mockCloudEventMessageHandlerAndSetChecks() {
