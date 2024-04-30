@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test
 class DataRequestClosedEmailMessageSenderTest {
     private val requestResponseEmailSenderUtils = DataRequestResponseEmailSenderUtils()
     private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
+    private val dataTypes = requestResponseEmailSenderUtils.getListOfAllDataTypes()
 
     @BeforeEach
     fun setupAuthentication() {
@@ -20,7 +21,6 @@ class DataRequestClosedEmailMessageSenderTest {
 
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
-        val dataTypes = requestResponseEmailSenderUtils.getListOfAllDataTypes()
         dataTypes.forEach {
             val dataRequestEntity = requestResponseEmailSenderUtils.getDataRequestEntityWithDataType(it[0])
             val dataRequestId = dataRequestEntity.dataRequestId
