@@ -1,0 +1,7 @@
+ARG DATALAND_GRADLE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION}
+
+WORKDIR /app
+COPY ./dataland-dummy-eurodat-client/ ./dataland-dummy-eurodat-client/
+COPY ./dataland-eurodat-client/eurodatClientOpenApi.json ./dataland-eurodat-client/eurodatClientOpenApi.json
+RUN ./gradlew dataland-dummy-eurodat-client:bootJar --no-daemon --stacktrace

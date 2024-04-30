@@ -96,8 +96,24 @@ export default defineComponent({
     /**
      * opens the dialog
      */
-    openDialog() {
-      this.dialogIsOpen = true;
+    async openDialog() {
+      const isLoggedIn = await this.checkLoggedIn();
+      if (isLoggedIn) {
+        this.dialogIsOpen = true;
+      } else {
+        const keycloakInstance = await assertDefined(this.getKeycloakPromise)();
+        await keycloakInstance.register();
+      }
+    },
+    /**
+     * checks if user is logged in
+     * @returns boolean
+     */
+    async checkLoggedIn() {
+      if (this.getKeycloakPromise) {
+        return (await this.getKeycloakPromise()).authenticated;
+      }
+      return false;
     },
   },
 });
