@@ -1,32 +1,30 @@
 <template>
   <div :data-test="dataTest">
-
-
-  <Dropdown
-    :options="displayOptions"
-    v-bind:model-value="selectedOption"
-    @update:model-value="handleInputChange($event)"
-    :placeholder="placeholder"
-    :name="name"
-    :showClear="!isRequired"
-    :option-label="optionLabel"
-    :option-value="optionValue"
-    :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
-    :disabled="disabled"
-  />
-<!--  FormKit component only used to parse the selected value in nested FormKits  -->
-  <FormKit
-    v-show="false"
-    type="text"
-    :disabled="disabled"
-    :name="name"
-    v-bind:model-value="selectedOption"
-    @update:model-value="handleFormKitInputChange($event)"
-    outer-class="hidden-input"
-    :validation-label="validationLabel"
-    :validation="validation"
-    :ignore="ignore"
-  />
+    <Dropdown
+      :options="displayOptions"
+      v-bind:model-value="selectedOption"
+      @update:model-value="handleInputChange($event)"
+      :placeholder="placeholder"
+      :name="name"
+      :showClear="!isRequired"
+      :option-label="optionLabel"
+      :option-value="optionValue"
+      :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
+      :disabled="disabled"
+    />
+    <!--  FormKit component only used to parse the selected value in nested FormKits  -->
+    <FormKit
+      v-show="false"
+      type="text"
+      :disabled="disabled"
+      :name="name"
+      v-bind:model-value="selectedOption"
+      @update:model-value="handleFormKitInputChange($event)"
+      outer-class="hidden-input"
+      :validation-label="validationLabel"
+      :validation="validation"
+      :ignore="ignore"
+    />
   </div>
 </template>
 
@@ -35,7 +33,7 @@ import { type ComponentPropsOptions, defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
-import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
@@ -56,9 +54,9 @@ export default defineComponent({
   }) as Readonly<ComponentPropsOptions>,
   data() {
     return {
-      selectedOption: null as null | string,
       optionLabel: "label",
       optionValue: "value",
+      selectedOption: this.modelValue,
     };
   },
   emits: ["update:model-value"],
@@ -67,20 +65,27 @@ export default defineComponent({
       this.selectedOption = newValue;
     },
     options() {
-      if(!(this.displayOptions as (DropdownOption | undefined)[])
-          .map((entry) => entry?.value).includes(this.selectedOption ?? undefined)) {
-        this.selectedOption = null;
+      if (
+        !(this.displayOptions as (DropdownOption | undefined)[])
+          .map((entry) => entry?.value)
+          .includes(this.selectedOption ?? undefined)
+      ) {
+        // TODO: CLEANUP
+        console.log(`Unknown option: '${this.selectedOption}'. Allowed: ${JSON.stringify(this.displayOptions)}  `);
       }
-    }
+    },
   },
   computed: {
     displayOptions() {
-      if(Array.isArray(this.options)) {
-        if((this.options as unknown[]).every((element) => typeof element == "object")) { return this.options; }
-        else { return this.options.map((entry) => ({value: entry, label: entry})); }
+      if (Array.isArray(this.options)) {
+        if ((this.options as unknown[]).every((element) => typeof element == "object")) {
+          return this.options;
+        } else {
+          return this.options.map((entry) => ({ value: entry, label: entry }));
+        }
       }
-      return Object.entries(this.options).map((entry) => ({value: entry[0], label: entry[1]}));
-    }
+      return Object.entries(this.options).map((entry) => ({ value: entry[0], label: entry[1] }));
+    },
   },
   methods: {
     /**

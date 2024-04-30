@@ -19,7 +19,7 @@ export function selectItemFromDropdownByValue(
       .should("have.text", valueToSelect);
     cy.get(".p-dropdown-items")
       .contains(new RegExp(`^${valueToSelect}$`))
-      .trigger("click");
+      .click();
   }
 }
 

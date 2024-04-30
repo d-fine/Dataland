@@ -44,6 +44,7 @@
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
             name="fileName"
+            ignore
           />
         </div>
         <div>
@@ -75,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, nextTick } from "vue";
 import { FormKit } from "@formkit/vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -116,7 +117,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    setTimeout(() => (this.isMounted = true));
+    void nextTick(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {

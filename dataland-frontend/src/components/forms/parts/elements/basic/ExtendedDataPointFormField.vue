@@ -125,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, nextTick } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
@@ -162,7 +162,7 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       commentValue: "",
-      currentReportValue: "" as string,
+      currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
       checkboxValue: [] as Array<string>,
@@ -173,7 +173,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    setTimeout(() => (this.isMounted = true));
+    void nextTick(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {
