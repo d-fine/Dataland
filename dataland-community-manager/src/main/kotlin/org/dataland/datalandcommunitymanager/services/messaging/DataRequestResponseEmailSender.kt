@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Service("DataRequestResponseEmailSender")
 /**
  * A class that provided utility for generating emails messages for data request responses
  */
+@Service("DataRequestResponseEmailSender")
 class DataRequestResponseEmailSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
@@ -88,6 +88,7 @@ class DataRequestResponseEmailSender(
             "closedInDays" to staleDaysThreshold,
         )
     }
+
     /**
      * Method to informs user by mail that his request is answered.
      * @param dataRequestEntity the dataRequestEntity
