@@ -475,7 +475,7 @@ jobs:
       - frontend-component-tests
       - python-tests
       - framework-toolbox-tests
-    if: ${{ !cancelled() }}
+    if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
         uses: actions/upload-artifact/merge@v4
