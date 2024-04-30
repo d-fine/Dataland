@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
+import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -27,6 +28,7 @@ class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
+    @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -37,27 +39,33 @@ class DataOwnersManager(
      * @return an entity holding the data ownership relations for the given company
      */
     @Transactional
-    fun addDataOwnerToCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
+    fun addDataOwnerToCompany(
+        companyId: String,
+        userId: String,
+        companyName: String,
+    ): CompanyDataOwnersEntity {
+        val correlationId = UUID.randomUUID().toString()
         checkIfCompanyIsValid(companyId)
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                logger.info(
-                    "User with Id $userId is already data owner of company with Id $companyId.",
-                )
+                logger.info("User with Id $userId is already data owner of company with Id $companyId.")
                 dataOwnersForCompany
             } else {
+                dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
+                    userId, companyId, companyName, correlationId,
+                )
                 logger.info("New data owner with Id $userId added to company with Id $companyId.")
                 dataOwnersForCompany.dataOwners.add(userId)
                 dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
+            dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
+                userId, companyId, companyName, correlationId,
+            )
             logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
             dataOwnerRepository.save(
-                CompanyDataOwnersEntity(
-                    companyId = companyId,
-                    dataOwners = mutableListOf(userId),
-                ),
+                CompanyDataOwnersEntity(companyId = companyId, dataOwners = mutableListOf(userId)),
             )
         }
     }

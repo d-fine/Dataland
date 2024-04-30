@@ -24,8 +24,7 @@ abstract class TemplateEmailFactory(
     protected abstract val optionalProperties: Set<String>
 
     protected abstract val templateFile: String
-
-    protected abstract val subject: String
+    protected abstract fun buildSubject(properties: Map<String, String?>): String
     protected abstract fun buildTextContent(properties: Map<String, String?>): String
 
     /**
@@ -39,7 +38,7 @@ abstract class TemplateEmailFactory(
     ): Email {
         validateProperties(properties)
         val content = EmailContent(
-            subject = subject,
+            subject = buildSubject(properties),
             textContent = buildTextContent(properties),
             htmlContent = buildHtmlContent(properties),
         )
