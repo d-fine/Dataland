@@ -22,7 +22,7 @@ class DataRequestClosedEmailFactory(
 
     override val templateFile = "/request_closed.html.ftl"
     override val subject = "Your data request has been closed!"
-    // todo change to function after other email implementation story is merged
+    // todo
     // override fun buildSubject(properties: Map<String, String?>): String {
     //        return "Your data request has been closed!"
     //    }
