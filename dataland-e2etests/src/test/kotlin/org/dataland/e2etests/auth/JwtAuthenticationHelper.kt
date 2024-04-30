@@ -35,7 +35,7 @@ class JwtAuthenticationHelper {
             .build()
     }
 
-    private fun requestToken(username: String, password: String): String {
+    fun requestToken(username: String, password: String): String {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
         require(response.isSuccessful) { "Token request failed, response is: $response" }
         val responseBodyAsJsonString = response.body!!.string()

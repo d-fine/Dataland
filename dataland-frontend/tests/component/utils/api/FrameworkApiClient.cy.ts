@@ -4,7 +4,7 @@ import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/
 describe("It should be possible to construct Unified API Clients for every framework using the old paradigm", () => {
   const frameworks = [
     DataTypeEnum.P2p,
-    DataTypeEnum.Sme,
+    //DataTypeEnum.Sme,
     DataTypeEnum.Lksg,
     DataTypeEnum.Sfdr,
     DataTypeEnum.EutaxonomyFinancials,

@@ -37,9 +37,12 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.DirtiesContext.ClassMode
 import java.time.Instant
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 class DataManagerTest(
@@ -199,18 +202,16 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
 
-        `when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
-
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataUUId, "bypassQa" to false,
                 "actionType" to
-                    ActionType.StoreData,
+                    ActionType.StorePublicData,
             ),
         ).toString()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataReceived, correlationId, ExchangeName.RequestReceived,
+                payload, MessageType.PublicDataReceived, correlationId, ExchangeName.RequestReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,
@@ -238,7 +239,12 @@ class DataManagerTest(
             objectMapper, companyQueryManager, mockDataMetaInformationManager,
             mockStorageClient, mockCloudEventMessageHandler, messageUtils,
         )
-        assertThrows<ResourceNotFoundApiException> { dataManager.getDataSet(mockMetaInfo.dataId, DataType("lksg"), "") }
+        assertThrows<ResourceNotFoundApiException> {
+            dataManager.getDataSet(
+                mockMetaInfo.dataId,
+                DataType("lksg"), "",
+            )
+        }
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
