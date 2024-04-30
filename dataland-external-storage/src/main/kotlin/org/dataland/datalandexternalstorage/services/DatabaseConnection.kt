@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import java.sql.Connection
 import java.sql.DriverManager
@@ -91,15 +92,25 @@ object DatabaseConnection {
             connectionProps,
         )
     }
+
+    /**
+     * This method retrieves a data blob entry from an external database
+     * @param conn hold the connection details
+     * @param sqlStatement the sql statement which should be executed
+     * @param dataId the dataId of the dataset to be retrieved
+     */
     fun selectDataFromSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String): String {
         val preparedStatement: PreparedStatement?
         var data = String()
         if (conn != null) {
+            logger.info("Retrieving data from eurodat storage for dataId: $dataId")
             preparedStatement = conn.prepareStatement(sqlStatement)
-            "SELECT jsob_blob FROM safedeposit.pdf WHERE uuid_pdf = $dataId"
-            data = preparedStatement.executeQuery(sqlStatement).toString()
+            val sqlReturnValue = preparedStatement.executeQuery()
+            while (sqlReturnValue.next()) {
+                data = sqlReturnValue.getString("blob_json")
+            }
             conn.close()
         }
-        return data
+        return ObjectMapper().writeValueAsString(data)
     }
 }

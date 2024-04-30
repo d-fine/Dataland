@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
 /**
- * Defines the restful internal storage API.
+ * Defines the restful external storage API.
  */
 interface ExternalStorageAPI {
 
     /**
-     * A method to retrieve data from the internal storage using the dataID
-     * @param dataId the ID of the data stored in the internal storage which should be retrieved
+     * A method to retrieve data from the external storage using the dataID
+     * @param dataId the ID of the data stored in the external storage which should be retrieved
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
      */
@@ -35,8 +35,8 @@ interface ExternalStorageAPI {
     fun selectDataById(@PathVariable("dataId") dataId: String, correlationId: String): ResponseEntity<String>
 
     /**
-     * A method to retrieve blobs from the internal storage using the blobs ID
-     * @param blobId the ID of the data stored in the internal storage which should be retrieved
+     * A method to retrieve blobs from the external storage using the blobs ID
+     * @param blobId the ID of the data stored in the external storage which should be retrieved
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
      */

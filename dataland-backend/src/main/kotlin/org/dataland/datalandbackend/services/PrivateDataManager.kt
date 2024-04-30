@@ -91,7 +91,7 @@ class PrivateDataManager(
             uploaderUserId = userAuthentication.userId,
             uploadTime = uploadTime,
             reportingPeriod = companyAssociatedSmeData.reportingPeriod,
-            data = companyAssociatedSmeData.data.toString(),
+            data = objectMapper.writeValueAsString(companyAssociatedSmeData.data),
         )
         val dataId = IdUtils.generateUUID()
 
@@ -107,6 +107,8 @@ class PrivateDataManager(
 
     private fun storeJsonInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
+        // TODO remove logger
+        logger.info("PrivateDataStoring $storableSmeDatasetAsString")
         jsonDataInMemoryStorage[dataId] = storableSmeDatasetAsString
         logger.info(
             "Stored JSON in memory for companyId ${storableDataSet.companyId} dataId $dataId and " +
@@ -337,6 +339,8 @@ class PrivateDataManager(
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
             dataAsString = storageClient.selectDataById(dataId, correlationId)
+            // TODO Remove logger
+            logger.info("PRIVATE DATA $dataAsString")
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +

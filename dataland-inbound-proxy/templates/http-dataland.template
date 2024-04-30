@@ -19,6 +19,8 @@ server {
 
     # locations
     include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf;
+    # The [.] is used to prevent throwing of an error when the speficied config file is not found. We need this because
+    # we no longer use a backend.conf, but backend-dev.conf and this is used as a switch to load the correct dev config
     include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}[.]conf;
     include                 conf.d/common;
 

@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RestController
 import java.io.ByteArrayInputStream
 
 /**
- * Implementation of Storage Controller
- * @param stringDataStore a database store for strings
- * @param blobDataStore a database store for blobs
+ * Implementation of external Storage Controller
+ * @param eurodatDataStore manager to handle data requests to the external data storage
  */
 @RestController
-@Component("StorageController")
+@Component("ExternalStorageController")
 class ExternalStorageController(
     @Autowired private val eurodatDataStore: EurodatDataStore,
 ) : ExternalStorageAPI {

@@ -278,7 +278,7 @@ class EurodatDataStore(
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        val sqlStatement = "SELECT jsob_blob FROM safedeposit.pdf WHERE uuid_pdf = $dataId"
+        val sqlStatement = "SELECT * FROM safedeposit.json WHERE uuid_json = '$dataId'"
         return selectDataFromSqlDatabase(conn, sqlStatement, dataId)
     }
 }

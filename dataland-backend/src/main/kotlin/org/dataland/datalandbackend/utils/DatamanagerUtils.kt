@@ -35,17 +35,26 @@ class DatamanagerUtils {
             throw e
         }
     }
+
+    /**
+     * This method asserts that the expected data type for a dataset corresponds with the data type stored in the meta
+     * information for this dataset
+     * @param dataId the dataId of the dataset
+     * @param dataType the expected data type of the dataset
+     * @param dataMetaInformationEntity the dataMetaInformationEntity of the dataset
+     * @param correlationId the correlationId of the corresponding process
+     */
     fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
         dataType: DataType,
-        dataMetaInformation: DataMetaInformationEntity,
+        dataMetaInformationEntity: DataMetaInformationEntity,
         correlationId: String,
     ) {
-        if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
+        if (DataType.valueOf(dataMetaInformationEntity.dataType) != dataType) {
             throw InvalidInputApiException(
                 "Requested data $dataId not of type $dataType",
                 "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
+                    " ${dataMetaInformationEntity.dataType} by Dataland instead of your requested" +
                     " type $dataType.",
             )
         }

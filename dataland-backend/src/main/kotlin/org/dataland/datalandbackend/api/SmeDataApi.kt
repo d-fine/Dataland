@@ -52,6 +52,12 @@ interface SmeDataApi {
      * @param dataId identifier used to uniquely specify data in the data store
      * @return the complete data stored under the provided data ID with the associated company ID
      */
+    //TODO Reactivate this at the end
+
+    // @PreAuthorize(
+    //   "(hasRole('ROLE_USER') " +
+    //       "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
+    // )
     @Operation(
         summary = "Retrieve specific data from the private data store.",
         description = "Data identified by the provided data ID is retrieved.",
@@ -64,10 +70,6 @@ interface SmeDataApi {
     @GetMapping(
         value = ["/{dataId}"],
         produces = ["application/json"],
-    )
-    @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
     )
     fun getCompanyAssociatedSmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<SmeData>>
