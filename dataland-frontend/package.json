@@ -35,11 +35,11 @@
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primevue": "~3.44.0",
-    "vue": "^3.4.21",
+    "vue": "^3.4.26",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.12.36",
+    "@cypress/code-coverage": "^3.12.38",
     "@faker-js/faker": "^8.4.1",
     "@rushstack/eslint-patch": "^1.10.2",
     "@tsconfig/node20": "^20.1.4",
@@ -59,7 +59,7 @@
     "git-commit-id": "^2.0.1",
     "lint-staged": "^15.2.2",
     "mocha": "^10.4.0",
-    "npm-check-updates": "^16.14.18",
+    "npm-check-updates": "^16.14.20",
     "otplib": "^12.0.1",
     "sass": "^1.75.0",
     "ts-node": "^10.9.2",
