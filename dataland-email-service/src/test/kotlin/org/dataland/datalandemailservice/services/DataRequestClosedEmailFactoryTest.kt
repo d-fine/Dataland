@@ -71,7 +71,6 @@ class DataRequestClosedEmailFactoryTest {
         assertTrue(
             email.content.textContent.contains("Your answered data request has been automatically closed "),
         )
-        println(email.content.textContent)
         assertTrue(
             email.content.textContent.contains("as no action was taken within the last "),
         )
