@@ -31,7 +31,7 @@ abstract class PavedRoadFramework(
     val explanation: String,
     val frameworkTemplateCsvFile: File,
     val order: Int,
-    val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
+    val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
 ) {
     val framework = Framework(
         identifier = identifier,
@@ -163,13 +163,16 @@ abstract class PavedRoadFramework(
     }
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
-        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.BackendDataModel)) {
             return
         }
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
-        dataModel.build(into = datalandProject)
+        dataModel.build(
+            into = datalandProject,
+            buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
+        )
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {

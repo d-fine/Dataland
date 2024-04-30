@@ -14,13 +14,10 @@
 	"sfdr": {
 		"numberOfProvidedReportingPeriods": 9
 	},
-	"sme": {
+	"esg-questionnaire": {
 		"numberOfProvidedReportingPeriods": 17
 	},
-	"esg-questionnaire": {
-		"numberOfProvidedReportingPeriods": 30
-	},
 	"heimathafen": {
-		"numberOfProvidedReportingPeriods": 21
+		"numberOfProvidedReportingPeriods": 30
 	}
 }
