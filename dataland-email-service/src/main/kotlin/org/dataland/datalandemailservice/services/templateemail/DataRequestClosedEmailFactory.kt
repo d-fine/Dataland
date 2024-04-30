@@ -21,11 +21,10 @@ class DataRequestClosedEmailFactory(
     override val builderForType = TemplateEmailMessage.Type.DataRequestClosed
 
     override val templateFile = "/request_closed.html.ftl"
-    override val subject = "Your data request has been closed!"
-    // todo
-    // override fun buildSubject(properties: Map<String, String?>): String {
-    //        return "Your data request has been closed!"
-    //    }
+
+    override fun buildSubject(properties: Map<String, String?>): String {
+        return "Your data request has been closed!"
+    }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         return StringBuilder()
