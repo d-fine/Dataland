@@ -34,6 +34,7 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
     private val userEmail = "$userId@example.com"
+    private val numberOfOpenDataRequestsForCompany = "0"
 
     private val requestControllerApiMock = Mockito.mock(RequestControllerApi::class.java)
     private val authenticatedOkHttpClientMock = Mockito.mock(OkHttpClient::class.java)
@@ -66,8 +67,8 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
             )
 
         val mockCall: Call = Mockito.mock(Call::class.java)
-        var mockResponse: Response = Mockito.mock(Response::class.java)
-        var mockResponseBody: ResponseBody = Mockito.mock(ResponseBody::class.java)
+        val mockResponse: Response = Mockito.mock(Response::class.java)
+        val mockResponseBody: ResponseBody = Mockito.mock(ResponseBody::class.java)
 
         val jsonStringRepresentation = "{\"email\": \"${userEmail}\", \"id\": \"${userId}\"}"
 
@@ -115,7 +116,10 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
     private fun checkProperties(properties: Map<String, String?>) {
         Assertions.assertEquals(companyId, properties.getValue("companyId"))
         Assertions.assertEquals(companyName, properties.getValue("companyName"))
-        Assertions.assertEquals(companyName, properties.getValue("companyName"))
+        Assertions.assertEquals(
+            numberOfOpenDataRequestsForCompany,
+            properties.getValue("numberOfOpenDataRequestsForCompany"),
+        )
     }
 
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
