@@ -9,10 +9,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -34,7 +35,7 @@ import java.util.*
 
 class DataRequestAlterationManagerTest {
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
-    private lateinit var dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender
+    private lateinit var dataRequestedAnsweredEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
@@ -81,7 +82,8 @@ class DataRequestAlterationManagerTest {
         `when`(
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
-                    metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
+                    metaData.dataType.value, "",
+                    RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
                 ),
             ),
         ).thenReturn(dummyDataRequestEntities)
@@ -106,15 +108,17 @@ class DataRequestAlterationManagerTest {
         metaDataControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
-        dataRequestedAnsweredEmailMessageSender = mock(DataRequestedAnsweredEmailMessageSender::class.java)
+        dataRequestedAnsweredEmailMessageSender = mock(DataRequestResponseEmailSender::class.java)
 
         doNothing().`when`(dataRequestedAnsweredEmailMessageSender)
-            .sendDataRequestedAnsweredEmail(dummyDataRequestEntity, correlationId)
+            .sendDataRequestResponseEmail(
+                dummyDataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
+            )
 
         dataRequestAlterationManager = DataRequestAlterationManager(
             dataRequestRepository = dataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
-            dataRequestedAnsweredEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
+            dataRequestResponseEmailMessageSender = dataRequestedAnsweredEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
             messageRepository = messageRepository,
@@ -143,13 +147,15 @@ class DataRequestAlterationManagerTest {
         )
         fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
         verify(dataRequestedAnsweredEmailMessageSender, times(1))
-            .sendDataRequestedAnsweredEmail(any(DataRequestEntity::class.java), anyString())
+            .sendDataRequestResponseEmail(
+                any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+            )
     }
 
     @Test
-    fun `validate that a request answered email is not send when a request status is patched to any but answered`() {
+    fun `validate that a response email is not send when a request status is patched to any but answered or closed`() {
         for (requestStatus in RequestStatus.entries) {
-            if (requestStatus == RequestStatus.Answered) {
+            if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
                 continue
             }
             dataRequestAlterationManager.patchDataRequest(
@@ -166,7 +172,7 @@ class DataRequestAlterationManagerTest {
         dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(dataRequestedAnsweredEmailMessageSender)
-                .sendDataRequestedAnsweredEmail(it, correlationId)
+                .sendDataRequestResponseEmail(it, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId)
         }
     }
 
