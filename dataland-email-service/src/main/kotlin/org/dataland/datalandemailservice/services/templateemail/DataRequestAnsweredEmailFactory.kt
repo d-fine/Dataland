@@ -36,7 +36,9 @@ class DataRequestAnsweredEmailFactory(
     override val optionalProperties = setOf(keys.closedIn, keys.dataTypeDescription)
 
     override val templateFile = "/request_answered.html.ftl"
-    override val subject = "Your data request has been answered!"
+    override fun buildSubject(properties: Map<String, String?>): String {
+        return "Your data request has been answered!"
+    }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         return StringBuilder()

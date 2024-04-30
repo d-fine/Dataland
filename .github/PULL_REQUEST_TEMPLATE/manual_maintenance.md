@@ -163,6 +163,8 @@ check that all ssh-keys are set and erased from people that have left
 
 - [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to dataland@d-fine.com
   contains the right attachments and is displayed correctly.
+- [ ] Check that once a user has been made data owner that user receives an e-mail informing them about the data
+ownership approval as well as the number of open requests related to the company they own now.
 
 ## Check RabbitMQ dead letter queue and disk space
 
