@@ -22,10 +22,7 @@ class EuTaxonomyNonFinancialsFramework : PavedRoadFramework(
         "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
     ),
     order = 2,
-    enabledFeatures = setOf(
-        FrameworkGenerationFeatures.ViewPage, FrameworkGenerationFeatures.FakeFixtures,
-        FrameworkGenerationFeatures.DataModel,
-    ),
+    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage),
 ) {
 
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {

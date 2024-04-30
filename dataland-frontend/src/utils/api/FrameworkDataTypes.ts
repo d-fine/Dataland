@@ -10,8 +10,8 @@ import {
   type PathwaysToParisData,
   type SfdrData,
   type SfdrDataControllerApi,
-  type SmeData,
-  type SmeDataControllerApi,
+  //type SmeData,
+  //type SmeDataControllerApi,
 } from "@clients/backend";
 
 export type FrameworkDataTypes = {
@@ -20,11 +20,13 @@ export type FrameworkDataTypes = {
     apiSuffix: "P2pData";
     api: P2pDataControllerApi;
   };
-  [DataTypeEnum.Sme]: {
+  /*[DataTypeEnum.Sme]: {
     data: SmeData;
     apiSuffix: "SmeData";
     api: SmeDataControllerApi;
   };
+
+   */
   [DataTypeEnum.Lksg]: {
     data: LksgData;
     apiSuffix: "LksgData";

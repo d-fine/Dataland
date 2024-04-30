@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -42,6 +43,7 @@ import java.util.*
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param messageUtils contains utils to be used to handle messages for the message queue
 */
 @Component("DataManager")
 class DataManager(
@@ -53,7 +55,7 @@ class DataManager(
     @Autowired private val messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val dataInMemoryStorage = mutableMapOf<String, String>()
+    private val publicDataInMemoryStorage = mutableMapOf<String, String>()
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -80,6 +82,7 @@ class DataManager(
      * relevant message queues
      * @param storableDataSet contains all the inputs needed by Dataland
      * @param bypassQa whether the data should be sent to QA or not
+     * @param correlationId the correlationId of the request
      * @return ID of the newly stored data in the data store
      */
     fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
@@ -88,7 +91,7 @@ class DataManager(
         correlationId: String,
     ):
         String {
-        val dataId = generateRandomDataId()
+        val dataId = IdUtils.generateUUID()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
         return dataId
@@ -171,12 +174,12 @@ class DataManager(
     }
 
     /**
-     * This method retrieves data from the temporary storage
+     * This method retrieves public data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      * @return stringified data entry from the temporary store
      */
-    fun selectDataSetFromTemporaryStorage(dataId: String): String {
-        val rawValue = dataInMemoryStorage.getOrElse(dataId) {
+    fun selectPublicDataSetFromTemporaryStorage(dataId: String): String {
+        val rawValue = publicDataInMemoryStorage.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
                 "Data ID not found in temporary storage",
                 "Dataland does not know the data id $dataId",
@@ -199,16 +202,16 @@ class DataManager(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
                 "actionType" to
-                    ActionType.StoreData,
+                    ActionType.StorePublicData,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataReceived, correlationId,
+            payload, MessageType.PublicDataReceived, correlationId,
             ExchangeName.RequestReceived,
         )
         logger.info(
@@ -216,14 +219,6 @@ class DataManager(
                 "for company ID '${storableDataSet.companyId}' in temporary storage. " +
                 "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
-    }
-
-    /**
-     * Method to generate a random Data ID
-     * @return generated UUID
-     */
-    fun generateRandomDataId(): String {
-        return "${UUID.randomUUID()}"
     }
 
     /**
@@ -264,7 +259,7 @@ class DataManager(
             "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
         )
         messageUtils.rejectMessageOnException {
-            dataInMemoryStorage.remove(dataId)
+            publicDataInMemoryStorage.remove(dataId)
         }
     }
 
@@ -304,7 +299,7 @@ class DataManager(
     }
 
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return dataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
+        return publicDataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
     }
 
     private fun getDataFromStorageService(dataId: String, correlationId: String): String {
@@ -349,7 +344,7 @@ class DataManager(
                 ),
             ).toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataReceived, correlationId,
+                payload, MessageType.PublicDataReceived, correlationId,
                 ExchangeName.RequestReceived,
             )
             logger.info(

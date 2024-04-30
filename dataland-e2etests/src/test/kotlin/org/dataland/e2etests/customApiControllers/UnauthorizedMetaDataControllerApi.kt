@@ -1,4 +1,4 @@
-package org.dataland.e2etests.unauthorizedApiControllers
+package org.dataland.e2etests.customApiControllers
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Types
