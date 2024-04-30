@@ -107,11 +107,8 @@ class DataOwnersManagerTest {
 
     @Test
     fun `check that email generated for users becoming company data owner are generated`() {
-        // val mockStoredCompany = mock(StoredCompanyEntity::class.java)
         val companyId = UUID.randomUUID().toString()
 
-        // `when`(mockStoredCompany.companyName).thenReturn(testCompanyName)
-        // `when`(mockStoredCompany.companyId).thenReturn(companyId)
         `when`(mockCompanyRepository.existsById(companyId)).thenReturn(true)
         `when`(mockDataOwnersRepository.existsById(companyId)).thenReturn(false)
         `when`(
