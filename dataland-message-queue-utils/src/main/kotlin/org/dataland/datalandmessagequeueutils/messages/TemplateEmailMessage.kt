@@ -15,5 +15,6 @@ data class TemplateEmailMessage(
         ClaimOwnership,
         DataRequestedAnswered,
         DataRequestClosed,
+        SuccessfullyClaimedOwnership,
     }
 }
