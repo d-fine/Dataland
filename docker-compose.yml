@@ -17,6 +17,10 @@ x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
 x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
   MAILJET_API_SECRET: ${MAILJET_API_SECRET}
   MAILJET_API_ID: ${MAILJET_API_ID}
+x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
+  POSTGRES_DB: eurodat_db_name
+  POSTGRES_USER: eurodat_db_user
+  POSTGRES_PASSWORD: eurodat_db_password
 
 
 services:
@@ -43,6 +47,7 @@ services:
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
+      BACKEND_URL: ${BACKEND_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
   admin-proxy:
@@ -489,6 +494,56 @@ services:
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
+  external-storage:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${EXTERNAL_STORAGE_IMAGE:-ghcr.io/d-fine/dataland/dataland_external_storage_test:${DATALAND_EXTERNAL_STORAGE_TEST_VERSION}}
+    networks:
+      - internal
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://eurodat-client:8080}
+    extra_hosts:
+     - "host.docker.internal:host-gateway"
+  eurodat-client:
+    restart: always
+    profiles: [ "production", "development" ]
+    image: registry.gitlab.com/eurodat/trustee-platform/client-controller:v0.0.31
+    networks:
+      - internal
+    expose:
+      - "8080"
+    volumes:
+      - ./dataland-eurodat-client/secret_files:/crt
+    env_file:
+      - ./dataland-eurodat-client/secret_files/client.env
+  dummy-eurodat-client:
+    restart: always
+    profiles: [ "testing" ]
+    image: ghcr.io/d-fine/dataland/dataland_dummy_eurodat_client_test:${DATALAND_DUMMY_EURODAT_CLIENT_TEST_VERSION}
+    networks:
+      - internal
+    expose:
+      - "8080"
+    environment:
+      <<: *dummy-eurodat-db-settings
+  dummy-eurodat-db:
+    restart: always
+    profiles: [ "testing" ]
+    image: postgres:alpine
+    networks:
+      - internal
+    tmpfs: /var/lib/postgresql/data
+    volumes:
+      - ./dataland-dummy-eurodat-db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      <<: *dummy-eurodat-db-settings
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
 networks:
   internal:
   external:

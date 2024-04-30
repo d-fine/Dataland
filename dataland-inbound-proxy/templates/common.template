@@ -8,6 +8,13 @@ location /api/internal/ {
   return 301 https://${PROXY_PRIMARY_URL}/nocontent;
 }
 
+location /api/ {
+  client_max_body_size ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}M;
+  proxy_pass ${BACKEND_URL};
+  include utils/proxy.conf;
+  include utils/apiErrors.conf;
+}
+
 location /documents/ {
   client_max_body_size ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}M;
   proxy_pass http://document-manager:8080/documents/;
@@ -21,6 +28,11 @@ location /documents/internal/ {
 
 location /internal-storage/actuator/health {
   proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
+  include utils/proxy.conf;
+}
+
+location /external-storage/actuator/health {
+  proxy_pass http://external-storage:8080/external-storage/actuator/health;
   include utils/proxy.conf;
 }
 

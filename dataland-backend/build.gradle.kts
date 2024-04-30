@@ -25,7 +25,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
     kotlin("plugin.serialization")
 }
-
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.jackson.module.kotlin)
@@ -33,7 +32,6 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
-    implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation(libs.logback.classic)

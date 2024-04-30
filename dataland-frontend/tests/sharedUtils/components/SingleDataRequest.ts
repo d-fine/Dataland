@@ -1,4 +1,5 @@
 import { DataTypeEnum } from "@clients/backend";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export const singleDataRequestPage = {
   chooseReportingPeriod(reportingPeriod: string = "2023"): void {
@@ -12,7 +13,7 @@ export const singleDataRequestPage = {
     cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'").should("not.exist");
   },
   chooseFrameworkLksg(): void {
-    const numberOfFrameworks = Object.keys(DataTypeEnum).length;
+    const numberOfFrameworks = Object.keys(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE).length;
     cy.get('[data-test="selectFramework"]')
       .should("exist")
       .get('[data-type="select"]')

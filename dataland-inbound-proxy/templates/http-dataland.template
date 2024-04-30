@@ -19,7 +19,7 @@ server {
 
     # locations
     include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf;
-    include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}.conf;
+    include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}[.]conf;
     include                 conf.d/common;
 
     # additional config
