@@ -94,7 +94,6 @@ class DataManager(
         val dataId = IdUtils.generateUUID()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
-        logger.info("Just a Test.")
         return dataId
     }
 
