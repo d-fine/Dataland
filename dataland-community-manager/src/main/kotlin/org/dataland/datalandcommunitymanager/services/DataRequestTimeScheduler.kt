@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.DataRequestClosedEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +14,6 @@ import java.util.UUID
 /**
  * Implementation of a time scheduler for data requests
  * @param alterationManager DataRequestAlterationManager
- * @param dataRequestClosedEmailMessageSender DataRequestClosedEmailMessageSender
  * @param dataRequestRepository DataRequestRepository,
  * @param staleDaysThreshold limit for answered request to remain answered
  */
@@ -23,7 +21,6 @@ import java.util.UUID
 @Service("DataRequestTimeScheduler")
 class DataRequestTimeScheduler(
     @Autowired private val alterationManager: DataRequestAlterationManager,
-    @Autowired private val dataRequestClosedEmailMessageSender: DataRequestClosedEmailMessageSender,
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
     private val staleDaysThreshold: Long,
@@ -48,10 +45,6 @@ class DataRequestTimeScheduler(
                     "informing user ${it.userId}. CorrelationId: $correlationId",
             )
             alterationManager.patchDataRequest(it.dataRequestId, RequestStatus.Closed)
-            dataRequestClosedEmailMessageSender.sendDataRequestClosedEmail(
-                it,
-                correlationId,
-            )
         }
     }
 }

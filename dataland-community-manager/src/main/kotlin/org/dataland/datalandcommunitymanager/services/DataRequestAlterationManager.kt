@@ -9,6 +9,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
+import org.dataland.datalandcommunitymanager.services.messaging.DataRequestClosedEmailMessageSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestedAnsweredEmailMessageSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -32,6 +33,7 @@ class DataRequestAlterationManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestedAnsweredEmailMessageSender: DataRequestedAnsweredEmailMessageSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+    @Autowired private val dataRequestClosedEmailMessageSender: DataRequestClosedEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val messageRepository: MessageRepository,
 ) {
@@ -68,11 +70,30 @@ class DataRequestAlterationManager(
             messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
         }
-        if (requestStatus == RequestStatus.Answered) {
-            val correlationId = UUID.randomUUID().toString()
-            dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
+        if (requestStatus != null) {
+            sendEmailBecauseOfStatusChanged(dataRequestEntity, requestStatus)
         }
         return dataRequestEntity.toStoredDataRequest()
+    }
+
+    /**
+     * Method to send email if the status changed
+     * @param dataRequestEntity the id of the request entity
+     * @param status the patched request status
+     */
+    private fun sendEmailBecauseOfStatusChanged(dataRequestEntity: DataRequestEntity, status: RequestStatus) {
+        val correlationId = UUID.randomUUID().toString()
+        when (status) {
+            RequestStatus.Answered -> {
+                dataRequestedAnsweredEmailMessageSender.sendDataRequestedAnsweredEmail(dataRequestEntity, correlationId)
+            }
+            RequestStatus.Closed -> {
+                dataRequestClosedEmailMessageSender.sendDataRequestClosedEmail(dataRequestEntity, correlationId)
+            }
+            else -> {
+                return
+            }
+        }
     }
 
     /**
