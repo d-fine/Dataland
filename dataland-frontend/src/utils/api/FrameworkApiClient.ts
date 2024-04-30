@@ -8,7 +8,6 @@ import {
   LksgDataControllerApi,
   P2pDataControllerApi,
   SfdrDataControllerApi,
-  SmeDataControllerApi,
 } from "@clients/backend";
 import { assertNever } from "@/utils/TypeScriptUtils";
 import { type AxiosInstance } from "axios";
@@ -40,11 +39,6 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(
         "P2pData",
         new P2pDataControllerApi(configuration, undefined, axiosInstance),
-      );
-    case DataTypeEnum.Sme:
-      return translateFrameworkApi<typeof DataTypeEnum.Sme>(
-        "SmeData",
-        new SmeDataControllerApi(configuration, undefined, axiosInstance),
       );
     case DataTypeEnum.EutaxonomyFinancials:
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
