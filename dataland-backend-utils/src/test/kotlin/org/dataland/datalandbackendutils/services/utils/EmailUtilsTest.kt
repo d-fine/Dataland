@@ -23,7 +23,7 @@ class EmailUtilsTest {
     }
 
     @Test
-    fun `validate that the email regex enforces correct placement of the at-symbol`() {
+    fun `validate that the email regex enforces correct placement of the at symbol`() {
         assertEquals("@test.com".isEmailAddress(), false)
         assertEquals("test@test.com@".isEmailAddress(), false)
     }
