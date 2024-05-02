@@ -217,6 +217,87 @@
       }
     },
     "/data/sme": {
+      "get": {
+        "tags": [
+          "sme-data-controller"
+        ],
+        "summary": "Receive a document.",
+        "description": "Receive a document by its ID from internal storage.",
+        "operationId": "getPrivateDocument",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hash",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully received document.",
+            "headers": {
+              "Content-Disposition": {
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "sme-data-controller"
@@ -449,6 +530,75 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/integrationTesting": {
+      "post": {
+        "tags": [
+          "integrationtesting-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedIntegrationtestingData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataIntegrationtestingData"
               }
             }
           },
@@ -1894,6 +2044,64 @@
         }
       }
     },
+    "/data/sme/{dataId}": {
+      "get": {
+        "tags": [
+          "sme-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedSmeData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}": {
       "get": {
         "tags": [
@@ -2266,6 +2474,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationLksgData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/integrationTesting/{dataId}": {
+      "get": {
+        "tags": [
+          "integrationtesting-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedIntegrationtestingData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataIntegrationtestingData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/integrationTesting/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "integrationtesting-data-controller"
+        ],
+        "operationId": "getAllCompanyIntegrationtestingData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationIntegrationtestingData"
                   }
                 }
               }
@@ -8930,6 +9274,150 @@
           "NoneOfTheAbove"
         ]
       },
+      "CompanyAssociatedDataIntegrationtestingData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IntegrationtestingData"
+          }
+        }
+      },
+      "ExtendedDataPointString": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "IntegrationtestingData": {
+        "required": [
+          "section"
+        ],
+        "type": "object",
+        "properties": {
+          "section": {
+            "$ref": "#/components/schemas/IntegrationtestingSection"
+          },
+          "noSection": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "IntegrationtestingSection": {
+        "required": [
+          "subsection"
+        ],
+        "type": "object",
+        "properties": {
+          "subsection": {
+            "$ref": "#/components/schemas/IntegrationtestingSectionSubsection"
+          },
+          "noSubsection": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "IntegrationtestingSectionSubsection": {
+        "required": [
+          "extendedDatapointRequired",
+          "mandatoryField"
+        ],
+        "type": "object",
+        "properties": {
+          "testString": {
+            "type": "string",
+            "nullable": true
+          },
+          "testNumber": {
+            "type": "number",
+            "nullable": true
+          },
+          "testYesOrNo": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "testYesOrNoOrNa": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "testDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "testPercentage": {
+            "type": "number",
+            "nullable": true
+          },
+          "testFieldWithDependency": {
+            "type": "string",
+            "nullable": true
+          },
+          "mandatoryField": {
+            "type": "string"
+          },
+          "simpleDatapoint": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "extendedDatapoint": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "extendedDatapointRequired": {
+            "$ref": "#/components/schemas/ExtendedDataPointString"
+          }
+        }
+      },
       "BaseDataPointString": {
         "type": "object",
         "properties": {
@@ -14094,6 +14582,21 @@
           }
         }
       },
+      "DataAndMetaInformationIntegrationtestingData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IntegrationtestingData"
+          }
+        }
+      },
       "DataAndMetaInformationHeimathafenData": {
         "required": [
           "data",
@@ -14163,10 +14666,14 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
@@ -14174,10 +14681,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -14204,10 +14707,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -14262,6 +14765,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "integrationTesting",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
