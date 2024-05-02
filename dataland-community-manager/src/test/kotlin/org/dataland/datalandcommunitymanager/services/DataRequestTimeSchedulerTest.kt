@@ -64,7 +64,7 @@ class DataRequestTimeSchedulerTest {
     }
 
     @Test
-    fun `validate that two stale and answered data request is patched`() {
+    fun `validate that two stale and answered data requests are patched`() {
         `when`(dataRequestRepository.searchDataRequestEntity(any(GetDataRequestsSearchFilter::class.java))).thenReturn(
             listOf(
                 getDataRequestEntity(dataRequestIdStaleAndAnswered, RequestStatus.Answered, staleLastModified),
