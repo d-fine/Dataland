@@ -129,6 +129,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev2.dataland.com
 - [ ] dev3.dataland.com
 - [ ] test.dataland.com
+- [ ] clone.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
 
