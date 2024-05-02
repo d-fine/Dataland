@@ -94,17 +94,17 @@ describeIf(
      */
     function testYesNoExtendedDataPointFormField(fieldData: ExtendedDataPoint<string>): void {
       cy.get('[data-test="protectedAreasExposure"]')
-        .find('div[data-test="dataQuality"] select')
+        .find('div[data-test="dataQuality"] span')
         .should("exist")
         .should("has.value", fieldData.quality);
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span')
         .should("exist")
         .should("has.value", fieldData.quality);
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span')
         .should("exist")
         .should("has.value", fieldData.quality);
     }
