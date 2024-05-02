@@ -112,8 +112,6 @@ class PrivateDataManager(
 
     private fun storeJsonInMemory(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         val storableSmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
-        // TODO remove logger
-        logger.info("PrivateDataStoring $storableSmeDatasetAsString")
         jsonDataInMemoryStorage[dataId] = storableSmeDatasetAsString
         logger.info(
             "Stored JSON in memory for companyId ${storableDataSet.companyId} dataId $dataId and " +
@@ -130,8 +128,8 @@ class PrivateDataManager(
             storableDataSet.uploaderUserId,
             storableDataSet.uploadTime,
             storableDataSet.reportingPeriod,
-            null,
-            QaStatus.Pending,
+            true,
+            QaStatus.Accepted,
         )
     }
 
@@ -277,9 +275,7 @@ class PrivateDataManager(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
-        val dataMetaInfoToStore = dataMetaInfoEntityForDataId?.copy(qaStatus = QaStatus.Accepted)
-        metaDataManager.setActiveDataset(dataMetaInfoToStore!!)
-        metaDataManager.storeDataMetaInformation(dataMetaInfoToStore)
+        metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId!!)
     }
 
     private fun removeDocumentsAndHashesFromInMemoryStorages(
@@ -317,6 +313,8 @@ class PrivateDataManager(
 
     /**
      * Retrieves a private sme data object from the private storage
+     * @param dataId the dataId of the dataset to be retrieved
+     * @param correlationId the correlationId of the request
      */
     fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
@@ -356,7 +354,9 @@ class PrivateDataManager(
 
     /**
      * This method retrieves a document from the storage
-     * @param documentId the documentId of the document to be retrieved
+     * @param dataId the dataId connected to document to be retrieved
+     * @param hash the hash of the requested document
+     * @param correlationId the correlationId of the request
      */
     fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
         val documentId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
