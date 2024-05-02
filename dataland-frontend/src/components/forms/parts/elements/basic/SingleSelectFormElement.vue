@@ -108,7 +108,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="scss" scoped>
 .bottom-line {
   border-style: solid;
   border-width: 0 0 1px 0;
