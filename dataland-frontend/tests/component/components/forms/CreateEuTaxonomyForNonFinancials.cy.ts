@@ -5,7 +5,7 @@ import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from "@clients/
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
-import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@ct/testUtils/Dropdown";
+import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 import { getFilledKpis } from "@/utils/DataPoint";
 
 describe("Component tests for the Eu Taxonomy for non financials that test dependent fields", () => {
