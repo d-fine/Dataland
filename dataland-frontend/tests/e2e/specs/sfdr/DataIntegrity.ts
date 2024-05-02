@@ -11,6 +11,7 @@ import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
+import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -81,10 +82,10 @@ describeIf(
             cy.get("li.p-multiselect-item").eq(sectorCardIndex).click();
           }
         });
-      cy.get('div[data-test="applicableHighImpactClimateSector"]')
-        .find('select[name="fileName"]')
-        .eq(sectorCardIndex)
-        .select(reportToReference);
+      selectItemFromDropdownByValue(
+        cy.get('div[data-test="applicableHighImpactClimateSector"]').find('div[name="fileName"]').eq(sectorCardIndex),
+        reportToReference,
+      );
     }
 
     /**
@@ -124,10 +125,14 @@ describeIf(
      * Set the quality for the sfdr test dataset
      */
     function setQualityInSfdrUploadForm(): void {
-      cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]')
-        .find('select[name="quality"]')
-        .select(3);
-      cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
+      selectItemFromDropdownByIndex(
+        cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]').find('div[name="quality"]'),
+        3,
+      );
+      selectItemFromDropdownByIndex(
+        cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('div[name="quality"]'),
+        3,
+      );
     }
 
     it("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {

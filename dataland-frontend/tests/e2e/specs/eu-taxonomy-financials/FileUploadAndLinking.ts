@@ -13,6 +13,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
+import { selectItemFromDropdownByIndex } from "@sharedUtils/Dropdown";
 
 describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",
@@ -76,15 +77,21 @@ describeIf(
             uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
 
             uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
-            cy.get(`[data-test="assetManagementKpis"]`)
-              .find(`[data-test="banksAndIssuersInPercent"]`)
-              .find('select[name="fileName"]')
-              .select(2);
+            selectItemFromDropdownByIndex(
+              cy
+                .get(`[data-test="assetManagementKpis"]`)
+                .find(`[data-test="banksAndIssuersInPercent"]`)
+                .find('div[name="fileName"]'),
+              2,
+            );
 
-            cy.get(`[data-test="assetManagementKpis"]`)
-              .find(`[data-test="investmentNonNfrdInPercent"]`)
-              .find('select[name="fileName"]')
-              .select(3);
+            selectItemFromDropdownByIndex(
+              cy
+                .get(`[data-test="assetManagementKpis"]`)
+                .find(`[data-test="investmentNonNfrdInPercent"]`)
+                .find('div[name="fileName"]'),
+              3,
+            );
 
             cy.intercept(
               {

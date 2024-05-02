@@ -13,6 +13,7 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from "@e2e/utils/GeneralUtils";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
+import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
@@ -30,7 +31,7 @@ describeIf(
       cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
       cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
       cy.get("div.p-datepicker").find('span:contains("11")').click();
-      cy.get('select[name="value"]').select(1);
+      selectItemFromDropdownByIndex(cy.get('div[name="value"]'), 1);
       cy.get('input[name="provider"]').type("Some Assurance Provider Company");
     }
 
@@ -94,10 +95,10 @@ describeIf(
       );
       uploadReports.fillAllFormsOfReportsSelectedForUpload();
       cy.get('div[name="capex"]').within(() => {
-        cy.get('select[name="fileName"]').select(differentFileNameForSameFile);
+        selectItemFromDropdownByValue(cy.get('div[name="fileName"]'), differentFileNameForSameFile);
       });
       cy.get('div[name="opex"]').within(() => {
-        cy.get('select[name="fileName"]').select(`${TEST_PDF_FILE_NAME}2`);
+        selectItemFromDropdownByValue(cy.get('div[name="fileName"]'), `${TEST_PDF_FILE_NAME}2`);
       });
       cy.intercept({ url: `**/documents/*`, method: "HEAD", times: 1 }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
@@ -132,16 +133,16 @@ describeIf(
             cy.get('div[name="revenue"]').within(() => {
               cy.get('[data-test="dataPointToggleButton"]').click();
               cy.get('input[name="value"]').type("250700");
-              cy.get('select[data-test="datapoint-currency"]').select(1);
-              cy.get('select[name="quality"]').select(1);
-              cy.get('select[name="fileName"]').select(TEST_PDF_FILE_NAME);
+              selectItemFromDropdownByIndex(cy.get('div[data-test="datapoint-currency"]'), 1);
+              selectItemFromDropdownByIndex(cy.get('div[name="quality"]'), 1);
+              selectItemFromDropdownByValue(cy.get('div[name="fileName"]'), TEST_PDF_FILE_NAME);
             });
             cy.get('div[name="capex"]').within(() => {
               cy.get('[data-test="dataPointToggleButton"]').click();
               cy.get('input[name="value"]').type("450700");
-              cy.get('select[data-test="datapoint-currency"]').select(10);
-              cy.get('select[name="quality"]').select(1);
-              cy.get('select[name="fileName"]').select(`${TEST_PDF_FILE_NAME}2`);
+              selectItemFromDropdownByIndex(cy.get('div[data-test="datapoint-currency"]'), 10);
+              selectItemFromDropdownByIndex(cy.get('div[name="quality"]'), 1);
+              selectItemFromDropdownByValue(cy.get('div[name="fileName"]'), `${TEST_PDF_FILE_NAME}2`);
             });
             cy.intercept({ method: "POST", url: `**/api/data/**`, times: 1 }, (request) => {
               const submittedEutaxonomyNonFinancialsData = assertDefined(
