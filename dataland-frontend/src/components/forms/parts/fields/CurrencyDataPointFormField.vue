@@ -26,7 +26,6 @@
           name="currency"
           placeholder="Currency"
           :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-          @value-selected="console.log('hi')"
           input-class="long"
         />
       </div>
