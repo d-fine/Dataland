@@ -69,7 +69,7 @@ class DataRequestAlterationManager(
             messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
         }
-        if (requestStatus != null) {
+        if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(dataRequestEntity, requestStatus)
         }
         return dataRequestEntity.toStoredDataRequest()
@@ -97,7 +97,7 @@ class DataRequestAlterationManager(
                 )
             }
             else -> {
-                return
+                throw IllegalArgumentException("Unable to send email. Unexpected status provided: $status")
             }
         }
     }
