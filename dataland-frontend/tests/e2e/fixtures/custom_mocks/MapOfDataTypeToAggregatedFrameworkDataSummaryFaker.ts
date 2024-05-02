@@ -1,4 +1,4 @@
-import { type AggregatedFrameworkDataSummary } from "@clients/backend";
+import { type AggregatedFrameworkDataSummary, DataTypeEnum } from "@clients/backend";
 import { AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 
@@ -14,10 +14,12 @@ export function generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(): Re
     string,
     { numberOfProvidedReportingPeriods: number }
   > = {};
-  Object.values(AggregatedDataRequestDataTypeEnum).forEach((frameworkName) => {
-    mapOfFrameworkNameToAggregatedFrameworkDataSummary[frameworkName] = {
-      numberOfProvidedReportingPeriods: generateInt(30),
-    };
-  });
+  Object.values(AggregatedDataRequestDataTypeEnum)
+    .filter((item) => item != DataTypeEnum.Sme)
+    .forEach((frameworkName) => {
+      mapOfFrameworkNameToAggregatedFrameworkDataSummary[frameworkName] = {
+        numberOfProvidedReportingPeriods: generateInt(30),
+      };
+    });
   return mapOfFrameworkNameToAggregatedFrameworkDataSummary;
 }

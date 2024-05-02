@@ -19,6 +19,8 @@ describe("Component tests for the single data request page", function (): void {
 
       cy.get("button[type='submit']").should("exist").click();
 
+      cy.get("[data-test='informationDataOwnership']").should("be.visible");
+
       cy.get("[data-test='conditionsNotAcceptedErrorMessage']").should("be.visible");
       cy.get("input[data-test='acceptConditionsCheckbox']").click();
 

@@ -9,14 +9,12 @@ import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -25,7 +23,6 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsD
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -33,9 +30,9 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
-import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
-import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
+import org.dataland.e2etests.customApiControllers.UnauthorizedCompanyDataControllerApi
+import org.dataland.e2etests.customApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
+import org.dataland.e2etests.customApiControllers.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
 
@@ -137,20 +134,6 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSmeData = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSmeData = FrameworkTestDataProvider(SmeData::class.java)
-    fun smeUploaderFunction(
-        companyId: String,
-        smeData: SmeData,
-        reportingPeriod: String,
-        bypassQa: Boolean = true,
-    ): DataMetaInformation {
-        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, reportingPeriod, smeData)
-        return dataControllerApiForSmeData.postCompanyAssociatedSmeData(
-            companyAssociatedSmeData, bypassQa,
-        )
-    }
-
     /**
      * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
      * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
@@ -235,11 +218,6 @@ class ApiAccessor {
             DataTypeEnum.sfdr -> uploadCompaniesAndDatasets(
                 testDataProvider = testDataProviderForSfdrData,
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
-            )
-
-            DataTypeEnum.sme -> uploadCompaniesAndDatasets(
-                testDataProvider = testDataProviderForSmeData,
-                frameworkDataUploadFunction = this::smeUploaderFunction,
             )
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompaniesAndDatasets(

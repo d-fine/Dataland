@@ -20,12 +20,12 @@ abstract class InDevelopmentPavedRoadFramework(
     explanation: String,
     frameworkTemplateCsvFile: File,
     order: Int,
-    enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
+    enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
 ) :
     PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
-        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.BackendDataModel)) {
             return
         }
         val dataModel = generateDataModel(framework)
@@ -33,7 +33,10 @@ abstract class InDevelopmentPavedRoadFramework(
 
         @Suppress("TooGenericExceptionCaught")
         try {
-            dataModel.build(into = datalandProject)
+            dataModel.build(
+                into = datalandProject,
+                buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
+            )
         } catch (ex: Exception) {
             logger.error("Could not build framework data-model!", ex)
         }
