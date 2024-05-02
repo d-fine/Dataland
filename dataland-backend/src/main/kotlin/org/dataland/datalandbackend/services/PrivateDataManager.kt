@@ -6,11 +6,13 @@ import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.DocumentStream
+import org.dataland.datalandbackend.model.DocumentType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
-import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
@@ -34,10 +36,12 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.*
 
@@ -60,6 +64,7 @@ class PrivateDataManager(
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
     @Autowired private val datamanagerUtils: DatamanagerUtils,
     @Autowired private val storageClient: ExternalStorageControllerApi,
+    @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
@@ -78,7 +83,7 @@ class PrivateDataManager(
         documents: Array<MultipartFile>?,
     ): DataMetaInformation {
         val uploadTime = Instant.now().toEpochMilli()
-        val correlationId = UUID.randomUUID().toString()
+        val correlationId = generateUUID()
         logger.info(
             "Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored. " +
                 "Will be processed with correlationId $correlationId",
@@ -93,7 +98,7 @@ class PrivateDataManager(
             reportingPeriod = companyAssociatedSmeData.reportingPeriod,
             data = objectMapper.writeValueAsString(companyAssociatedSmeData.data),
         )
-        val dataId = IdUtils.generateUUID()
+        val dataId = generateUUID()
 
         storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
@@ -150,7 +155,7 @@ class PrivateDataManager(
         val documentHashes = mutableMapOf<String, String>()
         for (document in documents) {
             val documentHash = document.bytes.sha256()
-            val documentUuid = IdUtils.generateUUID()
+            val documentUuid = generateUUID()
             documentHashes[documentHash] = documentUuid
             val documentAsByteArray = convertMultipartFileToByteArray(document)
             documentInMemoryStorage[documentHash] = documentAsByteArray
@@ -339,8 +344,6 @@ class PrivateDataManager(
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
             dataAsString = storageClient.selectDataById(dataId, correlationId)
-            // TODO Remove logger
-            logger.info("PRIVATE DATA $dataAsString")
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +
@@ -349,5 +352,27 @@ class PrivateDataManager(
             throw e
         }
         return dataAsString
+    }
+
+    /**
+     * This method retrieves a document from the storage
+     * @param documentId the documentId of the document to be retrieved
+     */
+    fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
+        val documentId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
+        val inMemoryStoredDocument = documentInMemoryStorage[hash]
+        return if (inMemoryStoredDocument != null) {
+            logger.info("Received document $documentId from temporary storage")
+            DocumentStream(hash, DocumentType.Pdf, InputStreamResource(ByteArrayInputStream(inMemoryStoredDocument)))
+        } else {
+            logger.info("Received document $documentId from storage service")
+            DocumentStream(
+                hash, DocumentType.Pdf,
+                InputStreamResource(
+                    streamingStorageClient
+                        .getBlobFromExternalStorage(documentId, correlationId),
+                ),
+            )
+        }
     }
 }

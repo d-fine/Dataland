@@ -113,4 +113,25 @@ object DatabaseConnection {
         }
         return ObjectMapper().writeValueAsString(data)
     }
+
+    /**
+     * This method retrieves a data blob entry from an external database
+     * @param conn hold the connection details
+     * @param sqlStatement the sql statement which should be executed
+     * @param documentId the documentId of the document to be retrieved
+     */
+    fun selectDocumentFromSqlDatabase(conn: Connection?, sqlStatement: String, documentId: String): ByteArray {
+        val preparedStatement: PreparedStatement?
+        var blob = ByteArray(0)
+        if (conn != null) {
+            logger.info("Retrieving document from eurodat storage for documentId: $documentId")
+            preparedStatement = conn.prepareStatement(sqlStatement)
+            val sqlReturnValue = preparedStatement.executeQuery()
+            while (sqlReturnValue.next()) {
+                blob = sqlReturnValue.getBytes("blob_pdf")
+            }
+            conn.close()
+        }
+        return blob
+    }
 }

@@ -4,6 +4,7 @@ import DatabaseConnection.getConnection
 import DatabaseConnection.insertByteArrayIntoSqlDatabase
 import DatabaseConnection.insertDataIntoSqlDatabase
 import DatabaseConnection.selectDataFromSqlDatabase
+import DatabaseConnection.selectDocumentFromSqlDatabase
 import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
@@ -280,5 +281,19 @@ class EurodatDataStore(
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlStatement = "SELECT * FROM safedeposit.json WHERE uuid_json = '$dataId'"
         return selectDataFromSqlDatabase(conn, sqlStatement, dataId)
+    }
+
+    /**
+     * Select a blob object from the eurodat storage by its documentId
+     */
+    fun selectPrivateDocument(documentId: String, correlationId: String): ByteArray {
+        logger.info("Select document for documentId $documentId from eurodat storage. CorrelationId $correlationId")
+        val eurodatCredentials = retryWrapperMethod("getEurodatCredentials") {
+            databaseCredentialResourceClient
+                .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+        }
+        val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
+        val sqlStatement = "SELECT * FROM safedeposit.pdf WHERE uuid_pdf = '$documentId'"
+        return selectDocumentFromSqlDatabase(conn, sqlStatement, documentId)
     }
 }

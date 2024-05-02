@@ -9,9 +9,12 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.PrivateDataManager
+import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
@@ -50,8 +53,7 @@ class SmeDataController(
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
-        // val correlationId = generateCorrelationId(companyId)
-        val correlationId = "12312"
+        val correlationId = generateUUID()
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
@@ -65,5 +67,16 @@ class SmeDataController(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
         )
         return ResponseEntity.ok(companyAssociatedData)
+    }
+    override fun getPrivateDocument(dataId: String, hash: String): ResponseEntity<InputStreamResource> {
+        val correlationId = generateUUID()
+        val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
+        return ResponseEntity.ok()
+            .contentType(document.type.mediaType)
+            .header(
+                HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=${document.documentId}.${document.type.fileExtension}",
+            )
+            .body(document.content)
     }
 }
