@@ -19,28 +19,20 @@ source ./*github_env.log
 source ./environments/.env.uncritical
 set +o allexport
 
-function max_jobs {
-  while [ `jobs | wc -l` -ge $1 ]
-  do
-    echo "Too many jobs in parallel, waiting."
-    sleep 10
-  done
-}
-
 log_folder="./log/build/$(date '+%Y%m%d_%H%M')"
 mkdir -p "$log_folder"
 
-for rebuild_script in $(find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" ! -name "*backend*"); do
-  max_jobs 6
+for rebuild_script in ./build-utils/rebuild*.sh; do
+  if [[ $rebuild_script =~ (prod|test|backend) ]]; then
+    echo "Skipping $rebuild_script as it is not required for a local build."
+    continue
+  fi
   echo "Executing rebuild script $rebuild_script"
-  $rebuild_script &>./$log_folder/$(basename $rebuild_script).log &
-  sleep 5
+  $rebuild_script &> "./$log_folder/$(basename "$rebuild_script").log" &
 done
 
 echo "Waiting for all processes to terminate."
 wait
-
-exit 0
 
 set -o allexport
 source ./*github_env.log
