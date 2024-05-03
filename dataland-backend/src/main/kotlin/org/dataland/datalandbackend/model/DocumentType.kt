@@ -7,6 +7,7 @@ import org.springframework.util.MimeType
 /**
  * An enum with the possible types (extensions) of a document stored in the database
  */
+// TODO move to backenutils
 @Schema(
     enumAsRef = true,
 )
