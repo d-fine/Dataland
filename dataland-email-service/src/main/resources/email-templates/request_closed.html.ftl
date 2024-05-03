@@ -19,7 +19,8 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Great news! 📣 <br>Your data request has been answered.</td>
+        <td colspan="3">Your answered data request has been automatically closed as no action was taken within the last ${closedInDays} days.
+        </td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
@@ -32,21 +33,6 @@
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
-
-    <tr>
-        <td colspan="3" style="font-weight: bold;">How to proceed?</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <ol style="line-height: 25px;">
-                <li>Review the provided data.</li>
-                <li>Close or reopen your data request.</li>
-            </ol>
-        </td>
-    </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
@@ -54,22 +40,10 @@
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
             <a href="${baseUrl}/requests/${dataRequestId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
-                REVIEW THE PROVIDED DATA
+                TO MY DATA REQUEST
             </a>
         </td>
         <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
-    </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3"> Without any actions,
-            your data request will be set to closed automatically
-            in <b>${closedInDays} days</b>.</td>
-
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>

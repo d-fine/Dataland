@@ -2,7 +2,7 @@ package org.dataland.datalandemailservice.services
 
 import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
-import org.dataland.datalandemailservice.services.templateemail.DataRequestAnsweredEmailFactory
+import org.dataland.datalandemailservice.services.templateemail.DataRequestClosedEmailFactory
 import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
 import org.dataland.datalandemailservice.utils.getProperties
 import org.dataland.datalandemailservice.utils.validateEmailHtmlFormatContainsDefaultProperties
@@ -12,7 +12,7 @@ import org.dataland.datalandemailservice.utils.validateTextContentOfBasicRequest
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class DataRequestAnsweredEmailFactoryTest {
+class DataRequestClosedEmailFactoryTest {
     private val proxyPrimaryUrl = "local-dev.dataland.com"
     private val senderEmail = "sender@dataland.com"
     private val senderName = "Dataland"
@@ -23,7 +23,7 @@ class DataRequestAnsweredEmailFactoryTest {
     ): Email {
         val properties = getProperties(setOptionalProperties)
 
-        val email = DataRequestAnsweredEmailFactory(
+        val email = DataRequestClosedEmailFactory(
             proxyPrimaryUrl = proxyPrimaryUrl,
             senderEmail = senderEmail,
             senderName = senderName,
@@ -35,7 +35,7 @@ class DataRequestAnsweredEmailFactoryTest {
     }
 
     @Test
-    fun `validate that the html output of the data request answered mail is correctly formatted`() {
+    fun `validate that the html output of the data request closed mail is correctly formatted`() {
         val basicEmail = buildTestEmail(false)
         val emailWithOptionalProperties = buildTestEmail(true)
 
@@ -53,12 +53,7 @@ class DataRequestAnsweredEmailFactoryTest {
             emptySet(),
             email,
         )
-
-        assertTrue(email.content.htmlContent.contains("Great news!"))
-        assertTrue(email.content.htmlContent.contains("Your data request has been answered."))
-        assertTrue(email.content.htmlContent.contains("How to proceed?"))
-        assertTrue(email.content.htmlContent.contains("Review the provided data."))
-        assertTrue(email.content.htmlContent.contains("Close or reopen your data request."))
+        assertTrue(email.content.htmlContent.contains("Your answered data request has been automatically closed"))
 
         validateHtmlContentOfBasicRequestResponseProperties(email)
     }
@@ -73,15 +68,11 @@ class DataRequestAnsweredEmailFactoryTest {
 
     private fun validateTextOfDefaultEmail(email: Email) {
         validateTextContentOfBasicRequestResponseProperties(email)
-
         assertTrue(
-            email.content.textContent.contains("Great news!\nYour data request has been answered.\n\n"),
+            email.content.textContent.contains("Your answered data request has been automatically closed "),
         )
-        assertTrue(email.content.textContent.contains("Review the provided data:\n"))
         assertTrue(
-            email.content.textContent.contains(
-                "\nWithout any actions, your data request will be set to closed automatically ",
-            ),
+            email.content.textContent.contains("as no action was taken within the last "),
         )
     }
 }
