@@ -33,6 +33,7 @@ hs_err_pid*
 
 local
 
+gitinfo
 .envrc
 
 /dataland-automated-qa-service/dataland-automated-qa-service.iml
