@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.DatamanagerUtils
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -51,6 +52,7 @@ class DataManagerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired var datamanagerUtils: DatamanagerUtils,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
@@ -64,7 +66,7 @@ class DataManagerTest(
     fun reset() {
         dataManager = DataManager(
             objectMapper, companyQueryManager, dataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler, messageUtils,
+            mockStorageClient, mockCloudEventMessageHandler, messageUtils, datamanagerUtils
         )
         spyDataManager = spy(dataManager)
     }
@@ -237,7 +239,7 @@ class DataManagerTest(
         )
         dataManager = DataManager(
             objectMapper, companyQueryManager, mockDataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler, messageUtils,
+            mockStorageClient, mockCloudEventMessageHandler, messageUtils, datamanagerUtils
         )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(
