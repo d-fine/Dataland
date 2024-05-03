@@ -90,11 +90,16 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-document-manager/Dockerfile`
 - [ ] `./dataland-document-manager/DockerfileBase`
 - [ ] `./dataland-document-manager/DockerfileTest`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-email-service/Dockerfile`
 - [ ] `./dataland-email-service/DockerfileBase`
 - [ ] `./dataland-email-service/DockerfileTest`
+- [ ] `./dataland-external-storage/Dockerfile`
+- [ ] `./dataland-external-storage/DockerfileBase`
+- [ ] `./dataland-external-storage/DockerfileTest`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
@@ -109,8 +114,6 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
