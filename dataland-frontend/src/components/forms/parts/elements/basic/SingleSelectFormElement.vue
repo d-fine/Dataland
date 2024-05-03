@@ -14,13 +14,12 @@
     />
     <!--  FormKit component only used to parse the selected value in nested FormKits  -->
     <FormKit
-      v-show="false"
       type="text"
       :disabled="disabled"
       :name="name"
       v-bind:model-value="selectedOption"
       @update:model-value="handleFormKitInputChange($event)"
-      outer-class="hidden-input"
+      :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
       :validation-label="validationLabel"
       :validation="validation"
       :ignore="ignore"
