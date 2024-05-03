@@ -29,11 +29,6 @@ input_sha=$( \
 
 echo Input sha1 Hash: "$input_sha"
 
-find "$0" "$@" -type f | awk '{print "\042" $1 "\042"}' | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/\|/venv/' | \
-  sort -u | \
-  xargs shasum | awk '{print $1}'
-
 # Only execute the "build" command if the manifests are different.
 full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha"
 echo "${docker_image_name^^}_VERSION=$input_sha" >> ./${BUILD_SCRIPT:-default}_github_env.log
