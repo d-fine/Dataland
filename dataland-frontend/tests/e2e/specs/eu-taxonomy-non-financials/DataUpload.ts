@@ -130,14 +130,14 @@ describeIf(
             uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
             uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
             fillRequiredEutaxonomyNonFinancialsFields();
-            cy.get('div[name="revenue"]').within(() => {
+            cy.get('div[name="revenue"] div[name="totalAmount"]').within(() => {
               cy.get('[data-test="dataPointToggleButton"]').click();
               cy.get('input[name="value"]').type("250700");
               selectItemFromDropdownByIndex(cy.get('div[name="currency"]'), 1);
               selectItemFromDropdownByIndex(cy.get('div[name="quality"]'), 1);
               selectItemFromDropdownByValue(cy.get('div[name="fileName"]'), TEST_PDF_FILE_NAME);
             });
-            cy.get('div[name="capex"]').within(() => {
+            cy.get('div[name="capex"] div[name="totalAmount"]').within(() => {
               cy.get('[data-test="dataPointToggleButton"]').click();
               cy.get('input[name="value"]').type("450700");
               selectItemFromDropdownByIndex(cy.get('div[name="currency"]'), 10);
