@@ -1,5 +1,4 @@
-FROM eclipse-temurin:21.0.3_9-jre-alpine as builder
-
+FROM eclipse-temurin:21.0.3_9-jdk-jammy as builder
 
 WORKDIR /app
 
