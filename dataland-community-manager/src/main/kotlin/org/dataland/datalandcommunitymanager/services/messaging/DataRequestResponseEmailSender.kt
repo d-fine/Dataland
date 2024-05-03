@@ -10,50 +10,23 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Manage sending emails to user regarding data requests
+ * A class that provided utility for generating emails messages for data request responses
  */
-@Service("DataRequestedAnsweredEmailSender")
-class DataRequestedAnsweredEmailMessageSender(
+@Service("DataRequestResponseEmailSender")
+class DataRequestResponseEmailSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Value("\${dataland.community-manager.data-request.answered.stale-days-threshold}")
+    private val staleDaysThreshold: String,
 ) {
-    /**
-     * Method to informs user by mail that his request is answered.
-     * @param dataRequestEntity the dataRequestEntity
-     */
-    fun sendDataRequestedAnsweredEmail(
-        dataRequestEntity: DataRequestEntity,
-        correlationId: String,
-    ) {
-        val properties = mapOf(
-            "companyId" to dataRequestEntity.datalandCompanyId,
-            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
-            "dataType" to dataRequestEntity.dataType,
-            "reportingPeriod" to dataRequestEntity.reportingPeriod,
-            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
-            "dataRequestId" to dataRequestEntity.dataRequestId,
-        )
-        val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataRequestedAnswered,
-            receiver = getUserEmailById(dataRequestEntity.userId),
-            properties = properties,
-        )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
-            correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
-        )
-    }
 
     /**
      * Method to retrieve companyName by companyId
@@ -96,10 +69,49 @@ class DataRequestedAnsweredEmailMessageSender(
             "lksg" -> "LkSG"
             "sfdr" -> "SFDR"
             "sme" -> "SME"
-            "p2p" -> "WWF Pathway to Paris"
+            "p2p" -> "WWF Pathways to Paris"
             "esg-questionnaire" -> "ESG Questionnaire"
             "heimathafen" -> "Heimathafen"
             else -> dataType
         }
+    }
+
+    private fun getProperties(dataRequestEntity: DataRequestEntity, staleDaysThreshold: String): Map<String, String> {
+        return mapOf(
+            "companyId" to dataRequestEntity.datalandCompanyId,
+            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
+            "dataType" to dataRequestEntity.dataType,
+            "reportingPeriod" to dataRequestEntity.reportingPeriod,
+            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+            "dataTypeDescription" to getDataTypeDescription(dataRequestEntity.dataType),
+            "dataRequestId" to dataRequestEntity.dataRequestId,
+            "closedInDays" to staleDaysThreshold,
+        )
+    }
+
+    /**
+     * Method to informs user by mail that his request is answered.
+     * @param dataRequestEntity the dataRequestEntity
+     * @param emailType the template email message type
+     * @param correlationId the correlation id
+     */
+    fun sendDataRequestResponseEmail(
+        dataRequestEntity: DataRequestEntity,
+        emailType: TemplateEmailMessage.Type,
+        correlationId: String,
+    ) {
+        val properties = getProperties(dataRequestEntity, staleDaysThreshold)
+        val message = TemplateEmailMessage(
+            emailTemplateType = emailType,
+            receiver = getUserEmailById(dataRequestEntity.userId),
+            properties = properties,
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(message),
+            MessageType.SendTemplateEmail,
+            correlationId,
+            ExchangeName.SendEmail,
+            RoutingKeyNames.templateEmail,
+        )
     }
 }

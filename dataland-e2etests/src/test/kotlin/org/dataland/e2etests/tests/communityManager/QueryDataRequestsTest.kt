@@ -108,7 +108,7 @@ class QueryDataRequestsTest {
             }.dataRequestId,
         )
 
-        val closedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Closed).filter {
+        val closedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.Resolved).filter {
             it.creationTimestamp > timestampBeforePost
         }
         assertEquals(0, closedDataRequests.size)

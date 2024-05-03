@@ -933,8 +933,9 @@
         "enum": [
           "Open",
           "Answered",
-          "Closed",
-          "Withdrawn"
+          "Resolved",
+          "Withdrawn",
+          "Closed"
         ]
       },
       "StoredDataRequest": {

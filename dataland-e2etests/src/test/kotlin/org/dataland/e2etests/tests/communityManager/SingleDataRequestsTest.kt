@@ -287,7 +287,7 @@ class SingleDataRequestsTest {
         assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Resolved)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
     }
 
@@ -306,7 +306,7 @@ class SingleDataRequestsTest {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2021")
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.Answered)
-        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Closed)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Resolved)
         val timestampBeforeFinalRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(
             SingleDataRequest(

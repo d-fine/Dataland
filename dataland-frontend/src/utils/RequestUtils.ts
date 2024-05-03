@@ -77,10 +77,12 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return "p-badge badge-blue outline rounded";
     case "Open":
       return "p-badge badge-yellow outline rounded";
-    case "Closed":
+    case "Resolved":
       return "p-badge badge-light-green outline rounded";
     case "Withdrawn":
       return "p-badge badge-gray outline rounded";
+    case "Closed":
+      return "p-badge badge-brown outline rounded";
     default:
       return "p-badge outline rounded";
   }
