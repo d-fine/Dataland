@@ -111,7 +111,10 @@ class Sme {
         } catch (e: ClientException) {
             e.statusCode != HttpStatus.NOT_FOUND.value()
         }
-        assertEquals(getSmeNaturalHazardsCoveredSorted(companyAssociatedDataSmeData.data), getSmeNaturalHazardsCoveredSorted(retrievedSmeData.data))
+        assertEquals(
+            getSmeNaturalHazardsCoveredSorted(companyAssociatedDataSmeData.data),
+            getSmeNaturalHazardsCoveredSorted(retrievedSmeData.data),
+        )
         assertEquals(companyAssociatedDataSmeData.companyId, retrievedSmeData.companyId)
         assertEquals(companyAssociatedDataSmeData.reportingPeriod, retrievedSmeData.reportingPeriod)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())

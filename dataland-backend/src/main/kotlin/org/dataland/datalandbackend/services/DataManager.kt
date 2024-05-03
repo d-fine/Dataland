@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
@@ -250,38 +249,18 @@ class DataManager(
      * @param correlationId to use in combination with dataId to retrieve data and assert type
      * @return data set associated with the data ID provided in the input
      */
-    fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        datamanagerUtils.assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
-        lateinit var dataAsString: String
-        try {
-            dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
-        } catch (e: ClientException) {
-            datamanagerUtils.handleStorageClientException(e, dataId, correlationId)
-        }
-        logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
-        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
-        return dataAsStorableDataSet
+    fun getPublicDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
+        return datamanagerUtils.getDataSet(dataId, dataType, correlationId, ::getDataFromCacheOrStorageService)
     }
-
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return publicDataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
+        return publicDataInMemoryStorage[dataId] ?: datamanagerUtils.getDataFromStorageService(
+            dataId,
+            correlationId, ::getPublicData,
+        )
     }
 
-    private fun getDataFromStorageService(dataId: String, correlationId: String): String {
-        val dataAsString: String
-        logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
-        try {
-            dataAsString = storageClient.selectDataById(dataId, correlationId)
-        } catch (e: ServerException) {
-            logger.error(
-                "Error requesting data. Received ServerException with Message:" +
-                    " ${e.message}. Correlation ID: $correlationId",
-            )
-            throw e
-        }
-        return dataAsString
+    private fun getPublicData(dataId: String, correlationId: String): String {
+        return storageClient.selectDataById(dataId, correlationId)
     }
 
     /**

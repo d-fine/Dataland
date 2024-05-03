@@ -66,7 +66,7 @@ class DataManagerTest(
     fun reset() {
         dataManager = DataManager(
             objectMapper, companyQueryManager, dataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler, messageUtils, datamanagerUtils
+            mockStorageClient, mockCloudEventMessageHandler, messageUtils, datamanagerUtils,
         )
         spyDataManager = spy(dataManager)
     }
@@ -92,7 +92,7 @@ class DataManagerTest(
             storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
+            dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
         }
         assertEquals(
             "The data with the id: $dataId is registered as type eutaxonomy-non-financials by " +
@@ -112,7 +112,7 @@ class DataManagerTest(
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
         dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<ResourceNotFoundApiException> {
-            dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
+            dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
         assertEquals("No dataset with the id: $dataId could be found in the data store.", thrown.message)
     }
@@ -129,7 +129,7 @@ class DataManagerTest(
         )
         dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.getDataSet(dataId, DataType(expectedDataTypeName), correlationId)
+            dataManager.getPublicDataSet(dataId, DataType(expectedDataTypeName), correlationId)
         }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
@@ -163,7 +163,7 @@ class DataManagerTest(
 
         dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.getDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
+            dataManager.getPublicDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
         }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
@@ -239,16 +239,16 @@ class DataManagerTest(
         )
         dataManager = DataManager(
             objectMapper, companyQueryManager, mockDataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler, messageUtils, datamanagerUtils
+            mockStorageClient, mockCloudEventMessageHandler, messageUtils, datamanagerUtils,
         )
         assertThrows<ResourceNotFoundApiException> {
-            dataManager.getDataSet(
+            dataManager.getPublicDataSet(
                 mockMetaInfo.dataId,
                 DataType("lksg"), "",
             )
         }
         assertThrows<ResourceNotFoundApiException> {
-            dataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
+            dataManager.getPublicDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
     }
 }

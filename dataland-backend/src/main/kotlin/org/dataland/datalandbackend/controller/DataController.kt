@@ -94,7 +94,7 @@ abstract class DataController<T>(
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
+            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -117,7 +117,10 @@ abstract class DataController<T>(
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId)
             logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
-            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+            val dataAsString = dataManager.getPublicDataSet(
+                it.dataId, DataType.valueOf(it.dataType),
+                correlationId,
+            ).data
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),
