@@ -53,7 +53,7 @@
                         :validation-messages="{
                           required: 'Select a framework to submit your request',
                         }"
-                        is-required="true"
+                        :is-required="true"
                         :data-test="'datapoint-framework'"
                       />
                     </BasicFormSection>
