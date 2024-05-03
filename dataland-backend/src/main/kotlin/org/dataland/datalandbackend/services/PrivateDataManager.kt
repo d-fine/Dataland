@@ -6,14 +6,14 @@ import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.DocumentStream
-import org.dataland.datalandbackend.model.DocumentType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.DocumentStream
+import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandexternalstorage.openApiClient.api.ExternalStorageControllerApi

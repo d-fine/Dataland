@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model
+package org.dataland.datalandbackendutils.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.http.MediaType
@@ -7,7 +7,6 @@ import org.springframework.util.MimeType
 /**
  * An enum with the possible types (extensions) of a document stored in the database
  */
-// TODO move to backenutils
 @Schema(
     enumAsRef = true,
 )

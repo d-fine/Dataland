@@ -5,9 +5,9 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.documentmanager.model.DocumentMetaInfo
-import org.dataland.documentmanager.model.DocumentType
 
 /**
  * The entity storing the document meta info

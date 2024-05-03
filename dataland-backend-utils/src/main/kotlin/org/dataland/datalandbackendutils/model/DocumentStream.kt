@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model
+package org.dataland.datalandbackendutils.model
 
 import org.springframework.core.io.InputStreamResource
 
@@ -9,7 +9,6 @@ import org.springframework.core.io.InputStreamResource
  * @param type the type of document
  * @param content the content of the document as stream
  */
-// TODO move to backenutils
 data class DocumentStream(
     val documentId: String,
     val type: DocumentType,
