@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
+
 ./build-utils/base_rebuild_single_docker_image.sh dataland_e2etests_base ./dataland-e2etests/DockerfileBase \
-       ./gradle/ ./gradlew ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
+       ./gradle/ ./gradlew ./environments/.env.uncritical $gradle_dependencies
 
 set -o allexport
 source ./*github_env.log
@@ -12,5 +14,4 @@ set +o allexport
        ./dataland-e2etests/ ./dataland-frontend/ ./testing/ \
        ./dataland-backend/backendOpenApi.json  ./dataland-api-key-manager/apiKeyManagerOpenApi.json \
        ./dataland-document-manager/documentManagerOpenApi.json  ./dataland-qa-service/qaServiceOpenApi.json \
-       ./dataland-community-manager/communityManagerOpenApi.json \
-       ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
+       ./dataland-community-manager/communityManagerOpenApi.json ./environments/.env.uncritical $gradle_dependencies
