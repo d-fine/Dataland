@@ -13,9 +13,9 @@ then
   exit 1
 fi
 
-echo Rebuilding docker image. Parameters: "${@:2}"
+echo Rebuilding docker image. Parameters: "$0" "${@:1}"
 
-regex=$(echo $0 "${@:2}" | sed 's/ /|/g' | sed 's/\./\\./g')
+regex=$(echo "$0" "${@:1}" | sed 's/ /|/g' | sed 's/\./\\./g')
 input_sha=$( \
   git ls-tree -r HEAD --name-only | awk '{print "./" $1 }' | \
   grep -E "$regex" | \
