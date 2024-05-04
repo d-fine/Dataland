@@ -211,8 +211,8 @@ export default defineComponent({
       storedDataRequest: {} as StoredDataRequest,
       companyName: "",
       showNewMessageDialog: false,
-      emailContacts: null as Set<string> | null,
-      emailMessage: "",
+      emailContacts: undefined as Set<string> | undefined,
+      emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
     };
   },
@@ -327,7 +327,7 @@ export default defineComponent({
       if (this.hasValidEmailForm) {
         patchDataRequest(this.requestId, undefined, this.emailContacts, this.emailMessage, this.getKeycloakPromise)
           .then(() => {
-            this.getRequest().catch((error) => console.log(error));
+            this.getRequest().catch((error) => console.error(error));
             this.showNewMessageDialog = false;
           })
           .catch((error) => console.error(error));

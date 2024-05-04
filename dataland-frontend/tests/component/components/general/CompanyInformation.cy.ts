@@ -43,7 +43,7 @@ describe("Component tests for the company info sheet", function (): void {
       });
     });
     cy.get('[data-test="reOpenRequestButton"]').should("exist");
-    cy.get('[data-test="closeRequestButton"]').should("exist");
+    cy.get('[data-test="resolveRequestButton"]').should("exist");
   });
   it("Check non-visibility of review request buttons", function () {
     mockRequestsOnMounted();
@@ -56,6 +56,6 @@ describe("Component tests for the company info sheet", function (): void {
       },
     });
     cy.get('[data-test="reOpenRequestButton"]').should("not.exist");
-    cy.get('[data-test="closeRequestButton"]').should("not.exist");
+    cy.get('[data-test="resolveRequestButton"]').should("not.exist");
   });
 });
