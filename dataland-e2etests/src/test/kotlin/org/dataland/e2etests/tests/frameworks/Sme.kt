@@ -102,7 +102,7 @@ class Sme {
             companyAssociatedDataSmeData,
             listOf(document),
         )
-        Thread.sleep(15000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
+        Thread.sleep(5000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
         lateinit var downloadedFile: File
         lateinit var retrievedSmeData: CompanyAssociatedDataSmeData
         try {
