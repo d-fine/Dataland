@@ -13,7 +13,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
-import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
+import { selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
 describeIf(
   "As a user, I want to add and link documents to the EU Taxonomy form",
