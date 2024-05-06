@@ -51,7 +51,6 @@ class DataManager(
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private val datamanagerUtils: DatamanagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val publicDataInMemoryStorage = mutableMapOf<String, String>()
@@ -250,13 +249,17 @@ class DataManager(
      * @return data set associated with the data ID provided in the input
      */
     fun getPublicDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        return datamanagerUtils.getDataSet(dataId, dataType, correlationId, ::getDataFromCacheOrStorageService)
+        return DatamanagerUtils(metaDataManager, objectMapper).getDataSet(
+            dataId, dataType, correlationId,
+            ::getDataFromCacheOrStorageService,
+        )
     }
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return publicDataInMemoryStorage[dataId] ?: datamanagerUtils.getDataFromStorageService(
-            dataId,
-            correlationId, ::getPublicData,
-        )
+        return publicDataInMemoryStorage[dataId] ?: DatamanagerUtils(metaDataManager, objectMapper)
+            .getDataFromStorageService(
+                dataId,
+                correlationId, ::getPublicData,
+            )
     }
 
     private fun getPublicData(dataId: String, correlationId: String): String {

@@ -87,8 +87,9 @@ class Sme {
         assertEquals(persistedDataMetaInfo.uploaderUserId, initialDataMetaInfo.uploaderUserId)
     }
 
+// TODO rename test description and add a second test to check the document methods
     @Test
-    fun `test that a dummy pdf document can be uploaded and retrieved after successful QA`() {
+    fun `test that a dataset and a dummy pdf document can be uploaded and retrieved`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         apiAccessor.companyDataControllerApi.postDataOwner(
             UUID.fromString(companyId),

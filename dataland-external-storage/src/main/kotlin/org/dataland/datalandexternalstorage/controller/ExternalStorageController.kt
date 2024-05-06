@@ -27,9 +27,9 @@ class ExternalStorageController(
         return ResponseEntity.ok(eurodatDataStore.selectPrivateDataSet(dataId, correlationId))
     }
 
-    override fun selectBlobById(documentId: String, correlationId: String): ResponseEntity<InputStreamResource> {
-        logger.info("Selecting blob from database with hash: $documentId. Correlation id: $correlationId.")
-        val blob = eurodatDataStore.selectPrivateDocument(documentId, correlationId)
+    override fun selectBlobById(blobId: String, correlationId: String): ResponseEntity<InputStreamResource> {
+        logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
+        val blob = eurodatDataStore.selectPrivateDocument(blobId, correlationId)
         val stream = ByteArrayInputStream(blob)
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)

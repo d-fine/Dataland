@@ -49,8 +49,9 @@ import java.util.*
  * @param companyQueryManager service for managing company data
  * @param metaDataManager service for managing metadata
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param messageUtils contains util methods for messages used on the message queue
  * @param dataIdToAssetIdMappingRepository the repository to map dataId to document hashes and document Ids
+ * @param storageClient
+ * @param streamingStorageClient
 */
 @Component("PrivateDataManager")
 class PrivateDataManager(
@@ -58,10 +59,7 @@ class PrivateDataManager(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
-    @Autowired private val datamanagerUtils: DatamanagerUtils,
-    @Autowired private val storageClient: ExternalStorageControllerApi,
     @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -69,6 +67,7 @@ class PrivateDataManager(
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
     private val documentHashesInMemoryStorage = mutableMapOf<String, MutableMap<String, String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
+    private val storageClient = ExternalStorageControllerApi()
 
     /**
      * Processes a private sme data storage request.
@@ -221,7 +220,7 @@ class PrivateDataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PrivateDataStored)
+        MessageQueueUtils().validateMessageType(type, MessageType.PrivateDataStored)
         val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -230,7 +229,7 @@ class PrivateDataManager(
             "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
                 "stored on EuroDaT. Starting to persist mapping info, meta info and clearing in-memory-storages",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils().rejectMessageOnException {
             persistMappingInfo(dataId, correlationId)
             persistMetaInfo(dataId, correlationId)
             removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
@@ -315,16 +314,17 @@ class PrivateDataManager(
      * @param correlationId the correlationId of the request
      */
     fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet {
-        return datamanagerUtils.getDataSet(
+        return DatamanagerUtils(metaDataManager, objectMapper).getDataSet(
             dataId, DataType.of(SmeData::class.java), correlationId,
             ::getDataFromCacheOrStorageService,
         )
     }
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return jsonDataInMemoryStorage[dataId] ?: datamanagerUtils.getDataFromStorageService(
-            dataId, correlationId,
-            ::getPrivateData,
-        )
+        return jsonDataInMemoryStorage[dataId] ?: DatamanagerUtils(metaDataManager, objectMapper)
+            .getDataFromStorageService(
+                dataId, correlationId,
+                ::getPrivateData,
+            )
     }
     private fun getPrivateData(dataId: String, correlationId: String): String {
         return storageClient.selectDataById(dataId, correlationId)

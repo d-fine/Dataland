@@ -78,7 +78,12 @@ class DatamanagerUtils(
      * @param correlationId the correlationId of the request
      * @param storageClientFunction the function which specifies from which storage the dataset should be retrieved
      */
-    fun getDataFromStorageService(dataId: String, correlationId: String, storageClientFunction: (String, String) -> String): String {
+    fun getDataFromStorageService(
+        dataId: String,
+        correlationId: String,
+        storageClientFunction: (String, String) ->
+        String,
+    ): String {
         val dataAsString: String
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
@@ -101,7 +106,13 @@ class DatamanagerUtils(
      * @param storageFunction the function to retrieve the dataset from the respective storage service
      * @return data set associated with the data ID provided in the input
      */
-    fun getDataSet(dataId: String, dataType: DataType, correlationId: String, storageFunction: (String, String) -> String):
+    fun getDataSet(
+        dataId: String,
+        dataType: DataType,
+        correlationId: String,
+        storageFunction: (String, String)
+        -> String,
+    ):
         StorableDataSet {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
