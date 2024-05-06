@@ -27,3 +27,12 @@ export function assertDefined<T>(input: T | undefined | null): T {
     return input;
   }
 }
+
+/**
+ * Verifies that the input is a string array in a typescript typesafe manner
+ * @param input the input to check
+ * @returns true iff the input is a string array
+ */
+export function isStringArray(input: unknown): input is string[] {
+  return Array.isArray(input) && input.every((it) => typeof it === "string");
+}

@@ -33,6 +33,7 @@ import Dropdown from "primevue/dropdown";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { isStringArray } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
@@ -53,7 +54,7 @@ export default defineComponent({
   }) as Readonly<ComponentPropsOptions>,
   data() {
     return {
-      selectedOption: this.modelValue,
+      selectedOption: this.modelValue as string | null,
     };
   },
   emits: ["update:modelValue"],
@@ -73,15 +74,17 @@ export default defineComponent({
     },
   },
   computed: {
-    displayOptions() {
-      if (Array.isArray(this.options)) {
-        if ((this.options as unknown[]).every((element) => typeof element == "object")) {
-          return this.options;
+    displayOptions(): DropdownOption[] {
+      const inputOptions = this.options as string[] | DropdownOption[] | Record<string, string>;
+      if (Array.isArray(inputOptions)) {
+        if (isStringArray(inputOptions)) {
+          return inputOptions.map((entry) => ({ value: entry, label: entry }));
         } else {
-          return this.options.map((entry) => ({ value: entry, label: entry }));
+          return inputOptions;
         }
+      } else {
+        return Object.entries(inputOptions).map((pair) => ({ value: pair[0], label: pair[1] }));
       }
-      return Object.entries(this.options).map((entry) => ({ value: entry[0], label: entry[1] }));
     },
   },
   methods: {

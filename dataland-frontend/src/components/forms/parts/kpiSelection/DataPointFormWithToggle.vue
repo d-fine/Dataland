@@ -162,7 +162,7 @@ import SingleSelectFormElement from "@/components/forms/parts/elements/basic/Sin
 
 export default defineComponent({
   name: "DataPointFormWithToggle",
-  components: {SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     isMounted: false,
