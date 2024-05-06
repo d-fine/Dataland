@@ -23,6 +23,7 @@
       :validation-label="validationLabel"
       :validation="validation"
       :ignore="ignore"
+      :validation-messages="validationMessages"
     />
   </div>
 </template>
@@ -51,6 +52,7 @@ export default defineComponent({
       default: false,
     },
     dataTest: String,
+    validationMessages: Object,
   }) as Readonly<ComponentPropsOptions>,
   data() {
     return {

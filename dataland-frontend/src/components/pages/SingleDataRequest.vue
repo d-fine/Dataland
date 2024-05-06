@@ -40,7 +40,7 @@
                         class="text-danger text-xs mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
-                        Select at least one reporting period to submit your request.
+                        Select at least one reporting period to submit your request
                       </p>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">

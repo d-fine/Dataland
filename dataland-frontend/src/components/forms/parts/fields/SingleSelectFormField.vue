@@ -12,6 +12,7 @@
       :class="containerClass"
       :ignore="ignore"
       :data-test="dataTest"
+      :validation-messages="validationMessages"
       v-bind:model-value="selectedOption"
       @update:model-value="handleInputChange"
     />
@@ -34,6 +35,7 @@ export default defineComponent({
     ignore: { type: Boolean, default: false },
     modelValue: String,
     dataTest: String,
+    validationMessages: Object,
   }) as Readonly<ComponentPropsOptions>,
   emits: ["update:model-value"],
   data() {
