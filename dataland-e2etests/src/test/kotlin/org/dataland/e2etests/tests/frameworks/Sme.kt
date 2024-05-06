@@ -106,8 +106,8 @@ class Sme {
         lateinit var downloadedFile: File
         lateinit var retrievedSmeData: CompanyAssociatedDataSmeData
         try {
-            retrievedSmeData = customSmeDataControllerApi.getCompanyAssociatedDataSmeData(initialDataMetaInfo.dataId)
-           //downloadedFile = smeDataControllerApi.getPrivateDocument(initialDataMetaInfo.dataId, expectedHash)
+            retrievedSmeData = smeDataControllerApi.getCompanyAssociatedSmeData(initialDataMetaInfo.dataId)
+          // downloadedFile = smeDataControllerApi.getPrivateDocument(initialDataMetaInfo.dataId, expectedHash)
         } catch (e: ClientException) {
             e.statusCode != HttpStatus.NOT_FOUND.value()
         }

@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.mosh
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.springframework.core.io.InputStreamResource
 import java.io.File
 
 class CustomSmeDataControllerApi(private val token: String) {
@@ -22,12 +21,6 @@ class CustomSmeDataControllerApi(private val token: String) {
         DataMetaInformation {
         val jsonAdapter: JsonAdapter<DataMetaInformation> =
             moshi.adapter(DataMetaInformation::class.java)
-        return jsonAdapter.fromJson(inputString)!!
-    }
-    private fun transferJsonToCompanyAssociatedDataSmeData(inputString: String):
-            CompanyAssociatedDataSmeData {
-        val jsonAdapter: JsonAdapter<CompanyAssociatedDataSmeData> =
-            moshi.adapter(CompanyAssociatedDataSmeData::class.java)
         return jsonAdapter.fromJson(inputString)!!
     }
 
@@ -82,35 +75,4 @@ class CustomSmeDataControllerApi(private val token: String) {
         val responseBodyAsString = response.body!!.string()
         return transferJsonToDataMetaInformation(responseBodyAsString)
     }
-
-    fun getCompanyAssociatedDataSmeData(
-        dataId: String,
-    ):
-            CompanyAssociatedDataSmeData {
-        val response = client.newCall(Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/data/sme/$dataId")
-            .get()
-            .addHeader("Authorization", "Bearer $token")
-            .build()
-        ).execute()
-        require(response.isSuccessful) { "Request failed, response is: $response" }
-        val responseBodyAsString = response.body!!.string()
-        return transferJsonToCompanyAssociatedDataSmeData(responseBodyAsString)
-    }
-    /*fun getPrivateDocument(
-        dataId: String,
-        hash: String,
-    ):
-            InputStreamResource {
-        val response = client.newCall(Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/data/sme/$dataId&$hash")
-            .get()
-            .addHeader("Authorization", "Bearer $token")
-            .build()
-        ).execute()
-        require(response.isSuccessful) { "Request failed, response is: $response" }
-        val responseBodyAsString = response.body
-        return InputStreamResource(responseBodyAsString)
-    }
-    */
 }
