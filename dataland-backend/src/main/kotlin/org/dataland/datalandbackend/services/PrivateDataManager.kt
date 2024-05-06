@@ -43,7 +43,7 @@ import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.*
 
-//TODO finalize doc
+// TODO finalize doc
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
@@ -63,7 +63,7 @@ class PrivateDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
     @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
-    @Autowired private val storageClient:ExternalStorageControllerApi,
+    @Autowired private val storageClient: ExternalStorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
