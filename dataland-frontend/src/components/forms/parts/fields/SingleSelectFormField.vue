@@ -8,7 +8,7 @@
       :placeholder="placeholder"
       :options="options"
       :input-class="inputClass"
-      :is-required="required"
+      :required="required"
       :class="containerClass"
       :ignore="ignore"
       :data-test="dataTest"

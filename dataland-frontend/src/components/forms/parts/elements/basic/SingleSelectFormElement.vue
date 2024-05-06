@@ -6,7 +6,7 @@
       @update:model-value="handleInputChange($event)"
       :placeholder="placeholder"
       :name="name"
-      :showClear="!isRequired"
+      :showClear="!required"
       option-label="label"
       option-value="value"
       :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
@@ -41,7 +41,6 @@ export default defineComponent({
   components: { Dropdown },
   props: Object.assign(deepCopyObject(DropdownOptionFormFieldProps as ObjectType), {
     inputClass: { type: String, default: "long" },
-    isRequired: { type: Boolean },
     disabled: {
       type: Boolean,
       default: false,

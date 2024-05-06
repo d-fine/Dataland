@@ -92,7 +92,7 @@
             v-model="currentReportValue"
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
-            ignore="true"
+            ignore
           />
         </div>
         <div>
