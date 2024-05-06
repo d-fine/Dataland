@@ -94,19 +94,19 @@ describeIf(
      */
     function testYesNoExtendedDataPointFormField(fieldData: ExtendedDataPoint<string>): void {
       cy.get('[data-test="protectedAreasExposure"]')
-        .find('div[data-test="dataQuality"] span')
+        .find('div[data-test="dataQuality"] span.p-dropdown-label')
         .should("exist")
-        .should("has.value", fieldData.quality);
+        .should("contain.text", fieldData.quality);
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span')
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-dropdown-label')
         .should("exist")
-        .should("has.value", fieldData.quality);
+        .should("contain.text", fieldData.quality);
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
       cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
-      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span')
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] span.p-dropdown-label')
         .should("exist")
-        .should("has.value", fieldData.quality);
+        .should("contain.text", fieldData.quality);
     }
 
     /**
