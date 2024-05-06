@@ -102,15 +102,15 @@ export default defineComponent({
       if (!this.deselectRemovedOptionsOnShrinkage) return;
 
       const currentValueIsAllowedOnOldData = convertOptionTypeToDropdownOptions(oldInput).some(
-        (it) => it.value == this.modelValue,
+        (it) => it.value == this.selectedOption,
       );
 
       const currentValueIsAllowedOnNewData = convertOptionTypeToDropdownOptions(newInput).some(
-        (it) => it.value == this.modelValue,
+        (it) => it.value == this.selectedOption,
       );
 
       if (currentValueIsAllowedOnOldData && !currentValueIsAllowedOnNewData) {
-        this.selectedOption = null;
+        this.setSelectedOption(null);
       }
     },
   },
@@ -136,20 +136,27 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Updates the interal selectedOption value and notifies any parent element
+     * of the changed value
+     * @param newValue the value to change the selected option to
+     */
+    setSelectedOption(newValue: string | null) {
+      this.selectedOption = newValue;
+      this.$emit("update:modelValue", newValue);
+    },
+    /**
      * Handler for changes in the dropdown component
      * @param newInput the new value in the dropdown
      */
     handleInputChange(newInput: string) {
-      this.selectedOption = newInput;
-      this.$emit("update:modelValue", this.selectedOption);
+      this.setSelectedOption(newInput);
     },
     /**
      * Handler for changes in the formkit component (e.g. called if data got loaded)
      * @param newInput the new value in the field
      */
     handleFormKitInputChange(newInput: string) {
-      this.selectedOption = newInput;
-      this.$emit("update:modelValue", this.selectedOption);
+      this.setSelectedOption(newInput);
     },
 
     /**
@@ -158,7 +165,7 @@ export default defineComponent({
      */
     deselectUnknownOptionsIfNotPermitted() {
       if (!this.allowUnknownOption && !this.convertedInputOptions.some((it) => it.value == this.selectedOption)) {
-        this.selectedOption = null;
+        this.setSelectedOption(null);
       }
     },
   },
