@@ -54,6 +54,7 @@ import java.util.*
  * @param storageClient
  * @param streamingStorageClient
 */
+//TODO reduce number of input parameters
 @Suppress("LongParameterList")
 @Component("PrivateDataManager")
 class PrivateDataManager(
