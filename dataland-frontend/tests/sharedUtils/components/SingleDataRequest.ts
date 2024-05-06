@@ -1,4 +1,3 @@
-import { DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
@@ -15,13 +14,13 @@ export const singleDataRequestPage = {
   },
   chooseFrameworkLksg(): void {
     const numberOfFrameworks = Object.keys(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE).length;
-      selectItemFromDropdownByValue(
-          cy.get('[data-test="selectFramework"]').should("exist").get('[data-test="datapoint-framework"]'),
-          "LkSG",
-          true,
-      );
-      cy.get('[data-test="datapoint-framework"]').get(".p-dropdown-trigger").click();
-      cy.get(".p-dropdown-items").find("li").should("have.length", numberOfFrameworks);
-      cy.get('[data-test="datapoint-framework"]').get(".p-dropdown-trigger").click();
+    selectItemFromDropdownByValue(
+      cy.get('[data-test="selectFramework"]').should("exist").get('[data-test="datapoint-framework"]'),
+      "LkSG",
+      true,
+    );
+    cy.get('[data-test="datapoint-framework"]').get(".p-dropdown-trigger").click();
+    cy.get(".p-dropdown-items").find("li").should("have.length", numberOfFrameworks);
+    cy.get('[data-test="datapoint-framework"]').get(".p-dropdown-trigger").click();
   },
 };
