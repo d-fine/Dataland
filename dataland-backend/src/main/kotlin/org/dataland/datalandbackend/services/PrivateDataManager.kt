@@ -34,7 +34,6 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
@@ -55,6 +54,7 @@ import java.util.*
  * @param storageClient
  * @param streamingStorageClient
 */
+@Suppress("LongParameterList")
 @Component("PrivateDataManager")
 class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
