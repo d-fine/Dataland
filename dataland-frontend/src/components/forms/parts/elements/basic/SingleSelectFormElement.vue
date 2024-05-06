@@ -7,8 +7,8 @@
       :placeholder="placeholder"
       :name="name"
       :showClear="!isRequired"
-      :option-label="optionLabel"
-      :option-value="optionValue"
+      option-label="label"
+      option-value="value"
       :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
       :disabled="disabled"
     />
@@ -53,12 +53,10 @@ export default defineComponent({
   }) as Readonly<ComponentPropsOptions>,
   data() {
     return {
-      optionLabel: "label",
-      optionValue: "value",
       selectedOption: this.modelValue,
     };
   },
-  emits: ["update:model-value"],
+  emits: ["update:modelValue"],
   watch: {
     modelValue(newValue: string) {
       this.selectedOption = newValue;
@@ -93,7 +91,7 @@ export default defineComponent({
      */
     handleInputChange(newInput: string) {
       this.selectedOption = newInput;
-      this.$emit("update:model-value", this.selectedOption);
+      this.$emit("update:modelValue", this.selectedOption);
     },
     /**
      * Handler for changes in the formkit component (e.g. called if data got loaded)
@@ -101,7 +99,7 @@ export default defineComponent({
      */
     handleFormKitInputChange(newInput: string) {
       this.selectedOption = newInput;
-      this.$emit("update:model-value", this.selectedOption);
+      this.$emit("update:modelValue", this.selectedOption);
     },
   },
 });
