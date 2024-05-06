@@ -225,7 +225,7 @@ class AggregatedDataRequestsTest {
             aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Answered), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Closed), 0,
+            aggregatedDataRequests, companyIdentifierValue, setOf(RequestStatus.Resolved), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
             aggregatedDataRequests, companyIdentifierValue, allRequestStati, countOfOpenRequests,

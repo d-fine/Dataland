@@ -407,8 +407,9 @@ export default defineComponent({
       const sortOrderRequestStatus: { [key: string]: number } = {};
       sortOrderRequestStatus[RequestStatus.Answered] = 1;
       sortOrderRequestStatus[RequestStatus.Open] = 2;
-      sortOrderRequestStatus[RequestStatus.Closed] = 3;
-      sortOrderRequestStatus[RequestStatus.Withdrawn] = 4;
+      sortOrderRequestStatus[RequestStatus.Resolved] = 3;
+      sortOrderRequestStatus[RequestStatus.Closed] = 4;
+      sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
       if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * this.sortOrder;
       return this.sortOrder;
     },
