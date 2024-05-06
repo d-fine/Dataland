@@ -108,7 +108,6 @@
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
-              required
             />
           </div>
           <div class="form-field">
