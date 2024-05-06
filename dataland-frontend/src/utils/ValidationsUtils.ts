@@ -45,7 +45,7 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
       uploadReportComponent.scrollIntoView({ behavior: "smooth", block: "center" });
     }
     throw new Error(
-      `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`,
+      `Not all uploaded reports are used as a data source. Please remove the following reports, or use them as a data source: ${unusedReports.toString()}`,
     );
   }
 }
