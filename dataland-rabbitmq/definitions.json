@@ -1,5 +1,5 @@
 {
-  "rabbit_version": "3.7.28",
+  "rabbit_version": "3.13.0",
   "users": [
     {
       "name": "RABBITMQ_USER_PLACEHOLDER",
