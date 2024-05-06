@@ -68,7 +68,7 @@ class Sme {
             listOf(dummyFileAlpha, dummyFileBeta),
         )
 
-        Thread.sleep(2000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
+        Thread.sleep(6000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
 
         val persistedDataMetaInfo =
             apiAccessor.metaDataControllerApi.getDataMetaInfo(initialDataMetaInfo.dataId)
@@ -103,7 +103,7 @@ class Sme {
             companyAssociatedDataSmeData,
             listOf(document),
         )
-        Thread.sleep(2000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
+        Thread.sleep(5000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
         lateinit var downloadedFile: File
         lateinit var retrievedSmeData: CompanyAssociatedDataSmeData
         try {
