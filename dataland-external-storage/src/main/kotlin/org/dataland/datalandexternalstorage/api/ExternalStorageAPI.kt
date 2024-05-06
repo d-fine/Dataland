@@ -12,28 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable
  * Defines the restful external storage API.
  */
 interface ExternalStorageAPI {
-
-    /**
-     * A method to retrieve data from the external storage using the dataID
-     * @param dataId the ID of the data stored in the external storage which should be retrieved
-     * @param correlationId the correlation ID of the data get request
-     * @return ResponseEntity containing the selected data
-     */
-    @Operation(
-        summary = "Request data by ID.",
-        description = "Requests data by ID.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data."),
-        ],
-    )
-    @GetMapping(
-        value = ["/data/{dataId}"],
-        produces = ["application/json"],
-    )
-    fun selectDataById(@PathVariable("dataId") dataId: String, correlationId: String): ResponseEntity<String>
-
     /**
      * A method to retrieve blobs from the external storage using the blobs ID
      * @param blobId the hash of the document stored in the external storage which should be retrieved
@@ -57,4 +35,25 @@ interface ExternalStorageAPI {
         @PathVariable("blobId") blobId: String,
         correlationId: String,
     ): ResponseEntity<InputStreamResource>
+
+    /**
+     * A method to retrieve data from the external storage using the dataID
+     * @param dataId the ID of the data stored in the external storage which should be retrieved
+     * @param correlationId the correlation ID of the data get request
+     * @return ResponseEntity containing the selected data
+     */
+    @Operation(
+        summary = "Request data by ID.",
+        description = "Requests data by ID.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data."),
+        ],
+    )
+    @GetMapping(
+        value = ["/data/{dataId}"],
+        produces = ["application/json"],
+    )
+    fun selectDataById(@PathVariable("dataId") dataId: String, correlationId: String): ResponseEntity<String>
 }
