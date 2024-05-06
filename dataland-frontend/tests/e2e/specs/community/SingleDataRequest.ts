@@ -144,7 +144,7 @@ describeIf(
       clickSubmitButton();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
-        .should("contain.text", "Select at least one reporting period to submit your request.");
+        .should("contain.text", "Select at least one reporting period to submit your request");
 
       cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
         .should("be.visible")
