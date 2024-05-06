@@ -65,6 +65,7 @@
                 v-model="currentReportValue"
                 placeholder="Select a report"
                 :options="[noReportLabel, ...reportsName]"
+                allow-unknown-option
                 ignore
                 input-class="w-12"
               />

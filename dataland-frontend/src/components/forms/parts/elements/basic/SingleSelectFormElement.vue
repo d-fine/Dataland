@@ -36,11 +36,40 @@ import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { isStringArray } from "@/utils/TypeScriptUtils";
 
+type OptionType = string[] | DropdownOption[] | Record<string, string>;
+
+/**
+ * Converts from a liberally choosen amount of formats to specify options
+ * to a unified DropDownOption interface for easier processing
+ * @param options the input option in one of the desired formats
+ * @returns the options converted to the unified format
+ */
+function convertOptionTypeToDropdownOptions(options: OptionType | null | undefined): DropdownOption[] {
+  if (!options) return [];
+  if (Array.isArray(options)) {
+    if (isStringArray(options)) {
+      return options.map((entry) => ({ value: entry, label: entry }));
+    } else {
+      return options;
+    }
+  } else {
+    return Object.entries(options).map((pair) => ({ value: pair[0], label: pair[1] }));
+  }
+}
+
 export default defineComponent({
   name: "SingleSelectFormElement",
   components: { Dropdown },
   props: Object.assign(deepCopyObject(DropdownOptionFormFieldProps as ObjectType), {
     inputClass: { type: String, default: "long" },
+    deselectRemovedOptionsOnShrinkage: {
+      type: Boolean,
+      default: true,
+    },
+    allowUnknownOption: {
+      type: Boolean,
+      default: false,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -62,30 +91,45 @@ export default defineComponent({
   watch: {
     modelValue(newValue: string) {
       this.selectedOption = newValue;
+      this.deselectUnknownOptionsIfNotPermitted();
     },
-    options() {
-      if (
-        !(this.displayOptions as (DropdownOption | undefined)[])
-          .map((entry) => entry?.value)
-          .includes(this.selectedOption ?? undefined)
-      ) {
-        // TODO: CLEANUP
-        console.log(`Unknown option: '${this.selectedOption}'. Allowed: ${JSON.stringify(this.displayOptions)}  `);
+    allowUnknownOption() {
+      this.deselectUnknownOptionsIfNotPermitted();
+    },
+    options(newInput: OptionType, oldInput: OptionType) {
+      if (!this.deselectRemovedOptionsOnShrinkage) return;
+
+      const currentValueIsAllowedOnOldData = convertOptionTypeToDropdownOptions(oldInput).some(
+        (it) => it.value == this.modelValue,
+      );
+
+      const currentValueIsAllowedOnNewData = convertOptionTypeToDropdownOptions(newInput).some(
+        (it) => it.value == this.modelValue,
+      );
+
+      if (currentValueIsAllowedOnOldData && !currentValueIsAllowedOnNewData) {
+        this.selectedOption = null;
       }
     },
   },
   computed: {
+    convertedInputOptions(): DropdownOption[] {
+      return convertOptionTypeToDropdownOptions(this.options as OptionType);
+    },
     displayOptions(): DropdownOption[] {
-      const inputOptions = this.options as string[] | DropdownOption[] | Record<string, string>;
-      if (Array.isArray(inputOptions)) {
-        if (isStringArray(inputOptions)) {
-          return inputOptions.map((entry) => ({ value: entry, label: entry }));
-        } else {
-          return inputOptions;
-        }
-      } else {
-        return Object.entries(inputOptions).map((pair) => ({ value: pair[0], label: pair[1] }));
+      const returnOptions = [...this.convertedInputOptions];
+
+      if (
+        this.allowUnknownOption &&
+        this.selectedOption &&
+        !returnOptions.some((it) => it.value == this.selectedOption)
+      ) {
+        returnOptions.push({
+          label: this.selectedOption,
+          value: this.selectedOption,
+        });
       }
+      return returnOptions;
     },
   },
   methods: {
@@ -104,6 +148,16 @@ export default defineComponent({
     handleFormKitInputChange(newInput: string) {
       this.selectedOption = newInput;
       this.$emit("update:modelValue", this.selectedOption);
+    },
+
+    /**
+     * Deselects the current element if unknown options are not permitted
+     * and the current selection is not in the list of allowed options
+     */
+    deselectUnknownOptionsIfNotPermitted() {
+      if (!this.allowUnknownOption && !this.convertedInputOptions.some((it) => it.value == this.selectedOption)) {
+        this.selectedOption = null;
+      }
     },
   },
 });

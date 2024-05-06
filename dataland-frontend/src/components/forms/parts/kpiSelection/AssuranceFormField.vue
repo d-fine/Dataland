@@ -44,6 +44,7 @@
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
             name="fileName"
+            allow-unknown-option
             ignore
           />
         </div>

@@ -93,6 +93,7 @@
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
             ignore
+            allow-unknown-option
           />
         </div>
         <div>
