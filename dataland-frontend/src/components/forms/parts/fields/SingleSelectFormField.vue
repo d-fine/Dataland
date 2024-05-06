@@ -13,6 +13,8 @@
       :ignore="ignore"
       :data-test="dataTest"
       :validation-messages="validationMessages"
+      :deselect-removed-options-on-shrinkage="deselectRemovedOptionsOnShrinkage"
+      :allow-unknown-option="allowUnknownOption"
       v-bind:model-value="selectedOption"
       @update:model-value="handleInputChange"
     />
@@ -33,6 +35,14 @@ export default defineComponent({
     inputClass: { type: String, default: "long" },
     containerClass: { type: String, default: "form-field" },
     ignore: { type: Boolean, default: false },
+    deselectRemovedOptionsOnShrinkage: {
+      type: Boolean,
+      default: true,
+    },
+    allowUnknownOption: {
+      type: Boolean,
+      default: false,
+    },
     modelValue: String,
     dataTest: String,
     validationMessages: Object,
