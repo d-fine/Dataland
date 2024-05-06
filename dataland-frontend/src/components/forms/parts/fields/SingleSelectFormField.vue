@@ -37,7 +37,7 @@ export default defineComponent({
     dataTest: String,
     validationMessages: Object,
   }) as Readonly<ComponentPropsOptions>,
-  emits: ["update:model-value"],
+  emits: ["update:modelValue"],
   data() {
     return {
       selectedOption: null as null | string,
@@ -55,7 +55,7 @@ export default defineComponent({
      */
     handleInputChange(newInput: string) {
       this.selectedOption = newInput;
-      this.$emit("update:model-value", this.selectedOption);
+      this.$emit("update:modelValue", this.selectedOption);
     },
   },
 });
