@@ -72,6 +72,7 @@
               <SingleSelectFormField
                 container-class=""
                 name="countryCode"
+                v-model="countryCode"
                 placeholder="Select"
                 validation="required"
                 validation-label="Country Code"
@@ -79,7 +80,6 @@
                 :label="companyDataNames.countryCode"
                 :description="companyDataExplanations.countryCode"
                 required
-                @value-selected="countryCode = $event"
               />
             </div>
           </div>
@@ -192,9 +192,9 @@
             :label="companyDataNames.sector"
             :description="companyDataExplanations.sector"
             name="sector"
+            v-model="sector"
             placeholder="Please choose"
             :options="gicsSectors"
-            @value-selected="sector = $event"
           />
 
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
@@ -258,7 +258,7 @@ export default defineComponent({
     companyLegalForm: "",
     headquarters: "",
     headquartersPostalCode: "",
-    countryCode: "",
+    countryCode: null as null | string,
     lei: "",
     isin: "",
     ticker: "",
@@ -266,7 +266,7 @@ export default defineComponent({
     duns: "",
     companyRegistrationNumber: "",
     vatNumber: "",
-    sector: "",
+    sector: null as null | string,
     website: "",
     checkCustomInputs,
     identifiers: {} as { [key: string]: Array<string> },

@@ -114,6 +114,6 @@ export default defineComponent({
 .bottom-line {
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-color: #958d7c;
+  border-color: $brown-lighter;
 }
 </style>
