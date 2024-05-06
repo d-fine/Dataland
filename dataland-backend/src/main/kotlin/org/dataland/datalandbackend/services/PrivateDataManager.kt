@@ -63,15 +63,13 @@ class PrivateDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
     @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
-    @Value("\${dataland.externalstorage.base-url}")
-    private val externalStorageBaseUrl: String,
+    @Autowired private val storageClient:ExternalStorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
     private val documentHashesInMemoryStorage = mutableMapOf<String, MutableMap<String, String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
-    private val storageClient = ExternalStorageControllerApi(externalStorageBaseUrl)
 
     /**
      * Processes a private sme data storage request.
