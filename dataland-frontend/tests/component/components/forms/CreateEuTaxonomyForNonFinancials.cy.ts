@@ -132,8 +132,13 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="fileName"]'),
       reports[0],
     );
-    cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="page"]').clear().type("5");
-    selectItemFromDropdownByIndex(cy.get('div[data-test="totalAmount"] div[name="quality"]'), 2);
+
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="page"]')
+      .not('[type="hidden"]')
+      .clear()
+      .type("5");
+
+    selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="quality"]'), 2);
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type("just a comment");
 
     cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
