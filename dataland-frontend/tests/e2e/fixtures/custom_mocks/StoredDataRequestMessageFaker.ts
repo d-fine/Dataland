@@ -10,7 +10,9 @@ import { generateArray } from "@e2e/fixtures/FixtureUtils";
 export function generateStoredDataRequestMessage(): StoredDataRequestMessageObject {
   const minimalNumberOfEmailAddressees = 1;
   return {
-    contacts: new Set(generateArray(() => faker.internet.email(), minimalNumberOfEmailAddressees)),
+    contacts: new Set(
+      generateArray(() => faker.internet.email({ provider: "example.com" }), minimalNumberOfEmailAddressees),
+    ),
     message: faker.git.commitMessage(),
     creationTimestamp: generateInt(),
   };

@@ -113,7 +113,7 @@ class Lksg {
 
     private fun sortComplaintRisksInDataset(dataset: LksgData): LksgData {
         val complaintRisksIdentifiedRisks = dataset.governance?.grievanceMechanismOwnOperations
-            ?.complaintsRiskPosition!!.toMutableList()
+            ?.complaintsRiskPosition?.toMutableList() ?: mutableListOf()
         val complaintRisksIdentifiedRisksSorted: MutableList<LksgGrievanceAssessmentMechanism> = mutableListOf()
         for (i in complaintRisksIdentifiedRisks.indices) {
             complaintRisksIdentifiedRisksSorted.add(

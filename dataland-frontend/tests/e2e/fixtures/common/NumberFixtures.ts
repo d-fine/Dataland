@@ -41,7 +41,7 @@ export function generatePercentageValue(min = 0, max = 100): number {
 export function generateInt(max = 10000, negative = false): number {
   const integer = faker.number.int(max);
   if (negative) {
-    return Math.random() > 0.5 ? -integer : integer;
+    return faker.datatype.boolean() ? -integer : integer;
   } else {
     return integer;
   }

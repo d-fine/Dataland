@@ -57,6 +57,16 @@
                         data-test="datapoint-framework"
                       />
                     </BasicFormSection>
+                    <BasicFormSection
+                      :data-test="'informationDataOwnership'"
+                      header="Information about company data ownership"
+                    >
+                      <p v-if="hasCompanyDataOwner">
+                        This company has at least one company data owner. <br />
+                        The company data owner(s) will be informed about your data request.
+                      </p>
+                      <p v-else>This company does not have a company owner yet.</p>
+                    </BasicFormSection>
                     <BasicFormSection header="Provide Contact Details">
                       <label for="Emails" class="label-with-optional">
                         <b>Emails</b><span class="optional-text">Optional</span>
@@ -223,6 +233,7 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import PrimeDialog from "primevue/dialog";
 import { openEmailClient } from "@/utils/Email";
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from "@/DatalandSettings";
+import { hasCompanyAtLeastOneDataOwner } from "@/utils/DataOwnerUtils";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
@@ -286,6 +297,7 @@ export default defineComponent({
       maxRequestReachedModalIsVisible: false,
       becomePremiumUserEmailTemplate,
       MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
+      hasCompanyDataOwner: false,
     };
   },
   computed: {
@@ -504,9 +516,16 @@ export default defineComponent({
         path: `/companies/${thisCompanyId}`,
       });
     },
+    /**
+     * Updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyIdentifier, this.getKeycloakPromise);
+    },
   },
   mounted() {
     this.retrieveFrameworkOptions();
+    this.updateHasCompanyDataOwner().catch((error) => console.error(error));
   },
 });
 </script>

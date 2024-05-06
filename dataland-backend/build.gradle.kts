@@ -25,7 +25,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
     kotlin("plugin.serialization")
 }
-
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.jackson.module.kotlin)
@@ -33,7 +32,6 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
-    implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation(libs.logback.classic)
@@ -123,10 +121,36 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the community manager service."
+    group = "clients"
+    val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
+        .path
+    outputDir.set(layout.buildDirectory.dir("clients/community-manager").get().toString())
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateInternalStorageClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -140,6 +164,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/internal-storage/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
 }
 
 ktlint {
