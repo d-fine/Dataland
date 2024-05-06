@@ -34,6 +34,7 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
@@ -43,6 +44,7 @@ import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.*
 
+//TODO finalize doc
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
@@ -61,13 +63,15 @@ class PrivateDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
     @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
+    @Value("\${dataland.externalstorage.base-url}")
+    private val externalStorageBaseUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
     private val documentHashesInMemoryStorage = mutableMapOf<String, MutableMap<String, String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
-    private val storageClient = ExternalStorageControllerApi()
+    private val storageClient = ExternalStorageControllerApi(externalStorageBaseUrl)
 
     /**
      * Processes a private sme data storage request.

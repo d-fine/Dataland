@@ -85,7 +85,7 @@ class DatamanagerUtils(
         String,
     ): String {
         val dataAsString: String
-        logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
+        logger.info("Retrieve data from storage. Correlation ID: $correlationId")
         try {
             dataAsString = storageClientFunction(dataId, correlationId)
         } catch (e: ServerException) {
