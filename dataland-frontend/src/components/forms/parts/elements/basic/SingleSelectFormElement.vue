@@ -12,7 +12,9 @@
       :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"
       :disabled="disabled"
     />
-    <!--  FormKit component only used to parse the selected value in nested FormKits  -->
+    <!--  FormKit component only used to parse the selected value in nested FormKits and to validate/display
+    validation messages
+     -->
     <FormKit
       type="text"
       :disabled="disabled"
