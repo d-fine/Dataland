@@ -47,7 +47,7 @@ import java.sql.SQLException
  * on eurodat
  * @param messageUtils contains utils connected to the messages on the message queue
  */
-//TODO reduce number of input parameters
+// TODO reduce number of input parameters
 @Suppress("LongParameterList")
 @Component
 class EurodatDataStore(
@@ -68,6 +68,7 @@ class EurodatDataStore(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+// TODO try to extract the creation logic into a separate class
     /**
      * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and
      * then throws a final exception after the retries are used up.
@@ -82,6 +83,7 @@ class EurodatDataStore(
         }
     }
 
+    // TODO refactor to extract the retry method into a util class
     /**
      * This method will rerun a given method if an exception is thrown while running it
      * @param inputMethod to specify in the logs which method should be rerun

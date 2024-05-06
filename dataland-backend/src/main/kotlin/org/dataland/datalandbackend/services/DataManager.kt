@@ -50,7 +50,6 @@ class DataManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val publicDataInMemoryStorage = mutableMapOf<String, String>()
@@ -132,13 +131,13 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
+        MessageQueueUtils().validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils().rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = qaCompletedMessage.validationResult
             if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
@@ -228,7 +227,7 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DataStored)
+        MessageQueueUtils().validateMessageType(type, MessageType.DataStored)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
@@ -236,7 +235,7 @@ class DataManager(
         logger.info(
             "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils().rejectMessageOnException {
             publicDataInMemoryStorage.remove(dataId)
         }
     }
