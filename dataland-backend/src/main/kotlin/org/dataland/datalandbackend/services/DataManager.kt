@@ -13,22 +13,10 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerE
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Argument
-import org.springframework.amqp.rabbit.annotation.Exchange
-import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.messaging.handler.annotation.Header
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -37,13 +25,12 @@ import java.util.*
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param companyManager service for managing company data
+ * @param companyQueryManager service for managing company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param messageUtils contains utils to be used to handle messages for the message queue
+ * @param dataManagerUtils holds util methods for handling of data
 */
-//TODO check what to to do with messageUtils
 @Component("DataManager")
 class DataManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -51,6 +38,7 @@ class DataManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val publicDataInMemoryStorage = mutableMapOf<String, String>()
@@ -105,53 +93,6 @@ class DataManager(
     }
 
     /**
-     * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param jsonString the message describing the result of the completed QA process
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredBackendDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
-            ),
-        ],
-    )
-    @Transactional
-    fun updateMetaData(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        MessageQueueUtils().validateMessageType(type, MessageType.QaCompleted)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        MessageQueueUtils().rejectMessageOnException {
-            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = qaCompletedMessage.validationResult
-            if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
-                metaDataManager.setActiveDataset(metaInformation)
-            }
-            logger.info(
-                "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
-                    "$dataId with Correlation Id: $correlationId",
-            )
-        }
-    }
-
-    /**
      * This method retrieves public data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      * @return stringified data entry from the temporary store
@@ -200,48 +141,6 @@ class DataManager(
     }
 
     /**
-     * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
-     * stored in the persisted database. Further it logs success notification associated containing dataId and
-     * correlationId
-     * @param dataId the ID of the dataset to that was stored
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataStoredBackendDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.data],
-            ),
-        ],
-    )
-    fun removeStoredItemFromTemporaryStore(
-        @Payload dataId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        MessageQueueUtils().validateMessageType(type, MessageType.DataStored)
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        logger.info("Internal Storage sent a message - job done")
-        logger.info(
-            "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
-        )
-        MessageQueueUtils().rejectMessageOnException {
-            publicDataInMemoryStorage.remove(dataId)
-        }
-    }
-
-    /**
      * Method to make the data manager get the data of a single entry from the data store
      * @param dataId to identify the stored data
      * @param dataType to check the correctness of the type of the retrieved data
@@ -249,13 +148,13 @@ class DataManager(
      * @return data set associated with the data ID provided in the input
      */
     fun getPublicDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        return DataManagerUtils(metaDataManager, objectMapper).getDataSet(
+        return dataManagerUtils.getDataSet(
             dataId, dataType, correlationId,
             ::getDataFromCacheOrStorageService,
         )
     }
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return publicDataInMemoryStorage[dataId] ?: DataManagerUtils(metaDataManager, objectMapper)
+        return publicDataInMemoryStorage[dataId] ?: dataManagerUtils
             .getDataFromStorageService(
                 dataId,
                 correlationId, ::getPublicData,
@@ -307,5 +206,13 @@ class DataManager(
             )
             throw e
         }
+    }
+
+    /**
+     * This method removes an entry from the metaDataInformation in-memory storage
+     * @param dataId the dataId of the meta data to be removed from the in-memory store
+     */
+    fun removeEntryFromMetaDataInMemoryStore(dataId: String) {
+        publicDataInMemoryStorage.remove(dataId)
     }
 }

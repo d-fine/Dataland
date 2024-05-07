@@ -20,23 +20,12 @@ import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Argument
-import org.springframework.amqp.rabbit.annotation.Exchange
-import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
-import org.springframework.messaging.handler.annotation.Header
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
@@ -51,8 +40,8 @@ import java.util.*
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataIdToAssetIdMappingRepository the repository to map dataId to document hashes and document Ids
  * @param storageClientUtils is a util class which contains the necessary storage clients to be used here
-*/
-//TODO how to deal with the MessageQueueUtils
+ * @param dataManagerUtils is a util class which contains methods for the data manager services
+ */
 @Component("PrivateDataManager")
 class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -61,6 +50,7 @@ class PrivateDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
     @Autowired private val storageClientUtils: StorageClientUtils,
+    @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
@@ -193,49 +183,11 @@ class PrivateDataManager(
     }
 
     /**
-     * This method processes a storing request if the applicable message is received from the queue
-     * @param payload the paylod of the received message from the message queue
-     * @param correlationId the correlationId of the request
-     * @param type the type of the message
+     * The method removes entries in the in memory storages which are connected to the specified dataId
+     * @param dataId the dataId for which connected entries in the in-memory storages should be removed
+     * @param correlationId the correlationId of the storing process
      */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataStoredBackendPrivateDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateItemStored, declare = "false"),
-                key = [RoutingKeyNames.data],
-            ),
-        ],
-    )
-    fun processStoredPrivateSmeData(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        MessageQueueUtils().validateMessageType(type, MessageType.PrivateDataStored)
-        val dataId = JSONObject(payload).getString("dataId")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        logger.info(
-            "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
-                "stored on EuroDaT. Starting to persist mapping info, meta info and clearing in-memory-storages",
-        )
-        MessageQueueUtils().rejectMessageOnException {
-            persistMappingInfo(dataId, correlationId)
-            persistMetaInfo(dataId, correlationId)
-            removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)
-        }
-    }
-
-    private fun removeRelatedEntriesFromInMemoryStorages(dataId: String, correlationId: String) {
+    fun removeRelatedEntriesFromInMemoryStorages(dataId: String, correlationId: String) {
         logger.info(
             "Removing entries related to dataId $dataId and correlationId $correlationId from in-memory-storages",
         )
@@ -245,7 +197,12 @@ class PrivateDataManager(
         documentHashes?.let { removeDocumentsAndHashesFromInMemoryStorages(dataId, it) }
     }
 
-    private fun persistMappingInfo(dataId: String, correlationId: String) {
+    /**
+     * The method persists the mapping information between dataId, document hash and documentId
+     * @param dataId the dataId for which the respective information should be persisted
+     * @param correlationId the correlationId of the storing process
+     */
+    fun persistMappingInfo(dataId: String, correlationId: String) {
         logger.info(
             "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
@@ -266,7 +223,13 @@ class PrivateDataManager(
             }
         }
     }
-    private fun persistMetaInfo(dataId: String, correlationId: String) {
+
+    /**
+     * This method persists the metaDataInformation for the dataset with the specified dataId
+     * @param dataId the dataId for which the metaDataInformation should be persisted
+     * @param correlationId the correlationId of the storing process
+     */
+    fun persistMetaInfo(dataId: String, correlationId: String) {
         logger.info(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
@@ -313,13 +276,13 @@ class PrivateDataManager(
      * @param correlationId the correlationId of the request
      */
     fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet {
-        return DataManagerUtils(metaDataManager, objectMapper).getDataSet(
+        return dataManagerUtils.getDataSet(
             dataId, DataType.of(SmeData::class.java), correlationId,
             ::getDataFromCacheOrStorageService,
         )
     }
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return jsonDataInMemoryStorage[dataId] ?: DataManagerUtils(metaDataManager, objectMapper)
+        return jsonDataInMemoryStorage[dataId] ?: dataManagerUtils
             .getDataFromStorageService(
                 dataId, correlationId,
                 ::getPrivateData,
