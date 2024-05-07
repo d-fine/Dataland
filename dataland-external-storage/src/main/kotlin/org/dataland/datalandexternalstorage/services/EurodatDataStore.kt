@@ -5,13 +5,9 @@ import DatabaseConnection.insertByteArrayIntoSqlDatabase
 import DatabaseConnection.insertDataIntoSqlDatabase
 import DatabaseConnection.selectDataFromSqlDatabase
 import DatabaseConnection.selectDocumentFromSqlDatabase
-import jakarta.annotation.PostConstruct
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandeurodatclient.openApiClient.api.DatabaseCredentialResourceApi
-import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseResourceApi
 import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
-import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
-import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
 import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWrapperMethod
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -31,57 +27,18 @@ import org.springframework.transaction.annotation.Transactional
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param temporarilyCachedDocumentClient the service for retrieven documents from the temporary storage
  * @param databaseCredentialResourceClient the service to retrieve eurodat storage credentials
- * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
  * on eurodat
  */
-// TODO reduce number of input parameters
-@Suppress("LongParameterList")
 @Component
 class EurodatDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
     @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
-    @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
     @Value("\${dataland.eurodatclient.app-name}")
     private val eurodatAppName: String,
-    @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
-    private val initializeSafeDepositBox: Boolean,
-
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
-// TODO try to extract the creation logic into a separate class
-    /**
-     * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and
-     * then throws a final exception after the retries are used up.
-     */
-    @PostConstruct
-    fun createSafeDepositBox() {
-        if (initializeSafeDepositBox) {
-            logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-            retryWrapperMethod("createSafeDepositBox") {
-                isSafeDepositBoxAvailable()
-            }
-        }
-    }
-
-    @Suppress("TooGenericExceptionThrown")
-    private fun isSafeDepositBoxAvailable() {
-        if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
-            logger.info("Safe deposit box exists.")
-        } else {
-            throw Exception("Service not there.")
-        }
-    }
-
-    /**
-     * Sends a POST request to the safe deposit box creation endpoint of the EuroDaT client.
-     */
-    fun postSafeDepositBoxCreationRequest(): SafeDepositDatabaseResponse {
-        val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
-        return safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
-    }
 
     /**
      * Method that triggers the storage processes of the JSON and the associated documents in EuroDaT

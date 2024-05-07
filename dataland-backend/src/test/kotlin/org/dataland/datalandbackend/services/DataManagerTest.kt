@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -49,6 +50,8 @@ class DataManagerTest(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyAlterationManager: CompanyAlterationManager,
+    @Autowired val dataManagerUtils: DataManagerUtils,
+    @Autowired val messageQueueListenerDataManager: MessageQueueListenerDataManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
@@ -62,7 +65,7 @@ class DataManagerTest(
     fun reset() {
         dataManager = DataManager(
             objectMapper, companyQueryManager, dataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler,
+            mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils,
         )
         spyDataManager = spy(dataManager)
     }
@@ -106,7 +109,7 @@ class DataManagerTest(
         )
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
-        dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
+        messageQueueListenerDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
@@ -123,7 +126,7 @@ class DataManagerTest(
         val expectedDataTypeName = getExpectedDataTypeName(
             storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
         )
-        dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
+        messageQueueListenerDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
             dataManager.getPublicDataSet(dataId, DataType(expectedDataTypeName), correlationId)
         }
@@ -157,7 +160,7 @@ class DataManagerTest(
             buildReturnOfMockDataSelect(storableDataSetForNonFinancials),
         )
 
-        dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
+        messageQueueListenerDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
             dataManager.getPublicDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
         }
@@ -182,7 +185,7 @@ class DataManagerTest(
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {
-            dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QaCompleted)
+            messageQueueListenerDataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QaCompleted)
         }
         assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -190,7 +193,7 @@ class DataManagerTest(
     @Test
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            dataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored)
+            messageQueueListenerDataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored)
         }
         assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -235,7 +238,7 @@ class DataManagerTest(
         )
         dataManager = DataManager(
             objectMapper, companyQueryManager, mockDataMetaInformationManager,
-            mockStorageClient, mockCloudEventMessageHandler,
+            mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils,
         )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(
