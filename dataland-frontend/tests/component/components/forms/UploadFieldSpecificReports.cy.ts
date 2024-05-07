@@ -4,6 +4,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { DataTypeEnum } from "@clients/backend";
 import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
 const createSfdrDataset = {
   fillRequiredFields(): void {
@@ -44,7 +45,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
   function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
     new UploadDocuments("referencedReports").selectDummyFile(fileName, contentSize);
     cy.get("div[data-test='scope1GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']").click();
-    cy.get("div[data-test='scope1GhgEmissionsInTonnes'] select[name='fileName']").select(fileName);
+    selectItemFromDropdownByValue(cy.get("div[data-test='scope1GhgEmissionsInTonnes'] div[name='fileName']"), fileName);
   }
 
   /**

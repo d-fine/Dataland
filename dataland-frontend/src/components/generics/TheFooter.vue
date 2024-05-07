@@ -39,7 +39,7 @@
       </div>
       <div class="grid m-0">
         <div class="col-12 text-left">
-          <p>Copyright &#169; 2023 Dataland</p>
+          <p>Copyright &#169; 2024 Dataland</p>
         </div>
       </div>
     </div>

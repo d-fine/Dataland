@@ -40,12 +40,11 @@
                         class="text-danger text-xs mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
-                        Select at least one reporting period to submit your request.
+                        Select at least one reporting period to submit your request
                       </p>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
-                      <FormKit
-                        type="select"
+                      <SingleSelectFormElement
                         placeholder="Select framework"
                         v-model="frameworkName"
                         name="Framework"
@@ -54,8 +53,8 @@
                         :validation-messages="{
                           required: 'Select a framework to submit your request',
                         }"
-                        outer-class="long"
-                        :data-test="'datapoint-framework'"
+                        required
+                        data-test="datapoint-framework"
                       />
                     </BasicFormSection>
                     <BasicFormSection
@@ -235,10 +234,12 @@ import PrimeDialog from "primevue/dialog";
 import { openEmailClient } from "@/utils/Email";
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from "@/DatalandSettings";
 import { hasCompanyAtLeastOneDataOwner } from "@/utils/DataOwnerUtils";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
+    SingleSelectFormElement,
     PrimeDialog,
     BasicFormSection,
     ToggleChipFormInputs,
@@ -286,6 +287,7 @@ export default defineComponent({
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
       reportingPeriodOptions: [
+        { name: "2024", value: false },
         { name: "2023", value: false },
         { name: "2022", value: false },
         { name: "2021", value: false },

@@ -102,7 +102,7 @@ describeIf(
       cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]')
         .should("exist")
         .get('[data-test="toggle-chip"')
-        .should("have.length", 4)
+        .should("have.length", 5)
         .first()
         .click()
         .should("have.class", "toggled");
