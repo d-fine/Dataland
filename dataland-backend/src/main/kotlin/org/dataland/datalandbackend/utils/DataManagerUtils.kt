@@ -15,10 +15,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 /**
- * Enables a centralized generation of log messages for all Dataland backend operations.
+ * The class holds methods which are used in handling data requests
  */
 
-@Component("ExceptionHandlingUtils")
+@Component("DataManagerUtils")
 class DataManagerUtils(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val objectMapper: ObjectMapper,
