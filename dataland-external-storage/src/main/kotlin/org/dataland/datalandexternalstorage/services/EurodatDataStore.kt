@@ -12,7 +12,6 @@ import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseR
 import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
-import org.dataland.datalandexternalstorage.entities.DataItem
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -193,7 +192,7 @@ class EurodatDataStore(
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         logger.info("Data from temporary storage retrieved.")
         retryWrapperMethod("storeJsonInEurodat") {
-            storeJsonInEurodat(correlationId, DataItem(dataId, jsonToStore), eurodatCredentials)
+            storeJsonInEurodat(correlationId, dataId, jsonToStore, eurodatCredentials)
         }
         logger.info("Data stored in eurodat storage.")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
@@ -210,18 +209,19 @@ class EurodatDataStore(
      * Stores a Data Item in EuroDaT while ensuring that there is no active transaction.
      * This will guarantee that the write is commited after exit of this method.
      * @param correlationId the correlationId of the storage request
-     * @param dataItem the DataItem to be stored
+     * @param dataId the dataId of the data to be stored
+     * @param data the data to be stored
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
     @Suppress("TooGenericExceptionThrown")
     @Transactional(propagation = Propagation.NEVER)
-    fun storeJsonInEurodat(correlationId: String, dataItem: DataItem, eurodatCredentials: Credentials) {
-        logger.info("Storing JSON in EuroDaT for dataId ${dataItem.id} and correlationId $correlationId")
+    fun storeJsonInEurodat(correlationId: String, dataId: String, data: String, eurodatCredentials: Credentials) {
+        logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
         val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        val sqlReturn = insertDataIntoSqlDatabase(conn, insertStatement, dataItem.id, dataItem.data)
+        val sqlReturn = insertDataIntoSqlDatabase(conn, insertStatement, dataId, data)
         if (!sqlReturn) {
-            throw Exception("An error occured while storing dataId ${dataItem.id} with correlationId $correlationId")
+            throw Exception("An error occured while storing dataId $dataId with correlationId $correlationId")
         }
     }
 
