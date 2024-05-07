@@ -43,6 +43,7 @@ import java.util.*
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param messageUtils contains utils to be used to handle messages for the message queue
 */
+//TODO check what to to do with messageUtils
 @Component("DataManager")
 class DataManager(
     @Autowired private val objectMapper: ObjectMapper,

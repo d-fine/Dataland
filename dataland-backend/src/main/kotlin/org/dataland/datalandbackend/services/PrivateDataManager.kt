@@ -193,7 +193,7 @@ class PrivateDataManager(
     }
 
     /**
-     * This method
+     * This method processes a storing request if the applicable message is received from the queue
      * @param payload the paylod of the received message from the message queue
      * @param correlationId the correlationId of the request
      * @param type the type of the message
