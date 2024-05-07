@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-shopt -s extglob
-./build-utils/base_rebuild_single_docker_image.sh dataland_frontend_production ./dataland-frontend/Dockerfile \
-         ./dataland-frontend/!(tests*) ./dataland-backend/backendOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json \
-         ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json \
-         ./dataland-community-manager/communityManagerOpenApi.json \
-         ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
+gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
+frontend_dependencies=$(grep frontend_dependencies ./build-utils/common.conf | cut -d'=' -f2)
+dependencies="$frontend_dependencies $gradle_dependencies"
+
+./build-utils/base_rebuild_single_docker_image.sh dataland_frontend_production ./dataland-frontend/Dockerfile $dependencies
