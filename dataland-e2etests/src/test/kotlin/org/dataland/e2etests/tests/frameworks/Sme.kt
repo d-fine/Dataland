@@ -54,6 +54,8 @@ class Sme {
         assertTrue(dummyFileBeta.delete())
     }
 
+    // TODO emanuel check if you can directly compare the data objects
+    // TODO check for both tests if the wait time can be reduced again
     @Test
     fun `post a company with SME data including documents and check if it has been persisted successfully`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
