@@ -9,8 +9,11 @@ describe("Component tests for the Eu Taxonomy for financials that test dependent
    * Fills the required fields of the form which are always present
    */
   function fillDefaultRequiredFields(): void {
-    cy.get("[data-test=assuranceSection] select").eq(0).select("None");
-    cy.get("[data-test=assuranceSection] select").eq(1).select(noReportLabel);
+    cy.get("[data-test=assuranceDataSingleSelect]").find(".p-dropdown-trigger").click();
+    cy.get(".p-dropdown-items").contains("None").click();
+
+    cy.get("[data-test=companyReportsSingleSelect]").find(".p-dropdown-trigger").click();
+    cy.get(".p-dropdown-items").contains(noReportLabel).click();
   }
 
   /**
