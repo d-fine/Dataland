@@ -12,6 +12,8 @@ import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseR
 import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
+import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils
+import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWrapperMethod
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -60,10 +62,7 @@ class EurodatDataStore(
     private val eurodatAppName: String,
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
     private val initializeSafeDepositBox: Boolean,
-    @Value("\${dataland.eurodatclient.max-retries-connecting}")
-    private val maxRetriesConnectingToEurodat: Int,
-    @Value("\${dataland.eurodatclient.milliseconds-between-retries}")
-    private val millisecondsBetweenRetriesConnectingToEurodat: Int,
+
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -80,34 +79,6 @@ class EurodatDataStore(
                 isSafeDepositBoxAvailable()
             }
         }
-    }
-
-    // TODO refactor to extract the retry method into a util class
-    /**
-     * This method will rerun a given method if an exception is thrown while running it
-     * @param inputMethod to specify in the logs which method should be rerun
-     */
-    @Suppress("TooGenericExceptionCaught")
-    fun <T> retryWrapperMethod(inputMethod: String, block: () -> T): T {
-        var retryCount = 0
-        while (retryCount <= maxRetriesConnectingToEurodat) {
-            try {
-                logger.info("Trying to run the method $inputMethod. Try number ${retryCount + 1}.")
-                return block()
-            } catch (e: Exception) {
-                logger.error("An error occurred while executing the method $inputMethod: ${e.message}. Trying again")
-                if (retryCount == maxRetriesConnectingToEurodat) {
-                    logger.error(
-                        "An error occurred while executing the method $inputMethod: ${e.message}. " +
-                            "Process terminated",
-                    )
-                    throw e
-                }
-            }
-            retryCount++
-            Thread.sleep(millisecondsBetweenRetriesConnectingToEurodat.toLong())
-        }
-        return block()
     }
 
     @Suppress("TooGenericExceptionThrown")
