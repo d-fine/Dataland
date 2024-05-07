@@ -287,6 +287,7 @@ export default defineComponent({
       displayConditionsNotAcceptedError: false,
       displayContactsNotValidError: false,
       reportingPeriodOptions: [
+        { name: "2024", value: false },
         { name: "2023", value: false },
         { name: "2022", value: false },
         { name: "2021", value: false },
