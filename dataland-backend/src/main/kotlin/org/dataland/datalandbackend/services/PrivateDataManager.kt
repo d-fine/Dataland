@@ -35,7 +35,6 @@ import java.util.*
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param companyQueryManager service for managing company data
  * @param metaDataManager service for managing metadata
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataIdToAssetIdMappingRepository the repository to map dataId to document hashes and document Ids
@@ -45,7 +44,6 @@ import java.util.*
 @Component("PrivateDataManager")
 class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
@@ -106,7 +104,7 @@ class PrivateDataManager(
     }
 
     private fun buildMetaInfoEntity(dataId: String, storableDataSet: StorableDataSet): DataMetaInformationEntity {
-        val company = companyQueryManager.getCompanyById(storableDataSet.companyId)
+        val company = dataManagerUtils.getCompanyByCompanyId(storableDataSet.companyId)
         return DataMetaInformationEntity(
             dataId,
             company,

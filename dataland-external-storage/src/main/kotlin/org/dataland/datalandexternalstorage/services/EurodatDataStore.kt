@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional
  * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
  * on eurodat
  */
-//TODO reduce number of input parameters
+// TODO reduce number of input parameters
 @Suppress("LongParameterList")
 @Component
 class EurodatDataStore(

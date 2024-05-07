@@ -2,8 +2,10 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -16,12 +18,16 @@ import org.springframework.stereotype.Component
 
 /**
  * The class holds methods which are used in handling data requests
+ *  @param objectMapper object mapper used for converting data classes to strings and vice versa
+ *  @param companyQueryManager service for managing company data
+ *  @param metaDataManager service for managing metadata
  */
 
 @Component("DataManagerUtils")
 class DataManagerUtils(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -126,5 +132,13 @@ class DataManagerUtils(
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
         return dataAsStorableDataSet
+    }
+
+    /**
+     * This method returns the company for a given companyId
+     * @param companyId the companyId of the company for which information should be retrieved
+     */
+    fun getCompanyByCompanyId(companyId: String): StoredCompanyEntity {
+        return companyQueryManager.getCompanyById(companyId)
     }
 }
