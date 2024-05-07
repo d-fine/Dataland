@@ -11,12 +11,12 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
 import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
+import org.dataland.datalandbackend.utils.StorageClientUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
-import org.dataland.datalandexternalstorage.openApiClient.api.ExternalStorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -43,7 +43,6 @@ import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.*
 
-// TODO finalize doc
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
@@ -51,11 +50,8 @@ import java.util.*
  * @param metaDataManager service for managing metadata
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataIdToAssetIdMappingRepository the repository to map dataId to document hashes and document Ids
- * @param storageClient
- * @param streamingStorageClient
+ * @param storageClientUtils is a util class which contains the necessary storage clients to be used here
 */
-// TODO reduce number of input parameters otherwise also autowire messageUtils again
-@Suppress("LongParameterList")
 @Component("PrivateDataManager")
 class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -63,8 +59,7 @@ class PrivateDataManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
-    @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
-    @Autowired private val storageClient: ExternalStorageControllerApi,
+    @Autowired private val storageClientUtils: StorageClientUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
@@ -330,7 +325,7 @@ class PrivateDataManager(
             )
     }
     private fun getPrivateData(dataId: String, correlationId: String): String {
-        return storageClient.selectDataById(dataId, correlationId)
+        return storageClientUtils.getDataByIdFromStorageClient(dataId, correlationId)
     }
 
     /**
@@ -350,8 +345,8 @@ class PrivateDataManager(
             DocumentStream(
                 hash, DocumentType.Pdf,
                 InputStreamResource(
-                    streamingStorageClient
-                        .getBlobFromExternalStorage(documentId, correlationId),
+                    storageClientUtils
+                        .getBlobFromExternalStorageClient(documentId, correlationId),
                 ),
             )
         }

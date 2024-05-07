@@ -1,7 +1,6 @@
 package org.dataland.datalandexternalstorage.utils
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component("EurodatDataStoreUtils")
-object EurodatDataStoreUtils
-
- {
+object EurodatDataStoreUtils {
     private const val maxRetriesConnectingToEurodat = 8
     private const val millisecondsBetweenRetriesConnectingToEurodat = 15000
     private val logger = LoggerFactory.getLogger(javaClass)

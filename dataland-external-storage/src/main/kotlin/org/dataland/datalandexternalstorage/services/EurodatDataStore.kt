@@ -12,31 +12,18 @@ import org.dataland.datalandeurodatclient.openApiClient.api.SafeDepositDatabaseR
 import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseRequest
 import org.dataland.datalandeurodatclient.openApiClient.model.SafeDepositDatabaseResponse
-import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils
 import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWrapperMethod
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Argument
-import org.springframework.amqp.rabbit.annotation.Exchange
-import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.messaging.handler.annotation.Header
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.sql.SQLException
 
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
@@ -46,7 +33,6 @@ import java.sql.SQLException
  * @param databaseCredentialResourceClient the service to retrieve eurodat storage credentials
  * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
  * on eurodat
- * @param messageUtils contains utils connected to the messages on the message queue
  */
 // TODO reduce number of input parameters
 @Suppress("LongParameterList")
@@ -57,7 +43,6 @@ class EurodatDataStore(
     @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedPrivateDocumentControllerApi,
     @Autowired var databaseCredentialResourceClient: DatabaseCredentialResourceApi,
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Value("\${dataland.eurodatclient.app-name}")
     private val eurodatAppName: String,
     @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
@@ -96,55 +81,6 @@ class EurodatDataStore(
     fun postSafeDepositBoxCreationRequest(): SafeDepositDatabaseResponse {
         val creationRequest = SafeDepositDatabaseRequest(eurodatAppName)
         return safeDepositDatabaseResourceClient.apiV1ClientControllerDatabaseServicePost(creationRequest)
-    }
-
-    /**
-     * Method that listens to the storage_queue and stores data into the database in case there is a message on the
-     * storage_queue
-     * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "requestReceivedEurodatDataStore",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [""],
-            ),
-        ],
-    )
-    fun processStorageRequest(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
-        val dataId = JSONObject(payload).getString("dataId")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty.")
-        }
-        logger.info(
-            "Received storage request for dataId $dataId and correlationId $correlationId with payload: $payload",
-        )
-        messageUtils.rejectMessageOnException {
-            val actionType = JSONObject(payload).getString("actionType")
-            if (actionType == ActionType.StorePrivateDataAndDocuments) {
-                try {
-                    storeDataInEurodat(dataId, correlationId, payload)
-                    sendMessageAfterSuccessfulStorage(payload, correlationId)
-                } catch (ex: SQLException) {
-                    logger.error("A sql exception was thrown: $ex")
-                }
-            }
-        }
     }
 
     /**
