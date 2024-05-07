@@ -216,6 +216,11 @@ input[type="radio"] {
   }
 }
 
+.p-dropdown-clear-icon {
+  position: relative;
+  margin: auto;
+}
+
 .p-datepicker {
   padding: 0.5rem;
   background: $card-background;
@@ -585,6 +590,17 @@ input[type="radio"] {
   }
   .long {
     width: 100%;
+  }
+  .shortish-hard {
+    width: 45%;
+    min-width: 45%;
+    max-width: 45%;
+  }
+  .normal-line-height {
+    line-height: normal;
+  }
+  .no-selection .p-dropdown-label {
+    color: #767676;
   }
   .yes-no-radio {
     fieldset.formkit-fieldset {

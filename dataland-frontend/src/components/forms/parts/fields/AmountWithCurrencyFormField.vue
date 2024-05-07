@@ -15,12 +15,10 @@
           />
         </div>
         <div class="col-4">
-          <FormKit
-            type="select"
+          <SingleSelectFormElement
             name="currency"
             placeholder="Currency"
             :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-            outer-class="long"
             data-test="AmountWithCurrencyFormField-currency"
           />
         </div>
@@ -36,6 +34,7 @@ import { FormKit } from "@formkit/vue";
 import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "AmountWithCurrencyFormField",
@@ -44,7 +43,7 @@ export default defineComponent({
       return DropdownDatasetIdentifier;
     },
   },
-  components: { NumberFormField, UploadFormHeader, FormKit },
+  components: { SingleSelectFormElement, NumberFormField, UploadFormHeader, FormKit },
   props: {
     ...FormFieldPropsWithPlaceholder,
     unit: {
