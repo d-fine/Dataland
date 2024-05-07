@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.DatamanagerUtils
 import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
@@ -10,6 +9,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
+import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
@@ -54,7 +54,7 @@ import java.util.*
  * @param storageClient
  * @param streamingStorageClient
 */
-// TODO reduce number of input parameters
+// TODO reduce number of input parameters otherwise also autowire messageUtils again
 @Suppress("LongParameterList")
 @Component("PrivateDataManager")
 class PrivateDataManager(
@@ -317,13 +317,13 @@ class PrivateDataManager(
      * @param correlationId the correlationId of the request
      */
     fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet {
-        return DatamanagerUtils(metaDataManager, objectMapper).getDataSet(
+        return DataManagerUtils(metaDataManager, objectMapper).getDataSet(
             dataId, DataType.of(SmeData::class.java), correlationId,
             ::getDataFromCacheOrStorageService,
         )
     }
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return jsonDataInMemoryStorage[dataId] ?: DatamanagerUtils(metaDataManager, objectMapper)
+        return jsonDataInMemoryStorage[dataId] ?: DataManagerUtils(metaDataManager, objectMapper)
             .getDataFromStorageService(
                 dataId, correlationId,
                 ::getPrivateData,

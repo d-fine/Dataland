@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.DatamanagerUtils
+import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -248,13 +248,13 @@ class DataManager(
      * @return data set associated with the data ID provided in the input
      */
     fun getPublicDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        return DatamanagerUtils(metaDataManager, objectMapper).getDataSet(
+        return DataManagerUtils(metaDataManager, objectMapper).getDataSet(
             dataId, dataType, correlationId,
             ::getDataFromCacheOrStorageService,
         )
     }
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return publicDataInMemoryStorage[dataId] ?: DatamanagerUtils(metaDataManager, objectMapper)
+        return publicDataInMemoryStorage[dataId] ?: DataManagerUtils(metaDataManager, objectMapper)
             .getDataFromStorageService(
                 dataId,
                 correlationId, ::getPublicData,

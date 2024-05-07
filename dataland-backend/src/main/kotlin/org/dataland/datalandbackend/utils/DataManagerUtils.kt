@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend
+package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component("ExceptionHandlingUtils")
-class DatamanagerUtils(
+class DataManagerUtils(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
