@@ -31,7 +31,7 @@ describeIf(
           cy.intercept("**/api/companies/" + storedCompany.companyId + "/data-owners/*").as("postDataOwner");
           void postDataOwner(token, reader_userId, storedCompany.companyId);
           cy.wait("@postDataOwner", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-          cy.writeFile("cypress/log/token.txt", token);
+          cy.ensureLoggedIn(admin_name, admin_pw);
           logout();
           login(reader_name, reader_pw);
           cy.visitAndCheckAppMount("/companies/" + storedCompany.companyId);
