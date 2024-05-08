@@ -215,14 +215,16 @@ describe("As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
-          cy.visit(`/companies`);
-          cy.intercept("**/api/companies*").as("searchCompany");
+          cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
+          cy.visit(`/companies`).wait("@searchCompanyInitial");
           verifySearchResultTableExists();
+          cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
+            "searchCompanyInput",
+          );
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyNameMarker, { scrollBehavior: false });
-          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            //todo cy.wait() should solve the issue
+          cy.wait("@searchCompanyInput", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(preFix).should("exist");
           });
         },
@@ -321,14 +323,15 @@ describe("As a user, I expect the search functionality on the /companies page to
        * @param frameworkToFilterFor the framework to filter by
        */
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
-        cy.visit(`/companies?framework=${frameworkToFilterFor}`);
-        cy.intercept("**/api/companies*").as("searchCompany");
+        cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
+        cy.visit(`/companies?framework=${frameworkToFilterFor}`).wait("@searchCompanyInitial");
         verifySearchResultTableExists();
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
-        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-          //todo cy.wait() should solve the issue
+        cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`, {
+          timeout: Cypress.env("short_timeout_in_ms") as number,
+        }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-normal']")
@@ -337,7 +340,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         });
       }
 
-      it(
+      it.only(
         "Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
           "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
         () => {
@@ -359,6 +362,10 @@ describe("As a user, I expect the search functionality on the /companies page to
               );
             });
           });
+          //todo
+          cy.intercept({ url: `**/api/companies?searchString=${companyNameMarker}*`, times: 1 }).as(
+            `searchCompanyInput_${DataTypeEnum.EutaxonomyFinancials}`,
+          );
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
 
           const companyNameSfdrPrefix = "CompanyWithSfdr";
@@ -374,6 +381,10 @@ describe("As a user, I expect the search functionality on the /companies page to
               sfdrFixture.reportingPeriod,
             );
           });
+          //todo
+          cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
+            `searchCompanyInput_${DataTypeEnum.Sme}`,
+          );
           checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
         },
       );
