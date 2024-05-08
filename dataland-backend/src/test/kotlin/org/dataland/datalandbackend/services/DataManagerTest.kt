@@ -21,6 +21,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -51,13 +52,13 @@ class DataManagerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val dataManagerUtils: DataManagerUtils,
-    @Autowired val messageQueueListenerDataManager: MessageQueueListenerDataManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
+    lateinit var messageQueueListenerDataManager: MessageQueueListenerDataManager
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 
@@ -68,6 +69,10 @@ class DataManagerTest(
             mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils,
         )
         spyDataManager = spy(dataManager)
+        messageQueueListenerDataManager = MessageQueueListenerDataManager(
+            objectMapper, dataMetaInformationManager,
+            MessageQueueUtils(), dataManager,
+        )
     }
 
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt(): StorableDataSet {
