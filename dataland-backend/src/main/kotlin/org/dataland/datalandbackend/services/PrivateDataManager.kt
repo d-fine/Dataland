@@ -232,6 +232,7 @@ class PrivateDataManager(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
+        metaDataManager.setNewDatasetActiveAndOldDatasetInactive(dataMetaInfoEntityForDataId!!)
         metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId!!)
     }
 
