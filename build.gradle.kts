@@ -64,7 +64,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     kotlin("jvm")
     kotlin("plugin.spring") apply false
-    id("org.sonarqube") version "4.3.0.3225"
+    id("org.sonarqube")
     jacoco
     id("org.springdoc.openapi-gradle-plugin") apply false
     id("com.gorylenko.gradle-git-properties") apply false
