@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
@@ -57,40 +56,27 @@ class Sme {
     // TODO emanuel check if you can directly compare the data objects
     // TODO check for both tests if the wait time can be reduced again
     @Test
-    fun `post a company with SME data including documents and check if it has been persisted successfully`() {
+    fun `post a company with SME data and check if it has been persisted successfully with correct data meta info`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         apiAccessor.companyDataControllerApi.postDataOwner(
             UUID.fromString(companyId),
             UUID.fromString(UPLOADER_USER_ID),
         )
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
-
-        val initialDataMetaInfo = customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
+        val dataMetaInfoInResponse = customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
             companyAssociatedDataSmeData,
             listOf(dummyFileAlpha, dummyFileBeta),
         )
-
+        // TODO discuss the number with Stephan
         Thread.sleep(6000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
 
         val persistedDataMetaInfo =
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(initialDataMetaInfo.dataId)
-
-        assertEquals(QaStatus.Accepted, initialDataMetaInfo.qaStatus)
-        assertEquals(true, initialDataMetaInfo.currentlyActive)
-
-        assertEquals(QaStatus.Accepted, persistedDataMetaInfo.qaStatus)
-        assertEquals(true, persistedDataMetaInfo.currentlyActive)
-
-        assertEquals(persistedDataMetaInfo.dataId, initialDataMetaInfo.dataId)
-        assertEquals(persistedDataMetaInfo.dataType, initialDataMetaInfo.dataType)
-        assertEquals(persistedDataMetaInfo.companyId, initialDataMetaInfo.companyId)
-        assertEquals(persistedDataMetaInfo.reportingPeriod, initialDataMetaInfo.reportingPeriod)
-        assertEquals(persistedDataMetaInfo.uploadTime, initialDataMetaInfo.uploadTime)
-        assertEquals(persistedDataMetaInfo.uploaderUserId, initialDataMetaInfo.uploaderUserId)
+            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInfoInResponse.dataId)
+        assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
     }
 
     @Test
-    fun `test that a dataset and a dummy pdf document can be uploaded and retrieved`() {
+    fun `post a company with SME data and check if it can be retrieved`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         apiAccessor.companyDataControllerApi.postDataOwner(
             UUID.fromString(companyId),
