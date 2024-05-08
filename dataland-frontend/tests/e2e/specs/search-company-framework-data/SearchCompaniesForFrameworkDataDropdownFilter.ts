@@ -381,7 +381,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               sfdrFixture.reportingPeriod,
             );
           });
-          //todo
+          //todo 1
           cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
             `searchCompanyInput_${DataTypeEnum.Sme}`,
           );
