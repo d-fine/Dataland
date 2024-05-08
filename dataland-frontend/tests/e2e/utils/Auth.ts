@@ -4,9 +4,8 @@ import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
  */
 export function logout(): void {
   cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" }).as("apikey");
-  cy.visitAndCheckAppMount("/api-key").wait("@apikey");
-  //todo
-  cy.wait(1000)
+  cy.visitAndCheckAppMount("/api-key").wait("@apikey", { timeout: Cypress.env("short_timeout_in_ms") as number });
+  cy.wait(1000) //todo
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
