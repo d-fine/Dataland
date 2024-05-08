@@ -75,7 +75,7 @@ class DataRequestResponseEmailSender(
             else -> dataType
         }
     }
-//abc
+
     private fun getProperties(dataRequestEntity: DataRequestEntity, staleDaysThreshold: String): Map<String, String> {
         return mapOf(
             "companyId" to dataRequestEntity.datalandCompanyId,
