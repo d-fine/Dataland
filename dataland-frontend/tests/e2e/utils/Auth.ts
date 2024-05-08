@@ -3,10 +3,10 @@ import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
 export function logout(): void {
-  cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" }).as("apikey");
-  cy.visitAndCheckAppMount("/api-key").wait("@apikey");
-  //todo
-  cy.wait(1000)
+  cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" })
+    .as("apikey")
+    .visitAndCheckAppMount("/api-key")
+    .wait("@apikey", { timeout: Cypress.env("short_timeout_in_ms") as number })
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")

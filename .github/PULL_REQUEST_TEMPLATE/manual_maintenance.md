@@ -15,7 +15,6 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 ### Gradle update
 
-- [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
 - [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
@@ -42,18 +41,20 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 ### Dataland EuroDaT client
 
-- [ ] Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with the currently used version 
-  of the client.
-  Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
+- [ ] Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
   then update the version number used in docker-compose.
-  Then start the eurodat client as described in the internal Dataland wiki and visit 
-  http://localhost:8080/api/v1/client-controller/openapi 
+- [ ] Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with the currently used version
+  of the client. 
+  Start the eurodat client as described in the internal Dataland wiki and visit
+  http://localhost:8080/api/v1/client-controller/openapi
   This should trigger an automated download of the openApiSpec. The content of this file will be in YAML format.
   Therefore convert its content to JSON with this converter: https://jsonformatter.org/yaml-to-json
   Then replace the content of eurodatClientOpenApi.json in the repo with the converted JSON from the converter.
   After doing this, there should be no diffs to main in eurodatClientOpenApi.json!
   If there are diffs, this means that it is out of sync and you should discuss this with someone on the MiNaBo team.
 
+  
+  
 ### Dataland Analytics
 
 - [ ] Update the backend API file
@@ -89,11 +90,16 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-document-manager/Dockerfile`
 - [ ] `./dataland-document-manager/DockerfileBase`
 - [ ] `./dataland-document-manager/DockerfileTest`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-email-service/Dockerfile`
 - [ ] `./dataland-email-service/DockerfileBase`
 - [ ] `./dataland-email-service/DockerfileTest`
+- [ ] `./dataland-external-storage/Dockerfile`
+- [ ] `./dataland-external-storage/DockerfileBase`
+- [ ] `./dataland-external-storage/DockerfileTest`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
@@ -108,8 +114,6 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
@@ -130,6 +134,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev2.dataland.com
 - [ ] dev3.dataland.com
 - [ ] test.dataland.com
+- [ ] clone.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
 
