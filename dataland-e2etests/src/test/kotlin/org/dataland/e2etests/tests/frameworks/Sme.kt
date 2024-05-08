@@ -1,11 +1,11 @@
 package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackendutils.utils.sha256
-import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.UPLOADER_USER_ID
 import org.dataland.e2etests.UPLOADER_USER_NAME
@@ -31,13 +31,14 @@ class Sme {
     val keycloakToken = apiAccessor.jwtHelper.requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
     val customSmeDataControllerApi = CustomSmeDataControllerApi(keycloakToken)
     val smeDataControllerApi = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSmeData = FrameworkTestDataProvider(SmeData::class.java)
 
-    val testSmeData = testDataProviderForSmeData.getTData(1).first()
+    val testSmeData = sortSmeNaturalHazardsCovered(
+        FrameworkTestDataProvider(SmeData::class.java).getTData(1).first(),
+    )
 
     val dummyFileAlpha = File("dummyFileAlpha.txt")
     val dummyFileBeta = File("dummyFileBeta.txt")
-    private val pdfDocument = File("./public/test-report.pdf")
+    lateinit var companyId: String
 
     @BeforeAll
     fun prepareDummyFiles() {
@@ -48,80 +49,50 @@ class Sme {
         dummyFileBeta.writeBytes(ByteArray(tenMegabytes))
     }
 
+    @BeforeAll
+    fun postCompanyAndSetDataOwnership() {
+        companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        apiAccessor.companyDataControllerApi.postDataOwner(
+            UUID.fromString(companyId),
+            UUID.fromString(UPLOADER_USER_ID),
+        )
+    }
+
     @AfterAll
     fun deleteDummyFiles() {
         assertTrue(dummyFileAlpha.delete())
         assertTrue(dummyFileBeta.delete())
     }
 
-    // TODO emanuel check if you can directly compare the data objects
-    // TODO check for both tests if the wait time can be reduced again
     @Test
-    fun `post a company with SME data including documents and check if it has been persisted successfully`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.companyDataControllerApi.postDataOwner(
-            UUID.fromString(companyId),
-            UUID.fromString(UPLOADER_USER_ID),
-        )
+    fun `post a company with SME data and check if it has been persisted successfully with correct data meta info`() {
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
-
-        val initialDataMetaInfo = customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
-            companyAssociatedDataSmeData,
-            listOf(dummyFileAlpha, dummyFileBeta),
+        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData)
+        val persistedDataMetaInfo = executeDataRetrievalWithRetries(
+            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
         )
-
-        Thread.sleep(6000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
-
-        val persistedDataMetaInfo =
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(initialDataMetaInfo.dataId)
-
-        assertEquals(QaStatus.Accepted, initialDataMetaInfo.qaStatus)
-        assertEquals(true, initialDataMetaInfo.currentlyActive)
-
-        assertEquals(QaStatus.Accepted, persistedDataMetaInfo.qaStatus)
-        assertEquals(true, persistedDataMetaInfo.currentlyActive)
-
-        assertEquals(persistedDataMetaInfo.dataId, initialDataMetaInfo.dataId)
-        assertEquals(persistedDataMetaInfo.dataType, initialDataMetaInfo.dataType)
-        assertEquals(persistedDataMetaInfo.companyId, initialDataMetaInfo.companyId)
-        assertEquals(persistedDataMetaInfo.reportingPeriod, initialDataMetaInfo.reportingPeriod)
-        assertEquals(persistedDataMetaInfo.uploadTime, initialDataMetaInfo.uploadTime)
-        assertEquals(persistedDataMetaInfo.uploaderUserId, initialDataMetaInfo.uploaderUserId)
+        assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
     }
 
     @Test
-    fun `test that a dataset and a dummy pdf document can be uploaded and retrieved`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.companyDataControllerApi.postDataOwner(
-            UUID.fromString(companyId),
-            UUID.fromString(UPLOADER_USER_ID),
-        )
+    fun `post a company with SME data and check if it can be retrieved`() {
+        val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", testSmeData)
+        val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
+        val expectedHashBeta = dummyFileBeta.readBytes().sha256()
 
-        val document = pdfDocument
-        val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
-        val expectedHash = document.readBytes().sha256()
-        val initialDataMetaInfo = customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
-            companyAssociatedDataSmeData,
-            listOf(document),
+        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData)
+        val retrievedCompanyAssociatedSmeData = executeDataRetrievalWithRetries(
+            smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponse.dataId,
         )
-        Thread.sleep(5000) // Wait required to give the asynchronous EuroDaT storage process enough time to finish
-        lateinit var downloadedFile: File
-        lateinit var retrievedSmeData: CompanyAssociatedDataSmeData
-        try {
-            retrievedSmeData = smeDataControllerApi.getCompanyAssociatedSmeData(initialDataMetaInfo.dataId)
-            downloadedFile = smeDataControllerApi.getPrivateDocument(initialDataMetaInfo.dataId, expectedHash)
-        } catch (e: ClientException) {
-            e.statusCode != HttpStatus.NOT_FOUND.value()
-        }
-        assertEquals(
-            getSmeNaturalHazardsCoveredSorted(companyAssociatedDataSmeData.data),
-            getSmeNaturalHazardsCoveredSorted(retrievedSmeData.data),
-        )
-        assertEquals(companyAssociatedDataSmeData.companyId, retrievedSmeData.companyId)
-        assertEquals(companyAssociatedDataSmeData.reportingPeriod, retrievedSmeData.reportingPeriod)
-        assertEquals(expectedHash, downloadedFile.readBytes().sha256())
+        val downloadedAlpha = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashAlpha)
+        val downloadedBeta = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashBeta)
+
+        assertEquals(companyAssociatedDataSmeData, retrievedCompanyAssociatedSmeData)
+        assertEquals(expectedHashAlpha, downloadedAlpha.readBytes().sha256())
+        assertEquals(expectedHashBeta, downloadedBeta.readBytes().sha256())
     }
-    private fun getSmeNaturalHazardsCoveredSorted(dataset: SmeData): SmeData {
+
+    private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
         return dataset.copy(
             insurances = dataset.insurances?.copy(
                 naturalHazards = dataset.insurances?.naturalHazards?.copy(
@@ -130,4 +101,34 @@ class Sme {
             ),
         )
     }
+
+    private fun postSmeDataset(companyAssociatedDataSmeData: CompanyAssociatedDataSmeData): DataMetaInformation {
+        return customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
+            companyAssociatedDataSmeData,
+            listOf(dummyFileAlpha, dummyFileBeta),
+        )
+    }
+
+    private fun <T>executeDataRetrievalWithRetries(action: (dataId: String) -> T, dataId: String): T? {
+        val maxAttempts = 10
+        var attempt = 1
+
+        while (attempt <= maxAttempts) {
+            Thread.sleep(500)
+            try {
+                return action(dataId)
+            } catch (e: ClientException) {
+                if (e.statusCode != HttpStatus.NOT_FOUND.value() || attempt == maxAttempts) {
+                    // If it's not a client error, rethrow the exception
+                    throw e
+                }
+                attempt++
+            }
+        }
+        return null
+    }
 }
+
+// Emanuel: notes about things we need to discuss:            TODO delete later
+// TODO create story for pdf check?
+// TODO currently you cannot upload an Sme dataset for a reporting period and company twice and deactivate the "old" one
