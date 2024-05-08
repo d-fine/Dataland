@@ -75,7 +75,7 @@ class Sme {
     }
 
     @Test
-    fun `post a company with SME data and check if it can be retrieved`() {
+    fun `post a company with SME data and check if it can be retrieved including the associated documents`() {
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", testSmeData)
         val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
         val expectedHashBeta = dummyFileBeta.readBytes().sha256()
@@ -92,11 +92,50 @@ class Sme {
         assertEquals(expectedHashBeta, downloadedBeta.readBytes().sha256())
     }
 
+    @Test
+    fun `post two SME datasets for the same reporting period and company and assert correct handling`() {
+        val smeDataAlpha = setNumberOfEmployees(testSmeData, 1)
+        val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(companyId, "2022", smeDataAlpha)
+        val smeDataBeta = setNumberOfEmployees(testSmeData, 2)
+        val companyAssociatedSmeDataBeta = CompanyAssociatedDataSmeData(companyId, "2022", smeDataBeta)
+
+        val dataMetaInfoInResponseAlpha = postSmeDataset(companyAssociatedSmeDataAlpha)
+        val dataMetaInfoInResponseBeta = postSmeDataset(companyAssociatedSmeDataBeta)
+
+        val persistedDataMetaInfoAlpha = executeDataRetrievalWithRetries(
+            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponseAlpha.dataId,
+        )
+        val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
+            smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponseAlpha.dataId,
+        )
+        assertEquals(false, persistedDataMetaInfoAlpha?.currentlyActive)
+        assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
+
+        val persistedDataMetaInfoBeta = executeDataRetrievalWithRetries(
+            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponseBeta.dataId,
+        )
+        val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
+            smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponseBeta.dataId,
+        )
+        assertEquals(true, persistedDataMetaInfoBeta?.currentlyActive)
+        assertEquals(2, retrievedCompanyAssociatedSmeDataBeta?.data?.general?.basicInformation?.numberOfEmployees)
+    }
+
     private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
         return dataset.copy(
             insurances = dataset.insurances?.copy(
                 naturalHazards = dataset.insurances?.naturalHazards?.copy(
                     naturalHazardsCovered = dataset.insurances?.naturalHazards?.naturalHazardsCovered?.sorted(),
+                ),
+            ),
+        )
+    }
+
+    private fun setNumberOfEmployees(dataset: SmeData, numberOfEmployees: Int): SmeData {
+        return dataset.copy(
+            general = dataset.general.copy(
+                basicInformation = dataset.general.basicInformation.copy(
+                    numberOfEmployees = numberOfEmployees,
                 ),
             ),
         )
