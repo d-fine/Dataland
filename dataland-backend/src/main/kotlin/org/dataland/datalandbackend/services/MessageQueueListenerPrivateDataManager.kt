@@ -24,7 +24,6 @@ import java.util.*
  * @param messageQueueUtils holds util methods to handle messages
  * @param privateDataManager the datamanager service for private manager
 */
-// TODO how to deal with the MessageQueueUtils
 @Component("MessageQueueListenerPrivateDataManager")
 class MessageQueueListenerPrivateDataManager(
     @Autowired private val messageQueueUtils: MessageQueueUtils,
