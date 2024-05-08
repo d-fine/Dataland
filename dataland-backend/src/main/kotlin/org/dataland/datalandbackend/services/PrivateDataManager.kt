@@ -297,6 +297,9 @@ class PrivateDataManager(
      * @param correlationId the correlationId of the request
      */
     fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
+        // TODO Wenn man nach einem document sucht, was es nicht gibt, entsteht hier aktuell ein internal server error
+        // TODO Grund: Die nächste Zeile kriegt eine out of bounds exception.  Das müssen wir iwie anders handlen,
+        // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
         val documentId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
         val inMemoryStoredDocument = documentInMemoryStorage[hash]
         return if (inMemoryStoredDocument != null) {
