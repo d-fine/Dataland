@@ -19,7 +19,7 @@ declare global {
  * @returns the cypress chainable
  */
 export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuery> {
-  return cy.visit(endpoint).get("#app").should("exist");
+  return cy.visit(endpoint, { retryOnNetworkFailure: true }).get("#app").should("exist");
 }
 
 Cypress.Commands.add("visitAndCheckAppMount", visitAndCheckAppMount);
