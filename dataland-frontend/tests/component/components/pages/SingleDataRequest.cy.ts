@@ -53,7 +53,9 @@ describe("Component tests for the single data request page", function (): void {
       checkContactsNotValid("test@example");
 
       checkContactsValid("test@example.com");
+      checkContactsNotValid("test@examplecom");
       checkContactsValid("test.jurgen@example.com");
+      checkContactsValid("Test.tEsT@Example.cOm");
 
       checkContactsNotValid("test@example.com, hoho");
 
