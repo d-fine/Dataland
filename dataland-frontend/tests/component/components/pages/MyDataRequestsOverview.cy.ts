@@ -34,7 +34,7 @@ before(function () {
     reportingPeriod: "3021",
     creationTimestamp: 1809204495770,
     lastModifiedDate: 1609204495770,
-    requestStatus: RequestStatus.Closed,
+    requestStatus: RequestStatus.Resolved,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
     dataRequestId: dummyRequestId,

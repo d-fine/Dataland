@@ -86,9 +86,9 @@ describe("Component tests for the view data request page", function (): void {
     }).as("fetchCompanyName");
   }
 
-  it("Check view data request page for closed request with data renders as expected", function () {
+  it("Check view data request page for resolved request with data renders as expected", function () {
     interceptUserAskForSingleDataRequestsOnMounted(
-      getStoredDataRequest(RequestStatus.Closed, [dummyMessageObject] as Array<StoredDataRequestMessageObject>),
+      getStoredDataRequest(RequestStatus.Resolved, [dummyMessageObject] as Array<StoredDataRequestMessageObject>),
     );
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
@@ -101,7 +101,7 @@ describe("Component tests for the view data request page", function (): void {
         requestId: requestId,
       },
     }).then((mounted) => {
-      checkBasicPageElements(RequestStatus.Closed);
+      checkBasicPageElements(RequestStatus.Resolved);
       cy.get('[data-test="newMessage"]').should("exist").should("not.be.visible");
       cy.get('[data-test="card_withdrawn"]').should("exist").should("not.be.visible");
       cy.get('[data-test="resolveRequestButton"]').should("exist").should("not.be.visible");

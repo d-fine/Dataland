@@ -73,7 +73,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
       cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
-      cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
+      cy.get('[data-test="datapoint-framework"]').find("span").should("have.text", "LkSG");
     });
 
     it("Fill out the request page and check correct validation, request and success message", () => {
@@ -131,10 +131,12 @@ describeIf(
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      const dropdown = cy.get("[data-test='datapoint-framework']").should("exist");
+      const dropdown = cy.get("[data-test='datapoint-framework']");
+      dropdown.should("exist").click();
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        dropdown.should("contain.text", humanizeStringOrNumber(framework));
+        cy.get(".p-dropdown-item").contains(humanizeStringOrNumber(framework)).should("exist");
       });
+      dropdown.click();
     }
 
     /**
@@ -144,7 +146,7 @@ describeIf(
       clickSubmitButton();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
-        .should("contain.text", "Select at least one reporting period to submit your request.");
+        .should("contain.text", "Select at least one reporting period to submit your request");
 
       cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
         .should("be.visible")

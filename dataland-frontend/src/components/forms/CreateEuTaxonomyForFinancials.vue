@@ -83,9 +83,8 @@
                           :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
                           :is-required="true"
                         />
-                        <div class="lg:col-4 md:col-6 col-12 p-0">
-                          <FormKit
-                            type="select"
+                        <div class="lg:col-4 md:col-6 col-12 p-0" data-test="assuranceDataSingleSelect">
+                          <SingleSelectFormElement
                             name="value"
                             placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
@@ -113,20 +112,19 @@
                         <FormKit type="group" name="dataSource" ignore="true">
                           <h4 class="mt-0">Data source</h4>
                           <div class="next-to-each-other">
-                            <div class="flex-1">
+                            <div class="flex-1" data-test="companyReportsSingleSelect">
                               <UploadFormHeader
                                 :label="euTaxonomyKpiNameMappings.report ?? ''"
                                 :description="euTaxonomyKpiInfoMappings.report ?? ''"
                                 :is-required="true"
                               />
-                              <FormKit
-                                type="select"
+                              <SingleSelectFormElement
                                 ignore="true"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
                                 v-model="currentReportValue"
                                 :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
-                                :plugins="[selectNothingIfNotExistsFormKitPlugin]"
+                                allow-unknown-option
                               />
                             </div>
                             <div>
@@ -346,9 +344,9 @@ import { type FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
-import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   setup() {
@@ -358,6 +356,7 @@ export default defineComponent({
   },
   name: "CreateEuTaxonomyForFinancials",
   components: {
+    SingleSelectFormElement,
     JumpLinksSection,
     SubmitButton,
     SubmitSideBar,
@@ -492,7 +491,6 @@ export default defineComponent({
   },
 
   methods: {
-    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset

@@ -38,8 +38,8 @@ class SecurityUtilsService(
     ): Boolean {
         if (requestStatusToPatch == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-        val statusChangeFromAnsweredToClosed =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Closed
+        val statusChangeFromAnsweredToResolved =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Resolved
         val statusChangeFromAnsweredToOpen =
             currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open
         val statusChangeFromAnsweredToWithdrawn =
@@ -47,7 +47,7 @@ class SecurityUtilsService(
         val statusChangeFromOpenToWithdrawn =
             currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
         return (
-            statusChangeFromAnsweredToClosed || statusChangeFromAnsweredToOpen ||
+            statusChangeFromAnsweredToResolved || statusChangeFromAnsweredToOpen ||
                 statusChangeFromAnsweredToWithdrawn || statusChangeFromOpenToWithdrawn
             )
     }

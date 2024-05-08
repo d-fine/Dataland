@@ -34,6 +34,7 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DATALAND_ADMIN_VALUE", "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_BATCH_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATALAND_BACKEND_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_RECEIVERS", "dummy.mail@example.com", [System.EnvironmentVariableTarget]::User)

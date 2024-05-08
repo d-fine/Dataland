@@ -4,7 +4,7 @@
 		"userId": "69711fc7-39eb-41a7-b134-0e387e61ad88",
 		"creationTimestamp": 402,
 		"dataType": "eutaxonomy-financials",
-		"reportingPeriod": "2019",
+		"reportingPeriod": "2020",
 		"datalandCompanyId": "dedfe005-30d5-4edb-85ea-29ee82e764b5",
 		"messageHistory": [
 			{
@@ -59,7 +59,7 @@
 			}
 		],
 		"lastModifiedDate": 865,
-		"requestStatus": "Closed"
+		"requestStatus": "Resolved"
 	},
 	{
 		"dataRequestId": "9a450e70-0c71-4c4b-9d3d-0ddcb905b67e",

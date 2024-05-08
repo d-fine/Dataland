@@ -34,7 +34,9 @@ class DataRequestedClaimOwnershipEmailFactory(
     override val optionalProperties = setOf(keys.message)
 
     override val templateFile = "/claim_ownership.html.ftl"
-    override val subject = "A message from Dataland: Your ESG data are high on demand!"
+    override fun buildSubject(properties: Map<String, String?>): String {
+        return "A message from Dataland: Your ESG data are high on demand!"
+    }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         val hasMultipleReportingPeriods = properties[keys.reportingPeriods]?.contains(",") ?: false

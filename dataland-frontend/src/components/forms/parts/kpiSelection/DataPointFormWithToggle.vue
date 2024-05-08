@@ -86,15 +86,14 @@
       <div class="next-to-each-other">
         <div class="flex-1">
           <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
-          <FormKit
-            type="select"
+          <SingleSelectFormElement
             name="fileName"
             :disabled="!dataPointIsAvailable"
             v-model="currentReportValue"
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
-            :plugins="[selectNothingIfNotExistsFormKitPlugin]"
-            ignore="true"
+            ignore
+            allow-unknown-option
           />
         </div>
         <div>
@@ -129,9 +128,8 @@
         :is-required="true"
       />
       <div class="md:col-6 col-12 p-0">
-        <FormKit
+        <SingleSelectFormElement
           :disabled="!dataPointIsAvailable"
-          type="select"
           data-test="qualityValue"
           v-model="currentQualityValue"
           name="quality"
@@ -159,13 +157,13 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
-import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "DataPointFormWithToggle",
-  components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     isMounted: false,
@@ -247,7 +245,6 @@ export default defineComponent({
     },
   },
   methods: {
-    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Toggle dataPointIsAvailable variable value and emit event
      *
