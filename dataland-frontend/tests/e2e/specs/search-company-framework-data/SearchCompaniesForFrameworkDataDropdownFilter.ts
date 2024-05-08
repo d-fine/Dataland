@@ -222,6 +222,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .click({ scrollBehavior: false })
             .type(companyNameMarker, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            //todo cy.wait() should solve the issue
             cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(preFix).should("exist");
           });
         },
@@ -327,6 +328,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
         cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+          //todo cy.wait() should solve the issue
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-normal']")
