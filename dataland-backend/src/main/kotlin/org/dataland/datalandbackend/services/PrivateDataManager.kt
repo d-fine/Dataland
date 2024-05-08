@@ -297,11 +297,22 @@ class PrivateDataManager(
      * @param hash the hash of the requested document
      * @param correlationId the correlationId of the request
      */
+    @Suppress("TooGenericExceptionCaught")
     fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
         // TODO Wenn man nach einem document sucht, was es nicht gibt, entsteht hier aktuell ein internal server error
         // TODO Grund: Die nächste Zeile kriegt eine out of bounds exception.  Das müssen wir iwie anders handlen,
         // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
-        val documentId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
+        val documentId: String
+        try {
+            documentId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
+        } catch (e: IndexOutOfBoundsException) {
+            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
+            throw ResourceNotFoundApiException(
+                "Document not found",
+                "No document for dataId $dataId with the hash: $dataId could be found in the data store.",
+                e,
+            )
+        }
         val inMemoryStoredDocument = documentInMemoryStorage[hash]
         return if (inMemoryStoredDocument != null) {
             logger.info("Received document $documentId from temporary storage")
