@@ -326,12 +326,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
         cy.visit(`/companies?framework=${frameworkToFilterFor}`).wait("@searchCompanyInitial");
         verifySearchResultTableExists();
+        cy.intercept({ url: `**searchString=${companyNameMarker}*`, times: 1 }).as(
+          `searchCompanyInput_${frameworkToFilterFor}`,
+        );
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
-        cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`, {
-          timeout: Cypress.env("short_timeout_in_ms") as number,
-        }).then(() => {
+        cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-normal']")
@@ -362,10 +363,6 @@ describe("As a user, I expect the search functionality on the /companies page to
               );
             });
           });
-          //todo
-          cy.intercept({ url: `**/api/companies?searchString=${companyNameMarker}*`, times: 1 }).as(
-            `searchCompanyInput_${DataTypeEnum.EutaxonomyFinancials}`,
-          );
           checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
 
           const companyNameSfdrPrefix = "CompanyWithSfdr";
@@ -381,10 +378,6 @@ describe("As a user, I expect the search functionality on the /companies page to
               sfdrFixture.reportingPeriod,
             );
           });
-          //todo
-          cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
-            `searchCompanyInput_${DataTypeEnum.Sme}`,
-          );
           checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
         },
       );
