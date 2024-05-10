@@ -276,11 +276,75 @@ describe("As a user, I expect the search functionality on the /companies page to
         },
       );
 
+      /**
+       * Visits the company search page, filters by the specified framework,
+       * enters companyNamePrefix into the search bar and ensures that a matching company appears as the first result
+       * @param companyNamePrefix the search term to enter
+       * @param frameworkToFilterFor the framework to filter by
+       */
+      function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
+        cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
+        cy.visit(`/companies?framework=${frameworkToFilterFor}`).wait("@searchCompanyInitial");
+        verifySearchResultTableExists();
+        cy.intercept({ url: `**searchString=${companyNameMarker}*`, times: 1 }).as(
+          `searchCompanyInput_${frameworkToFilterFor}`,
+        );
+        cy.get("input[id=search_bar_top]")
+          .click({ scrollBehavior: false })
+          .type(companyNameMarker, { scrollBehavior: false });
+        cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
+          cy.get(".p-autocomplete-item")
+            .eq(0)
+            .get("span[class='font-normal']")
+            .contains(companyNamePrefix)
+            .should("exist");
+        });
+      }
+
+      it(
+        "Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
+          "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
+        () => {
+          const companyNameSfdrPrefix = "CompanyWithSfdr";
+          const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
+
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
+            const sfdrFixture = companiesWithSfdrData[0];
+            void uploadCompanyAndFrameworkData(
+              DataTypeEnum.Sfdr,
+              token,
+              generateDummyCompanyInformation(companyNameSfdr),
+              sfdrFixture.t,
+              sfdrFixture.reportingPeriod,
+            );
+          });
+          checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
+          const companyNameFinancialPrefix = "CompanyWithFinancial";
+          const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
+
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
+            getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
+              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
+                (storedCompany) => {
+                  return uploadFrameworkData(
+                    DataTypeEnum.EutaxonomyFinancials,
+                    token,
+                    storedCompany.companyId,
+                    fixtureData.reportingPeriod,
+                    fixtureData.t,
+                  );
+                },
+              );
+            });
+          });
+          checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
+        },
+      );
       it(
         "Upload a company with Eu Taxonomy Data For Financials and check if it only appears in the results if the " +
           "framework filter is set to that framework, or to several frameworks including that framework",
         () => {
-          const companyName = "CompanyWithFinancial" + companyNameMarker;
+          const companyName = "CompanyWithEuFinancial" + companyNameMarker;
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
@@ -313,72 +377,6 @@ describe("As a user, I expect the search functionality on the /companies page to
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");
-        },
-      );
-
-      /**
-       * Visits the company search page, filters by the specified framework,
-       * enters companyNamePrefix into the search bar and ensures that a matching company appears as the first result
-       * @param companyNamePrefix the search term to enter
-       * @param frameworkToFilterFor the framework to filter by
-       */
-      function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
-        cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
-        cy.visit(`/companies?framework=${frameworkToFilterFor}`).wait("@searchCompanyInitial");
-        verifySearchResultTableExists();
-        cy.intercept({ url: `**searchString=${companyNameMarker}*`, times: 1 }).as(
-          `searchCompanyInput_${frameworkToFilterFor}`,
-        );
-        cy.get("input[id=search_bar_top]")
-          .click({ scrollBehavior: false })
-          .type(companyNameMarker, { scrollBehavior: false });
-        cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
-          cy.get(".p-autocomplete-item")
-            .eq(0)
-            .get("span[class='font-normal']")
-            .contains(companyNamePrefix)
-            .should("exist");
-        });
-      }
-
-      it(
-        "Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
-          "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
-        () => {
-          const companyNameFinancialPrefix = "CompanyWithFinancial";
-          const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
-            getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
-              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
-                (storedCompany) => {
-                  return uploadFrameworkData(
-                    DataTypeEnum.EutaxonomyFinancials,
-                    token,
-                    storedCompany.companyId,
-                    fixtureData.reportingPeriod,
-                    fixtureData.t,
-                  );
-                },
-              );
-            });
-          });
-          checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
-
-          const companyNameSfdrPrefix = "CompanyWithSfdr";
-          const companyNameSfdr = companyNameSfdrPrefix + companyNameMarker;
-
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
-            const sfdrFixture = companiesWithSfdrData[0];
-            void uploadCompanyAndFrameworkData(
-              DataTypeEnum.Sfdr,
-              token,
-              generateDummyCompanyInformation(companyNameSfdr),
-              sfdrFixture.t,
-              sfdrFixture.reportingPeriod,
-            );
-          });
-          checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
         },
       );
     },
