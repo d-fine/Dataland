@@ -110,6 +110,7 @@
                     </PrimeButton>
                   </div>
                 </span>
+                <StatusHistory :status-history="dummyStatusHistory" />
               </div>
               <div class="card" data-test="card_providedContactDetails">
                 <span style="display: flex; align-items: center">
@@ -179,6 +180,7 @@ import PrimeDialog from "primevue/dialog";
 import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
 import { type DataTypeEnum, QaStatus } from "@clients/backend";
 import TheContent from "@/components/generics/TheContent.vue";
+import StatusHistory from "@/components/resources/viewDataRequestPage/StatusHistory.vue";
 
 export default defineComponent({
   name: "ViewDataRequest",
@@ -191,6 +193,7 @@ export default defineComponent({
     AuthenticationWrapper,
     TheHeader,
     TheFooter,
+    StatusHistory,
   },
   props: {
     requestId: {
@@ -205,6 +208,24 @@ export default defineComponent({
   },
   data() {
     return {
+      dummyStatusHistory: [
+        {
+          requestStatus: RequestStatus.Open,
+          statusChangeDate: 1714315046000,
+        },
+        {
+          requestStatus: RequestStatus.Answered,
+          statusChangeDate: 1714415046000,
+        },
+        {
+          requestStatus: RequestStatus.Open,
+          statusChangeDate: 1714615046000,
+        },
+        {
+          requestStatus: RequestStatus.Answered,
+          statusChangeDate: 1714655046000,
+        },
+      ],
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
       isDatasetAvailable: false,
@@ -436,5 +457,12 @@ export default defineComponent({
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
+}
+
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  list-style-type: none;
 }
 </style>

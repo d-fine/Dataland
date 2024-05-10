@@ -942,6 +942,7 @@
         "required": [
           "creationTimestamp",
           "dataRequestId",
+          "dataRequestStatusHistory",
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
@@ -977,6 +978,12 @@
               "$ref": "#/components/schemas/StoredDataRequestMessageObject"
             }
           },
+          "dataRequestStatusHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestStatusObject"
+            }
+          },
           "lastModifiedDate": {
             "type": "integer",
             "format": "int64"
@@ -1002,6 +1009,22 @@
           },
           "message": {
             "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "StoredDataRequestStatusObject": {
+        "required": [
+          "creationTimestamp",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus"
           },
           "creationTimestamp": {
             "type": "integer",
