@@ -35,6 +35,9 @@ data class DataRequestEntity(
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
 
+    @OneToMany(mappedBy = "dataRequest")
+    var dataRequestStatusHistory: List<RequestStatusEntity>,
+
     var lastModifiedDate: Long,
 
     @Enumerated(EnumType.STRING)
@@ -54,6 +57,7 @@ data class DataRequestEntity(
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
         messageHistory = listOf(),
+        dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
         requestStatus = RequestStatus.Open,
     )
