@@ -92,6 +92,7 @@ class DataManager(
         correlationId: String,
     ):
         String {
+        // todo remove @transactional if needed
         val dataId = IdUtils.generateUUID()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
