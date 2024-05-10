@@ -1,0 +1,1193 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Dataland Community Manager API documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/community"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    }
+  ],
+  "paths": {
+    "/requests/single": {
+      "post": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Send a single request",
+        "description": "A single of data requests for specific frameworks and companies is being sent.",
+        "operationId": "postSingleDataRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SingleDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully processed a single data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleDataRequestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/bulk": {
+      "post": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Send a bulk request",
+        "description": "A bulk of data requests for specific frameworks and companies is being sent.",
+        "operationId": "postBulkDataRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully processed a bulk of data requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkDataRequestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/{dataRequestId}/requestStatus": {
+      "patch": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Updates a data request.",
+        "description": "Updates status and message history of data request given data request id.",
+        "operationId": "patchDataRequest",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "contacts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get all stored data requests based on filters.",
+        "description": "Gets all the stored data request based on filters.",
+        "operationId": "getDataRequests",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datalandCompanyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredDataRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/{dataRequestId}": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Gets a stored data request for a given ID.",
+        "description": "Gets the stored data request corresponding to the provided data request ID.",
+        "operationId": "getDataRequestById",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data request for the provided ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/user": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get all stored data requests of the user making the request.",
+        "description": "Gets all the stored data request created by the user who is making the request.",
+        "operationId": "getDataRequestsForRequestingUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data requests for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedStoredDataRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/aggregated": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get aggregated data requests.",
+        "description": "Gets all data requests that match the given filters, while aggregating userIDs.",
+        "operationId": "getAggregatedDataRequests",
+        "parameters": [
+          {
+            "name": "identifierValue",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "sme",
+                  "esg-questionnaire",
+                  "heimathafen"
+                ]
+              }
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved aggregated data requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AggregatedDataRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/actuator": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027info\u0027",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health\u0027",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health-path\u0027",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SingleDataRequest": {
+        "required": [
+          "companyIdentifier",
+          "dataType",
+          "reportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "companyIdentifier": {
+            "type": "string",
+            "example": "enterValidIdentifier"
+          },
+          "dataType": {
+            "type": "string",
+            "example": "p2p",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme",
+              "esg-questionnaire",
+              "heimathafen"
+            ]
+          },
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "2022",
+              "2023"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "contacts": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "testuser@example.com"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "SingleDataRequestResponse": {
+        "required": [
+          "message",
+          "reportingPeriodsOfDuplicateDataRequests",
+          "reportingPeriodsOfStoredDataRequests"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "reportingPeriodsOfStoredDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriodsOfDuplicateDataRequests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BulkDataRequest": {
+        "required": [
+          "companyIdentifiers",
+          "dataTypes",
+          "reportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "companyIdentifiers": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "enterValidIdentifiers"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "p2p",
+              "sme"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme",
+                "esg-questionnaire",
+                "heimathafen"
+              ]
+            }
+          },
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "2022",
+              "2023"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BulkDataRequestResponse": {
+        "required": [
+          "acceptedCompanyIdentifiers",
+          "message",
+          "rejectedCompanyIdentifiers"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "acceptedCompanyIdentifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rejectedCompanyIdentifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RequestStatus": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Answered",
+          "Resolved",
+          "Withdrawn",
+          "Closed"
+        ]
+      },
+      "StoredDataRequest": {
+        "required": [
+          "creationTimestamp",
+          "dataRequestId",
+          "dataRequestStatusHistory",
+          "dataType",
+          "datalandCompanyId",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataRequestId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "dataRequestStatusHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestStatusObject"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
+      "StoredDataRequestMessageObject": {
+        "required": [
+          "contacts",
+          "creationTimestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "StoredDataRequestStatusObject": {
+        "required": [
+          "creationTimestamp",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ExtendedStoredDataRequest": {
+        "required": [
+          "companyName",
+          "creationTimestamp",
+          "dataRequestId",
+          "dataType",
+          "datalandCompanyId",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataRequestId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
+      "AggregatedDataRequest": {
+        "required": [
+          "count",
+          "datalandCompanyId",
+          "requestStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme",
+              "esg-questionnaire",
+              "heimathafen"
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datalandCompanyId": {
+            "type": "string"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "required": [
+          "errorType",
+          "httpStatus",
+          "message",
+          "summary"
+        ],
+        "type": "object",
+        "properties": {
+          "errorType": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "required": [
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "default-bearer-auth": {
+        "type": "http",
+        "in": "header",
+        "scheme": "bearer"
+      },
+      "default-oauth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
+            "tokenUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}

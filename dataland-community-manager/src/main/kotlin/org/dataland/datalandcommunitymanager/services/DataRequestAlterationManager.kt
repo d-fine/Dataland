@@ -9,8 +9,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
-import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -36,8 +34,7 @@ class DataRequestAlterationManager(
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired private val messageRepository: MessageRepository,
-    @Autowired private val requestStatusRepository: RequestStatusRepository,
+    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -60,10 +57,10 @@ class DataRequestAlterationManager(
         }
         val modificationTime = Instant.now().toEpochMilli()
         if (requestStatus != null) {
-            // todo check if commented out logic works
+            // todo check modification time is the correct time
             val requestStatusHistory = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusHistory)
-            requestStatusRepository.saveAllAndFlush(dataRequestEntity.dataRequestStatusHistory)
+            dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
             dataRequestEntity.requestStatus = requestStatus
         }
@@ -74,7 +71,7 @@ class DataRequestAlterationManager(
             val messageHistory =
                 listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)
-            messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
+            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
         }
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
