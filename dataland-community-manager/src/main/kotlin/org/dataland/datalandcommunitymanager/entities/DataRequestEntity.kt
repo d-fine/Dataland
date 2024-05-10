@@ -101,6 +101,9 @@ data class DataRequestEntity(
         messageHistory = messageHistory
             .sortedBy { it.creationTimestamp }
             .map { it.toStoredDataRequestMessageObject() },
+        dataRequestStatusHistory = dataRequestStatusHistory
+            .sortedBy { it.creationTimestamp }
+            .map { it.toStoredDataRequestStatusObject() },
         lastModifiedDate = lastModifiedDate,
         requestStatus = requestStatus,
     )

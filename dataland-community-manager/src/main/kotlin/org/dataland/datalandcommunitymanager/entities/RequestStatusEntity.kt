@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -18,6 +20,7 @@ data class RequestStatusEntity(
     @Id
     val statusHistoryId: String,
 
+    @Enumerated(EnumType.STRING)
     val requestStatus: RequestStatus,
 
     val creationTimestamp: Long,
