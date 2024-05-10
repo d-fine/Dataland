@@ -340,7 +340,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         });
       }
 
-      it.only(
+      it(
         "Upload a company with Eu Taxonomy Data For Financials and one with SFDR and " +
           "check if they are displayed in the autocomplete dropdown only if the framework filter is set accordingly",
         () => {
