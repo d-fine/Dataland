@@ -10,6 +10,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import java.util.*
 
 /**
@@ -71,6 +72,18 @@ data class DataRequestEntity(
     fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
         this.messageHistory = messageHistory.map {
             MessageEntity(it, this)
+        }
+    }
+
+    /**
+     * Associates a request status history
+     * This must be done after creation and storage of the DataRequestEntity
+     * due to cross dependencies between entities
+     * @param requestStatusHistory a list of ordered request status objects
+     */
+    fun associateRequestStatus(requestStatusHistory: List<StoredDataRequestStatusObject>) {
+        this.dataRequestStatusHistory = requestStatusHistory.map {
+            RequestStatusEntity(it, this)
         }
     }
 
