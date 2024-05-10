@@ -40,7 +40,7 @@ describeIf(
         },
       },
       () => {
-        cy.wait(100)
+        cy.wait(5000)
           .then(() => getKeycloakToken(reader_name, reader_pw))
           .then({ timeout: 120000 }, async (token) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
