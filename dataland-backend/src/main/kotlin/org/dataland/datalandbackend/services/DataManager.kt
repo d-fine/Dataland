@@ -85,6 +85,8 @@ class DataManager(
      * @param correlationId the correlationId of the request
      * @return ID of the newly stored data in the data store
      */
+
+    @Transactional(propagation = Propagation.NEVER)
     fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
         storableDataSet: StorableDataSet,
         bypassQa: Boolean,
@@ -196,6 +198,7 @@ class DataManager(
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
+    @Transactional(propagation = Propagation.NEVER)
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
         storableDataSet: StorableDataSet,
