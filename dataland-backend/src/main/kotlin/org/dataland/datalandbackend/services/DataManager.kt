@@ -85,14 +85,12 @@ class DataManager(
      * @param correlationId the correlationId of the request
      * @return ID of the newly stored data in the data store
      */
-    @Transactional(propagation = Propagation.NEVER)
     fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
         storableDataSet: StorableDataSet,
         bypassQa: Boolean,
         correlationId: String,
     ):
         String {
-        // todo remove @transactional if needed
         val dataId = IdUtils.generateUUID()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
