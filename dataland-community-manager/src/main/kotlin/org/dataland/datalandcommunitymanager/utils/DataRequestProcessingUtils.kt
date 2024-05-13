@@ -8,8 +8,9 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
+import org.dataland.datalandcommunitymanager.services.DataRequestHistoryManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +23,7 @@ import java.time.Instant
 @Service
 class DataRequestProcessingUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val messageRepository: MessageRepository,
+    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) {
@@ -79,19 +80,24 @@ class DataRequestProcessingUtils(
         contacts: Set<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
+        val creationTime = Instant.now().toEpochMilli()
         val dataRequestEntity = DataRequestEntity(
             DatalandAuthentication.fromContext().userId,
             dataType.value,
             reportingPeriod,
             datalandCompanyId,
-            Instant.now().toEpochMilli(),
+            creationTime,
         )
+
         dataRequestEntity.requestStatus = RequestStatus.Open
+        val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
+        dataRequestEntity.associateRequestStatus(requestStatusObject)
+        dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
         dataRequestRepository.save(dataRequestEntity)
         if (!contacts.isNullOrEmpty()) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
             dataRequestEntity.associateMessages(messageHistory)
-            messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
+            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
         }
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
         return dataRequestEntity
