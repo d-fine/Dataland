@@ -48,21 +48,21 @@ class EurodatDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod("getEurodatCredentials") {
+        val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
         logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         logger.info("Data from temporary storage retrieved.")
-        retryWrapperMethod("storeJsonInEurodat") {
+        retryWrapperMethod("write data into EuroDaT database") {
             storeJsonInEurodat(correlationId, dataId, jsonToStore, eurodatCredentials)
         }
         logger.info("Data stored in eurodat storage.")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
             val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
-            retryWrapperMethod("storeBlobInEurodat") {
+            retryWrapperMethod("write blob into EuroDaT database") {
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
             }
         }
@@ -141,7 +141,7 @@ class EurodatDataStore(
      */
     fun selectPrivateDataSet(dataId: String, correlationId: String): String {
         logger.info("Select data for data $dataId from eurodat storage.CorrelationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod("getEurodatCredentials") {
+        val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
@@ -155,7 +155,7 @@ class EurodatDataStore(
      */
     fun selectPrivateDocument(documentId: String, correlationId: String): ByteArray {
         logger.info("Select document for documentId $documentId from eurodat storage. CorrelationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod("getEurodatCredentials") {
+        val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }

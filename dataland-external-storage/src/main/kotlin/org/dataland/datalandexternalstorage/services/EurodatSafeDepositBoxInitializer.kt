@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
  * on eurodat
  */
 @Component
-class EurodatSafeDepositBoxInitialization(
+class EurodatSafeDepositBoxInitializer(
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
     @Value("\${dataland.eurodatclient.app-name}")
     private val eurodatAppName: String,
@@ -34,7 +34,7 @@ class EurodatSafeDepositBoxInitialization(
     fun createSafeDepositBox() {
         if (initializeSafeDepositBox) {
             logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-            retryWrapperMethod("createSafeDepositBox") {
+            retryWrapperMethod("create SafeDepositBox in EuroDaT") {
                 isSafeDepositBoxAvailable()
             }
         }
