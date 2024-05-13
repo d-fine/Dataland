@@ -171,5 +171,3 @@ class Sme {
         return null
     }
 }
-
-// TODO create story for pdf check?
