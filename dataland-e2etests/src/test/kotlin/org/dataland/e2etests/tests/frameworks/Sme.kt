@@ -94,28 +94,32 @@ class Sme {
 
     @Test
     fun `post two SME datasets for the same reporting period and company and assert correct handling`() {
-        val smeDataAlpha = setNumberOfEmployees(testSmeData, 1)
-        val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(companyId, "2022", smeDataAlpha)
-        val smeDataBeta = setNumberOfEmployees(testSmeData, 2)
-        val companyAssociatedSmeDataBeta = CompanyAssociatedDataSmeData(companyId, "2022", smeDataBeta)
+        val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(
+            companyId, "2022",
+            setNumberOfEmployees(testSmeData, 1),
+        )
+        val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
+        val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
+            smeDataControllerApi::getCompanyAssociatedSmeData, dataIdAlpha,
+        )
 
-        val dataMetaInfoInResponseAlpha = postSmeDataset(companyAssociatedSmeDataAlpha)
-        val dataMetaInfoInResponseBeta = postSmeDataset(companyAssociatedSmeDataBeta)
+        val companyAssociatedSmeDataBeta = CompanyAssociatedDataSmeData(
+            companyId, "2022",
+            setNumberOfEmployees(testSmeData, 2),
+        )
+        val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta).dataId
+        val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
+            smeDataControllerApi::getCompanyAssociatedSmeData, dataIdBeta,
+        )
 
         val persistedDataMetaInfoAlpha = executeDataRetrievalWithRetries(
-            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponseAlpha.dataId,
-        )
-        val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
-            smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponseAlpha.dataId,
+            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdAlpha,
         )
         assertEquals(false, persistedDataMetaInfoAlpha?.currentlyActive)
         assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
 
         val persistedDataMetaInfoBeta = executeDataRetrievalWithRetries(
-            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponseBeta.dataId,
-        )
-        val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
-            smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponseBeta.dataId,
+            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdBeta,
         )
         assertEquals(true, persistedDataMetaInfoBeta?.currentlyActive)
         assertEquals(2, retrievedCompanyAssociatedSmeDataBeta?.data?.general?.basicInformation?.numberOfEmployees)
@@ -149,7 +153,7 @@ class Sme {
     }
 
     private fun <T>executeDataRetrievalWithRetries(action: (dataId: String) -> T, dataId: String): T? {
-        val maxAttempts = 10
+        val maxAttempts = 20
         var attempt = 1
 
         while (attempt <= maxAttempts) {
@@ -168,6 +172,4 @@ class Sme {
     }
 }
 
-// Emanuel: notes about things we need to discuss:            TODO delete later
 // TODO create story for pdf check?
-// TODO currently you cannot upload an Sme dataset for a reporting period and company twice and deactivate the "old" one
