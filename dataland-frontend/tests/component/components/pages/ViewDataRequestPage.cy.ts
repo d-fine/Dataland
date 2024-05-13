@@ -141,6 +141,7 @@ describe("Component tests for the view data request page", function (): void {
     cy.contains("Request Details").should("exist").should("have.class", "card__title");
     cy.contains("Provided Contact Details & Messages").should("exist").should("have.class", "card__title");
     cy.contains("Request is").should("exist").should("have.class", "card__title");
+    cy.get('[data-test="status_history_toggle"]').should("exist");
 
     cy.get('[data-test="card_requestDetails"]')
       .should("exist")
