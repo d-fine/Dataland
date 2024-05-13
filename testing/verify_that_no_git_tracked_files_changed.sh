@@ -2,7 +2,9 @@
 set -euxo pipefail
 
 git add --all
-if git diff --exit-code --stat HEAD --; then
+
+# Ignore changes in OpenApi files as they are verified in a separate GitHub action
+if git diff --exit-code --stat HEAD -- :!*OpenApi.json; then
   echo "Okay! There are no changed files."
   exit 0
 else
