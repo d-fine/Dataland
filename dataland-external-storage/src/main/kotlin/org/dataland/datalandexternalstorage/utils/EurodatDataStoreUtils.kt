@@ -14,8 +14,9 @@ object EurodatDataStoreUtils {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * This method will rerun a given method if an exception is thrown while running it
+     * This method will rerun a given method for a specified number of times if an exception is thrown while running it
      * @param inputMethod to specify in the logs which method should be rerun
+     * @param block the method that should be retried
      */
     @Suppress("TooGenericExceptionCaught")
     fun <T> retryWrapperMethod(inputMethod: String, block: () -> T): T {
