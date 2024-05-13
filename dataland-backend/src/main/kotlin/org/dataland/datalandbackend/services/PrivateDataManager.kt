@@ -302,9 +302,9 @@ class PrivateDataManager(
         // TODO Wenn man nach einem document sucht, was es nicht gibt, entsteht hier aktuell ein internal server error
         // TODO Grund: Die nächste Zeile kriegt eine out of bounds exception.  Das müssen wir iwie anders handlen,
         // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
-        val documentId: String
+        val eurodatId: String
         try {
-            documentId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
+            eurodatId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
         } catch (e: IndexOutOfBoundsException) {
             logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
             throw ResourceNotFoundApiException(
@@ -315,15 +315,15 @@ class PrivateDataManager(
         }
         val inMemoryStoredDocument = documentInMemoryStorage[hash]
         return if (inMemoryStoredDocument != null) {
-            logger.info("Received document $documentId from temporary storage")
+            logger.info("Received document for eurodatId $eurodatId from temporary storage")
             DocumentStream(hash, DocumentType.Pdf, InputStreamResource(ByteArrayInputStream(inMemoryStoredDocument)))
         } else {
-            logger.info("Received document $documentId from storage service")
+            logger.info("Received document for eurodatId $eurodatId from storage service")
             DocumentStream(
                 hash, DocumentType.Pdf,
                 InputStreamResource(
                     storageClientUtils
-                        .getBlobFromExternalStorageClient(documentId, correlationId),
+                        .getBlobFromExternalStorageClient(eurodatId, correlationId),
                 ),
             )
         }
