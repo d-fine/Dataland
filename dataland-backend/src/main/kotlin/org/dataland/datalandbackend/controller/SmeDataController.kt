@@ -29,10 +29,10 @@ import org.springframework.web.multipart.MultipartFile
 class SmeDataController(
     @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
+    @Autowired private var logMessageBuilder: LogMessageBuilder,
     var dataMetaInformationManager: DataMetaInformationManager,
 ) : SmeDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val logMessageBuilder = LogMessageBuilder()
 
     @Operation(operationId = "postSmeJsonAndDocuments")
     override fun postSmeJsonAndDocuments(
