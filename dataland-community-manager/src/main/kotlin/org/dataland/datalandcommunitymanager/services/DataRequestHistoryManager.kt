@@ -33,7 +33,7 @@ class DataRequestHistoryManager(
             requestStatusRepository.saveAllAndFlush(dataRequestStatusHistory.toList())
         } catch (ex: Exception) {
             dataRequestStatusHistory.forEach {
-                logger.info(it.statusHistoryId + " - " + it.dataRequest)
+                logger.info(it.statusHistoryId)
             }
             logger.error("Error while saving status histories: ", ex)
         }

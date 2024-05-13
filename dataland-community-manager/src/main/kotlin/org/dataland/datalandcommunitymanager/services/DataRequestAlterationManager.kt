@@ -62,7 +62,7 @@ class DataRequestAlterationManager(
             val requestStatusHistory = setOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
 
             dataRequestEntity.associateRequestStatus(requestStatusHistory)
-
+            logger.info("try to patch data request: 1") // todo remove
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
 
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
