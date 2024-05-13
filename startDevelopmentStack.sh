@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Login to the docker repository
+
 set -euxo pipefail
 ./verifyEnvironmentVariables.sh
 
+# Login to the docker repository
 docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 
 # Retrieve the SSL-Certificates for local-dev.dataland.com

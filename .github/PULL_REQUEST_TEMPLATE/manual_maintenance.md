@@ -53,22 +53,6 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
   After doing this, there should be no diffs to main in eurodatClientOpenApi.json!
   If there are diffs, this means that it is out of sync and you should discuss this with someone on the MiNaBo team.
 
-  
-  
-### Dataland Analytics
-
-- [ ] Update the backend API file
-  - [ ] Go to https://dataland.com/api/v3/api-docs/public and copy the backend api JSON
-  - [ ] Convert the JSON to a .yaml file preferably using an online-converter (https://jsonformatter.org/json-to-yaml)
-  - [ ] Paste the .yaml output into "datasets_open_api.yaml"
-- [ ] Accordingly, update the document API file
-  - [ ] Copy from https://dataland.com/documents/v3/api-docs/public to documents_open_api.yaml
-- [ ] Accordingly, update the community API file
-  - [ ] Copy from https://dataland.com/community/v3/api-docs/public to requests_open_api.yaml
-- [ ] Accordingly, update the QA API file
-  - [ ] Copy from https://dataland.com/qa/v3/api-docs/public to requests_open_api.yaml
-
-
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
