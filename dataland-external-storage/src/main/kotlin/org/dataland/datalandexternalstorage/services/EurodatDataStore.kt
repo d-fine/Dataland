@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.sql.SQLException
 
 /**
  * Simple implementation of a data storing service using the EuroDaT data trustee
@@ -77,7 +78,6 @@ class EurodatDataStore(
      * @param data the data to be stored
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
-    @Suppress("TooGenericExceptionThrown")
     @Transactional(propagation = Propagation.NEVER)
     fun storeJsonInEurodat(correlationId: String, dataId: String, data: String, eurodatCredentials: Credentials) {
         logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
@@ -85,7 +85,7 @@ class EurodatDataStore(
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlReturn = insertDataIntoSqlDatabase(conn, insertStatement, dataId, data)
         if (!sqlReturn) {
-            throw Exception("An error occured while storing dataId $dataId with correlationId $correlationId")
+            throw SQLException("An error occured while storing dataId $dataId with correlationId $correlationId")
         }
     }
 
@@ -98,7 +98,6 @@ class EurodatDataStore(
      * @param documentId the documentId in the UUID format of the document to be stored
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
-    @Suppress("TooGenericExceptionThrown")
     @Transactional(propagation = Propagation.NEVER)
     fun storeBlobInEurodat(
         dataId: String,
@@ -117,7 +116,7 @@ class EurodatDataStore(
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlReturn = insertByteArrayIntoSqlDatabase(conn, insertStatement, documentId, resultByteArray)
         if (!sqlReturn) {
-            throw Exception(
+            throw SQLException(
                 "An error occured while storing document hash $hash, documentId $documentId and " +
                     "correlationId $correlationId",
             )

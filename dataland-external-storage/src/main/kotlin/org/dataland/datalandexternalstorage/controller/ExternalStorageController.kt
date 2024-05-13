@@ -23,12 +23,12 @@ class ExternalStorageController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
-        logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
+        logger.info("Selecting data from EuroDaT storage with data ID: $dataId. Correlation ID: $correlationId.")
         return ResponseEntity.ok(eurodatDataStore.selectPrivateDataSet(dataId, correlationId))
     }
 
     override fun selectBlobById(blobId: String, correlationId: String): ResponseEntity<InputStreamResource> {
-        logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
+        logger.info("Selecting blob from EuroDaT storage with hash: $blobId. Correlation id: $correlationId.")
         val blob = eurodatDataStore.selectPrivateDocument(blobId, correlationId)
         val stream = ByteArrayInputStream(blob)
         return ResponseEntity.ok()
