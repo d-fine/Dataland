@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OrderColumn
 import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -36,8 +37,9 @@ data class DataRequestEntity(
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
 
-    @OneToMany(mappedBy = "dataRequest")
-    var dataRequestStatusHistory: Set<RequestStatusEntity>,
+    @OneToMany(mappedBy = "dataRequestStatus")
+    @OrderColumn(name = "creationTimestamp")
+    var dataRequestStatusHistory: List<RequestStatusEntity>,
 
     var lastModifiedDate: Long,
 
@@ -58,7 +60,7 @@ data class DataRequestEntity(
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
         messageHistory = listOf(),
-        dataRequestStatusHistory = setOf(),
+        dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
         requestStatus = RequestStatus.Open,
     )
@@ -81,10 +83,10 @@ data class DataRequestEntity(
      * due to cross dependencies between entities
      * @param requestStatusHistory a list of ordered request status objects
      */
-    fun associateRequestStatus(requestStatusHistory: Set<StoredDataRequestStatusObject>) {
+    fun associateRequestStatus(requestStatusHistory: List<StoredDataRequestStatusObject>) {
         this.dataRequestStatusHistory = requestStatusHistory.map {
             RequestStatusEntity(it, this)
-        }.toSet()
+        }
     }
 
     /**
