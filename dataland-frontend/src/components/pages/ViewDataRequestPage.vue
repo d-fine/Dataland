@@ -92,25 +92,38 @@
           <div class="grid col-8 flex-direction-column">
             <div class="col-12">
               <div class="card" data-test="card_requestIs">
-                <span style="display: flex; align-items: center">
-                  <div class="card__title">Request is:</div>
-                  <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
-                    {{ storedDataRequest.requestStatus }}
+                <div style="display: flex">
+                  <div class="card__title" style="width: 20%; max-width: 120px">Request is:</div>
+                  <div style="width: 80%">
+                    <table>
+                      <tr>
+                        <td style="width: 130px; display: flex; align-items: center">
+                          <div
+                            :class="badgeClass(storedDataRequest.requestStatus)"
+                            style="margin: 0 1rem; display: inline-flex"
+                          >
+                            {{ storedDataRequest.requestStatus }}
+                          </div>
+                        </td>
+                        <td>
+                          <div class="card__subtitle">
+                            since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
+                          </div>
+                          <div style="margin-left: auto">
+                            <PrimeButton
+                              data-test="resolveRequestButton"
+                              v-show="isRequestStatusAnswered()"
+                              @click="goToResolveDataRequestPage()"
+                            >
+                              <span class="d-letters pl-2"> Resolve Request </span>
+                            </PrimeButton>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                    <StatusHistory :status-history="dummyStatusHistory" />
                   </div>
-                  <div class="card__subtitle">
-                    since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
-                  </div>
-                  <div style="margin-left: auto">
-                    <PrimeButton
-                      data-test="resolveRequestButton"
-                      v-show="isRequestStatusAnswered()"
-                      @click="goToResolveDataRequestPage()"
-                    >
-                      <span class="d-letters pl-2"> Resolve Request </span>
-                    </PrimeButton>
-                  </div>
-                </span>
-                <StatusHistory :status-history="dummyStatusHistory" />
+                </div>
               </div>
               <div class="card" data-test="card_providedContactDetails">
                 <span style="display: flex; align-items: center">
