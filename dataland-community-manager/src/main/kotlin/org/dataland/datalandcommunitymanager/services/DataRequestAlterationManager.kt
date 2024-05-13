@@ -57,10 +57,14 @@ class DataRequestAlterationManager(
         }
         val modificationTime = Instant.now().toEpochMilli()
         if (requestStatus != null) {
+            logger.info("try to patch data request: 0") // todo remove
             // todo check modification time is the correct time
-            val requestStatusHistory = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
+            val requestStatusHistory = setOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
+
             dataRequestEntity.associateRequestStatus(requestStatusHistory)
+            logger.info("try to patch data request: 1") // todo remove
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
             dataRequestEntity.requestStatus = requestStatus
         }

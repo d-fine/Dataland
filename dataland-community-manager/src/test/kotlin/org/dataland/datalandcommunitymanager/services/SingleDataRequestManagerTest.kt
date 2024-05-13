@@ -123,6 +123,7 @@ class SingleDataRequestManagerTest {
                 requestStatus = RequestStatus.Open,
                 dataType = (it.arguments[1] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
+                dataRequestStatusHistory = emptySet(),
                 userId = "user-id",
             )
         }

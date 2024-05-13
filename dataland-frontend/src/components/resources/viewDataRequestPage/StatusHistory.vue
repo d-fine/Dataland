@@ -1,36 +1,35 @@
 <template>
   <div>
-    <PrimeButton @click="toggleViewStatusHistory()"> view status history </PrimeButton>
+    <p v-show="!isStatusHistoryVisible" @click="toggleViewStatusHistory()">view status history</p>
   </div>
   <div v-show="isStatusHistoryVisible">
     <table>
       <tr v-for="(statusChange, index) in statusHistoryToDisplay" :key="index" class="">
+        <td style="width: 130px; display: flex; align-items: center">
+          <div :class="badgeClass(statusChange?.requestStatus)" style="margin: 0 1rem; display: inline-flex">
+            {{ statusChange?.requestStatus }}
+          </div>
+        </td>
         <td>
           <div class="card__subtitle">
             {{ convertUnixTimeInMsToDateString(statusChange?.statusChangeDate) }}
           </div>
         </td>
-        <td>
-          <div :class="badgeClass(statusChange?.requestStatus)" style="display: inline-flex">
-            {{ statusChange?.requestStatus }}
-          </div>
-        </td>
       </tr>
     </table>
+  </div>
+  <div>
+    <p v-show="isStatusHistoryVisible" @click="toggleViewStatusHistory()">close status history</p>
   </div>
 </template>
 
 <script lang="ts">
-import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { badgeClass } from "@/utils/RequestUtils";
 
 export default defineComponent({
   name: "StatusHistory",
-  components: {
-    PrimeButton,
-  },
   props: {
     statusHistory: {
       type: Array,
@@ -58,3 +57,5 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss"></style>
