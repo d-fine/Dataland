@@ -24,4 +24,11 @@ class FrameworkToolboxCliTest {
             FrameworkToolboxCli().invoke(arrayOf("list", "file", "unsupported"))
         }
     }
+
+    @Test
+    fun `An error should be thrown when a build is requested for an unknown framework`() {
+        assertThrows<IllegalArgumentException> {
+            FrameworkToolboxCli().invoke(arrayOf("unknown-framework"))
+        }
+    }
 }
