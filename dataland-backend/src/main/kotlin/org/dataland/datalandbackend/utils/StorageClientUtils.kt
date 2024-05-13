@@ -18,11 +18,11 @@ class StorageClientUtils(
 
     /**
      * his methods retrieves an document by using the external storage client and returns the document as an inputstream
-     * @param documentId the documentId for the document to be retrieved
+     * @param eurodatId the documentId for the document to be retrieved
      * @param correlationId the correlationId of the request which caused the exception to be thrown
      */
-    fun getBlobFromExternalStorageClient(documentId: String, correlationId: String): InputStream {
-        return streamingStorageClient.getBlobFromExternalStorage(documentId, correlationId)
+    fun getBlobFromExternalStorageClient(eurodatId: String, correlationId: String): InputStream {
+        return streamingStorageClient.getBlobFromExternalStorage(eurodatId, correlationId)
     }
 
     /**

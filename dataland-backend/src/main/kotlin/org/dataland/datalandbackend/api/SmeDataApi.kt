@@ -81,7 +81,8 @@ interface SmeDataApi {
 
     /**
      * Retrieve a document by its ID
-     * @param documentId the ID to check
+     * @param hash the hash of the document
+     * @param dataId the dataId to which the document is connected
      */
     // TODO Reactivate this at the end
 
