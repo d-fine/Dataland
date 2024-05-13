@@ -131,11 +131,13 @@ jobs:
           java-version: 21
           cache: gradle
       - name: Build framework '${{ matrix.framework }}'
-        run: |
-          ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
-          mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
+        run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
+        env:
+          DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: "100"
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
       - name: Verify that there are no changed (git-tracked) files
         run: ./testing/verify_that_no_git_tracked_files_changed.sh
+      - run: mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
