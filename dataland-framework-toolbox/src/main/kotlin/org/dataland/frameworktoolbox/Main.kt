@@ -17,19 +17,19 @@ fun main(args: Array<String>) {
 
     require(args.isNotEmpty()) {
         "Please specify one argument: The name of the framework to convert, 'all' for converting all frameworks, " +
-                "or 'list' for listing all available frameworks"
+            "or 'list' for listing all available frameworks"
     }
     val command = args[0]
 
     when (command) {
         "all" -> {
-            require(args.size == 1) { "Command 'all' does not support more than one argument"}
+            require(args.size == 1) { "Command 'all' does not support more than one argument" }
             allPavedRoadFrameworks.forEach {
                 it.compileFramework(datalandProject)
             }
         }
         "list" -> {
-            require(args.size <= 2) { "Command 'list' does not support more than two arguments"}
+            require(args.size <= 2) { "Command 'list' does not support more than two arguments" }
             val om = jacksonObjectMapper()
             val allFrameworkIdentifiers = allPavedRoadFrameworks.map { it.identifier }
             println(om.writeValueAsString(allFrameworkIdentifiers))
@@ -38,7 +38,7 @@ fun main(args: Array<String>) {
             }
         }
         else -> {
-            require(args.size == 1) { "Command 'build' does not support more than one argument"}
+            require(args.size == 1) { "Command 'build' does not support more than one argument" }
             val foundFramework = allPavedRoadFrameworks.find { it.identifier == args[0] }
             requireNotNull(foundFramework) {
                 "Could not find framework with identifier ${args[0]}"

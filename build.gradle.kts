@@ -91,7 +91,7 @@ sonar {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "dataland-frontend/src/main.ts"
+                "dataland-frontend/src/main.ts",
         )
         property(
             "sonar.sources",

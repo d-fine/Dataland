@@ -33,7 +33,8 @@ class LksgDataController(
     LksgData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedLksgData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<LksgData>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<LksgData>> {
         return super.getCompanyAssociatedData(dataId)
     }
 
