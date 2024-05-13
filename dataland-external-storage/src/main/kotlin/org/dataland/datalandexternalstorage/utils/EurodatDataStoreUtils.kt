@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component
 
 @Component("EurodatDataStoreUtils")
 object EurodatDataStoreUtils {
-    private const val maxRetriesConnectingToEurodat = 8
-    private const val millisecondsBetweenRetriesConnectingToEurodat = 15000
+    private const val maxRetries = 8
+    private const val millisecondsBetweenRetries = 15000
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -20,13 +20,13 @@ object EurodatDataStoreUtils {
     @Suppress("TooGenericExceptionCaught")
     fun <T> retryWrapperMethod(inputMethod: String, block: () -> T): T {
         var retryCount = 0
-        while (retryCount <= maxRetriesConnectingToEurodat) {
+        while (retryCount <= maxRetries) {
             try {
                 logger.info("Trying to run the method $inputMethod. Try number ${retryCount + 1}.")
                 return block()
             } catch (e: Exception) {
                 logger.error("An error occurred while executing the method $inputMethod: ${e.message}. Trying again")
-                if (retryCount == maxRetriesConnectingToEurodat) {
+                if (retryCount == maxRetries) {
                     logger.error(
                         "An error occurred while executing the method $inputMethod: ${e.message}. " +
                             "Process terminated",
@@ -35,7 +35,7 @@ object EurodatDataStoreUtils {
                 }
             }
             retryCount++
-            Thread.sleep(millisecondsBetweenRetriesConnectingToEurodat.toLong())
+            Thread.sleep(millisecondsBetweenRetries.toLong())
         }
         return block()
     }
