@@ -40,7 +40,6 @@ class EurodatSafeDepositBoxInitializer(
         }
     }
 
-    @Suppress("TooGenericExceptionThrown")
     private fun isSafeDepositBoxAvailable() {
         if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
             logger.info("Safe deposit box exists.")
