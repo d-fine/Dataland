@@ -90,10 +90,10 @@ class DataRequestProcessingUtils(
         )
 
         dataRequestEntity.requestStatus = RequestStatus.Open
+        dataRequestRepository.save(dataRequestEntity)
         val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
         dataRequestEntity.associateRequestStatus(requestStatusObject)
         dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-        dataRequestRepository.save(dataRequestEntity)
         if (!contacts.isNullOrEmpty()) {
             val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
             dataRequestEntity.associateMessages(messageHistory)
