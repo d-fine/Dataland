@@ -1,14 +1,14 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.entities.DataIdToAssetIdMappingEntity
+import org.dataland.datalandbackend.entities.DataIdToHashMappingEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.repositories.DataIdToAssetIdMappingRepository
+import org.dataland.datalandbackend.repositories.DataIdToHashMappingRepository
 import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.datalandbackend.utils.StorageClientUtils
@@ -37,7 +37,7 @@ import java.util.*
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param metaDataManager service for managing metadata
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param dataIdToAssetIdMappingRepository the repository to map dataId to document hashes and document Ids
+ * @param dataIdToHashMappingRepository the repository to map dataId to document hashes and document Ids
  * @param storageClientUtils is a util class which contains the necessary storage clients to be used here
  * @param dataManagerUtils is a util class which contains methods for the data manager services
  */
@@ -46,7 +46,7 @@ class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val dataIdToAssetIdMappingRepository: DataIdToAssetIdMappingRepository,
+    @Autowired private val dataIdToHashMappingRepository: DataIdToHashMappingRepository,
     @Autowired private val storageClientUtils: StorageClientUtils,
     @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
@@ -204,20 +204,20 @@ class PrivateDataManager(
         logger.info(
             "Persisting mapping info for dataId $dataId and correlationId $correlationId",
         )
-        val dataIdToJsonMappingEntity = DataIdToAssetIdMappingEntity(
-            dataId = dataId, assetId = "JSON",
+        val dataIdToJsonMappingEntity = DataIdToHashMappingEntity(
+            dataId = dataId, hash = "JSON",
             eurodatId = "JSON",
         )
-        dataIdToAssetIdMappingRepository.save(dataIdToJsonMappingEntity)
+        dataIdToHashMappingRepository.save(dataIdToJsonMappingEntity)
         val documentHashes = documentHashesInMemoryStorage[dataId]
         if (!documentHashes.isNullOrEmpty()) {
             val dataIdToDocumentHashMappingEntities =
                 documentHashes.map { documentHash ->
-                    DataIdToAssetIdMappingEntity(dataId, documentHash.key, documentHash.value)
+                    DataIdToHashMappingEntity(dataId, documentHash.key, documentHash.value)
                 }
             dataIdToDocumentHashMappingEntities.forEach {
                     mappingEntity ->
-                dataIdToAssetIdMappingRepository.save(mappingEntity)
+                dataIdToHashMappingRepository.save(mappingEntity)
             }
         }
     }
@@ -304,7 +304,7 @@ class PrivateDataManager(
         // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
         val eurodatId: String
         try {
-            eurodatId = dataIdToAssetIdMappingRepository.findByDataIdAndAssetId(dataId, hash)[0].eurodatId
+            eurodatId = dataIdToHashMappingRepository.findByDataIdAndHash(dataId, hash)[0].eurodatId
         } catch (e: IndexOutOfBoundsException) {
             logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
             throw ResourceNotFoundApiException(

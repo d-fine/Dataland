@@ -7,9 +7,9 @@ import java.io.Serializable
  * class here is required.
  */
 @Embeddable
-data class DataIdToAssetIdCompositeKey(
+data class DataIdToHashCompositeKey(
     var dataId: String,
-    var assetId: String,
+    var hash: String,
     var eurodatId: String,
 ) : Serializable {
     companion object {
