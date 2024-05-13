@@ -27,12 +27,12 @@ object EurodatDataStoreUtils {
                 return block()
             } catch (e: Exception) {
                 logger.error(
-                    "An error occurred while executing the method $descriptionOfOperation: ${e.message}. " +
+                    "An error occurred while trying to $descriptionOfOperation: ${e.message}. " +
                         "Trying again",
                 )
                 if (retryCount == maxRetries) {
                     logger.error(
-                        "An error occurred while executing the method $descriptionOfOperation: ${e.message}. " +
+                        "An error occurred while trying to $descriptionOfOperation: ${e.message}. " +
                             "Process terminated",
                     )
                     throw e
