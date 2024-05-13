@@ -16,9 +16,6 @@ class DataRequestHistoryManager(
     @Autowired private val messageRepository: MessageRepository,
     @Autowired private val requestStatusRepository: RequestStatusRepository,
 ) {
-
-    // todo check if other methods could be refactored to this place,
-    // i.e. check usage of messageRepository: MessageRepository
     /**
      * Method to store the request status history
      * @param dataRequestStatusHistory list of request status entities
