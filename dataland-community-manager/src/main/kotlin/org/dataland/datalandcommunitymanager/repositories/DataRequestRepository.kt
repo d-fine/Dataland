@@ -99,6 +99,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.messageHistory " +
+            "LEFT JOIN FETCH d.dataRequestStatusHistory " +
             "WHERE d IN :dataRequests",
     )
     fun fetchMessages(

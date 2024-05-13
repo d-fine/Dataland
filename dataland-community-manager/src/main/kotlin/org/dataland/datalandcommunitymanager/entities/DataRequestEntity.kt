@@ -37,7 +37,7 @@ data class DataRequestEntity(
     var messageHistory: List<MessageEntity>,
 
     @OneToMany(mappedBy = "dataRequest")
-    var dataRequestStatusHistory: List<RequestStatusEntity>,
+    var dataRequestStatusHistory: Set<RequestStatusEntity>,
 
     var lastModifiedDate: Long,
 
@@ -58,7 +58,7 @@ data class DataRequestEntity(
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
         messageHistory = listOf(),
-        dataRequestStatusHistory = listOf(),
+        dataRequestStatusHistory = setOf(),
         lastModifiedDate = creationTimestamp,
         requestStatus = RequestStatus.Open,
     )
@@ -81,10 +81,10 @@ data class DataRequestEntity(
      * due to cross dependencies between entities
      * @param requestStatusHistory a list of ordered request status objects
      */
-    fun associateRequestStatus(requestStatusHistory: List<StoredDataRequestStatusObject>) {
+    fun associateRequestStatus(requestStatusHistory: Set<StoredDataRequestStatusObject>) {
         this.dataRequestStatusHistory = requestStatusHistory.map {
             RequestStatusEntity(it, this)
-        }
+        }.toSet()
     }
 
     /**

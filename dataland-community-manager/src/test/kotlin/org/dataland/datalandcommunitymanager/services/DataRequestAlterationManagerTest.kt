@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -20,6 +19,7 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.doNothing
@@ -40,7 +40,7 @@ class DataRequestAlterationManagerTest {
     private lateinit var dataRequestRepository: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var metaDataControllerApi: MetaDataControllerApi
-    private lateinit var messageRepository: MessageRepository
+    private lateinit var historyManager: DataRequestHistoryManager
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
@@ -90,10 +90,9 @@ class DataRequestAlterationManagerTest {
         doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
             metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
         )
-        messageRepository = mock(MessageRepository::class.java)
-        `when`(messageRepository.saveAllAndFlush(anyList())).thenReturn(
-            emptyList(),
-        )
+        historyManager = mock(DataRequestHistoryManager::class.java)
+        doNothing().`when`(historyManager).saveMessageHistory(anyList())
+        doNothing().`when`(historyManager).saveStatusHistory(anySet())
     }
 
     @BeforeEach
@@ -121,7 +120,7 @@ class DataRequestAlterationManagerTest {
             dataRequestResponseEmailMessageSender = dataRequestResponseEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
-            messageRepository = messageRepository,
+            dataRequestHistoryManager = historyManager,
         )
     }
 
