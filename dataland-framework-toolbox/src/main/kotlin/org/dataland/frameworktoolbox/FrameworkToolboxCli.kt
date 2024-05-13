@@ -5,7 +5,6 @@ import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
-import org.springframework.context.support.GenericApplicationContext
 import java.io.File
 import java.nio.file.Path
 
@@ -14,7 +13,7 @@ import java.nio.file.Path
  */
 class FrameworkToolboxCli {
 
-    private val context: GenericApplicationContext = AnnotationConfigApplicationContext(SpringConfig::class.java)
+    private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
     private val datalandProject = DatalandRepository(Path.of("./"))
 
