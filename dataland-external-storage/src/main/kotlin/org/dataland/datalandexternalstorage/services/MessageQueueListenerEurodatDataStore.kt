@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component
 import java.sql.SQLException
 
 /**
- * Simple implementation of a the message queue listeners for the euroDatdataManager
+ * Simple implementation of the message queue listeners for the euroDatdataManager
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * on eurodat
  * @param messageUtils contains utils connected to the messages on the message queue
@@ -38,8 +38,8 @@ class MessageQueueListenerEurodatDataStore(
 
 //
     /**
-     * Method that listens to the storage_queue and stores data into the database in case there is a message on the
-     * storage_queue
+     * Method that listens to the storage_queue and stores data into the EuroDaT database in case there is a message
+     * on the storage_queue
      * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
