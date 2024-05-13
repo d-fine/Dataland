@@ -13,10 +13,13 @@ import org.springframework.stereotype.Component
 
 /**
  * Simple implementation of the initialization of the eurodat minabo safedepositbox
- * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
+ * @param safeDepositDatabaseResourceClient the EuroDaT client to create the safe deposit box used to store private data
  * on eurodat
  */
-@ConditionalOnProperty(name = ["dataland.eurodatclient.initialize-safe-deposit-box"], havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(
+    name = ["dataland.eurodatclient.initialize-safe-deposit-box"], havingValue = "true",
+    matchIfMissing = false,
+)
 @Component
 class EurodatSafeDepositBoxInitializer(
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
@@ -42,7 +45,7 @@ class EurodatSafeDepositBoxInitializer(
         if (postSafeDepositBoxCreationRequest().response.contains("Database already exists")) {
             logger.info("Safe deposit box exists.")
         } else {
-            throw Exception("Service not there.")
+            throw IllegalArgumentException("Received unexpected response when trying to create safe deposit box.")
         }
     }
 
