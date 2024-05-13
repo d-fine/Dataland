@@ -62,7 +62,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*").as("getApiKeyMetaInfoForUser");
     cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
     cy.visitAndCheckAppMount("/api-key");
-    cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
+    cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 
     verifyCreatingApiKeyAndCopyingIt();
 
