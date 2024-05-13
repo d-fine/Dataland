@@ -8,6 +8,7 @@ import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWra
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 
 /**
@@ -15,14 +16,12 @@ import org.springframework.stereotype.Component
  * @param safeDepositDatabaseResourceClient the service to create the safe deposit box used to store private data
  * on eurodat
  */
+@ConditionalOnProperty(name = ["dataland.eurodatclient.initialize-safe-deposit-box"], havingValue = "true", matchIfMissing = false)
 @Component
 class EurodatSafeDepositBoxInitializer(
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
     @Value("\${dataland.eurodatclient.app-name}")
     private val eurodatAppName: String,
-    @Value("\${dataland.eurodatclient.initialize-safe-deposit-box}")
-    private val initializeSafeDepositBox: Boolean,
-
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -32,11 +31,9 @@ class EurodatSafeDepositBoxInitializer(
      */
     @PostConstruct
     fun createSafeDepositBox() {
-        if (initializeSafeDepositBox) {
-            logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-            retryWrapperMethod("create SafeDepositBox in EuroDaT") {
-                isSafeDepositBoxAvailable()
-            }
+        logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
+        retryWrapperMethod("create SafeDepositBox in EuroDaT") {
+            isSafeDepositBoxAvailable()
         }
     }
 
