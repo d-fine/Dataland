@@ -6,14 +6,14 @@ import org.junit.jupiter.api.assertThrows
 class FrameworkToolboxCliTest {
 
     @Test
-    fun `An error message should be thrown if called without arguments`() {
+    fun `an error message should be thrown if called without arguments`() {
         assertThrows<IllegalArgumentException> {
             FrameworkToolboxCli().invoke(emptyArray())
         }
     }
 
     @Test
-    fun `An error message should be thrown if more arguments are specified than supported`() {
+    fun `an error message should be thrown if more arguments are specified than supported`() {
         assertThrows<IllegalArgumentException> {
             FrameworkToolboxCli().invoke(arrayOf("all", "unsupported"))
         }
@@ -26,7 +26,7 @@ class FrameworkToolboxCliTest {
     }
 
     @Test
-    fun `An error should be thrown when a build is requested for an unknown framework`() {
+    fun `an error should be thrown when a build is requested for an unknown framework`() {
         assertThrows<IllegalArgumentException> {
             FrameworkToolboxCli().invoke(arrayOf("unknown-framework"))
         }
