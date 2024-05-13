@@ -91,6 +91,7 @@ class DataRequestProcessingUtils(
 
         dataRequestEntity.requestStatus = RequestStatus.Open
         dataRequestRepository.save(dataRequestEntity)
+        // todo check if the next lines create an error
         val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
         dataRequestEntity.associateRequestStatus(requestStatusObject)
         dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
