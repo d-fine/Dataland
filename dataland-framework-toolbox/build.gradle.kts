@@ -56,6 +56,7 @@ jacoco {
     toolVersion = jacocoVersion
     this.applyTo(tasks.named<JavaExec>("integrationTest").get())
     this.applyTo(tasks.named<JavaExec>("runCoverage").get())
+    this.applyTo(tasks.named<JavaExec>("runCreateFrameworkList").get())
 }
 
 dependencies {

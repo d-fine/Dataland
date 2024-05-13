@@ -15,5 +15,5 @@ class SmeFramework : PavedRoadFramework(
     explanation = "Small and medium-sized enterprises questionnaire",
     File("./dataland-framework-toolbox/inputs/sme/sme.xlsx"),
     order = 6,
-    enabledFeatures = setOf(FrameworkGenerationFeatures.FakeFixtures, FrameworkGenerationFeatures.BackendDataModel)
+    enabledFeatures = setOf(FrameworkGenerationFeatures.FakeFixtures, FrameworkGenerationFeatures.BackendDataModel),
 )
