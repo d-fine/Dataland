@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
+import java.util.function.Consumer
 
 /**
  * An In-Memory representation of a upload-configuration section
@@ -25,6 +26,13 @@ data class UploadCategoryBuilder(
 
     override val imports: Set<TypeScriptImport>
         get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
+
+    override fun traverse(lambda: Consumer<UploadConfigElement>) {
+        lambda.accept(this)
+        children.forEach {
+            it.traverse(lambda)
+        }
+    }
 
     override fun assertComplianceWithLegacyUploadPage() {
         require(children.isNotEmpty()) {
