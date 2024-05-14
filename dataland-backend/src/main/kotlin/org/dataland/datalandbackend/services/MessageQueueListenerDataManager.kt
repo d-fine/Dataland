@@ -119,8 +119,8 @@ class MessageQueueListenerDataManager(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info(
-            "Internal Storage sent a message - job done " +
-                "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
+            "Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: " +
+                "$correlationId.",
         )
         messageQueueUtils.rejectMessageOnException {
             dataManager.removeDataSetFromInMemoryStore(dataId)
