@@ -75,9 +75,15 @@ class DataRequestAlterationManagerTest {
     )
     private fun mockRepos() {
         dataRequestRepository = mock(DataRequestRepository::class.java)
+
         `when`<Any>(
             dataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
+        dummyDataRequestEntities.forEach {
+            `when`<Any>(
+                dataRequestRepository.findById(it.dataRequestId),
+            ).thenReturn(Optional.of(it))
+        }
         `when`(
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
