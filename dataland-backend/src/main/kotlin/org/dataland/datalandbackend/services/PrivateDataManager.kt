@@ -288,7 +288,7 @@ class PrivateDataManager(
             )
     }
     private fun getPrivateData(dataId: String, correlationId: String): String {
-        return storageClientUtils.getDataByIdFromStorageClient(dataId, correlationId)
+        return storageClientUtils.getJsonFromExternalStorage(dataId, correlationId)
     }
 
     /**
@@ -328,7 +328,7 @@ class PrivateDataManager(
                 hash, DocumentType.Pdf,
                 InputStreamResource(
                     storageClientUtils
-                        .getBlobFromExternalStorageClient(eurodatId, correlationId),
+                        .getBlobFromExternalStorage(eurodatId, correlationId),
                 ),
             )
         }

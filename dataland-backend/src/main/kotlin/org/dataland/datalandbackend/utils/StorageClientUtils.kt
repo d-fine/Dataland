@@ -21,7 +21,7 @@ class StorageClientUtils(
      * @param eurodatId the documentId for the document to be retrieved
      * @param correlationId the correlationId of the request which caused the exception to be thrown
      */
-    fun getBlobFromExternalStorageClient(eurodatId: String, correlationId: String): InputStream {
+    fun getBlobFromExternalStorage(eurodatId: String, correlationId: String): InputStream {
         return streamingStorageClient.getBlobFromExternalStorage(eurodatId, correlationId)
     }
 
@@ -30,7 +30,7 @@ class StorageClientUtils(
      * @param dataId the dataId of the dataset to be retrieved
      * @param correlationId the correlationId of the corresponding process
      */
-    fun getDataByIdFromStorageClient(
+    fun getJsonFromExternalStorage(
         dataId: String,
         correlationId: String,
     ): String {
