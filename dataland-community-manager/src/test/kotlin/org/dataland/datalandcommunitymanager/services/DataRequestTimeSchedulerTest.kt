@@ -41,7 +41,7 @@ class DataRequestTimeSchedulerTest {
             reportingPeriod = "dummyReportingPeriod",
             datalandCompanyId = "dummyCompanyId",
             messageHistory = emptyList(),
-            dataRequestStatusHistory = emptySet(),
+            dataRequestStatusHistory = emptyList(),
             lastModifiedDate = lastModifiedDate,
             requestStatus = status,
         )
