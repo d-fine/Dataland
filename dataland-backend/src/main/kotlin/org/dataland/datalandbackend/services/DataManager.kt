@@ -209,10 +209,10 @@ class DataManager(
     }
 
     /**
-     * This method removes an entry from the metaDataInformation in-memory storage
-     * @param dataId the dataId of the meta data to be removed from the in-memory store
+     * This method removes a dataset from the in memory storage
+     * @param dataId the dataId of the dataset to be removed from the in-memory store
      */
-    fun removeEntryFromMetaDataInMemoryStore(dataId: String) {
+    fun removeDataSetFromInMemoryStore(dataId: String) {
         publicDataInMemoryStorage.remove(dataId)
     }
 }

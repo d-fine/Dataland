@@ -123,7 +123,7 @@ class MessageQueueListenerDataManager(
             "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
         )
         messageQueueUtils.rejectMessageOnException {
-            dataManager.removeEntryFromMetaDataInMemoryStore(dataId)
+            dataManager.removeDataSetFromInMemoryStore(dataId)
         }
     }
 }
