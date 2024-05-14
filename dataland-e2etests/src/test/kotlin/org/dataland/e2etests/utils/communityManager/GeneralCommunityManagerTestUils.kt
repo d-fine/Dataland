@@ -59,13 +59,13 @@ fun generateRandomIsin(): String {
 }
 
 fun generateRandomPermId(numberOfDigits: Int? = null): String {
-    fun generateRandomIntegerDifferentFrom20(): Int {
-        val randomInt = (1..100).random()
-        return if (randomInt != 20) randomInt else generateRandomIntegerDifferentFrom20()
+    fun generateRandomIntegerFrom10To100ButDifferentFrom20(): Int {
+        val randomInt = (10..100).random()
+        return if (randomInt != 20) randomInt else generateRandomIntegerFrom10To100ButDifferentFrom20()
     }
 
     val digits = ('0'..'9')
-    val numberOfCharacters = numberOfDigits ?: generateRandomIntegerDifferentFrom20()
+    val numberOfCharacters = numberOfDigits ?: generateRandomIntegerFrom10To100ButDifferentFrom20()
     return (1..numberOfCharacters).map { digits.random() }.joinToString("")
 }
 
