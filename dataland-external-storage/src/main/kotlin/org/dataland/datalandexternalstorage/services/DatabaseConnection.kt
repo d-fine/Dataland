@@ -3,7 +3,6 @@ import org.slf4j.LoggerFactory
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
-import java.sql.SQLException
 import java.util.Properties
 import java.util.UUID
 
@@ -80,10 +79,10 @@ object DatabaseConnection {
         val connectionProps = Properties()
         connectionProps["user"] = username
         connectionProps["password"] = password
-           return DriverManager.getConnection(
-                databaseUrl,
-                connectionProps,
-            )
+        return DriverManager.getConnection(
+            databaseUrl,
+            connectionProps,
+        )
     }
 
     /**

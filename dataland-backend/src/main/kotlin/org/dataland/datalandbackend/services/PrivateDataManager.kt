@@ -26,6 +26,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
@@ -297,15 +298,14 @@ class PrivateDataManager(
      * @param hash the hash of the requested document
      * @param correlationId the correlationId of the request
      */
-    @Suppress("TooGenericExceptionCaught")
     fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
         // TODO Wenn man nach einem document sucht, was es nicht gibt, entsteht hier aktuell ein internal server error
         // TODO Grund: Die nächste Zeile kriegt eine out of bounds exception.  Das müssen wir iwie anders handlen,
         // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
         val eurodatId: String
         try {
-            eurodatId = dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, hash)[0].eurodatId
-        } catch (e: IndexOutOfBoundsException) {
+            eurodatId = dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, "hash").eurodatId
+        } catch (e: EmptyResultDataAccessException) {
             logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
             throw ResourceNotFoundApiException(
                 "No matching eurodatId found",
