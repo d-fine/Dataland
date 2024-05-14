@@ -3,7 +3,7 @@ package org.dataland.datalandexternalstorage.utils
 import org.slf4j.LoggerFactory
 
 /**
- * Enables a centralized generation of log messages for all Dataland backend operations.
+ * The object holds utils used in the EurodatDataStore class
  */
 
 object EurodatDataStoreUtils {
@@ -13,7 +13,7 @@ object EurodatDataStoreUtils {
 
     /**
      * This method will rerun a given method for a specified number of times if an exception is thrown while running it
-     * @param descriptionOfOperation to specify in the logs which method should be rerun
+     * @param descriptionOfOperation to specify in the logs what was retried
      * @param block the method that should be retried
      * @returns the value T of the input method
      */
