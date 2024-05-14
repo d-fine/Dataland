@@ -942,7 +942,6 @@
         "required": [
           "creationTimestamp",
           "dataRequestId",
-          "dataRequestStatusHistory",
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
@@ -1040,7 +1039,6 @@
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
-          "messageHistory",
           "reportingPeriod",
           "requestStatus",
           "userId"
@@ -1068,12 +1066,6 @@
           },
           "companyName": {
             "type": "string"
-          },
-          "messageHistory": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
-            }
           },
           "lastModifiedDate": {
             "type": "integer",

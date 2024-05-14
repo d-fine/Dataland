@@ -14163,24 +14163,24 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
           "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           }
         }
@@ -14204,10 +14204,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

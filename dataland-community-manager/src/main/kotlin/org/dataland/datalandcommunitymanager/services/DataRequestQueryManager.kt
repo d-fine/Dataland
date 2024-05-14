@@ -13,7 +13,6 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,7 +27,6 @@ class DataRequestQueryManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     /** This method retrieves all the data requests for the current user from the database and logs a message.
      * @returns all data requests for the current user
@@ -50,8 +48,7 @@ class DataRequestQueryManager(
      */
     fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
-        logger.info("TEST")
-        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyInformation.companyName)
+        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -129,7 +126,7 @@ class DataRequestQueryManager(
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
-
+        // todo maybe add fetch status history (dont know if its needed)
         return dataRequestRepository.fetchMessages(result).map { it.toStoredDataRequest() }
     }
 }
