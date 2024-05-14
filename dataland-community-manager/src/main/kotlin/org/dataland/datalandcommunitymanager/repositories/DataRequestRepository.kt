@@ -99,15 +99,12 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.messageHistory " +
-            "LEFT JOIN FETCH d.dataRequestStatusHistory " +
             "WHERE d IN :dataRequests",
     )
     fun fetchMessages(
         dataRequests: List<DataRequestEntity>,
     ): List<DataRequestEntity>
 
-    // todo propaply somtehing similar for requestStatusHistory
-    // todo check if below function still needed
     /** This method updates the Request Status to Answered for an open request with a specific framework,
      * reporting period as well as company identifier
      * @param datalandCompanyId to check for

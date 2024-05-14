@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.entities
 
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -24,7 +23,6 @@ data class RequestStatusEntity(
     @Enumerated(EnumType.STRING)
     val requestStatus: RequestStatus,
 
-    @Column(name = "creationTime")
     val creationTimestamp: Long,
 
     @ManyToOne(optional = false)
