@@ -149,7 +149,6 @@ class DataRequestAlterationManagerTest {
             requestStatus = RequestStatus.Answered,
             null,
         )
-        fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
         verify(dataRequestResponseEmailMessageSender, times(1))
             .sendDataRequestResponseEmail(
                 any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
@@ -162,6 +161,14 @@ class DataRequestAlterationManagerTest {
         verify(dataRequestResponseEmailMessageSender, times(2))
             .sendDataRequestResponseEmail(
                 any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+            )
+        verify(historyManager, times(2))
+            .saveStatusHistory(
+                anyList(),
+            )
+        verify(historyManager, times(0))
+            .saveMessageHistory(
+                anyList(),
             )
     }
 
@@ -177,6 +184,14 @@ class DataRequestAlterationManagerTest {
                 null,
             )
         }
+        verify(historyManager, times(3))
+            .saveStatusHistory(
+                anyList(),
+            )
+        verify(historyManager, times(0))
+            .saveMessageHistory(
+                anyList(),
+            )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
     }
 
@@ -187,6 +202,14 @@ class DataRequestAlterationManagerTest {
             verify(dataRequestResponseEmailMessageSender)
                 .sendDataRequestResponseEmail(it, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId)
         }
+        verify(historyManager, times(dummyDataRequestEntities.size))
+            .saveStatusHistory(
+                anyList(),
+            )
+        verify(historyManager, times(0))
+            .saveMessageHistory(
+                anyList(),
+            )
     }
 
     @Test
@@ -202,6 +225,16 @@ class DataRequestAlterationManagerTest {
             .sendSingleDataRequestExternalMessage(
                 any(SingleDataRequestEmailMessageSender.MessageInformation::class.java),
                 anyString(), anyString(), anyString(),
+            )
+
+        verify(historyManager, times(1))
+            .saveMessageHistory(
+                anyList(),
+            )
+
+        verify(historyManager, times(0))
+            .saveStatusHistory(
+                anyList(),
             )
     }
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
