@@ -309,10 +309,15 @@ class PrivateDataManager(
             logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
             throw ResourceNotFoundApiException(
                 "Document not found",
-                "No document for dataId $dataId with the hash: $dataId could be found in the data store.",
+                "Dataland cannot match the dataId $dataId and hash $hash to a eurodatId to retrieve the document " +
+                    "from EuroDaT",
                 e,
             )
         }
+        logger.info(
+            "Using dataId $dataId and hash $hash to determine necessary eurodatId of the document. " +
+                "CorrelationId $correlationId",
+        )
         val inMemoryStoredDocument = documentInMemoryStorage[hash]
         return if (inMemoryStoredDocument != null) {
             logger.info("Received document for eurodatId $eurodatId from temporary storage")
