@@ -64,11 +64,11 @@ class DataRequestAlterationManager(
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
             dataRequestEntity.requestStatus = requestStatus
             dataRequestRepository.save(dataRequestEntity)
-        }
-        if (contacts != null) {
             dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
                 throw DataRequestNotFoundApiException(dataRequestId)
             }
+        }
+        if (contacts != null) {
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
             val messageHistory =
                 listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
