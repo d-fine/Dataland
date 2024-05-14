@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable
 interface ExternalStorageAPI {
     /**
      * A method to retrieve blobs from the external storage using the blobs ID
-     * @param blobId the hash of the document stored in the external storage which should be retrieved
+     * @param blobId the eurodatId of the document stored in the external storage which should be retrieved
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
      */

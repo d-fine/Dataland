@@ -1,13 +1,11 @@
 package org.dataland.datalandexternalstorage.utils
 
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
 
 /**
  * Enables a centralized generation of log messages for all Dataland backend operations.
  */
 
-@Component("EurodatDataStoreUtils")
 object EurodatDataStoreUtils {
     private const val maxRetries = 8
     private const val millisecondsBetweenRetries = 15000
