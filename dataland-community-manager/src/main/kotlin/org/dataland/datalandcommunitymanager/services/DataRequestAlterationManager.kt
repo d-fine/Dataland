@@ -52,11 +52,10 @@ class DataRequestAlterationManager(
         message: String? = null,
         correlationId: String? = null,
     ): StoredDataRequest {
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
         val modificationTime = Instant.now().toEpochMilli()
-
         dataRequestEntity.lastModifiedDate = modificationTime
         if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
@@ -64,16 +63,20 @@ class DataRequestAlterationManager(
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
             dataRequestEntity.requestStatus = requestStatus
+            dataRequestRepository.save(dataRequestEntity)
         }
         if (contacts != null) {
+            dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+                throw DataRequestNotFoundApiException(dataRequestId)
+            }
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
             val messageHistory =
                 listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)
             dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
+            dataRequestRepository.save(dataRequestEntity)
         }
-        dataRequestRepository.save(dataRequestEntity)
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(
                 dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
