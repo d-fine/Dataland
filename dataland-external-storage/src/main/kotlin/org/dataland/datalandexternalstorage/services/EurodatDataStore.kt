@@ -62,9 +62,9 @@ class EurodatDataStore(
         logger.info("Data stored in eurodat storage.")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
-            val documentId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
+            val eurodatId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
             retryWrapperMethod("write blob into EuroDaT database") {
-                storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, documentId, eurodatCredentials)
+                storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, eurodatId, eurodatCredentials)
             }
         }
         logger.info("Documents stored in eurodat storage.")
@@ -95,7 +95,7 @@ class EurodatDataStore(
      * @param dataId the DataId connected to the document which should be stored
      * @param correlationId the correlationId of the storage request
      * @param hash the hash of the document to be stored
-     * @param documentId the documentId in the UUID format of the document to be stored
+     * @param eurodatId the eurodatId in the UUID format of the document to be stored
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
     @Transactional(propagation = Propagation.NEVER)
@@ -103,21 +103,21 @@ class EurodatDataStore(
         dataId: String,
         correlationId: String,
         hash: String,
-        documentId: String,
+        eurodatId: String,
         eurodatCredentials: Credentials,
     ) {
         logger.info(
-            "Storing document with hash $hash and documentId $documentId in EuroDaT for dataId $dataId and" +
+            "Storing document with hash $hash and eurodatId $eurodatId in EuroDaT for dataId $dataId and" +
                 " correlationId $correlationId",
         )
         val resource = temporarilyCachedDocumentClient.getReceivedPrivateDocument(hash)
         val resultByteArray = resource.readBytes()
         val insertStatement = "INSERT INTO safedeposit.pdf (uuid_pdf, blob_pdf) VALUES(?, ?)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        val sqlReturn = insertByteArrayIntoSqlDatabase(conn, insertStatement, documentId, resultByteArray)
+        val sqlReturn = insertByteArrayIntoSqlDatabase(conn, insertStatement, eurodatId, resultByteArray)
         if (!sqlReturn) {
             throw SQLException(
-                "An error occured while storing document hash $hash, documentId $documentId and " +
+                "An error occured while storing document hash $hash, eurodatId $eurodatId and " +
                     "correlationId $correlationId",
             )
         }
@@ -150,16 +150,16 @@ class EurodatDataStore(
     }
 
     /**
-     * Select a blob object from the eurodat storage by its documentId
+     * Select a blob object from the eurodat storage by its eurodatId
      */
-    fun selectPrivateDocument(documentId: String, correlationId: String): ByteArray {
-        logger.info("Select document for documentId $documentId from eurodat storage. CorrelationId $correlationId")
+    fun selectPrivateDocument(eurodatId: String, correlationId: String): ByteArray {
+        logger.info("Select document for eurodatId $eurodatId from eurodat storage. CorrelationId $correlationId")
         val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
-        val sqlStatement = "SELECT * FROM safedeposit.pdf WHERE uuid_pdf = '$documentId'"
-        return selectDocumentFromSqlDatabase(conn, sqlStatement, documentId)
+        val sqlStatement = "SELECT * FROM safedeposit.pdf WHERE uuid_pdf = '$eurodatId'"
+        return selectDocumentFromSqlDatabase(conn, sqlStatement, eurodatId)
     }
 }
