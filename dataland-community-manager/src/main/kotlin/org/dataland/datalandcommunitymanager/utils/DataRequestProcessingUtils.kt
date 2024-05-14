@@ -86,17 +86,17 @@ class DataRequestProcessingUtils(
             dataType.value,
             reportingPeriod,
             datalandCompanyId,
-            Instant.now().toEpochMilli(),
+            creationTime,
         )
 
         dataRequestEntity.requestStatus = RequestStatus.Open
         dataRequestRepository.save(dataRequestEntity)
-        // todo check why the next lines create an error (somewhere long / int confusion)
+        // todo check why the next lines create an error
         val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
         dataRequestEntity.associateRequestStatus(requestStatusObject)
         dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
         if (!contacts.isNullOrEmpty()) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
             dataRequestEntity.associateMessages(messageHistory)
             dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
         }

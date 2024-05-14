@@ -1,5 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -38,6 +40,9 @@ class DataRequestAlterationManager(
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
+    @PersistenceContext
+    private lateinit var entityManager: EntityManager
+
     /**
      * Method to patch the status of a data request.
      * @param dataRequestId the id of the data request to patch
@@ -52,30 +57,29 @@ class DataRequestAlterationManager(
         message: String? = null,
         correlationId: String? = null,
     ): StoredDataRequest {
-        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
+        val oldRequestStatus = dataRequestEntity.requestStatus
         val modificationTime = Instant.now().toEpochMilli()
         dataRequestEntity.lastModifiedDate = modificationTime
-        if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
+        dataRequestEntity.requestStatus = requestStatus ?: oldRequestStatus
+        dataRequestRepository.save(dataRequestEntity)
+        // todo check if entityManager needed
+        entityManager.detach(dataRequestEntity)
+        if (requestStatus != null && requestStatus != oldRequestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
-            dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
-            dataRequestEntity.requestStatus = requestStatus
-            dataRequestRepository.save(dataRequestEntity)
-            dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
-                throw DataRequestNotFoundApiException(dataRequestId)
-            }
+            dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
         }
+
         if (contacts != null) {
-            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
-            val messageHistory =
-                listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)
             dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
-            dataRequestRepository.save(dataRequestEntity)
+            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestId)
         }
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(

@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.entities
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -24,8 +25,8 @@ data class RequestStatusEntity(
     val requestStatus: RequestStatus,
 
     val creationTimestamp: Long,
-
-    @ManyToOne(optional = false)
+// todo if FetchType.lazs is needed
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "data_request_id")
     var dataRequestStatus: DataRequestEntity,
 ) {
