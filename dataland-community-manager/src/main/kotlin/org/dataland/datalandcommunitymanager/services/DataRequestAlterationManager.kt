@@ -57,26 +57,30 @@ class DataRequestAlterationManager(
         }
         val modificationTime = Instant.now().toEpochMilli()
         dataRequestEntity.lastModifiedDate = modificationTime
+
+        var hasBeenDataRequestModified: Boolean = false
+
         if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
             dataRequestEntity.requestStatus = requestStatus
-            dataRequestRepository.save(dataRequestEntity)
-            dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
-                throw DataRequestNotFoundApiException(dataRequestId)
-            }
+            hasBeenDataRequestModified = true
         }
         if (contacts != null) {
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
             val messageHistory =
                 listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)
+            hasBeenDataRequestModified = true
             dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
+        }
+        if (hasBeenDataRequestModified) {
             dataRequestRepository.save(dataRequestEntity)
         }
+
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
             sendEmailBecauseOfStatusChanged(
                 dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
