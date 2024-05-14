@@ -8,7 +8,6 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.DataRequestHistoryManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -86,17 +85,17 @@ class DataRequestProcessingUtils(
             dataType.value,
             reportingPeriod,
             datalandCompanyId,
-            creationTime,
+            Instant.now().toEpochMilli(),
         )
 
         dataRequestEntity.requestStatus = RequestStatus.Open
         dataRequestRepository.save(dataRequestEntity)
-        // todo check if the next lines create an error
-        val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
-        dataRequestEntity.associateRequestStatus(requestStatusObject)
-        dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+        // todo check why the next lines create an error (somewhere long / int confusion)
+        // val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
+        // dataRequestEntity.associateRequestStatus(requestStatusObject)
+        // dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
         if (!contacts.isNullOrEmpty()) {
-            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
             dataRequestEntity.associateMessages(messageHistory)
             dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
         }
