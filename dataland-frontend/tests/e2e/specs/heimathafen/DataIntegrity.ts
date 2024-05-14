@@ -52,17 +52,16 @@ describeIf(
                 heimathafenFixtureForTest.t,
                 (config) => getBaseFrameworkDefinition(DataTypeEnum.Heimathafen)!.getFrameworkApiClient(config),
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.Heimathafen}/${dataMetaInformation.dataId}`).as(
-                  "fetchDataForPrefill",
-                );
-                cy.visitAndCheckAppMount(
-                  "/companies/" +
-                    storedCompany.companyId +
-                    "/frameworks/" +
-                    DataTypeEnum.Heimathafen +
-                    "/upload?templateDataId=" +
-                    dataMetaInformation.dataId,
-                );
+                cy.intercept(`**/api/data/${DataTypeEnum.Heimathafen}/${dataMetaInformation.dataId}**`)
+                  .as("fetchDataForPrefill")
+                  .visitAndCheckAppMount(
+                    "/companies/" +
+                      storedCompany.companyId +
+                      "/frameworks/" +
+                      DataTypeEnum.Heimathafen +
+                      "/upload?templateDataId=" +
+                      dataMetaInformation.dataId,
+                  );
                 cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
                 cy.get("h1").should("contain", testCompanyNameHeimathafen);
                 cy.intercept({
