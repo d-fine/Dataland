@@ -51,7 +51,7 @@ class DataManager(
      * @param correlationId the correlationId of the request
      * @return ID of the newly stored data in the data store
      */
-    fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
+    fun processDataStorageRequest(
         storableDataSet: StorableDataSet,
         bypassQa: Boolean,
         correlationId: String,
