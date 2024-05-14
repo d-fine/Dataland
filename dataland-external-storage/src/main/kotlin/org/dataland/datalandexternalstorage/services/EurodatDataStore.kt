@@ -72,7 +72,7 @@ class EurodatDataStore(
 
     /**
      * Stores a Data Item in EuroDaT while ensuring that there is no active transaction.
-     * This will guarantee that the write is commited after exit of this method.
+     * This will guarantee that the write is committed after exit of this method.
      * @param correlationId the correlationId of the storage request
      * @param dataId the dataId of the data to be stored
      * @param data the data to be stored
