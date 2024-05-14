@@ -10,8 +10,8 @@ import java.io.InputStream
  * The class holds the various storage clients for the data manager services
  */
 
-@Component("StorageClientUtils")
-class StorageClientUtils(
+@Component("ExternalStorageClientUtils")
+class ExternalStorageClientUtils(
     @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
     @Autowired private val storageClient: ExternalStorageControllerApi,
 ) {

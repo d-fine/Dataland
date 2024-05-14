@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdToHashMappingRepository
 import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
-import org.dataland.datalandbackend.utils.StorageClientUtils
+import org.dataland.datalandbackend.utils.ExternalStorageClientUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -38,7 +38,7 @@ import java.util.*
  * @param metaDataManager service for managing metadata
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataIdToHashMappingRepository the repository to map dataId to document hashes and document Ids
- * @param storageClientUtils is a util class which contains the necessary storage clients to be used here
+ * @param externalStorageClientUtils is a util class which contains the necessary storage clients to be used here
  * @param dataManagerUtils is a util class which contains methods for the data manager services
  */
 @Component("PrivateDataManager")
@@ -47,7 +47,7 @@ class PrivateDataManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val dataIdToHashMappingRepository: DataIdToHashMappingRepository,
-    @Autowired private val storageClientUtils: StorageClientUtils,
+    @Autowired private val externalStorageClientUtils: ExternalStorageClientUtils,
     @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -288,7 +288,7 @@ class PrivateDataManager(
             )
     }
     private fun getPrivateData(dataId: String, correlationId: String): String {
-        return storageClientUtils.getJsonFromExternalStorage(dataId, correlationId)
+        return externalStorageClientUtils.getJsonFromExternalStorage(dataId, correlationId)
     }
 
     /**
@@ -327,7 +327,7 @@ class PrivateDataManager(
             DocumentStream(
                 hash, DocumentType.Pdf,
                 InputStreamResource(
-                    storageClientUtils
+                    externalStorageClientUtils
                         .getBlobFromExternalStorage(eurodatId, correlationId),
                 ),
             )
