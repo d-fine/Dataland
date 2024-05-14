@@ -3,6 +3,7 @@ import org.slf4j.LoggerFactory
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
+import java.sql.SQLException
 import java.util.Properties
 import java.util.UUID
 
@@ -19,18 +20,14 @@ object DatabaseConnection {
      * @param dataId the dataId of the data to be inserted
      * @param data the data to be inserted
      */
-    fun insertDataIntoSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String, data: String): Boolean {
-        val preparedStatement: PreparedStatement?
-        var successFlag = false
+    fun insertDataIntoSqlDatabase(conn: Connection, sqlStatement: String, dataId: String, data: String): Boolean {
         val loggingMessage = "Data for $dataId was inserted successfully."
-        if (conn != null) {
-            preparedStatement = conn.prepareStatement(sqlStatement)
-            preparedStatement.setObject(1, UUID.fromString(dataId))
-            preparedStatement.setString(2, data)
+        val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)
+        preparedStatement.setObject(1, UUID.fromString(dataId))
+        preparedStatement.setString(2, data)
 
-            successFlag = executeSqlStatement(preparedStatement, loggingMessage)
-            conn.close()
-        }
+        val successFlag = executeSqlStatement(preparedStatement, loggingMessage)
+        conn.close()
         return successFlag
     }
 
@@ -43,22 +40,18 @@ object DatabaseConnection {
      * @param document the document to be inserted
      */
     fun insertByteArrayIntoSqlDatabase(
-        conn: Connection?,
+        conn: Connection,
         sqlStatement: String,
         documentId: String,
         document: ByteArray,
     ): Boolean {
-        val preparedStatement: PreparedStatement?
-        var successFlag = false
         val loggingMessage = "A Document with the $documentId was inserted successfully."
-        if (conn != null) {
-            preparedStatement = conn.prepareStatement(sqlStatement)
-            preparedStatement.setObject(1, UUID.fromString(documentId))
-            preparedStatement.setBytes(2, document)
+        val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)
+        preparedStatement.setObject(1, UUID.fromString(documentId))
+        preparedStatement.setBytes(2, document)
 
-            successFlag = executeSqlStatement(preparedStatement, loggingMessage)
-            conn.close()
-        }
+        val successFlag = executeSqlStatement(preparedStatement, loggingMessage)
+        conn.close()
         return successFlag
     }
     private fun executeSqlStatement(
@@ -71,7 +64,7 @@ object DatabaseConnection {
             logger.info(loggingMessage)
             successFlag = true
         } else {
-            logger.info("Unexpexted number of changed rows. Expected was 1, actual was $rowsInserted .")
+            logger.info("Unexpected number of changed rows. Expected was 1, actual was $rowsInserted .")
         }
         preparedStatement.close()
         return successFlag
@@ -83,14 +76,14 @@ object DatabaseConnection {
      * @param password the password to log into the database
      * @param databaseUrl the url of the database
      */
-    fun getConnection(username: String, password: String, databaseUrl: String): Connection? {
+    fun getConnection(username: String, password: String, databaseUrl: String): Connection {
         val connectionProps = Properties()
         connectionProps["user"] = username
         connectionProps["password"] = password
-        return DriverManager.getConnection(
-            databaseUrl,
-            connectionProps,
-        )
+           return DriverManager.getConnection(
+                databaseUrl,
+                connectionProps,
+            )
     }
 
     /**
@@ -99,18 +92,15 @@ object DatabaseConnection {
      * @param sqlStatement the sql statement which should be executed
      * @param dataId the dataId of the dataset to be retrieved
      */
-    fun selectDataFromSqlDatabase(conn: Connection?, sqlStatement: String, dataId: String): String {
-        val preparedStatement: PreparedStatement?
+    fun selectDataFromSqlDatabase(conn: Connection, sqlStatement: String, dataId: String): String {
         var data = String()
-        if (conn != null) {
-            logger.info("Retrieving data from eurodat storage for dataId: $dataId")
-            preparedStatement = conn.prepareStatement(sqlStatement)
-            val sqlReturnValue = preparedStatement.executeQuery()
-            while (sqlReturnValue.next()) {
-                data = sqlReturnValue.getString("blob_json")
-            }
-            conn.close()
+        logger.info("Retrieving data from eurodat storage for dataId: $dataId")
+        val preparedStatement = conn.prepareStatement(sqlStatement)
+        val sqlReturnValue = preparedStatement.executeQuery()
+        while (sqlReturnValue.next()) {
+            data = sqlReturnValue.getString("blob_json")
         }
+        conn.close()
         return ObjectMapper().writeValueAsString(data)
     }
 
@@ -120,18 +110,15 @@ object DatabaseConnection {
      * @param sqlStatement the sql statement which should be executed
      * @param documentId the documentId of the document to be retrieved
      */
-    fun selectDocumentFromSqlDatabase(conn: Connection?, sqlStatement: String, documentId: String): ByteArray {
-        val preparedStatement: PreparedStatement?
+    fun selectDocumentFromSqlDatabase(conn: Connection, sqlStatement: String, documentId: String): ByteArray {
         var blob = ByteArray(0)
-        if (conn != null) {
-            logger.info("Retrieving document from eurodat storage for documentId: $documentId")
-            preparedStatement = conn.prepareStatement(sqlStatement)
-            val sqlReturnValue = preparedStatement.executeQuery()
-            while (sqlReturnValue.next()) {
-                blob = sqlReturnValue.getBytes("blob_pdf")
-            }
-            conn.close()
+        logger.info("Retrieving document from eurodat storage for documentId: $documentId")
+        val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)
+        val sqlReturnValue = preparedStatement.executeQuery()
+        while (sqlReturnValue.next()) {
+            blob = sqlReturnValue.getBytes("blob_pdf")
         }
+        conn.close()
         return blob
     }
 }
