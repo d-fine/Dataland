@@ -40,6 +40,7 @@ class EurodatDataStore(
     private val eurodatAppName: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val loggingMessageGetEurodatConnection = "get JDBC connection details from EuroDaT"
 
     /**
      * Method that triggers the storage processes of the JSON and the associated documents in EuroDaT
@@ -49,7 +50,7 @@ class EurodatDataStore(
      */
     fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
+        val eurodatCredentials = retryWrapperMethod(loggingMessageGetEurodatConnection) {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
@@ -140,7 +141,7 @@ class EurodatDataStore(
      */
     fun selectPrivateDataSet(dataId: String, correlationId: String): String {
         logger.info("Select data for data $dataId from eurodat storage.CorrelationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
+        val eurodatCredentials = retryWrapperMethod(loggingMessageGetEurodatConnection) {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
@@ -154,7 +155,7 @@ class EurodatDataStore(
      */
     fun selectPrivateDocument(eurodatId: String, correlationId: String): ByteArray {
         logger.info("Select document for eurodatId $eurodatId from eurodat storage. CorrelationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod("get JDBC connection details from EuroDaT") {
+        val eurodatCredentials = retryWrapperMethod(loggingMessageGetEurodatConnection) {
             databaseCredentialResourceClient
                 .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
         }
