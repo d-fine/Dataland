@@ -37,7 +37,7 @@ class DataManagerUtils(
      * @param dataId the dataId for which a exception was thrown
      * @param correlationId the correlationId of the request which caused the exception to be thrown
      */
-    fun handleStorageClientException(e: ClientException, dataId: String, correlationId: String) {
+    private fun handleStorageClientException(e: ClientException, dataId: String, correlationId: String) {
         if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
             logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
             throw ResourceNotFoundApiException(
@@ -58,7 +58,7 @@ class DataManagerUtils(
      * @param dataMetaInformationEntity the dataMetaInformationEntity of the dataset
      * @param correlationId the correlationId of the corresponding process
      */
-    fun assertActualAndExpectedDataTypeForIdMatch(
+    private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
         dataType: DataType,
         dataMetaInformationEntity: DataMetaInformationEntity,
@@ -82,18 +82,18 @@ class DataManagerUtils(
      * This function retrieves a dataset from one of the connected services
      * @param dataId the dataId of the requested dataset
      * @param correlationId the correlationId of the request
-     * @param storageClientFunction the function which specifies from which storage the dataset should be retrieved
+     * @param datasetGetterFunction the function which specifies from which storage the dataset should be retrieved
      */
     fun getDataFromStorageService(
         dataId: String,
         correlationId: String,
-        storageClientFunction: (String, String) ->
+        datasetGetterFunction: (String, String) ->
         String,
     ): String {
         val dataAsString: String
         logger.info("Retrieve data from storage. Correlation ID: $correlationId")
         try {
-            dataAsString = storageClientFunction(dataId, correlationId)
+            dataAsString = datasetGetterFunction(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +
@@ -109,14 +109,14 @@ class DataManagerUtils(
      * @param dataId to identify the stored data
      * @param dataType to check the correctness of the type of the retrieved data
      * @param correlationId to use in combination with dataId to retrieve data and assert type
-     * @param storageFunction the function to retrieve the dataset from the respective storage service
+     * @param datasetGetterFunction the function to retrieve the dataset from the respective storage service
      * @return data set associated with the data ID provided in the input
      */
     fun getDataSet(
         dataId: String,
         dataType: DataType,
         correlationId: String,
-        storageFunction: (String, String)
+        datasetGetterFunction: (String, String)
         -> String,
     ):
         StorableDataSet {
@@ -124,7 +124,7 @@ class DataManagerUtils(
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
         lateinit var dataAsString: String
         try {
-            dataAsString = storageFunction(dataId, correlationId)
+            dataAsString = datasetGetterFunction(dataId, correlationId)
         } catch (e: ClientException) {
             handleStorageClientException(e, dataId, correlationId)
         }
