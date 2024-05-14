@@ -19,14 +19,13 @@ import org.dataland.datalandbackend.model.DataIdToHashCompositeKey
     ],
 )
 @IdClass(DataIdToHashCompositeKey::class)
-data class DataIdToHashMappingEntity(
+data class DataIdAndHashToEurodatIdMappingEntity(
     @Id
     @Column(name = "data_id")
     val dataId: String,
     @Id
     @Column(name = "hash")
     var hash: String,
-    @Id
     @Column(name = "eurodat_id")
     var eurodatId: String,
 
