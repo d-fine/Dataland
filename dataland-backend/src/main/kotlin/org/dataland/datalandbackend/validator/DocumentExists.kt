@@ -1,0 +1,40 @@
+package org.dataland.datalandbackend.validator
+
+import jakarta.validation.Constraint
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
+import jakarta.validation.Payload
+import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
+import kotlin.reflect.KClass
+
+/**
+ * Annotation for the validation of an ExtendedDataPoint<*> holding a number
+ */
+@Target(AnnotationTarget.FIELD)
+@Constraint(validatedBy = [DocumentExistsValidator::class])
+annotation class DocumentExists(
+    val message: String = "Input validation failed: The document reference doesn't exist",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = [],
+)
+
+/**
+ * Class holding the validation logic for a class that implements BaseDataPoint<*> Interface featuring a number
+ */
+class DocumentExistsValidator : ConstraintValidator<DocumentExists, BaseDocumentReference> {
+    // TODO make path adaptive for container
+    private val documentControllerApi = DocumentControllerApi(basePath = "https://local-dev.dataland.com/documents")
+
+    override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
+        try {
+            if (documentReference != null) {
+                documentReference.fileReference?.let { documentControllerApi.checkDocument(it) }
+            }
+        } catch (exc: ResourceNotFoundApiException) {
+            return false
+        }
+        return true
+    }
+}

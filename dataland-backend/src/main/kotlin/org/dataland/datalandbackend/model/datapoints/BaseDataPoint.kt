@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.model.datapoints
 
-import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.BaseDocumentReference
+import org.dataland.datalandbackend.validator.DocumentExists
 
 /**
  * --- API model ---
@@ -10,6 +10,6 @@ import org.dataland.datalandbackend.model.documents.BaseDocumentReference
  */
 data class BaseDataPoint<T>(
     override val value: T?,
-    @field:Valid
+    @field:DocumentExists
     override val dataSource: BaseDocumentReference? = null,
 ) : BaseDataPoint<T>
