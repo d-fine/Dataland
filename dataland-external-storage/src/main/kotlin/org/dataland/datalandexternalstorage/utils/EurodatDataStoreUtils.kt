@@ -17,6 +17,7 @@ object EurodatDataStoreUtils {
      * This method will rerun a given method for a specified number of times if an exception is thrown while running it
      * @param descriptionOfOperation to specify in the logs which method should be rerun
      * @param block the method that should be retried
+     * @returns the value T of the input method
      */
     @Suppress("TooGenericExceptionCaught")
     fun <T> retryWrapperMethod(descriptionOfOperation: String, block: () -> T): T {
