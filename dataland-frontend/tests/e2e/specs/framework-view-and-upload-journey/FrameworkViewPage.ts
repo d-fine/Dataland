@@ -78,10 +78,12 @@ describeIf(
     ): void {
       cy.intercept({ url: "/api/companies*", times: 2 }).as("searchCompanies");
       cy.intercept({ url: "/api/companies/meta-information" }).as("fetchFilters");
+      cy.intercept({ times: 2, url: "/api/companies/numberOfCompanies**" }).as("numberOfCompanies");
       cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+      verifySearchResultTableExists();
       cy.wait("@searchCompanies");
       cy.wait("@fetchFilters");
-      verifySearchResultTableExists();
+      cy.wait(["@numberOfCompanies", "@numberOfCompanies"]);
       const companySelector = "span:contains(VIEW)";
       cy.get(companySelector).first().click();
     }
@@ -359,21 +361,25 @@ describeIf(
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
-    it("Check that clicking a search result on the search page or an autocomplete suggestion on the view page redirects the user to the company cockpit", () => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
-      visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
+    it(
+      "Check that clicking a search result on the search page or an autocomplete suggestion on the view page" +
+        " redirects the user to the company cockpit",
+      () => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
 
-      validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
-      validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
+        validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
+        validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
 
-      validateChosenFramework(DataTypeEnum.P2p);
-      selectFrameworkInDropdown(DataTypeEnum.Sfdr);
+        validateChosenFramework(DataTypeEnum.P2p);
+        selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
-      validateChosenFramework(DataTypeEnum.Sfdr);
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
+        validateChosenFramework(DataTypeEnum.Sfdr);
+        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 
-      validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
-    });
+        validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
+      },
+    );
 
     it("Check that using back-button and dropdowns on the view-page work as expected", () => {
       cy.ensureLoggedIn();
