@@ -58,7 +58,7 @@ class DataRequestAlterationManager(
         val modificationTime = Instant.now().toEpochMilli()
 
         dataRequestEntity.lastModifiedDate = modificationTime
-        if (requestStatus != null) {
+        if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
