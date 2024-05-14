@@ -19,7 +19,6 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyList
-import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.Mockito.doNothing
@@ -92,7 +91,7 @@ class DataRequestAlterationManagerTest {
         )
         historyManager = mock(DataRequestHistoryManager::class.java)
         doNothing().`when`(historyManager).saveMessageHistory(anyList())
-        doNothing().`when`(historyManager).saveStatusHistory(anySet())
+        doNothing().`when`(historyManager).saveStatusHistory(anyList())
     }
 
     @BeforeEach
