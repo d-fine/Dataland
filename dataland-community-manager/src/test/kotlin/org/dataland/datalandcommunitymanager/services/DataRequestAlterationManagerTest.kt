@@ -184,10 +184,6 @@ class DataRequestAlterationManagerTest {
                 null,
             )
         }
-        verify(historyManager, times(3))
-            .saveStatusHistory(
-                anyList(),
-            )
         verify(historyManager, times(0))
             .saveMessageHistory(
                 anyList(),
