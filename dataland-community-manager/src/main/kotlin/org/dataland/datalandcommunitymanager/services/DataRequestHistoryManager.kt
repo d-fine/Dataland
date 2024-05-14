@@ -4,7 +4,6 @@ import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepository
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,26 +16,13 @@ class DataRequestHistoryManager(
     @Autowired private val messageRepository: MessageRepository,
     @Autowired private val requestStatusRepository: RequestStatusRepository,
 ) {
-
-    private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
-
-    // todo check if other methods could be refactored to this place,
-    // i.e. check usage of messageRepository: MessageRepository
     /**
      * Method to store the request status history
      * @param dataRequestStatusHistory list of request status entities
      */
     @Transactional
-    fun saveStatusHistory(dataRequestStatusHistory: Set<RequestStatusEntity>) {
-        try {
-            // todo remove try catch block
-            requestStatusRepository.saveAllAndFlush(dataRequestStatusHistory.toList())
-        } catch (ex: Exception) {
-            dataRequestStatusHistory.forEach {
-                logger.info(it.statusHistoryId)
-            }
-            logger.error("Error while saving status histories: ", ex)
-        }
+    fun saveStatusHistory(dataRequestStatusHistory: List<RequestStatusEntity>) {
+        requestStatusRepository.saveAllAndFlush(dataRequestStatusHistory)
     }
 
     /**
