@@ -38,7 +38,7 @@ data class DataRequestEntity(
     var messageHistory: List<MessageEntity>,
 
     @OneToMany(mappedBy = "dataRequestStatus")
-    @OrderColumn(name = "creationTimestamp")
+    @OrderColumn(name = "creationTime")
     var dataRequestStatusHistory: List<RequestStatusEntity>,
 
     var lastModifiedDate: Long,
