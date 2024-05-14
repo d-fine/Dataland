@@ -17,8 +17,8 @@ class ExternalStorageClientUtils(
 ) {
 
     /**
-     * his methods retrieves an document by using the external storage client and returns the document as an inputstream
-     * @param eurodatId the documentId for the document to be retrieved
+     * This method retrieves a document by using the external storage client and returns the document as an inputstream
+     * @param eurodatId the eurodatId for the document to be retrieved
      * @param correlationId the correlationId of the request which caused the exception to be thrown
      */
     fun getBlobFromExternalStorage(eurodatId: String, correlationId: String): InputStream {
@@ -26,7 +26,7 @@ class ExternalStorageClientUtils(
     }
 
     /**
-     * This methods retrieves an dataset by using the external storage client and returns the dataset as a string
+     * This method retrieves a dataset by using the external storage client and returns the dataset as a string
      * @param dataId the dataId of the dataset to be retrieved
      * @param correlationId the correlationId of the corresponding process
      */
