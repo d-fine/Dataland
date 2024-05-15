@@ -5,8 +5,6 @@ import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient as ApiClientBackend
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ApiClient as ApiClientQaService
 import org.dataland.documentmanager.openApiClient.infrastructure.ApiClient as ApiClientDocumentManager
-import org.dataland.externalstorage.openApiClient.infrastructure.ApiClient as ApiClientExternalStorage
-
 object GlobalAuth {
     fun setBearerToken(token: String?) {
         ApiClientApiKeyManager.Companion.accessToken = token
@@ -14,6 +12,5 @@ object GlobalAuth {
         ApiClientDocumentManager.Companion.accessToken = token
         ApiClientQaService.Companion.accessToken = token
         ApiClientCommunityManager.Companion.accessToken = token
-        ApiClientExternalStorage.Companion.accessToken = token
     }
 }
