@@ -125,7 +125,7 @@ class DataRequestProcessingUtils(
                 requestingUserId, companyId, framework.name, reportingPeriod,
             )?.filter {
             it.requestStatus == requestStatus
-        }
+        } // todo check if fetch requestStatus needed
         if (foundRequests != null) {
             dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                 companyId,

@@ -50,7 +50,7 @@ class DataRequestTimeSchedulerTest {
                 statusHistoryId = UUID.randomUUID().toString(),
                 requestStatus = status,
                 creationTimestamp = 0,
-                dataRequestStatus = dataRequestEntity,
+                dataRequestEntity = dataRequestEntity,
             ),
         )
         return dataRequestEntity

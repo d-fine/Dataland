@@ -27,7 +27,7 @@ data class RequestStatusEntity(
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
-    var dataRequestStatus: DataRequestEntity,
+    var dataRequestEntity: DataRequestEntity,
 ) {
     constructor(
         statusObject: StoredDataRequestStatusObject,
@@ -36,7 +36,7 @@ data class RequestStatusEntity(
         statusHistoryId = UUID.randomUUID().toString(),
         requestStatus = statusObject.status,
         creationTimestamp = statusObject.creationTimestamp,
-        dataRequestStatus = dataRequest,
+        dataRequestEntity = dataRequest,
     )
 
     /**

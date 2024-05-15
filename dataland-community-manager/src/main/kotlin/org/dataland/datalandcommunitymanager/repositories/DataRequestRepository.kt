@@ -41,29 +41,26 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param status to check for
      * @returns the aggregated data requests
      */
-    // todo
     @Query(
-        """
-    SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(
-        d.dataType, 
-        d.reportingPeriod, 
-        d.datalandCompanyId,
-         rs.requestStatus,  
-        COUNT(d.userId)
-    ) 
-    FROM DataRequestEntity d
-     LEFT JOIN RequestStatusEntity rs ON d.dataRequestId = rs.dataRequestStatus.dataRequestId
-    WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) 
-      AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) 
-      AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%)
-      AND rs.creationTimestamp =  (
-    SELECT MAX(rs2.creationTimestamp)
-    FROM RequestStatusEntity rs2
-    WHERE rs.dataRequestStatus.dataRequestId = rs2.dataRequestStatus.dataRequestId
-)
-AND (:status IS NULL OR rs.requestStatus = :status)
-    GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, rs.requestStatus
-""",
+        " SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity( " +
+            "d.dataType, " +
+            "d.reportingPeriod, " +
+            "d.datalandCompanyId, " +
+            "rs.requestStatus, " +
+            "COUNT(d.userId) " +
+            ") " +
+            "FROM DataRequestEntity d " +
+            "JOIN RequestStatusEntity rs ON d = rs.dataRequestEntity " +
+            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
+            "AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) " +
+            "AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
+            "AND rs.creationTimestamp =  ( " +
+            "SELECT MAX(rs2.creationTimestamp) " +
+            "FROM RequestStatusEntity rs2 " +
+            "WHERE rs.dataRequestEntity = rs2.dataRequestEntity " +
+            ") " +
+            "AND (:status IS NULL OR rs.requestStatus = :status) " +
+            "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, rs.requestStatus ",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
@@ -80,14 +77,19 @@ AND (:status IS NULL OR rs.requestStatus = :status)
      */
     @Query(
         "SELECT d FROM DataRequestEntity d  " +
-            "JOIN RequestStatusEntity rs ON d.dataRequestId = rs.dataRequestStatus " +
+            "JOIN RequestStatusEntity rs ON d = rs.dataRequestEntity " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
             "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
+            " rs.creationTimestamp =  (" +
+            "    SELECT MAX(rs2.creationTimestamp)" +
+            "    FROM RequestStatusEntity rs2 " +
+            "    WHERE rs.dataRequestEntity = rs2.dataRequestEntity " +
+            ") AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
-            "OR rs.dataRequestStatus = :#{#searchFilter.requestStatus}) AND " +
+            "OR rs.requestStatus = :#{#searchFilter.requestStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
