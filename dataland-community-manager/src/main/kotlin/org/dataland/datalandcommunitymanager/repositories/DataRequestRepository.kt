@@ -24,15 +24,13 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param datalandCompanyId to check for
      * @param dataType to check for
      * @param reportingPeriod to check for
-     * @param requestStatus to check for
      * @returns a list of the data requests
      */
-    fun findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriodAndRequestStatus(
+    fun findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
         userId: String,
         datalandCompanyId: String,
         dataType: String,
         reportingPeriod: String,
-        requestStatus: RequestStatus,
     ): List<DataRequestEntity>?
 
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of

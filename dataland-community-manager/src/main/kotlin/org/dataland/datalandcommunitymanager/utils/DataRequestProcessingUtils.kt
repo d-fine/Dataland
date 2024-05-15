@@ -121,9 +121,11 @@ class DataRequestProcessingUtils(
     ): List<DataRequestEntity>? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
         val foundRequests = dataRequestRepository
-            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriodAndRequestStatus(
-                requestingUserId, companyId, framework.name, reportingPeriod, requestStatus,
-            )
+            .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                requestingUserId, companyId, framework.name, reportingPeriod,
+            )?.filter {
+            it.requestStatus == requestStatus
+        }
         if (foundRequests != null) {
             dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                 companyId,
