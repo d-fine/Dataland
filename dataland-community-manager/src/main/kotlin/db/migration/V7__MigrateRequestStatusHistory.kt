@@ -8,13 +8,7 @@ import org.flywaydb.core.api.migration.Context
  */
 public class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        // todo check if we need to remove request_status from the table
-        /*
-        context!!.connection.createStatement().execute(
-            "ALTER TABLE data_requests " +
-                "DROP COLUMN request_status",
-        )
-         */
+        // todo patch status history of existing requetss
         context!!.connection.createStatement().execute(
             "CREATE TABLE request_status_history (" +
                 "status_history_id varchar(255) NOT NULL, " +
