@@ -56,11 +56,16 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
   
   
 ### Dataland Analytics
+## Update OpenAPI Specifications
 
-- [ ] Update the backend API file
-  - [ ] Go to https://dataland.com/api/v3/api-docs/public and copy the backend api JSON
-  - [ ] Convert the JSON to a .yaml file preferably using an online-converter (https://jsonformatter.org/json-to-yaml)
-  - [ ] Paste the .yaml output into "datasets_open_api.yaml"
+ - [ ] In the DatalandAnayltics repo, run the script `update_api_specs.sh` in order to update the open API files. Additional information can be found in the README of DatalandAnalytics
+
+
+- [ ] Update the open API files
+  - [ ] 
+    - [ ] Go to https://dataland.com/api/v3/api-docs/public and copy the backend api JSON
+    - [ ] Convert the JSON to a .yaml file preferably using an online-converter (https://jsonformatter.org/json-to-yaml)
+    - [ ] Paste the .yaml output into "datasets_open_api.yaml"
 - [ ] Accordingly, update the document API file
   - [ ] Copy from https://dataland.com/documents/v3/api-docs/public to documents_open_api.yaml
 - [ ] Accordingly, update the community API file
