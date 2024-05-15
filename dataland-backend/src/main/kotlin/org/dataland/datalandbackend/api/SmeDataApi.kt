@@ -32,10 +32,6 @@ interface SmeDataApi {
     /**
      * A method to store private sme data via Dataland into a data store
      */
-    @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
-    )
     @Operation(
         summary = "Upload a new private sme data set.",
         description = "The uploaded private sme data is added to the private data store, the generated data id is " +
@@ -47,6 +43,10 @@ interface SmeDataApi {
         ],
     )
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwnerForCompany(#companyAssociatedSmeData.companyId))",
+    )
     fun postSmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         @RequestPart(value = "documents") documents: Array<MultipartFile>?,
@@ -57,11 +57,6 @@ interface SmeDataApi {
      * @param dataId identifier used to uniquely specify data in the data store
      * @return the complete data stored under the provided data ID with the associated company ID
      */
-
-    @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
-    )
     @Operation(
         summary = "Retrieve specific data from the private data store.",
         description = "Data identified by the provided data ID is retrieved.",
@@ -75,6 +70,10 @@ interface SmeDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwnerForCompanyOfDataId(#dataId))",
+    )
     fun getCompanyAssociatedSmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<SmeData>>
 
@@ -83,11 +82,6 @@ interface SmeDataApi {
      * @param hash the hash of the document
      * @param dataId the dataId to which the document is connected
      */
-
-    @PreAuthorize(
-        "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
-    )
     @Operation(
         summary = "Receive a document.",
         description = "Receive a document by its ID from internal storage.",
@@ -106,6 +100,10 @@ interface SmeDataApi {
             "application/json",
             "application/pdf",
         ],
+    )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwnerForCompanyOfDataId(#dataId))",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,

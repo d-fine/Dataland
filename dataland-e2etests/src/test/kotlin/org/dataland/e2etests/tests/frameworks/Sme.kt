@@ -10,6 +10,7 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.UPLOADER_USER_ID
 import org.dataland.e2etests.UPLOADER_USER_NAME
 import org.dataland.e2etests.UPLOADER_USER_PASSWORD
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.customApiControllers.CustomSmeDataControllerApi
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
@@ -28,8 +29,9 @@ class Sme {
 
     private val apiAccessor = ApiAccessor()
 
-    val keycloakToken = apiAccessor.jwtHelper.requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
-    val customSmeDataControllerApi = CustomSmeDataControllerApi(keycloakToken)
+    val keycloakTokenUploader = apiAccessor.jwtHelper.requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
+    val customSmeDataControllerApi = CustomSmeDataControllerApi(keycloakTokenUploader)
+
     val smeDataControllerApi = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     val testSmeData = sortSmeNaturalHazardsCovered(
@@ -81,6 +83,8 @@ class Sme {
         val expectedHashBeta = dummyFileBeta.readBytes().sha256()
 
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val retrievedCompanyAssociatedSmeData = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponse.dataId,
         )
@@ -99,6 +103,8 @@ class Sme {
             setNumberOfEmployees(testSmeData, 1),
         )
         val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdAlpha,
         )
@@ -129,6 +135,8 @@ class Sme {
     fun `post an SME dataset with duplicate files and assert that the downloaded file is unique and correct`() {
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
         val dataId = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
         )
@@ -137,6 +145,8 @@ class Sme {
         val downloadedFile = smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, expectedHash)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())
     }
+
+    // TODO test für keinen access für andere?  Not even Admin!
 
     private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
         return dataset.copy(
