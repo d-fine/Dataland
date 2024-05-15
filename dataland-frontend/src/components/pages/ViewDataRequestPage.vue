@@ -391,10 +391,23 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+.message {
+  width: 100%;
+  border: #e0dfde solid 1px;
+  padding: $spacing-md;
+  border-radius: $radius-xxs;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 :deep {
-  .message {
+  .card {
     width: 100%;
-    border: #e0dfde solid 1px;
+    background-color: var(--surface-card);
     padding: $spacing-md;
     border-radius: $radius-xxs;
     text-align: left;
@@ -402,54 +415,39 @@ export default defineComponent({
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 1rem;
-    margin-top: 1rem;
-  }
-}
-  :deep {
-    .card {
+
+    &__subtitle {
+      font-size: medium;
+      line-height: normal;
+      color: gray;
+    }
+
+    &__data {
+      font-size: medium;
+      font-weight: bold;
+      line-height: normal;
+      margin-top: 0.25rem;
+      margin-bottom: 2rem;
+    }
+
+    &__title {
+      font-size: large;
+      font-weight: bold;
+      line-height: normal;
+    }
+
+    &__separator {
       width: 100%;
-      background-color: var(--surface-card);
-      padding: $spacing-md;
-      border-radius: $radius-xxs;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      border-bottom: #e0dfde solid 1px;
+      margin-top: 1rem;
       margin-bottom: 1rem;
-
-      &__subtitle {
-        font-size: medium;
-        line-height: normal;
-        color: gray;
-      }
-
-      &__data {
-        font-size: medium;
-        font-weight: bold;
-        line-height: normal;
-        margin-top: 0.25rem;
-        margin-bottom: 2rem;
-      }
-
-      &__title {
-        font-size: large;
-        font-weight: bold;
-        line-height: normal;
-      }
-
-      &__separator {
-        width: 100%;
-        border-bottom: #e0dfde solid 1px;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      }
     }
   }
-  .two-columns {
-    columns: 2;
-    -webkit-columns: 2;
-    -moz-columns: 2;
-    list-style-type: none;
-  }
+}
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  list-style-type: none;
 }
 </style>
