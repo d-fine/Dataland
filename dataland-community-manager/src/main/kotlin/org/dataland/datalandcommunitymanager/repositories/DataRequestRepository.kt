@@ -42,24 +42,29 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns the aggregated data requests
      */
     // todo
-    /*
-@Query(
-    "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
-        "d.dataType, " +
-        "d.reportingPeriod, " +
-        "d.datalandCompanyId, " +
-        "d.requestStatus, " +
-        "COUNT(d.userId))" +
-        "FROM DataRequestEntity d " +
-        "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
-        "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
-        "  AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
-        "  AND (:status IS NULL OR d.requestStatus = :status) " +
-        "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, d.requestStatus",
-
-
+    @Query(
+        """
+    SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(
+        d.dataType, 
+        d.reportingPeriod, 
+        d.datalandCompanyId,
+         h.requestStatus,  
+        COUNT(d.userId)
+    ) 
+    FROM DataRequestEntity d
+     left join RequestStatusEntity h on d.dataRequestId = h.dataRequestStatus.dataRequestId
+    WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) 
+      AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) 
+      AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%)
+      AND h.creationTimestamp =  (
+    SELECT MAX(h2.creationTimestamp)
+    FROM RequestStatusEntity h2
+    WHERE h.dataRequestStatus.dataRequestId = h2.dataRequestStatus.dataRequestId
+)
+AND (:status IS NULL OR h.requestStatus = :status)
+    GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, h.requestStatus
+""",
     )
-    */
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
         @Param("dataTypes") dataTypes: Set<String>?,
