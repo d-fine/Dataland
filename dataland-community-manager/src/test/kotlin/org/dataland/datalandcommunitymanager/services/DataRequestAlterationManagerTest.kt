@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import jakarta.persistence.EntityManager
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -31,8 +32,9 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.*
-
 class DataRequestAlterationManagerTest {
+
+    private lateinit var entityManager: EntityManager
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
@@ -75,7 +77,6 @@ class DataRequestAlterationManagerTest {
     )
     private fun mockRepos() {
         dataRequestRepository = mock(DataRequestRepository::class.java)
-
         `when`<Any>(
             dataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
@@ -98,6 +99,8 @@ class DataRequestAlterationManagerTest {
         historyManager = mock(DataRequestHistoryManager::class.java)
         doNothing().`when`(historyManager).saveMessageHistory(anyList())
         doNothing().`when`(historyManager).saveStatusHistory(anyList())
+        entityManager = mock(EntityManager::class.java)
+        doNothing().`when`(entityManager).detach(any(DataRequestEntity::class.java))
     }
 
     @BeforeEach
@@ -126,6 +129,7 @@ class DataRequestAlterationManagerTest {
             metaDataControllerApi = metaDataControllerApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
             dataRequestHistoryManager = historyManager,
+            entityManager = entityManager,
         )
     }
 

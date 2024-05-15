@@ -37,11 +37,9 @@ class DataRequestAlterationManager(
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
+    @PersistenceContext private var entityManager: EntityManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
-
-    @PersistenceContext
-    private lateinit var entityManager: EntityManager
 
     /**
      * Method to patch the status of a data request.
