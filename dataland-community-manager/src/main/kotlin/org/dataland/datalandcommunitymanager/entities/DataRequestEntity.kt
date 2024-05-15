@@ -34,6 +34,7 @@ data class DataRequestEntity(
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
 
+    // todo check if dataRequest works as well
     @OneToMany(mappedBy = "dataRequestStatus")
     var dataRequestStatusHistory: List<RequestStatusEntity>,
 
