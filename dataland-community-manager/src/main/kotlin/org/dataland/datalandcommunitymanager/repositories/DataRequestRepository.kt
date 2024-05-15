@@ -100,9 +100,9 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     ): List<DataRequestEntity>
 
     /**
-     * Fetches data request entities together with the associated message history
-     * @param dataRequests the requests entities for which the message histories to fetch
-     * @returns the initial list of data request entities together with the associated message history
+     * Fetches data request entities together with the associated status history
+     * @param dataRequests the requests entities for which the status histories to fetch
+     * @returns the initial list of data request entities together with the associated status history
      */
     @Query(
         "SELECT DISTINCT d FROM DataRequestEntity d " +
