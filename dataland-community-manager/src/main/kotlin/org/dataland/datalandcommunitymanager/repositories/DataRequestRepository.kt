@@ -50,14 +50,14 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "COUNT(d.userId) " +
             ") " +
             "FROM DataRequestEntity d " +
-            "JOIN RequestStatusEntity rs ON d = rs.dataRequestEntity " +
+            "JOIN RequestStatusEntity rs ON d = rs.dataRequest " +
             "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
             "AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) " +
             "AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
             "AND rs.creationTimestamp =  ( " +
             "SELECT MAX(rs2.creationTimestamp) " +
             "FROM RequestStatusEntity rs2 " +
-            "WHERE rs.dataRequestEntity = rs2.dataRequestEntity " +
+            "WHERE rs.dataRequest = rs2.dataRequest " +
             ") " +
             "AND (:status IS NULL OR rs.requestStatus = :status) " +
             "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, rs.requestStatus ",
@@ -77,7 +77,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         "SELECT d FROM DataRequestEntity d  " +
-            "JOIN RequestStatusEntity rs ON d = rs.dataRequestEntity " +
+            "JOIN RequestStatusEntity rs ON d = rs.dataRequest " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
             "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
@@ -86,7 +86,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "rs.creationTimestamp =  (" +
             "    SELECT MAX(rs2.creationTimestamp)" +
             "    FROM RequestStatusEntity rs2 " +
-            "    WHERE rs.dataRequestEntity = rs2.dataRequestEntity " +
+            "    WHERE rs.dataRequest = rs2.dataRequest " +
             ") AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
             "OR rs.requestStatus = :#{#searchFilter.requestStatus}) AND " +
