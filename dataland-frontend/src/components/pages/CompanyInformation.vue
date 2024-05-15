@@ -50,8 +50,8 @@
           <span class="font-semibold">{{ companyInformation.headquarters }}</span>
         </div>
         <div class="company-details__info">
-          <span>ISIN: </span>
-          <span class="font-semibold">{{ displayIsin }}</span>
+          <span>LEI: </span>
+          <span class="font-semibold">{{ displayLei }}</span>
         </div>
       </div>
     </div>
@@ -103,8 +103,8 @@ export default defineComponent({
         return "—";
       }
     },
-    displayIsin() {
-      return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
+    displayLei() {
+      return this.companyInformation?.identifiers?.[IdentifierType.Lei]?.[0] ?? "—";
     },
     contextMenuItems() {
       const listOfItems = [];
