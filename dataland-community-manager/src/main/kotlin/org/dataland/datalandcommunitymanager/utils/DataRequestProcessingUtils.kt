@@ -81,6 +81,7 @@ class DataRequestProcessingUtils(
         message: String? = null,
     ): DataRequestEntity {
         val creationTime = Instant.now().toEpochMilli()
+
         val dataRequestEntity = DataRequestEntity(
             DatalandAuthentication.fromContext().userId,
             dataType.value,
@@ -88,19 +89,20 @@ class DataRequestProcessingUtils(
             datalandCompanyId,
             creationTime,
         )
-
         dataRequestEntity.requestStatus = RequestStatus.Open
         dataRequestRepository.save(dataRequestEntity)
-        // todo check why the next lines create an error
+
         val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
         dataRequestEntity.associateRequestStatus(requestStatusObject)
         dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+
         if (!contacts.isNullOrEmpty()) {
             val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, creationTime))
             dataRequestEntity.associateMessages(messageHistory)
             dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
         }
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
+
         return dataRequestEntity
     }
 
