@@ -6,19 +6,19 @@ import jakarta.persistence.Id
 import jakarta.persistence.IdClass
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
-import org.dataland.datalandbackend.model.DataIdToHashCompositeKey
+import org.dataland.datalandbackend.model.DataIdAndHashCompositeKey
 
 /**
- * The database entity for storing mapping between data and documents
+ * The database entity for storing mapping between Dataland data and EuroDaT
  */
 @Entity
 @Table(
-    name = "data_document_mapping",
+    name = "dataland_eurodat_data_mapping",
     uniqueConstraints = [
-        UniqueConstraint(columnNames = ["dataId", "hash", "eurodatId"]),
+        UniqueConstraint(columnNames = ["dataId", "hash"]),
     ],
 )
-@IdClass(DataIdToHashCompositeKey::class)
+@IdClass(DataIdAndHashCompositeKey::class)
 data class DataIdAndHashToEurodatIdMappingEntity(
     @Id
     @Column(name = "data_id")
@@ -28,5 +28,4 @@ data class DataIdAndHashToEurodatIdMappingEntity(
     var hash: String,
     @Column(name = "eurodat_id")
     var eurodatId: String,
-
 )

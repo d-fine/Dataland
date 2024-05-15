@@ -26,7 +26,6 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
@@ -302,18 +301,12 @@ class PrivateDataManager(
         // TODO Wenn man nach einem document sucht, was es nicht gibt, entsteht hier aktuell ein internal server error
         // TODO Grund: Die nächste Zeile kriegt eine out of bounds exception.  Das müssen wir iwie anders handlen,
         // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
-        val eurodatId: String
-        try {
-            eurodatId = dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, "hash").eurodatId
-        } catch (e: EmptyResultDataAccessException) {
-            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
-            throw ResourceNotFoundApiException(
+        val eurodatId = dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, hash)?.eurodatId
+            ?: throw ResourceNotFoundApiException(
                 "No matching eurodatId found",
                 "Dataland cannot match the dataId $dataId and hash $hash to a eurodatId to retrieve the document " +
                     "from EuroDaT",
-                e,
             )
-        }
         logger.info(
             "Matched dataId $dataId and hash $hash with eurodatId $eurodatId, CorrelationId $correlationId",
         )
