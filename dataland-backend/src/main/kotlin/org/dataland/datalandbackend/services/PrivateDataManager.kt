@@ -9,8 +9,6 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdAndHashToEurodatIdMappingRepository
-import org.dataland.datalandbackend.utils.DataManagerUtils
-import org.dataland.datalandbackend.utils.ExternalStorageDataGetter
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
@@ -298,9 +296,6 @@ class PrivateDataManager(
      * @param correlationId the correlationId of the request
      */
     fun retrievePrivateDocumentById(dataId: String, hash: String, correlationId: String): DocumentStream {
-        // TODO Wenn man nach einem document sucht, was es nicht gibt, entsteht hier aktuell ein internal server error
-        // TODO Grund: Die nächste Zeile kriegt eine out of bounds exception.  Das müssen wir iwie anders handlen,
-        // TODO Vorschlag: Passende exception schmeißen (ResourceNotFoundException z.B.)
         val eurodatId = dataIdAndHashToEurodatIdMappingRepository.findByDataIdAndHash(dataId, hash)?.eurodatId
             ?: throw ResourceNotFoundApiException(
                 "No matching eurodatId found",

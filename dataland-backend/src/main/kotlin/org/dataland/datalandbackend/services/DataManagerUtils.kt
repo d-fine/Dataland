@@ -1,12 +1,10 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException

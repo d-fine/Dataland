@@ -2,12 +2,12 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.SmeDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication

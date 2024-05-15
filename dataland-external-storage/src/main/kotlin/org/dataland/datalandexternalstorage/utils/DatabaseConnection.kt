@@ -1,3 +1,5 @@
+package org.dataland.datalandexternalstorage.utils
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import java.sql.Connection

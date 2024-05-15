@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.utils.DataManagerUtils
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
