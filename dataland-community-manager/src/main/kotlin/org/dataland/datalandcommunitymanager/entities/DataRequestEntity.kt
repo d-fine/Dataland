@@ -2,8 +2,6 @@ package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
@@ -41,9 +39,9 @@ data class DataRequestEntity(
 
     var lastModifiedDate: Long,
 
-    @Enumerated(EnumType.STRING)
-    var requestStatus: RequestStatus,
 ) {
+    val requestStatus: RequestStatus?
+        get() = dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus
     constructor(
         userId: String,
         dataType: String,
@@ -60,7 +58,6 @@ data class DataRequestEntity(
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
-        requestStatus = RequestStatus.Open,
     )
 
     /**
@@ -105,6 +102,6 @@ data class DataRequestEntity(
             .sortedBy { it.creationTimestamp }
             .map { it.toStoredDataRequestStatusObject() },
         lastModifiedDate = lastModifiedDate,
-        requestStatus = requestStatus,
+        requestStatus = requestStatus ?: RequestStatus.Open,
     )
 }

@@ -55,17 +55,17 @@ class DataRequestAlterationManager(
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        val oldRequestStatus = dataRequestEntity.requestStatus
         val modificationTime = Instant.now().toEpochMilli()
         dataRequestEntity.lastModifiedDate = modificationTime
-        dataRequestEntity.requestStatus = requestStatus ?: oldRequestStatus
         dataRequestRepository.save(dataRequestEntity)
-        if (requestStatus != null && requestStatus != oldRequestStatus) {
+        if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
-            if (contacts != null) dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
+            if (contacts != null) {
+                dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
+            }
         }
         if (contacts != null) {
             val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
