@@ -91,9 +91,6 @@ class DataRequestAlterationManagerTest {
                 ),
             ),
         ).thenReturn(dummyDataRequestEntities)
-        doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
-            metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
-        )
         historyManager = mock(DataRequestHistoryManager::class.java)
         doNothing().`when`(historyManager).saveMessageHistory(anyList())
         doNothing().`when`(historyManager).saveStatusHistory(anyList())

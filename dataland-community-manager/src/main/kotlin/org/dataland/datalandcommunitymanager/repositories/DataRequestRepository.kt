@@ -5,10 +5,8 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * A JPA repository for storing and retrieving data requests
@@ -104,33 +102,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun fetchMessages(
         dataRequests: List<DataRequestEntity>,
     ): List<DataRequestEntity>
-
-    /** This method updates the Request Status to Answered for an open request with a specific framework,
-     * reporting period as well as company identifier
-     * @param datalandCompanyId to check for
-     * @param reportingPeriod to check for
-     * @param dataType to check for
-     * @returns the aggregated data requests
-     */
-    @Transactional
-    @Modifying
-    @Query
-    (
-        "UPDATE DataRequestEntity d " +
-            "SET d.requestStatus = " +
-            ":#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
-            "WHERE " +
-            "(d.dataType = :#{#dataType} AND " +
-            "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
-            "AND " +
-            "d.reportingPeriod = :#{#reportingPeriod} AND " +
-            "d.datalandCompanyId = :#{#datalandCompanyId})",
-    )
-    fun updateDataRequestEntitiesFromOpenToAnswered(
-        datalandCompanyId: String,
-        reportingPeriod: String,
-        dataType: String,
-    )
 
     /** This method counts the number of data requests that a user
      * has performed from a specified timestamp.

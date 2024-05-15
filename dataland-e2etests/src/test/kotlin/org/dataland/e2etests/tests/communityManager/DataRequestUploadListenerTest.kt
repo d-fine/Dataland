@@ -208,7 +208,7 @@ class DataRequestUploadListenerTest {
             "The status of the previously open data request is not 'withdrawn' after patching.",
         )
         assertEquals(
-            RequestStatus.Withdrawn, openToWithdrawnDataRequest.dataRequestStatusHistory.last().status,
+            RequestStatus.Withdrawn, openToWithdrawnDataRequest.dataRequestStatusHistory?.last()?.status,
             "The status history was not patched correctly.",
         )
 
@@ -224,7 +224,7 @@ class DataRequestUploadListenerTest {
             "The status of the previously answered data request is not 'withdrawn' after patching.",
         )
         assertEquals(
-            RequestStatus.Withdrawn, answeredToWithdrawnDataRequest.dataRequestStatusHistory.last().status,
+            RequestStatus.Withdrawn, answeredToWithdrawnDataRequest.dataRequestStatusHistory?.last()?.status,
             "The status history was not patched correctly.",
         )
     }
@@ -263,7 +263,7 @@ class DataRequestUploadListenerTest {
             "The contacts were not patched correctly.",
         )
         assertEquals(
-            RequestStatus.Open, newMessageAndOpenDataRequest.dataRequestStatusHistory.last().status,
+            RequestStatus.Open, newMessageAndOpenDataRequest.dataRequestStatusHistory?.last()?.status,
             "The status history was not patched correctly.",
         )
         assertEquals(RequestStatus.Open, newMessageAndOpenDataRequest.requestStatus)

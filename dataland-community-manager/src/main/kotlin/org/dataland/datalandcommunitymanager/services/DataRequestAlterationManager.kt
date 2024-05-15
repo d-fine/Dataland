@@ -149,13 +149,8 @@ class DataRequestAlterationManager(
                 metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
             ),
         )
-        // todo check if logic is the same
-        // dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
-        //    metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
-        // )
         dataRequestEntities.forEach {
             patchDataRequest(it.dataRequestId, RequestStatus.Answered, correlationId = correlationId)
-            // sendEmailBecauseOfStatusChanged(it, RequestStatus.Answered, correlationId)
         }
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +
