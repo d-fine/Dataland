@@ -43,15 +43,15 @@
       <div class="company-details__info-holder">
         <div class="company-details__info">
           <span>Sector: </span>
-          <span class="font-semibold">{{ displaySector }}</span>
+          <span class="font-semibold" data-test="sector-visible">{{ displaySector }}</span>
         </div>
         <div class="company-details__info">
           <span>Headquarter: </span>
-          <span class="font-semibold">{{ companyInformation.headquarters }}</span>
+          <span class="font-semibold" data-test="headquarter-visible">{{ companyInformation.headquarters }}</span>
         </div>
         <div class="company-details__info">
           <span>LEI: </span>
-          <span class="font-semibold">{{ displayLei }}</span>
+          <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
         </div>
       </div>
     </div>
