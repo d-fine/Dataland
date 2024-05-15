@@ -36,6 +36,14 @@ class DataMetaInformationManager(
         if (dataMetaInfo.currentlyActive == true) {
             return
         }
+        setNewDatasetActiveAndOldDatasetInactive(dataMetaInfo)
+    }
+
+    /**
+     * The method sets a new dataset active in the metadata database and sets the existing dataset to inactive
+     * @param dataMetaInfo the DataMetaInformationEntity of the dataset
+     */
+    fun setNewDatasetActiveAndOldDatasetInactive(dataMetaInfo: DataMetaInformationEntity) {
         val metaInfoOfCurrentlyActiveDataset = dataMetaInformationRepositoryInterface.getActiveDataset(
             dataMetaInfo.company,
             dataMetaInfo.dataType,

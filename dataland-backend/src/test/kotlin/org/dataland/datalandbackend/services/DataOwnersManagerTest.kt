@@ -29,6 +29,7 @@ class DataOwnersManagerTest {
     lateinit var mockCompanyRepository: StoredCompanyRepository
     lateinit var dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender
     lateinit var requestControllerApi: RequestControllerApi
+    lateinit var mockMetaInformationManager: DataMetaInformationManager
 
     private val testUserId = UUID.randomUUID().toString()
     private val testCompanyName = "Test Company AG"
@@ -42,11 +43,13 @@ class DataOwnersManagerTest {
     fun initializeDataOwnersManager() {
         mockDataOwnersRepository = mock(DataOwnerRepository::class.java)
         mockCompanyRepository = mock(StoredCompanyRepository::class.java)
+        mockMetaInformationManager = mock(DataMetaInformationManager::class.java)
         dataOwnershipSuccessfullyEmailMessageSender = mock(DataOwnershipSuccessfullyEmailMessageSender::class.java)
         requestControllerApi = mock(RequestControllerApi::class.java)
         dataOwnersManager = DataOwnersManager(
             mockDataOwnersRepository,
             mockCompanyRepository,
+            mockMetaInformationManager,
             mock(DataOwnershipEmailMessageSender::class.java),
             dataOwnershipSuccessfullyEmailMessageSender,
         )
