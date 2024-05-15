@@ -25,6 +25,7 @@ data class RequestStatusEntity(
 
     val creationTimestamp: Long,
 
+    // todo check if dataRequest works as well (its the same name as in messageEntity)
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
     var dataRequestEntity: DataRequestEntity,

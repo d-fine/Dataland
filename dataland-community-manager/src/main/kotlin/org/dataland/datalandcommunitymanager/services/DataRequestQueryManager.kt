@@ -126,7 +126,6 @@ class DataRequestQueryManager(
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
-        // todo maybe add fetch message history (dont think that its needed)
         return dataRequestRepository.fetchStatusHistory(result).map { it.toStoredDataRequest() }
     }
 }
