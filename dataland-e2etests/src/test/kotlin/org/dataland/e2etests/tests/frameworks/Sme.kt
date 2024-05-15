@@ -98,7 +98,7 @@ class Sme {
             companyId, "2022",
             setNumberOfEmployees(testSmeData, 1),
         )
-        val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha, listOf(dummyFileAlpha, dummyFileBeta)).dataId
+        val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
         val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdAlpha,
         )
@@ -160,7 +160,7 @@ class Sme {
 
     private fun postSmeDataset(
         companyAssociatedDataSmeData: CompanyAssociatedDataSmeData,
-        documents: List<File>,
+        documents: List<File> = listOf(),
     ): DataMetaInformation {
         return customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
             companyAssociatedDataSmeData,
