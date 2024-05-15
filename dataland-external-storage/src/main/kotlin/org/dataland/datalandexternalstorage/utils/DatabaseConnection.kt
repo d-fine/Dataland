@@ -22,12 +22,11 @@ object DatabaseConnection {
      * @param data the data to be inserted
      */
     fun insertDataIntoSqlDatabase(conn: Connection, sqlStatement: String, dataId: String, data: String): Boolean {
-        val loggingMessage = "Data for $dataId was inserted successfully."
         val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)
         preparedStatement.setObject(1, UUID.fromString(dataId))
         preparedStatement.setString(2, data)
 
-        val successFlag = executeSqlStatement(preparedStatement, loggingMessage)
+        val successFlag = executeSqlInsertStatement(preparedStatement, "Data for $dataId was inserted successfully.")
         conn.close()
         return successFlag
     }
@@ -46,16 +45,19 @@ object DatabaseConnection {
         documentId: String,
         document: ByteArray,
     ): Boolean {
-        val loggingMessage = "A Document with the $documentId was inserted successfully."
         val preparedStatement: PreparedStatement = conn.prepareStatement(sqlStatement)
         preparedStatement.setObject(1, UUID.fromString(documentId))
         preparedStatement.setBytes(2, document)
 
-        val successFlag = executeSqlStatement(preparedStatement, loggingMessage)
+        val successFlag = executeSqlInsertStatement(
+            preparedStatement,
+            "A Document with the $documentId was inserted successfully.",
+        )
         conn.close()
         return successFlag
     }
-    private fun executeSqlStatement(
+
+    private fun executeSqlInsertStatement(
         preparedStatement: PreparedStatement,
         loggingMessage: String,
     ): Boolean {
@@ -93,7 +95,7 @@ object DatabaseConnection {
      * @param sqlStatement the sql statement which should be executed
      * @param dataId the dataId of the dataset to be retrieved
      */
-    fun selectDataFromSqlDatabase(conn: Connection, sqlStatement: String, dataId: String): String {
+    fun selectJsonStringFromSqlDatabase(conn: Connection, sqlStatement: String, dataId: String): String {
         var data = String()
         logger.info("Retrieving data from eurodat storage for dataId: $dataId")
         val preparedStatement = conn.prepareStatement(sqlStatement)

@@ -29,8 +29,8 @@ import org.springframework.web.multipart.MultipartFile
 class SmeDataController(
     @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired private var logMessageBuilder: LogMessageBuilder,
-    var dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired var logMessageBuilder: LogMessageBuilder,
+    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
 ) : SmeDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 

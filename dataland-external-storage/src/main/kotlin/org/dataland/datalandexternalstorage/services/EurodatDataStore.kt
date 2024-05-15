@@ -6,8 +6,8 @@ import org.dataland.datalandeurodatclient.openApiClient.model.Credentials
 import org.dataland.datalandexternalstorage.utils.DatabaseConnection.getConnection
 import org.dataland.datalandexternalstorage.utils.DatabaseConnection.insertByteArrayIntoSqlDatabase
 import org.dataland.datalandexternalstorage.utils.DatabaseConnection.insertDataIntoSqlDatabase
-import org.dataland.datalandexternalstorage.utils.DatabaseConnection.selectDataFromSqlDatabase
 import org.dataland.datalandexternalstorage.utils.DatabaseConnection.selectDocumentFromSqlDatabase
+import org.dataland.datalandexternalstorage.utils.DatabaseConnection.selectJsonStringFromSqlDatabase
 import org.dataland.datalandexternalstorage.utils.EurodatDataStoreUtils.retryWrapperMethod
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -147,7 +147,7 @@ class EurodatDataStore(
         }
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlStatement = "SELECT * FROM safedeposit.json WHERE uuid_json = '$dataId'"
-        return selectDataFromSqlDatabase(conn, sqlStatement, dataId)
+        return selectJsonStringFromSqlDatabase(conn, sqlStatement, dataId)
     }
 
     /**
