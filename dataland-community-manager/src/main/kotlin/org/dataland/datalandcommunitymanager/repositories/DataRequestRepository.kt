@@ -75,14 +75,14 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         "SELECT d FROM DataRequestEntity d  " +
+            "JOIN RequestStatusEntity rs ON d.dataRequestId = rs.dataRequestStatus " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
             "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
-            // "(:#{#searchFilter.requestStatus} IS NULL " +
-            // todo
-            // "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
+            "(:#{#searchFilter.requestStatus} IS NULL " +
+            "OR rs.dataRequestStatus = :#{#searchFilter.requestStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
