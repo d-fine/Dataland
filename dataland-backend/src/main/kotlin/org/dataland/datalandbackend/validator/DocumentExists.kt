@@ -31,10 +31,9 @@ class DocumentExistsValidator(
     private val documentControllerApi = DocumentControllerApi(basePath = documentManagerBaseUrl)
 
     override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
-        /*
         if (documentReference != null) {
             documentControllerApi.checkDocument(documentReference.fileReference!!)
-        } */
+        }
         return true
     }
 }
