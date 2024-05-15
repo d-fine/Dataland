@@ -942,6 +942,7 @@
         "required": [
           "creationTimestamp",
           "dataRequestId",
+          "dataRequestStatusHistory",
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",

@@ -27,7 +27,7 @@ data class StoredDataRequest(
 
     val messageHistory: List<StoredDataRequestMessageObject>,
 
-    val dataRequestStatusHistory: List<StoredDataRequestStatusObject>?,
+    val dataRequestStatusHistory: List<StoredDataRequestStatusObject>,
 
     val lastModifiedDate: Long,
 

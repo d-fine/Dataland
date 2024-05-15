@@ -207,6 +207,10 @@ class DataRequestUploadListenerTest {
             openToWithdrawnDataRequest.requestStatus,
             "The status of the previously open data request is not 'withdrawn' after patching.",
         )
+        assertEquals(
+            RequestStatus.Withdrawn, openToWithdrawnDataRequest.dataRequestStatusHistory.last().status,
+            "The status history was not patched correctly.",
+        )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
@@ -218,6 +222,10 @@ class DataRequestUploadListenerTest {
             RequestStatus.Withdrawn,
             answeredToWithdrawnDataRequest.requestStatus,
             "The status of the previously answered data request is not 'withdrawn' after patching.",
+        )
+        assertEquals(
+            RequestStatus.Withdrawn, answeredToWithdrawnDataRequest.dataRequestStatusHistory.last().status,
+            "The status history was not patched correctly.",
         )
     }
 
@@ -253,6 +261,10 @@ class DataRequestUploadListenerTest {
         assertEquals(
             contacts, newMessageAndOpenDataRequest.messageHistory.last().contacts,
             "The contacts were not patched correctly.",
+        )
+        assertEquals(
+            RequestStatus.Open, newMessageAndOpenDataRequest.dataRequestStatusHistory.last().status,
+            "The status history was not patched correctly.",
         )
         assertEquals(RequestStatus.Open, newMessageAndOpenDataRequest.requestStatus)
     }

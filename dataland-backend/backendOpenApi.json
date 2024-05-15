@@ -14170,13 +14170,13 @@
           "companyName": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "lei": {
