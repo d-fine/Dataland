@@ -83,7 +83,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
-            " rs.creationTimestamp =  (" +
+            "rs.creationTimestamp =  (" +
             "    SELECT MAX(rs2.creationTimestamp)" +
             "    FROM RequestStatusEntity rs2 " +
             "    WHERE rs.dataRequestEntity = rs2.dataRequestEntity " +
