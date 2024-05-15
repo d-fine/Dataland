@@ -60,15 +60,12 @@ class DataRequestAlterationManager(
         dataRequestEntity.lastModifiedDate = modificationTime
         dataRequestEntity.requestStatus = requestStatus ?: oldRequestStatus
         dataRequestRepository.save(dataRequestEntity)
-        // todo check if entityManager needed
         if (requestStatus != null && requestStatus != oldRequestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
-            if (contacts != null) {
-                dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
-            }
+            if (contacts != null) dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
         }
         if (contacts != null) {
             val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
