@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
 import java.io.File
 import java.util.UUID
@@ -67,32 +68,44 @@ class Sme {
     }
 
     @Test
-    fun `post a company with SME data and check if it has been persisted successfully with correct data meta info`() {
-        val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
-        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
+    fun `post SME data, check meta-info-persistence and that it is not even accessible to Dataland admins `() {
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
+        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha))
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
         )
         assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val exceptionForJson = assertThrows<ClientException> {
+            smeDataControllerApi.getCompanyAssociatedSmeData(persistedDataMetaInfo!!.dataId)
+        }
+        assertTrue(exceptionForJson.message!!.contains("Client error : 403"))
+
+        val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
+        val exceptionForBlob = assertThrows<ClientException> {
+            smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, expectedHashAlpha)
+        }
+        assertTrue(exceptionForBlob.message!!.contains("Client error : 403"))
     }
 
     @Test
-    fun `post a company with SME data and check if it can be retrieved including the associated documents`() {
+    fun `post SME data and check if it can be retrieved by the data owner, including the associated documents`() {
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", testSmeData)
-        val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
-        val expectedHashBeta = dummyFileBeta.readBytes().sha256()
-
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val retrievedCompanyAssociatedSmeData = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponse.dataId,
         )
-        val downloadedAlpha = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashAlpha)
-        val downloadedBeta = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashBeta)
-
         assertEquals(companyAssociatedDataSmeData, retrievedCompanyAssociatedSmeData)
+
+        val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
+        val downloadedAlpha = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashAlpha)
         assertEquals(expectedHashAlpha, downloadedAlpha.readBytes().sha256())
+
+        val expectedHashBeta = dummyFileBeta.readBytes().sha256()
+        val downloadedBeta = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashBeta)
         assertEquals(expectedHashBeta, downloadedBeta.readBytes().sha256())
     }
 
@@ -108,6 +121,7 @@ class Sme {
         val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdAlpha,
         )
+        assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
 
         val companyAssociatedSmeDataBeta = CompanyAssociatedDataSmeData(
             companyId, "2022",
@@ -117,36 +131,33 @@ class Sme {
         val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdBeta,
         )
+        assertEquals(2, retrievedCompanyAssociatedSmeDataBeta?.data?.general?.basicInformation?.numberOfEmployees)
 
         val persistedDataMetaInfoAlpha = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdAlpha,
         )
         assertEquals(false, persistedDataMetaInfoAlpha?.currentlyActive)
-        assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
 
         val persistedDataMetaInfoBeta = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdBeta,
         )
         assertEquals(true, persistedDataMetaInfoBeta?.currentlyActive)
-        assertEquals(2, retrievedCompanyAssociatedSmeDataBeta?.data?.general?.basicInformation?.numberOfEmployees)
     }
 
     @Test
-    fun `post an SME dataset with duplicate files and assert that the downloaded file is unique and correct`() {
+    fun `post an SME dataset with duplicate file and assert that the downloaded file is unique and correct`() {
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
         val dataId = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
 
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
         )
 
         val expectedHash = dummyFileAlpha.readBytes().sha256()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val downloadedFile = smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, expectedHash)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())
     }
-
-    // TODO test für keinen access für andere?  Not even Admin!
 
     private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
         return dataset.copy(
