@@ -13,6 +13,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -31,11 +32,10 @@ interface SmeDataApi {
     /**
      * A method to store private sme data via Dataland into a data store
      */
-    // TODO activate again
-    // @PreAuthorize(
-    //   "(hasRole('ROLE_USER') " +
-    //        "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
-    // )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
+    )
     @Operation(
         summary = "Upload a new private sme data set.",
         description = "The uploaded private sme data is added to the private data store, the generated data id is " +
@@ -57,12 +57,11 @@ interface SmeDataApi {
      * @param dataId identifier used to uniquely specify data in the data store
      * @return the complete data stored under the provided data ID with the associated company ID
      */
-    // TODO Reactivate this at the end
 
-    // @PreAuthorize(
-    //   "(hasRole('ROLE_USER') " +
-    //       "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
-    // )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
+    )
     @Operation(
         summary = "Retrieve specific data from the private data store.",
         description = "Data identified by the provided data ID is retrieved.",
@@ -84,12 +83,11 @@ interface SmeDataApi {
      * @param hash the hash of the document
      * @param dataId the dataId to which the document is connected
      */
-    // TODO Reactivate this at the end
 
-    // @PreAuthorize(
-    //   "(hasRole('ROLE_USER') " +
-    //       "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
-    // )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedSmeData.companyId))",
+    )
     @Operation(
         summary = "Receive a document.",
         description = "Receive a document by its ID from internal storage.",
