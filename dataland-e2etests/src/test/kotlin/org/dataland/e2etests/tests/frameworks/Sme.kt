@@ -68,7 +68,7 @@ class Sme {
     }
 
     @Test
-    fun `post SME data, check meta-info-persistence and that it is not even accessible to Dataland admins `() {
+    fun `post SME data check meta-info-persistence and that it is not even accessible to Dataland admins `() {
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha))
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
@@ -90,7 +90,7 @@ class Sme {
     }
 
     @Test
-    fun `post SME data and check if it can be retrieved by the data owner, including the associated documents`() {
+    fun `post SME data and check if it can be retrieved by the data owner including the associated documents`() {
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", testSmeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
 
