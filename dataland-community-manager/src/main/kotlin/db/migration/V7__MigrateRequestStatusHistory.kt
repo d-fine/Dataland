@@ -6,9 +6,8 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script migrates the request status history to a separate table
  */
-public class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
+class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        // todo patch status history of existing requetss
         context!!.connection.createStatement().execute(
             "CREATE TABLE request_status_history (" +
                 "status_history_id varchar(255) NOT NULL, " +
