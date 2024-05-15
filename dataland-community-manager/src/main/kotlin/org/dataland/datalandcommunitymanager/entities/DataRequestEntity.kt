@@ -35,7 +35,7 @@ data class DataRequestEntity(
     var messageHistory: List<MessageEntity>,
 
     // todo check if dataRequest works as well
-    @OneToMany(mappedBy = "dataRequestStatus")
+    @OneToMany(mappedBy = "dataRequestEntity")
     var dataRequestStatusHistory: List<RequestStatusEntity>,
 
     var lastModifiedDate: Long,
