@@ -48,21 +48,21 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         d.dataType, 
         d.reportingPeriod, 
         d.datalandCompanyId,
-         h.requestStatus,  
+         rs.requestStatus,  
         COUNT(d.userId)
     ) 
     FROM DataRequestEntity d
-     left join RequestStatusEntity h on d.dataRequestId = h.dataRequestStatus.dataRequestId
+     LEFT JOIN RequestStatusEntity rs ON d.dataRequestId = rs.dataRequestStatus.dataRequestId
     WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) 
       AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%) 
       AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%)
-      AND h.creationTimestamp =  (
-    SELECT MAX(h2.creationTimestamp)
-    FROM RequestStatusEntity h2
-    WHERE h.dataRequestStatus.dataRequestId = h2.dataRequestStatus.dataRequestId
+      AND rs.creationTimestamp =  (
+    SELECT MAX(rs2.creationTimestamp)
+    FROM RequestStatusEntity rs2
+    WHERE rs.dataRequestStatus.dataRequestId = rs2.dataRequestStatus.dataRequestId
 )
-AND (:status IS NULL OR h.requestStatus = :status)
-    GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, h.requestStatus
+AND (:status IS NULL OR rs.requestStatus = :status)
+    GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, rs.requestStatus
 """,
     )
     fun getAggregatedDataRequests(
