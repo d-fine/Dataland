@@ -37,6 +37,7 @@ class DataRequestUploadListenerTest {
         .getCompanyInformationWithoutIdentifiers(1).first()
     private val message = "test message"
     private val contacts = setOf("test@example.com", "test2@example.com")
+    private val errorMessageForRequestStatusHistory = "The status history was not patched correctly."
 
     @Test
     fun `post single data request and provide data and check that status has changed to answered`() {
@@ -209,7 +210,7 @@ class DataRequestUploadListenerTest {
         )
         assertEquals(
             RequestStatus.Withdrawn, openToWithdrawnDataRequest.dataRequestStatusHistory?.last()?.status,
-            "The status history was not patched correctly.",
+            errorMessageForRequestStatusHistory,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -225,7 +226,7 @@ class DataRequestUploadListenerTest {
         )
         assertEquals(
             RequestStatus.Withdrawn, answeredToWithdrawnDataRequest.dataRequestStatusHistory?.last()?.status,
-            "The status history was not patched correctly.",
+            errorMessageForRequestStatusHistory,
         )
     }
 
@@ -264,7 +265,7 @@ class DataRequestUploadListenerTest {
         )
         assertEquals(
             RequestStatus.Open, newMessageAndOpenDataRequest.dataRequestStatusHistory?.last()?.status,
-            "The status history was not patched correctly.",
+            errorMessageForRequestStatusHistory,
         )
         assertEquals(RequestStatus.Open, newMessageAndOpenDataRequest.requestStatus)
     }
