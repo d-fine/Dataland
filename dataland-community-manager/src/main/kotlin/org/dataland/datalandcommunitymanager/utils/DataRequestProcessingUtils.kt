@@ -89,7 +89,6 @@ class DataRequestProcessingUtils(
             datalandCompanyId,
             creationTime,
         )
-        dataRequestEntity.requestStatus = RequestStatus.Open
         dataRequestRepository.save(dataRequestEntity)
 
         val requestStatusObject = listOf(StoredDataRequestStatusObject(RequestStatus.Open, creationTime))
