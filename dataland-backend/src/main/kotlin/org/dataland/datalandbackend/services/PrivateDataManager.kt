@@ -271,21 +271,22 @@ class PrivateDataManager(
      * Retrieves a private sme data object from the private storage
      * @param dataId the dataId of the dataset to be retrieved
      * @param correlationId the correlationId of the request
+     * @return the sme dataset
      */
-    fun getPrivateDataSet(dataId: String, correlationId: String): StorableDataSet {
-        return dataManagerUtils.getDataSet(
-            dataId, DataType.of(SmeData::class.java), correlationId,
-            ::getDataFromCacheOrStorageService,
+    fun getPrivateSmeData(dataId: String, correlationId: String): SmeData {
+        return objectMapper.readValue(
+            dataManagerUtils.getStorableDataset(
+                dataId, DataType.of(SmeData::class.java), correlationId,
+                ::getJsonStringFromCacheOrExternalStorage,
+            ).data,
+            SmeData::class.java,
         )
     }
-    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
+    private fun getJsonStringFromCacheOrExternalStorage(dataId: String, correlationId: String): String {
         return jsonDataInMemoryStorage[dataId] ?: dataManagerUtils
-            .getDataFromStorageService(
-                dataId, correlationId,
-                ::getPrivateData,
-            )
+            .getDatasetAsJsonStringFromStorageService(dataId, correlationId, ::getJsonStringFromExternalStorage)
     }
-    private fun getPrivateData(dataId: String, correlationId: String): String {
+    private fun getJsonStringFromExternalStorage(dataId: String, correlationId: String): String {
         return externalStorageDataGetter.getJsonFromExternalStorage(dataId, correlationId)
     }
 

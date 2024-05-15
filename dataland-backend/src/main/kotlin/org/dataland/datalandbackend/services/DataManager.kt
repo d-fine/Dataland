@@ -147,20 +147,20 @@ class DataManager(
      * @return data set associated with the data ID provided in the input
      */
     fun getPublicDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        return dataManagerUtils.getDataSet(
+        return dataManagerUtils.getStorableDataset(
             dataId, dataType, correlationId,
-            ::getDataFromCacheOrStorageService,
+            ::getJsonStringFromCacheOrInternalStorage,
         )
     }
-    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
+    private fun getJsonStringFromCacheOrInternalStorage(dataId: String, correlationId: String): String {
         return publicDataInMemoryStorage[dataId] ?: dataManagerUtils
-            .getDataFromStorageService(
+            .getDatasetAsJsonStringFromStorageService(
                 dataId,
-                correlationId, ::getPublicData,
+                correlationId, ::getJsonStringFromInternalStorage,
             )
     }
 
-    private fun getPublicData(dataId: String, correlationId: String): String {
+    private fun getJsonStringFromInternalStorage(dataId: String, correlationId: String): String {
         return storageClient.selectDataById(dataId, correlationId)
     }
 

@@ -80,18 +80,19 @@ class DataManagerUtils(
      * This function retrieves a dataset from one of the connected services
      * @param dataId the dataId of the requested dataset
      * @param correlationId the correlationId of the request
-     * @param datasetGetterFunction the function which specifies from which storage the dataset should be retrieved
+     * @param datasetJsonStringGetter the function which specifies from which storage the dataset should be retrieved
+     * @return the dataset as JSON string
      */
-    fun getDataFromStorageService(
+    fun getDatasetAsJsonStringFromStorageService(
         dataId: String,
         correlationId: String,
-        datasetGetterFunction: (String, String) ->
+        datasetJsonStringGetter: (String, String) ->
         String,
     ): String {
         val dataAsString: String
         logger.info("Retrieve data from storage. Correlation ID: $correlationId")
         try {
-            dataAsString = datasetGetterFunction(dataId, correlationId)
+            dataAsString = datasetJsonStringGetter(dataId, correlationId)
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +
@@ -107,14 +108,14 @@ class DataManagerUtils(
      * @param dataId to identify the stored data
      * @param dataType to check the correctness of the type of the retrieved data
      * @param correlationId to use in combination with dataId to retrieve data and assert type
-     * @param datasetGetterFunction the function to retrieve the dataset from the respective storage service
+     * @param datasetJsonStringGetter the function to retrieve the dataset from the respective storage service
      * @return data set associated with the data ID provided in the input
      */
-    fun getDataSet(
+    fun getStorableDataset(
         dataId: String,
         dataType: DataType,
         correlationId: String,
-        datasetGetterFunction: (String, String)
+        datasetJsonStringGetter: (String, String)
         -> String,
     ):
         StorableDataSet {
@@ -122,7 +123,7 @@ class DataManagerUtils(
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, dataMetaInformation, correlationId)
         lateinit var dataAsString: String
         try {
-            dataAsString = datasetGetterFunction(dataId, correlationId)
+            dataAsString = datasetJsonStringGetter(dataId, correlationId)
         } catch (e: ClientException) {
             handleStorageClientException(e, dataId, correlationId)
         }

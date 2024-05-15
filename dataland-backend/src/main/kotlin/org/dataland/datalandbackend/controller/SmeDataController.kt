@@ -58,10 +58,7 @@ class SmeDataController(
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = myObjectMapper.readValue(
-                privateDataManager.getPrivateDataSet(dataId, correlationId).data,
-                SmeData::class.java,
-            ),
+            data = privateDataManager.getPrivateSmeData(dataId, correlationId),
         )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
