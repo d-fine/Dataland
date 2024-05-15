@@ -32,6 +32,10 @@ class DocumentController(
         }
     }
 
+    override fun checkDocumentBoolean(documentId: String): Boolean {
+        return documentManager.checkIfDocumentExistsWithId(documentId)
+    }
+
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
         val document = documentManager.retrieveDocumentById(documentId)
         return ResponseEntity.ok()
