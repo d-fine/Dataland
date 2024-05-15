@@ -67,7 +67,7 @@ class Sme {
     @Test
     fun `post a company with SME data and check if it has been persisted successfully with correct data meta info`() {
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
-        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData)
+        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
         )
@@ -80,7 +80,7 @@ class Sme {
         val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
         val expectedHashBeta = dummyFileBeta.readBytes().sha256()
 
-        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData)
+        val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
         val retrievedCompanyAssociatedSmeData = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataMetaInfoInResponse.dataId,
         )
@@ -98,7 +98,7 @@ class Sme {
             companyId, "2022",
             setNumberOfEmployees(testSmeData, 1),
         )
-        val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
+        val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha, listOf(dummyFileAlpha, dummyFileBeta)).dataId
         val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdAlpha,
         )
@@ -107,7 +107,7 @@ class Sme {
             companyId, "2022",
             setNumberOfEmployees(testSmeData, 2),
         )
-        val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta).dataId
+        val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
         val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdBeta,
         )
@@ -123,6 +123,19 @@ class Sme {
         )
         assertEquals(true, persistedDataMetaInfoBeta?.currentlyActive)
         assertEquals(2, retrievedCompanyAssociatedSmeDataBeta?.data?.general?.basicInformation?.numberOfEmployees)
+    }
+
+    @Test
+    fun `post an SME dataset with duplicate files and assert that the downloaded file is unique and correct`() {
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
+        val dataId = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
+        val persistedDataMetaInfo = executeDataRetrievalWithRetries(
+            apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
+        )
+
+        val expectedHash = dummyFileAlpha.readBytes().sha256()
+        val downloadedFile = smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, expectedHash)
+        assertEquals(expectedHash, downloadedFile.readBytes().sha256())
     }
 
     private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
@@ -145,10 +158,13 @@ class Sme {
         )
     }
 
-    private fun postSmeDataset(companyAssociatedDataSmeData: CompanyAssociatedDataSmeData): DataMetaInformation {
+    private fun postSmeDataset(
+        companyAssociatedDataSmeData: CompanyAssociatedDataSmeData,
+        documents: List<File>,
+    ): DataMetaInformation {
         return customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
             companyAssociatedDataSmeData,
-            listOf(dummyFileAlpha, dummyFileBeta),
+            documents,
         )
     }
 
