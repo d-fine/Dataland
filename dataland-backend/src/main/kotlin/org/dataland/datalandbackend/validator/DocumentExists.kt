@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.springframework.beans.factory.annotation.Value
 import kotlin.reflect.KClass
@@ -32,12 +31,8 @@ class DocumentExistsValidator(
     private val documentControllerApi = DocumentControllerApi(basePath = documentManagerBaseUrl)
 
     override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
-        try {
-            if (documentReference != null) {
-                documentReference.fileReference?.let { documentControllerApi.checkDocument(it) }
-            }
-        } catch (exc: ResourceNotFoundApiException) {
-            return false
+        if (documentReference != null) {
+            documentControllerApi.checkDocument(documentReference.fileReference!!)
         }
         return true
     }

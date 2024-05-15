@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ConfigurationDocumentsControllerApi(
     @Value("\${dataland.documentmanager.base-url}")
-    private val documentsManagerBaseUrl: String,
+    private val documentManagerBaseUrl: String,
 ) {
     /**
      * The bean to configure the internal client StorageControllerApi
      */
     @Bean
     fun getApiDocumentsClient(): DocumentControllerApi {
-        return DocumentControllerApi(basePath = documentsManagerBaseUrl)
+        return DocumentControllerApi(basePath = documentManagerBaseUrl)
     }
 }
