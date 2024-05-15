@@ -403,6 +403,7 @@ export default defineComponent({
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
+
 :deep {
   .card {
     width: 100%;
