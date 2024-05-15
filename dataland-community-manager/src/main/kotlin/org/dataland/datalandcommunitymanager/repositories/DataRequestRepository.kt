@@ -87,7 +87,14 @@ AND (:status IS NULL OR rs.requestStatus = :status)
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
-            "OR rs.dataRequestStatus = :#{#searchFilter.requestStatus}) AND " +
+            "OR " +
+            "(rs.dataRequestStatus = :#{#searchFilter.requestStatus} AND rs.creationTimestamp =  (" +
+            "    SELECT MAX(rs2.creationTimestamp)" +
+            "    FROM RequestStatusEntity rs2" +
+            "    WHERE rs.dataRequestStatus.dataRequestId = rs2.dataRequestStatus.dataRequestId" +
+            "   )" +
+            ")" +
+            ") AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
