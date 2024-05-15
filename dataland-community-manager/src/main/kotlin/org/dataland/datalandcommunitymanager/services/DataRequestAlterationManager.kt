@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -37,7 +35,6 @@ class DataRequestAlterationManager(
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
-    @PersistenceContext private var entityManager: EntityManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -64,14 +61,15 @@ class DataRequestAlterationManager(
         dataRequestEntity.requestStatus = requestStatus ?: oldRequestStatus
         dataRequestRepository.save(dataRequestEntity)
         // todo check if entityManager needed
-        entityManager.detach(dataRequestEntity)
         if (requestStatus != null && requestStatus != oldRequestStatus) {
             val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
             dataRequestEntity.associateRequestStatus(requestStatusObject)
             dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
             dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
+            if (contacts != null) {
+                dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
+            }
         }
-
         if (contacts != null) {
             val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)

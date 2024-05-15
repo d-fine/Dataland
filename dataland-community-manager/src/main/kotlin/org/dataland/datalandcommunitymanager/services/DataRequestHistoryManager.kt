@@ -1,5 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
@@ -15,7 +18,17 @@ import org.springframework.transaction.annotation.Transactional
 class DataRequestHistoryManager(
     @Autowired private val messageRepository: MessageRepository,
     @Autowired private val requestStatusRepository: RequestStatusRepository,
+    @PersistenceContext private var entityManager: EntityManager,
 ) {
+    /**
+     * Method to detach the dataRequestEntity
+     * @param dataRequestEntity data request entity
+     */
+    @Transactional
+    fun detachDataRequestEntity(dataRequestEntity: DataRequestEntity) {
+        entityManager.detach(dataRequestEntity)
+    }
+
     /**
      * Method to store the request status history
      * @param dataRequestStatusHistory list of request status entities

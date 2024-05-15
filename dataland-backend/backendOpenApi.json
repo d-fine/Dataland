@@ -14173,15 +14173,15 @@
           "companyId": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
