@@ -95,7 +95,7 @@ interface DocumentApi {
     )
     fun checkDocumentBoolean(
         @PathVariable("documentId") documentId: String,
-    ): Boolean
+    ): ResponseEntity<Boolean>
 
     /**
      * Retrieve a document by its ID
