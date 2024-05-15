@@ -40,8 +40,8 @@ data class DataRequestEntity(
     var lastModifiedDate: Long,
 
 ) {
-    val requestStatus: RequestStatus?
-        get() = dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus
+    val requestStatus: RequestStatus
+        get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
     constructor(
         userId: String,
         dataType: String,
@@ -102,6 +102,6 @@ data class DataRequestEntity(
             .sortedBy { it.creationTimestamp }
             .map { it.toStoredDataRequestStatusObject() },
         lastModifiedDate = lastModifiedDate,
-        requestStatus = requestStatus ?: RequestStatus.Open,
+        requestStatus = requestStatus,
     )
 }
