@@ -34,7 +34,7 @@ class DataRequestQueryManager(
     fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedStoredDataRequestEntitiesForUser =
-            dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
+            dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
         val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
@@ -126,7 +126,7 @@ class DataRequestQueryManager(
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
-        // todo maybe add fetch status history (dont know if its needed)
-        return dataRequestRepository.fetchMessages(result).map { it.toStoredDataRequest() }
+        // todo maybe add fetch message history (dont think that its needed)
+        return dataRequestRepository.fetchStatusHistory(result).map { it.toStoredDataRequest() }
     }
 }
