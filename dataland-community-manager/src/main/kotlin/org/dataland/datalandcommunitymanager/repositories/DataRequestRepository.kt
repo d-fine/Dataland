@@ -80,7 +80,7 @@ AND (:status IS NULL OR rs.requestStatus = :status)
      */
     @Query(
         "SELECT d FROM DataRequestEntity d  " +
-            "JOIN RequestStatusEntity rs ON d.dataRequestId = rs.dataRequestStatus " +
+            "JOIN RequestStatusEntity rs ON d.dataRequestId = rs.dataRequestStatus.dataRequestId " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
             "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
