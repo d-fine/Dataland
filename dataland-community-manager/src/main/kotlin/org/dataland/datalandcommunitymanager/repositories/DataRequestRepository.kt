@@ -41,21 +41,25 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param status to check for
      * @returns the aggregated data requests
      */
-    @Query(
-        "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
-            "d.dataType, " +
-            "d.reportingPeriod, " +
-            "d.datalandCompanyId, " +
-            "d.requestStatus, " +
-            "COUNT(d.userId))" +
-            "FROM DataRequestEntity d " +
-            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
-            "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
-            "  AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
-            "  AND (:status IS NULL OR d.requestStatus = :status) " +
-            "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, d.requestStatus",
+    // todo
+    /*
+@Query(
+    "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
+        "d.dataType, " +
+        "d.reportingPeriod, " +
+        "d.datalandCompanyId, " +
+        "d.requestStatus, " +
+        "COUNT(d.userId))" +
+        "FROM DataRequestEntity d " +
+        "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
+        "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
+        "  AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
+        "  AND (:status IS NULL OR d.requestStatus = :status) " +
+        "GROUP BY d.dataType, d.reportingPeriod, d.datalandCompanyId, d.requestStatus",
+
 
     )
+    */
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
         @Param("dataTypes") dataTypes: Set<String>?,
@@ -76,8 +80,9 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
-            "(:#{#searchFilter.requestStatus} IS NULL " +
-            "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
+            // "(:#{#searchFilter.requestStatus} IS NULL " +
+            // todo
+            // "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
