@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.api.SmeDataApi
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 /**
  * Controller for the SME framework endpoints
@@ -65,6 +68,8 @@ class SmeDataController(
         )
         return ResponseEntity.ok(companyAssociatedData)
     }
+
+    @Operation(operationId = "getPrivateDocument")
     override fun getPrivateDocument(dataId: String, hash: String): ResponseEntity<InputStreamResource> {
         val correlationId = generateUUID()
         val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
@@ -75,5 +80,41 @@ class SmeDataController(
                 "attachment; filename=${document.documentId}.${document.type.fileExtension}",
             )
             .body(document.content)
+    }
+
+    @Operation(operationId = "getFrameworkDatasetsForCompany")
+    override fun getFrameworkDatasetsForCompany(
+        // TODO this function is mostly duplicate code to the code in DataController.kt => think about it later
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
+        val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
+        val smeDataType = DataType.of(SmeData::class.java)
+        logger.info(
+            logMessageBuilder.getFrameworkDatasetsForCompanyMessage(smeDataType, companyId, reportingPeriodInLog),
+        )
+        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
+            companyId, smeDataType, showOnlyActive, reportingPeriod,
+        )
+        val authentication = DatalandAuthentication.fromContextOrNull()
+        val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<SmeData>>()
+        metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
+            val correlationId = generateCorrelationId(companyId)
+            val smeData = privateDataManager.getPrivateSmeData(it.dataId, correlationId)
+            frameworkDataAndMetaInfo.add(
+                DataAndMetaInformation(
+                    it.toApiModel(DatalandAuthentication.fromContext()), smeData,
+                ),
+            )
+        }
+        return ResponseEntity.ok(frameworkDataAndMetaInfo)
+    }
+
+    private fun generateCorrelationId(companyId: String): String {
+        // TODO this function is mostly duplicate code, see DataController.kt => handle this problem later
+        val correlationId = UUID.randomUUID().toString()
+        logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
+        return correlationId
     }
 }

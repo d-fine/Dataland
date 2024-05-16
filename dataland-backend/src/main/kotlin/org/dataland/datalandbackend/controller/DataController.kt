@@ -116,7 +116,6 @@ abstract class DataController<T>(
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId)
-            logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
             val dataAsString = dataManager.getPublicDataSet(
                 it.dataId, DataType.valueOf(it.dataType),
                 correlationId,
