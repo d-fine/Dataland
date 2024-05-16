@@ -7,6 +7,7 @@ import jakarta.validation.Payload
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -70,7 +71,12 @@ private fun callDocumentApiAndCheckFileReference(
         documentControllerApi.checkDocument(fileReference)
     } catch (exception: ResourceNotFoundApiException) {
         logger.info("The referenced document doesn't have a valid reference or doesn't exist at all.")
+        logger.info(exception.message + exception.summary)
         return false
+    }
+    catch (exception: ClientException) {
+        logger.info("This is a client exception!")
+        logger.info(exception.message + exception.statusCode + exception.response)
     }
     return true
 }
