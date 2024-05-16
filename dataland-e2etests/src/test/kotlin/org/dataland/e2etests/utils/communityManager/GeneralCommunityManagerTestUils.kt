@@ -262,5 +262,5 @@ fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDa
 }
 
 fun getMessageHistoryOfRequest(dataRequestId: String): List<StoredDataRequestMessageObject> {
-    return requestControllerApi.getDataRequestById(UUID.fromString(dataRequestId)).messageHistory ?: emptyList()
+    return requestControllerApi.getDataRequestById(UUID.fromString(dataRequestId)).messageHistory
 }

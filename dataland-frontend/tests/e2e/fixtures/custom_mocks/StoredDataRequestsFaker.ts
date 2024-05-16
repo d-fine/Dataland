@@ -60,9 +60,14 @@ export function generateStoredDataRequest(): StoredDataRequest {
   const minimalNumberOfMessageObjects = 1;
   const messageHistory = generateArray(() => generateStoredDataRequestMessage(), minimalNumberOfMessageObjects);
   const timeOffsetBetweenCreationAndLastModified = 500;
+  const creationTime = generateInt(timeOffsetBetweenCreationAndLastModified);
   const lastModifiedTime = generateInt(500) + timeOffsetBetweenCreationAndLastModified;
   const status = pickOneElement(Object.values(RequestStatus));
   const requestStatusHistory = [
+    {
+      status: RequestStatus.Open,
+      creationTimestamp: creationTime,
+    },
     {
       status: status,
       creationTimestamp: lastModifiedTime,
@@ -71,7 +76,7 @@ export function generateStoredDataRequest(): StoredDataRequest {
   return {
     dataRequestId: faker.string.uuid(),
     userId: faker.string.uuid(),
-    creationTimestamp: generateInt(timeOffsetBetweenCreationAndLastModified),
+    creationTimestamp: creationTime,
     dataType: pickOneElement(Object.values(DataTypeEnum)),
     reportingPeriod: generateReportingPeriod(),
     datalandCompanyId: faker.string.uuid(),

@@ -237,11 +237,11 @@ class DataRequestUploadListenerTest {
         val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, null, contacts, message)
 
         assertEquals(
-            message, newMessageDataRequest.messageHistory?.last()?.message,
+            message, newMessageDataRequest.messageHistory.last().message,
             "The message was not patched correctly.",
         )
         assertEquals(
-            contacts, newMessageDataRequest.messageHistory?.last()?.contacts,
+            contacts, newMessageDataRequest.messageHistory.last().contacts,
             "The contacts were not patched correctly.",
         )
     }
@@ -256,11 +256,11 @@ class DataRequestUploadListenerTest {
         val newMessageAndOpenDataRequest =
             requestControllerApi.patchDataRequest(dataRequestId, RequestStatus.Open, contacts, message)
         assertEquals(
-            message, newMessageAndOpenDataRequest.messageHistory?.last()?.message,
+            message, newMessageAndOpenDataRequest.messageHistory.last().message,
             "The message was not patched correctly.",
         )
         assertEquals(
-            contacts, newMessageAndOpenDataRequest.messageHistory?.last()?.contacts,
+            contacts, newMessageAndOpenDataRequest.messageHistory.last().contacts,
             "The contacts were not patched correctly.",
         )
         assertEquals(
