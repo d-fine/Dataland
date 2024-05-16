@@ -9,7 +9,13 @@ import java.util.UUID
  */
 class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        context!!.connection.createStatement().execute(
+        context!!
+        createStatusHistoryTable(context)
+        insertStatusHistoryForExistingRequests(context)
+        dropRequestStatusColumn(context)
+    }
+    private fun createStatusHistoryTable(context: Context) {
+        context.connection.createStatement().execute(
             "CREATE TABLE request_status_history (" +
                 "status_history_id varchar(255) NOT NULL, " +
                 "data_request_id varchar(255) NOT NULL, " +
@@ -19,6 +25,8 @@ class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
                 "CONSTRAINT fk_data_request FOREIGN KEY(data_request_id) REFERENCES data_requests(data_request_id)" +
                 ")",
         )
+    }
+    private fun insertStatusHistoryForExistingRequests(context: Context) {
         val oldRequests = context.connection.createStatement().executeQuery(
             "SELECT data_request_id, last_modified_date, request_status FROM data_requests",
         )
@@ -28,20 +36,22 @@ class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
         val preparedStatement = context.connection.prepareStatement(insertQuery)
 
         while (oldRequests.next()) {
-            val status_history_id = UUID.randomUUID().toString()
-            val data_request_id = oldRequests.getString("data_request_id")
-            val request_status = oldRequests.getString("request_status")
-            val creation_time_stamp = oldRequests.getLong("last_modified_date")
+            val statusHistoryId = UUID.randomUUID().toString()
+            val dataRequestId = oldRequests.getString("data_request_id")
+            val requestStatus = oldRequests.getString("request_status")
+            val creationTimestamp = oldRequests.getLong("last_modified_date")
 
-            preparedStatement.setString(1, status_history_id)
-            preparedStatement.setString(2, data_request_id)
-            preparedStatement.setString(3, request_status)
-            preparedStatement.setLong(4, creation_time_stamp)
+            preparedStatement.setString(1, statusHistoryId)
+            preparedStatement.setString(2, dataRequestId)
+            preparedStatement.setString(3, requestStatus)
+            preparedStatement.setLong(4, creationTimestamp)
             preparedStatement.executeUpdate()
         }
         oldRequests.close()
         preparedStatement.close()
+    }
 
+    private fun dropRequestStatusColumn(context: Context) {
         context.connection.createStatement().execute(
             "ALTER TABLE data_requests " +
                 "DROP COLUMN request_status",
