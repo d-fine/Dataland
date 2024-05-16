@@ -5,6 +5,8 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
+import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReference
+
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,8 +51,8 @@ class ExtendedDocumentReferenceExistsValidator(
     @Qualifier("getDocumentControllerApi")
     @Autowired
     val documentControllerApi: DocumentControllerApi,
-) : ConstraintValidator<DocumentExists, BaseDocumentReference> {
-    override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
+) : ConstraintValidator<DocumentExists, ExtendedDocumentReference> {
+    override fun isValid(documentReference: ExtendedDocumentReference?, context: ConstraintValidatorContext?): Boolean {
         if (documentReference == null) return true
         try {
             documentControllerApi.checkDocument(documentReference.fileReference!!)
