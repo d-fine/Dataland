@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend
+package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus

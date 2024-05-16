@@ -3,14 +3,13 @@ import jakarta.persistence.Embeddable
 import java.io.Serializable
 
 /**
- * The primary key in the dataId-assetId-mapping-table is a composite key. In order to define that composite key, this
+ * The primary key in the Dataland-EuroDaT-mapping-table is a composite key. In order to define that composite key, this
  * class here is required.
  */
 @Embeddable
-data class DataIdToAssetIdCompositeKey(
+data class DataIdAndHashCompositeKey(
     var dataId: String,
-    var assetId: String,
-    var eurodatId: String,
+    var hash: String,
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1
