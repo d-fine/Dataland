@@ -281,7 +281,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
         ],
       },
     ],
-    labelBadgeColor: "red",
+    labelBadgeColor: "orange",
   },
   {
     type: "section",
