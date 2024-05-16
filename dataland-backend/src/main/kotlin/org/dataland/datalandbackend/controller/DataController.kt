@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -10,6 +9,7 @@ import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.canUserBypassQa
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -48,7 +48,7 @@ abstract class DataController<T>(
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
-        val dataIdOfPostedData = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
+        val dataIdOfPostedData = dataManager.processDataStorageRequest(
             datasetToStore,
             bypassQa, correlationId,
         )
@@ -94,7 +94,7 @@ abstract class DataController<T>(
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
+            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -117,7 +117,10 @@ abstract class DataController<T>(
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId)
             logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
-            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+            val dataAsString = dataManager.getPublicDataSet(
+                it.dataId, DataType.valueOf(it.dataType),
+                correlationId,
+            ).data
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),

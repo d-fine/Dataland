@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.model
 
+import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
