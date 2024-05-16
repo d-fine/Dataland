@@ -41,10 +41,11 @@ class V7__MigrateRequestStatusHistory : BaseJavaMigration() {
             val requestStatus = oldRequests.getString("request_status")
             val creationTimestamp = oldRequests.getLong("last_modified_date")
 
-            preparedStatement.setString(1, statusHistoryId)
-            preparedStatement.setString(2, dataRequestId)
-            preparedStatement.setString(3, requestStatus)
-            preparedStatement.setLong(4, creationTimestamp)
+            var index = 1
+            preparedStatement.setString(index++, statusHistoryId)
+            preparedStatement.setString(index++, dataRequestId)
+            preparedStatement.setString(index++, requestStatus)
+            preparedStatement.setLong(index, creationTimestamp)
             preparedStatement.executeUpdate()
         }
         oldRequests.close()
