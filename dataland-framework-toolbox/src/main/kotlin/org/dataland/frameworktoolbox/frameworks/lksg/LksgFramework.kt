@@ -35,7 +35,7 @@ class LksgFramework : PavedRoadFramework(
     private fun editShareOfTemporaryWorkersOptions(parent: ComponentGroup) {
         parent.edit<SingleSelectComponent>("shareOfTemporaryWorkers") {
             options = mutableSetOf(
-                SelectionOption("Smaller10", "<10%"),
+                SelectionOption("Smaller50", "<10%"),
                 SelectionOption("Between10And25", "10-25%"),
                 SelectionOption("Between25And50", "25-50%"),
                 SelectionOption("Greater50", ">50%"),

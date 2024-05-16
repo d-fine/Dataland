@@ -7153,7 +7153,7 @@
       "LksgGeneralMasterdataShareOfTemporaryWorkersOptions": {
         "type": "string",
         "enum": [
-          "Smaller10",
+          "Smaller50",
           "Between10And25",
           "Between25And50",
           "Greater50"
@@ -14205,18 +14205,6 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14224,6 +14212,18 @@
           "lei": {
             "type": "string",
             "nullable": true
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           }
         }
       },

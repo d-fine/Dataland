@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class LksgGeneralMasterdataShareOfTemporaryWorkersOptions {
-    Smaller10,
+    Smaller50,
     Between10And25,
     Between25And50,
     Greater50,
