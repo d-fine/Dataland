@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView ? 'summary-panel--interactive' : ''}`"
+    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView && isUserAllowedToView ? 'summary-panel--interactive' : ''}`"
     @click="onClickPanel"
   >
     <div>
@@ -114,8 +114,6 @@ function onCursorEnterProvideButton(): void {
 function onCursorLeaveProvideButton(): void {
   provideDataButtonHovered = false;
 }
-
-// TODO der "hover-style" muss deaktiviert werden, wenn "isUserAllowedToView" auf false steht
 </script>
 
 <style scoped lang="scss">

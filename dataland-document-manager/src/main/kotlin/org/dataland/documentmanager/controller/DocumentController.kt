@@ -34,12 +34,13 @@ class DocumentController(
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
         val document = documentManager.retrieveDocumentById(documentId)
+        val contentLength = document.content.contentLength()
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
             .header(
                 HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=${document.documentId}.${document.type.fileExtension}",
-            )
+            ).header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
             .body(document.content)
     }
 }

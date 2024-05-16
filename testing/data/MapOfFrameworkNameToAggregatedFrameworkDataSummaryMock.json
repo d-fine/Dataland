@@ -19,5 +19,8 @@
 	},
 	"heimathafen": {
 		"numberOfProvidedReportingPeriods": 30
+	},
+	"sme": {
+		"numberOfProvidedReportingPeriods": 5
 	}
 }
