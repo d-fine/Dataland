@@ -99,7 +99,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.general?.masterData?.seasonalOrMigrantWorkers == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                Smaller10: "<10%",
+                Smaller50: "<10%",
                 Between10And25: "10-25%",
                 Between25And50: "25-50%",
                 Greater50: ">50%",

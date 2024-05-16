@@ -87,7 +87,7 @@ export const lksgDataModel = [
             options: [
               {
                 label: "<10%",
-                value: "Smaller10",
+                value: "Smaller50",
               },
               {
                 label: "10-25%",
