@@ -6,6 +6,8 @@ import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import kotlin.reflect.KClass
 
@@ -26,10 +28,10 @@ annotation class DocumentExists(
 class DocumentExistsValidator(
     @Value("\${dataland.documentmanager.base-url:https://local-dev.dataland.com/documents}")
     private val documentManagerBaseUrl: String,
+    @Qualifier("getDocumentControllerApi")
+    @Autowired val documentControllerApi: DocumentControllerApi,
 ) : ConstraintValidator<DocumentExists, BaseDocumentReference> {
-    // TODO make path adaptive for container
-    private val documentControllerApi = DocumentControllerApi(basePath = documentManagerBaseUrl)
-
+    // TODO make path adaptive for containe
     override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
         if (documentReference != null) {
             documentControllerApi.checkDocument(documentReference.fileReference!!)

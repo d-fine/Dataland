@@ -73,31 +73,6 @@ interface DocumentApi {
     )
 
     /**
-     * Checks if a document with a given ID exists and returns a boolean
-     * @param documentId the ID to check
-     * @return boolean value
-     */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @Operation(
-        summary = "Check if a document exists.",
-        description = "Check for a given document ID (hash) if the document already exists in the database.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked document existence."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that a document does not exist."),
-        ],
-    )
-    @RequestMapping(
-        method = [RequestMethod.HEAD],
-        value = ["/{documentId}"],
-        produces = ["application/json"],
-    )
-    fun checkDocumentBoolean(
-        @PathVariable("documentId") documentId: String,
-    ): ResponseEntity<Boolean>
-
-    /**
      * Retrieve a document by its ID
      * @param documentId the ID to check
      */
