@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandexternalstorage.openApiClient.api.ExternalStorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Configuration
 class ConfigurationStorageControllerApi(
     @Value("\${dataland.internalstorage.base-url}")
     private val internalStorageBaseUrl: String,
+    @Value("\${dataland.externalstorage.base-url}")
+    private val externalStorageBaseUrl: String,
 ) {
     /**
      * The bean to configure the internal client StorageControllerApi
@@ -20,5 +23,13 @@ class ConfigurationStorageControllerApi(
     @Bean
     fun getApiInternalClient(): StorageControllerApi {
         return StorageControllerApi(basePath = internalStorageBaseUrl)
+    }
+
+    /**
+     * The bean to configure the external client StorageControllerApi
+     */
+    @Bean
+    fun getApiExternalClient(): ExternalStorageControllerApi {
+        return ExternalStorageControllerApi(basePath = externalStorageBaseUrl)
     }
 }

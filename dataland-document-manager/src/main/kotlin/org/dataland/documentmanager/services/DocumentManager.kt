@@ -1,6 +1,8 @@
 package org.dataland.documentmanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.DocumentStream
+import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -8,8 +10,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
-import org.dataland.documentmanager.model.DocumentStream
-import org.dataland.documentmanager.model.DocumentType
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
