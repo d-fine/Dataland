@@ -946,6 +946,7 @@
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
+          "messageHistory",
           "reportingPeriod",
           "requestStatus",
           "userId"
