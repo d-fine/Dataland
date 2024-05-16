@@ -43,31 +43,12 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 - [ ] Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
   then update the version number used in docker-compose.
-- [ ] Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with the currently used version
-  of the client. 
-  Start the eurodat client as described in the internal Dataland wiki and visit
-  http://localhost:8080/api/v1/client-controller/openapi
-  This should trigger an automated download of the openApiSpec. The content of this file will be in YAML format.
-  Therefore convert its content to JSON with this converter: https://jsonformatter.org/yaml-to-json
-  Then replace the content of eurodatClientOpenApi.json in the repo with the converted JSON from the converter.
-  After doing this, there should be no diffs to main in eurodatClientOpenApi.json!
-  If there are diffs, this means that it is out of sync and you should discuss this with someone on the MiNaBo team.
-
-  
-  
-### Dataland Analytics
-
-- [ ] Update the backend API file
-  - [ ] Go to https://dataland.com/api/v3/api-docs/public and copy the backend api JSON
-  - [ ] Convert the JSON to a .yaml file preferably using an online-converter (https://jsonformatter.org/json-to-yaml)
-  - [ ] Paste the .yaml output into "datasets_open_api.yaml"
-- [ ] Accordingly, update the document API file
-  - [ ] Copy from https://dataland.com/documents/v3/api-docs/public to documents_open_api.yaml
-- [ ] Accordingly, update the community API file
-  - [ ] Copy from https://dataland.com/community/v3/api-docs/public to requests_open_api.yaml
-- [ ] Accordingly, update the QA API file
-  - [ ] Copy from https://dataland.com/qa/v3/api-docs/public to requests_open_api.yaml
-
+- [ ] If the version was changed: Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with 
+  the currently used version of the client. 
+  1. Edit the docker compose file by adding a `ports` section with the entry `"8080:8080"` to the "eurodat-client" and start it
+  2. Open a shell and navigate to the `dataland-eurodat-client` subproject 
+  3. Execute the following snippet of code: `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
+  4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
 
 ### Dockerfile updates
 
