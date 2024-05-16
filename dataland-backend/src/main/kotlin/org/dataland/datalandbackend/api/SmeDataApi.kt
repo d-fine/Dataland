@@ -97,6 +97,7 @@ interface SmeDataApi {
         ],
     )
     @GetMapping(
+        value = ["/documents"],
         produces = [
             "application/json",
             "application/pdf",
