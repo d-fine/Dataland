@@ -48,6 +48,7 @@ const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
+  isUserAllowedToView: boolean | undefined;
   isUserAllowedToUpload: boolean | undefined;
 }>();
 
@@ -95,7 +96,7 @@ let provideDataButtonHovered: boolean = false;
  * the view page is visted
  */
 function onClickPanel(): void {
-  if (!provideDataButtonHovered && hasAccessibleViewPage.value) {
+  if (!provideDataButtonHovered && hasAccessibleViewPage.value && props.isUserAllowedToView) {
     void router.push(`/companies/${props.companyId}/frameworks/${props.framework}`);
   }
 }
@@ -113,6 +114,8 @@ function onCursorEnterProvideButton(): void {
 function onCursorLeaveProvideButton(): void {
   provideDataButtonHovered = false;
 }
+
+// TODO der "hover-style" muss deaktiviert werden, wenn "isUserAllowedToView" auf false steht
 </script>
 
 <style scoped lang="scss">
