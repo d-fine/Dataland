@@ -25,7 +25,7 @@ data class StoredDataRequest(
 
     val datalandCompanyId: String,
 
-    val messageHistory: List<StoredDataRequestMessageObject>?,
+    val messageHistory: List<StoredDataRequestMessageObject>,
 
     val dataRequestStatusHistory: List<StoredDataRequestStatusObject>,
 
