@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration
  * This class holds the configuration properties and the beans to auto-configure this library in a spring-boot
  * environment
  */
+
+// todo remove class if not necessary and remove applicaton props etc.
 @Configuration
 class ConfigurationDocumentsControllerApi(
     @Value("\${dataland.documentmanager.base-url}")
