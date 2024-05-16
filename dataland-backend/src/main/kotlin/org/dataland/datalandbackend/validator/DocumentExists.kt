@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Qualifier
 import kotlin.reflect.KClass
 
 /**
- * Annotation for the validation of an ExtendedDataPoint<*> holding a number
+ * Annotation for the validation of an ExtendedDataPoint<*> holding a number todo documentation
  */
 @Target(AnnotationTarget.FIELD)
-@Constraint(validatedBy = [DocumentExistsValidator::class])
+@Constraint(validatedBy = [BaseDocumentReferenceExistsValidator::class,
+    ExtendedDocumentReferenceExistsValidator::class])
 annotation class DocumentExists(
     val message: String = "Input validation failed: The document reference doesn't exist",
     val groups: Array<KClass<*>> = [],
@@ -24,8 +25,27 @@ annotation class DocumentExists(
 
 /**
  * Class holding the validation logic for a class that implements BaseDataPoint<*> Interface featuring a number
+ * todo documentation
  */
-class DocumentExistsValidator(
+class BaseDocumentReferenceExistsValidator(
+    @Qualifier("getDocumentControllerApi")
+    @Autowired
+    val documentControllerApi: DocumentControllerApi,
+) : ConstraintValidator<DocumentExists, BaseDocumentReference> {
+    override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
+        if (documentReference == null) return true
+        var valid: Boolean
+        try {
+            documentControllerApi.checkDocument(documentReference.fileReference!!)
+            valid = true
+        } catch (exception: ResourceNotFoundApiException) {
+            valid = false
+        }
+        return valid
+    }
+}
+
+class ExtendedDocumentReferenceExistsValidator(
     @Qualifier("getDocumentControllerApi")
     @Autowired
     val documentControllerApi: DocumentControllerApi,
