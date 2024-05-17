@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.specific.uploadconfig
 
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCellConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
@@ -32,12 +33,21 @@ class FrameworkUploadConfigBuilder(
     )
 
     private fun buildUploadConfig(uploadConfigTsPath: Path) {
+        var anyLambdaFunctionUsesDataset = false
+        rootSectionConfigBuilder.traverse {
+            anyLambdaFunctionUsesDataset = when (it) {
+                is UploadCategoryBuilder -> anyLambdaFunctionUsesDataset || it.shouldDisplay.usesDataset
+                is UploadCellConfigBuilder -> anyLambdaFunctionUsesDataset || it.shouldDisplay.usesDataset
+            }
+        }
+
         val freeMarkerContext = mapOf(
             "uploadConfig" to rootSectionConfigBuilder.children,
             "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
             "frameworkBaseNameInCamelCase" to Naming.getNameFromLabel(framework.identifier),
             "frameworkIdentifier" to framework.identifier,
             "imports" to TypeScriptImport.mergeImports(rootSectionConfigBuilder.imports),
+            "anyLambdaFunctionUsesDataset" to anyLambdaFunctionUsesDataset,
         )
 
         val freemarkerTemplate = FreeMarker.configuration
