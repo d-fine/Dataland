@@ -253,9 +253,8 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-      let heimathafenDataControllerApi: PublicFrameworkDataApi<HeimathafenData>;
       if (frameworkDefinition) {
-        heimathafenDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
+        const heimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
