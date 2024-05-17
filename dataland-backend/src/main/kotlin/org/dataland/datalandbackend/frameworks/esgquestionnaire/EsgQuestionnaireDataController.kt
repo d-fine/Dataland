@@ -33,7 +33,8 @@ class EsgQuestionnaireDataController(
     EsgQuestionnaireData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEsgQuestionnaireData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<EsgQuestionnaireData>> {
         return super.getCompanyAssociatedData(dataId)
     }
 

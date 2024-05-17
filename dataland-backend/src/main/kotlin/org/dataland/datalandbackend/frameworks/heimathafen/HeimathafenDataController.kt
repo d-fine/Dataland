@@ -33,7 +33,8 @@ class HeimathafenDataController(
     HeimathafenData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedHeimathafenData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<HeimathafenData>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<HeimathafenData>> {
         return super.getCompanyAssociatedData(dataId)
     }
 
