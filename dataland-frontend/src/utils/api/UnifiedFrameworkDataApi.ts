@@ -4,7 +4,8 @@ import { type DataMetaInformation } from "@clients/backend";
 import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
-export interface FrameworkDataApi<FrameworkDataType> {
+//TODO rename to BaseFrameworkDataApi later
+export interface FrDataApi<FrameworkDataType> {
   getAllCompanyData(
     companyId: string,
     showOnlyActive?: boolean,
@@ -15,9 +16,23 @@ export interface FrameworkDataApi<FrameworkDataType> {
     dataId: string,
     options?: AxiosRequestConfig,
   ): AxiosPromise<CompanyAssociatedData<FrameworkDataType>>;
+}
+
+//TODO rename to PublicFrameworkDataApi later
+export interface FrameworkDataApi<FrameworkDataType> extends FrDataApi<FrameworkDataType> {
   postFrameworkData(
     data: CompanyAssociatedData<FrameworkDataType>,
     bypassQa?: boolean,
+    options?: AxiosRequestConfig,
+  ): AxiosPromise<DataMetaInformation>;
+}
+
+export interface PrivateFrameworkDataApi<FrameworkDataType> extends FrDataApi<FrameworkDataType> {
+  // TODO think about this
+  getPrivateDocument(dataId: string, hash: string, options?: AxiosRequestConfig): AxiosPromise<File>;
+  postFrameworkData(
+    companyAssociatedSmeData: CompanyAssociatedData<FrameworkDataType>,
+    documents: Array<File>,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataMetaInformation>;
 }

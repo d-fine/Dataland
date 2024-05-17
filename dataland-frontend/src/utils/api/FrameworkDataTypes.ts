@@ -20,7 +20,7 @@ export type FrameworkDataTypes = {
     apiSuffix: "P2pData";
     api: P2pDataControllerApi;
   };
-  /*[DataTypeEnum.Sme]: {
+  /*[DataTypeEnum.Sme]: { TODO probably need it for Prepopulation
     data: SmeData;
     apiSuffix: "SmeData";
     api: SmeDataControllerApi;
