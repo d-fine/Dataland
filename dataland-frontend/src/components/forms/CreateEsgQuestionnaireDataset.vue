@@ -150,7 +150,7 @@ import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "
 import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
 import { esgQuestionnaireDataModel } from "@/frameworks/esg-questionnaire/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { getFilledKpis } from "@/utils/DataPoint";
 
@@ -266,7 +266,7 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-      let esgQuestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
+      let esgQuestionnaireDataControllerApi: PublicFrameworkDataApi<EsgQuestionnaireData>;
       if (frameworkDefinition) {
         esgQuestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
           undefined,
@@ -293,7 +293,7 @@ export default defineComponent({
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-        let esgQuestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
+        let esgQuestionnaireDataControllerApi: PublicFrameworkDataApi<EsgQuestionnaireData>;
         if (frameworkDefinition) {
           esgQuestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
             undefined,

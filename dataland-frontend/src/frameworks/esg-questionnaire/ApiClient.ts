@@ -7,10 +7,10 @@ import {
   type EsgQuestionnaireData,
   EsgQuestionnaireDataControllerApi,
 } from "@clients/backend";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class EsgQuestionnaireApiClient implements FrameworkDataApi<EsgQuestionnaireData> {
+export class EsgQuestionnaireApiClient implements PublicFrameworkDataApi<EsgQuestionnaireData> {
   private readonly openApiDataController: EsgQuestionnaireDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {

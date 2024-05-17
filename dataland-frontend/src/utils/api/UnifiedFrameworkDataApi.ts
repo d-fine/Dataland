@@ -17,8 +17,7 @@ export interface BaseFrameworkDataApi<FrameworkDataType> {
   ): AxiosPromise<CompanyAssociatedData<FrameworkDataType>>;
 }
 
-//TODO rename to PublicFrameworkDataApi later
-export interface FrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
+export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
   postFrameworkData(
     data: CompanyAssociatedData<FrameworkDataType>,
     bypassQa?: boolean,
@@ -56,7 +55,7 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
 };
 
 class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
-  implements FrameworkDataApi<FrameworkDataTypes[K]["data"]>
+  implements PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]>
 {
   private readonly apiSuffix: FrameworkDataTypes[K]["apiSuffix"];
   private readonly openApiDataController: OpenApiDataControllerApi<
@@ -122,6 +121,6 @@ export function translateFrameworkApi<K extends keyof FrameworkDataTypes>(
     FrameworkNameObjectTranslation<FrameworkDataTypes[K]["apiSuffix"]>,
     FrameworkDataTypes[K]["data"]
   >,
-): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
   return new OpenApiUnificationAdapter(apiSuffix, openApiDataController);
 }
