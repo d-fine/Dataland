@@ -10,9 +10,7 @@ import {
   type PathwaysToParisData,
   type SfdrData,
   type SfdrDataControllerApi,
-  type SmeData,
-  //type SmeData,
-  //type SmeDataControllerApi,
+  type SmeData, SmeDataControllerApi,
 } from "@clients/backend";
 
 export type FrameworkDataTypes = {
