@@ -1,4 +1,4 @@
-package org.dataland.documentmanager.model
+package org.dataland.datalandbackendutils.model
 
 import org.springframework.core.io.InputStreamResource
 

@@ -1,10 +1,10 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

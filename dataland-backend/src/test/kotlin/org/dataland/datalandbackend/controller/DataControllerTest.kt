@@ -98,7 +98,7 @@ internal class DataControllerTest(
     }
 
     private fun mockDataManager() {
-        `when`(mockDataManager.getDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
+        `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
             StorableDataSet(
                 "",
                 testDataType,
