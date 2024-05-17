@@ -167,7 +167,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      documentsToUpload: [] as File[],
+      documentsToUpload: [] as DocumentToUpload[],
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       listOfFilledKpis: [] as Array<string>,
     };
@@ -243,12 +243,13 @@ export default defineComponent({
             Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
         }
+        const Files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Sme);
         let SmeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
         if (frameworkDefinition) {
           SmeDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-          await SmeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, this.documentsToUpload);
+          await SmeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
         }
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";
