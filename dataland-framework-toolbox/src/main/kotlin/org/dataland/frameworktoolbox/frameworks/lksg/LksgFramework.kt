@@ -45,7 +45,7 @@ class LksgFramework : PavedRoadFramework(
 
     private fun setSectionColorsAndExpansion(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
-            viewPageLabelBadgeColor = LabelBadgeColor.Orange
+            viewPageLabelBadgeColor = LabelBadgeColor.Red
             viewPageExpandOnPageLoad = true
 
             uploadPageLabelBadgeColor = LabelBadgeColor.Orange
