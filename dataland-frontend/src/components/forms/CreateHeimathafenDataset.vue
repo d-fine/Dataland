@@ -279,13 +279,13 @@ export default defineComponent({
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-        let HeimathafenDataControllerApi: PublicFrameworkDataApi<HeimathafenData>;
+        let heimathafenDataControllerApi: PublicFrameworkDataApi<HeimathafenData>;
         if (frameworkDefinition) {
-          HeimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+          heimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
             undefined,
             apiClientProvider.axiosInstance,
           );
-          await HeimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
+          await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
         }
         this.$emit("datasetCreated");
         this.dataDate = undefined;
