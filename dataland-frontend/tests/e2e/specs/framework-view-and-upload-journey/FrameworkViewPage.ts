@@ -78,12 +78,10 @@ describeIf(
     ): void {
       cy.intercept({ url: "/api/companies*", times: 2 }).as("searchCompanies");
       cy.intercept({ url: "/api/companies/meta-information" }).as("fetchFilters");
-      cy.intercept({ times: 2, url: "/api/companies/numberOfCompanies**" }).as("numberOfCompanies");
       cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
       verifySearchResultTableExists();
       cy.wait("@searchCompanies");
       cy.wait("@fetchFilters");
-      cy.wait(["@numberOfCompanies", "@numberOfCompanies"]);
       const companySelector = "span:contains(VIEW)";
       cy.get(companySelector).first().click();
     }

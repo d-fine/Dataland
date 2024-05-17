@@ -1,4 +1,4 @@
-package org.dataland.documentmanager.model
+package org.dataland.datalandbackendutils.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.http.MediaType
