@@ -2,14 +2,17 @@
 import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import { type Configuration, type SfdrData } from "@clients/backend";
 import { type AxiosInstance } from "axios";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { SfdrApiClient } from "@/frameworks/sfdr/ApiClient";
 
 export class BaseSfdrFrameworkDefinition implements BaseFrameworkDefinition<SfdrData> {
   readonly identifier = "sfdr";
   readonly explanation = "Sustainability Finance Disclosure Regulation";
   readonly label = "SFDR";
-  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<SfdrData> {
+  getFrameworkApiClient(
+    configuration?: Configuration,
+    axiosInstance?: AxiosInstance,
+  ): PublicFrameworkDataApi<SfdrData> {
     return new SfdrApiClient(configuration, axiosInstance);
   }
 }

@@ -138,7 +138,7 @@ import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNo
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
 import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
@@ -252,7 +252,7 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
-      let lksgDataControllerApi: FrameworkDataApi<LksgData>;
+      let lksgDataControllerApi: PublicFrameworkDataApi<LksgData>;
       if (frameworkDefinition) {
         lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
         const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
@@ -278,7 +278,7 @@ export default defineComponent({
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
-        let lksgDataControllerApi: FrameworkDataApi<LksgData>;
+        let lksgDataControllerApi: PublicFrameworkDataApi<LksgData>;
         if (frameworkDefinition) {
           lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
           await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);

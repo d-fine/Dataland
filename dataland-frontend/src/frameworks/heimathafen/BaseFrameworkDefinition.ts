@@ -2,7 +2,7 @@
 import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import { type Configuration, type HeimathafenData } from "@clients/backend";
 import { type AxiosInstance } from "axios";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { HeimathafenApiClient } from "@/frameworks/heimathafen/ApiClient";
 
 export class BaseHeimathafenFrameworkDefinition implements BaseFrameworkDefinition<HeimathafenData> {
@@ -12,7 +12,7 @@ export class BaseHeimathafenFrameworkDefinition implements BaseFrameworkDefiniti
   getFrameworkApiClient(
     configuration?: Configuration,
     axiosInstance?: AxiosInstance,
-  ): FrameworkDataApi<HeimathafenData> {
+  ): PublicFrameworkDataApi<HeimathafenData> {
     return new HeimathafenApiClient(configuration, axiosInstance);
   }
 }

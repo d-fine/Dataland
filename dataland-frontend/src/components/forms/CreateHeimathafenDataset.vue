@@ -143,7 +143,7 @@ import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/Yes
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { getFilledKpis } from "@/utils/DataPoint";
 import { heimathafenDataModel } from "@/frameworks/heimathafen/UploadConfig";
@@ -253,17 +253,17 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-      let HeimathafenDataControllerApi: FrameworkDataApi<HeimathafenData>;
+      let heimathafenDataControllerApi: PublicFrameworkDataApi<HeimathafenData>;
       if (frameworkDefinition) {
-        HeimathafenDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
+        heimathafenDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
-        const dataResponse = await HeimathafenDataControllerApi.getFrameworkData(dataId);
-        const HeimathafenResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(HeimathafenResponseData.data);
+        const dataResponse = await heimathafenDataControllerApi.getFrameworkData(dataId);
+        const heimathafenResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
         this.companyAssociatedHeimathafenData = objectDropNull(
-          HeimathafenResponseData as ObjectType,
+          heimathafenResponseData as ObjectType,
         ) as CompanyAssociatedDataHeimathafenData;
       }
 
@@ -280,7 +280,7 @@ export default defineComponent({
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-        let HeimathafenDataControllerApi: FrameworkDataApi<HeimathafenData>;
+        let HeimathafenDataControllerApi: PublicFrameworkDataApi<HeimathafenData>;
         if (frameworkDefinition) {
           HeimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
             undefined,

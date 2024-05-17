@@ -2,7 +2,7 @@
 import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import { type Configuration, type EsgQuestionnaireData } from "@clients/backend";
 import { type AxiosInstance } from "axios";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { EsgQuestionnaireApiClient } from "@/frameworks/esg-questionnaire/ApiClient";
 
 export class BaseEsgQuestionnaireFrameworkDefinition implements BaseFrameworkDefinition<EsgQuestionnaireData> {
@@ -13,7 +13,7 @@ export class BaseEsgQuestionnaireFrameworkDefinition implements BaseFrameworkDef
   getFrameworkApiClient(
     configuration?: Configuration,
     axiosInstance?: AxiosInstance,
-  ): FrameworkDataApi<EsgQuestionnaireData> {
+  ): PublicFrameworkDataApi<EsgQuestionnaireData> {
     return new EsgQuestionnaireApiClient(configuration, axiosInstance);
   }
 }

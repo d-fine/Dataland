@@ -2,14 +2,17 @@
 import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import { type Configuration, type LksgData } from "@clients/backend";
 import { type AxiosInstance } from "axios";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { LksgApiClient } from "@/frameworks/lksg/ApiClient";
 
 export class BaseLksgFrameworkDefinition implements BaseFrameworkDefinition<LksgData> {
   readonly identifier = "lksg";
   readonly explanation = "Lieferkettensorgfaltspflichtengesetz";
   readonly label = "LkSG";
-  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<LksgData> {
+  getFrameworkApiClient(
+    configuration?: Configuration,
+    axiosInstance?: AxiosInstance,
+  ): PublicFrameworkDataApi<LksgData> {
     return new LksgApiClient(configuration, axiosInstance);
   }
 }

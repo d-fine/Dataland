@@ -3,9 +3,11 @@ import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
-export type ApiClientConstructor<FrameworkDataType> = (config: Configuration) => FrameworkDataApi<FrameworkDataType>;
+export type ApiClientConstructor<FrameworkDataType> = (
+  config: Configuration,
+) => PublicFrameworkDataApi<FrameworkDataType>;
 
 /**
  * Uploads a single framework entry for a company
