@@ -34,8 +34,9 @@ class DocumentController(
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
         val document = documentManager.retrieveDocumentById(documentId)
+        println("test get Document")
         val contentLength = document.content.contentLength()
-        println("content Length: $contentLength")
+        println("content Length: $contentLength") // todo
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
             .header(
