@@ -68,6 +68,7 @@ class EurodatDataStore(
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, eurodatId, eurodatCredentials)
             }
         }
+        // TODO logging is misleading, should only be shown if there was a document stored
         logger.info("Documents stored in eurodat storage.")
     }
 

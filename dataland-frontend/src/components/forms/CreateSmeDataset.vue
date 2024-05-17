@@ -105,7 +105,7 @@ import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum } from "@clients/backend";
+import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum, type SmeData } from "@clients/backend";
 import { smeDataModel } from "@/frameworks/sme/UploadConfig";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -119,10 +119,12 @@ import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { getFilledKpis } from "@/utils/DataPoint";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 export default defineComponent({
   setup() {
@@ -165,7 +167,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      documentsToUpload: [] as DocumentToUpload[],
+      documentsToUpload: [] as File[],
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       listOfFilledKpis: [] as Array<string>,
     };
@@ -213,13 +215,18 @@ export default defineComponent({
      */
     async loadSmeData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const smeDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getUnifiedFrameworkDataController(DataTypeEnum.Sme);
-      this.companyAssociatedSmeData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
-      this.listOfFilledKpis = getFilledKpis(this.companyAssociatedSmeData.data);
-      this.referencedReportsForPrefill =
-        this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Sme);
+      let smeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
+      if (frameworkDefinition) {
+        smeDataControllerApi = frameworkDefinition?.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+        const dataResponse = await smeDataControllerApi.getFrameworkData(dataId);
+        const smeResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
+        this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
+        this.referencedReportsForPrefill =
+          this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
+      }
       this.waitingForData = false;
     },
     /**
@@ -233,12 +240,14 @@ export default defineComponent({
             this.companyAssociatedSmeData.data as ObjectType,
             Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
-          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         }
-        const smeDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.Sme);
-        await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData);
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Sme);
+        let SmeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
+        if (frameworkDefinition) {
+          SmeDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+          await SmeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, this.documentsToUpload);
+        }
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
