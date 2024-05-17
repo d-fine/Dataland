@@ -34,7 +34,6 @@ class DocumentController(
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
         val document = documentManager.retrieveDocumentById(documentId)
-        println("test get Document")
         val documentContent = document.content
         val contentLength = documentContent.contentAsByteArray.size
         return ResponseEntity.ok()
