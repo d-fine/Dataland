@@ -33,7 +33,8 @@ class SfdrDataController(
     SfdrData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<SfdrData>> {
         return super.getCompanyAssociatedData(dataId)
     }
 

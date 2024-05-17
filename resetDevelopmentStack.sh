@@ -8,6 +8,9 @@ if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null |
   exit 1
 fi
 
+# Write files necessary for the EuroDaT-client to work
+./dataland-eurodat-client/write_secret_files.sh
+
 echo "Clearing Docker..."
 docker compose --profile development down
 docker compose --profile init down
