@@ -18,7 +18,6 @@ export class SmeApiClient implements PrivateFrameworkDataApi<SmeData> {
     reportingPeriod?: string,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataAndMetaInformation<SmeData>[]> {
-    console.log("+-+-+-+-getAllCompanyData being called in ApiClients.ts"); // TODO  does not work yet in the Frontend
     return this.openApiDataController.getFrameworkDatasetsForCompany(
       companyId,
       showOnlyActive,

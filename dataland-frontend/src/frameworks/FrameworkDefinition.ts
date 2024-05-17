@@ -1,6 +1,6 @@
 import { type Configuration, type DataTypeEnum } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type FrDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type AxiosInstance } from "axios";
 
 interface MLDTConfigViewConfiguration<FrameworkDataType> {
@@ -15,7 +15,10 @@ export interface BaseFrameworkDefinition<FrameworkDataType> {
   readonly label: string;
   readonly explanation: string;
 
-  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrDataApi<FrameworkDataType>;
+  getFrameworkApiClient(
+    configuration?: Configuration,
+    axiosInstance?: AxiosInstance,
+  ): BaseFrameworkDataApi<FrameworkDataType>;
 }
 
 export interface FrontendFrameworkDefinition<FrameworkDataType> extends BaseFrameworkDefinition<FrameworkDataType> {

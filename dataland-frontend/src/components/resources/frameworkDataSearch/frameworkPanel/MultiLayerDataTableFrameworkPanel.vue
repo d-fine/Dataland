@@ -51,7 +51,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
@@ -146,7 +146,7 @@ async function loadDataForDisplay(
   const frameworkDefinition = getFrontendFrameworkDefinition(
     props.frameworkIdentifier,
   ) as FrontendFrameworkDefinition<FrameworkDataType>;
-  let dataControllerApi: FrDataApi<FrameworkDataType>;
+  let dataControllerApi: BaseFrameworkDataApi<FrameworkDataType>;
   if (frameworkDefinition) {
     dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
   } else {
