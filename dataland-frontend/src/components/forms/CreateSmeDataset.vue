@@ -217,11 +217,12 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Sme);
-      let smeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
       if (frameworkDefinition) {
-        smeDataControllerApi = frameworkDefinition?.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-        const dataResponse = await smeDataControllerApi.getFrameworkData(dataId);
-        const smeResponseData = dataResponse.data;
+        const smeDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+          undefined,
+          apiClientProvider.axiosInstance,
+        );
+        const smeResponseData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
         this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
         this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
         this.referencedReportsForPrefill =
@@ -229,6 +230,7 @@ export default defineComponent({
       }
       this.waitingForData = false;
     },
+
     /**
      * Sends data to add SME data
      */
