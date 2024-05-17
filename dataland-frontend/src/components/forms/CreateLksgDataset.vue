@@ -252,9 +252,11 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
-      let lksgDataControllerApi: PublicFrameworkDataApi<LksgData>;
       if (frameworkDefinition) {
-        lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+        const lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+          undefined,
+          apiClientProvider.axiosInstance,
+        );
         const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
         const lksgResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);

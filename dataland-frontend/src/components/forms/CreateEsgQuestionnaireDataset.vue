@@ -266,9 +266,8 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-      let esgQuestionnaireDataControllerApi: PublicFrameworkDataApi<EsgQuestionnaireData>;
       if (frameworkDefinition) {
-        esgQuestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+        const esgQuestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
