@@ -8,9 +8,9 @@ import {
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import {
+  KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
-  KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLES,
 } from "@/utils/KeycloakUtils";
 import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
@@ -292,8 +292,7 @@ describe("Component test for the company cockpit", () => {
 
   it("Check the Sme summary panel behaviour if the user is company owner", () => {
     const hasCompanyDataOwner = true;
-    const keycloakRoles = KEYCLOAK_ROLES;
-    keycloakRoles.forEach((keycloakRole: string) => {
+    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
       mockRequestsOnMounted(hasCompanyDataOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyDataOwnerId).then(() => {
         waitForRequestsOnMounted();
@@ -303,8 +302,7 @@ describe("Component test for the company cockpit", () => {
   });
   it("Check the Sme summary panel behaviour if the user is not company owner", () => {
     const hasCompanyDataOwner = true;
-    const keycloakRoles = KEYCLOAK_ROLES;
-    keycloakRoles.forEach((keycloakRole: string) => {
+    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
       mockRequestsOnMounted(hasCompanyDataOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]).then(() => {
         waitForRequestsOnMounted();
