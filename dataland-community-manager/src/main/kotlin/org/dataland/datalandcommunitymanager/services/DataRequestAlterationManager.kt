@@ -7,8 +7,8 @@ import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiEx
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -34,7 +34,7 @@ class DataRequestAlterationManager(
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
-    @Autowired private val messageRepository: MessageRepository,
+    @Autowired private val dataRequestHistoryManager: DataRequestHistoryManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -50,27 +50,34 @@ class DataRequestAlterationManager(
         requestStatus: RequestStatus? = null,
         contacts: Set<String>? = null,
         message: String? = null,
+        correlationId: String? = null,
     ): StoredDataRequest {
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
-        if (requestStatus != null) {
-            dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
-            dataRequestEntity.requestStatus = requestStatus
-        }
         val modificationTime = Instant.now().toEpochMilli()
         dataRequestEntity.lastModifiedDate = modificationTime
         dataRequestRepository.save(dataRequestEntity)
+        if (requestStatus != null && requestStatus != dataRequestEntity.requestStatus) {
+            val requestStatusObject = listOf(StoredDataRequestStatusObject(requestStatus, modificationTime))
+            dataRequestEntity.associateRequestStatus(requestStatusObject)
+            dataRequestHistoryManager.saveStatusHistory(dataRequestEntity.dataRequestStatusHistory)
+            dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestId, requestStatus)
+            if (contacts != null) {
+                dataRequestHistoryManager.detachDataRequestEntity(dataRequestEntity)
+            }
+        }
         if (contacts != null) {
-            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
-            val messageHistory =
-                listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, modificationTime))
             dataRequestEntity.associateMessages(messageHistory)
-            messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
+            dataRequestHistoryManager.saveMessageHistory(dataRequestEntity.messageHistory)
             this.sendSingleDataRequestEmail(dataRequestEntity, contacts, message)
+            dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestId)
         }
         if (requestStatus == RequestStatus.Closed || requestStatus == RequestStatus.Answered) {
-            sendEmailBecauseOfStatusChanged(dataRequestEntity, requestStatus)
+            sendEmailBecauseOfStatusChanged(
+                dataRequestEntity, requestStatus, correlationId ?: UUID.randomUUID().toString(),
+            )
         }
         return dataRequestEntity.toStoredDataRequest()
     }
@@ -83,7 +90,7 @@ class DataRequestAlterationManager(
     private fun sendEmailBecauseOfStatusChanged(
         dataRequestEntity: DataRequestEntity,
         status: RequestStatus,
-        correlationId: String = UUID.randomUUID().toString(),
+        correlationId: String,
     ) {
         when (status) {
             RequestStatus.Answered -> {
@@ -134,6 +141,7 @@ class DataRequestAlterationManager(
      * @param dataId the id of the uploaded dataset
      * @param correlationId dataland correlationId
      */
+    @Transactional
     fun patchRequestStatusFromOpenToAnsweredByDataId(dataId: String, correlationId: String) {
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val dataRequestEntities = dataRequestRepository.searchDataRequestEntity(
@@ -141,11 +149,8 @@ class DataRequestAlterationManager(
                 metaData.dataType.value, "", RequestStatus.Open, metaData.reportingPeriod, metaData.companyId,
             ),
         )
-        dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
-            metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
-        )
         dataRequestEntities.forEach {
-            sendEmailBecauseOfStatusChanged(it, RequestStatus.Answered, correlationId)
+            patchDataRequest(it.dataRequestId, RequestStatus.Answered, correlationId = correlationId)
         }
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +

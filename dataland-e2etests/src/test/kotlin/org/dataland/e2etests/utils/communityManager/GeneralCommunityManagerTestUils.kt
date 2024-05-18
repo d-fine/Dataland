@@ -7,6 +7,7 @@ import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
+import org.dataland.communitymanager.openApiClient.model.StoredDataRequestMessageObject
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -258,4 +259,8 @@ fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDa
     return requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
         storedDataRequest.creationTimestamp > timestamp
     }
+}
+
+fun getMessageHistoryOfRequest(dataRequestId: String): List<StoredDataRequestMessageObject> {
+    return requestControllerApi.getDataRequestById(UUID.fromString(dataRequestId)).messageHistory
 }

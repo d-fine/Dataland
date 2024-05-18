@@ -21,6 +21,7 @@ import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlySto
 import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
+import org.dataland.e2etests.utils.communityManager.getMessageHistoryOfRequest
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
@@ -258,7 +259,7 @@ class SingleDataRequestsTest {
         )
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, 1)
-        val messageHistory = newlyStoredRequests[0].messageHistory
+        val messageHistory = getMessageHistoryOfRequest(newlyStoredRequests[0].dataRequestId)
         assertEquals(
             1,
             messageHistory.size,
