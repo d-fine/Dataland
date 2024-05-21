@@ -14302,13 +14302,11 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -14316,11 +14314,13 @@
           "countryCode": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
