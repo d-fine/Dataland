@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
 
 /**
  * Controller for the document API
@@ -34,19 +35,16 @@ class DocumentController(
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
         val document = documentManager.retrieveDocumentById(documentId)
-        val documentContent = document.content
-        val contentLength = document.contentLength
+        val documentBytes = document.content.inputStream.use { it.readBytes() }
+        val documentContent = InputStreamResource(ByteArrayInputStream(documentBytes))
+        val contentLength = documentBytes.size
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
             .header(
                 HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=${document.documentId}.${document.type.fileExtension}",
             )
-            .apply {
-                if (contentLength != null) {
-                    header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
-                }
-            }
+            .header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
             .body(documentContent)
     }
 }

@@ -90,7 +90,7 @@ interface DocumentApi {
                     Header(name = HttpHeaders.CONTENT_DISPOSITION, schema = Schema(type = "string")),
                     Header(
                         name = HttpHeaders.CONTENT_LENGTH,
-                        schema = Schema(type = "integer", format = "int64", nullable = true),
+                        schema = Schema(type = "integer", format = "int64"),
                     ),
                 ],
             ),

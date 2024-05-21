@@ -31,7 +31,6 @@ class DocumentControllerTest {
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
         assertFalse(isByteArrayRepresentationOfPdf(docxDocument.readBytes()))
         val uploadResponse = uploadDocument(docxDocument)
-        println("test1")
         val downloadedFile = ensureQaCompleted(uploadResponse)
         assertTrue(
             isByteArrayRepresentationOfPdf(
@@ -105,14 +104,12 @@ class DocumentControllerTest {
         Awaitility.await().atMost(10, TimeUnit.SECONDS)
             .until {
                 try {
-                    println("test2")
                     downloadedFile = documentControllerClient.getDocument(uploadResponse.documentId)
                     true
                 } catch (e: ClientException) {
                     e.statusCode != HttpStatus.NOT_FOUND.value()
                 }
             }
-        println("test3")
         return downloadedFile
     }
 
