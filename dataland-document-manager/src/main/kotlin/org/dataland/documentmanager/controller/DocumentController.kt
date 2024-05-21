@@ -45,7 +45,7 @@ class DocumentController(
                 "attachment; filename=${document.documentId}.${document.type.fileExtension}",
             )
             .header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
-            .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+            .header(HttpHeaders.CONTENT_TYPE, "${document.type.mediaType}")
             .body(documentContent)
     }
 }
