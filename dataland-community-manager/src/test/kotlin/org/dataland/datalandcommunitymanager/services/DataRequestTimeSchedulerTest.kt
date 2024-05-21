@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.GetDataRequestsSearchFilter
@@ -33,7 +34,7 @@ class DataRequestTimeSchedulerTest {
         status: RequestStatus,
         lastModifiedDate: Long,
     ): DataRequestEntity {
-        return DataRequestEntity(
+        val dataRequestEntity = DataRequestEntity(
             dataRequestId = requestId,
             userId = "dummyUserId",
             creationTimestamp = 0,
@@ -41,9 +42,18 @@ class DataRequestTimeSchedulerTest {
             reportingPeriod = "dummyReportingPeriod",
             datalandCompanyId = "dummyCompanyId",
             messageHistory = emptyList(),
+            dataRequestStatusHistory = emptyList(),
             lastModifiedDate = lastModifiedDate,
-            requestStatus = status,
         )
+        dataRequestEntity.dataRequestStatusHistory = listOf(
+            RequestStatusEntity(
+                statusHistoryId = UUID.randomUUID().toString(),
+                requestStatus = status,
+                creationTimestamp = 0,
+                dataRequest = dataRequestEntity,
+            ),
+        )
+        return dataRequestEntity
     }
 
     @BeforeEach

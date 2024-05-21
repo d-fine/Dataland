@@ -1,5 +1,7 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+
 /**
  * --- API model ---
  * Contains info about an extended stored data request on Dataland.
@@ -10,7 +12,6 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  * @param datalandCompanyId the value of the company identifier for this data request
  * @param companyName the name of the company for this data request
  * @param lastModifiedDate the date when the data request has been modified the last time
- * @param messageHistory a list of all message objects which were created during the life cycle
  * @param requestStatus the current status of the data request
  */
 data class ExtendedStoredDataRequest(
@@ -28,22 +29,19 @@ data class ExtendedStoredDataRequest(
 
     val companyName: String,
 
-    val messageHistory: List<StoredDataRequestMessageObject>,
-
     val lastModifiedDate: Long,
 
     val requestStatus: RequestStatus,
 ) {
-    constructor(storedDataRequest: StoredDataRequest, companyName: String) : this(
-        storedDataRequest.dataRequestId,
-        storedDataRequest.userId,
-        storedDataRequest.creationTimestamp,
-        storedDataRequest.dataType,
-        storedDataRequest.reportingPeriod,
-        storedDataRequest.datalandCompanyId,
+    constructor(dataRequestEntity: DataRequestEntity, companyName: String) : this(
+        dataRequestEntity.dataRequestId,
+        dataRequestEntity.userId,
+        dataRequestEntity.creationTimestamp,
+        dataRequestEntity.dataType,
+        dataRequestEntity.reportingPeriod,
+        dataRequestEntity.datalandCompanyId,
         companyName,
-        storedDataRequest.messageHistory,
-        storedDataRequest.lastModifiedDate,
-        storedDataRequest.requestStatus,
+        dataRequestEntity.lastModifiedDate,
+        dataRequestEntity.requestStatus,
     )
 }
