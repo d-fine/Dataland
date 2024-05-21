@@ -942,6 +942,7 @@
         "required": [
           "creationTimestamp",
           "dataRequestId",
+          "dataRequestStatusHistory",
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
@@ -975,6 +976,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "dataRequestStatusHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestStatusObject"
             }
           },
           "lastModifiedDate": {
@@ -1009,6 +1016,22 @@
           }
         }
       },
+      "StoredDataRequestStatusObject": {
+        "required": [
+          "creationTimestamp",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "ExtendedStoredDataRequest": {
         "required": [
           "companyName",
@@ -1017,7 +1040,6 @@
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
-          "messageHistory",
           "reportingPeriod",
           "requestStatus",
           "userId"
@@ -1045,12 +1067,6 @@
           },
           "companyName": {
             "type": "string"
-          },
-          "messageHistory": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
-            }
           },
           "lastModifiedDate": {
             "type": "integer",

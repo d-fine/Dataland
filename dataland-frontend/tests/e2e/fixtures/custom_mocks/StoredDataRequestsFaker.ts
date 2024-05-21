@@ -6,6 +6,8 @@ import { generateStoredDataRequestMessage } from "@e2e/fixtures/custom_mocks/Sto
 import { faker } from "@faker-js/faker";
 import { generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
+const DEFAULT_TIME_OFFSET = 500;
+
 /**
  * Creates a list of stored data requests
  * @returns The list of request
@@ -59,17 +61,31 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
 export function generateStoredDataRequest(): StoredDataRequest {
   const minimalNumberOfMessageObjects = 1;
   const messageHistory = generateArray(() => generateStoredDataRequestMessage(), minimalNumberOfMessageObjects);
-  const timeOffsetBetweenCreationAndLastModified = 500;
+  const timeOffsetBetweenCreationAndLastModified = DEFAULT_TIME_OFFSET;
+  const creationTime = generateInt(timeOffsetBetweenCreationAndLastModified);
+  const lastModifiedTime = generateInt(DEFAULT_TIME_OFFSET) + timeOffsetBetweenCreationAndLastModified;
+  const status = pickOneElement(Object.values(RequestStatus));
+  const requestStatusHistory = [
+    {
+      status: RequestStatus.Open,
+      creationTimestamp: creationTime,
+    },
+    {
+      status: status,
+      creationTimestamp: lastModifiedTime,
+    },
+  ];
   return {
     dataRequestId: faker.string.uuid(),
     userId: faker.string.uuid(),
-    creationTimestamp: generateInt(timeOffsetBetweenCreationAndLastModified),
+    creationTimestamp: creationTime,
     dataType: pickOneElement(Object.values(DataTypeEnum)),
     reportingPeriod: generateReportingPeriod(),
     datalandCompanyId: faker.string.uuid(),
     messageHistory: messageHistory,
-    lastModifiedDate: generateInt(500) + timeOffsetBetweenCreationAndLastModified,
-    requestStatus: pickOneElement(Object.values(RequestStatus)),
+    dataRequestStatusHistory: requestStatusHistory,
+    lastModifiedDate: lastModifiedTime,
+    requestStatus: status,
   };
 }
 /**

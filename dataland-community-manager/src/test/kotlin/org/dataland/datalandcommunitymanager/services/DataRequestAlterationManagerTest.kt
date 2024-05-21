@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -32,15 +31,15 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.*
-
 class DataRequestAlterationManagerTest {
+
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var metaDataControllerApi: MetaDataControllerApi
-    private lateinit var messageRepository: MessageRepository
+    private lateinit var historyManager: DataRequestHistoryManager
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
@@ -79,6 +78,11 @@ class DataRequestAlterationManagerTest {
         `when`<Any>(
             dataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
+        dummyDataRequestEntities.forEach {
+            `when`<Any>(
+                dataRequestRepository.findById(it.dataRequestId),
+            ).thenReturn(Optional.of(it))
+        }
         `when`(
             dataRequestRepository.searchDataRequestEntity(
                 searchFilter = GetDataRequestsSearchFilter(
@@ -87,13 +91,10 @@ class DataRequestAlterationManagerTest {
                 ),
             ),
         ).thenReturn(dummyDataRequestEntities)
-        doNothing().`when`(dataRequestRepository).updateDataRequestEntitiesFromOpenToAnswered(
-            metaData.companyId, metaData.reportingPeriod, metaData.dataType.value,
-        )
-        messageRepository = mock(MessageRepository::class.java)
-        `when`(messageRepository.saveAllAndFlush(anyList())).thenReturn(
-            emptyList(),
-        )
+        historyManager = mock(DataRequestHistoryManager::class.java)
+        doNothing().`when`(historyManager).saveMessageHistory(anyList())
+        doNothing().`when`(historyManager).saveStatusHistory(anyList())
+        doNothing().`when`(historyManager).detachDataRequestEntity(any(DataRequestEntity::class.java))
     }
 
     @BeforeEach
@@ -121,7 +122,7 @@ class DataRequestAlterationManagerTest {
             dataRequestResponseEmailMessageSender = dataRequestResponseEmailMessageSender,
             metaDataControllerApi = metaDataControllerApi,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSender,
-            messageRepository = messageRepository,
+            dataRequestHistoryManager = historyManager,
         )
     }
 
@@ -145,7 +146,6 @@ class DataRequestAlterationManagerTest {
             requestStatus = RequestStatus.Answered,
             null,
         )
-        fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
         verify(dataRequestResponseEmailMessageSender, times(1))
             .sendDataRequestResponseEmail(
                 any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
@@ -158,6 +158,14 @@ class DataRequestAlterationManagerTest {
         verify(dataRequestResponseEmailMessageSender, times(2))
             .sendDataRequestResponseEmail(
                 any(DataRequestEntity::class.java), any(TemplateEmailMessage.Type::class.java), anyString(),
+            )
+        verify(historyManager, times(2))
+            .saveStatusHistory(
+                anyList(),
+            )
+        verify(historyManager, times(0))
+            .saveMessageHistory(
+                anyList(),
             )
     }
 
@@ -173,6 +181,10 @@ class DataRequestAlterationManagerTest {
                 null,
             )
         }
+        verify(historyManager, times(0))
+            .saveMessageHistory(
+                anyList(),
+            )
         verifyNoInteractions(dataRequestResponseEmailMessageSender)
     }
 
@@ -183,6 +195,14 @@ class DataRequestAlterationManagerTest {
             verify(dataRequestResponseEmailMessageSender)
                 .sendDataRequestResponseEmail(it, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId)
         }
+        verify(historyManager, times(dummyDataRequestEntities.size))
+            .saveStatusHistory(
+                anyList(),
+            )
+        verify(historyManager, times(0))
+            .saveMessageHistory(
+                anyList(),
+            )
     }
 
     @Test
@@ -198,6 +218,16 @@ class DataRequestAlterationManagerTest {
             .sendSingleDataRequestExternalMessage(
                 any(SingleDataRequestEmailMessageSender.MessageInformation::class.java),
                 anyString(), anyString(), anyString(),
+            )
+
+        verify(historyManager, times(1))
+            .saveMessageHistory(
+                anyList(),
+            )
+
+        verify(historyManager, times(0))
+            .saveStatusHistory(
+                anyList(),
             )
     }
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)

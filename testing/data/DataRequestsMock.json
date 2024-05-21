@@ -1,11 +1,11 @@
 [
 	{
-		"dataRequestId": "901760d0-731d-418c-8a98-cd023ea0f69c",
-		"userId": "69711fc7-39eb-41a7-b134-0e387e61ad88",
-		"creationTimestamp": 402,
-		"dataType": "eutaxonomy-financials",
-		"reportingPeriod": "2020",
-		"datalandCompanyId": "dedfe005-30d5-4edb-85ea-29ee82e764b5",
+		"dataRequestId": "760d0731-d18c-4a98-9cd0-23ea0f69c269",
+		"userId": "11fc739e-b1a7-4134-80e3-87e61ad88fc1",
+		"creationTimestamp": 300,
+		"dataType": "esg-questionnaire",
+		"reportingPeriod": "2024",
+		"datalandCompanyId": "dfe00530-d5ed-4b5e-aa29-ee82e764b53b",
 		"messageHistory": [
 			{
 				"contacts": [
@@ -58,13 +58,23 @@
 				"creationTimestamp": 2710
 			}
 		],
-		"lastModifiedDate": 865,
-		"requestStatus": "Resolved"
+		"dataRequestStatusHistory": [
+			{
+				"status": "Open",
+				"creationTimestamp": 300
+			},
+			{
+				"status": "Open",
+				"creationTimestamp": 521
+			}
+		],
+		"lastModifiedDate": 521,
+		"requestStatus": "Open"
 	},
 	{
-		"dataRequestId": "9a450e70-0c71-4c4b-9d3d-0ddcb905b67e",
-		"userId": "be56c018-c2fe-4665-b2f1-4055bc94ad42",
-		"creationTimestamp": 207,
+		"dataRequestId": "50e700c7-1c4b-4d3d-90dd-cb905b67e5be",
+		"userId": "6c018c2f-e665-42f1-9405-5bc94ad42d61",
+		"creationTimestamp": 306,
 		"dataType": "lksg",
 		"reportingPeriod": "2021",
 		"datalandCompanyId": "Mock-Company-Id",
@@ -102,13 +112,23 @@
 				"creationTimestamp": 4532
 			}
 		],
-		"lastModifiedDate": 629,
+		"dataRequestStatusHistory": [
+			{
+				"status": "Open",
+				"creationTimestamp": 306
+			},
+			{
+				"status": "Answered",
+				"creationTimestamp": 825
+			}
+		],
+		"lastModifiedDate": 825,
 		"requestStatus": "Open"
 	},
 	{
-		"dataRequestId": "1933a76a-dd35-442a-9fcd-fd0ca1de1c63",
-		"userId": "c558a524-18e2-47a0-bb59-8e99efd3a220",
-		"creationTimestamp": 483,
+		"dataRequestId": "3a76add3-542a-4fcd-9fd0-ca1de1c637c5",
+		"userId": "8a52418e-27a0-4b59-b8e9-9efd3a220ef0",
+		"creationTimestamp": 61,
 		"dataType": "lksg",
 		"reportingPeriod": "2022",
 		"datalandCompanyId": "Mock-Company-Id",
@@ -134,13 +154,23 @@
 				"creationTimestamp": 1715
 			}
 		],
-		"lastModifiedDate": 589,
+		"dataRequestStatusHistory": [
+			{
+				"status": "Open",
+				"creationTimestamp": 61
+			},
+			{
+				"status": "Answered",
+				"creationTimestamp": 784
+			}
+		],
+		"lastModifiedDate": 784,
 		"requestStatus": "Answered"
 	},
 	{
-		"dataRequestId": "6def81ae-8783-4753-8a86-5ad959bbe6e4",
-		"userId": "8632cefe-ab6e-43d1-8324-eec7807bf79b",
-		"creationTimestamp": 256,
+		"dataRequestId": "f81ae878-3753-4a86-85ad-959bbe6e4086",
+		"userId": "2cefeab6-e3d1-4324-aeec-7807bf79b189",
+		"creationTimestamp": 192,
 		"dataType": "lksg",
 		"reportingPeriod": "2024",
 		"datalandCompanyId": "Mock-Company-Id",
@@ -155,13 +185,23 @@
 				"creationTimestamp": 8078
 			}
 		],
-		"lastModifiedDate": 556,
+		"dataRequestStatusHistory": [
+			{
+				"status": "Open",
+				"creationTimestamp": 192
+			},
+			{
+				"status": "Closed",
+				"creationTimestamp": 932
+			}
+		],
+		"lastModifiedDate": 932,
 		"requestStatus": "Answered"
 	},
 	{
-		"dataRequestId": "038fba73-ef47-43ed-a965-7c18c96b8a7f",
-		"userId": "9583ac0b-4404-4cdf-bf81-d6cf43854cca",
-		"creationTimestamp": 142,
+		"dataRequestId": "fba73ef4-73ed-4965-a7c1-8c96b8a7f895",
+		"userId": "3ac0b440-4cdf-4f81-bd6c-f43854ccac42",
+		"creationTimestamp": 17,
 		"dataType": "eutaxonomy-non-financials",
 		"reportingPeriod": "1996",
 		"datalandCompanyId": "550e8400-e29b-11d4-a716-446655440000",
@@ -187,7 +227,17 @@
 				"creationTimestamp": 7847
 			}
 		],
-		"lastModifiedDate": 824,
+		"dataRequestStatusHistory": [
+			{
+				"status": "Open",
+				"creationTimestamp": 17
+			},
+			{
+				"status": "Resolved",
+				"creationTimestamp": 610
+			}
+		],
+		"lastModifiedDate": 610,
 		"requestStatus": "Answered"
 	}
 ]

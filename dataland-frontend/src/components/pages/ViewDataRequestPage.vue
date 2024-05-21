@@ -110,6 +110,8 @@
                     </PrimeButton>
                   </div>
                 </span>
+                <div class="card__separator" />
+                <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
               <div class="card" data-test="card_providedContactDetails">
                 <span style="display: flex; align-items: center">
@@ -179,6 +181,7 @@ import PrimeDialog from "primevue/dialog";
 import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
 import { type DataTypeEnum, QaStatus } from "@clients/backend";
 import TheContent from "@/components/generics/TheContent.vue";
+import StatusHistory from "@/components/resources/dataRequest/StatusHistory.vue";
 
 export default defineComponent({
   name: "ViewDataRequest",
@@ -191,6 +194,7 @@ export default defineComponent({
     AuthenticationWrapper,
     TheHeader,
     TheFooter,
+    StatusHistory,
   },
   props: {
     requestId: {
@@ -222,6 +226,7 @@ export default defineComponent({
       .then(() => {
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
         this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
+        this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
       })
       .catch((error) => console.error(error));
   },
@@ -399,42 +404,50 @@ export default defineComponent({
   margin-top: 1rem;
 }
 
-.card {
-  width: 100%;
-  background-color: var(--surface-card);
-  padding: $spacing-md;
-  border-radius: $radius-xxs;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-
-  &__subtitle {
-    font-size: medium;
-    line-height: normal;
-    color: gray;
-  }
-
-  &__data {
-    font-size: medium;
-    font-weight: bold;
-    line-height: normal;
-    margin-top: 0.25rem;
-    margin-bottom: 2rem;
-  }
-
-  &__title {
-    font-size: large;
-    font-weight: bold;
-    line-height: normal;
-  }
-
-  &__separator {
+:deep {
+  .card {
     width: 100%;
-    border-bottom: #e0dfde solid 1px;
-    margin-top: 1rem;
+    background-color: var(--surface-card);
+    padding: $spacing-md;
+    border-radius: $radius-xxs;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     margin-bottom: 1rem;
+
+    &__subtitle {
+      font-size: medium;
+      line-height: normal;
+      color: gray;
+    }
+
+    &__data {
+      font-size: medium;
+      font-weight: bold;
+      line-height: normal;
+      margin-top: 0.25rem;
+      margin-bottom: 2rem;
+    }
+
+    &__title {
+      font-size: large;
+      font-weight: bold;
+      line-height: normal;
+    }
+
+    &__separator {
+      width: 100%;
+      border-bottom: #e0dfde solid 1px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
   }
+}
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  list-style-type: none;
 }
 </style>

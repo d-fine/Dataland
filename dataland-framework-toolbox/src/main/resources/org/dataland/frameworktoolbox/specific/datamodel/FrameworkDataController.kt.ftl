@@ -34,7 +34,8 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     ${frameworkDataType.shortenedQualifier}::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
         return super.getCompanyAssociatedData(dataId)
     }
 

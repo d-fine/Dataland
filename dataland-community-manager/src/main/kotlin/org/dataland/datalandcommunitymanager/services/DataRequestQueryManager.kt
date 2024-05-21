@@ -34,7 +34,7 @@ class DataRequestQueryManager(
     fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedStoredDataRequestEntitiesForUser =
-            dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
+            dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
         val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
             getExtendedStoredDataRequestByRequestEntity(dataRequestEntity)
         }
@@ -48,7 +48,7 @@ class DataRequestQueryManager(
      */
     fun getExtendedStoredDataRequestByRequestEntity(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
         val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity.toStoredDataRequest(), companyInformation.companyName)
+        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName)
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -126,7 +126,6 @@ class DataRequestQueryManager(
             datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
-
-        return dataRequestRepository.fetchMessages(result).map { it.toStoredDataRequest() }
+        return dataRequestRepository.fetchStatusHistory(result).map { it.toStoredDataRequest() }
     }
 }
