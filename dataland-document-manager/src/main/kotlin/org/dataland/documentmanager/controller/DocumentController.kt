@@ -36,8 +36,8 @@ class DocumentController(
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
         val document = documentManager.retrieveDocumentById(documentId)
         val documentBytes = document.content.inputStream.use { it.readBytes() }
-        val documentContent = InputStreamResource(ByteArrayInputStream(documentBytes))
         val contentLength = documentBytes.size
+        val documentContent = InputStreamResource(ByteArrayInputStream(documentBytes))
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
             .header(
@@ -45,6 +45,7 @@ class DocumentController(
                 "attachment; filename=${document.documentId}.${document.type.fileExtension}",
             )
             .header(HttpHeaders.CONTENT_LENGTH, contentLength.toString())
+            .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
             .body(documentContent)
     }
 }

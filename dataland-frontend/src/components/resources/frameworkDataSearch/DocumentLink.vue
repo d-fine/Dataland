@@ -47,6 +47,11 @@ export default defineComponent({
         await documentControllerApi
           .getDocument(fileReference, {
             responseType: "arraybuffer",
+            onDownloadProgress: (progressEvent) => {
+              const percentCompleted = Math.round((progressEvent.loaded * 100) / assertDefined(progressEvent.total));
+              console.log("Download progress: ", percentCompleted);
+              // You could here update some progress bar or similar
+            },
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
             const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
