@@ -1,5 +1,6 @@
 package org.dataland.datalandbackendutils.model
 
+import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource
 import java.io.IOException
 
@@ -19,10 +20,12 @@ data class DocumentStream(
         get() = content.contentLen()
 }
 
+private val logger = LoggerFactory.getLogger("Document Stream")
 private fun InputStreamResource.contentLen(): Long? {
     return try {
         inputStream.use { it.readBytes().size.toLong() }
     } catch (e: IOException) {
+        logger.error("unable to get content length", e)
         null
     }
 }
