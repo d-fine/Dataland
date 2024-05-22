@@ -9,9 +9,10 @@ import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Lksg {
 
     private val apiAccessor = ApiAccessor()
@@ -21,10 +22,10 @@ class Lksg {
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
         .getCompanyInformationWithoutIdentifiers(1)
 
-    @BeforeEach
-    fun postTestDocuments(){
-        documentManagerAccessor.uploadAllTestDocuments()
-
+    @BeforeAll
+    fun postTestDocuments() {
+        println("++-+-+-+-+ posting test documents") // TODO remove later
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
     private fun removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(dataset: LksgData): LksgData {
@@ -50,6 +51,11 @@ class Lksg {
         )[0]
 
         return fixedDataSetWithAllSortedRiskPositions
+    }
+
+    @Test
+    fun `dummytest`() { // TODO dummy test, remove later
+        assertEquals("hi", "hi")
     }
 
     @Test
