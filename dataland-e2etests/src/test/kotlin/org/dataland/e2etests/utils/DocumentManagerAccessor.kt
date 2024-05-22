@@ -11,10 +11,10 @@ class DocumentManagerAccessor {
 
     val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
     val testFiles = listOf(
-        File(".\\build\\resources\\test\\documents\\some-document.pdf"),
-        File(".\\build\\resources\\test\\documents\\some-document2.pdf"),
-        File(".\\build\\resources\\test\\documents\\StandardWordExport.pdf"),
-        File(".\\build\\resources\\test\\documents\\more-pdfs-in-seperate-directory\\some-document.pdf"),
+        File("./build/resources/test/documents/some-document.pdf"),
+        File("./build/resources/test/documents/some-document2.pdf"),
+        File("./build/resources/test/documents/StandardWordExport.pdf"),
+        File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
     )
 
     val jwtHelper = JwtAuthenticationHelper()
@@ -32,19 +32,19 @@ class DocumentManagerAccessor {
 
     private fun executeDocumentExistenceCheckWithRetries(documentId: String) {
         val maxAttempts = 20
-        var attempt = 1
 
-        while (attempt <= maxAttempts) {
+        for (attempt in 1..maxAttempts) {
             Thread.sleep(500)
             try {
                 documentControllerApi.checkDocument(documentId)
+                break
             } catch (e: ClientException) {
                 if (e.statusCode != HttpStatus.NOT_FOUND.value() || attempt == maxAttempts) {
                     throw e
                 }
-                attempt++
             }
-            break
+            println("attemps $attempt") // todo remove
         }
+
     }
 }
