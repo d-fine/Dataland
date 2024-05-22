@@ -32,7 +32,6 @@ export default defineComponent({
   },
   watch: {
     percentCompleted(newValue) {
-      console.log(newValue);
       if (newValue == undefined) {
         this.displaySpinner = false;
         this.displayCheckmark = false;
