@@ -32,16 +32,8 @@ export default defineComponent({
   },
   watch: {
     percentCompleted(newValue) {
-      if (newValue == undefined) {
-        this.displaySpinner = false;
-        this.displayCheckmark = false;
-      } else if (newValue == 100) {
-        this.displaySpinner = false;
-        this.displayCheckmark = true;
-      } else {
-        this.displaySpinner = true;
-        this.displayCheckmark = false;
-      }
+      this.displaySpinner = newValue != undefined && newValue < 100;
+      this.displayCheckmark = newValue == 100;
     },
   },
   computed: {
