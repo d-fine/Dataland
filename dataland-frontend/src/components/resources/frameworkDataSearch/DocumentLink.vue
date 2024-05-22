@@ -21,7 +21,7 @@ import type Keycloak from "keycloak-js";
 import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import DownloadProgressSpinner from "./DownloadProgressSpinner.vue";
+import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
 
 export default defineComponent({
   setup() {
