@@ -1,7 +1,33 @@
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("check that the progress spinner works correctly for the document link component", function (): void {
-  it("Check that Download Progress Spinner appears if a download started", function (): void {
+  it("Check that there are no icons before and after triggering a download", function (): void {
+    cy.intercept("**/documents/dummyFile**", {
+      statusCode: 200,
+    }).as("downloadComplete");
+    cy.mountWithPlugins(DocumentLink, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        downloadName: "Test",
+        fileReference: "dummyFileReference",
+      },
+      data() {
+        return {
+          percentCompleted: undefined,
+        };
+      },
+    }).then(() => {
+      validateNoIcons();
+      cy.get("[data-test='download-link']").should("exist").click();
+      cy.wait("@downloadComplete").then(() => {
+        validateNoIcons();
+      });
+    });
+  });
+  it("Check that Download Progress Spinner appears if the prop changes", function (): void {
     cy.mountWithPlugins(DocumentLink, {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -15,9 +41,7 @@ describe("check that the progress spinner works correctly for the document link 
         };
       },
     }).then((mounted) => {
-      cy.get('[data-test="spinner-icon"]').should("not.exist");
-      cy.get("[data-test='percentage-text']").should("not.exist");
-      cy.get("[data-test='checkmark-icon']").should("not.exist");
+      validateNoIcons();
 
       void mounted.wrapper
         .setData({
@@ -81,10 +105,16 @@ describe("check that the progress spinner works correctly for the document link 
           percentCompleted: undefined,
         })
         .then(() => {
-          cy.get('[data-test="spinner-icon"]').should("not.exist");
-          cy.get("[data-test='percentage-text']").should("not.exist");
-          cy.get("[data-test='checkmark-icon']").should("not.exist");
+          validateNoIcons();
         });
     });
   });
 });
+/**
+ * Checks that no icons exist
+ */
+function validateNoIcons(): void {
+  cy.get('[data-test="spinner-icon"]').should("not.exist");
+  cy.get("[data-test='percentage-text']").should("not.exist");
+  cy.get("[data-test='checkmark-icon']").should("not.exist");
+}

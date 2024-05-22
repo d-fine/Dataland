@@ -1,5 +1,8 @@
 <template>
-  <div style="position: relative; display: flex; align-items: center; justify-content: center">
+  <div
+    style="position: relative; display: flex; align-items: center; justify-content: center"
+    data-test="download-link"
+  >
     <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">
       <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
       <i
