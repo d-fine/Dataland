@@ -14302,16 +14302,16 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "sector": {
@@ -14343,10 +14343,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
