@@ -1,21 +1,19 @@
 <template>
-  <div style="position: relative; display: flex; align-items: center; justify-content: center">
-    <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
-      <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
-      <i
-        v-if="showIcon"
-        class="pi pi-download pl-1"
-        data-test="download-icon"
-        aria-hidden="true"
-        style="font-size: 12px"
-      />
-      <span class="underline ml-1 pl-1">{{ suffix }}</span>
-    </span>
-    <span class="progress-spinner-container" v-if="percentCompleted != undefined">
-      <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
-      <div class="progress-spinner-value">{{ percentCompleted }}%</div>
-    </span>
-  </div>
+  <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
+    <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
+    <i
+      v-if="showIcon"
+      class="pi pi-download pl-1"
+      data-test="download-icon"
+      aria-hidden="true"
+      style="font-size: 12px"
+    />
+    <span class="underline ml-1 pl-1">{{ suffix }}</span>
+  </span>
+  <span class="progress-spinner-container" v-if="percentCompleted == undefined">
+    <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
+    <div class="progress-spinner-value">{{ percentCompleted }}%</div>
+  </span>
 </template>
 
 <script lang="ts">
