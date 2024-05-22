@@ -5,7 +5,6 @@ import { DataTypeEnum } from "@clients/backend";
 export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
 
 export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework == DataTypeEnum.Sme);
-// TODO Emanuel: können wir nicht einfach "getAllPrivateFrameworkIDentifiers" hierfür nutzen => später ausprobieren
 export const ARRAY_OF_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
 export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
 export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
