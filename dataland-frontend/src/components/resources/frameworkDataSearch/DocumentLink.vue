@@ -60,7 +60,8 @@ export default defineComponent({
           .getDocument(fileReference, {
             responseType: "arraybuffer",
             onDownloadProgress: (progressEvent) => {
-              this.percentCompleted = Math.round((progressEvent.loaded * 100) / assertDefined(progressEvent.total));
+              if (progressEvent.total != null)
+                this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
             },
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
