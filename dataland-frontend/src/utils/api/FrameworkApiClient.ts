@@ -24,6 +24,7 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
   configuration: Configuration | undefined,
   axiosInstance?: AxiosInstance,
 ): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+  // TODO kann sein dass man jetzt lksg, sfdr und nonfinancials (also alle nicht-toolbox-frameworks) rausnehmen kann
   switch (framework) {
     case DataTypeEnum.Lksg:
       return translateFrameworkApi<typeof DataTypeEnum.Lksg>(
