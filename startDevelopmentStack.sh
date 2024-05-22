@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
-# Login to the docker repository
+
 set -euxo pipefail
 ./verifyEnvironmentVariables.sh
 
+# Login to the docker repository
 docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
 
 # Retrieve the SSL-Certificates for local-dev.dataland.com
 mkdir -p ./local/certs
 scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
-
-# Write files necessary for the EuroDaT-client to work
-./dataland-eurodat-client/write_secret_files.sh
 
 rm ./*github_env.log || true
 ./build-utils/base_rebuild_gradle_dockerfile.sh

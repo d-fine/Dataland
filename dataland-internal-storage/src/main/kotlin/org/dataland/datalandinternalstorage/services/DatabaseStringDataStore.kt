@@ -26,13 +26,13 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-
 /**
  * Simple implementation of a data store using a postgres database
- * @param dataItemRepository
+ * @param dataItemRepository the repository for data items
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param messageUtils utils for handling of messages
  */
 @Component
 class DatabaseStringDataStore(

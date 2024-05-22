@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.servers.Server
 
 /**
- * Basic configuration for the OpenAPI Swagger-UI available at /internal-storage/swagger-ui/index.html
+ * Basic configuration for the OpenAPI Swagger-UI available at /external-storage/swagger-ui/index.html
  */
 @OpenAPIDefinition(
     info = Info(

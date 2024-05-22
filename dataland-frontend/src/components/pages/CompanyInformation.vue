@@ -43,15 +43,15 @@
       <div class="company-details__info-holder">
         <div class="company-details__info">
           <span>Sector: </span>
-          <span class="font-semibold">{{ displaySector }}</span>
+          <span class="font-semibold" data-test="sector-visible">{{ displaySector }}</span>
         </div>
         <div class="company-details__info">
           <span>Headquarter: </span>
-          <span class="font-semibold">{{ companyInformation.headquarters }}</span>
+          <span class="font-semibold" data-test="headquarter-visible">{{ companyInformation.headquarters }}</span>
         </div>
         <div class="company-details__info">
-          <span>ISIN: </span>
-          <span class="font-semibold">{{ displayIsin }}</span>
+          <span>LEI: </span>
+          <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
         </div>
       </div>
     </div>
@@ -103,8 +103,8 @@ export default defineComponent({
         return "—";
       }
     },
-    displayIsin() {
-      return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
+    displayLei() {
+      return this.companyInformation?.identifiers?.[IdentifierType.Lei]?.[0] ?? "—";
     },
     contextMenuItems() {
       const listOfItems = [];

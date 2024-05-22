@@ -27,6 +27,7 @@ import kotlin.jvm.optionals.getOrNull
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val metaInformationManager: DataMetaInformationManager,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
     @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
 ) {
@@ -159,7 +160,7 @@ class DataOwnersManager(
      * @return a Boolean indicating whether the user is data owner or not
      */
     @Transactional(readOnly = true)
-    fun isCurrentUserDataOwner(companyId: String): Boolean {
+    fun isCurrentUserDataOwnerForCompany(companyId: String): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         fun exceptionToThrow(cause: Throwable?) = InsufficientRightsApiException(
             "Neither uploader nor data owner",
@@ -175,6 +176,18 @@ class DataOwnersManager(
         } catch (resourceNotFoundApiException: ResourceNotFoundApiException) {
             throw exceptionToThrow(resourceNotFoundApiException)
         }
+    }
+
+    /**
+     * Method to check whether the currently authenticated user is data owner of the specified company that is
+     * associated with a specific framework dataset.
+     * @param dataId of the framework dataset
+     * @return a Boolean indicating whether the user is data owner of the company associated with the dataset
+     */
+    @Transactional(readOnly = true)
+    fun isCurrentUserDataOwnerForCompanyOfDataId(dataId: String): Boolean {
+        val companyId = metaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
+        return isCurrentUserDataOwnerForCompany(companyId)
     }
 
     /**

@@ -75,14 +75,87 @@ jobs:
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
-  framework-toolbox-tests:
+  framework-toolbox-list-frameworks:
+    runs-on: ubuntu-latest
+    outputs:
+      frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "framework-toolbox-list-frameworks"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Execute framework-toolbox to list all frameworks
+        id: listFrameworks
+        run: |
+          ./gradlew dataland-framework-toolbox:runCreateFrameworkList --no-daemon --stacktrace
+          echo "frameworkList=$(<./dataland-framework-toolbox/build/framework-list.json)" >> "$GITHUB_OUTPUT"
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JaCoCoResultsToolbox-list
+          path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
+  framework-toolbox-consistency-tests:
+    runs-on: ubuntu-latest
+    needs:
+      - framework-toolbox-list-frameworks
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJson(needs.framework-toolbox-list-frameworks.outputs.frameworkList) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "framework-toolbox-consistency-test-${{ matrix.framework }}"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Build framework '${{ matrix.framework }}'
+        run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
+      - name: Verify that there are no changed (git-tracked) files
+        run: ./testing/verify_that_no_git_tracked_files_changed.sh
+      - run: mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
+        if: always()
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JaCoCoResultsToolbox-${{ matrix.framework }}
+          path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
+  framework-toolbox-integration-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
-          task: "framework-toolbox-tests"
+          task: "framework-toolbox-integration-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -98,9 +171,6 @@ jobs:
           cache: gradle
       - name: Execute framework-toolbox integrationTest
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
-        env:
-          DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: "100"
-          DATALAND_BACKEND_CLIENT_SECRET: "password"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -372,7 +442,8 @@ jobs:
       - gradle-based-tests
       - frontend-component-tests
       - python-tests
-      - framework-toolbox-tests
+      - framework-toolbox-integration-tests
+      - framework-toolbox-consistency-tests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -421,6 +492,10 @@ jobs:
         name: JaCoCoResultsE2ETest
         with:
           pattern: JaCoCoResultsE2ETest-*
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: JaCoCoResultsToolbox-*
           merge-multiple: true
       - uses: actions/download-artifact@v4
         name: lcovResults
@@ -478,7 +553,8 @@ jobs:
       - gradle-based-tests
       - frontend-component-tests
       - python-tests
-      - framework-toolbox-tests
+      - framework-toolbox-integration-tests
+      - framework-toolbox-consistency-tests
     if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
@@ -500,6 +576,13 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           pattern: JaCoCoResultsE2ETest-*
+          delete-merged: true
+      - name: Merge Jacoco Framework Toolbox Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: JaCoCoResultsToolbox
+          pattern: JaCoCoResultsToolbox-*
           delete-merged: true
       - name: Merge Python Test Artifacts
         uses: actions/upload-artifact/merge@v4

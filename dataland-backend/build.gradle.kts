@@ -120,6 +120,30 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
         ),
     )
 }
+tasks.register("generateExternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the external storage service."
+    group = "clients"
+    val externalStorageClientDestinationPackage = "org.dataland.datalandexternalstorage.openApiClient"
+    input = project.file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json")
+        .path
+    outputDir.set(layout.buildDirectory.dir("clients/external-storage").get().toString())
+    packageName.set(externalStorageClientDestinationPackage)
+    modelPackage.set("$externalStorageClientDestinationPackage.model")
+    apiPackage.set("$externalStorageClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
 
 tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     description = "Task to generate clients for the community manager service."
@@ -176,6 +200,7 @@ tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateInternalStorageClient")
+    dependsOn("generateExternalStorageClient")
     dependsOn("generateCommunityManagerClient")
     dependsOn("generateDocumentManagerClient")
 }
@@ -191,6 +216,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/internal-storage/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/external-storage/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/document-manager/src/main/kotlin"))
 }
