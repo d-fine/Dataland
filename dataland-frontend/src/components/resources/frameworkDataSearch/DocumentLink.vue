@@ -1,19 +1,23 @@
 <template>
-  <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
-    <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
-    <i
-      v-if="showIcon"
-      class="pi pi-download pl-1"
-      data-test="download-icon"
-      aria-hidden="true"
-      style="font-size: 12px"
-    />
-    <span class="underline ml-1 pl-1">{{ suffix }}</span>
-  </span>
-  <span class="progress-spinner-container" v-if="percentCompleted == undefined">
-    <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
-    <div class="progress-spinner-value">{{ percentCompleted }}%</div>
-  </span>
+  <div style="position: relative; display: flex; align-items: center; justify-content: center">
+    <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">
+      <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
+      <i
+        v-if="showIcon"
+        class="pi pi-download pl-1"
+        data-test="download-icon"
+        aria-hidden="true"
+        style="font-size: 12px"
+      />
+      <span class="underline ml-1 pl-1">{{ suffix }}</span>
+    </span>
+    <div v-if="percentCompleted != undefined" style="position: relative; width: 1.5rem">
+      <span class="progress-spinner-container">
+        <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
+        <div class="progress-spinner-value">{{ percentCompleted }}%</div>
+      </span>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -100,7 +104,11 @@ type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
 </script>
 <style lang="scss" scoped>
 .progress-spinner-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  flex: 1 0 auto;
   width: 1.5rem;
   height: 1.5rem;
 }
