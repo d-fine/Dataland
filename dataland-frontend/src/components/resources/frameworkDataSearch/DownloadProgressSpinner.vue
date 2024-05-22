@@ -24,6 +24,9 @@ export default defineComponent({
   props: {
     percentCompleted: { type: Number, default: undefined },
   },
+  mounted() {
+    this.updateDisplays(this.percentCompleted);
+  },
   data() {
     return {
       displaySpinner: false,
@@ -31,14 +34,23 @@ export default defineComponent({
     };
   },
   watch: {
-    percentCompleted(newValue) {
-      this.displaySpinner = newValue != undefined && newValue < 100;
-      this.displayCheckmark = newValue == 100;
+    percentCompleted(newValue: undefined | number) {
+      this.updateDisplays(newValue);
     },
   },
   computed: {
     displayAnything() {
       return this.displaySpinner || this.displayCheckmark;
+    },
+  },
+  methods: {
+    /**
+     * updates the visibility of spinner and checkmark
+     * @param newPercentCompleted new value of percentCompleted
+     */
+    updateDisplays(newPercentCompleted: undefined | number) {
+      this.displaySpinner = newPercentCompleted != undefined && newPercentCompleted < 100;
+      this.displayCheckmark = newPercentCompleted == 100;
     },
   },
 });
