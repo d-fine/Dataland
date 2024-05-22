@@ -19,7 +19,6 @@ class Sfdr {
 
     @BeforeAll
     fun postTestDocuments() {
-        println("++-+-+-+-+ posting test documents") // TODO remove later
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 

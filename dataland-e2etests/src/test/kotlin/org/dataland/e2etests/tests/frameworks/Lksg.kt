@@ -24,7 +24,6 @@ class Lksg {
 
     @BeforeAll
     fun postTestDocuments() {
-        println("++-+-+-+-+ posting test documents") // TODO remove later
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
@@ -51,11 +50,6 @@ class Lksg {
         )[0]
 
         return fixedDataSetWithAllSortedRiskPositions
-    }
-
-    @Test
-    fun `dummytest`() { // TODO dummy test, remove later
-        assertEquals("hi", "hi")
     }
 
     @Test
