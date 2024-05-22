@@ -13,7 +13,7 @@
     </span>
     <div v-if="percentCompleted != undefined" style="position: relative; width: 1.5rem">
       <span class="progress-spinner-container">
-        <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
+        <i class="pi pi-spin pi-spinner progress-spinner-spinner" />
         <div class="progress-spinner-value">{{ percentCompleted }}%</div>
       </span>
     </div>
@@ -120,5 +120,10 @@ type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
   transform: translate(-50%, -50%);
   font-size: 0.45rem;
   color: black;
+}
+
+.progress-spinner-spinner {
+  font-size: 1.5rem;
+  color: $orange-prime;
 }
 </style>
