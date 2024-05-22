@@ -6,11 +6,11 @@
   >
     <div v-if="displayAnything" style="position: relative; width: 1.5rem">
       <span v-if="displaySpinner" class="progress-spinner-container">
-        <i class="pi pi-spin pi-spinner progress-spinner-spinner" />
-        <div class="progress-spinner-value">{{ percentCompleted }}%</div>
+        <i class="pi pi-spin pi-spinner progress-spinner-spinner" data-test="spinner-icon" />
+        <div class="progress-spinner-value" data-test="percentage-text">{{ percentCompleted }}%</div>
       </span>
       <span v-if="displayCheckmark" class="progress-spinner-container">
-        <i class="pi pi-check progress-completed-checkmark" />
+        <i class="pi pi-check progress-completed-checkmark" data-test="checkmark-icon" />
       </span>
     </div>
   </transition>
