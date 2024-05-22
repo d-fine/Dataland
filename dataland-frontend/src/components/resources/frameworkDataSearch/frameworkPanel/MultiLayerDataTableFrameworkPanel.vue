@@ -50,7 +50,6 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
-import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
@@ -131,15 +130,6 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
 }
 
 /**
- * Gets a base framework api for the framework specified by the identifier on the current page.
- * @returns the base framework api for API calls to fetch framework data
- */
-function getBaseFrameworkApiForIdentifierss(): BaseFrameworkDataApi<FrameworkDataType> | undefined {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  return getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider);
-}
-
-/**
  * Fetches all datasets that should be displayed
  * @param companyId the id of the company to retrieve data for
  * @param singleDataMetaInfoToDisplay If set, only display the dataset belonging to this single entry
@@ -149,7 +139,8 @@ async function loadDataForDisplay(
   companyId: string,
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
-  const dataControllerApi = getBaseFrameworkApiForIdentifierss();
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider);
   if (dataControllerApi) {
     if (singleDataMetaInfoToDisplay) {
       const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;

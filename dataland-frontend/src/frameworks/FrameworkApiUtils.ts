@@ -29,8 +29,7 @@ export function getFrameworkDataApiForIdentifier(
     if (frameworkDefinition) {
       dataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
     }
-  }
-  if (publicFrameworkIdentifiers.includes(identifier)) {
+  } else if (publicFrameworkIdentifiers.includes(identifier)) {
     const frameworkDefinition = getBasePublicFrameworkDefinition(identifier);
     if (frameworkDefinition) {
       dataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
