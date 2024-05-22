@@ -31,13 +31,13 @@ export function getFrameworkDataApiForIdentifier(
     }
   }
   if (publicFrameworkIdentifiers.includes(identifier)) {
-    //TODO werden hier Nicht-Toolbox-Frameworks reinfallen? Wenn nicht, muss ich das anders abfangen
     const frameworkDefinition = getBasePublicFrameworkDefinition(identifier);
     if (frameworkDefinition) {
       dataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-    } else {
-      dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(identifier as keyof FrameworkDataTypes);
     }
+  } else {
+    // If code reaches this point, it means that the framework for the identifier is not integrated into the Toolbox yet
+    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(identifier as keyof FrameworkDataTypes);
   }
   return dataControllerApi;
-} // TODO elses zu den ganzen ifs?
+}

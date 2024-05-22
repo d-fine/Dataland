@@ -5,6 +5,7 @@
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 import { DataTypeEnum } from "@clients/backend";
+import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -87,11 +88,11 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
     return "";
   }
 
-  const frameworkLabel = getBasePublicFrameworkDefinition(rawInput)?.label;
-  // TODO noch zu ergänzen:  Wenn label nicht gefunden => check auch in den privateFrameworkDefinitions
+  const frameworkLabel =
+    getBasePublicFrameworkDefinition(rawInput)?.label || getBasePrivateFrameworkDefinition(rawInput)?.label;
   if (frameworkLabel) return frameworkLabel;
   const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
-  return resultOfCustomMappingHumanisation == ""
+  return resultOfCustomMappingHumanisation === ""
     ? convertCamelCaseToSentenceCase(rawInput)
     : resultOfCustomMappingHumanisation;
 }
