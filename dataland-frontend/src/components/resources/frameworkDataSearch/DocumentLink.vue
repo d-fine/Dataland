@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex">
+  <div style="position: relative; display: flex; align-items: center; justify-content: center">
     <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
       <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
       <i
@@ -11,10 +11,10 @@
       />
       <span class="underline ml-1 pl-1">{{ suffix }}</span>
     </span>
-    <div class="progress-spinner-container" v-if="percentCompleted != undefined">
-      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <span class="progress-spinner-container" v-if="percentCompleted != undefined">
+      <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
       <div class="progress-spinner-value">{{ percentCompleted }}%</div>
-    </div>
+    </span>
   </div>
 </template>
 
@@ -26,7 +26,6 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
-  //Todo rename style classes
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -52,8 +51,8 @@ export default defineComponent({
      */
     async downloadDocument() {
       const fileReference: string = this.fileReference;
+      this.percentCompleted = 0;
       try {
-        this.percentCompleted = 0;
         const docUrl = document.createElement("a");
         const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .documentController;
@@ -75,9 +74,8 @@ export default defineComponent({
           });
       } catch (error) {
         console.error(error);
-        this.percentCompleted = undefined;
       }
-      //todo stop spinner this.percentCompleted = undefined;
+      this.percentCompleted = undefined;
     },
     /**
      * Extracts the file extension from the http response headers
@@ -104,8 +102,8 @@ type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
 <style lang="scss" scoped>
 .progress-spinner-container {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .progress-spinner-value {
@@ -113,7 +111,7 @@ type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 10px;
+  font-size: 0.45rem;
   color: black;
 }
 </style>
