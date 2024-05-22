@@ -105,7 +105,7 @@ import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum } from "@clients/backend";
+import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum, type SmeData } from "@clients/backend";
 import { smeDataModel } from "@/frameworks/sme/UploadConfig";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -123,8 +123,8 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { getFilledKpis } from "@/utils/DataPoint";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
+import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 export default defineComponent({
   setup() {
@@ -209,26 +209,30 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Builds an api to get and upload Sme data
+     * @returns the api
+     */
+    buildSmeDataApi(): PrivateFrameworkDataApi<SmeData> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Sme);
+      if (frameworkDefinition) {
+        return frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+      }
+    },
+
+    /**
      * Loads the SME-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadSmeData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      // TODO Emanuel: duplciate code to the post-function!
-      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Sme);
-      if (frameworkDefinition) {
-        const smeDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
-          undefined,
-          apiClientProvider.axiosInstance,
-        );
-        const smeResponseData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
-        this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
-        this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
-        this.referencedReportsForPrefill =
-          this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
-      }
+      const smeDataControllerApi = this.buildSmeDataApi();
+      const smeResponseData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
+      this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
+      this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
+      this.referencedReportsForPrefill =
+        this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
       this.waitingForData = false;
     },
 
@@ -245,15 +249,8 @@ export default defineComponent({
           );
         }
         const Files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
-        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Sme);
-        if (frameworkDefinition) {
-          const smeDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
-            undefined,
-            apiClientProvider.axiosInstance,
-          );
-          await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
-        }
+        const smeDataControllerApi = this.buildSmeDataApi();
+        await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;

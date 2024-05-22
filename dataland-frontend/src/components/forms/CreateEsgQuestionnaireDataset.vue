@@ -109,7 +109,11 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { type CompanyAssociatedDataEsgQuestionnaireData, DataTypeEnum } from "@clients/backend";
+import {
+  type CompanyAssociatedDataEsgQuestionnaireData,
+  DataTypeEnum,
+  type EsgQuestionnaireData,
+} from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -148,6 +152,7 @@ import { esgQuestionnaireDataModel } from "@/frameworks/esg-questionnaire/Upload
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
 import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 export default defineComponent({
   setup() {
@@ -253,28 +258,31 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Builds an api to get and upload esg questionnaire data
+     * @returns the api
+     */
+    buildEsgQuestionnaireDataApi(): PublicFrameworkDataApi<EsgQuestionnaireData> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
+      if (frameworkDefinition) {
+        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+      }
+    },
+
+    /**
      * Loads the EsgQuestionnaire-Dataset identified by the provided dataId and pre-configures the form to contain
      * the data from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadEsgQuestionnaireData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      // TODO Emanuel: duplciate code to the post-function!
-      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-      if (frameworkDefinition) {
-        const esgQuestionnaireDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
-          undefined,
-          apiClientProvider.axiosInstance,
-        );
-        const dataResponse = await esgQuestionnaireDataControllerApi.getFrameworkData(dataId);
-        const esgQuestionnaireResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(esgQuestionnaireResponseData.data);
-        this.companyAssociatedEsgQuestionnaireData = objectDropNull(
-          esgQuestionnaireResponseData as ObjectType,
-        ) as CompanyAssociatedDataEsgQuestionnaireData;
-      }
-
+      const esgQuestionnaireDataControllerApi = this.buildEsgQuestionnaireDataApi();
+      const dataResponse = await assertDefined(esgQuestionnaireDataControllerApi).getFrameworkData(dataId);
+      const esgQuestionnaireResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(esgQuestionnaireResponseData.data);
+      this.companyAssociatedEsgQuestionnaireData = objectDropNull(
+        esgQuestionnaireResponseData as ObjectType,
+      ) as CompanyAssociatedDataEsgQuestionnaireData;
       this.waitingForData = false;
     },
     /**
@@ -286,15 +294,10 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
-        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-        if (frameworkDefinition) {
-          const esgQuestionnaireDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
-            undefined,
-            apiClientProvider.axiosInstance,
-          );
-          await esgQuestionnaireDataControllerApi.postFrameworkData(this.companyAssociatedEsgQuestionnaireData);
-        }
+        const esgQuestionnaireDataControllerApi = this.buildEsgQuestionnaireDataApi();
+        await assertDefined(esgQuestionnaireDataControllerApi).postFrameworkData(
+          this.companyAssociatedEsgQuestionnaireData,
+        );
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";

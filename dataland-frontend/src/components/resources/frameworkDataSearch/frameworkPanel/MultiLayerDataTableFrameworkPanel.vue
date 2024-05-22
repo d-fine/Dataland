@@ -140,7 +140,7 @@ function getBaseFrameworkApiForIdentifierss(): BaseFrameworkDataApi<FrameworkDat
 }
 
 /**
- * Fetches all datasets that should be displayed TODO
+ * Fetches all datasets that should be displayed
  * @param companyId the id of the company to retrieve data for
  * @param singleDataMetaInfoToDisplay If set, only display the dataset belonging to this single entry
  * @returns the datasets that should be displayed
@@ -158,6 +158,6 @@ async function loadDataForDisplay(
       return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
     }
   }
-  // TODO Emanuel: else? evtl. "error"-cornercases abfangen?
+  // TODO Emanuel: else? evtl. "error"-cornercases abfangen?  Z.B. dass es zu dem identifier keine api gibt.
 }
 </script>
