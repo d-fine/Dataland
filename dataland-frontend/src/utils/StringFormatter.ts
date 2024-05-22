@@ -3,7 +3,7 @@
  */
 
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
-import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 import { DataTypeEnum } from "@clients/backend";
 
 /**
@@ -87,7 +87,8 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
     return "";
   }
 
-  const frameworkLabel = getBaseFrameworkDefinition(rawInput)?.label;
+  const frameworkLabel = getBasePublicFrameworkDefinition(rawInput)?.label;
+  // TODO noch zu ergänzen:  Wenn label nicht gefunden => check auch in den privateFrameworkDefinitions
   if (frameworkLabel) return frameworkLabel;
   const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
   return resultOfCustomMappingHumanisation == ""

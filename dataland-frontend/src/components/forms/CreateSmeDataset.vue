@@ -105,7 +105,7 @@ import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum, type SmeData } from "@clients/backend";
+import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum } from "@clients/backend";
 import { smeDataModel } from "@/frameworks/sme/UploadConfig";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -123,8 +123,8 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { getFilledKpis } from "@/utils/DataPoint";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
+import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -216,9 +216,10 @@ export default defineComponent({
     async loadSmeData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Sme);
+      // TODO Emanuel: duplciate code to the post-function!
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Sme);
       if (frameworkDefinition) {
-        const smeDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+        const smeDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
@@ -245,11 +246,13 @@ export default defineComponent({
         }
         const Files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Sme);
-        let SmeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
+        const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Sme);
         if (frameworkDefinition) {
-          SmeDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-          await SmeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
+          const smeDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
+            undefined,
+            apiClientProvider.axiosInstance,
+          );
+          await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
         }
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";

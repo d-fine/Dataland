@@ -4,9 +4,12 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
-import { type ApiClientConstructor, uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { type PublicApiClientConstructor, uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
-import { getAllFrameworkIdentifiers, getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
+import {
+  getAllPublicFrameworkIdentifiers,
+  getBasePublicFrameworkDefinition,
+} from "@/frameworks/BasePublicFrameworkRegistry";
 import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
@@ -38,7 +41,7 @@ describe(
      */
     function registerFrameworkFakeFixtureUpload<FrameworkDataType>(
       frameworkIdentifier: DataTypeEnum,
-      apiClientConstructor: ApiClientConstructor<FrameworkDataType>,
+      apiClientConstructor: PublicApiClientConstructor<FrameworkDataType>,
       nameOfFixtureJson: string,
     ): void {
       describeIf(
@@ -111,11 +114,11 @@ describe(
     }
 
     // Prepopulation for frameworks of the framework-registry
-    for (const framework of getAllFrameworkIdentifiers()) {
+    for (const framework of getAllPublicFrameworkIdentifiers()) {
       const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework);
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
-        (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
+        (config) => getBasePublicFrameworkDefinition(framework)!.getPublicFrameworkApiClient(config),
         `CompanyInformationWith${dataTypeInPascalCase}Data`.replace("-", ""),
       );
     }

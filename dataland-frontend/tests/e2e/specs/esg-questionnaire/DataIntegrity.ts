@@ -11,7 +11,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
@@ -51,7 +51,8 @@ describeIf(
                 storedCompany.companyId,
                 "2021",
                 esgQuestionnaireFixtureForTest.t,
-                (config) => getBaseFrameworkDefinition(DataTypeEnum.EsgQuestionnaire)!.getFrameworkApiClient(config),
+                (config) =>
+                  getBasePublicFrameworkDefinition(DataTypeEnum.EsgQuestionnaire)!.getPublicFrameworkApiClient(config),
               ).then((dataMetaInformation) => {
                 cy.intercept(`**/api/data/${DataTypeEnum.EsgQuestionnaire}/${dataMetaInformation.dataId}`).as(
                   "fetchDataForPrefill",

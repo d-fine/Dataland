@@ -50,8 +50,8 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -131,7 +131,16 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
 }
 
 /**
- * Fetches all datasets that should be displayed
+ * Gets a base framework api for the framework specified by the identifier on the current page.
+ * @returns the base framework api for API calls to fetch framework data
+ */
+function getBaseFrameworkApiForIdentifierss(): BaseFrameworkDataApi<FrameworkDataType> | undefined {
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  return getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider);
+}
+
+/**
+ * Fetches all datasets that should be displayed TODO
  * @param companyId the id of the company to retrieve data for
  * @param singleDataMetaInfoToDisplay If set, only display the dataset belonging to this single entry
  * @returns the datasets that should be displayed
@@ -140,22 +149,15 @@ async function loadDataForDisplay(
   companyId: string,
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-  const frameworkDefinition = getFrontendFrameworkDefinition(props.frameworkIdentifier);
-  let dataControllerApi: BaseFrameworkDataApi<FrameworkDataType>;
-  if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-  } else {
-    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
+  const dataControllerApi = getBaseFrameworkApiForIdentifierss();
+  if (dataControllerApi) {
+    if (singleDataMetaInfoToDisplay) {
+      const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
+      return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
+    } else {
+      return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+    }
   }
-
-  if (singleDataMetaInfoToDisplay) {
-    const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-
-    return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-  } else {
-    return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
-  }
+  // TODO Emanuel: else? evtl. "error"-cornercases abfangen?
 }
 </script>

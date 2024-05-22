@@ -110,7 +110,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { type CompanyAssociatedDataHeimathafenData, DataTypeEnum, type HeimathafenData } from "@clients/backend";
+import { type CompanyAssociatedDataHeimathafenData, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -143,10 +143,9 @@ import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/Yes
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { getFilledKpis } from "@/utils/DataPoint";
 import { heimathafenDataModel } from "@/frameworks/heimathafen/UploadConfig";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -252,9 +251,10 @@ export default defineComponent({
     async loadHeimathafenData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
+      // TODO Emanuel: duplciate code to the post-function!
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Heimathafen);
       if (frameworkDefinition) {
-        const heimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+        const heimathafenDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
@@ -278,10 +278,9 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-        let heimathafenDataControllerApi: PublicFrameworkDataApi<HeimathafenData>;
+        const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Heimathafen);
         if (frameworkDefinition) {
-          heimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+          const heimathafenDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
             undefined,
             apiClientProvider.axiosInstance,
           );

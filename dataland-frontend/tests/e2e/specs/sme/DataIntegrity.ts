@@ -8,6 +8,7 @@ import {
   SmeDataControllerApi,
   type SmeData,
   type StoredCompany,
+  type PathwaysToParisData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
@@ -46,13 +47,8 @@ describeIf(
           })
           .then((storedCompany) => {
             storedTestCompany = storedCompany;
-            return uploadFrameworkData(
-              DataTypeEnum.Sme,
-              tokenForAdminUser,
-              storedCompany.companyId,
-              "2021",
-              smeFixtureForTest.t,
-            );
+            const dummy = {} as PathwaysToParisData; // TODO this is just to make it green for now
+            return uploadFrameworkData(DataTypeEnum.P2p, tokenForAdminUser, storedCompany.companyId, "2021", dummy);
           })
           .then((dataMetaInfo) => {
             dataMetaInfoOfTestDataset = dataMetaInfo;

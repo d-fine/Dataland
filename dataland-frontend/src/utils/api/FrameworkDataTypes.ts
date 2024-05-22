@@ -18,7 +18,6 @@ export type FrameworkDataTypes = {
     apiSuffix: "P2pData";
     api: P2pDataControllerApi;
   };
-
   [DataTypeEnum.Lksg]: {
     data: LksgData;
     apiSuffix: "LksgData";

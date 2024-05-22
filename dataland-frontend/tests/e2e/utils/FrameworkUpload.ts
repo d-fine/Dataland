@@ -5,7 +5,7 @@ import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
-export type ApiClientConstructor<FrameworkDataType> = (
+export type PublicApiClientConstructor<FrameworkDataType> = (
   config: Configuration,
 ) => PublicFrameworkDataApi<FrameworkDataType>;
 
@@ -52,7 +52,7 @@ export async function uploadGenericFrameworkData<FrameworkDataType>(
   companyId: string,
   reportingPeriod: string,
   data: FrameworkDataType,
-  apiClientConstructor: ApiClientConstructor<FrameworkDataType>,
+  apiClientConstructor: PublicApiClientConstructor<FrameworkDataType>,
   bypassQa: boolean = true,
 ): Promise<DataMetaInformation> {
   const apiClient = apiClientConstructor(new Configuration({ accessToken: token }));

@@ -105,7 +105,7 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { lksgDataModel } from "@/frameworks/lksg/UploadConfig";
-import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from "@clients/backend";
+import { type CompanyAssociatedDataLksgData, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -137,14 +137,13 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
 import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
 import RiskAssessmentsFormField from "@/components/forms/parts/fields/RiskAssessmentsFormField.vue";
 import GeneralViolationsAssessmentsFormField from "@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue";
 import GrievanceMechanismAssessmentsFormField from "@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -251,9 +250,10 @@ export default defineComponent({
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
+      // TODO Emanuel: duplciate code to the post-function!
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksg);
       if (frameworkDefinition) {
-        const lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+        const lksgDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
@@ -279,10 +279,12 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
-        let lksgDataControllerApi: PublicFrameworkDataApi<LksgData>;
+        const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksg);
         if (frameworkDefinition) {
-          lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+          const lksgDataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(
+            undefined,
+            apiClientProvider.axiosInstance,
+          );
           await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
         }
         this.$emit("datasetCreated");
