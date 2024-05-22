@@ -35,9 +35,11 @@ class DocumentControllerTest {
         assertFalse(isByteArrayRepresentationOfPdf(docxDocument.readBytes()))
         val uploadResponse = uploadDocument(docxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
+        val byteArrayOfDownload = downloadedFile.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Pdf.mediaType, byteArrayOfDownload.size.toString())
         assertTrue(
             isByteArrayRepresentationOfPdf(
-                downloadedFile.readBytes(),
+                byteArrayOfDownload,
             ),
             "downloaded document is a pdf document",
         )
@@ -47,21 +49,27 @@ class DocumentControllerTest {
     fun `test that a dummy ods document can be uploaded and retrieved after successful QA`() {
         val uploadResponse = uploadDocument(odsDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(odsDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        val byteArrayOfOds = odsDocument.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Ods.mediaType, byteArrayOfOds.size.toString())
+        assertEquals(byteArrayOfOds.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
     fun `test that a dummy xlsx document can be uploaded and retrieved after successful QA`() {
         val uploadResponse = uploadDocument(xlsxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(xlsxDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        val byteArrayOfXlsx = xlsxDocument.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Xlsx.mediaType, byteArrayOfXlsx.size.toString())
+        assertEquals(byteArrayOfXlsx.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
     fun `test that a dummy xls document can be uploaded and retrieved after successful QA`() {
         val uploadResponse = uploadDocument(xlsDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(xlsDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        val byteArrayOfXls = xlsDocument.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Xls.mediaType, byteArrayOfXls.size.toString())
+        assertEquals(byteArrayOfXls.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
@@ -130,7 +138,7 @@ class DocumentControllerTest {
                 try {
                     val response = documentControllerClient.getDocumentWithHttpInfo(uploadResponse.documentId).headers
                     assertEquals(response[HttpHeaders.CONTENT_LENGTH]?.first(), size)
-                    assertEquals(response[HttpHeaders.CONTENT_TYPE]?.first(), mimeType)
+                    assertEquals(response[HttpHeaders.CONTENT_TYPE]?.first(), mimeType.toString())
                     true
                 } catch (e: ClientException) {
                     e.statusCode != HttpStatus.NOT_FOUND.value()
