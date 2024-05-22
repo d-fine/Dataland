@@ -4,7 +4,7 @@
     enter-active-class="spinner-transition-enter-active"
     leave-active-class="spinner-transition-leave-active"
   >
-    <div v-if="displayAnything" :key="displayAnything + ''" style="position: relative; width: 1.5rem">
+    <div v-if="displayAnything" style="position: relative; width: 1.5rem">
       <span v-if="displaySpinner" class="progress-spinner-container">
         <i class="pi pi-spin pi-spinner progress-spinner-spinner" />
         <div class="progress-spinner-value">{{ percentCompleted }}%</div>
@@ -32,7 +32,6 @@ export default defineComponent({
   },
   watch: {
     percentCompleted(newValue) {
-      console.log(newValue);
       if (newValue == undefined) {
         this.displaySpinner = false;
         this.displayCheckmark = false;
