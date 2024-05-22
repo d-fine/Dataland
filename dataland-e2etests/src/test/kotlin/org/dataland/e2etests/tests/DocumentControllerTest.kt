@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
+import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
@@ -13,7 +14,9 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -63,9 +66,11 @@ class DocumentControllerTest {
 
     @Test
     fun `test that a dummy pdf document can be uploaded and retrieved after successful QA`() {
+        val byteArrayOfPdf = pdfDocument.readBytes()
         val uploadResponse = uploadDocument(pdfDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(pdfDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        validateResponseHeaders(uploadResponse, DocumentType.Pdf.mediaType, byteArrayOfPdf.size.toString())
+        assertEquals(byteArrayOfPdf.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
@@ -111,6 +116,26 @@ class DocumentControllerTest {
                 }
             }
         return downloadedFile
+    }
+
+    /**
+     * checks if response headers are correct
+     * @param uploadResponse uploadResponse
+     * @param mimeType expected mime type of the document
+     * @param size expected size of the document
+     */
+    private fun validateResponseHeaders(uploadResponse: DocumentUploadResponse, mimeType: MediaType, size: String) {
+        Awaitility.await().atMost(10, TimeUnit.SECONDS)
+            .until {
+                try {
+                    val response = documentControllerClient.getDocumentWithHttpInfo(uploadResponse.documentId).headers
+                    assertEquals(response[HttpHeaders.CONTENT_LENGTH]?.first(), size)
+                    assertEquals(response[HttpHeaders.CONTENT_TYPE]?.first(), mimeType)
+                    true
+                } catch (e: ClientException) {
+                    e.statusCode != HttpStatus.NOT_FOUND.value()
+                }
+            }
     }
 
     /**
