@@ -11,12 +11,7 @@
       />
       <span class="underline ml-1 pl-1">{{ suffix }}</span>
     </span>
-    <div v-if="percentCompleted != undefined" style="position: relative; width: 1.5rem">
-      <span class="progress-spinner-container">
-        <i class="pi pi-spin pi-spinner progress-spinner-spinner" />
-        <div class="progress-spinner-value">{{ percentCompleted }}%</div>
-      </span>
-    </div>
+    <DownloadProgressSpinner :percent-completed="percentCompleted" />
   </div>
 </template>
 
@@ -26,6 +21,7 @@ import type Keycloak from "keycloak-js";
 import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import DownloadProgressSpinner from "./DownloadProgressSpinner.vue";
 
 export default defineComponent({
   setup() {
@@ -39,6 +35,7 @@ export default defineComponent({
     };
   },
   name: "DocumentLink",
+  components: { DownloadProgressSpinner },
   props: {
     label: String,
     suffix: String,
@@ -67,6 +64,7 @@ export default defineComponent({
             },
           } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
+            this.percentCompleted = 100;
             const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
             const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
@@ -102,28 +100,3 @@ export default defineComponent({
 });
 type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
 </script>
-<style lang="scss" scoped>
-.progress-spinner-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  flex: 1 0 auto;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.progress-spinner-value {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.45rem;
-  color: black;
-}
-
-.progress-spinner-spinner {
-  font-size: 1.5rem;
-  color: $orange-prime;
-}
-</style>
