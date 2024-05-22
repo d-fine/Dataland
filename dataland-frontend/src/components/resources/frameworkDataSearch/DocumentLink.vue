@@ -10,7 +10,7 @@
     />
     <span class="underline ml-1 pl-1">{{ suffix }}</span>
   </span>
-  <span class="progress-spinner-container" v-if="percentCompleted == undefined">
+  <span class="progress-spinner-container" v-if="percentCompleted != undefined">
     <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem" />
     <div class="progress-spinner-value">{{ percentCompleted }}%</div>
   </span>
