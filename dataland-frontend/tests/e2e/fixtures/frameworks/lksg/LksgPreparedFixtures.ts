@@ -208,6 +208,7 @@ function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   const dummyFileReference = "123";
   newFixture.companyInformation.companyName = "TestForBrokenFileReference";
-  newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct!.dataSource!.fileReference = dummyFileReference;
+  newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct!.dataSource!.fileReference =
+    dummyFileReference;
   return newFixture;
 }

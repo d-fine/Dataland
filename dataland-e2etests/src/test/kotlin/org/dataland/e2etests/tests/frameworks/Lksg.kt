@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
@@ -125,8 +126,11 @@ class Lksg {
             )
         }
 
-        // todo assertTrue(exception.summary.contains("Document with ID $dummyFileReference does not exist."))
-        assertTrue(exception.message!!.contains("Client error"))
+        val testClientError = exception.response as ClientError<*>
+
+        assertTrue(testClientError.statusCode == 400)
+        assertTrue(testClientError.body.toString().contains("Invalid input"))
+        assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
     }
 
     private fun assertDownloadedDatasets(
