@@ -31,7 +31,9 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  //TODO implementation of provide and inject dataId is bad, needs refactoring
+  //TODO implementation of provide and inject dataId is bad, needs refactoring. For some reason direct injection
+  //TODO of dataId here did not work. Goal is to remove the inject in DataPointWrapperDisplayComponent and inject
+  //TODO dataId here
   inject: ["dialogRef"],
   data() {
     return {
