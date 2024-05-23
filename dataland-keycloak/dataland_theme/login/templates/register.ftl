@@ -9,10 +9,40 @@
     <#elseif section = "form">
         <form id="kc-register-form" action="${url.registrationAction}" method="post">
             <@inputField.dala
+            fieldName="username"
+            fieldErrorHandlers=[]
+            fieldHeading="Username"
+            tabindex="1"
+            autofocus=false
+            type="text"
+            value=(register.formData.username!'')
+            />
+
+            <@inputField.dala
+            fieldName="firstName"
+            fieldErrorHandlers=[]
+            fieldHeading="First Name"
+            tabindex="2"
+            autofocus=false
+            type="text"
+            value=(register.formData.firstName!'')
+            />
+
+            <@inputField.dala
+            fieldName="lastName"
+            fieldErrorHandlers=[]
+            fieldHeading="Last Name"
+            tabindex="3"
+            autofocus=false
+            type="text"
+            value=(register.formData.lastName!'')
+            />
+
+            <@inputField.dala
                 fieldName="email"
                 fieldErrorHandlers=["email"]
                 fieldHeading="*Enter your email address"
-                tabindex="1"
+                tabindex="4"
                 autofocus=true
                 autocomplete="email"
                 type="text"
@@ -24,7 +54,7 @@
                 fieldErrorHandlers=["password", "password-confirm"]
                 fieldHeading="*Password"
                 wrappingDivAttributes="data-role=\"password-primary\""
-                tabindex="2"
+                tabindex="5"
                 autofocus=false
                 type="password"
                 autocomplete="off"
@@ -40,17 +70,18 @@
                 fieldErrorHandlers=["password", "password-confirm"]
                 fieldHeading="*Repeat password"
                 wrappingDivAttributes="data-role=\"password-confirm\""
-                tabindex="3"
+                tabindex="6"
                 autofocus=false
                 type="password"
                 autocomplete="off"
             />
+
             
             <div class="text-left mt-4 flex align-items-center">
                 <input id="user.attributes.receive_updates" name="user.attributes.receive_updates" type="checkbox">
-                <label for="user.attributes.receive_updates" class="tex-sm ml-2" tabindex="4">Sign me up for updates (optional)</label>
+                <label for="user.attributes.receive_updates" class="tex-sm ml-2" tabindex="7">Sign me up for updates (optional)</label>
             </div>
-            <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="5" name="register" type="submit" value="CREATE AN ACCOUNT"/>
+            <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="8" name="register" type="submit" value="CREATE AN ACCOUNT"/>
         </form>
 
         <@socialLogin.dala prefix="TEST DATALAND WITH"/>
