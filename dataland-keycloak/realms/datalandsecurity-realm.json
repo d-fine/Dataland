@@ -31,6 +31,7 @@
   "sslRequired": "none",
   "registrationAllowed": true,
   "registrationEmailAsUsername": false,
+
   "rememberMe": true,
   "verifyEmail": false,
   "loginWithEmailAllowed": true,
