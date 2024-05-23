@@ -200,6 +200,10 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
   return newFixture;
 }
 
+/**
+ * Generates an LKSG dataset with a no-existing file reference.
+ * @returns the dataset
+ */
 function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
   const dummyFileReference = "123";

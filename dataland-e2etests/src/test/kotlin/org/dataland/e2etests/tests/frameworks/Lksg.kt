@@ -108,7 +108,8 @@ class Lksg {
     fun `check that dataset cannot be uploaded if document does not exist`() {
         val companyId = "1908273127903192839781293898312983"
         val companyName = "TestForBrokenFileReference"
-        val companyInformation = apiAccessor.testDataProviderForLksgData.getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+        val companyInformation = apiAccessor.testDataProviderForLksgData
+            .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
         val lksgData = companyInformation!!.t
 
         val dataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
