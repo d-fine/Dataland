@@ -8,6 +8,8 @@ describe("check that the progress spinner works correctly for the document link 
     }).as("downloadComplete");
     cy.mountWithPlugins(DocumentLink, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         downloadName: "Test",
         fileReference: "dummyFileReference",
