@@ -38,11 +38,20 @@ export default defineComponent({
       required: true,
     },
   },
+  //TODO implementation of provide and inject dataId is bad, needs refactoring
+  inject: {
+    dataId: {
+      from: "dataId",
+      default: {},
+    },
+  },
   data() {
     return {
       DataPointDataTable,
+      dataId: this.dataId,
     };
   },
+
   computed: {
     modalOptions() {
       return {
@@ -53,8 +62,12 @@ export default defineComponent({
         },
         data: {
           dataPointDisplay: this.dataPointProperties,
+          dataId: this.requiredDataId,
         },
       };
+    },
+    requiredDataId() {
+      return (this.requiredDataId = this.dataId as string);
     },
     dataPointProperties() {
       const content = this.content.displayValue;
