@@ -18,6 +18,12 @@ import type Keycloak from "keycloak-js";
 import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import {Configuration, ConfigurationParameters, DataTypeEnum, SmeData} from "@clients/backend";
+import {getFrontendFrameworkDefinition} from "@/frameworks/FrontendFrameworkRegistry";
+import {PrivateFrameworkDataApi} from "@/utils/api/UnifiedFrameworkDataApi";
+import {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
+import {DataPointDisplay} from "@/utils/DataPoint";
+import {getBasePrivateFrameworkDefinition} from "@/frameworks/BasePrivateFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -25,6 +31,17 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+    inject: ["dialogRef"],
+ data() {
+    return {
+        requestedDataId: String,
+       };
+
+ },
+    mounted() {
+        const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
+        this.requestedDataId = dialogRefToDisplay.data.dataId
+    },
   name: "DocumentLink",
   props: {
     label: String,
@@ -33,33 +50,58 @@ export default defineComponent({
     fileReference: { type: String, required: true },
     showIcon: Boolean,
     fontStyle: String,
+    datatype: String,
   },
   methods: {
     /**
      * Method to download available reports
      */
     async downloadDocument() {
-      const fileReference: string = this.fileReference;
-      try {
-        const docUrl = document.createElement("a");
-        const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-          .documentController;
-        await documentControllerApi
-          .getDocument(fileReference, {
-            responseType: "arraybuffer",
-          } as AxiosRequestConfig)
-          .then((getDocumentsFromStorageResponse) => {
-            const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-            const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
-            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
-            docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
-            document.body.appendChild(docUrl);
-            docUrl.click();
-          });
-      } catch (error) {
-        console.error(error);
-      }
+        const fileReference: string = this.fileReference;
+        //TODO use getAllPublicFrameworks and getAllPrivateFrameworks to define the if condition
+        try {
+            const docUrl = document.createElement("a");
+            if (this.datatype == !DataTypeEnum.Sme) {
+                const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+                    .documentController;
+                await documentControllerApi
+                    .getDocument(fileReference, {
+                        responseType: "arraybuffer",
+                    } as AxiosRequestConfig)
+                    .then((getDocumentsFromStorageResponse) => {
+                        const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+                        const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+                        const newBlob = new Blob([getDocumentsFromStorageResponse.data], {type: mimeType});
+                        docUrl.href = URL.createObjectURL(newBlob);
+                        docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
+                        document.body.appendChild(docUrl);
+                        docUrl.click();
+                    });
+            } else { const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+                let SmeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
+                const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Sme);
+                if (frameworkDefinition) {
+                    SmeDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
+                        undefined,
+                        apiClientProvider.axiosInstance,
+                    );
+                    await SmeDataControllerApi.getPrivateDocument( this.requestedDataId.toString(), fileReference,{
+                        responseType: "arraybuffer"} as AxiosRequestConfig).then((getDocumentsFromStorageResponse) => {
+                        const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+                        const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+                        const newBlob = new Blob([getDocumentsFromStorageResponse.data], {type: mimeType});
+                        docUrl.href = URL.createObjectURL(newBlob);
+                        docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
+                        document.body.appendChild(docUrl);
+                        docUrl.click();
+                    });
+
+            }
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
     },
     /**
      * Extracts the file extension from the http response headers
