@@ -22,7 +22,7 @@ import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
-import {getAllPublicFrameworkIdentifiers} from "@/frameworks/BasePublicFrameworkRegistry";
+import { getAllPublicFrameworkIdentifiers } from "@/frameworks/BasePublicFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -61,8 +61,8 @@ export default defineComponent({
       const fileReference: string = this.fileReference;
       try {
         const docUrl = document.createElement("a");
-        let publicFramework = getAllPublicFrameworkIdentifiers()
-        if ( publicFramework.includes(this.datatype!!)) {
+        const publicFramework = getAllPublicFrameworkIdentifiers();
+        if (publicFramework.includes(this.datatype!)) {
           const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
             .documentController;
           await documentControllerApi
