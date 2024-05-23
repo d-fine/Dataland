@@ -48,7 +48,6 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
-      dataId: this.dataId,
     };
   },
 
