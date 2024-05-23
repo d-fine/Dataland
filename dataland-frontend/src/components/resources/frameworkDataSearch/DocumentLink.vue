@@ -18,12 +18,11 @@ import type Keycloak from "keycloak-js";
 import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { Configuration, ConfigurationParameters, DataTypeEnum, type SmeData } from "@clients/backend";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { DataPointDisplay } from "@/utils/DataPoint";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
+import {getAllPublicFrameworkIdentifiers} from "@/frameworks/BasePublicFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -60,10 +59,10 @@ export default defineComponent({
      */
     async downloadDocument() {
       const fileReference: string = this.fileReference;
-      //TODO use getAllPublicFrameworks and getAllPrivateFrameworks to define the if condition
       try {
         const docUrl = document.createElement("a");
-        if (this.datatype == !DataTypeEnum.Sme) {
+        let publicFramework = getAllPublicFrameworkIdentifiers()
+        if ( publicFramework.includes(this.datatype!!)) {
           const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
             .documentController;
           await documentControllerApi
