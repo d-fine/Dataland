@@ -23,6 +23,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     generateFixtureForSixLksgDataSetsInDifferentYears,
     generateFixtureForOneLksgDataSetWithProductionSites,
     generateFixtureToContainSubcontractingCountries,
+    generateFixtureWithBrokenFileReference,
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
@@ -196,5 +197,13 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
   newFixture.t.general.masterData.fixedAndWorkingCapital = null;
   newFixture.t.general.productionSpecific = null;
   newFixture.t.general.productionSpecificOwnOperations = null;
+  return newFixture;
+}
+
+function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
+  const newFixture = generateLksgFixtures(1, 0)[0];
+  const dummyFileReference = "123";
+  newFixture.companyInformation.companyName = "TestForBrokenFileReference";
+  newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct!.dataSource!.fileReference = dummyFileReference;
   return newFixture;
 }

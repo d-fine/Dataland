@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentMechanism
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Lksg {
@@ -100,6 +102,30 @@ class Lksg {
             downloadedActive2023Datasets,
             sortDatasetsInSecondTest(uploadedDataSets),
         )
+    }
+
+    @Test
+    fun `check that dataset cannot be uploaded if document does not exist`(){
+        val companyId = "1908273127903192839781293898312983"
+        val companyName = "TestForBrokenFileReference"
+        val companyInformation = apiAccessor.testDataProviderForLksgData.getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+        val lksgData = companyInformation!!.t
+
+        val dataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
+
+        val uploadPair = Pair(dataSet, "2022")
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.uploadWithWait(
+                companyId = companyId,
+                frameworkData = uploadPair.first,
+                reportingPeriod = uploadPair.second,
+                uploadFunction = apiAccessor::lksgUploaderFunction,
+            )
+        }
+
+        // todo assertTrue(exception.summary.contains("Document with ID $dummyFileReference does not exist."))
+        assertTrue(exception.message!!.contains("Client error"))
     }
 
     private fun assertDownloadedDatasets(
