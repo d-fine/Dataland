@@ -56,7 +56,7 @@ class FrameworkViewConfigBuilder(
         )
 
         val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/viewconfig/ApiClient.ts.ftl")
+            .getTemplate("/specific/viewconfig/PublicApiClient.ts.ftl")
 
         val writer = FileWriter(apiClientTsPath.toFile())
         generatedTsFiles.add(apiClientTsPath)
@@ -76,7 +76,7 @@ class FrameworkViewConfigBuilder(
 
         val outputJobs = listOf(
             Pair(
-                "/specific/viewconfig/BaseFrameworkDefinition.ts.ftl",
+                "/specific/viewconfig/PublicBaseFrameworkDefinition.ts.ftl",
                 baseDirectoryPath / "BaseFrameworkDefinition.ts",
             ),
             Pair(
