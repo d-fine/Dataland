@@ -14,6 +14,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   const manipulatorFunctions: Array<generatorFunction> = [
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
     manipulateFixtureForOneFilledSubcategory,
+    generateFixtureWithBrokenFileReference,
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
@@ -215,4 +216,18 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
     },
     environmental: null!,
   };
+}
+
+/**
+ * Generates an SFDR dataset with a no-existing file reference.
+ * @returns the dataset
+ */
+function generateFixtureWithBrokenFileReference(): FixtureData<SfdrData> {
+  const newFixture = generateSfdrFixtures(1, 0)[0];
+  const dummyFileReference = "123";
+  newFixture.companyInformation.companyName = "TestForBrokenFileReference";
+  newFixture.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsLocationBasedInTonnes!.dataSource!.fileReference =
+    dummyFileReference;
+
+  return newFixture;
 }
