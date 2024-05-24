@@ -38,7 +38,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
                 it,
-                this::migrateBlankFileReferences,
+                this::migrateFaultyFileReferences,
             )
         }
     }
@@ -69,7 +69,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     /**
      * Migrate the data points with blank file references to containing null-valued a dataSource instead
      */
-    fun migrateBlankFileReferences(dataTableEntity: DataTableEntity) {
+    fun migrateFaultyFileReferences(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
         dataset.keys().forEach { checkForFaultyFileReferenceAndIterateFurther(
             dataset, it, "dataSource")
