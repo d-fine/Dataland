@@ -14,6 +14,7 @@ import java.io.File
  * for any frameworks that are currently in development. It turns a large amount of errors into warnings
  * that make the development experience more pleasant
  */
+@Suppress("TooManyFunctions", "LongParameterList")
 abstract class InDevelopmentPavedRoadFramework(
     identifier: String,
     label: String,
@@ -23,7 +24,10 @@ abstract class InDevelopmentPavedRoadFramework(
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
     privateFrameworkBoolean: Boolean = false,
 ) :
-    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures, privateFrameworkBoolean) {
+    PavedRoadFramework(
+        identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures,
+        privateFrameworkBoolean,
+    ) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.BackendDataModel)) {
