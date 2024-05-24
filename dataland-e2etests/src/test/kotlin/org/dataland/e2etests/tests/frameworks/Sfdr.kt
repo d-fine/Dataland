@@ -46,12 +46,11 @@ class Sfdr {
 
     @Test
     fun `check that Sfdr dataset cannot be uploaded if document does not exist`() {
-        //todo remove val companyId = "1908273127903192839781293898312983"
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val companyName = "TestForBrokenFileReference"
 
-        val companyInformation = apiAccessor.testDataProviderForSfdrData.
-        getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
+        val companyInformation = apiAccessor.testDataProviderForSfdrData
+            .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
 
         val dataSet = companyInformation!!.t
 
@@ -71,7 +70,5 @@ class Sfdr {
         assertTrue(testClientError.statusCode == 400)
         assertTrue(testClientError.body.toString().contains("Invalid input"))
         assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
-
-
     }
 }
