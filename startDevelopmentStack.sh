@@ -17,7 +17,7 @@ source ./*github_env.log
 source ./environments/.env.uncritical
 set +o allexport
 
-log_folder="./log/build/$(date '+%Y%m%d_%H%M')"
+log_folder="./log/build/"
 mkdir -p "$log_folder"
 
 for rebuild_script in ./build-utils/rebuild*.sh; do
@@ -29,7 +29,9 @@ for rebuild_script in ./build-utils/rebuild*.sh; do
   $rebuild_script &> "./$log_folder/$(basename "$rebuild_script").log" &
 done
 
-echo "Waiting for all processes to terminate."
+sleep 5
+echo "Waiting for all build processes to terminate."
+echo "Progress may be monitored using the logs in $log_folder"
 wait
 
 set -o allexport
