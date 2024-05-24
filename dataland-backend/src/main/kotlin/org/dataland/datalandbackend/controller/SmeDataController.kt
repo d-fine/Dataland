@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 /**
  * Controller for the SME framework endpoints
@@ -113,7 +112,7 @@ class SmeDataController(
 
     private fun generateCorrelationId(companyId: String): String {
         // TODO this function is mostly duplicate code, see DataController.kt => handle this problem later
-        val correlationId = UUID.randomUUID().toString()
+        val correlationId = generateUUID()
         logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
         return correlationId
     }
