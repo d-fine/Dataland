@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration
  * environment
  */
 
-// todo remove class if not necessary and remove applicaton props etc.
 @Configuration
 class ConfigurationDocumentsControllerApi(
     @Value("\${dataland.documentmanager.base-url}")
