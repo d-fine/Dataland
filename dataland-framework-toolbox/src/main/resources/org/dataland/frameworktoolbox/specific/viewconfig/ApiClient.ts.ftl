@@ -7,10 +7,10 @@ import {
   type ${frameworkBaseName}Data,
   ${frameworkBaseName}DataControllerApi,
 } from "@clients/backend";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class ${frameworkBaseName}ApiClient implements FrameworkDataApi<${frameworkBaseName}Data> {
+export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${frameworkBaseName}Data> {
   private readonly openApiDataController: ${frameworkBaseName}DataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
