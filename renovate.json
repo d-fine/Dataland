@@ -6,9 +6,16 @@
   "separateMinorPatch": true,
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
+  "minimumReleaseAge": "14 days",
   "schedule": [
     "after 10pm every weekday",
     "before 5am every weekday",
     "every weekend"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "labels": ["dependencies", "MAJOR"]
+    }
   ]
 }
