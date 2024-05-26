@@ -5,39 +5,12 @@ creation URL (or simply copy this md file into the description)
 
 # Maintenance tasks (to be completed by the assignee)
 
-## Dataland
+## Dataland repository
 
-### Problematic updates
+### Dependency updates
 
-See the list of known issues on the internal Dataland Wiki.
-Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem.
-If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog.
-
-### Gradle update
-
-- [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
-- [ ] Update versions in `versions.properties`
-- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
-
-### Dataland frontend
-
-- [ ] Update node version in `dataland-frontend/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
-  `package.json`
-- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
-  for security issues
-
-### Dataland keycloak theme
-
-- [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
-  `package.json`
-- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
-  for security issues
-
-### Dataland automated QA service
-
-- [ ] Update package versions in `dataland-automated-qa-service/requirements.txt`
+Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description, consult the 
+internal Dataland Wiki.
 
 ### Dataland EuroDaT client
 
@@ -47,67 +20,16 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
   the currently used version of the client. 
   1. Edit the docker compose file by adding a `ports` section with the entry `"8080:8080"` to the "eurodat-client" and start it
   2. Open a shell and navigate to the `dataland-eurodat-client` subproject 
-  3. Execute the following snippet of code: `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
+  3. Execute the following snippet of code (requires python): `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
   4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
-
-### Dockerfile updates
-
-Update versions in the following dockerfiles
-
-- [ ] `./dataland-api-key-manager/Dockerfile`
-- [ ] `./dataland-api-key-manager/DockerfileBase`
-- [ ] `./dataland-api-key-manager/DockerfileTest`
-- [ ] `./dataland-automated-qa-service/Dockerfile`
-- [ ] `./dataland-automated-qa-service/DockerfileBase`
-- [ ] `./dataland-automated-qa-service/DockerfileTest`
-- [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-backend/DockerfileBase`
-- [ ] `./dataland-backend/DockerfileTest`
-- [ ] `./dataland-batch-manager/Dockerfile`
-- [ ] `./dataland-batch-manager/DockerfileBase`
-- [ ] `./dataland-community-manager/Dockerfile`
-- [ ] `./dataland-community-manager/DockerfileBase`
-- [ ] `./dataland-community-manager/DockerfileTest`
-- [ ] `./dataland-document-manager/Dockerfile`
-- [ ] `./dataland-document-manager/DockerfileBase`
-- [ ] `./dataland-document-manager/DockerfileTest`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
-- [ ] `./dataland-e2etests/Dockerfile`
-- [ ] `./dataland-e2etests/DockerfileBase`
-- [ ] `./dataland-email-service/Dockerfile`
-- [ ] `./dataland-email-service/DockerfileBase`
-- [ ] `./dataland-email-service/DockerfileTest`
-- [ ] `./dataland-external-storage/Dockerfile`
-- [ ] `./dataland-external-storage/DockerfileBase`
-- [ ] `./dataland-external-storage/DockerfileTest`
-- [ ] `./dataland-frontend/Dockerfile`
-- [ ] `./dataland-frontend/DockerfileTest`
-- [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
-- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
-- [ ] `./dataland-inbound-proxy/Dockerfile`
-- [ ] `./dataland-internal-storage/Dockerfile`
-- [ ] `./dataland-internal-storage/DockerfileBase`
-- [ ] `./dataland-internal-storage/DockerfileTest`
-- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
-- [ ] `./dataland-pgadmin/Dockerfile`
-- [ ] `./dataland-qa-service/Dockerfile`
-- [ ] `./dataland-qa-service/DockerfileBase`
-- [ ] `./dataland-qa-service/DockerfileTest`
-- [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./base-dockerfiles/DockerfileGradle`
-- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
-  document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
-- [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
-  service that is not covered by the tasks above)
 
 ## Server updates
 
-Note: First manually create backups of the servers with a short retention duration.
-Then start the update with one of the dev servers and deploy to it after the update.
-If everything was fine, proceed with other servers. Double check for Prod.
+Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
+before applying any changes.
 
-Note: currently there seems to be an issue with the docker-compose plugin
+Start the update with one of the dev servers and deploy to it afterwards. If everything was fine, proceed with other 
+servers.
 
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 
@@ -115,21 +37,13 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev2.dataland.com
 - [ ] dev3.dataland.com
 - [ ] test.dataland.com
-- [ ] clone.dataland.com
 - [ ] letsencrypt.dataland.com
-- [ ] (OPT) dataland.com
+- [ ] dataland.com (align beforehand)
 
-### ssh-keys maintenance
+## ssh-keys maintenance
 
-check that all ssh-keys are set and erased from people that have left
-
-- [ ] dev1.dataland.com
-- [ ] dev2.dataland.com
-- [ ] dev3.dataland.com
-- [ ] test.dataland.com
-- [ ] clone.dataland.com
-- [ ] letsencrypt.dataland.com
-- [ ] (OPT) dataland.com
+Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the internal
+wiki.
 
 ## Check keycloak automatic logout if inactive
 
