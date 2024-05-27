@@ -95,6 +95,22 @@
                 LOGIN TO ACCOUNT
             </Button>
         </div>
+
+        <script>
+            let firstName = document.getElementById("firstName");
+            let lastName = document.getElementById("lastName");
+            let username = document.getElementById("username");
+
+            function updateUserNameFromFirstNameLastName () {
+                if (firstName.value !== "" && lastName.value !== "") {
+                    username.value = lastName.value + "_" + lastName.value;
+                }
+            }
+
+            firstName.addEventListener('focusout', updateUserNameFromFirstNameLastName);
+            lastName.addEventListener('focusout', updateUserNameFromFirstNameLastName);
+        </script>
+
         <script type="text/javascript" src="${url.resourcesPath}/passwordStrength.js"></script>
     </#if>
 </@layout.registrationLayout>
