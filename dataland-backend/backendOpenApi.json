@@ -14302,6 +14302,14 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -14313,14 +14321,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "lei": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
