@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.general.general
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
@@ -17,12 +18,13 @@ data class SfdrGeneralGeneral(
 
     val fiscalYearEnd: LocalDate,
 
+    @field:Valid()
+    val referencedReports: Map<String, CompanyReport>? = null,
+
     @field:Schema(
         implementation = Map::class,
         example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE,
     )
-    val referencedReports: Map<String, CompanyReport>? = null,
-
     val scopeOfEntities: YesNoNa? = null,
 
 )
