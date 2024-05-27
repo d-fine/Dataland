@@ -140,36 +140,6 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.water = null;
   input.t.environmental!.emissions = null;
   input.t.environmental!.greenhouseGasEmissions = null;
-  input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure = {
-    quality: "Audited",
-    dataSource: {
-      fileReference: "string",
-      page: 0,
-      tagName: "string",
-    },
-    comment: "string",
-    value: "Yes",
-  };
-  input.t.environmental!.biodiversity!.protectedAreasExposure = {
-    quality: "Audited",
-    dataSource: {
-      fileReference: "string",
-      page: 0,
-      tagName: "string",
-    },
-    comment: "string",
-    value: "No",
-  };
-  input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure = {
-    quality: "Audited",
-    dataSource: {
-      fileReference: "string",
-      page: 0,
-      tagName: "string",
-    },
-    comment: "string",
-    value: "Yes",
-  };
 
   input.t.social = null;
   return input;

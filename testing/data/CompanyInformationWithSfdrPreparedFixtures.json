@@ -957,34 +957,27 @@
 				"energyPerformance": null,
 				"biodiversity": {
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-						"quality": "Audited",
+						"value": "Yes",
 						"dataSource": {
-							"fileReference": "string",
-							"page": 0,
-							"tagName": "string"
+							"page": 1097,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
 						},
-						"comment": "string",
-						"value": "Yes"
+						"comment": "navigate cross-platform sensor",
+						"quality": "Incomplete"
 					},
-					"protectedAreasExposure": {
-						"quality": "Audited",
-						"dataSource": {
-							"fileReference": "string",
-							"page": 0,
-							"tagName": "string"
-						},
-						"comment": "string",
-						"value": "No"
-					},
+					"protectedAreasExposure": null,
 					"rareOrEndangeredEcosystemsExposure": {
-						"quality": "Audited",
+						"value": "Yes",
 						"dataSource": {
-							"fileReference": "string",
-							"page": 0,
-							"tagName": "string"
+							"page": 334,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
 						},
-						"comment": "string",
-						"value": "Yes"
+						"comment": "compress back-end port",
+						"quality": "Audited"
 					},
 					"highlyBiodiverseGrasslandExposure": {
 						"value": "Yes",
