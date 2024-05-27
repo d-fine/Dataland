@@ -40,10 +40,6 @@ class FrameworkRegistryImportsUpdater {
         val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
         val jobs = listOf(
             Pair(
-                "/specific/frameworkregistryimports/BaseFrameworkRegistryImports.ts.ftl",
-                pathToFrameworkDirectory / "BaseFrameworkRegistryImports.ts",
-            ),
-            Pair(
                 "/specific/frameworkregistryimports/FrontendFrameworkRegistryImports.ts.ftl",
                 pathToFrameworkDirectory / "FrontendFrameworkRegistryImports.ts",
             ),
