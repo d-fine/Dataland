@@ -51,7 +51,11 @@ private fun callDocumentApiAndCheckFileReference(
         documentControllerApi.checkDocument(fileReference)
     } catch (exception: ClientException) {
         logger.info("The referenced document does not exist.")
-        logger.info(exception.message + exception.statusCode + exception.response)
+        logger.info(
+            "Message: ${exception.message} " +
+                "Status code: ${exception.statusCode} " +
+                "Response: ${exception.response}",
+        )
         return false
     }
     return true
