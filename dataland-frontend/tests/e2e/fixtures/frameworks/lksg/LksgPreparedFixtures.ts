@@ -206,9 +206,9 @@ function generateOneLksgDatasetWithOnlyNulls(): FixtureData<LksgData> {
  */
 function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
   const newFixture = generateLksgFixtures(1, 0)[0];
-  const dummyFileReference = "123";
+  const brokenFileReference = "123";
   newFixture.companyInformation.companyName = "TestForBrokenFileReference";
   newFixture.t.governance!.certificationsPoliciesAndResponsibilities!.codeOfConduct!.dataSource!.fileReference =
-    dummyFileReference;
+    brokenFileReference;
   return newFixture;
 }
