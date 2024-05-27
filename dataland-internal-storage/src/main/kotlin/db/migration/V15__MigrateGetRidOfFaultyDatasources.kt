@@ -24,7 +24,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         "heimathafen",
         "sme",
 
-    )
+        )
 
     // todo the actual file references needs to be fed to the list. now there are only dummies.
     private val fileReferencesThatAreHashesButDoNotExist = listOf(
@@ -34,7 +34,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     )
 
     override fun migrate(context: Context?) {
-        dataTypesToMigrate.forEach{
+        dataTypesToMigrate.forEach {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
                 it,
@@ -47,7 +47,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         dataset: JSONObject,
         objectName: String,
         targetObjectName: String,
-        ) {
+    ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
             val dataSource = obj.getOrJavaNull(targetObjectName) as JSONObject?
@@ -71,11 +71,15 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
      */
     fun migrateFaultyFileReferences(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
-        dataset.keys().forEach { checkForFaultyFileReferenceAndIterateFurther(
-            dataset, it, "dataSource")
+        dataset.keys().forEach {
+            checkForFaultyFileReferenceAndIterateFurther(
+                dataset, it, "dataSource"
+            )
         }
-        dataset.keys().forEach { checkForFaultyFileReferenceAndIterateFurther(
-            dataset, it, "companyReport")
+        dataset.keys().forEach {
+            checkForFaultyFileReferenceAndIterateFurther(
+                dataset, it, "companyReport"
+            )
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
