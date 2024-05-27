@@ -86,6 +86,7 @@ describeIf(
                   frontendSubmittedSmeDataset as unknown as Record<string, object>,
                 );
               });
+            //TODO add visit to the view page to make sure that it is working
           });
       },
     );
