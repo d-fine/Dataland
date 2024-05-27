@@ -6,26 +6,22 @@ set -euxo pipefail
 # base_rebuild_single_docker_image.sh image_name dockerfile [additional_relevant_files...]
 # e.g.: base_rebuild_single_docker_image.sh <image-name> <path to Dockerfile> <first file that is relevant> <second file that is relevant> ...
 docker_image_name=$1
+dockerfile=$2
 if [[ "$docker_image_name" == *"-"* ]];
 then
   echo "ERROR: Docker image name '$docker_image_name' contains a '-' which is forbidden"
   exit 1
 fi
 
+echo Rebuilding docker image. Parameters: "$0" "${@:1}"
 
-# shift removes the first argument (it's the docker image name - hence not not a file)
-# Now $@ contains only filenames where a change in any file content should trigger a rebuild
-shift
-dockerfile=$1
-echo Rebuilding docker image. Parameters: "$@"
-
+regex=$(echo "$0" "${@:1}" | sed 's/ /|/g' | sed 's/\./\\./g')
 input_sha=$( \
-  find "$0" "$@" -type f | awk '{print "\042" $1 "\042"}' | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/\|/venv/' | \
+  git ls-tree -r HEAD --name-only | awk '{print "./" $1 }' | \
+  grep -E "$regex" | \
   sort -u | \
-  xargs shasum | \
-  shasum | \
-  awk '{print $1}'
+  xargs shasum | awk '{print $1}' | \
+  shasum | awk '{print $1}'
 )
 
 echo Input sha1 Hash: "$input_sha"
@@ -60,9 +56,13 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_BATCH_MANAGER_BASE_VERSION="${DATALAND_BATCH_MANAGER_BASE_VERSION:-}" \
                         --build-arg DATALAND_COMMUNITY_MANAGER_BASE_VERSION="${DATALAND_COMMUNITY_MANAGER_BASE_VERSION:-}" \
                         --build-arg DATALAND_EMAIL_SERVICE_BASE_VERSION="${DATALAND_EMAIL_SERVICE_BASE_VERSION:-}" \
+                        --build-arg DATALAND_EXTERNAL_STORAGE_BASE_VERSION="${DATALAND_EXTERNAL_STORAGE_BASE_VERSION:-}" \
+                        --build-arg DATALAND_DUMMY_EURODAT_CLIENT_BASE_VERSION="${DATALAND_DUMMY_EURODAT_CLIENT_BASE_VERSION:-}" \
+                        --build-arg DATALAND_DUMMY_EURODAT_CLIENT_TEST_VERSION="${DATALAND_DUMMY_EURODAT_CLIENT_TEST_VERSION:-}" \
                         --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}" \
                         --build-arg DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
                         --build-arg DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
+                        --build-arg MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER="${MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER:-}" \
                         --build-arg MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY="${MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY:-}"
                   )
 

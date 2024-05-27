@@ -41,22 +41,49 @@ export async function getAnsweredDataRequestsForViewPage(
  * Patches the RequestStatus of a StoredDataRequest
  * @param dataRequestId the dataland dataRequestId
  * @param requestStatus the desired requestStatus
+ * @param contacts set of email contacts
+ * @param message context of the email
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
-export async function patchDataRequestStatus(
+export async function patchDataRequest(
   dataRequestId: string,
-  requestStatus: RequestStatus,
+  requestStatus: RequestStatus | undefined,
+  contacts: Set<string> | undefined,
+  message: string | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
-      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequestStatus(
+      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
         dataRequestId,
         requestStatus,
+        contacts,
+        message,
       );
     }
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+/**
+ * Defines the color of p-badge
+ * @param requestStatus status of a request
+ * @returns p-badge class
+ */
+export function badgeClass(requestStatus: RequestStatus): string {
+  switch (requestStatus) {
+    case "Answered":
+      return "p-badge badge-blue outline rounded";
+    case "Open":
+      return "p-badge badge-yellow outline rounded";
+    case "Resolved":
+      return "p-badge badge-light-green outline rounded";
+    case "Withdrawn":
+      return "p-badge badge-gray outline rounded";
+    case "Closed":
+      return "p-badge badge-brown outline rounded";
+    default:
+      return "p-badge outline rounded";
   }
 }

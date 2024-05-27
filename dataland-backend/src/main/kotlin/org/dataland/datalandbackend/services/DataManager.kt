@@ -4,44 +4,31 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Argument
-import org.springframework.amqp.rabbit.annotation.Exchange
-import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.messaging.handler.annotation.Header
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param companyManager service for managing company data
+ * @param companyQueryManager service for managing query regarding company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param dataManagerUtils holds util methods for handling of data
 */
 @Component("DataManager")
 class DataManager(
@@ -50,45 +37,26 @@ class DataManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val messageUtils: MessageQueueUtils,
+    @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val dataInMemoryStorage = mutableMapOf<String, String>()
-
-    private fun assertActualAndExpectedDataTypeForIdMatch(
-        dataId: String,
-        dataType: DataType,
-        correlationId: String,
-    ) {
-        val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
-            throw InvalidInputApiException(
-                "Requested data $dataId not of type $dataType",
-                "The data with the id: $dataId is registered as type" +
-                    " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
-                    " type $dataType.",
-            )
-        }
-        logger.info(
-            "Requesting Data with ID $dataId and expected type $dataType from framework data storage. " +
-                "Correlation ID: $correlationId",
-        )
-    }
+    private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
 
     /**
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
      * relevant message queues
      * @param storableDataSet contains all the inputs needed by Dataland
      * @param bypassQa whether the data should be sent to QA or not
+     * @param correlationId the correlationId of the request
      * @return ID of the newly stored data in the data store
      */
-    fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
+    fun processDataStorageRequest(
         storableDataSet: StorableDataSet,
         bypassQa: Boolean,
         correlationId: String,
     ):
         String {
-        val dataId = generateRandomDataId()
+        val dataId = IdUtils.generateUUID()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
         return dataId
@@ -103,7 +71,7 @@ class DataManager(
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeMetaDataFrom(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
-        val company = companyQueryManager.getCompanyById(storableDataSet.companyId)
+        val company = dataManagerUtils.getCompanyByCompanyId(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
                 "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
@@ -124,59 +92,12 @@ class DataManager(
     }
 
     /**
-     * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param jsonString the message describing the result of the completed QA process
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredBackendDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
-            ),
-        ],
-    )
-    @Transactional
-    fun updateMetaData(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        messageUtils.rejectMessageOnException {
-            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = qaCompletedMessage.validationResult
-            if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
-                metaDataManager.setActiveDataset(metaInformation)
-            }
-            logger.info(
-                "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
-                    "$dataId with Correlation Id: $correlationId",
-            )
-        }
-    }
-
-    /**
-     * This method retrieves data from the temporary storage
+     * This method retrieves public data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      * @return stringified data entry from the temporary store
      */
-    fun selectDataSetFromTemporaryStorage(dataId: String): String {
-        val rawValue = dataInMemoryStorage.getOrElse(dataId) {
+    fun selectPublicDataSetFromTemporaryStorage(dataId: String): String {
+        val rawValue = publicDataInMemoryStorage.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
                 "Data ID not found in temporary storage",
                 "Dataland does not know the data id $dataId",
@@ -199,16 +120,16 @@ class DataManager(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         val payload = JSONObject(
             mapOf(
                 "dataId" to dataId, "bypassQa" to bypassQa,
                 "actionType" to
-                    ActionType.StoreData,
+                    ActionType.StorePublicData,
             ),
         ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataReceived, correlationId,
+            payload, MessageType.PublicDataReceived, correlationId,
             ExchangeName.RequestReceived,
         )
         logger.info(
@@ -219,107 +140,28 @@ class DataManager(
     }
 
     /**
-     * Method to generate a random Data ID
-     * @return generated UUID
-     */
-    fun generateRandomDataId(): String {
-        return "${UUID.randomUUID()}"
-    }
-
-    /**
-     * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
-     * stored in the persisted database. Further it logs success notification associated containing dataId and
-     * correlationId
-     * @param dataId the ID of the dataset to that was stored
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataStoredBackendDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.data],
-            ),
-        ],
-    )
-    fun removeStoredItemFromTemporaryStore(
-        @Payload dataId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.DataStored)
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        logger.info("Internal Storage sent a message - job done")
-        logger.info(
-            "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
-        )
-        messageUtils.rejectMessageOnException {
-            dataInMemoryStorage.remove(dataId)
-        }
-    }
-
-    /**
      * Method to make the data manager get the data of a single entry from the data store
      * @param dataId to identify the stored data
      * @param dataType to check the correctness of the type of the retrieved data
      * @param correlationId to use in combination with dataId to retrieve data and assert type
      * @return data set associated with the data ID provided in the input
      */
-    fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
-        assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
-        val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        lateinit var dataAsString: String
-        try {
-            dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
-        } catch (e: ClientException) {
-            handleInternalStorageClientException(e, dataId, correlationId)
-        }
-        logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
-        val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
-        dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
-        return dataAsStorableDataSet
+    fun getPublicDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
+        return dataManagerUtils.getStorableDataset(
+            dataId, dataType, correlationId,
+            ::getJsonStringFromCacheOrInternalStorage,
+        )
     }
-
-    private fun handleInternalStorageClientException(e: ClientException, dataId: String, correlationId: String) {
-        if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
-            throw ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store.",
-                e,
+    private fun getJsonStringFromCacheOrInternalStorage(dataId: String, correlationId: String): String {
+        return publicDataInMemoryStorage[dataId] ?: dataManagerUtils
+            .getDatasetAsJsonStringFromStorageService(
+                dataId,
+                correlationId, ::getJsonStringFromInternalStorage,
             )
-        } else {
-            throw e
-        }
     }
 
-    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
-        return dataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
-    }
-
-    private fun getDataFromStorageService(dataId: String, correlationId: String): String {
-        val dataAsString: String
-        logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
-        try {
-            dataAsString = storageClient.selectDataById(dataId, correlationId)
-        } catch (e: ServerException) {
-            logger.error(
-                "Error requesting data. Received ServerException with Message:" +
-                    " ${e.message}. Correlation ID: $correlationId",
-            )
-            throw e
-        }
-        return dataAsString
+    private fun getJsonStringFromInternalStorage(dataId: String, correlationId: String): String {
+        return storageClient.selectDataById(dataId, correlationId)
     }
 
     /**
@@ -349,7 +191,7 @@ class DataManager(
                 ),
             ).toString()
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataReceived, correlationId,
+                payload, MessageType.PublicDataReceived, correlationId,
                 ExchangeName.RequestReceived,
             )
             logger.info(
@@ -363,5 +205,13 @@ class DataManager(
             )
             throw e
         }
+    }
+
+    /**
+     * This method removes a dataset from the in memory storage
+     * @param dataId the dataId of the dataset to be removed from the in-memory store
+     */
+    fun removeDataSetFromInMemoryStore(dataId: String) {
+        publicDataInMemoryStorage.remove(dataId)
     }
 }

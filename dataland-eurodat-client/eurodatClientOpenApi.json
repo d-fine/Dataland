@@ -1,0 +1,452 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "EuroDaT Client REST API",
+    "description": "OpenAPI specification of EuroDaT Client's available API",
+    "contact": {
+      "name": "EuroDaT support",
+      "url": "https://www.eurodat.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:12345"
+    },
+    {
+      "url": "https://localhost:12346"
+    },
+    {
+      "url": "https://localhost:12347"
+    },
+    {
+      "url": "https://localhost:12348"
+    }
+  ],
+  "paths": {
+    "/api/v1/client-controller/apps": {
+      "post": {
+        "tags": [
+          "Client Controller Resource"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/client-controller/apps/{transactionId}": {
+      "post": {
+        "tags": [
+          "Client Controller Resource"
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowStartResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Client Controller Resource"
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/client-controller/credential-service/database/external/{transactionId}": {
+      "get": {
+        "tags": [
+          "Database Credential Resource"
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Credentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/client-controller/credential-service/database/safedeposit/{appId}": {
+      "get": {
+        "tags": [
+          "Database Credential Resource"
+        ],
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Credentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/client-controller/credential-service/rabbitmq/external/{appId}": {
+      "post": {
+        "tags": [
+          "Rabbit Mq Credential Resource"
+        ],
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CredentialResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/client-controller/database-service": {
+      "post": {
+        "tags": [
+          "Safe Deposit Database Resource"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SafeDepositDatabaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeDepositDatabaseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/client-controller/database-service/{appId}": {
+      "delete": {
+        "tags": [
+          "Safe Deposit Database Resource"
+        ],
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafeDepositDatabaseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppRequest": {
+        "required": [
+          "appId",
+          "consumer",
+          "provider"
+        ],
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string"
+          },
+          "consumer": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provider": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CredentialResponse": {
+        "required": [
+          "rabbitMqUrl",
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "rabbitMqUrl": {
+            "type": "string"
+          },
+          "leaseDuration": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Credentials": {
+        "required": [
+          "jdbcUrl",
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "jdbcUrl": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "leaseDuration": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      },
+      "LocalDateTime": {
+        "format": "date-time",
+        "type": "string",
+        "example": "2022-03-10T12:15:50"
+      },
+      "SafeDepositDatabaseRequest": {
+        "required": [
+          "appId"
+        ],
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string"
+          }
+        }
+      },
+      "SafeDepositDatabaseResponse": {
+        "required": [
+          "response"
+        ],
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string"
+          }
+        }
+      },
+      "Transaction": {
+        "required": [
+          "id",
+          "appId",
+          "clientId",
+          "consumer",
+          "provider"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "appId": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "consumer": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provider": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "startTime": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocalDateTime"
+              }
+            ],
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocalDateTime"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "WorkflowRequest": {
+        "required": [
+          "workflowDefinitionId"
+        ],
+        "type": "object",
+        "properties": {
+          "workflowDefinitionId": {
+            "type": "string"
+          }
+        }
+      },
+      "WorkflowStartResponse": {
+        "required": [
+          "transactionId",
+          "workflowDefinitionId",
+          "workflowRunId"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "workflowDefinitionId": {
+            "type": "string"
+          },
+          "workflowRunId": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

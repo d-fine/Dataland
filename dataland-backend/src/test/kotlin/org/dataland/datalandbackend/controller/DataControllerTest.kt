@@ -64,8 +64,10 @@ internal class DataControllerTest(
         mockSecurityContext = mock(SecurityContext::class.java)
         mockDataManager = mock(DataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController =
-            EutaxonomyNonFinancialsDataController(mockDataManager, mockDataMetaInformationManager, objectMapper)
+        dataController = EutaxonomyNonFinancialsDataController(
+            mockDataManager,
+            mockDataMetaInformationManager, objectMapper,
+        )
     }
 
     @Test
@@ -96,7 +98,7 @@ internal class DataControllerTest(
     }
 
     private fun mockDataManager() {
-        `when`(mockDataManager.getDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
+        `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
             StorableDataSet(
                 "",
                 testDataType,

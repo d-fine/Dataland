@@ -72,10 +72,13 @@ class FrameworkDataModelBuilder(
      * Generate the code for the DataModel and integrates it into the Dataland Repository.
      * Check if compilation succeeds and re-generates the OpenApi definition.
      */
-    fun build(into: DatalandRepository) {
+    fun build(into: DatalandRepository, buildApiController: Boolean) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
         rootPackageBuilder.build(into)
-        buildFrameworkSpecificApiController(into)
+
+        if (buildApiController) {
+            buildFrameworkSpecificApiController(into)
+        }
 
         logger.info("Generation completed. Verifying generated files and updating OpenApi-Spec")
         into.gradleInterface.executeGradleTasks(listOf("assemble"))

@@ -1,5 +1,5 @@
 {
-  "rabbit_version": "3.7.28",
+  "rabbit_version": "3.13.0",
   "users": [
     {
       "name": "RABBITMQ_USER_PLACEHOLDER",
@@ -97,6 +97,24 @@
     },
     {
       "name": "sendEmail",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "privateItemStored",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "privateRequestReceived",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,

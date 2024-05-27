@@ -7,6 +7,7 @@ import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
+import org.dataland.communitymanager.openApiClient.model.StoredDataRequestMessageObject
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -59,13 +60,13 @@ fun generateRandomIsin(): String {
 }
 
 fun generateRandomPermId(numberOfDigits: Int? = null): String {
-    fun generateRandomIntegerDifferentFrom20(): Int {
-        val randomInt = (1..100).random()
-        return if (randomInt != 20) randomInt else generateRandomIntegerDifferentFrom20()
+    fun generateRandomIntegerFrom10To100ButDifferentFrom20(): Int {
+        val randomInt = (10..100).random()
+        return if (randomInt != 20) randomInt else generateRandomIntegerFrom10To100ButDifferentFrom20()
     }
 
     val digits = ('0'..'9')
-    val numberOfCharacters = numberOfDigits ?: generateRandomIntegerDifferentFrom20()
+    val numberOfCharacters = numberOfDigits ?: generateRandomIntegerFrom10To100ButDifferentFrom20()
     return (1..numberOfCharacters).map { digits.random() }.joinToString("")
 }
 
@@ -213,7 +214,7 @@ fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestSta
 
 fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID, newStatus: RequestStatus) {
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
-    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequestStatus(dataRequestId, newStatus)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, newStatus)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
     assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
@@ -258,4 +259,8 @@ fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDa
     return requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
         storedDataRequest.creationTimestamp > timestamp
     }
+}
+
+fun getMessageHistoryOfRequest(dataRequestId: String): List<StoredDataRequestMessageObject> {
+    return requestControllerApi.getDataRequestById(UUID.fromString(dataRequestId)).messageHistory
 }

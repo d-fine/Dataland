@@ -124,14 +124,14 @@
                         "/static/logos/img_envoria.png",
                         "/static/logos/img_Experience_One.png",
                         "/static/logos/img_impact_cubed.png",
-                        "/static/logos/img_lyt.png",
                         "/static/logos/img_pwc.png",
                         "/static/logos/img_t_systems.png",
                         "/static/logos/img_value_balancing_alliance.png",
                         "/static/logos/img_voeb.png",
                         "/static/logos/img_Atlas_Metrics.png",
                         "/static/logos/img_sustainable_dividends.png",
-                        "/static/logos/img_Metzler.png"
+                        "/static/logos/img_Metzler.png",
+                        "/static/logos/img_leonardo.png"
                     ]
                 },
                 {
@@ -371,6 +371,22 @@
                         {
                             "title": "Collaboration",
                             "text": "We will work together to achieve these principles and promote their acceptance."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Companies",
+            "url": "/companies",
+            "sections": [
+                {
+                    "title": "Single Data Request",
+                    "cards": [
+                        {
+                            "icon": "erik.breen@dataland.com",
+                            "title": "Interested in becoming a premium user",
+                            "text": "Hi Erik,\n\nI'd like to receive some information about the premium user role on Dataland.\nThank you, and I look forward to hearing from you.\n\nBest regards,\n\n[Your Name]\n[Your Email Address]\n[Your Phone Number]"
                         }
                     ]
                 }

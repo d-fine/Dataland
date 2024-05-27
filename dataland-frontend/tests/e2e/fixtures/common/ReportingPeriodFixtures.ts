@@ -5,5 +5,5 @@ import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
  * @returns a random reporting period
  */
 export function generateReportingPeriod(): string {
-  return pickOneElement(["2019", "2020", "2021", "2022", "2023"]);
+  return pickOneElement(["2020", "2021", "2022", "2023", "2024"]);
 }

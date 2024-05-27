@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
+import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -26,7 +27,9 @@ import kotlin.jvm.optionals.getOrNull
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val metaInformationManager: DataMetaInformationManager,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
+    @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -37,27 +40,33 @@ class DataOwnersManager(
      * @return an entity holding the data ownership relations for the given company
      */
     @Transactional
-    fun addDataOwnerToCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
+    fun addDataOwnerToCompany(
+        companyId: String,
+        userId: String,
+        companyName: String,
+    ): CompanyDataOwnersEntity {
+        val correlationId = UUID.randomUUID().toString()
         checkIfCompanyIsValid(companyId)
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                logger.info(
-                    "User with Id $userId is already data owner of company with Id $companyId.",
-                )
+                logger.info("User with Id $userId is already data owner of company with Id $companyId.")
                 dataOwnersForCompany
             } else {
+                dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
+                    userId, companyId, companyName, correlationId,
+                )
                 logger.info("New data owner with Id $userId added to company with Id $companyId.")
                 dataOwnersForCompany.dataOwners.add(userId)
                 dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
+            dataOwnershipSuccessfullyEmailMessageSender.sendDataOwnershipAcceptanceExternalEmailMessage(
+                userId, companyId, companyName, correlationId,
+            )
             logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
             dataOwnerRepository.save(
-                CompanyDataOwnersEntity(
-                    companyId = companyId,
-                    dataOwners = mutableListOf(userId),
-                ),
+                CompanyDataOwnersEntity(companyId = companyId, dataOwners = mutableListOf(userId)),
             )
         }
     }
@@ -151,7 +160,7 @@ class DataOwnersManager(
      * @return a Boolean indicating whether the user is data owner or not
      */
     @Transactional(readOnly = true)
-    fun isCurrentUserDataOwner(companyId: String): Boolean {
+    fun isCurrentUserDataOwnerForCompany(companyId: String): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         fun exceptionToThrow(cause: Throwable?) = InsufficientRightsApiException(
             "Neither uploader nor data owner",
@@ -167,6 +176,18 @@ class DataOwnersManager(
         } catch (resourceNotFoundApiException: ResourceNotFoundApiException) {
             throw exceptionToThrow(resourceNotFoundApiException)
         }
+    }
+
+    /**
+     * Method to check whether the currently authenticated user is data owner of the specified company that is
+     * associated with a specific framework dataset.
+     * @param dataId of the framework dataset
+     * @return a Boolean indicating whether the user is data owner of the company associated with the dataset
+     */
+    @Transactional(readOnly = true)
+    fun isCurrentUserDataOwnerForCompanyOfDataId(dataId: String): Boolean {
+        val companyId = metaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
+        return isCurrentUserDataOwnerForCompany(companyId)
     }
 
     /**

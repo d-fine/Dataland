@@ -21,6 +21,7 @@ import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlySto
 import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
+import org.dataland.e2etests.utils.communityManager.getMessageHistoryOfRequest
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
@@ -258,7 +259,7 @@ class SingleDataRequestsTest {
         )
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, 1)
-        val messageHistory = newlyStoredRequests[0].messageHistory
+        val messageHistory = getMessageHistoryOfRequest(newlyStoredRequests[0].dataRequestId)
         assertEquals(
             1,
             messageHistory.size,
@@ -287,7 +288,8 @@ class SingleDataRequestsTest {
         assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Closed)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Resolved)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
     }
 
     @Test
@@ -305,7 +307,7 @@ class SingleDataRequestsTest {
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = generateRandomLei())
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2021")
         postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2022", RequestStatus.Answered)
-        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Closed)
+        postSingleDataRequestForReportingPeriodAndUpdateStatus(companyId, "2023", RequestStatus.Resolved)
         val timestampBeforeFinalRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postSingleDataRequest(
             SingleDataRequest(

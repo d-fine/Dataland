@@ -2,10 +2,11 @@ import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cyp
 import { type Interception } from "cypress/types/net-stubbing";
 import { type BulkDataRequestResponse } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { DataTypeEnum, IdentifierType } from "@clients/backend";
+import { IdentifierType } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 describeIf(
   "As a user I want to be able to conduct a bulk request request",
@@ -101,7 +102,7 @@ describeIf(
       cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]')
         .should("exist")
         .get('[data-test="toggle-chip"')
-        .should("have.length", 4)
+        .should("have.length", 5)
         .first()
         .click()
         .should("have.class", "toggled");
@@ -113,7 +114,7 @@ describeIf(
      * Chose frameworks
      */
     function chooseFrameworks(): void {
-      const numberOfFrameworks = Object.keys(DataTypeEnum).length;
+      const numberOfFrameworks = Object.keys(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE).length;
       cy.get('[data-test="selectFrameworkSelect"] .p-multiselect')
         .should("exist")
         .click()

@@ -45,6 +45,7 @@
             <div class="card">
               <DataTable
                 :value="displayedData"
+                style="cursor: pointer"
                 :rowHover="true"
                 :loading="waitingForData"
                 data-test="requested-Datasets-table"
@@ -55,6 +56,8 @@
                 :total-records="numberOfFilteredRequests"
                 @page="onPage($event)"
                 @sort="onSort($event)"
+                @row-click="onRowClick($event)"
+                id="my-data-requests-overview-table"
               >
                 <Column header="COMPANY" field="companyName" :sortable="true">
                   <template #body="slotProps">
@@ -109,6 +112,7 @@
                       class="text-right text-primary no-underline font-bold"
                     >
                       <span
+                        id="resolveButton"
                         style="cursor: pointer"
                         data-test="requested-Datasets-Resolve"
                         @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
@@ -155,17 +159,23 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import {
+  frameworkHasSubTitle,
+  getFrameworkSubtitle,
+  getFrameworkTitle,
+  humanizeStringOrNumber,
+} from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { type ExtendedStoredDataRequest, RequestStatus } from "@clients/communitymanager";
-import { DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum } from "@clients/backend";
 import InputText from "primevue/inputtext";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import type { FrameworkSelectableItem } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import { badgeClass } from "@/utils/RequestUtils";
 
 export default defineComponent({
   name: "MyDataRequestsOverview",
@@ -231,6 +241,10 @@ export default defineComponent({
     },
   },
   methods: {
+    badgeClass,
+    frameworkHasSubTitle,
+    getFrameworkTitle,
+    getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
     /**
      * Navigates to the company view page
@@ -289,55 +303,19 @@ export default defineComponent({
       this.waitingForData = false;
     },
     /**
-     * Return the title of a framework
-     * @param framework dataland framework
-     * @returns title of framework
+     * Navigates to the view dataRequest page
+     * @param event contains column that was clicked
+     * @param event.data extended stored data request
+     * @param event.originalEvent needed to get the clicked cell
+     * @returns the promise of the router push action
      */
-    getFrameworkTitle(framework: DataTypeEnum) {
-      switch (framework) {
-        case DataTypeEnum.EutaxonomyFinancials:
-          return "EU Taxonomy";
-        case DataTypeEnum.EutaxonomyNonFinancials:
-          return "EU Taxonomy";
-        case DataTypeEnum.P2p:
-          return "WWF";
-        case DataTypeEnum.EsgQuestionnaire:
-          return "ESG Questionnaire";
-        default:
-          return humanizeStringOrNumber(framework);
+    onRowClick(event: { data: ExtendedStoredDataRequest; originalEvent: MouseEvent | TouchEvent }) {
+      const clickedElement = event.originalEvent.target as HTMLElement;
+      const isResolveButtonClick = clickedElement.id === "resolveButton";
+      if (!isResolveButtonClick) {
+        const requestIdOfClickedRow = event.data.dataRequestId;
+        return this.$router.push(`/requests/${requestIdOfClickedRow}`);
       }
-    },
-    /**
-     * Return the subtitle of a framework
-     * @param framework dataland framework
-     * @returns subtitle of framework
-     */
-    getFrameworkSubtitle(framework: DataTypeEnum) {
-      switch (framework) {
-        case DataTypeEnum.EutaxonomyFinancials:
-          return "for financial companies";
-        case DataTypeEnum.EutaxonomyNonFinancials:
-          return "for non-financial companies";
-        case DataTypeEnum.P2p:
-          return "Pathways to Paris";
-        case DataTypeEnum.EsgQuestionnaire:
-          return "für Corporate Schuldscheindarlehen";
-        default:
-          return "";
-      }
-    },
-    /**
-     * Checks the existence of subtitle for framework
-     * @param framework dataland framework
-     * @returns boolean if framework has subtitle
-     */
-    frameworkHasSubTitle(framework: DataTypeEnum) {
-      return (
-        framework == DataTypeEnum.P2p ||
-        framework == DataTypeEnum.EutaxonomyFinancials ||
-        framework == DataTypeEnum.EutaxonomyNonFinancials ||
-        framework == DataTypeEnum.EsgQuestionnaire
-      );
     },
     /**
      * Sorts the list of storedDataRequests
@@ -348,21 +326,7 @@ export default defineComponent({
       this.sortOrder = event.sortOrder ?? 1;
       this.updateCurrentDisplayedData();
     },
-    /**
-     * Defines the color of p-badge
-     * @param requestStatus status of a request
-     * @returns p-badge class
-     */
-    badgeClass(requestStatus: RequestStatus): string {
-      switch (requestStatus) {
-        case "Answered":
-          return "p-badge badge-blue outline rounded";
-        case "Open":
-          return "p-badge badge-yellow outline rounded";
-        case "Closed":
-          return "p-badge badge-light-green outline rounded";
-      }
-    },
+
     /**
      * Filterfunction for frameworks
      * @param framework dataland framework
@@ -440,8 +404,13 @@ export default defineComponent({
      * @returns result of the comparison
      */
     customCompareForRequestStatus(a: RequestStatus, b: RequestStatus) {
-      if (a == RequestStatus.Answered || (a == RequestStatus.Open && b == RequestStatus.Closed))
-        return -1 * this.sortOrder;
+      const sortOrderRequestStatus: { [key: string]: number } = {};
+      sortOrderRequestStatus[RequestStatus.Answered] = 1;
+      sortOrderRequestStatus[RequestStatus.Open] = 2;
+      sortOrderRequestStatus[RequestStatus.Resolved] = 3;
+      sortOrderRequestStatus[RequestStatus.Closed] = 4;
+      sortOrderRequestStatus[RequestStatus.Withdrawn] = 5;
+      if (sortOrderRequestStatus[a] <= sortOrderRequestStatus[b]) return -1 * this.sortOrder;
       return this.sortOrder;
     },
     /**
@@ -455,3 +424,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+#my-data-requests-overview-table tr:hover {
+  cursor: pointer;
+}
+</style>

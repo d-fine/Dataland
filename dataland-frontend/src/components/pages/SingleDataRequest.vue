@@ -40,12 +40,11 @@
                         class="text-danger text-xs mt-2"
                         data-test="reportingPeriodErrorMessage"
                       >
-                        Select at least one reporting period to submit your request.
+                        Select at least one reporting period to submit your request
                       </p>
                     </BasicFormSection>
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
-                      <FormKit
-                        type="select"
+                      <SingleSelectFormElement
                         placeholder="Select framework"
                         v-model="frameworkName"
                         name="Framework"
@@ -54,15 +53,38 @@
                         :validation-messages="{
                           required: 'Select a framework to submit your request',
                         }"
-                        outer-class="long"
-                        :data-test="'datapoint-framework'"
+                        required
+                        data-test="datapoint-framework"
                       />
+                    </BasicFormSection>
+                    <BasicFormSection
+                      :data-test="'informationDataOwnership'"
+                      header="Information about company data ownership"
+                    >
+                      <p v-if="hasCompanyDataOwner">
+                        This company has at least one company data owner. <br />
+                        The company data owner(s) will be informed about your data request.
+                      </p>
+                      <p v-else>This company does not have a company owner yet.</p>
                     </BasicFormSection>
                     <BasicFormSection header="Provide Contact Details">
                       <label for="Emails" class="label-with-optional">
                         <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit v-model="contactsAsString" type="text" name="contactDetails" data-test="contactEmail" />
+                      <FormKit
+                        v-model="contactsAsString"
+                        type="text"
+                        name="contactDetails"
+                        data-test="contactEmail"
+                        @input="handleContactsUpdate"
+                      />
+                      <p
+                        v-show="displayContactsNotValidError"
+                        class="text-danger text-xs"
+                        data-test="contectsNotValidErrorMessage"
+                      >
+                        You have to provide valid contacts to add a message to the request
+                      </p>
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying contacts your data request will be directed accordingly.<br />
                         You can specify multiple comma separated email addresses.<br />
@@ -82,19 +104,74 @@
                         type="textarea"
                         name="dataRequesterMessage"
                         data-test="dataRequesterMessage"
+                        v-bind:disabled="!allowAccessDataRequesterMessage"
                       />
                       <p class="gray-text font-italic" style="text-align: left">
                         Let your contacts know what exactly your are looking for.
                       </p>
+                      <div v-show="allowAccessDataRequesterMessage">
+                        <div class="mt-3 flex">
+                          <label class="tex-sm flex">
+                            <input
+                              type="checkbox"
+                              class="ml-2 mr-3 mt-1"
+                              style="min-width: 17px"
+                              v-model="consentToMessageDataUsageGiven"
+                              data-test="acceptConditionsCheckbox"
+                              @click="displayConditionsNotAcceptedError = false"
+                            />
+                            I hereby declare that the recipient(s) stated above consented to being contacted by Dataland
+                            with regard to this data request
+                          </label>
+                        </div>
+                        <p
+                          v-show="displayConditionsNotAcceptedError"
+                          class="text-danger text-xs mt-2"
+                          data-test="conditionsNotAcceptedErrorMessage"
+                        >
+                          You have to declare that the recipient(s) consented in order to add a message
+                        </p>
+                      </div>
                     </BasicFormSection>
                   </div>
+                  <PrimeDialog
+                    v-model:visible="maxRequestReachedModalIsVisible"
+                    id="successModal"
+                    :dismissableMask="false"
+                    :modal="true"
+                    :closable="false"
+                    style="border-radius: 0.75rem; text-align: center; max-width: 400px"
+                    :show-header="false"
+                    :draggable="false"
+                    data-test="quotaReachedModal"
+                  >
+                    <em class="material-icons info-icon red-text" style="font-size: 3em">error</em>
+                    <div class="text-block" style="margin: 15px">
+                      Your quota of {{ MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER }} single data requests per day
+                      is exceeded. The quota will reset automatically tomorrow.
+                    </div>
+                    <div class="text-block" style="margin: 15px">
+                      To avoid quotas altogether, consider becoming a premium user.
+                      <a href="#" @click="openBecomePremiumUserEmail">Contact Erik Breen</a> for more information on
+                      premium membership.
+                    </div>
+                    <div style="margin: 10px">
+                      <PrimeButton
+                        label="CLOSE"
+                        @click="closeMaxRequestsReachedModal()"
+                        class="p-button-outlined"
+                        data-test="closeMaxRequestsReachedModalButton"
+                      />
+                    </div>
+                  </PrimeDialog>
+
                   <div class="col-12 flex align-items-end">
                     <PrimeButton
                       type="submit"
                       label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
                       name="submit_request_button"
-                      @click="checkIfAtLeastOneReportingPeriodSelected()"
+                      @click="checkPreSubmitConditions"
                     >
                       SUBMIT DATA REQUEST
                     </PrimeButton>
@@ -153,10 +230,17 @@ import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue"
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import PrimeDialog from "primevue/dialog";
+import { openEmailClient } from "@/utils/Email";
+import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from "@/DatalandSettings";
+import { hasCompanyAtLeastOneDataOwner } from "@/utils/DataOwnerUtils";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
+    SingleSelectFormElement,
+    PrimeDialog,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
@@ -176,6 +260,17 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
+
+    const companiesPage = content.pages.find((page) => page.url === "/companies");
+    const singleDatRequestSection = companiesPage
+      ? companiesPage.sections.find((section) => section.title === "Single Data Request")
+      : undefined;
+    const becomePremiumUserEmailTemplate = singleDatRequestSection
+      ? singleDatRequestSection.cards?.find((card) => card.title === "Interested in becoming a premium user")
+      : undefined;
+
+    const dataRequesterMessageAccessDisabledText = "Please provide a valid email before entering a message";
+
     return {
       singleDataRequestModel: {},
       footerContent,
@@ -183,10 +278,16 @@ export default defineComponent({
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
       frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
       contactsAsString: "",
-      dataRequesterMessage: "",
+      allowAccessDataRequesterMessage: false,
+      dataRequesterMessage: dataRequesterMessageAccessDisabledText,
+      dataRequesterMessageAccessDisabledText,
+      consentToMessageDataUsageGiven: false,
       errorMessage: "",
       selectedReportingPeriodsError: false,
+      displayConditionsNotAcceptedError: false,
+      displayContactsNotValidError: false,
       reportingPeriodOptions: [
+        { name: "2024", value: false },
         { name: "2023", value: false },
         { name: "2022", value: false },
         { name: "2021", value: false },
@@ -194,6 +295,10 @@ export default defineComponent({
       ],
       submittingSucceeded: false,
       submitted: false,
+      maxRequestReachedModalIsVisible: false,
+      becomePremiumUserEmailTemplate,
+      MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
+      hasCompanyDataOwner: false,
     };
   },
   computed: {
@@ -214,12 +319,120 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Opens an Email regarding becoming a premium user
+     */
+    openBecomePremiumUserEmail() {
+      openEmailClient(this.becomePremiumUserEmailTemplate);
+    },
+    /**
+     * Opens the Max Requests Reached Modal
+     */
+    openMaxRequestsReachedModal() {
+      this.maxRequestReachedModalIsVisible = true;
+    },
+    /**
+     * Closes the Max Requests Reached Modal
+     */
+    closeMaxRequestsReachedModal() {
+      this.maxRequestReachedModalIsVisible = false;
+    },
+    /**
+     * Checks if the provided contacts are accepted
+     * @returns true if all the provided emails are valid and at least one has been provided, false otherwise
+     */
+    areContactsFilledAndValid(): boolean {
+      if (this.selectedContacts.length == 0) return false;
+      return this.areContactsValid();
+    },
+    /**
+     * Checks if each of the provided contacts is a valid email
+     * @returns true if the provided emails are all valid (therefor also if there are none), false otherwise
+     */
+    areContactsValid(): boolean {
+      return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
+    },
+
+    /**
+     * updates the messagebox visibility and stops displaying the contacts not valid error
+     */
+    handleContactsUpdate(): void {
+      this.displayContactsNotValidError = false;
+      void this.$nextTick(() => this.updateMessageVisibility());
+    },
+
+    /**
+     * Checks if an email string is a valid email using regex
+     * @param email the email string to check
+     * @returns true if the email is valid, false otherwise
+     */
+    isValidEmail(email: string): boolean {
+      // This RegEx should be kept consistent with the validation rules used by the community service in the backend
+      const regex = /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-zA-Z]{2,}$/;
+      return regex.test(email);
+    },
+
+    /**
+     * Updates if the message block is active and if the accept terms and conditions checkmark below is visible
+     * and required, based on whether valid contacts have been provided
+     */
+    updateMessageVisibility(): void {
+      if (this.areContactsFilledAndValid()) {
+        this.allowAccessDataRequesterMessage = true;
+        if (this.dataRequesterMessage == this.dataRequesterMessageAccessDisabledText) {
+          this.dataRequesterMessage = "";
+        }
+      } else {
+        this.allowAccessDataRequesterMessage = false;
+        if (this.contactsAsString == "" && this.dataRequesterMessage == "") {
+          this.dataRequesterMessage = this.dataRequesterMessageAccessDisabledText;
+        }
+      }
+    },
+
+    /**
+     * Updates if the message terms and conditions not being accepted should stop the user from submitting the request.
+     * Based on if they are accepted or not and on if the user wants to submit a message
+     */
+    updateConditionsNotAcceptedError(): void {
+      this.displayConditionsNotAcceptedError =
+        !this.consentToMessageDataUsageGiven && this.allowAccessDataRequesterMessage;
+    },
+
+    /**
+     * Updates if an error should be displayed and submitting should be disabled because the provided contacts are not valid
+     */
+    updateContactsNotValidError(): void {
+      this.displayContactsNotValidError = !this.areContactsValid();
+    },
+
+    /**
      * Check whether reporting periods have been selected
      */
     checkIfAtLeastOneReportingPeriodSelected(): void {
       if (!this.selectedReportingPeriods.length) {
         this.selectedReportingPeriodsError = true;
       }
+    },
+
+    /**
+     * checks if the forms are filled out correctly and updates the displayed warnings accordingly
+     */
+    checkPreSubmitConditions(): void {
+      this.checkIfAtLeastOneReportingPeriodSelected();
+      this.updateConditionsNotAcceptedError();
+      this.updateContactsNotValidError();
+    },
+
+    /**
+     * Returns if the forms are filled out correctly
+     * @returns true if they are filled out correctly, false otherwise
+     */
+    preSubmitConditionsFulfilled(): boolean {
+      return (
+        !this.displayConditionsNotAcceptedError &&
+        !this.selectedReportingPeriodsError &&
+        !this.displayContactsNotValidError
+      );
     },
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
@@ -238,32 +451,50 @@ export default defineComponent({
         dataType: this.frameworkName,
         reportingPeriods: this.selectedReportingPeriods as Set<string>,
         contacts: this.selectedContacts as Set<string>,
-        message: this.dataRequesterMessage,
+        message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : "",
       };
+    },
+    /**
+     * Sets state variables
+     * @param errorMessage sets error message
+     * @param submitted sets submitted state
+     * @param submittingSucceded sets succeded submit state
+     */
+    editStateVariables(errorMessage: string, submitted: boolean, submittingSucceded: boolean): void {
+      this.errorMessage = errorMessage;
+      this.submitted = submitted;
+      this.submittingSucceeded = submittingSucceded;
     },
     /**
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      if (!this.selectedReportingPeriodsError) {
-        try {
-          const singleDataRequestObject = this.collectDataToSend();
-          const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-            .requestController;
-          const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
-          this.errorMessage = response.statusText;
-          this.submittingSucceeded = true;
-        } catch (error) {
-          console.error(error);
-          if (error instanceof AxiosError) {
-            const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-            this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
+      if (!this.preSubmitConditionsFulfilled()) {
+        return;
+      }
+      try {
+        const singleDataRequestObject = this.collectDataToSend();
+        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .requestController;
+        const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
+        this.editStateVariables(response.statusText, true, true);
+      } catch (error) {
+        console.error(error);
+        if (error instanceof AxiosError) {
+          const errorJSON = error.toJSON();
+          if (errorJSON.status == 403) {
+            this.openMaxRequestsReachedModal();
           } else {
-            this.errorMessage =
-              "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+            this.editStateVariables(responseMessages ? responseMessages[0].message : error.message, true, false);
           }
+        } else {
+          this.editStateVariables(
+            "An unexpected error occurred." + " Please try again or contact the support team if the issue persists.",
+            true,
+            false,
+          );
         }
-        this.submitted = true;
       }
     },
     /**
@@ -286,9 +517,16 @@ export default defineComponent({
         path: `/companies/${thisCompanyId}`,
       });
     },
+    /**
+     * Updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyIdentifier, this.getKeycloakPromise);
+    },
   },
   mounted() {
     this.retrieveFrameworkOptions();
+    this.updateHasCompanyDataOwner().catch((error) => console.error(error));
   },
 });
 </script>

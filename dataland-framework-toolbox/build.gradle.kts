@@ -32,9 +32,31 @@ tasks.register("integrationTest", JavaExec::class) {
     workingDir = rootDir
 }
 
+tasks.register("runCoverage", JavaExec::class) {
+    doNotTrackState("Application should always run.")
+    description = "Execute the main class with jacoco coverage reporting."
+    group = "Verification"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "org.dataland.frameworktoolbox.MainKt"
+    workingDir = rootDir
+}
+
+tasks.register("runCreateFrameworkList", JavaExec::class) {
+    doNotTrackState("Not worth caching.")
+    description = "Create a list of all frameworks and store it in 'framework-list.json'"
+    group = "Verification"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "org.dataland.frameworktoolbox.MainKt"
+    val outputFilePath = layout.buildDirectory.file("framework-list.json").get().asFile.path
+    args = listOf("list", outputFilePath)
+    workingDir = rootDir
+}
+
 jacoco {
     toolVersion = jacocoVersion
     this.applyTo(tasks.named<JavaExec>("integrationTest").get())
+    this.applyTo(tasks.named<JavaExec>("runCoverage").get())
+    this.applyTo(tasks.named<JavaExec>("runCreateFrameworkList").get())
 }
 
 dependencies {

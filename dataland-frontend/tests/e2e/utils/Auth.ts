@@ -3,9 +3,10 @@ import { getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
  * Navigates to the /companies page and logs the user out via the dropdown menu. Verifies that the logout worked
  */
 export function logout(): void {
-  cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" }).as("apikey");
-  cy.visitAndCheckAppMount("/api-key")
-    .wait("@apikey")
+  cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" })
+    .as("apikey")
+    .visitAndCheckAppMount("/api-key")
+    .wait("@apikey", { timeout: Cypress.env("short_timeout_in_ms") as number })
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .get("a[id='profile-picture-dropdown-logout-anchor']")
@@ -28,19 +29,11 @@ let globalJwt = "";
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
-  cy.visitAndCheckAppMount("/")
-    .get("a[aria-label='Login to account']")
-    .click()
-    .get("#username")
-    .should("exist")
-    .type(username, { force: true })
-    .get("#password")
-    .should("exist")
-    .type(password, { force: true })
+  cy.intercept({ times: 1, url: "/api/companies/numberOfCompanies**" }).as("numberOfCompanies");
 
-    .get("#kc-login")
-    .should("exist")
-    .click();
+  cy.visitAndCheckAppMount("/").get("a[aria-label='Login to account']").click();
+
+  loginWithCredentials(username, password);
 
   if (otpGenerator) {
     cy.get("input[id='otp']")
@@ -57,8 +50,25 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.wait("@getCompanies").then((interception) => {
     globalJwt = interception.request.headers["authorization"] as string;
   });
+  cy.wait("@numberOfCompanies");
 }
+/**
+ * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
+ * @param username the username to use (defaults to data_reader)
+ * @param password the password to use (defaults to the password of data_reader)
+ */
+export function loginWithCredentials(username = reader_name, password = reader_pw): void {
+  cy.get("#username")
+    .should("exist")
+    .type(username, { force: true })
+    .get("#password")
+    .should("exist")
+    .type(password, { force: true })
 
+    .get("#kc-login")
+    .should("exist")
+    .click();
+}
 /**
  * Performs a login if required to ensure that the user is logged in with the credentials.
  * Sessions are cached for enhanced performance

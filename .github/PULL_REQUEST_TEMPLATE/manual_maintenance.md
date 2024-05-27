@@ -9,13 +9,12 @@ creation URL (or simply copy this md file into the description)
 
 ### Problematic updates
 
-See the list of known issue on the internal wiki https://github.com/d-fine/DatalandInternal/wiki/Problematic-updates
-Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem
-If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog 
+See the list of known issues on the internal Dataland Wiki.
+Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem.
+If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog.
 
 ### Gradle update
 
-- [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
 - [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
@@ -40,6 +39,17 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
 
 - [ ] Update package versions in `dataland-automated-qa-service/requirements.txt`
 
+### Dataland EuroDaT client
+
+- [ ] Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
+  then update the version number used in docker-compose.
+- [ ] If the version was changed: Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with 
+  the currently used version of the client. 
+  1. Edit the docker compose file by adding a `ports` section with the entry `"8080:8080"` to the "eurodat-client" and start it
+  2. Open a shell and navigate to the `dataland-eurodat-client` subproject 
+  3. Execute the following snippet of code: `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
+  4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
+
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
@@ -61,11 +71,16 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-document-manager/Dockerfile`
 - [ ] `./dataland-document-manager/DockerfileBase`
 - [ ] `./dataland-document-manager/DockerfileTest`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
+- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-email-service/Dockerfile`
 - [ ] `./dataland-email-service/DockerfileBase`
 - [ ] `./dataland-email-service/DockerfileTest`
+- [ ] `./dataland-external-storage/Dockerfile`
+- [ ] `./dataland-external-storage/DockerfileBase`
+- [ ] `./dataland-external-storage/DockerfileTest`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
@@ -100,6 +115,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev2.dataland.com
 - [ ] dev3.dataland.com
 - [ ] test.dataland.com
+- [ ] clone.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] (OPT) dataland.com
 
@@ -134,6 +150,13 @@ check that all ssh-keys are set and erased from people that have left
 
 - [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to dataland@d-fine.com
   contains the right attachments and is displayed correctly.
+- [ ] Check that once a user has been made data owner that user receives an e-mail informing them about the data
+ownership approval as well as the number of open requests related to the company they own now.
+
+## Check e-mails sent by community manager
+
+- [ ] Check that the data request answered e-mail is sent and displayed correctly
+- [ ] Check that the data request closed e-mail is sent and displayed correctly
 
 ## Check RabbitMQ dead letter queue and disk space
 

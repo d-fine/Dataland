@@ -75,14 +75,87 @@ jobs:
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
-  framework-toolbox-tests:
+  framework-toolbox-list-frameworks:
+    runs-on: ubuntu-latest
+    outputs:
+      frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "framework-toolbox-list-frameworks"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Execute framework-toolbox to list all frameworks
+        id: listFrameworks
+        run: |
+          ./gradlew dataland-framework-toolbox:runCreateFrameworkList --no-daemon --stacktrace
+          echo "frameworkList=$(<./dataland-framework-toolbox/build/framework-list.json)" >> "$GITHUB_OUTPUT"
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JaCoCoResultsToolbox-list
+          path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
+  framework-toolbox-consistency-tests:
+    runs-on: ubuntu-latest
+    needs:
+      - framework-toolbox-list-frameworks
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJson(needs.framework-toolbox-list-frameworks.outputs.frameworkList) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "framework-toolbox-consistency-test-${{ matrix.framework }}"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Build framework '${{ matrix.framework }}'
+        run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
+      - name: Verify that there are no changed (git-tracked) files
+        run: ./testing/verify_that_no_git_tracked_files_changed.sh
+      - run: mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
+        if: always()
+      - name: Upload JaCoCo Exec Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JaCoCoResultsToolbox-${{ matrix.framework }}
+          path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
+  framework-toolbox-integration-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
-          task: "framework-toolbox-tests"
+          task: "framework-toolbox-integration-tests"
           env: ${{ toJSON(env) }}
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
@@ -134,26 +207,28 @@ jobs:
       - name: Execute unit tests for all spring services
         run: |
           sudo apt install libreoffice
-          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test --no-daemon --stacktrace
+          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test :dataland-external-storage:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
           NOTIFICATION_INTERNAL_CC: ""
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
       - name: Keycloak theme linting
         run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
         if: always()
-      - name: Execute Frontend Scripts to check if they run successfully
+      - name: Verify that Fake Fixtures are Up-To-Date
         if: always()
-        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
+        run: testing/verify_that_fake_fixtures_are_up_to_date.sh
       - name: verify OpenApi Files
         if: always()
         env:
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
@@ -286,6 +361,7 @@ jobs:
           KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "password"
           KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
@@ -319,6 +395,8 @@ jobs:
           RABBITMQ_PASS: "dataland"
           RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
           FRONTEND_LOCATION_CONFIG: "Test"
+          INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -364,7 +442,8 @@ jobs:
       - gradle-based-tests
       - frontend-component-tests
       - python-tests
-      - framework-toolbox-tests
+      - framework-toolbox-integration-tests
+      - framework-toolbox-consistency-tests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -415,6 +494,10 @@ jobs:
           pattern: JaCoCoResultsE2ETest-*
           merge-multiple: true
       - uses: actions/download-artifact@v4
+        with:
+          pattern: JaCoCoResultsToolbox-*
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
         name: lcovResults
         with:
           pattern: lcovResults-*
@@ -432,7 +515,11 @@ jobs:
         if: ${{ !cancelled() }}
         # jacocoTestReport must be executed in a gradle-job that is started AFTER classes are compiled - because
         # the build.gradle.kts only looks for .class files at start of gradle (and not at start of task).
-        run: ./gradlew jacocoTestReport --no-daemon --stacktrace
+        run: |
+          # the next line  at some point fixed the problem of missing coverage reports on our java processes
+          # we left it here, even though removing it again did not break the coverage reports for java processes
+          for file in *.exec; do if [[ -f $file ]]; then project=$(echo $file | awk -F '-bootRun-' '{print $1}'); mkdir -p ./dataland-$project/build/jacoco; mv $file ./dataland-$project/build/jacoco/$file; fi; done
+          ./gradlew jacocoTestReport --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Sonar
@@ -462,7 +549,13 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - sonar
-    if: ${{ !cancelled() }}
+      - e2e-tests
+      - gradle-based-tests
+      - frontend-component-tests
+      - python-tests
+      - framework-toolbox-integration-tests
+      - framework-toolbox-consistency-tests
+    if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
         uses: actions/upload-artifact/merge@v4
@@ -483,6 +576,13 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           pattern: JaCoCoResultsE2ETest-*
+          delete-merged: true
+      - name: Merge Jacoco Framework Toolbox Test Artifacts
+        uses: actions/upload-artifact/merge@v4
+        if: always()
+        with:
+          name: JaCoCoResultsToolbox
+          pattern: JaCoCoResultsToolbox-*
           delete-merged: true
       - name: Merge Python Test Artifacts
         uses: actions/upload-artifact/merge@v4

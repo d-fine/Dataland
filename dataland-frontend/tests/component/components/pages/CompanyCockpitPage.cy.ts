@@ -3,8 +3,8 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
   type AggregatedFrameworkDataSummary,
   type CompanyInformation,
-  type SmeData,
   type DataTypeEnum,
+  type HeimathafenData,
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
@@ -18,9 +18,9 @@ describe("Component test for the company cockpit", () => {
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
 
   before(function () {
-    cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-      const smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
-      companyInformationForTest = smeFixtures[0].companyInformation;
+    cy.fixture("CompanyInformationWithHeimathafenData").then(function (jsonContent) {
+      const heimathafenFixtures = jsonContent as Array<FixtureData<HeimathafenData>>;
+      companyInformationForTest = heimathafenFixtures[0].companyInformation;
     });
     cy.fixture("MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock").then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
@@ -145,9 +145,11 @@ describe("Component test for the company cockpit", () => {
         );
 
         if (isProvideDataButtonExpected) {
-          cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
-            "exist",
-          );
+          if (frameworkName != "heimathafen") {
+            cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
+              "exist",
+            );
+          }
         } else {
           cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
             "not.exist",
@@ -183,7 +185,7 @@ describe("Component test for the company cockpit", () => {
 
   it("Check for expected elements from a non-logged-in users perspective for a company without data owner", () => {
     const hasCompanyDataOwner = false;
-    const isClaimOwnershipPanelExpected = false;
+    const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
     mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
@@ -210,7 +212,7 @@ describe("Component test for the company cockpit", () => {
     const hasCompanyDataOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = false;
-    const isSingleDataRequestButtonExpected = false;
+    const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
       waitForRequestsOnMounted();
@@ -241,7 +243,7 @@ describe("Component test for the company cockpit", () => {
     const hasCompanyDataOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = true;
-    const isSingleDataRequestButtonExpected = false;
+    const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], "mock-data-owner-id").then(() => {
       waitForRequestsOnMounted();

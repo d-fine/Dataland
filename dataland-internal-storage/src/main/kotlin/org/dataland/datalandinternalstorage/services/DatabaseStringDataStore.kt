@@ -26,13 +26,13 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-
 /**
  * Simple implementation of a data store using a postgres database
- * @param dataItemRepository
+ * @param dataItemRepository the repository for data items
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * @param messageUtils utils for handling of messages
  */
 @Component
 class DatabaseStringDataStore(
@@ -72,14 +72,14 @@ class DatabaseStringDataStore(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DataReceived)
+        messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
         messageUtils.rejectMessageOnException {
-            if (actionType == ActionType.StoreData) {
+            if (actionType == ActionType.StorePublicData) {
                 persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
             }
             if (actionType == ActionType.DeleteData) {
@@ -97,7 +97,7 @@ class DatabaseStringDataStore(
      */
     fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = temporarilyCachedDataClient.getReceivedData(dataId)
+        val data = temporarilyCachedDataClient.getReceivedPublicData(dataId)
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
         storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

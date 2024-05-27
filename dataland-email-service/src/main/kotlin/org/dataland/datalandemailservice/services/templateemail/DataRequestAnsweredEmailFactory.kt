@@ -12,29 +12,17 @@ class DataRequestAnsweredEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-) : TemplateEmailFactory(
+) : DataRequestResponseEmailBaseFactory(
     proxyPrimaryUrl = proxyPrimaryUrl,
     senderEmail = senderEmail,
     senderName = senderName,
 ) {
-    private val keys = object {
-        val companyId = "companyId"
-        val companyName = "companyName"
-        val dataType = "dataType"
-        val reportingPeriod = "reportingPeriod"
-        val creationDate = "creationDate"
-        val closedIn = "closedIn"
-        val dataTypeDescription = "dataTypeDescription"
-    }
-
     override val builderForType = TemplateEmailMessage.Type.DataRequestedAnswered
-    override val requiredProperties = setOf(
-        keys.companyId, keys.companyName, keys.dataType, keys.reportingPeriod, keys.creationDate,
-    )
-    override val optionalProperties = setOf(keys.closedIn, keys.dataTypeDescription)
 
     override val templateFile = "/request_answered.html.ftl"
-    override val subject = "Your data request has been answered!"
+    override fun buildSubject(properties: Map<String, String?>): String {
+        return "Your data request has been answered!"
+    }
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         return StringBuilder()
@@ -42,13 +30,16 @@ class DataRequestAnsweredEmailFactory(
                 "Great news!\n" +
                     "Your data request has been answered.\n\n",
             )
-            .append("Company: ${properties[keys.companyName]} \n")
-            .append("Framework: ${properties[keys.dataType]} \n")
-            .append("Reporting period: ${properties[keys.reportingPeriod]} \n\n")
-            .append("Request created: ${properties[keys.creationDate]} \n\n")
+            .append("Company: ${properties[Keys.COMPANY_NAME]} \n")
+            .append("Framework: ${properties[Keys.DATA_TYPE]} \n")
+            .append("Reporting period: ${properties[Keys.REPORTING_PERIOD]} \n\n")
+            .append("Request created: ${properties[Keys.CREATION_DATE]} \n\n")
             .append("Review the provided data:\n")
-            .append("$proxyPrimaryUrl/companies/${properties[keys.companyId]}/frameworks/${properties[keys.dataType]}")
-            .append("\nWithout any actions, your data request will be set to closed automatically in some days.")
+            .append("$proxyPrimaryUrl/requests/${properties[Keys.DATA_REQUEST_ID]}")
+            .append(
+                "\nWithout any actions, your data request will be set to closed " +
+                    "automatically in ${properties[Keys.CLOSED_IN_DAYS]} days.",
+            )
             .toString()
     }
 }

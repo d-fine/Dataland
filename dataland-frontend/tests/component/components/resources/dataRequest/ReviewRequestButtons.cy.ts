@@ -2,8 +2,19 @@ import ReviewRequestButtonsComponent from "@/components/resources/dataRequest/Re
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { checkEmailFieldsAndCheckBox } from "@ct/testUtils/EmailDetails";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 describe("Component tests for the data request review buttons", function (): void {
   const mockCompanyId: string = "Mock-Company-Id";
+  const parentComponentOfEmailDetails = "updateRequestModal";
+  const triggerComponentForEmailDetails = "updateRequestButton";
+  const messageHistory = [
+    {
+      contacts: ["Franz69@example.com"],
+      message: "navigate online bandwidth",
+      creationTimestamp: 2710,
+    },
+  ];
   let mockedRequests: StoredDataRequest[];
   before(() => {
     cy.fixture("DataRequestsMock").then((jsonContent) => {
@@ -42,9 +53,9 @@ describe("Component tests for the data request review buttons", function (): voi
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
 
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod("closeRequestButton", "reOpenRequestButton");
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod("resolveRequestButton", "reOpenRequestButton");
 
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "closeRequestButton");
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "resolveRequestButton");
   });
   /**
    * Checks for pop up modal
@@ -52,11 +63,12 @@ describe("Component tests for the data request review buttons", function (): voi
    */
   function checkForReviewButtonsPopUpModal(expectedPopUp: string): void {
     const popUpdataTestId = `[data-test="${expectedPopUp}"]`;
-    cy.get('[data-test="closeRequestButton"]').should("exist").click();
+    cy.get('[data-test="resolveRequestButton"]').should("exist").click();
     cy.get(popUpdataTestId).should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
 
     cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    checkTheUpdateRequestModal();
     cy.get(popUpdataTestId).should("exist");
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   }
@@ -76,12 +88,22 @@ describe("Component tests for the data request review buttons", function (): voi
     cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
     cy.get('[data-test="reporting-periods"] a').contains("2021").should("not.have.class", "link");
     cy.get('[data-test="reporting-periods"] a').contains("2022").should("have.class", "link").click();
+    if (buttonToClick == "reOpenRequestButton") checkTheUpdateRequestModal();
     cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
   }
   /**
    * Mocks the community-manager answer for the request of the users data requests
    */
   function interceptUserRequestsOnMounted(): void {
+    const requestFor2022 = mockedRequests.find((it) => it.reportingPeriod == "2022");
+    assert(requestFor2022 !== undefined);
+
+    cy.intercept(`**/community/requests/${requestFor2022!.dataRequestId}`, {
+      body: {
+        messageHistory: messageHistory,
+      },
+      status: 200,
+    }).as("fetchSingleDataRequests");
     cy.intercept(`**/community/requests/user`, {
       body: mockedRequests,
     }).as("fetchUserRequests");
@@ -90,13 +112,13 @@ describe("Component tests for the data request review buttons", function (): voi
    * Mocks the answer for patching the request status
    */
   function interceptPatchRequestsOnMounted(): void {
-    cy.intercept(`**/requestStatus?requestStatus=Closed`, {
+    cy.intercept(`**/requestStatus?requestStatus=Resolved`, {
       body: {
-        requestStatus: RequestStatus.Closed,
+        requestStatus: RequestStatus.Resolved,
       } as StoredDataRequest,
       status: 200,
     }).as("closeUserRequest");
-    cy.intercept(`**/requestStatus?requestStatus=Open`, {
+    cy.intercept(`**/requestStatus?requestStatus=Open**`, {
       body: {
         requestStatus: RequestStatus.Open,
       } as StoredDataRequest,
@@ -123,6 +145,40 @@ describe("Component tests for the data request review buttons", function (): voi
         framework: framework,
         mapOfReportingPeriodToActiveDataset: map,
       },
+    });
+  }
+  /**
+   * Checks the update request modal tab menu and message history tab
+   */
+  function checkTheUpdateRequestModal(): void {
+    cy.get('[data-test="updateRequestTabMenu"]')
+      .should("exist")
+      .within(() => {
+        cy.contains("button", "UPDATE REQUEST").should("exist");
+        cy.contains("button", "VIEW HISTORY").should("exist").click({ force: true });
+      });
+    cy.get('[data-test="viewHistoryModal"]')
+      .should("exist")
+      .should("be.visible")
+      .within(() => {
+        checkMessageHistory();
+      });
+    cy.get('[data-test="updateRequestTabMenu"]')
+      .contains("button", "UPDATE REQUEST")
+      .should("exist")
+      .click({ force: true });
+    checkEmailFieldsAndCheckBox(parentComponentOfEmailDetails, triggerComponentForEmailDetails);
+  }
+  /**
+   * Checks the message history
+   */
+  function checkMessageHistory(): void {
+    messageHistory.forEach((message) => {
+      message.contacts.forEach((contact) => {
+        cy.contains(contact).should("exist");
+      });
+      cy.contains(message.message).should("exist");
+      cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should("exist");
     });
   }
 });

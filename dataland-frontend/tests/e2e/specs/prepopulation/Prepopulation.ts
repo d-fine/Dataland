@@ -80,7 +80,6 @@ describe(
             },
             () => {
               const expectedNumberOfCompanies = fixtureData.length;
-              cy.wait(2000);
               cy.getKeycloakToken(admin_name, admin_pw)
                 .then((token) =>
                   wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),

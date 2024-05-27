@@ -1,4 +1,4 @@
-import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, premium_user_name, premium_user_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -73,7 +73,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
       cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
-      cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
+      cy.get('[data-test="datapoint-framework"]').find("span").should("have.text", "LkSG");
     });
 
     it("Fill out the request page and check correct validation, request and success message", () => {
@@ -87,6 +87,7 @@ describeIf(
 
       cy.get('[data-test="contactEmail"]').type(testEmail);
       cy.get('[data-test="dataRequesterMessage"]').type(testMessage);
+      cy.get('[data-test="acceptConditionsCheckbox"]').should("be.visible").click();
       clickSubmitButton();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestBodyIsValid(interception);
@@ -96,19 +97,6 @@ describeIf(
       cy.get("[data-test=requestStatusText]").should("contain.text", "Submitting your data request was successful.");
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should("contain", "/companies/");
-    });
-
-    it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
-      cy.ensureLoggedIn(reader_name, reader_pw);
-      cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      singleDataRequestPage.chooseReportingPeriod(testYear);
-      singleDataRequestPage.chooseFrameworkLksg();
-      clickSubmitButton();
-      cy.get("[data-test=submittedDiv]").should("exist");
-      cy.get("[data-test=requestStatusText]").should(
-        "contain.text",
-        "The submission of your data request was unsuccessful.",
-      );
     });
 
     /**
@@ -143,10 +131,12 @@ describeIf(
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      const dropdown = cy.get("[data-test='datapoint-framework']").should("exist");
+      const dropdown = cy.get("[data-test='datapoint-framework']");
+      dropdown.should("exist").click();
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        dropdown.should("contain.text", humanizeStringOrNumber(framework));
+        cy.get(".p-dropdown-item").contains(humanizeStringOrNumber(framework)).should("exist");
       });
+      dropdown.click();
     }
 
     /**
@@ -156,7 +146,7 @@ describeIf(
       clickSubmitButton();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
-        .should("contain.text", "Select at least one reporting period to submit your request.");
+        .should("contain.text", "Select at least one reporting period to submit your request");
 
       cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
         .should("be.visible")

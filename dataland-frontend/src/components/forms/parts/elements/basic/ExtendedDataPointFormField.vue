@@ -60,13 +60,14 @@
                 :label="`${label} Report`"
                 description="Select a report as a reference for this data point."
               />
-              <FormKit
-                type="select"
+              <SingleSelectFormElement
                 name="fileName"
                 v-model="currentReportValue"
                 placeholder="Select a report"
                 :options="[noReportLabel, ...reportsName]"
-                ignore="true"
+                allow-unknown-option
+                ignore
+                input-class="w-12"
               />
             </div>
             <div class="col-4">
@@ -99,10 +100,9 @@
               description="The level of confidence associated to the value."
               :is-required="isDataQualityRequired"
             />
-            <FormKit
-              type="select"
-              v-model="qualityValue"
+            <SingleSelectFormElement
               name="quality"
+              v-model="qualityValue"
               :disabled="!isDataQualityRequired"
               :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
@@ -125,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, nextTick } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
@@ -137,10 +137,11 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
-  components: { UploadFormHeader, FormKit, InputSwitch },
+  components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
   inject: {
     injectReportsNameAndReferences: {
       from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
@@ -161,7 +162,7 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       commentValue: "",
-      currentReportValue: "" as string,
+      currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
       checkboxValue: [] as Array<string>,
@@ -172,7 +173,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    setTimeout(() => (this.isMounted = true));
+    void nextTick(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {

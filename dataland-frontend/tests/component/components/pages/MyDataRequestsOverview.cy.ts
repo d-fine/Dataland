@@ -5,9 +5,11 @@ import { DataTypeEnum } from "@clients/backend";
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
 const expectedHeaders = ["COMPANY", "REPORTING PERIOD", "FRAMEWORK", "REQUESTED", "LAST UPDATED", "STATUS"];
+const dummyRequestId = "dummyRequestId";
 
 before(function () {
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     datalandCompanyId: "compA",
     companyName: "companyAnswered",
     dataType: DataTypeEnum.P2p,
@@ -17,22 +19,25 @@ before(function () {
     requestStatus: RequestStatus.Answered,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
-    companyName: "companyNotAnsweredSME",
-    dataType: DataTypeEnum.Sme,
+    dataRequestId: dummyRequestId,
+    companyName: "companyNotAnsweredSfdr",
+    dataType: DataTypeEnum.Sfdr,
     reportingPeriod: "2022",
     creationTimestamp: 1709204495770,
     lastModifiedDate: 1709204495770,
     requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "z-company-that-will-always-be-sorted-to-bottom",
     dataType: DataTypeEnum.EutaxonomyFinancials,
     reportingPeriod: "3021",
     creationTimestamp: 1809204495770,
     lastModifiedDate: 1609204495770,
-    requestStatus: RequestStatus.Closed,
+    requestStatus: RequestStatus.Resolved,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "companyNotAnsweredEU",
     dataType: DataTypeEnum.EutaxonomyNonFinancials,
     reportingPeriod: "2021",
@@ -41,6 +46,7 @@ before(function () {
     requestStatus: RequestStatus.Open,
   } as ExtendedStoredDataRequest);
   mockDataRequests.push({
+    dataRequestId: dummyRequestId,
     companyName: "a-company-that-will-always-be-sorted-to-top",
     dataType: DataTypeEnum.EsgQuestionnaire,
     reportingPeriod: "1021",
@@ -122,7 +128,7 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check the content of the data table", function (): void {
     const expectedCompanys = [
       "companyAnswered",
-      "companyNotAnsweredSME",
+      "companyNotAnsweredSfdr",
       "companyNotAnsweredEU",
       "z-company-that-will-always-be-sorted-to-bottom",
       "a-company-that-will-always-be-sorted-to-top",
@@ -176,7 +182,7 @@ describe("Component tests for the data requests search page", function (): void 
   it("Check filter functionality and reset button", function (): void {
     const expectedFrameworks = [
       "WWF",
-      "SME",
+      "SFDR",
       "EU Taxonomy",
       "Pathways to Paris",
       "for financial companies",
@@ -203,7 +209,21 @@ describe("Component tests for the data requests search page", function (): void 
       expectedFrameworks.forEach((value) => {
         cy.get(`table tbody:contains(${value})`).should("exist");
       });
-      cy.get(`table tbody:contains("SFDR")`).should("not.exist");
+      cy.get(`table tbody:contains("SME")`).should("not.exist");
+    });
+  });
+  it("Check the functionality of rowClick event", function (): void {
+    cy.intercept("**community/requests/user", {
+      body: mockDataRequests,
+      status: 200,
+    }).as("UserRequests");
+    cy.mountWithPlugins(RequestedDatasetsPage, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      cy.get('[data-test="requested-Datasets-table"]').within(() => {
+        cy.get("tr:last").click();
+      });
+      cy.wrap(mounted.component).its("$route.path").should("eq", `/requests/${dummyRequestId}`);
     });
   });
 });

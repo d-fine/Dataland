@@ -145,9 +145,9 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Update status of data request.",
-        "description": "Updates status of data request given data request id.",
-        "operationId": "patchDataRequestStatus",
+        "summary": "Updates a data request.",
+        "description": "Updates status and message history of data request given data request id.",
+        "operationId": "patchDataRequest",
         "parameters": [
           {
             "name": "dataRequestId",
@@ -161,9 +161,29 @@
           {
             "name": "requestStatus",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "contacts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -913,6 +933,8 @@
         "enum": [
           "Open",
           "Answered",
+          "Resolved",
+          "Withdrawn",
           "Closed"
         ]
       },
@@ -920,6 +942,7 @@
         "required": [
           "creationTimestamp",
           "dataRequestId",
+          "dataRequestStatusHistory",
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
@@ -953,6 +976,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/StoredDataRequestMessageObject"
+            }
+          },
+          "dataRequestStatusHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoredDataRequestStatusObject"
             }
           },
           "lastModifiedDate": {
@@ -987,6 +1016,22 @@
           }
         }
       },
+      "StoredDataRequestStatusObject": {
+        "required": [
+          "creationTimestamp",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "ExtendedStoredDataRequest": {
         "required": [
           "companyName",
@@ -995,7 +1040,6 @@
           "dataType",
           "datalandCompanyId",
           "lastModifiedDate",
-          "messageHistory",
           "reportingPeriod",
           "requestStatus",
           "userId"
@@ -1023,12 +1067,6 @@
           },
           "companyName": {
             "type": "string"
-          },
-          "messageHistory": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
-            }
           },
           "lastModifiedDate": {
             "type": "integer",
