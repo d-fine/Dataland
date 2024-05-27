@@ -50,7 +50,7 @@
                 fieldErrorHandlers=["password", "password-confirm"]
                 fieldHeading="*Password"
                 wrappingDivAttributes="data-role=\"password-primary\""
-                tabindex="5"
+                tabindex="4"
                 autofocus=false
                 type="password"
                 autocomplete="off"
@@ -66,7 +66,7 @@
                 fieldErrorHandlers=["password", "password-confirm"]
                 fieldHeading="*Repeat password"
                 wrappingDivAttributes="data-role=\"password-confirm\""
-                tabindex="6"
+                tabindex="5"
                 autofocus=false
                 type="password"
                 autocomplete="off"
@@ -75,9 +75,11 @@
             
             <div class="text-left mt-4 flex align-items-center">
                 <input id="user.attributes.receive_updates" name="user.attributes.receive_updates" type="checkbox">
-                <label for="user.attributes.receive_updates" class="tex-sm ml-2" tabindex="7">Sign me up for updates (optional)</label>
+                <label for="user.attributes.receive_updates" class="tex-sm ml-2" tabindex="6">Sign me up for updates
+                    (optional)</label>
             </div>
-            <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="8" name="register" type="submit" value="CREATE AN ACCOUNT"/>
+            <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="7"
+                   name="register" type="submit" value="CREATE AN ACCOUNT"/>
         </form>
 
         <@socialLogin.dala prefix="TEST DATALAND WITH"/>
