@@ -24,9 +24,11 @@ export default defineComponent({
   props: {
     companyId: {
       type: String,
+      required: true,
     },
     dataType: {
       type: String,
+      required: true,
     },
     dataId: {
       type: String,

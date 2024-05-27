@@ -122,6 +122,7 @@ export default defineComponent({
     },
     dataType: {
       type: String,
+      required: true,
     },
     dataId: {
       type: String,
