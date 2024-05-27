@@ -220,14 +220,13 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
 
 /**
  * Generates an SFDR dataset with a no-existing file reference.
+ * @param input Fixture data to be manipulated
  * @returns the dataset
  */
-function generateFixtureWithBrokenFileReference(): FixtureData<SfdrData> {
-  const newFixture = generateSfdrFixtures(1, 0)[0];
-  const dummyFileReference = "123";
-  newFixture.companyInformation.companyName = "TestForBrokenFileReference";
-  newFixture.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsLocationBasedInTonnes!.dataSource!.fileReference =
-    dummyFileReference;
-
-  return newFixture;
+function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  const brokenFileReference = "123";
+  input.companyInformation.companyName = "TestForBrokenFileReference";
+  input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsLocationBasedInTonnes!.dataSource!.fileReference =
+    brokenFileReference;
+  return input;
 }
