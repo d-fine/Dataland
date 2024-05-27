@@ -36,6 +36,10 @@ class ReportPreuploadComponent(
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),
+                Annotation(
+                    fullyQualifiedName = "jakarta.validation.Valid",
+                    applicationTargetPrefix = "field",
+                ),
             ),
         )
     }
