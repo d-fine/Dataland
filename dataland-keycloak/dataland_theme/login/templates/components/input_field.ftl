@@ -1,5 +1,5 @@
 <#macro dala fieldName fieldErrorHandlers fieldHeading wrappingDivAttributes="" autofocus=false message=true additionalInputProperties...>
-    <div class="input-group text-left mt-5 mb-5" ${wrappingDivAttributes?no_esc}>
+    <div class="input-group text-left mt-5 mb-0" ${wrappingDivAttributes?no_esc}>
         <input
                 <#if messagesPerField.existsError(fieldErrorHandlers)>
                 class="error"
