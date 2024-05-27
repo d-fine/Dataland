@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -40,7 +40,7 @@ class DataManager(
     @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val publicDataInMemoryStorage = mutableMapOf<String, String>()
+    private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
 
     /**
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
