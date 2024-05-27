@@ -29,6 +29,7 @@
                     tabindex="2"
                     autofocus=false
                     type="text"
+                    required=false
                     value=(register.formData.firstName!'')
                     />
                 </div>
@@ -40,6 +41,7 @@
                     tabindex="3"
                     autofocus=false
                     type="text"
+                    required=false
                     value=(register.formData.lastName!'')
                     />
                 </div>
