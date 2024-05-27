@@ -1,8 +1,10 @@
 package org.dataland.datalandbackend.model.documents
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
+import org.dataland.datalandbackend.validator.DocumentExists
 import java.time.LocalDate
 
 /**
@@ -17,6 +19,8 @@ data class CompanyReport(
 
     // The following annotation is required due to a known issue with the openApi generator for fields starting with is
     @field:JsonProperty()
+    @field:NotBlank
+    @field:DocumentExists
     val isGroupLevel: YesNoNa? = null,
 
     val reportDate: LocalDate? = null,
