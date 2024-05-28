@@ -28,7 +28,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     )
 
     // todo the actual file references needs to be fed to the list. now there are only dummies.
-    private var fileReferencesExisting: ArrayList<String> = ArrayList()
+    var fileReferencesExisting: ArrayList<String> = ArrayList()
 
     private val logger = LoggerFactory.getLogger("Migration V15")
 
@@ -65,6 +65,8 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         }
     }
 
+
+
     private fun checkForFaultyFileReferenceAndIterateFurther(
         dataset: JSONObject,
         objectName: String,
@@ -72,12 +74,32 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
-            val dataSourceOrCompanyInfo = obj.getOrJavaNull(targetObjectName) as JSONObject?
-            if (dataSourceOrCompanyInfo !== null) {
-                val fileReference = dataSourceOrCompanyInfo.get("fileReference") as String
-                if ((fileReference !in fileReferencesExisting) || (!isSha256(fileReference))) {
-                    logger.info("Replace reference to document with null. The broken file refrence was " + fileReference)
-                    obj.put(targetObjectName, null as Any?)
+            val dataSourceOrCompanyInfoList = obj.getOrJavaNull(targetObjectName) as JSONObject?
+            if (dataSourceOrCompanyInfoList !== null) {
+                if (targetObjectName == "referencedReports") {
+
+                    val keys: Iterator<String> = dataSourceOrCompanyInfoList.keys()
+                    while (keys.hasNext()) {
+                        val key = keys.next()
+                        val companyInfo = dataSourceOrCompanyInfoList.getOrJavaNull(key) as JSONObject?
+                        if (companyInfo !== null) {
+                            val fileReference = companyInfo.get("fileReference") as String
+                            if ((fileReference !in fileReferencesExisting) || (!isSha256(fileReference))) {
+                                logger.info("Remove reference to document from CompanyInformation list. The broken file refrence was " + fileReference)
+                                dataSourceOrCompanyInfoList.remove(key)
+                            }
+                        }
+                    }
+                    if (dataSourceOrCompanyInfoList.isEmpty) {
+                        obj.put(targetObjectName, null as Any?)
+                    }
+                }
+                else {
+                    val fileReference = dataSourceOrCompanyInfoList.get("fileReference") as String
+                    if ((fileReference !in fileReferencesExisting) || (!isSha256(fileReference))) {
+                        logger.info("Replace reference to document with null. The broken file refrence was " + fileReference)
+                        obj.put(targetObjectName, null as Any?)
+                    }
                 }
             } else {
                 obj.keys().forEach { checkForFaultyFileReferenceAndIterateFurther(obj, it, targetObjectName) }
@@ -101,7 +123,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         }
         dataset.keys().forEach {
             checkForFaultyFileReferenceAndIterateFurther(
-                dataset, it, "companyReport",
+                dataset, it, "referencedReports",
             )
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
