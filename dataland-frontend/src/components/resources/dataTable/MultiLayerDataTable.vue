@@ -16,7 +16,7 @@
               :data-dataset-index="idx"
             >
               <div class="p-column-header-content">
-                <span class="p-column-title">{{ mldtDataset.headerLabel }}</span>
+                <span class="p-column-title">{{ mldtDataset.metaInfo.reportingPeriod }}</span>
               </div>
             </th>
           </tr>

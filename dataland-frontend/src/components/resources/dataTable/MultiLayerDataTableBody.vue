@@ -34,6 +34,7 @@
         >
           <MultiLayerDataTableCell
             :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)"
+            :meta-info="mldtDataset.metaInfo"
             :inReviewMode="inReviewMode"
           />
         </td>

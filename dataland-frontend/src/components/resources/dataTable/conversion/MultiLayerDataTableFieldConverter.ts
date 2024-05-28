@@ -41,6 +41,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
+  // TODO Emanuel: no value getter for document link? Wie kann P2p sof unktionieren? (Livestock Farming)
 };
 
 /**

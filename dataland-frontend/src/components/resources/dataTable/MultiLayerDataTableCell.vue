@@ -4,9 +4,10 @@
     <MultiLayerDataTableCell :content="content.displayValue.innerContents" :inReviewMode="inReviewMode" />
   </div>
   <div v-if="content.displayComponentName == MLDTDisplayComponents.DataPointWrapperDisplayComponent">
-    <DataPointWrapperDisplayComponent :content="content">
+    <DataPointWrapperDisplayComponent :content="content" :metaInfo="metaInfo">
       <MultiLayerDataTableCell
         :content="content.displayValue.innerContents"
+        :meta-info="metaInfo"
         v-if="!hasBlankInnerContents"
         :inReviewMode="inReviewMode"
       />
@@ -28,6 +29,7 @@ import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/Mo
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 import DataPointWrapperDisplayComponent from "@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue";
 import FreeTextDisplayComponent from "@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue";
+import { type DataMetaInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
@@ -57,6 +59,10 @@ export default defineComponent({
   props: {
     content: {
       type: Object as () => AvailableMLDTDisplayObjectTypes,
+      required: true,
+    },
+    metaInfo: {
+      type: Object as () => DataMetaInformation,
       required: true,
     },
     inReviewMode: {

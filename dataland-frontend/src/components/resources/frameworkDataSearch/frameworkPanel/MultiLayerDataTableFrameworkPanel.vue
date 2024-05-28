@@ -71,13 +71,13 @@ const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.framewo
 const mldtDatasets = computed(() => {
   const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
   return sortedDataAndMetaInformation.map((singleDataSet) => ({
-    headerLabel: singleDataSet.metaInfo.reportingPeriod,
+    metaInfo: singleDataSet.metaInfo,
     dataset: singleDataSet.data,
   }));
 });
 
 const sortedReportingPeriods = computed(() => {
-  return mldtDatasets.value.map((mldtDataset) => mldtDataset.headerLabel);
+  return mldtDatasets.value.map((mldtDataset) => mldtDataset.metaInfo.reportingPeriod);
 });
 
 const sortedReports = computed(() => {

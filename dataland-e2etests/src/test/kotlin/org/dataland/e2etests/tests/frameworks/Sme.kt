@@ -39,8 +39,12 @@ class Sme {
         FrameworkTestDataProvider(SmeData::class.java).getTData(1).first(),
     )
 
-    val dummyFileAlpha = File("dummyFileAlpha.txt")
-    val dummyFileBeta = File("dummyFileBeta.txt")
+    lateinit var dummyFileAlpha: File
+    lateinit var hashAlpha: String
+
+    lateinit var dummyFileBeta: File
+    lateinit var hashBeta: String
+
     lateinit var companyId: String
 
     @BeforeAll
@@ -48,8 +52,13 @@ class Sme {
         val threeMegabytes = 3 * 1000 * 1000
         val tenMegabytes = 10 * 1000 * 1000
 
+        dummyFileAlpha = File("dummyFileAlpha.txt")
         dummyFileAlpha.writeBytes(ByteArray(threeMegabytes))
+        hashAlpha = dummyFileAlpha.readBytes().sha256()
+
+        dummyFileBeta = File("dummyFileBeta.txt")
         dummyFileBeta.writeBytes(ByteArray(tenMegabytes))
+        hashBeta = dummyFileBeta.readBytes().sha256()
     }
 
     @BeforeAll
@@ -69,7 +78,8 @@ class Sme {
 
     @Test
     fun `post SME data and check its meta info persistence and that data is not even accessible to Dataland admins `() {
-        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
+        val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", smeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha))
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
@@ -82,16 +92,16 @@ class Sme {
         }
         assertTrue(exceptionForJson.message!!.contains("Client error : 403"))
 
-        val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
         val exceptionForBlob = assertThrows<ClientException> {
-            smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, expectedHashAlpha)
+            smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, hashAlpha)
         }
         assertTrue(exceptionForBlob.message!!.contains("Client error : 403"))
     }
 
     @Test
     fun `post SME data with documents and check if data and documents can be retrieved by the data owner`() {
-        val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", testSmeData)
+        val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
+        val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", smeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -100,20 +110,19 @@ class Sme {
         )
         assertEquals(companyAssociatedDataSmeData, retrievedCompanyAssociatedSmeData)
 
-        val expectedHashAlpha = dummyFileAlpha.readBytes().sha256()
-        val downloadedAlpha = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashAlpha)
-        assertEquals(expectedHashAlpha, downloadedAlpha.readBytes().sha256())
+        val downloadedAlpha = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, hashAlpha)
+        assertEquals(hashAlpha, downloadedAlpha.readBytes().sha256())
 
-        val expectedHashBeta = dummyFileBeta.readBytes().sha256()
-        val downloadedBeta = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, expectedHashBeta)
-        assertEquals(expectedHashBeta, downloadedBeta.readBytes().sha256())
+        val downloadedBeta = smeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, hashBeta)
+        assertEquals(hashBeta, downloadedBeta.readBytes().sha256())
     }
 
     @Test
     fun `post two SME datasets for the same reporting period and company and assert correct handling`() {
+        var smeData = setPowerConsumptionFileReference(testSmeData, null)
         val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(
             companyId, "2022",
-            setNumberOfEmployees(testSmeData, 1),
+            setNumberOfEmployees(smeData, 1),
         )
         val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
 
@@ -123,9 +132,10 @@ class Sme {
         )
         assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
 
+        smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
         val companyAssociatedSmeDataBeta = CompanyAssociatedDataSmeData(
             companyId, "2022",
-            setNumberOfEmployees(testSmeData, 2),
+            setNumberOfEmployees(smeData, 2),
         )
         val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
         val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
@@ -146,17 +156,17 @@ class Sme {
 
     @Test
     fun `post an SME dataset with duplicate file and assert that the downloaded file is unique and correct`() {
-        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", testSmeData)
+        val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", smeData)
         val dataId = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
 
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
         )
 
-        val expectedHash = dummyFileAlpha.readBytes().sha256()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val downloadedFile = smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, expectedHash)
-        assertEquals(expectedHash, downloadedFile.readBytes().sha256())
+        val downloadedFile = smeDataControllerApi.getPrivateDocument(persistedDataMetaInfo!!.dataId, hashAlpha)
+        assertEquals(hashAlpha, downloadedFile.readBytes().sha256())
     }
 
     private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
@@ -167,6 +177,33 @@ class Sme {
                 ),
             ),
         )
+    }
+
+    // TODO Emanuel: Vllt kann man die folgende Funktion bisschen simpler schreiben
+    private fun setPowerConsumptionFileReference(dataset: SmeData, fileReference: String?): SmeData {
+        if (fileReference == null) {
+            return dataset.copy(
+                power = dataset.power?.copy(
+                    consumption = dataset.power?.consumption?.copy(
+                        powerConsumptionInMwh = dataset.power?.consumption?.powerConsumptionInMwh?.copy(
+                            dataSource = null,
+                        ),
+                    ),
+                ),
+            )
+        } else {
+            return dataset.copy(
+                power = dataset.power?.copy(
+                    consumption = dataset.power?.consumption?.copy(
+                        powerConsumptionInMwh = dataset.power?.consumption?.powerConsumptionInMwh?.copy(
+                            dataSource = dataset.power?.consumption?.powerConsumptionInMwh?.dataSource?.copy(
+                                fileReference = fileReference,
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        }
     }
 
     private fun setNumberOfEmployees(dataset: SmeData, numberOfEmployees: Int): SmeData {

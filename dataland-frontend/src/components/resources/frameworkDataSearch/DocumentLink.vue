@@ -26,7 +26,6 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
 import { getAllPublicFrameworkIdentifiers } from "@/frameworks/BasePublicFrameworkRegistry";
 import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
@@ -40,16 +39,7 @@ export default defineComponent({
   data() {
     return {
       percentCompleted: undefined as number | undefined,
-      requestedDataId: String,
     };
-  },
-  //TODO implementation of provide and inject dataId is bad, needs refactoring. For some reason direct injection
-  //TODO of dataId here did not work. Goal is to remove the inject in DataPointWrapperDisplayComponent and inject
-  //TODO dataId here
-  inject: ["dialogRef"],
-  mounted() {
-    const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
-    this.requestedDataId = dialogRefToDisplay.data.dataId;
   },
   name: "DocumentLink",
   components: { DownloadProgressSpinner },
@@ -58,15 +48,17 @@ export default defineComponent({
     suffix: String,
     downloadName: { type: String, required: true },
     fileReference: { type: String, required: true },
+    dataId: String,
+    datatype: String,
     showIcon: Boolean,
     fontStyle: String,
-    datatype: String,
   },
   methods: {
     /**
      * Method to download available reports
      */
     async downloadDocument() {
+      // TODO Emanuel: so eine lange FUnktion sollten wir vermeiden
       const fileReference: string = this.fileReference;
       this.percentCompleted = 0;
       try {
@@ -103,11 +95,12 @@ export default defineComponent({
               undefined,
               apiClientProvider.axiosInstance,
             );
-            await SmeDataControllerApi.getPrivateDocument(this.requestedDataId.toString(), fileReference, {
+            await SmeDataControllerApi.getPrivateDocument(this.dataId.toString(), fileReference, {
+              // TODO AChtung, undefined case behandeln
               responseType: "arraybuffer",
               onDownloadProgress: (progressEvent) => {
                 if (progressEvent.total != null)
-                  this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                  this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total); // TODO funktioniert percentage noch?
               },
             } as AxiosRequestConfig).then((getDocumentsFromStorageResponse) => {
               this.percentCompleted = 100;

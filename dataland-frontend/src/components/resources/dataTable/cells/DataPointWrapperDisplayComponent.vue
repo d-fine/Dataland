@@ -10,6 +10,7 @@
     </a>
     <DocumentLink
       v-else-if="dataPointProperties.dataSource"
+      :dataId="metaInfo.dataId"
       :label="dataPointProperties.value"
       :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
       :file-reference="dataPointProperties.dataSource.fileReference"
@@ -27,7 +28,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
@@ -37,12 +38,9 @@ export default defineComponent({
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
       required: true,
     },
-  },
-  //TODO implementation of provide and inject dataId is bad, needs refactoring
-  inject: {
-    dataId: {
-      from: "dataId",
-      default: {},
+    metaInfo: {
+      type: Object as () => DataMetaInformation,
+      required: true,
     },
   },
   data() {
@@ -61,12 +59,9 @@ export default defineComponent({
         },
         data: {
           dataPointDisplay: this.dataPointProperties,
-          dataId: this.requiredDataId,
+          dataId: this.metaInfo.dataId,
         },
       };
-    },
-    requiredDataId() {
-      return (this.requiredDataId = this.dataId as string);
     },
     dataPointProperties() {
       const content = this.content.displayValue;

@@ -1,11 +1,13 @@
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { type DataMetaInformation } from "@clients/backend";
 
 export type MLDTConfig<FrameworkDataType> = Array<
   MLDTCellConfig<FrameworkDataType> | MLDTSectionConfig<FrameworkDataType>
 >;
 
+// TODO EManuel: later: think about using DataAndMetaInformation<T> instead?
 export interface MLDTDataset<FrameworkDataType> {
-  headerLabel: string;
+  metaInfo: DataMetaInformation;
   dataset: FrameworkDataType;
 }
 
