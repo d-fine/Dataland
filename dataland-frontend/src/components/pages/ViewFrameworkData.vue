@@ -49,12 +49,6 @@ export default defineComponent({
       return this.gotoNotFound();
     }
   },
-  //TODO implementation of provide and inject dataId is bad, needs refactoring
-  provide() {
-    return {
-      dataId: this.dataId,
-    };
-  },
   methods: {
     /**
      * Navigate to the not found page.
