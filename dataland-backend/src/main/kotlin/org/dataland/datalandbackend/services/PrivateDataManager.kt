@@ -53,7 +53,7 @@ class PrivateDataManager(
     private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
     private val documentHashesInMemoryStorage = mutableMapOf<String, MutableMap<String, String>>()
     private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
-    //TODO lets use the same maps as Marc did in his fix for the flaky e2e tests
+    // TODO lets use the same maps as Marc did in his fix for the flaky e2e tests
 
     /**
      * Processes a private sme data storage request.
