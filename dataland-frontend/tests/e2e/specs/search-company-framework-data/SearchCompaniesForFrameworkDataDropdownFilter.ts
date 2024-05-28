@@ -281,12 +281,12 @@ describe("As a user, I expect the search functionality on the /companies page to
        * enters companyNamePrefix into the search bar and ensures that a matching company appears as the first result
        * @param searchStringToType the search term to enter
        * @param frameworkToFilterFor the framework to filter by
-       * @param isSearchStringExpectedInFirstResult
+       * @param isSearchStringExpectedInFirstAutocompleteResult defines if a match for the search string is expected
        */
       function validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
         searchStringToType: string,
         frameworkToFilterFor: string,
-        isSearchStringExpectedInFirstResult: boolean,
+        isSearchStringExpectedInFirstAutocompleteResult: boolean,
       ): void {
         cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
         cy.visit(`/companies?framework=${frameworkToFilterFor}`).wait("@searchCompanyInitial");
@@ -298,7 +298,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
         cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
-          if (isSearchStringExpectedInFirstResult) {
+          if (isSearchStringExpectedInFirstAutocompleteResult) {
             cy.get(".p-autocomplete-item")
               .eq(0)
               .get("span[class='font-normal']")
