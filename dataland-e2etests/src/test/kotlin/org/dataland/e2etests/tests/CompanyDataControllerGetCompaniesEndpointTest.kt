@@ -10,12 +10,16 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.util.UUID
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CompanyDataControllerGetCompaniesEndpointTest {
 
     companion object {
@@ -23,12 +27,18 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     }
     private val setOfAllDataTypes = enumValues<DataTypeEnum>().toSet()
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
     private val company1 = "Company 1"
     private val company2 = "Company 2"
     private val company3 = "Company 3"
     private val company5 = "Company 5"
     private val company8 = "Company 8"
     private val company9 = "Company 9"
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
