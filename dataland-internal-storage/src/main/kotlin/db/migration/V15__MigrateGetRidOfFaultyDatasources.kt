@@ -6,6 +6,7 @@ import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 
 /**
  * This migration script removes all file references that are not hashes and all
@@ -24,16 +25,37 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         "heimathafen",
         "sme",
 
-        )
-
-    // todo the actual file references needs to be fed to the list. now there are only dummies.
-    private val fileReferencesThatAreHashesButDoNotExist = listOf(
-        "3271890987321798",
-        "189237128391823",
-        "0931209801392093",
     )
 
+    // todo the actual file references needs to be fed to the list. now there are only dummies.
+    private var fileReferencesExisting: ArrayList<String> = ArrayList()
+
+    private val logger = LoggerFactory.getLogger("Migration V15")
+
+    /**
+     * Get all valid fileReferences from database
+     * blob_id in blob_items table is the actual hash value for the document
+     */
+    fun getExistingFileReferences(context: Context?) {
+        val statement = context!!.connection.createStatement()
+
+        if (statement.execute("SELECT blob_id FROM blob_items")) {
+            val result = statement.resultSet
+
+            while (result.next()) {
+                var temp: String = result.getString("blob_id")
+                fileReferencesExisting.add(temp)
+                logger.info("Adding to known documents list: " + temp)
+            }
+        } else {
+            throw RuntimeException("Error while accessing blob_items table in database")
+        }
+    }
+
     override fun migrate(context: Context?) {
+        // get up to date list of file references
+        getExistingFileReferences(context)
+        // now check datasets
         dataTypesToMigrate.forEach {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
@@ -50,10 +72,11 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
-            val dataSource = obj.getOrJavaNull(targetObjectName) as JSONObject?
-            if (dataSource !== null) {
-                val fileReference = dataSource.get("fileReference") as String
-                if (!isSha256(fileReference) || fileReference in fileReferencesThatAreHashesButDoNotExist) {
+            val dataSourceOrCompanyInfo = obj.getOrJavaNull(targetObjectName) as JSONObject?
+            if (dataSourceOrCompanyInfo !== null) {
+                val fileReference = dataSourceOrCompanyInfo.get("fileReference") as String
+                if ((fileReference !in fileReferencesExisting) || (!isSha256(fileReference))) {
+                    logger.info("Replace object with null. The broken file refrence was " + fileReference)
                     obj.put(targetObjectName, null as Any?)
                 }
             } else {
@@ -73,15 +96,14 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         val dataset = dataTableEntity.dataJsonObject
         dataset.keys().forEach {
             checkForFaultyFileReferenceAndIterateFurther(
-                dataset, it, "dataSource"
+                dataset, it, "dataSource",
             )
         }
         dataset.keys().forEach {
             checkForFaultyFileReferenceAndIterateFurther(
-                dataset, it, "companyReport"
+                dataset, it, "companyReport",
             )
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
-
 }

@@ -7,9 +7,9 @@ class V15__MigrateGetRidOfFaultyDatasourcesTest {
     @Test
     fun `check migration script for faulty file references in sfdr works properly`() {
         TestUtils().testMigrationOfSingleDataset(
-            "sfdr",
-            "V15/originalDatabaseEntry.json",
-            "V15/expectedDatabaseEntry.json",
+            "lksg",
+            "V15/originalLksgDatabaseEntry.json",
+            "V15/expectedLksgDatabaseEntry.json",
             V15__MigrateGetRidOfFaultyDatasources()::migrateFaultyFileReferences,
         )
     }
