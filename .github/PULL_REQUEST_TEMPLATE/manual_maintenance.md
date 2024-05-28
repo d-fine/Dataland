@@ -9,7 +9,7 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
-Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
+- [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
 ### Dataland EuroDaT client
@@ -42,8 +42,8 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 
 ## ssh-keys maintenance
 
-Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the internal
-wiki.
+- [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the 
+  internal wiki.
 
 ## Check RabbitMQ dead letter queue and disk space
 
