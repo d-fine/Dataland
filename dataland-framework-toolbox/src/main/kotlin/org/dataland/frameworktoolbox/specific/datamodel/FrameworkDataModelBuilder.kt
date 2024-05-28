@@ -50,7 +50,6 @@ class FrameworkDataModelBuilder(
         val targetPath = into.backendKotlinSrc /
             frameworkBasePackageQualifier.replace(".", "/") /
             "${rootDataModelClass.name}Controller.kt"
-
         logger.trace("Building framework API controller for '{}' into '{}'", framework.identifier, targetPath)
         val nameOfDataApiController = if (privateFrameworkBoolean) {
             "/specific/datamodel/PrivateFrameworkDataController.kt.ftl"

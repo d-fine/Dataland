@@ -39,6 +39,6 @@ export class ${frameworkBaseName}ApiClient implements PrivateFrameworkDataApi<${
     documents: Array<File>,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataMetaInformation> {
-    return this.openApiDataController.postSmeJsonAndDocuments(companyAssociated${frameworkBaseName}Data, documents, options);
+    return this.openApiDataController.post${frameworkBaseName}JsonAndDocuments(companyAssociated${frameworkBaseName}Data, documents, options);
   }
 }

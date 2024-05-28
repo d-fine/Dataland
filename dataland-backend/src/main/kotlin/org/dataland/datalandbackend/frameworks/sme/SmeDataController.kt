@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
 /**
- * Controller for the SME framework endpoints
+ * Controller for the sme framework endpoints
  * @param privateDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
@@ -90,21 +90,21 @@ class SmeDataController(
         reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
-        val smeDataType = DataType.of(SmeData::class.java)
+        val dataType = DataType.of(SmeData::class.java)
         logger.info(
-            logMessageBuilder.getFrameworkDatasetsForCompanyMessage(smeDataType, companyId, reportingPeriodInLog),
+            logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog),
         )
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-            companyId, smeDataType, showOnlyActive, reportingPeriod,
+            companyId, dataType, showOnlyActive, reportingPeriod,
         )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<SmeData>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId)
-            val smeData = privateDataManager.getPrivateSmeData(it.dataId, correlationId)
+            val data = privateDataManager.getPrivateSmeData(it.dataId, correlationId)
             frameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()), smeData,
+                    it.toApiModel(DatalandAuthentication.fromContext()), data,
                 ),
             )
         }

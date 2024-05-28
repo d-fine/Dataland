@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.frameworks.${frameworkPackageName}
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.api.SmeDataApi
+import org.dataland.datalandbackend.api.${frameworkDataType.shortenedQualifier}Api
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile
 </#list>
 
 /**
- * Controller for the SME framework endpoints
+ * Controller for the ${frameworkIdentifier} framework endpoints
  * @param privateDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
@@ -35,23 +35,23 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myObjectMapper: ObjectMapper,
     @Autowired var logMessageBuilder: LogMessageBuilder,
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-) : SmeDataApi {
+) : ${frameworkDataType.shortenedQualifier}Api {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Operation(operationId = "postSmeJsonAndDocuments")
-    override fun postSmeJsonAndDocuments(
-    companyAssociatedSmeData: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>,
+    @Operation(operationId = "post${frameworkIdentifier?cap_first}JsonAndDocuments")
+    override fun post${frameworkIdentifier?cap_first}JsonAndDocuments(
+    companyAssociated${frameworkDataType.shortenedQualifier}: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>,
         documents: Array<MultipartFile>?,
             ): ResponseEntity<DataMetaInformation> {
-                val dataMetaInformation = privateDataManager.processPrivateSmeDataStorageRequest(
-                companyAssociatedSmeData,
+                val dataMetaInformation = privateDataManager.processPrivate${frameworkDataType.shortenedQualifier}StorageRequest(
+                companyAssociated${frameworkDataType.shortenedQualifier},
                 documents,
                 )
                 return ResponseEntity.ok(dataMetaInformation)
                 }
 
-                @Operation(operationId = "getCompanyAssociatedSmeData")
-                override fun getCompanyAssociatedSmeData(dataId: String): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
+                @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
+                override fun getCompanyAssociated${frameworkDataType.shortenedQualifier}(dataId: String): ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
                     val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
                     if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
                     throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
@@ -62,7 +62,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                     val companyAssociatedData = CompanyAssociatedData(
                     companyId = companyId,
                     reportingPeriod = metaInfo.reportingPeriod,
-                    data = privateDataManager.getPrivateSmeData(dataId, correlationId),
+                    data = privateDataManager.getPrivate${frameworkDataType.shortenedQualifier}(dataId, correlationId),
                     )
                     logger.info(
                     logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -85,27 +85,26 @@ class ${frameworkDataType.shortenedQualifier}Controller(
 
                         @Operation(operationId = "getFrameworkDatasetsForCompany")
                         override fun getFrameworkDatasetsForCompany(
-                        // TODO this function is mostly duplicate code to the code in DataController.kt => think about it later
                         companyId: String,
                         showOnlyActive: Boolean,
                         reportingPeriod: String?,
                         ): ResponseEntity<List<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>> {
                             val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
-                            val smeDataType = DataType.of(SmeData::class.java)
+                            val dataType = DataType.of(${frameworkDataType.shortenedQualifier}::class.java)
                             logger.info(
-                            logMessageBuilder.getFrameworkDatasetsForCompanyMessage(smeDataType, companyId, reportingPeriodInLog),
+                            logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog),
                             )
                             val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-                            companyId, smeDataType, showOnlyActive, reportingPeriod,
+                            companyId, dataType, showOnlyActive, reportingPeriod,
                             )
                             val authentication = DatalandAuthentication.fromContextOrNull()
                             val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>()
                                 metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
                                 val correlationId = generateCorrelationId(companyId)
-                                val smeData = privateDataManager.getPrivateSmeData(it.dataId, correlationId)
+                                val data = privateDataManager.getPrivate${frameworkIdentifier?cap_first}Data(it.dataId, correlationId)
                                 frameworkDataAndMetaInfo.add(
                                 DataAndMetaInformation(
-                                it.toApiModel(DatalandAuthentication.fromContext()), smeData,
+                                it.toApiModel(DatalandAuthentication.fromContext()), data,
                                 ),
                                 )
                                 }
