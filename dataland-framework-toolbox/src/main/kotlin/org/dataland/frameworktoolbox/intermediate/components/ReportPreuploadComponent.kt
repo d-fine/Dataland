@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -36,10 +37,7 @@ class ReportPreuploadComponent(
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),
-                Annotation(
-                    fullyQualifiedName = "jakarta.validation.Valid",
-                    applicationTargetPrefix = "field",
-                ),
+                ValidAnnotation,
             ),
         )
     }

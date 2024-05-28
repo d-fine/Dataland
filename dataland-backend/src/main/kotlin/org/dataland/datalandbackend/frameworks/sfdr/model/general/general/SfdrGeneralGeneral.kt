@@ -22,7 +22,7 @@ data class SfdrGeneralGeneral(
         implementation = Map::class,
         example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE,
     )
-    @field:Valid
+    @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
 
     val scopeOfEntities: YesNoNa? = null,
