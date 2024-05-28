@@ -82,11 +82,21 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             }
     }
 
+    private fun companyListForTestingLksgSpecificValidation(): List<CompanyInformationWithT<T>> {
+        return convertJsonToList(File("./build/resources/test/CompanyInformationWithLksgPreparedFixtures.json"))
+    }
+
     private fun companyListForTestingSfdrSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"))
     }
 
-    fun getSpecificCompanyByNameFromPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
+    fun getSpecificCompanyByNameFromLksgPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
+        return companyListForTestingLksgSpecificValidation().find {
+            it.companyInformation.companyName == companyName
+        }
+    }
+
+    fun getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
         return companyListForTestingSfdrSpecificValidation().find {
             it.companyInformation.companyName == companyName
         }

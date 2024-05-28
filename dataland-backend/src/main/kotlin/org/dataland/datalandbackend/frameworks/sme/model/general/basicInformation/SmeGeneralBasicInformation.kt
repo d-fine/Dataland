@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.sme.model.general.basicInformation
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigInteger
@@ -23,6 +24,7 @@ data class SmeGeneralBasicInformation(
         implementation = Map::class,
         example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE,
     )
+    @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
 
 )

@@ -1,5 +1,7 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentMechanism
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Lksg {
@@ -24,7 +27,6 @@ class Lksg {
 
     @BeforeAll
     fun postTestDocuments() {
-        println("++-+-+-+-+ posting test documents") // TODO remove later
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
@@ -51,11 +53,6 @@ class Lksg {
         )[0]
 
         return fixedDataSetWithAllSortedRiskPositions
-    }
-
-    @Test
-    fun `dummytest`() { // TODO dummy test, remove later
-        assertEquals("hi", "hi")
     }
 
     @Test
@@ -106,6 +103,34 @@ class Lksg {
             downloadedActive2023Datasets,
             sortDatasetsInSecondTest(uploadedDataSets),
         )
+    }
+
+    @Test
+    fun `check that dataset cannot be uploaded if document does not exist`() {
+        val companyId = "1908273127903192839781293898312983"
+        val companyName = "TestForBrokenFileReference"
+        val companyInformation = apiAccessor.testDataProviderForLksgData
+            .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+        val lksgData = companyInformation!!.t
+
+        val dataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
+
+        val uploadPair = Pair(dataSet, "2022")
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.uploadWithWait(
+                companyId = companyId,
+                frameworkData = uploadPair.first,
+                reportingPeriod = uploadPair.second,
+                uploadFunction = apiAccessor::lksgUploaderFunction,
+            )
+        }
+
+        val testClientError = exception.response as ClientError<*>
+
+        assertTrue(testClientError.statusCode == 400)
+        assertTrue(testClientError.body.toString().contains("Invalid input"))
+        assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
     }
 
     private fun assertDownloadedDatasets(

@@ -4,9 +4,6 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
-import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
-import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReference
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
@@ -20,12 +17,11 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD)
 @Constraint(
     validatedBy = [
-        BaseDocumentReferenceExistsValidator::class,
-        ExtendedDocumentReferenceExistsValidator::class,
+        DocumentReferenceExistsValidator::class,
     ],
 )
 annotation class DocumentExists(
-    val message: String = "Input validation failed: The document reference doesn't exist",
+    val message: String = "Input validation failed: The document reference doesn't exist.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -33,32 +29,16 @@ annotation class DocumentExists(
 /**
  * Class holding the validation logic for an BaseDocumentReference. It checks if the referenced document is valid
  */
-class BaseDocumentReferenceExistsValidator(
+class DocumentReferenceExistsValidator(
     @Qualifier("getDocumentControllerApi")
     @Autowired
     val documentControllerApi: DocumentControllerApi,
-) : ConstraintValidator<DocumentExists, BaseDocumentReference> {
+) : ConstraintValidator<DocumentExists, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun isValid(documentReference: BaseDocumentReference?, context: ConstraintValidatorContext?): Boolean {
+    override fun isValid(documentReference: String?, context: ConstraintValidatorContext?): Boolean {
         if (documentReference == null) return true
-        return callDocumentApiAndCheckFileReference(documentReference.fileReference!!, documentControllerApi, logger)
-    }
-}
-
-/**
- * Class holding the validation logic for an ExtendedDocumentReference. It checks if the referenced document is valid
- */
-class ExtendedDocumentReferenceExistsValidator(
-    @Qualifier("getDocumentControllerApi")
-    @Autowired
-    val documentControllerApi: DocumentControllerApi,
-) : ConstraintValidator<DocumentExists, ExtendedDocumentReference> {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
-    override fun isValid(documentReference: ExtendedDocumentReference?, context: ConstraintValidatorContext?): Boolean {
-        if (documentReference == null) return true
-        return callDocumentApiAndCheckFileReference(documentReference.fileReference!!, documentControllerApi, logger)
+        return callDocumentApiAndCheckFileReference(documentReference, documentControllerApi, logger)
     }
 }
 
@@ -69,13 +49,13 @@ private fun callDocumentApiAndCheckFileReference(
 ): Boolean {
     try {
         documentControllerApi.checkDocument(fileReference)
-    } catch (exception: ResourceNotFoundApiException) {
-        logger.info("The referenced document doesn't have a valid reference or doesn't exist at all.")
-        logger.info(exception.message + exception.summary)
-        // return false
     } catch (exception: ClientException) {
-        logger.info("This is a client exception!")
-        logger.info(exception.message + exception.statusCode + exception.response)
+        logger.info("The referenced document does not exist.")
+        logger.info(
+            "Message: ${exception.message} " +
+                "Status code: ${exception.statusCode} " +
+                "Response: ${exception.response}",
+        )
         return false
     }
     return true

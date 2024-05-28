@@ -9,12 +9,17 @@ import java.io.File
 
 class DocumentManagerAccessor {
 
+    companion object {
+        const val WAIT_TIME_IN_MS = 500L
+        const val MAX_ATTEMPTS_TO_CHECK_DOCUMENT = 20
+    }
+
     val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
     val testFiles = listOf(
-        File(".\\build\\resources\\test\\documents\\some-document.pdf"),
-        File(".\\build\\resources\\test\\documents\\some-document2.pdf"),
-        File(".\\build\\resources\\test\\documents\\StandardWordExport.pdf"),
-        File(".\\build\\resources\\test\\documents\\more-pdfs-in-seperate-directory\\some-document.pdf"),
+        File("./build/resources/test/documents/some-document.pdf"),
+        File("./build/resources/test/documents/some-document2.pdf"),
+        File("./build/resources/test/documents/StandardWordExport.pdf"),
+        File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
     )
 
     val jwtHelper = JwtAuthenticationHelper()
@@ -27,24 +32,19 @@ class DocumentManagerAccessor {
             documentIds.add(documentControllerApi.postDocument(file).documentId)
         }
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }
-        println("all documents posted") // todo remove
     }
 
     private fun executeDocumentExistenceCheckWithRetries(documentId: String) {
-        val maxAttempts = 20
-        var attempt = 1
-
-        while (attempt <= maxAttempts) {
-            Thread.sleep(500)
+        for (attempt in 1..MAX_ATTEMPTS_TO_CHECK_DOCUMENT) {
+            Thread.sleep(WAIT_TIME_IN_MS)
             try {
                 documentControllerApi.checkDocument(documentId)
+                break
             } catch (e: ClientException) {
-                if (e.statusCode != HttpStatus.NOT_FOUND.value() || attempt == maxAttempts) {
+                if (e.statusCode != HttpStatus.NOT_FOUND.value() || attempt == MAX_ATTEMPTS_TO_CHECK_DOCUMENT) {
                     throw e
                 }
-                attempt++
             }
-            break
         }
     }
 }

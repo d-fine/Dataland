@@ -115,6 +115,19 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "Content-Length": {
+                "style": "simple",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "Content-Type": {
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
