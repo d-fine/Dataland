@@ -14,5 +14,5 @@ class SmeFramework : PavedRoadFramework(
     explanation = "Small and medium-sized enterprises questionnaire",
     File("./dataland-framework-toolbox/inputs/sme/sme.xlsx"),
     order = 6,
-    privateFrameworkBoolean = true,
+    isPrivateFramework = true,
 )

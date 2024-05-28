@@ -32,7 +32,7 @@ abstract class PavedRoadFramework(
     val frameworkTemplateCsvFile: File,
     val order: Int,
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
-    val privateFrameworkBoolean: Boolean = false,
+    val isPrivateFramework: Boolean = false,
 ) {
     val framework = Framework(
         identifier = identifier,
@@ -173,7 +173,7 @@ abstract class PavedRoadFramework(
         dataModel.build(
             into = datalandProject,
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
-            privateFrameworkBoolean = privateFrameworkBoolean,
+            privateFrameworkBoolean = isPrivateFramework,
         )
     }
 
@@ -183,7 +183,7 @@ abstract class PavedRoadFramework(
         }
         val viewConfig = generateViewModel(framework)
         customizeViewModel(viewConfig)
-        viewConfig.build(into = datalandProject, privateFrameworkBoolean)
+        viewConfig.build(into = datalandProject, isPrivateFramework)
     }
 
     private fun compileFixtureGenerator(datalandProject: DatalandRepository) {

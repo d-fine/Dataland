@@ -113,7 +113,6 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                                 }
 
                                 private fun generateCorrelationId(companyId: String): String {
-                                // TODO this function is mostly duplicate code, see DataController.kt => handle this problem later
                                 val correlationId = generateUUID()
                                 logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
                                 return correlationId

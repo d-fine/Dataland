@@ -41,7 +41,7 @@ abstract class InDevelopmentPavedRoadFramework(
             dataModel.build(
                 into = datalandProject,
                 buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
-                privateFrameworkBoolean = privateFrameworkBoolean,
+                privateFrameworkBoolean = isPrivateFramework,
             )
         } catch (ex: Exception) {
             logger.error("Could not build framework data-model!", ex)
@@ -57,7 +57,7 @@ abstract class InDevelopmentPavedRoadFramework(
 
         @Suppress("TooGenericExceptionCaught")
         try {
-            viewConfig.build(into = datalandProject, privateFrameworkBoolean)
+            viewConfig.build(into = datalandProject, isPrivateFramework)
         } catch (ex: Exception) {
             logger.error("Could not build framework view configuration!", ex)
         }
