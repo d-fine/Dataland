@@ -8,11 +8,10 @@ import {
   SmeDataControllerApi,
   type SmeData,
   type StoredCompany,
-  type PathwaysToParisData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadSmeFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
@@ -47,8 +46,14 @@ describeIf(
           })
           .then((storedCompany) => {
             storedTestCompany = storedCompany;
-            const dummy = {} as PathwaysToParisData; // TODO this is just to make it green for now
-            return uploadFrameworkData(DataTypeEnum.P2p, tokenForAdminUser, storedCompany.companyId, "2021", dummy);
+            const Files: File[] = [];
+            return uploadSmeFrameworkData(
+              tokenForAdminUser,
+              storedCompany.companyId,
+              "2021",
+              smeFixtureForTest.t,
+              Files,
+            );
           })
           .then((dataMetaInfo) => {
             dataMetaInfoOfTestDataset = dataMetaInfo;
@@ -69,6 +74,8 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
+            //TODO remove wait, without this wait the test currently fails here
+            cy.wait(100);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
@@ -86,6 +93,7 @@ describeIf(
                   frontendSubmittedSmeDataset as unknown as Record<string, object>,
                 );
               });
+
             //TODO add visit to the view page to make sure that it is working
           });
       },

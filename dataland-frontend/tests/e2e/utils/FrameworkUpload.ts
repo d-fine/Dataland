@@ -1,9 +1,17 @@
-import { Configuration, type DataMetaInformation, type CompanyInformation } from "@clients/backend";
+import {
+  Configuration,
+  type DataMetaInformation,
+  type CompanyInformation,
+  type SmeData,
+  SmeDataControllerApi,
+} from "@clients/backend";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { postDataOwner } from "@e2e/utils/DataOwnerUtils";
+import { admin_userId } from "@e2e/utils/Cypress";
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
   config: Configuration,
@@ -93,4 +101,26 @@ export async function uploadCompanyAndFrameworkData<K extends keyof FrameworkDat
       },
     );
   });
+}
+/**
+ * Uploads a single sme dataset for a company
+ * @param token The API bearer token to use
+ * @param companyId The Id of the company to upload the dataset for
+ * @param reportingPeriod The reporting period to use for the upload
+ * @param data The Dataset to upload
+ * @param documents the documents to upload
+ * @returns a promise on the created data meta information
+ */
+export async function uploadSmeFrameworkData(
+  token: string,
+  companyId: string,
+  reportingPeriod: string,
+  data: SmeData,
+  documents: File[],
+): Promise<DataMetaInformation> {
+  await postDataOwner(token, admin_userId, companyId);
+  const smeDataControllerApi = new SmeDataControllerApi(new Configuration({ accessToken: token }));
+
+  const response = await smeDataControllerApi.postSmeJsonAndDocuments({ companyId, reportingPeriod, data }, documents);
+  return response.data;
 }
