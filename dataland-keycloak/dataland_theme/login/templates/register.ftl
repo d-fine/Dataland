@@ -1,7 +1,7 @@
 <#import "dataland_template.ftl" as layout>
 <#import "components/input_field.ftl" as inputField>
 <#import "components/social_login.ftl" as socialLogin>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('email','username','password','password-confirm'); section>
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('email','password','password-confirm'); section>
     <#if section = "header">
         Create an account
     <#elseif section = "backUrl">/
@@ -81,7 +81,7 @@
                     (optional)</label>
             </div>
             <input class="p-button w-full cursor-pointer font-semibold mt-5 p-login-button" tabindex="7"
-                   name="register" type="submit" value="CREATE AN ACCOUNT"/>
+                   name="register" id="register_button" type="submit" value="CREATE AN ACCOUNT"/>
         </form>
 
         <@socialLogin.dala prefix="TEST DATALAND WITH"/>
@@ -95,6 +95,21 @@
                 LOGIN TO ACCOUNT
             </Button>
         </div>
+
+        <script>
+            let submit_button = document.getElementById("register_button");
+
+            let first_name_field = document.getElementById("firstName");
+            let last_name_field = document.getElementById("lastName");
+
+            submit_button.addEventListener("click", function () {
+                console.log("changing names");
+                if(!first_name_field.value) first_name_field.value = "-";
+                if(!last_name_field.value) last_name_field.value = "-";
+                console.log("first name: " + first_name_field.value);
+                console.log("last name: " + last_name_field.value);
+            });
+        </script>
 
         <script type="text/javascript" src="${url.resourcesPath}/passwordStrength.js"></script>
     </#if>
