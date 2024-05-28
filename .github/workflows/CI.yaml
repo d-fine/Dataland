@@ -236,8 +236,8 @@ jobs:
         with:
           name: OpenApiDiffs
           path: |
-            ./**/formatbefore.txt
-            ./**/formatafter.txt
+            ./**/*.formatted.json
+            ./**/*.formatted-before.json
       - name: verify no it.only exists
         if: always()
         run: |
