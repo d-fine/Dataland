@@ -9,6 +9,7 @@ import {
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
+import { DataTypeEnum, QaStatus } from "@clients/backend";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
    * Mounts the MultiLayerDataTable with the given dataset
@@ -135,7 +136,15 @@ describe("Tests for the MultiLayerDataTable component", () => {
   ];
 
   const dummyFrameworkTestMldtDataset1: MLDTDataset<DummyFrameworkForTest> = {
-    headerLabel: "Testing 1",
+    metaInfo: {
+      dataId: "does-not-matter-abc1",
+      companyId: "not-relevant-for-test1",
+      dataType: DataTypeEnum.Heimathafen,
+      uploadTime: 111111111,
+      reportingPeriod: "Testing 1",
+      currentlyActive: true,
+      qaStatus: QaStatus.Accepted,
+    },
     dataset: {
       stringOnLevel1: "Dataset 1 - String 1",
       stringOnLevel2: "Dataset 1 - String 2",
@@ -143,7 +152,15 @@ describe("Tests for the MultiLayerDataTable component", () => {
     },
   };
   const dummyFrameworkTestMldtDataset2: MLDTDataset<DummyFrameworkForTest> = {
-    headerLabel: "Testing 2",
+    metaInfo: {
+      dataId: "does-not-matter-abc2",
+      companyId: "not-relevant-for-test2",
+      dataType: DataTypeEnum.Heimathafen,
+      uploadTime: 111111111,
+      reportingPeriod: "Testing 2",
+      currentlyActive: true,
+      qaStatus: QaStatus.Accepted,
+    },
     dataset: {
       stringOnLevel1: "Dataset 2 - String 1",
       stringOnLevel2: "Dataset 2 - String 2",
@@ -151,7 +168,15 @@ describe("Tests for the MultiLayerDataTable component", () => {
     },
   };
   const dummyFrameworkTestMldtDataset3: MLDTDataset<DummyFrameworkForTest> = {
-    headerLabel: "Testing 3",
+    metaInfo: {
+      dataId: "does-not-matter-abc3",
+      companyId: "not-relevant-for-test3",
+      dataType: DataTypeEnum.Heimathafen,
+      uploadTime: 111111111,
+      reportingPeriod: "Testing 3",
+      currentlyActive: true,
+      qaStatus: QaStatus.Accepted,
+    },
     dataset: {
       stringOnLevel1: undefined,
       stringOnLevel2: "Dataset 2 - String 2",
