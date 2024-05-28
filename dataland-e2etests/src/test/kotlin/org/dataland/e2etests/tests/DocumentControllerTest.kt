@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
+import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
@@ -13,7 +14,9 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -32,9 +35,11 @@ class DocumentControllerTest {
         assertFalse(isByteArrayRepresentationOfPdf(docxDocument.readBytes()))
         val uploadResponse = uploadDocument(docxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
+        val byteArrayOfDownload = downloadedFile.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Pdf.mediaType, byteArrayOfDownload.size.toString())
         assertTrue(
             isByteArrayRepresentationOfPdf(
-                downloadedFile.readBytes(),
+                byteArrayOfDownload,
             ),
             "downloaded document is a pdf document",
         )
@@ -44,28 +49,36 @@ class DocumentControllerTest {
     fun `test that a dummy ods document can be uploaded and retrieved after successful QA`() {
         val uploadResponse = uploadDocument(odsDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(odsDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        val byteArrayOfOds = odsDocument.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Ods.mediaType, byteArrayOfOds.size.toString())
+        assertEquals(byteArrayOfOds.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
     fun `test that a dummy xlsx document can be uploaded and retrieved after successful QA`() {
         val uploadResponse = uploadDocument(xlsxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(xlsxDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        val byteArrayOfXlsx = xlsxDocument.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Xlsx.mediaType, byteArrayOfXlsx.size.toString())
+        assertEquals(byteArrayOfXlsx.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
     fun `test that a dummy xls document can be uploaded and retrieved after successful QA`() {
         val uploadResponse = uploadDocument(xlsDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(xlsDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        val byteArrayOfXls = xlsDocument.readBytes()
+        validateResponseHeaders(uploadResponse, DocumentType.Xls.mediaType, byteArrayOfXls.size.toString())
+        assertEquals(byteArrayOfXls.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
     fun `test that a dummy pdf document can be uploaded and retrieved after successful QA`() {
+        val byteArrayOfPdf = pdfDocument.readBytes()
         val uploadResponse = uploadDocument(pdfDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
-        assertEquals(pdfDocument.readBytes().sha256(), downloadedFile.readBytes().sha256())
+        validateResponseHeaders(uploadResponse, DocumentType.Pdf.mediaType, byteArrayOfPdf.size.toString())
+        assertEquals(byteArrayOfPdf.sha256(), downloadedFile.readBytes().sha256())
     }
 
     @Test
@@ -111,6 +124,26 @@ class DocumentControllerTest {
                 }
             }
         return downloadedFile
+    }
+
+    /**
+     * checks if response headers are correct
+     * @param uploadResponse uploadResponse
+     * @param mimeType expected mime type of the document
+     * @param size expected size of the document
+     */
+    private fun validateResponseHeaders(uploadResponse: DocumentUploadResponse, mimeType: MediaType, size: String) {
+        Awaitility.await().atMost(10, TimeUnit.SECONDS)
+            .until {
+                try {
+                    val response = documentControllerClient.getDocumentWithHttpInfo(uploadResponse.documentId).headers
+                    assertEquals(response[HttpHeaders.CONTENT_LENGTH]?.first(), size)
+                    assertEquals(response[HttpHeaders.CONTENT_TYPE]?.first(), mimeType.toString())
+                    true
+                } catch (e: ClientException) {
+                    e.statusCode != HttpStatus.NOT_FOUND.value()
+                }
+            }
     }
 
     /**

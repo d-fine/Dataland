@@ -5,7 +5,7 @@
         `Data extracted from the company report. Company Reports(${reportingPeriods[indexOfNewestReportingPeriod]}):`
       }}
     </h4>
-    <span id="reportList">
+    <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <DocumentLink
           data-test="documentLinkTest"
@@ -14,7 +14,7 @@
           font-style="font-semibold"
         />
       </span>
-    </span>
+    </div>
     <span
       v-if="doPreviousReportsExist(reports, indexOfNewestReportingPeriod)"
       class="link font-semibold underline mr-0 ml-auto"
