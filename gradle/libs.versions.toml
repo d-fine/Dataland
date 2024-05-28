@@ -175,7 +175,7 @@ springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
 freemarker = "org.freemarker:freemarker:_"
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.11.1"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.13.0"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
 
