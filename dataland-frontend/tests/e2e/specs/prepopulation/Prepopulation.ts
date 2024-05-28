@@ -4,13 +4,17 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
-import { type PublicApiClientConstructor, uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {
+  type PublicApiClientConstructor,
+  uploadGenericFrameworkData,
+  uploadSmeFrameworkData,
+} from "@e2e/utils/FrameworkUpload";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
 import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
 } from "@/frameworks/BasePublicFrameworkRegistry";
-import { type DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
@@ -102,6 +106,75 @@ describe(
       );
     }
 
+    /**
+     * Uploads sme fixtures
+     * @param chunkSize to define how many upload-requests shall be awaited before the next chunk is being uploaded
+     * @param numberOfSmeFixturesToUpload to define how many sme fixture datasets shall be uploaded
+     */
+    function uploadSmeFixtures(chunkSize: number, numberOfSmeFixturesToUpload: number): void {
+      {
+        describeIf(
+          `Upload and validate data for framework ${DataTypeEnum.Sme}`,
+          {
+            executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+          },
+          () => {
+            let fixtureData: Array<FixtureData<SmeData>>;
+
+            before(function () {
+              cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+                fixtureData = (jsonContent as typeof fixtureData).slice(0, numberOfSmeFixturesToUpload);
+              });
+            });
+
+            it(`Upload data for framework ${DataTypeEnum.Sme}`, () => {
+              cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+                doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
+                  const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
+                  await uploadSmeFrameworkData(
+                    token,
+                    storedCompany.companyId,
+                    fixtureDataClosure.reportingPeriod,
+                    fixtureDataClosure.t,
+                    [], // TODO Emanuel later: add an actual file and also reference it in the fileReference fields!
+                    //TODO why ? => because we want the download link to work for all fixtures!
+                  );
+                });
+              });
+            });
+
+            it(
+              "Checks that all the uploaded company ids and data ids can be retrieved",
+              // TODO The following test is kind of duplicate code to "registerFrameworkFakeFixtureUpload"
+              // TODO => somehow it should be centralized and re-used in both places!
+              {
+                retries: {
+                  runMode: 5,
+                  openMode: 5,
+                },
+              },
+              () => {
+                const expectedNumberOfCompanies = fixtureData.length;
+                cy.getKeycloakToken(admin_name, admin_pw)
+                  .then((token) =>
+                    wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sme)),
+                  )
+                  .then((response) => {
+                    assert(
+                      response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+                        response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+                      `Found ${response.numberOfCompaniesForDataType} companies having 
+            ${response.numberOfDataSetsForDataType} datasets with datatype ${DataTypeEnum.Sme}, 
+            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
+                    );
+                  });
+              },
+            );
+          },
+        );
+      }
+    }
+
     // Prepopulation for frameworks not implemented with the framework-toolbox
     for (const [key, value] of Object.entries(frameworkFixtureMap)) {
       const keyTyped = key as keyof typeof frameworkFixtureMap;
@@ -121,5 +194,7 @@ describe(
         `CompanyInformationWith${dataTypeInPascalCase}Data`.replace("-", ""),
       );
     }
+
+    uploadSmeFixtures(2, 10);
   },
 );
