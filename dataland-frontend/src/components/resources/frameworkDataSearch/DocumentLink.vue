@@ -49,7 +49,7 @@ export default defineComponent({
     downloadName: { type: String, required: true },
     fileReference: { type: String, required: true },
     dataId: String,
-    datatype: String,
+    dataType: { String, required: true },
     showIcon: Boolean,
     fontStyle: String,
   },
@@ -64,7 +64,7 @@ export default defineComponent({
       try {
         const docUrl = document.createElement("a");
         const publicFramework = getAllPublicFrameworkIdentifiers();
-        if (publicFramework.includes(this.datatype!)) {
+        if (publicFramework.includes(this.dataType)) {
           const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
             .documentController;
           await documentControllerApi
