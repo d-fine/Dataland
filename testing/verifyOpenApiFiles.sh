@@ -17,19 +17,13 @@ function getOpenApiSha1Sum() {
 }
 
 sha1SumBeforeRegenerate=$(getOpenApiSha1Sum)
-echo "sha1sum before regenerate: $sha1SumBeforeRegenerate"
-echo "detailed sha1sum before:"
-getFormattedOpenApiSha1Sum
-
 ./gradlew generateOpenApiDocs --no-daemon --stacktrace
 sha1SumAfterRegenerate=$(getOpenApiSha1Sum)
 echo "sha1sum before regenerate: $sha1SumBeforeRegenerate"
-echo "detailed sha1sum before:"
-getFormattedOpenApiSha1Sum
+getFormattedOpenApiSha1Sum > formatbefore.txt
 
 echo "sha1sum after regenerate: $sha1SumAfterRegenerate"
-echo "detailed sha1sum after:"
-getFormattedOpenApiSha1Sum
+getFormattedOpenApiSha1Sum > formatafter.txt
 
 if [[ "$sha1SumBeforeRegenerate" == "$sha1SumAfterRegenerate" ]]; then
   echo "OpenApi Files OK!"

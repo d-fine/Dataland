@@ -230,6 +230,14 @@ jobs:
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
+      - name: Upload OpenApi diffs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenApiDiffs
+          path: |
+            ./**/formatbefore.txt
+            ./**/formatafter.txt
       - name: verify no it.only exists
         if: always()
         run: |
