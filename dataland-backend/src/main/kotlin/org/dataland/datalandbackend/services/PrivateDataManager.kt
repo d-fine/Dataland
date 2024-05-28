@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.time.Instant
-import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -49,11 +49,10 @@ class PrivateDataManager(
     @Autowired private val dataManagerUtils: DataManagerUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val jsonDataInMemoryStorage = mutableMapOf<String, String>()
-    private val metaInfoEntityInMemoryStorage = mutableMapOf<String, DataMetaInformationEntity>()
-    private val documentHashesInMemoryStorage = mutableMapOf<String, MutableMap<String, String>>()
-    private val documentInMemoryStorage = mutableMapOf<String, ByteArray>()
-    // TODO lets use the same maps as Marc did in his fix for the flaky e2e tests
+    private val jsonDataInMemoryStorage = ConcurrentHashMap<String, String>()
+    private val metaInfoEntityInMemoryStorage = ConcurrentHashMap<String, DataMetaInformationEntity>()
+    private val documentHashesInMemoryStorage = ConcurrentHashMap<String, MutableMap<String, String>>()
+    private val documentInMemoryStorage = ConcurrentHashMap<String, ByteArray>()
 
     /**
      * Processes a private sme data storage request.
