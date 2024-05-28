@@ -9,8 +9,8 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
-Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description, consult the 
-internal Dataland Wiki.
+Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
+consult the internal Dataland Wiki.
 
 ### Dataland EuroDaT client
 
@@ -26,10 +26,10 @@ internal Dataland Wiki.
 ## Server updates
 
 Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
-before applying any changes.
+before applying any changes and align with the team when to apply them.
 
-Start the update with one of the dev servers and deploy to it afterwards. If everything was fine, proceed with other 
-servers.
+Start the update with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
+fine, proceed with other servers.
 
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 
@@ -45,33 +45,6 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the internal
 wiki.
 
-## Check keycloak automatic logout if inactive
-
-- [ ] Check that you are automatically logged out if you are idle for too long and also get notified about this by a
-  pop-up. Timeouts are defined as `TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS`
-  in `./dataland-frontend/src/utils/Constants.ts` and `ssoSessionIdleTimeout`
-  in `./dataland-keycloak/realms/datalandsecurity-realm.json`.
-
-## Check e-mails sent by keycloak
-
-- [ ] Check that the verification e-mail is sent and displayed correctly
-- [ ] Check that the reset password e-mail is sent and displayed correctly
-- [ ] Check that the password can be reset
-- [ ] Check that account linking via e-mail verification works correctly
-- [ ] Check that account linking via username & password verification works correctly
-
-## Check e-mails sent by backend
-
-- [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to dataland@d-fine.com
-  contains the right attachments and is displayed correctly.
-- [ ] Check that once a user has been made data owner that user receives an e-mail informing them about the data
-ownership approval as well as the number of open requests related to the company they own now.
-
-## Check e-mails sent by community manager
-
-- [ ] Check that the data request answered e-mail is sent and displayed correctly
-- [ ] Check that the data request closed e-mail is sent and displayed correctly
-
 ## Check RabbitMQ dead letter queue and disk space
 
 - [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
@@ -83,29 +56,23 @@ ownership approval as well as the number of open requests related to the company
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
-## Check that links to external webpages are working
-- [ ] Go to the frameworks/upload page and check that the link to WWF Pathway to Paris is still working as intended.
-
 ## Check that the main branch has no sonar issues
 - [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
-  findings fix them.
+  findings, either fix them directly or bring them up for discussion with the team.
 
 ## Conclusion
 
-- [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to a dev server using this branch
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
     - [ ] It's verified that everything seems to be working fine by manually using the website
-    - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] This template and the internal wiki page have been updated to reflect the latest state of tasks required and known issues with upgrades
 - [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in
   future commits
 
 # Review (to be completed by the reviewer)
 
-- [ ] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
-- [ ] A peer-review has been executed
-  - [ ] The code has been manually inspected by someone who did not implement the feature
+- [ ] The GitHub Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by GitHub.
+- [ ] The changes have been peer-reviewed by someone who did not implement them
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
@@ -114,15 +81,8 @@ ownership approval as well as the number of open requests related to the company
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] It's verified that everything seems to be working fine by manually using the website
-  - [ ] All implemented Social Logins have been tested manually in the UI
-  - [ ] The "mailto:*" buttons ("I am interested" and "Get in touch") on the landing page work.
-  - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
-    authorization has worked by assuring that you get a 200 response
-- [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
-- [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
-  authorization has worked by assuring that you get a 200 response
 - [ ] It is assured that deploying this feature branch over the current main does not break anything
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
   - [ ] Deploy the feature branch to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
