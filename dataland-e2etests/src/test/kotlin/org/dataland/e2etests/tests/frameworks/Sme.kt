@@ -179,31 +179,19 @@ class Sme {
         )
     }
 
-    // TODO Emanuel: Vllt kann man die folgende Funktion bisschen simpler schreiben
     private fun setPowerConsumptionFileReference(dataset: SmeData, fileReference: String?): SmeData {
-        if (fileReference == null) {
-            return dataset.copy(
-                power = dataset.power?.copy(
-                    consumption = dataset.power?.consumption?.copy(
-                        powerConsumptionInMwh = dataset.power?.consumption?.powerConsumptionInMwh?.copy(
-                            dataSource = null,
-                        ),
-                    ),
-                ),
-            )
-        } else {
-            return dataset.copy(
-                power = dataset.power?.copy(
-                    consumption = dataset.power?.consumption?.copy(
-                        powerConsumptionInMwh = dataset.power?.consumption?.powerConsumptionInMwh?.copy(
-                            dataSource = dataset.power?.consumption?.powerConsumptionInMwh?.dataSource?.copy(
-                                fileReference = fileReference,
-                            ),
-                        ),
-                    ),
-                ),
-            )
+        val newDataSource = fileReference?.let {
+            dataset.power?.consumption?.powerConsumptionInMwh?.dataSource?.copy(fileReference = it)
         }
+        return dataset.copy(
+            power = dataset.power?.copy(
+                consumption = dataset.power?.consumption?.copy(
+                    powerConsumptionInMwh = dataset.power?.consumption?.powerConsumptionInMwh?.copy(
+                        dataSource = newDataSource,
+                    ),
+                ),
+            ),
+        )
     }
 
     private fun setNumberOfEmployees(dataset: SmeData, numberOfEmployees: Int): SmeData {
