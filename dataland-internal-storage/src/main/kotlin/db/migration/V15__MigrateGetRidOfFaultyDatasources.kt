@@ -76,7 +76,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
             if (dataSourceOrCompanyInfo !== null) {
                 val fileReference = dataSourceOrCompanyInfo.get("fileReference") as String
                 if ((fileReference !in fileReferencesExisting) || (!isSha256(fileReference))) {
-                    logger.info("Replace object with null. The broken file refrence was " + fileReference)
+                    logger.info("Replace reference to document with null. The broken file refrence was " + fileReference)
                     obj.put(targetObjectName, null as Any?)
                 }
             } else {
