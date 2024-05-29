@@ -11,6 +11,7 @@
     <DocumentLink
       v-else-if="dataPointProperties.dataSource"
       :dataId="metaInfo.dataId"
+      :dataType="metaInfo.dataType"
       :label="dataPointProperties.value"
       :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
       :file-reference="dataPointProperties.dataSource.fileReference"
@@ -60,6 +61,7 @@ export default defineComponent({
         data: {
           dataPointDisplay: this.dataPointProperties,
           dataId: this.metaInfo.dataId,
+          dataType: this.metaInfo.dataType,
         },
       };
     },

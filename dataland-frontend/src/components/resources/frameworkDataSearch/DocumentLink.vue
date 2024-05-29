@@ -26,8 +26,10 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
-import { getAllPublicFrameworkIdentifiers } from "@/frameworks/BasePublicFrameworkRegistry";
+import {
+  getAllPrivateFrameworkIdentifiers,
+  getBasePrivateFrameworkDefinition,
+} from "@/frameworks/BasePrivateFrameworkRegistry";
 import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
 
 export default defineComponent({
@@ -63,29 +65,8 @@ export default defineComponent({
       this.percentCompleted = 0;
       try {
         const docUrl = document.createElement("a");
-        const publicFramework = getAllPublicFrameworkIdentifiers();
-        if (publicFramework.includes(this.dataType)) {
-          const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-            .documentController;
-          await documentControllerApi
-            .getDocument(fileReference, {
-              responseType: "arraybuffer",
-              onDownloadProgress: (progressEvent) => {
-                if (progressEvent.total != null)
-                  this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              },
-            } as AxiosRequestConfig)
-            .then((getDocumentsFromStorageResponse) => {
-              this.percentCompleted = 100;
-              const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-              const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
-              const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
-              docUrl.href = URL.createObjectURL(newBlob);
-              docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
-              document.body.appendChild(docUrl);
-              docUrl.click();
-            });
-        } else {
+        const privateFramework = getAllPrivateFrameworkIdentifiers();
+        if (privateFramework.includes(this.dataType)) {
           //TODO Check if the percentage is correctly displayed in the frontend for both kind of frameworks
           const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
           let SmeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
@@ -113,6 +94,27 @@ export default defineComponent({
               docUrl.click();
             });
           }
+        } else {
+          const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+            .documentController;
+          await documentControllerApi
+            .getDocument(fileReference, {
+              responseType: "arraybuffer",
+              onDownloadProgress: (progressEvent) => {
+                if (progressEvent.total != null)
+                  this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              },
+            } as AxiosRequestConfig)
+            .then((getDocumentsFromStorageResponse) => {
+              this.percentCompleted = 100;
+              const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+              const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+              const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
+              docUrl.href = URL.createObjectURL(newBlob);
+              docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
+              document.body.appendChild(docUrl);
+              docUrl.click();
+            });
         }
       } catch (error) {
         console.error(error);
