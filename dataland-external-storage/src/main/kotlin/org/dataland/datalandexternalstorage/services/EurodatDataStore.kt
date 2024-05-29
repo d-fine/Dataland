@@ -60,16 +60,18 @@ class EurodatDataStore(
         retryWrapperMethod("write data into EuroDaT database") {
             storeJsonInEurodat(correlationId, dataId, jsonToStore, eurodatCredentials)
         }
-        logger.info("Data stored in eurodat storage.")
+        logger.info("Data with $dataId stored in eurodat storage. CorrelationId: $correlationId")
         val documentHashesOfDocumentsToStore = JSONObject(payload).getJSONObject("documentHashes")
         documentHashesOfDocumentsToStore.keys().forEach { hashAsArrayElement ->
             val eurodatId = documentHashesOfDocumentsToStore[hashAsArrayElement] as String
             retryWrapperMethod("write blob into EuroDaT database") {
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, eurodatId, eurodatCredentials)
             }
+            logger.info(
+                "Documents with hash: $hashAsArrayElement, eurodatId: $eurodatId for dataId: $dataId was " +
+                    "stored in eurodat storage. CorrelationId: $correlationId",
+            )
         }
-        // TODO logging is misleading, should only be shown if there was a document stored
-        logger.info("Documents stored in eurodat storage.")
     }
 
     /**

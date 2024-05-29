@@ -120,10 +120,7 @@ class Sme {
     @Test
     fun `post two SME datasets for the same reporting period and company and assert correct handling`() {
         var smeData = setPowerConsumptionFileReference(testSmeData, null)
-        val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(
-            companyId, "2022",
-            setNumberOfEmployees(smeData, 1),
-        )
+        val companyAssociatedSmeDataAlpha = generateSmeDataWithSetNumberOfEmployees(companyId, "2022", smeData, 1)
         val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -133,10 +130,8 @@ class Sme {
         assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
 
         smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
-        val companyAssociatedSmeDataBeta = CompanyAssociatedDataSmeData(
-            companyId, "2022",
-            setNumberOfEmployees(smeData, 2),
-        )
+        val companyAssociatedSmeDataBeta = generateSmeDataWithSetNumberOfEmployees(companyId, "2022", smeData, 2)
+
         val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
         val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdBeta,
@@ -231,5 +226,17 @@ class Sme {
             }
         }
         return null
+    }
+    private fun generateSmeDataWithSetNumberOfEmployees(
+        companyId: String,
+        reportingPeriod: String,
+        smeData: SmeData,
+        numberOfEmployees: Int,
+    ): CompanyAssociatedDataSmeData {
+        val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(
+            companyId, reportingPeriod,
+            setNumberOfEmployees(smeData, numberOfEmployees),
+        )
+        return companyAssociatedSmeDataAlpha
     }
 }
