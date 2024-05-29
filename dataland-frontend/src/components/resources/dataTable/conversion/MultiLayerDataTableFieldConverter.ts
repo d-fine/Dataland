@@ -47,6 +47,7 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   draufzuklicken und zu versuchen, das PDF herunterzuladen. Das hatte nicht funktioniert am Montag!
 
   Daher => Check am Ende, ob das Feld funktioniert, oder ob das ein bug ist!
+  Stephan: Stand 29.05.2024 funktioniert das Feld. Heute gestestet
   */
 };
 
