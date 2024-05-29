@@ -140,6 +140,7 @@ commons-text = "org.apache.commons:commons-text:_"
 
 pdfbox = "org.apache.pdfbox:pdfbox:_"
 
+
 mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:_"
 
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
