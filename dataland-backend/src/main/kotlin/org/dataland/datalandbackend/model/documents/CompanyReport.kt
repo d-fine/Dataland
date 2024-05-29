@@ -13,8 +13,8 @@ import java.time.LocalDate
  */
 data class CompanyReport(
     @field:JsonProperty(required = true)
-    @field:NotBlank
-    @field:DocumentExists
+    // todo check if annotation leads to problems with OpenApi @field:NotBlank
+    // todo check if annotation leads to problems with OpenApi @field:DocumentExists
     override val fileReference: String,
 
     override val fileName: String? = null,
