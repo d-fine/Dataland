@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -45,6 +46,7 @@ data class EuTaxonomyDataForFinancials(
 
     val numberOfEmployees: BigDecimal? = null,
 
+    @field:Valid
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     val referencedReports: Map<String, CompanyReport>? = null,
 )

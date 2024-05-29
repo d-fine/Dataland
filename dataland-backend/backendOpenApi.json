@@ -3961,18 +3961,6 @@
           },
           "referencedReports": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "example": {
-                "string": {
-                  "fileReference": "string",
-                  "fileName": "string",
-                  "isGroupLevel": "Yes",
-                  "reportDate": "2023-10-12",
-                  "currency": "string"
-                }
-              }
-            },
             "nullable": true,
             "example": {
               "string": {
@@ -5071,18 +5059,6 @@
           },
           "referencedReports": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "example": {
-                "string": {
-                  "fileReference": "string",
-                  "fileName": "string",
-                  "isGroupLevel": "Yes",
-                  "reportDate": "2023-10-12",
-                  "currency": "string"
-                }
-              }
-            },
             "nullable": true,
             "example": {
               "string": {
@@ -11589,18 +11565,6 @@
           },
           "referencedReports": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "example": {
-                "string": {
-                  "fileReference": "string",
-                  "fileName": "string",
-                  "isGroupLevel": "Yes",
-                  "reportDate": "2023-10-12",
-                  "currency": "string"
-                }
-              }
-            },
             "nullable": true,
             "example": {
               "string": {
@@ -14344,15 +14308,15 @@
           "companyId": {
             "type": "string"
           },
+          "countryCode": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           },
           "lei": {
             "type": "string",
