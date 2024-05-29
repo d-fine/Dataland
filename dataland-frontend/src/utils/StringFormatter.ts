@@ -89,7 +89,7 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
   }
 
   const frameworkLabel =
-    getBasePublicFrameworkDefinition(rawInput)?.label || getBasePrivateFrameworkDefinition(rawInput)?.label;
+    getBasePublicFrameworkDefinition(rawInput)?.label ?? getBasePrivateFrameworkDefinition(rawInput)?.label;
   if (frameworkLabel) return frameworkLabel;
   const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
   return resultOfCustomMappingHumanisation === ""
