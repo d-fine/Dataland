@@ -18,7 +18,13 @@
         "NaceCodeA": {
           "highImpactClimateSectorEnergyConsumptionInGWh": {
             "value": 100,
-            "quality": "Audited"
+            "quality": "Audited",
+            "dataSource": {
+              "tagName": "testTagName",
+              "page": 200,
+              "fileName": "dummyFileName",
+              "fileReference": "dummyFileReference2"
+            }
           }
         }
       }
