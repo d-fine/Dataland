@@ -28,14 +28,16 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
 
     )
 
-    // todo the actual file references needs to be fed to the list. now there are only dummies.
-    var fileReferencesExisting: ArrayList<String> = ArrayList()
-
     private val logger = LoggerFactory.getLogger("Migration V15")
 
+    // Array containing all valid file references
+    var fileReferencesExisting: ArrayList<String> = ArrayList()
+
     /**
-     * Get all valid fileReferences from database
-     * blob_id in blob_items table is the actual hash value for the document
+     * Get all valid fileReferences from database and add them to fileReferencesExisting
+     *
+     * blob_id in the blob_items table is the same as the fileReference, the actual hash value of the document.
+     * Entries in blob_items are assumed to be consistent with the document_meta_info table of the DocumentManagerDB.
      */
     fun getExistingFileReferences(context: Context?) {
         val statement = context!!.connection.createStatement()
@@ -70,47 +72,60 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         return (fileReference !in fileReferencesExisting) || (!isSha256(fileReference))
     }
 
+    /**
+     * Remove company reports with invalid fileReference from map of company reports.
+     * If no company reports are left, replace referencedReports with null.
+     */
     private fun replaceFaultyFileReferenceReferencedReports(
-        dataSourceOrCompanyInfoList: JSONObject,
+        companyReportMap: JSONObject,
         obj: JSONObject,
         targetObjectName: String,
     ) {
-        val keys: Iterator<String> = dataSourceOrCompanyInfoList.keys()
         val keysToBeRemoved: ArrayList<String> = ArrayList()
+
+        // Find the keys of all reports with invalid fileReference
+        val keys: Iterator<String> = companyReportMap.keys()
         while (keys.hasNext()) {
-            val key = keys.next()
-            val companyInfo = dataSourceOrCompanyInfoList.getOrJavaNull(key) as JSONObject?
-            if (companyInfo !== null) {
-                val fileReference = companyInfo.get("fileReference") as String
+            val companyReportKey = keys.next()
+            val companyReport = companyReportMap.getOrJavaNull(companyReportKey) as JSONObject?
+            if (companyReport !== null) {
+                val fileReference = companyReport.get("fileReference") as String
                 if (isFaultyFileReference(fileReference)) {
                     logger.info(
-                        "Remove reference to document from CompanyInformation list." +
-                            " The broken file refrence was " + fileReference,
+                        "Remove reference to document from CompanyReport Map." +
+                            " The broken file reference was " + fileReference,
                     )
-                    keysToBeRemoved.add(key)
+                    keysToBeRemoved.add(companyReportKey)
                 }
             }
         }
         for (key in keysToBeRemoved) {
-            dataSourceOrCompanyInfoList.remove(key)
+            companyReportMap.remove(key)
         }
-        if (dataSourceOrCompanyInfoList.isEmpty) {
+        // If no report left, replace empty map with null
+        if (companyReportMap.isEmpty) {
             obj.put(targetObjectName, null as Any?)
         }
     }
 
+    /**
+     * Replace dataSource with null if fileReference is invalid
+     */
     private fun replaceFaultyFileReferenceDataSource(
-        dataSourceOrCompanyInfoList: JSONObject,
+        dataSource: JSONObject,
         obj: JSONObject,
         targetObjectName: String,
     ) {
-        val fileReference = dataSourceOrCompanyInfoList.get("fileReference") as String
+        val fileReference = dataSource.get("fileReference") as String
         if (isFaultyFileReference(fileReference)) {
-            logger.info("Replace reference to document with null. The broken file refrence was " + fileReference)
+            logger.info("Replace reference to document with null. The broken file reference was " + fileReference)
             obj.put(targetObjectName, null as Any?)
         }
     }
 
+    /**
+     * Recursively iterate over the elements of a dataset and find dataSources or referencedReports
+     */
     private fun checkForFaultyFileReferenceAndIterateFurther(
         dataset: JSONObject,
         objectName: String,
@@ -138,7 +153,14 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     }
 
     /**
-     * Migrate the data points with blank file references to containing null-valued a dataSource instead
+     * Migrate the data points
+     *
+     * There are three objects storing fileReferences: Base and ExtendedDocumentReference and CompanyReport.
+     * ExtendedDocumentReference and BaseDocumentReference are consistently referred to as "dataSource".
+     * CompanyReport only occurs list-like as Map<String, CompanyReport>? which is consistently referred to as
+     * "referencedReports".
+     * Both cases are handled separately.
+     *
      */
     fun migrateFaultyFileReferences(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
