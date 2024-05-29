@@ -74,7 +74,6 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
-            //TODO remove wait, without this wait the test currently fails here
             cy.wait(100);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
@@ -93,8 +92,6 @@ describeIf(
                   frontendSubmittedSmeDataset as unknown as Record<string, object>,
                 );
               });
-
-            //TODO add visit to the view page to make sure that it is working
           });
       },
     );

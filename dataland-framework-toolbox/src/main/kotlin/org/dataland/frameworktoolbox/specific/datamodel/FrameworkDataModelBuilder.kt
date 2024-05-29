@@ -52,8 +52,6 @@ class FrameworkDataModelBuilder(
             "${rootDataModelClass.name}Controller.kt"
         logger.trace("Building framework API controller for '{}' into '{}'", framework.identifier, targetPath)
         val nameOfDataApiController = if (privateFrameworkBoolean) {
-/* TODO Das freemarker template PrivateFrameworkDataController hat eine ziemlich unschöne Formatierung.
-Wir sollten die FOrmatierung ähnlich ansprechend machen wie in PublicFrameworkDataController   */
             "/specific/datamodel/PrivateFrameworkDataController.kt.ftl"
         } else {
             "/specific/datamodel/PublicFrameworkDataController.kt.ftl"

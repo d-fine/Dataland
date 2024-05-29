@@ -41,7 +41,8 @@ class SmeDataController(
     override fun postSmeJsonAndDocuments(
         companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
         documents: Array<MultipartFile>?,
-    ): ResponseEntity<DataMetaInformation> {
+    ):
+        ResponseEntity<DataMetaInformation> {
         val dataMetaInformation = privateDataManager.processPrivateSmeDataStorageRequest(
             companyAssociatedSmeData,
             documents,
@@ -50,7 +51,8 @@ class SmeDataController(
     }
 
     @Operation(operationId = "getCompanyAssociatedSmeData")
-    override fun getCompanyAssociatedSmeData(dataId: String): ResponseEntity<CompanyAssociatedData<SmeData>> {
+    override fun getCompanyAssociatedSmeData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<SmeData>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
@@ -70,7 +72,11 @@ class SmeDataController(
     }
 
     @Operation(operationId = "getPrivateDocument")
-    override fun getPrivateDocument(dataId: String, hash: String): ResponseEntity<InputStreamResource> {
+    override fun getPrivateDocument(
+        dataId: String,
+        hash: String,
+    ):
+        ResponseEntity<InputStreamResource> {
         val correlationId = generateCorrelationIdAndLogIt(companyId = null, dataId = dataId)
         val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
         return ResponseEntity.ok()
@@ -87,7 +93,8 @@ class SmeDataController(
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
-    ): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
+    ):
+        ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         val dataType = DataType.of(SmeData::class.java)
         logger.info(
