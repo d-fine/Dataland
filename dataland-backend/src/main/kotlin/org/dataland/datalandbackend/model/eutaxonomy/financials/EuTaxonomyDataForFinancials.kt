@@ -42,6 +42,7 @@ data class EuTaxonomyDataForFinancials(
 
     val euTaxonomyActivityLevelReporting: YesNo? = null,
 
+    @field:Valid()
     val assurance: AssuranceDataPoint? = null,
 
     val numberOfEmployees: BigDecimal? = null,
