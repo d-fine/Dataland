@@ -18,10 +18,7 @@ data class SfdrGeneralGeneral(
 
     val fiscalYearEnd: LocalDate,
 
-    @field:Schema(
-        implementation = Map::class,
-        example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE,
-    )
+    @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
 

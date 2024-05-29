@@ -1,10 +1,8 @@
 package org.dataland.datalandbackend.model.documents
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
-import org.dataland.datalandbackend.validator.DocumentExists
 import java.time.LocalDate
 
 /**

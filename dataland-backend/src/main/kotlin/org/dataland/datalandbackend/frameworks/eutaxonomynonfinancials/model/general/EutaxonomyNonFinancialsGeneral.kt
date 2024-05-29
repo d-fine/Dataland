@@ -25,14 +25,12 @@ data class EutaxonomyNonFinancialsGeneral(
 
     val euTaxonomyActivityLevelReporting: YesNo? = null,
 
+    @field:Valid()
     val assurance: AssuranceDataPoint? = null,
 
     val numberOfEmployees: BigDecimal? = null,
 
-    @field:Schema(
-        implementation = Map::class,
-        example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE,
-    )
+    @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
 
