@@ -3,18 +3,18 @@ package org.dataland.datalandbackend.frameworks.${frameworkPackageName}
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.api.${frameworkDataType.shortenedQualifier}Api
+import org.dataland.datalandbackend.api.SmeDataApi
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.springframework.beans.factory.annotation.Autowired
-import org.dataland.datalandbackend.utils.IdUtils.generateUUID
+import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.PrivateDataManager
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationIdAndLogIt
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -57,7 +57,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                     throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
                     }
                     val companyId = metaInfo.company.companyId
-                    val correlationId = generateUUID()
+                    val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = dataId)
                     logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
                     val companyAssociatedData = CompanyAssociatedData(
                     companyId = companyId,
@@ -72,7 +72,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
 
                     @Operation(operationId = "getPrivateDocument")
                     override fun getPrivateDocument(dataId: String, hash: String): ResponseEntity<InputStreamResource> {
-                        val correlationId = generateUUID()
+                        val correlationId = generateCorrelationIdAndLogIt(companyId = null, dataId = dataId)
                         val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
                         return ResponseEntity.ok()
                         .contentType(document.type.mediaType)
@@ -100,7 +100,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                             val authentication = DatalandAuthentication.fromContextOrNull()
                             val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>()
                                 metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-                                val correlationId = generateCorrelationId(companyId)
+                                val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = null)
                                 val data = privateDataManager.getPrivate${frameworkIdentifier?cap_first}Data(it.dataId, correlationId)
                                 frameworkDataAndMetaInfo.add(
                                 DataAndMetaInformation(
@@ -109,11 +109,5 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                                 )
                                 }
                                 return ResponseEntity.ok(frameworkDataAndMetaInfo)
-                                }
-
-                                private fun generateCorrelationId(companyId: String): String {
-                                val correlationId = generateUUID()
-                                logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
-                                return correlationId
                                 }
 }
