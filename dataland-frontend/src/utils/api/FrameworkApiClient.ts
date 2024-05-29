@@ -24,8 +24,15 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
   configuration: Configuration | undefined,
   axiosInstance?: AxiosInstance,
 ): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
-  // TODO kann sein dass man jetzt lksg, sfdr und nonfinancials (also alle nicht-toolbox-frameworks) rausnehmen kann
-  // TODO by Stephan: Ich glaube nicht, da diese Funktionalität in uploadFrameworkData verwendet wird, das müsste vorher geändert werden
+  /* TODO kann sein dass man jetzt lksg, sfdr und nonfinancials (also alle nicht-toolbox-frameworks) rausnehmen kann
+
+   Antwort by Stephan: Ich glaube nicht, da diese Funktionalität in uploadFrameworkData verwendet wird,
+   das müsste vorher geändert werden
+
+   Re-Antwort by Emanuel: Aber alle toolbox-supported Frameworks sollten in der Lage sein, ohne diese Funktion hier
+   Sachen hochzuladen. Ähnlich wie auf den upload pages dieser Frameworks, wo sie auch auf diese Funktion hier
+   verzichten können.
+  */
   switch (framework) {
     case DataTypeEnum.Lksg:
       return translateFrameworkApi<typeof DataTypeEnum.Lksg>(

@@ -19,7 +19,7 @@
       :reports="sortedReports"
     />
     <MultiLayerDataTable
-      :mldtDatasets="mldtDatasets"
+      :dataAndMetaInfo="sortedDataAndMetaInfo"
       :inReviewMode="inReviewMode"
       :config="
         editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
@@ -68,28 +68,25 @@ const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 
-const mldtDatasets = computed(() => {
-  const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
-  return sortedDataAndMetaInformation.map((singleDataSet) => ({
-    metaInfo: singleDataSet.metaInfo,
-    dataset: singleDataSet.data,
-  }));
+const sortedDataAndMetaInfo = computed(() => {
+  return sortDatasetsByReportingPeriod(rawDataAndMetaInfoForDisplay.value);
 });
 
 const sortedReportingPeriods = computed(() => {
-  return mldtDatasets.value.map((mldtDataset) => mldtDataset.metaInfo.reportingPeriod);
+  return sortedDataAndMetaInfo.value.map((singleDataAndMetaInfo) => singleDataAndMetaInfo.metaInfo.reportingPeriod);
 });
 
 const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
-      return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EutaxonomyNonFinancialsData).general?.referencedReports,
+      return sortedDataAndMetaInfo.value.map(
+        (singleDataAndMetaInfo) =>
+          (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports,
       );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
-      return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForFinancials).referencedReports,
+      return sortedDataAndMetaInfo.value.map(
+        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports,
       );
     }
     default: {
@@ -101,7 +98,7 @@ const sortedReports = computed(() => {
 
 const updateCounter = ref(0);
 const status = ref<ViewPanelStates>("LoadingDatasets");
-const dataAndMetaInformationForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
+const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
 
 watch(
   [(): string => props.companyId, (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay],
@@ -116,9 +113,9 @@ watch(
 async function reloadDisplayData(currentCounter: number): Promise<void> {
   status.value = "LoadingDatasets";
   try {
-    const datasetsForDisplay = await loadDataForDisplay(props.companyId, props.singleDataMetaInfoToDisplay);
+    const fetchedDataAndMetaInfo = await loadDataForDisplay(props.companyId, props.singleDataMetaInfoToDisplay);
     if (updateCounter.value == currentCounter) {
-      dataAndMetaInformationForDisplay.value = datasetsForDisplay;
+      rawDataAndMetaInfoForDisplay.value = fetchedDataAndMetaInfo;
       status.value = "DisplayingDatasets";
     }
   } catch (err) {

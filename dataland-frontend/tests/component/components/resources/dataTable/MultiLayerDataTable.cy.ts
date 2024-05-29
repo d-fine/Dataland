@@ -1,4 +1,4 @@
-import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import {
@@ -10,21 +10,22 @@ import {
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 import { DataTypeEnum, QaStatus } from "@clients/backend";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 describe("Tests for the MultiLayerDataTable component", () => {
   /**
    * Mounts the MultiLayerDataTable with the given dataset
-   * @param mldtDatasets the datasets to mount
+   * @param dataAndMetaInfo the datasets to mount together with their meta info
    * @returns the component mounting chainable
    */
   function mountMultiLayerDataTableWithDatasets(
-    mldtDatasets: Array<MLDTDataset<DummyFrameworkForTest>>,
+    dataAndMetaInfo: Array<DataAndMetaInformation<DummyFrameworkForTest>>,
   ): Cypress.Chainable {
     return cy.mountWithPlugins(MultiLayerDataTable, {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         config: dummyFrameworkMLDTConfig,
-        mldtDatasets: mldtDatasets,
+        dataAndMetaInfo: dataAndMetaInfo,
       },
     });
   }
@@ -135,7 +136,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     },
   ];
 
-  const dummyFrameworkTestMldtDataset1: MLDTDataset<DummyFrameworkForTest> = {
+  const dummyFrameworkTestDataAndMetaInfo1: DataAndMetaInformation<DummyFrameworkForTest> = {
     metaInfo: {
       dataId: "does-not-matter-abc1",
       companyId: "not-relevant-for-test1",
@@ -145,13 +146,13 @@ describe("Tests for the MultiLayerDataTable component", () => {
       currentlyActive: true,
       qaStatus: QaStatus.Accepted,
     },
-    dataset: {
+    data: {
       stringOnLevel1: "Dataset 1 - String 1",
       stringOnLevel2: "Dataset 1 - String 2",
       stringOnLevel3: "Dataset 1 - String 3",
     },
   };
-  const dummyFrameworkTestMldtDataset2: MLDTDataset<DummyFrameworkForTest> = {
+  const dummyFrameworkTestDataAndMetaInfo2: DataAndMetaInformation<DummyFrameworkForTest> = {
     metaInfo: {
       dataId: "does-not-matter-abc2",
       companyId: "not-relevant-for-test2",
@@ -161,13 +162,13 @@ describe("Tests for the MultiLayerDataTable component", () => {
       currentlyActive: true,
       qaStatus: QaStatus.Accepted,
     },
-    dataset: {
+    data: {
       stringOnLevel1: "Dataset 2 - String 1",
       stringOnLevel2: "Dataset 2 - String 2",
       stringOnLevel3: "Dataset 2 - String 3",
     },
   };
-  const dummyFrameworkTestMldtDataset3: MLDTDataset<DummyFrameworkForTest> = {
+  const dummyFrameworkTestDataAndMetaInfo3: DataAndMetaInformation<DummyFrameworkForTest> = {
     metaInfo: {
       dataId: "does-not-matter-abc3",
       companyId: "not-relevant-for-test3",
@@ -177,7 +178,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       currentlyActive: true,
       qaStatus: QaStatus.Accepted,
     },
-    dataset: {
+    data: {
       stringOnLevel1: undefined,
       stringOnLevel2: "Dataset 2 - String 2",
       stringOnLevel3: "Dataset 2 - String 3",
@@ -186,13 +187,13 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
   describe("Tests that nesting works as expected", () => {
     it("Tests that sections marked with 'expandOnPageLoad' are auto-expanded", () => {
-      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellValueContainer("Level 2 - String").should("be.visible");
     });
 
     it("Tests that sections can be expanded and contracted", () => {
-      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
       getSectionHead("Section 1").should("have.attr", "data-section-expanded", "true");
       getCellValueContainer("Level 2 - String").should("be.visible");
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").should("be.visible");
@@ -205,7 +206,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     });
 
     it("Tests that subsections can be expanded and contracted", () => {
-      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
       getCellValueContainer("Level 3 - String", 0, false).should("not.be.visible");
 
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
@@ -216,7 +217,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
     });
 
     it("Tests that the state of subsection expansion is remembered when sections get expanded", () => {
-      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
       getSectionHead("Subsection 1").should("have.attr", "data-section-expanded", "false").click();
       getCellValueContainer("Level 3 - String").should("be.visible");
 
@@ -232,38 +233,38 @@ describe("Tests for the MultiLayerDataTable component", () => {
 
   describe("Tests that the shouldDisplay directive works", () => {
     it("Tests that fields and sections get hidden if shouldDisplay is false", () => {
-      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset3]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo3]);
       getCellValueContainer("Level 1 - String", 0, false).should("not.exist");
       getSectionHead("Section 2").should("not.exist");
     });
 
     it("Tests that fields and sections should get displayed if at least one of the datasets has shouldDisplay = true", () => {
-      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1, dummyFrameworkTestMldtDataset3]);
+      mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1, dummyFrameworkTestDataAndMetaInfo3]);
       getCellValueContainer("Level 1 - String").should("be.visible");
       getSectionHead("Section 2").should("be.visible");
     });
   });
 
   it("Tests that datasets can be displayed in parallel with correct values", () => {
-    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1, dummyFrameworkTestMldtDataset2]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1, dummyFrameworkTestDataAndMetaInfo2]);
     cy.get("th[data-dataset-index=0]").should("contain.text", "Testing 1");
     cy.get("th[data-dataset-index=1]").should("contain.text", "Testing 2");
     getCellValueContainer("Level 2 - String", 0).should("contain.text", "Dataset 1 - String 2");
     getCellValueContainer("Level 2 - String", 1).should("contain.text", "Dataset 2 - String 2");
 
-    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset2, dummyFrameworkTestMldtDataset1]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo2, dummyFrameworkTestDataAndMetaInfo1]);
     getCellValueContainer("Level 2 - String", 1).should("contain.text", "Dataset 1 - String 2");
     getCellValueContainer("Level 2 - String", 0).should("contain.text", "Dataset 2 - String 2");
   });
 
   it("Tests that header badge coloring works", () => {
-    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
     getSectionHead("Section 1").find("span.p-badge.badge-blue").should("exist");
     getSectionHead("Section 2").find("span.p-badge").should("not.exist");
   });
 
   it("Tests that explanation texts are shown iff they are defined", () => {
-    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestMldtDataset1]);
+    mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
     getCellRowHeaderContainer("Level 1 - String").find("em").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("This is a test info");
     getCellRowHeaderContainer("Level 1 - String").find("em").trigger("mouseleave");
@@ -277,7 +278,7 @@ describe("Tests for the MultiLayerDataTable component", () => {
       // @ts-ignore
       props: {
         config: editMultiLayerDataTableConfigForHighlightingHiddenFields(dummyFrameworkMLDTConfig, true, false),
-        mldtDatasets: [dummyFrameworkTestMldtDataset3],
+        dataAndMetaInfo: [dummyFrameworkTestDataAndMetaInfo3],
         inReviewMode: true,
       },
     });

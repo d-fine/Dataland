@@ -1,15 +1,9 @@
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type DataMetaInformation } from "@clients/backend";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 export type MLDTConfig<FrameworkDataType> = Array<
   MLDTCellConfig<FrameworkDataType> | MLDTSectionConfig<FrameworkDataType>
 >;
-
-// TODO EManuel: later: think about using DataAndMetaInformation<T> instead?
-export interface MLDTDataset<FrameworkDataType> {
-  metaInfo: DataMetaInformation;
-  dataset: FrameworkDataType;
-}
 
 export type BadgeColor = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
 
@@ -37,50 +31,56 @@ export interface MLDTSectionConfig<FrameworkDataType> {
 /**
  * Check if the cell or section should be displayed given the provided datasets.
  * @param cellOrSectionConfig The cellOrSectionConfig to check
- * @param mldtDatasets The datasets to use during the check
+ * @param dataAndMetaInformation The datasets to use during the check
  * @returns true if the cell or section should be displayed
  */
 export function isCellOrSectionVisible<FrameworkDataType>(
   cellOrSectionConfig: MLDTSectionConfig<FrameworkDataType> | MLDTCellConfig<FrameworkDataType>,
-  mldtDatasets: Array<MLDTDataset<FrameworkDataType>>,
+  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>,
 ): boolean {
   if (cellOrSectionConfig.type == "cell") {
-    return isCellRowVisible(cellOrSectionConfig, mldtDatasets);
+    return isCellRowVisible(cellOrSectionConfig, dataAndMetaInformation);
   } else {
-    return isCellSectionVisible(cellOrSectionConfig, mldtDatasets);
+    return isCellSectionVisible(cellOrSectionConfig, dataAndMetaInformation);
   }
 }
 
 /**
  * Check if the specified MLDT-Cell should be displayed given the provided datasets.
  * @param cellConfig The cell to check
- * @param mldtDatasets The datasets to use during the check
+ * @param dataAndMetaInformation The datasets to use during the check
  * @returns true if the cell should be displayed
  */
 function isCellRowVisible<FrameworkDataType>(
   cellConfig: MLDTCellConfig<FrameworkDataType>,
-  mldtDatasets: Array<MLDTDataset<FrameworkDataType>>,
+  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>,
 ): boolean {
-  return mldtDatasets.some((mldtDataset) => cellConfig.shouldDisplay(mldtDataset.dataset));
+  return dataAndMetaInformation.some((singleDataAndMetaInformation) =>
+    cellConfig.shouldDisplay(singleDataAndMetaInformation.data),
+  );
 }
 
 /**
  * Check if the specified MLDT-Section should be displayed given the provided datasets.
  * @param sectionConfig The section to check
- * @param mldtDatasets The datasets to use during the check
+ * @param dataAndMetaInformation The datasets to use during the check
  * @returns true iff the section should be displayed
  */
 function isCellSectionVisible<FrameworkDataType>(
   sectionConfig: MLDTSectionConfig<FrameworkDataType>,
-  mldtDatasets: Array<MLDTDataset<FrameworkDataType>>,
+  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>,
 ): boolean {
-  const shouldShowSection = mldtDatasets.some((mldtDataset) => sectionConfig.shouldDisplay(mldtDataset.dataset));
+  const shouldShowSection = dataAndMetaInformation.some((singleDataAndMetaInformation) =>
+    sectionConfig.shouldDisplay(singleDataAndMetaInformation.data),
+  );
 
   if (!shouldShowSection) {
     return false;
   }
 
-  const anyChildrenVisible = sectionConfig.children.some((child) => isCellOrSectionVisible(child, mldtDatasets));
+  const anyChildrenVisible = sectionConfig.children.some((child) =>
+    isCellOrSectionVisible(child, dataAndMetaInformation),
+  );
 
   return shouldShowSection && anyChildrenVisible;
 }
