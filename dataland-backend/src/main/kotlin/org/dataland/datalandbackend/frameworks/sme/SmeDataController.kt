@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.PrivateDataManager
-import org.dataland.datalandbackend.utils.IdUtils.generateUUID
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationIdAndLogIt
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,7 +56,7 @@ class SmeDataController(
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
-        val correlationId = generateUUID()
+        val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
@@ -71,7 +71,7 @@ class SmeDataController(
 
     @Operation(operationId = "getPrivateDocument")
     override fun getPrivateDocument(dataId: String, hash: String): ResponseEntity<InputStreamResource> {
-        val correlationId = generateUUID()
+        val correlationId = generateCorrelationIdAndLogIt(companyId = null, dataId = dataId)
         val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
@@ -84,7 +84,6 @@ class SmeDataController(
 
     @Operation(operationId = "getFrameworkDatasetsForCompany")
     override fun getFrameworkDatasetsForCompany(
-        // TODO this function is mostly duplicate code to the code in DataController.kt => think about it later
         companyId: String,
         showOnlyActive: Boolean,
         reportingPeriod: String?,
@@ -100,7 +99,7 @@ class SmeDataController(
         val authentication = DatalandAuthentication.fromContextOrNull()
         val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<SmeData>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-            val correlationId = generateCorrelationId(companyId)
+            val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = null)
             val data = privateDataManager.getPrivateSmeData(it.dataId, correlationId)
             frameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
@@ -109,12 +108,5 @@ class SmeDataController(
             )
         }
         return ResponseEntity.ok(frameworkDataAndMetaInfo)
-    }
-
-    private fun generateCorrelationId(companyId: String): String {
-        // TODO this function is mostly duplicate code, see DataController.kt => handle this problem later
-        val correlationId = generateUUID()
-        logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
-        return correlationId
     }
 }
