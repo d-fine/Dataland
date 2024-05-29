@@ -93,7 +93,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
                 if (isFaultyFileReference(fileReference)) {
                     logger.info(
                         "Remove reference to document from CompanyReport Map." +
-                            " The broken file reference was " + fileReference,
+                            " Broken file reference: " + fileReference,
                     )
                     keysToBeRemoved.add(companyReportKey)
                 }
@@ -118,7 +118,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     ) {
         val fileReference = dataSource.get("fileReference") as String
         if (isFaultyFileReference(fileReference)) {
-            logger.info("Replace reference to document with null. The broken file reference was " + fileReference)
+            logger.info("Replace reference to document with null. Broken file reference: " + fileReference)
             obj.put(targetObjectName, null as Any?)
         }
     }
