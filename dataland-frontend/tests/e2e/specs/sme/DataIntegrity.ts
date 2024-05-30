@@ -14,6 +14,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadSmeFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 let smeFixtureForTest: FixtureData<SmeData>;
 
@@ -39,6 +40,7 @@ describeIf(
       () => {
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = "Company-Created-In-Sme-Blanket-Test-" + uniqueCompanyMarker;
+        let dataMetaInformationOfReuploadedDataset: DataMetaInformation;
         getKeycloakToken(admin_name, admin_pw)
           .then((token: string) => {
             tokenForAdminUser = token;
@@ -74,11 +76,11 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
-            cy.wait(100);
+            cy.wait(1000);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
-                const dataMetaInformationOfReuploadedDataset = postResponseInterception.response
+                dataMetaInformationOfReuploadedDataset = postResponseInterception.response
                   ?.body as DataMetaInformation;
                 return new SmeDataControllerApi(
                   new Configuration({ accessToken: tokenForAdminUser }),
@@ -91,7 +93,26 @@ describeIf(
                   smeFixtureForTest.t as unknown as Record<string, object>,
                   frontendSubmittedSmeDataset as unknown as Record<string, object>,
                 );
+                checkDocumentIsDownloadable(storedTestCompany.companyId , dataMetaInformationOfReuploadedDataset.dataId);
               });
+            /**
+             * validates that the document pertaining to power consumption is displayed correctly and can be downloaded by the data owner
+             * @param companyId the company associated to the data uploaded
+             * @param dataId the latest version of sme data for the company
+             */
+            function checkDocumentIsDownloadable (companyId : string, dataId : string): void {
+              cy.wait(5000);
+              cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme +"/" + dataId);
+
+              MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "false").click();
+              MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "false").click();
+              cy.wait(3000);
+              MLDT.getCellValueContainer("Power consumption in MWh")
+                  .find("a.link")
+                  .should("include.text", "MWh")
+                  .click();
+              cy.get('[data-test="download-link"]').click();
+            }
           });
       },
     );
