@@ -110,7 +110,19 @@ describeIf(
                 .find("a.link")
                 .should("include.text", "MWh")
                 .click();
+
+              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/SustainabilityReport.pdf`;
+              cy.readFile(expectedPathToDownloadedReport).should("not.exist");
+              cy.intercept("**/documents/*").as("documentDownload");
               cy.get('[data-test="download-link"]').click();
+              cy.readFile(expectedPathToDownloadedReport, "binary", {
+                timeout: Cypress.env("medium_timeout_in_ms") as number,
+              }).then((receivedPdfBinary) => {
+                cy.task("calculateHash", receivedPdfBinary).then((receivedPdfHash) => {
+                  cy.task("calculateHash", Cypress.env("expectedPdfBinary")).should("eq", receivedPdfHash);
+                });
+                cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+              });
             }
           });
       },
