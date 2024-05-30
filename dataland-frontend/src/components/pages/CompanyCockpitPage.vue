@@ -88,7 +88,7 @@ export default defineComponent({
     };
   },
   created() {
-    void this.setUserRights();
+    this.setUserRights();
   },
   props: {
     companyId: {

@@ -202,7 +202,7 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
-      void this.loadSmeData(dataId);
+      this.loadSmeData(dataId);
     } else {
       this.waitingForData = false;
     }

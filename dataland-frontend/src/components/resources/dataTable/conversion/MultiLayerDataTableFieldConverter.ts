@@ -41,14 +41,6 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
-  /* TODO Emanuel: Am Montag hatten wir ja mal testen wollen, ob die DocumentLink Komponente noch für die public
-  frameworks funktioniert, wenn sie quasi "direkt" gemountet wird auf der view page.
-  Wir hatten dafür mal das "Tierfutter-Zertifikat" von P2P unter "Livestock Farming" rausgepickt, um einfach mal
-  draufzuklicken und zu versuchen, das PDF herunterzuladen. Das hatte nicht funktioniert am Montag!
-
-  Daher => Check am Ende, ob das Feld funktioniert, oder ob das ein bug ist!
-  Stephan: Stand 29.05.2024 funktioniert das Feld. Heute gestestet
-  */
 };
 
 /**

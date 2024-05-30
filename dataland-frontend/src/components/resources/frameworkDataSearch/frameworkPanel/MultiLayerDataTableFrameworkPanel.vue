@@ -146,6 +146,5 @@ async function loadDataForDisplay(
       return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
     }
   }
-  // TODO Emanuel: else? evtl. "error"-cornercases abfangen?  Z.B. dass es zu dem identifier keine api gibt.
 }
 </script>

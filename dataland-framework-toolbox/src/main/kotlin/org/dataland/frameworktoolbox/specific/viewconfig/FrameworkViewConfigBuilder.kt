@@ -75,7 +75,6 @@ class FrameworkViewConfigBuilder(
             "frameworkExplanation" to framework.explanation,
             "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
             "frameworkViewConfigConstName" to getNameFromLabel(framework.identifier),
-
         )
         val frameworkDefinition = if (privateFrameworkBoolean) {
             "BasePrivateFrameworkDefinition.ts.ftl"
@@ -92,12 +91,10 @@ class FrameworkViewConfigBuilder(
                 baseDirectoryPath / "FrontendFrameworkDefinition.ts",
             ),
         )
-
         for ((template, outputPath) in outputJobs) {
             generatedTsFiles.add(outputPath)
             val freemarkerTemplate = FreeMarker.configuration
                 .getTemplate(template)
-
             val writer = FileWriter(outputPath.toFile())
             freemarkerTemplate.process(freeMarkerContext, writer)
             writer.close()

@@ -108,7 +108,7 @@ export default defineComponent({
     this.isPrivateFramework = PRIVATE_FRAMEWORKS.includes(this.dataType as DataTypeEnum);
   },
   created() {
-    void this.setDataOwnerRights();
+    this.setDataOwnerRights();
   },
   computed: {
     dynamicButtonTitle(): string {

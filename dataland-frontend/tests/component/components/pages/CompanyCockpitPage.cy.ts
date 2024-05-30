@@ -139,7 +139,6 @@ describe("Component test for the company cockpit", () => {
    * @param iAmDataOwner is the current user company data owner
    */
   function validateSmeFrameworkSummaryPanel(iAmDataOwner: boolean): void {
-    //todo discuss if check for clicking aka able to see the provided data is needed
     const frameworkName = "sme";
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     if (iAmDataOwner) {
