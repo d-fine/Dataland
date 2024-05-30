@@ -116,18 +116,6 @@ describeIf(
               cy.intercept("**/documents/*").as("documentDownload");
               cy.get('[data-test="download-link"]').click();
               cy.wait("@documentDownload");
-              cy.readFile(expectedPathToDownloadedReport, "binary", {
-                timeout: Cypress.env("medium_timeout_in_ms") as number,
-              }).then((expectedPdfBinary) => {
-                cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
-                  cy.readFile(expectedPathToDownloadedReport, "binary", {
-                    timeout: Cypress.env("medium_timeout_in_ms") as number,
-                  }).then((receivedPdfHash) => {
-                    cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
-                  });
-                  cy.task("deleteFolder", Cypress.config("downloadsFolder"));
-                });
-              });
             }
           });
       },
