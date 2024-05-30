@@ -38,71 +38,78 @@ describe(
     });
 
     /**
+     * Checks that all the uploaded company ids and data ids can be retrieved
+     * @param frameworkIdentifier The framework to check
+     * @param expectedNumberOfCompanies The expected number of companies
+     */
+    function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCompanies: number) {
+      it(
+          "Checks that all the uploaded company ids and data ids can be retrieved",
+          {
+            retries: {
+              runMode: 5,
+              openMode: 5,
+            },
+          },
+          () => {
+            cy.getKeycloakToken(admin_name, admin_pw)
+                .then((token) =>
+                    wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
+                )
+                .then((response) => {
+                  assert(
+                      response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+                      response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+                      `Found ${response.numberOfCompaniesForDataType} companies having 
+          ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
+          but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
+                  );
+                });
+          },
+      );
+    }
+
+    /**
      * A meta-programming function that allows the registration of a new framework for prepopulation
      * @param frameworkIdentifier The framework to prepopulate
      * @param apiClientConstructor a function for constructing an API client fitting for the framework
      * @param nameOfFixtureJson The name of the Json file containing the fixtures
      */
     function registerFrameworkFakeFixtureUpload<FrameworkDataType>(
-        frameworkIdentifier: DataTypeEnum,
-        apiClientConstructor: PublicApiClientConstructor<FrameworkDataType>,
-        nameOfFixtureJson: string,
+      frameworkIdentifier: DataTypeEnum,
+      apiClientConstructor: PublicApiClientConstructor<FrameworkDataType>,
+      nameOfFixtureJson: string,
     ): void {
       describeIf(
-          `Upload and validate data for framework ${frameworkIdentifier}`,
-          {
-            executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-          },
-          () => {
-            let fixtureData: Array<FixtureData<FrameworkDataType>>;
+        `Upload and validate data for framework ${frameworkIdentifier}`,
+        {
+          executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        },
+        () => {
+          let fixtureData: Array<FixtureData<FrameworkDataType>> = [];
 
-            before(function () {
-              cy.fixture(nameOfFixtureJson).then(function (jsonContent) {
-                fixtureData = jsonContent as typeof fixtureData;
+          before(function () {
+            cy.fixture(nameOfFixtureJson).then(function (jsonContent) {
+              fixtureData = jsonContent as typeof fixtureData;
+            });
+          });
+
+          it(`Upload data for framework ${frameworkIdentifier}`, () => {
+            cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+              doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
+                const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
+                await uploadGenericFrameworkData(
+                  token,
+                  storedCompany.companyId,
+                  fixtureDataClosure.reportingPeriod,
+                  fixtureDataClosure.t,
+                  apiClientConstructor,
+                );
               });
             });
-
-            it(`Upload data for framework ${frameworkIdentifier}`, () => {
-              cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
-                doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
-                  const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
-                  await uploadGenericFrameworkData(
-                      token,
-                      storedCompany.companyId,
-                      fixtureDataClosure.reportingPeriod,
-                      fixtureDataClosure.t,
-                      apiClientConstructor,
-                  );
-                });
-              });
-            });
-
-            it(
-                "Checks that all the uploaded company ids and data ids can be retrieved",
-                {
-                  retries: {
-                    runMode: 5,
-                    openMode: 5,
-                  },
-                },
-                () => {
-                  const expectedNumberOfCompanies = fixtureData.length;
-                  cy.getKeycloakToken(admin_name, admin_pw)
-                      .then((token) =>
-                          wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
-                      )
-                      .then((response) => {
-                        assert(
-                            response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                            response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                            `Found ${response.numberOfCompaniesForDataType} companies having 
-            ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
-            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
-                        );
-                      });
-                },
-            );
-          },
+          });
+          checkUploadedData(frameworkIdentifier, fixtureData.length);
+        },
       );
     }
 
@@ -112,65 +119,38 @@ describe(
      * @param numberOfSmeFixturesToUpload to define how many sme fixture datasets shall be uploaded
      */
     function uploadSmeFixtures(chunkSize: number, numberOfSmeFixturesToUpload: number): void {
-        describeIf(
-          `Upload and validate data for framework ${DataTypeEnum.Sme}`,
-          {
-            executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-          },
-          () => {
-            let fixtureData: Array<FixtureData<SmeData>>;
+      describeIf(
+        `Upload and validate data for framework ${DataTypeEnum.Sme}`,
+        {
+          executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+        },
+        () => {
+          let fixtureData: Array<FixtureData<SmeData>> = [];
 
-            before(function () {
-              cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
-                fixtureData = (jsonContent as typeof fixtureData).slice(0, numberOfSmeFixturesToUpload);
+          before(function () {
+            cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
+              fixtureData = (jsonContent as typeof fixtureData).slice(0, numberOfSmeFixturesToUpload);
+            });
+          });
+
+          it(`Upload data for framework ${DataTypeEnum.Sme}`, () => {
+            cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
+              doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
+                const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
+                await uploadSmeFrameworkData(
+                  token,
+                  storedCompany.companyId,
+                  fixtureDataClosure.reportingPeriod,
+                  fixtureDataClosure.t,
+                  [], // TODO Emanuel later: add an actual file and also reference it in the fileReference fields!
+                  //TODO why ? => because we want the download link to work for all fixtures!
+                );
               });
             });
-
-            it(`Upload data for framework ${DataTypeEnum.Sme}`, () => {
-              cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
-                doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
-                  const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
-                  await uploadSmeFrameworkData(
-                    token,
-                    storedCompany.companyId,
-                    fixtureDataClosure.reportingPeriod,
-                    fixtureDataClosure.t,
-                    [], // TODO Emanuel later: add an actual file and also reference it in the fileReference fields!
-                    //TODO why ? => because we want the download link to work for all fixtures!
-                  );
-                });
-              });
-            });
-
-            it(
-              "Checks that all the uploaded company ids and data ids can be retrieved",
-              // TODO The following test is kind of duplicate code to "registerFrameworkFakeFixtureUpload"
-              // TODO => somehow it should be centralized and re-used in both places!
-              {
-                retries: {
-                  runMode: 5,
-                  openMode: 5,
-                },
-              },
-              () => {
-                const expectedNumberOfCompanies = fixtureData.length;
-                cy.getKeycloakToken(admin_name, admin_pw)
-                  .then((token) =>
-                    wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sme)),
-                  )
-                  .then((response) => {
-                    assert(
-                      response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                        response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                      `Found ${response.numberOfCompaniesForDataType} companies having 
-            ${response.numberOfDataSetsForDataType} datasets with datatype ${DataTypeEnum.Sme}, 
-            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
-                    );
-                  });
-              },
-            );
-          },
-        );
+          });
+          checkUploadedData(DataTypeEnum.Sme, fixtureData.length);
+        },
+      );
     }
 
     // Prepopulation for frameworks not implemented with the framework-toolbox
