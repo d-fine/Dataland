@@ -144,8 +144,7 @@ describe(
                   storedCompany.companyId,
                   fixtureDataClosure.reportingPeriod,
                   fixtureDataClosure.t,
-                  [], // TODO Emanuel later: add an actual file and also reference it in the fileReference fields!
-                  //TODO why ? => because we want the download link to work for all fixtures!
+                  [],
                 );
               });
             });
