@@ -80,8 +80,7 @@ describeIf(
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
-                dataMetaInformationOfReuploadedDataset = postResponseInterception.response
-                  ?.body as DataMetaInformation;
+                dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
                 return new SmeDataControllerApi(
                   new Configuration({ accessToken: tokenForAdminUser }),
                 ).getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId);
@@ -93,24 +92,24 @@ describeIf(
                   smeFixtureForTest.t as unknown as Record<string, object>,
                   frontendSubmittedSmeDataset as unknown as Record<string, object>,
                 );
-                checkDocumentIsDownloadable(storedTestCompany.companyId , dataMetaInformationOfReuploadedDataset.dataId);
+                checkDocumentIsDownloadable(storedTestCompany.companyId, dataMetaInformationOfReuploadedDataset.dataId);
               });
             /**
              * validates that the document pertaining to power consumption is displayed correctly and can be downloaded by the data owner
              * @param companyId the company associated to the data uploaded
              * @param dataId the latest version of sme data for the company
              */
-            function checkDocumentIsDownloadable (companyId : string, dataId : string): void {
+            function checkDocumentIsDownloadable(companyId: string, dataId: string): void {
               cy.wait(5000);
-              cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme +"/" + dataId);
+              cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/" + dataId);
 
               MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "false").click();
               MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "false").click();
               cy.wait(3000);
               MLDT.getCellValueContainer("Power consumption in MWh")
-                  .find("a.link")
-                  .should("include.text", "MWh")
-                  .click();
+                .find("a.link")
+                .should("include.text", "MWh")
+                .click();
               cy.get('[data-test="download-link"]').click();
             }
           });
