@@ -42,30 +42,30 @@ describe(
      * @param frameworkIdentifier The framework to check
      * @param expectedNumberOfCompanies The expected number of companies
      */
-    function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCompanies: number) {
+    function checkUploadedData(frameworkIdentifier: DataTypeEnum, expectedNumberOfCompanies: number): void {
       it(
-          "Checks that all the uploaded company ids and data ids can be retrieved",
-          {
-            retries: {
-              runMode: 5,
-              openMode: 5,
-            },
+        "Checks that all the uploaded company ids and data ids can be retrieved",
+        {
+          retries: {
+            runMode: 5,
+            openMode: 5,
           },
-          () => {
-            cy.getKeycloakToken(admin_name, admin_pw)
-                .then((token) =>
-                    wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
-                )
-                .then((response) => {
-                  assert(
-                      response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
-                      response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
-                      `Found ${response.numberOfCompaniesForDataType} companies having 
+        },
+        () => {
+          cy.getKeycloakToken(admin_name, admin_pw)
+            .then((token) =>
+              wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, frameworkIdentifier)),
+            )
+            .then((response) => {
+              assert(
+                response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+                  response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+                `Found ${response.numberOfCompaniesForDataType} companies having 
           ${response.numberOfDataSetsForDataType} datasets with datatype ${frameworkIdentifier}, 
           but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`,
-                  );
-                });
-          },
+              );
+            });
+        },
       );
     }
 
@@ -108,7 +108,9 @@ describe(
               });
             });
           });
-          checkUploadedData(frameworkIdentifier, fixtureData.length);
+          it("Checks that all the uploaded company ids and data ids can be retrieved", function () {
+            checkUploadedData(frameworkIdentifier, fixtureData.length);
+          });
         },
       );
     }
@@ -148,7 +150,9 @@ describe(
               });
             });
           });
-          checkUploadedData(DataTypeEnum.Sme, fixtureData.length);
+          it("Checks that all the uploaded company ids and data ids can be retrieved", function () {
+            checkUploadedData(DataTypeEnum.Sme, fixtureData.length);
+          });
         },
       );
     }
