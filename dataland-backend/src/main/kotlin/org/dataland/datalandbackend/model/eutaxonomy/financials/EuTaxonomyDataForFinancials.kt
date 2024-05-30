@@ -24,12 +24,16 @@ data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.ELIGIBILITY_KPIS_DEFAULT_VALUE)
+    @field:Valid()
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
+    @field:Valid()
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
 
+    @field:Valid()
     val investmentFirmKpis: InvestmentFirmKpis? = null,
 
+    @field:Valid()
     val insuranceKpis: InsuranceKpis? = null,
 
     val fiscalYearDeviation: FiscalYearDeviation? = null,
