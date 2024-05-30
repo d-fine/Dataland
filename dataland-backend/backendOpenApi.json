@@ -14317,15 +14317,15 @@
           "companyId": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",

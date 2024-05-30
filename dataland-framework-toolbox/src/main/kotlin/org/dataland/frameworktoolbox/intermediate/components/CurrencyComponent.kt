@@ -27,7 +27,7 @@ class CurrencyComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val annotations = listOf(ValidAnnotation)
+        val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue) + ValidAnnotation
 
         dataClassBuilder.addProperty(
             identifier,

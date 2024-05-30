@@ -3,15 +3,25 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
     private val errorCode400 = "Client error : 400"
     private val errorMessage = "Input validation failed."
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     fun getErrorFromApi(companyName: String): ClientException {
         val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
@@ -20,7 +30,8 @@ class InvalidSfdrRequestTests {
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         val errorForInvalidInput = assertThrows<ClientException> {
             apiAccessor.sfdrUploaderFunction(
-                companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
+                companyInformation.actualStoredCompany.companyId,
+                oneInvalidSfdrDataset!!.t,
                 "",
             )
         }
