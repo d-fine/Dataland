@@ -244,8 +244,6 @@ export default defineComponent({
     }
   },
   methods: {
-    /* TODO Emanuel: Eine solche Funktion "buildXyDataApi" haben wir jetzt aktuell auf jeder Create-page =>
-          könnte man vllt als util-Funktion iwo zentralisieren, und hier nur noch importen und nutzen*/
     /**
      * Builds an api to get and upload Heimathafen data
      * @returns the api

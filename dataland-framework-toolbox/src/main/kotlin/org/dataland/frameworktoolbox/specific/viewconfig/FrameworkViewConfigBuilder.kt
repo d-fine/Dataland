@@ -82,19 +82,14 @@ class FrameworkViewConfigBuilder(
             "BasePublicFrameworkDefinition.ts.ftl"
         }
         val outputJobs = listOf(
-            Pair(
-                "/specific/viewconfig/$frameworkDefinition",
-                baseDirectoryPath / "BaseFrameworkDefinition.ts",
-            ),
-            Pair(
-                "/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
+            Pair("/specific/viewconfig/$frameworkDefinition", baseDirectoryPath / "BaseFrameworkDefinition.ts"),
+            Pair("/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
                 baseDirectoryPath / "FrontendFrameworkDefinition.ts",
-            ),
+                ),
         )
         for ((template, outputPath) in outputJobs) {
             generatedTsFiles.add(outputPath)
-            val freemarkerTemplate = FreeMarker.configuration
-                .getTemplate(template)
+            val freemarkerTemplate = FreeMarker.configuration.getTemplate(template)
             val writer = FileWriter(outputPath.toFile())
             freemarkerTemplate.process(freeMarkerContext, writer)
             writer.close()
