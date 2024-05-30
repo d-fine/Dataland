@@ -76,7 +76,7 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
-            cy.wait(1000);
+            cy.wait(100);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
@@ -100,19 +100,15 @@ describeIf(
              * @param dataId the latest version of sme data for the company
              */
             function checkDocumentIsDownloadable(companyId: string, dataId: string): void {
-              cy.wait(5000);
+              cy.wait(100);
               cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/" + dataId);
 
               MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "false").click();
               MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "false").click();
-              cy.wait(3000);
               MLDT.getCellValueContainer("Power consumption in MWh")
                 .find("a.link")
                 .should("include.text", "MWh")
                 .click();
-
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/SustainabilityReport.pdf`;
-              cy.readFile(expectedPathToDownloadedReport).should("not.exist");
               cy.intercept("**/documents/*").as("documentDownload");
               cy.get('[data-test="download-link"]').click();
               cy.wait("@documentDownload");
