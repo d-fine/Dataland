@@ -66,10 +66,10 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
 
-    @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     @field:Valid()
