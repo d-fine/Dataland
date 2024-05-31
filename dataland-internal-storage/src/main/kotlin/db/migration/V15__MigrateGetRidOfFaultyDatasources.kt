@@ -83,10 +83,8 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     ) {
         val keysToBeRemoved: ArrayList<String> = ArrayList()
 
-        val keys: Iterator<String> = companyReportMap.keys()
-        while (keys.hasNext()) {
-            val companyReportKey = keys.next()
-            val companyReport = companyReportMap.getOrJavaNull(companyReportKey) as JSONObject?
+        companyReportMap.keys().forEach {
+            val companyReport = companyReportMap.getOrJavaNull(it) as JSONObject?
             if (companyReport !== null) {
                 val fileReference = companyReport.get("fileReference") as String
                 if (isFaultyFileReference(fileReference)) {
@@ -94,7 +92,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
                         "Remove reference to document from CompanyReport Map." +
                             " Broken file reference: " + fileReference,
                     )
-                    keysToBeRemoved.add(companyReportKey)
+                    keysToBeRemoved.add(it)
                 }
             }
         }
@@ -134,10 +132,12 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
             if (dataSource !== null) {
                 replaceFaultyFileReferenceDataSource(dataSource, obj, "dataSource")
             }
+
             val companyReportList = obj.getOrJavaNull("referencedReports") as JSONObject?
             if (companyReportList !== null) {
                 replaceFaultyFileReferenceReferencedReports(companyReportList, obj, "referencedReports")
-            } else {
+            }
+            if ((dataSource == null) && (companyReportList == null)) {
                 obj.keys().forEach {
                     checkRecursivelyForFaultyFileReferences(obj, it)
                 }
