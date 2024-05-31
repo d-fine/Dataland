@@ -15,10 +15,10 @@ class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication()
         get() = jwt.getClaimAsString("preferred_username")
 
     val firstName: String
-        get() = jwt.getClaimAsString("firstName") ?: "" // todo check if this is best practise
+        get() = jwt.getClaimAsString("given_name") ?: "" // todo check if this is best practise
 
     val lastName: String
-        get() = jwt.getClaimAsString("lastName") ?: ""
+        get() = jwt.getClaimAsString("family_name") ?: ""
 
     override fun getAuthorities(): List<GrantedAuthority> {
         val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<*>?
