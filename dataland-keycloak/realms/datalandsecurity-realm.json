@@ -687,28 +687,28 @@
     "notBefore" : 0,
     "groups" : [ ]
   },
-  {
-    "id": "a82d0809-2bc2-4244-9ca3-947b7ba817b9",
-    "createdTimestamp": 1713789577905,
-    "username": "service-account-dataland-backend",
-    "enabled": true,
-    "totp": false,
-    "emailVerified": false,
-    "serviceAccountClientId": "dataland-backend",
-    "disableableCredentialTypes": [],
-    "requiredActions": [
-      "TERMS_AND_CONDITIONS"
-    ],
-    "realmRoles": [
-      "ROLE_USER",
-      "default-roles-datalandsecurity"
-    ],
-    "clientRoles": {
-      "realm-management": ["view-users"]
-    },
-    "notBefore": 0,
-    "groups": []
-  }
+    {
+      "id": "a82d0809-2bc2-4244-9ca3-947b7ba817b9",
+      "createdTimestamp": 1713789577905,
+      "username": "service-account-dataland-backend",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "serviceAccountClientId": "dataland-backend",
+      "disableableCredentialTypes": [],
+      "requiredActions": [
+        "TERMS_AND_CONDITIONS"
+      ],
+      "realmRoles": [
+        "ROLE_USER",
+        "default-roles-datalandsecurity"
+      ],
+      "clientRoles": {
+        "realm-management": ["view-users"]
+      },
+      "notBefore": 0,
+      "groups": []
+    }
   ],
   "scopeMappings": [
     {
@@ -2067,9 +2067,9 @@
       }
     },
     {
-      "alias": "linkedin",
-      "internalId": "2fded455-83f2-410e-b978-26a2a721b32d",
-      "providerId": "linkedin",
+      "alias": "linkedin-openid-connect",
+      "internalId": "879e30b3-34fa-4a0b-862e-3914e67fb188",
+      "providerId": "linkedin-openid-connect",
       "enabled": true,
       "updateProfileFirstLoginMode": "on",
       "trustEmail": true,
@@ -2079,16 +2079,10 @@
       "linkOnly": false,
       "firstBrokerLoginFlowAlias": "first broker login",
       "config": {
-        "hideOnLoginPage": "false",
-        "acceptsPromptNoneForwardFromClient": "false",
-        "clientId": "${KEYCLOAK_LINKEDIN_ID}",
-        "disableUserInfo": "false",
-        "syncMode": "IMPORT",
         "clientSecret": "${KEYCLOAK_LINKEDIN_SECRET}",
-        "defaultScope": "r_emailaddress,r_liteprofile",
-        "guiOrder": "1",
-        "profileProjection": "(id,firstName,lastName,profilePicture(displayImage~:playableStreams))",
-        "useJwksUrl": "true"
+        "clientId": "${KEYCLOAK_LINKEDIN_ID}",
+        "syncMode": "IMPORT",
+        "guiOrder": "1"
       }
     }
   ],
@@ -2096,7 +2090,7 @@
     {
       "id": "da50d335-f09b-419a-84b8-f0f513dbd3f0",
       "name": "picture",
-      "identityProviderAlias": "linkedin",
+      "identityProviderAlias": "linkedin-openid-connect",
       "identityProviderMapper": "linkedin-user-attribute-mapper",
       "config": {
         "claims": "[]",
