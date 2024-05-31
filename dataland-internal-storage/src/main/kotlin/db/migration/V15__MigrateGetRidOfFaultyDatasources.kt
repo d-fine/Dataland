@@ -31,7 +31,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger("Migration V15")
 
     // Array containing all valid file references
-    var fileReferencesExisting: ArrayList<String> = ArrayList()
+    var validFileReferences: ArrayList<String> = ArrayList()
 
     /**
      * Get all valid fileReferences from database and add them to fileReferencesExisting
@@ -39,7 +39,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
      * blob_id in the blob_items table is the same as the fileReference, the actual hash value of the document.
      * Entries in blob_items are assumed to be consistent with the document_meta_info table of the DocumentManagerDB.
      */
-    fun getExistingFileReferences(context: Context?) {
+    private fun getExistingFileReferences(context: Context?) {
         val statement = context!!.connection.createStatement()
 
         if (statement.execute("SELECT blob_id FROM blob_items")) {
@@ -47,7 +47,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
 
             while (result.next()) {
                 var temp: String = result.getString("blob_id")
-                fileReferencesExisting.add(temp)
+                validFileReferences.add(temp)
                 logger.info("Adding to known documents list: " + temp)
             }
         } else {
@@ -69,7 +69,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     }
 
     private fun isFaultyFileReference(fileReference: String): Boolean {
-        return (fileReference !in fileReferencesExisting) || (!isSha256(fileReference))
+        return (fileReference !in validFileReferences) || (!isSha256(fileReference))
     }
 
     /**
@@ -83,7 +83,6 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     ) {
         val keysToBeRemoved: ArrayList<String> = ArrayList()
 
-        // Find the keys of all reports with invalid fileReference
         val keys: Iterator<String> = companyReportMap.keys()
         while (keys.hasNext()) {
             val companyReportKey = keys.next()
@@ -102,7 +101,6 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         for (key in keysToBeRemoved) {
             companyReportMap.remove(key)
         }
-        // If no report left, replace empty map with null
         if (companyReportMap.isEmpty) {
             obj.put(targetObjectName, null as Any?)
         }
@@ -126,23 +124,22 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     /**
      * Recursively iterate over the elements of a dataset and find dataSources or referencedReports
      */
-    private fun checkForFaultyFileReferenceAndIterateFurther(
+    private fun checkRecursivelyForFaultyFileReferences(
         dataset: JSONObject,
         objectName: String,
-        targetObjectName: String,
-        fileReferenceCheckAndReplacementHandler: (JSONObject, JSONObject, String) -> Unit,
     ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
-            val dataSourceOrCompanyInfoList = obj.getOrJavaNull(targetObjectName) as JSONObject?
-            if (dataSourceOrCompanyInfoList !== null) {
-                fileReferenceCheckAndReplacementHandler(dataSourceOrCompanyInfoList, obj, targetObjectName)
+            val dataSource = obj.getOrJavaNull("dataSource") as JSONObject?
+            if (dataSource !== null) {
+                replaceFaultyFileReferenceDataSource(dataSource, obj, "dataSource")
+            }
+            val companyReportList = obj.getOrJavaNull("referencedReports") as JSONObject?
+            if (companyReportList !== null) {
+                replaceFaultyFileReferenceReferencedReports(companyReportList, obj, "referencedReports")
             } else {
                 obj.keys().forEach {
-                    checkForFaultyFileReferenceAndIterateFurther(
-                        obj, it, targetObjectName,
-                        fileReferenceCheckAndReplacementHandler,
-                    )
+                    checkRecursivelyForFaultyFileReferences(obj, it)
                 }
             }
         }
@@ -165,16 +162,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     fun migrateFaultyFileReferences(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
         dataset.keys().forEach {
-            checkForFaultyFileReferenceAndIterateFurther(
-                dataset, it, "dataSource",
-                ::replaceFaultyFileReferenceDataSource,
-            )
-        }
-        dataset.keys().forEach {
-            checkForFaultyFileReferenceAndIterateFurther(
-                dataset, it, "referencedReports",
-                ::replaceFaultyFileReferenceReferencedReports,
-            )
+            checkRecursivelyForFaultyFileReferences(dataset, it)
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
