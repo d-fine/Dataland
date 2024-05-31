@@ -10,21 +10,31 @@ import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException as ApiKeyManagerClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRetrievalViaApiKeyTest {
 
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val apiKeyHelper = ApiKeyAuthenticationHelper()
 
     private val datesHandler = DatesHandler()
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     private fun buildApiKeyMetaInfoForFailedValidation(validationMessage: String): ApiKeyMetaInfo {
         return ApiKeyMetaInfo(null, null, null, false, validationMessage)

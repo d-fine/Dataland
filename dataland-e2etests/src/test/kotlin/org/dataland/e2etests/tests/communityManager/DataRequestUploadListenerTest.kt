@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEut
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
@@ -18,6 +19,7 @@ import org.dataland.e2etests.utils.communityManager.postStandardSingleDataReques
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -26,6 +28,7 @@ import java.util.*
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestUploadListenerTest {
     val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = apiAccessor.requestControllerApi
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
@@ -38,6 +41,11 @@ class DataRequestUploadListenerTest {
     private val message = "test message"
     private val contacts = setOf("test@example.com", "test2@example.com")
     private val errorMessageForRequestStatusHistory = "The status history was not patched correctly."
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     @Test
     fun `post single data request and provide data and check that status has changed to answered`() {

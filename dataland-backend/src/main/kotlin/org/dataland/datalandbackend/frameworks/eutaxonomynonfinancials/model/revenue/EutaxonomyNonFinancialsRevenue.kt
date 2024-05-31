@@ -16,6 +16,7 @@ import kotlin.collections.MutableList
  * The data-model for the Revenue section
  */
 data class EutaxonomyNonFinancialsRevenue(
+    @field:Valid()
     val totalAmount: CurrencyDataPoint? = null,
 
     @field:Valid()

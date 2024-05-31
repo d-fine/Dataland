@@ -11,20 +11,30 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
 import java.util.*
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CompanyDataControllerTest {
 
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
     private val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithRandomIdentifiers(1).first()
     private val checkOtherCompanyTrue = "Other Company true"
     private val checkOtherCompanyFalse = "Other Company false"
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     @Test
     fun `post a dummy company and check if post was successful`() {
