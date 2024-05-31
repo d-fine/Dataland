@@ -20,6 +20,7 @@ data class SfdrSocialAntiCorruptionAndAntiBribery(
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:MinimumValue(minimumValue = 0)
+    @field:Valid()
     val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 
 )

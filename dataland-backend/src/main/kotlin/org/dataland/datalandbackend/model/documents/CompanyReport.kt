@@ -1,8 +1,10 @@
 package org.dataland.datalandbackend.model.documents
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
+import org.dataland.datalandbackend.validator.DocumentExists
 import java.time.LocalDate
 
 /**
@@ -11,6 +13,8 @@ import java.time.LocalDate
  */
 data class CompanyReport(
     @field:JsonProperty(required = true)
+    @field:NotBlank
+    @field:DocumentExists
     override val fileReference: String,
 
     override val fileName: String? = null,

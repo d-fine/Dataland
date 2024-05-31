@@ -6,17 +6,22 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.Instant
 import kotlin.math.abs
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MetaDataControllerTest {
 
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val numberOfCompaniesToPostPerFramework = 4
     private val numberOfDataSetsToPostPerCompany = 5
@@ -26,6 +31,12 @@ class MetaDataControllerTest {
     private val listOfTestCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
+
     companion object {
         private const val SLEEP_DURATION_MS: Long = 1000
     }

@@ -1,17 +1,27 @@
 package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EuTaxonomyNonFinancials {
 
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val listOfOneEuTaxonomyNonFinancialsDataSet = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1)
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1)
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     @Test
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {

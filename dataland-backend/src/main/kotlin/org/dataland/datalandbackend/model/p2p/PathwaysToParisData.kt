@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.p2p
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.p2p.categories.ammonia.P2pAmmonia
 import org.dataland.datalandbackend.model.p2p.categories.automotive.P2pAutomotive
@@ -21,6 +22,7 @@ import org.dataland.datalandbackend.model.p2p.categories.steel.P2pSteel
 @DataType("p2p", 4)
 data class PathwaysToParisData(
     @field:JsonProperty(required = true)
+    @field:Valid()
     val general: P2pGeneral,
 
     val ammonia: P2pAmmonia? = null,
@@ -39,6 +41,7 @@ data class PathwaysToParisData(
 
     val electricityGeneration: P2pElectricityGeneration? = null,
 
+    @field:Valid
     val livestockFarming: P2pLivestockFarming? = null,
 
     val cement: P2pCement? = null,

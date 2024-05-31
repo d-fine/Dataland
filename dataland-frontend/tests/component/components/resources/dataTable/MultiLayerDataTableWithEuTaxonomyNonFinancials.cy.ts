@@ -154,7 +154,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
     const allReports = fixturesForTests.map((it) => assertDefined(it.t.general).referencedReports);
     const expectedLatestReportingPeriod = allReportingPeriods[0];
     const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(
-      allReports[0] as Map<string, CompanyReport>,
+      allReports[0] as Record<string, CompanyReport>,
     )[0];
     cy.mountWithDialog(
       ShowMultipleReportsBanner,
