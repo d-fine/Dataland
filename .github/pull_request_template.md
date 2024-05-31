@@ -22,4 +22,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on 
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
-  - [ ] The new feature is manually used/tested/observed on dev server
+  - [ ] The new feature is manually used/tested/observed on dev server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
