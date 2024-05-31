@@ -8,7 +8,7 @@
             </div>
             <div>
                 <#list social.providers as p>
-                    <#if p.alias="linkedin">
+                    <#if p.alias="linkedin-openid-connect">
                         <div id="social-linkedin">
                             <button
                                     class="p-button cursor-pointer font-semibold w-full p-button-linkedin uppercase flex justify-content-center align-items-center p-login-button"
