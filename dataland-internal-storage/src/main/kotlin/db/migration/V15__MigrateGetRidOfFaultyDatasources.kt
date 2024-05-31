@@ -56,9 +56,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     }
 
     override fun migrate(context: Context?) {
-        // get up to date list of file references
         getExistingFileReferences(context)
-        // now check datasets
         dataTypesToMigrate.forEach {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
