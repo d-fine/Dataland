@@ -43,6 +43,9 @@ class SingleDataRequestEmailMessageSender(
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
         val properties = mapOf(
             "User" to messageInformation.userAuthentication.userDescription,
+            "E-Mail" to messageInformation.userAuthentication.username,
+            "First Name" to messageInformation.userAuthentication.firstName,
+            "Last Name" to messageInformation.userAuthentication.lastName,
             "Data Type" to messageInformation.dataType.value,
             "Reporting Periods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "Dataland Company ID" to messageInformation.datalandCompanyId,
