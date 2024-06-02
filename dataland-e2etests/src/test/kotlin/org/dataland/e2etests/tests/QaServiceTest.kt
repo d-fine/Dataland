@@ -4,6 +4,7 @@ import org.awaitility.Awaitility.await
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -21,6 +22,7 @@ import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQ
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaServiceTest {
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
     companion object {
@@ -29,6 +31,7 @@ class QaServiceTest {
 
     @BeforeAll
     fun postCompany() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1).first()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)

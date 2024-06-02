@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subcategories
 
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -11,6 +12,7 @@ import java.math.BigDecimal
 data class P2pLivestockFarmingAnimalFeed(
     val ownFeedInPercent: BigDecimal? = null,
 
+    @field:Valid
     val externalFeedCertification: BaseDataPoint<YesNo>? = null,
 
     val originOfExternalFeed: String? = null,
