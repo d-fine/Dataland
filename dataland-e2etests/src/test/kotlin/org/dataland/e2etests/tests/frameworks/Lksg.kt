@@ -1,21 +1,34 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationLksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentMechanism
 import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Lksg {
 
     private val apiAccessor = ApiAccessor()
+    private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val listOfOneLksgDataSet = apiAccessor.testDataProviderForLksgData.getTData(1)
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForLksgData
         .getCompanyInformationWithoutIdentifiers(1)
+
+    @BeforeAll
+    fun postTestDocuments() {
+        documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
+    }
 
     private fun removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(dataset: LksgData): LksgData {
         val fixedDataSet = dataset.copy()
@@ -90,6 +103,34 @@ class Lksg {
             downloadedActive2023Datasets,
             sortDatasetsInSecondTest(uploadedDataSets),
         )
+    }
+
+    @Test
+    fun `check that dataset cannot be uploaded if document does not exist`() {
+        val companyId = "1908273127903192839781293898312983"
+        val companyName = "TestForBrokenFileReference"
+        val companyInformation = apiAccessor.testDataProviderForLksgData
+            .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+        val lksgData = companyInformation!!.t
+
+        val dataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
+
+        val uploadPair = Pair(dataSet, "2022")
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.uploadWithWait(
+                companyId = companyId,
+                frameworkData = uploadPair.first,
+                reportingPeriod = uploadPair.second,
+                uploadFunction = apiAccessor::lksgUploaderFunction,
+            )
+        }
+
+        val testClientError = exception.response as ClientError<*>
+
+        assertTrue(testClientError.statusCode == 400)
+        assertTrue(testClientError.body.toString().contains("Invalid input"))
+        assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
     }
 
     private fun assertDownloadedDatasets(

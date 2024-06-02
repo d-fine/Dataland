@@ -170,12 +170,39 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
 }
 
+tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the document manager service."
+    group = "clients"
+    val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
+    outputDir.set(layout.buildDirectory.dir("clients/document-manager").get().toString())
+    packageName.set(documentManagerClientDestinationPackage)
+    modelPackage.set("$documentManagerClientDestinationPackage.model")
+    apiPackage.set("$documentManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
     dependsOn("generateInternalStorageClient")
     dependsOn("generateExternalStorageClient")
     dependsOn("generateCommunityManagerClient")
+    dependsOn("generateDocumentManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -191,6 +218,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/internal-storage/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/external-storage/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/document-manager/src/main/kotlin"))
 }
 
 ktlint {

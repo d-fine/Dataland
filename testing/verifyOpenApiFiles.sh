@@ -12,6 +12,7 @@ function getOpenApiSha1Sum() {
 }
 
 sha1SumBeforeRegenerate=$(getOpenApiSha1Sum)
+find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted-before.json' shell {} \;
 ./gradlew generateOpenApiDocs --no-daemon --stacktrace
 sha1SumAfterRegenerate=$(getOpenApiSha1Sum)
 echo "sha1sum before regenerate: $sha1SumBeforeRegenerate"

@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -31,11 +32,11 @@ class ReportPreuploadComponent(
             listOf(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                    rawParameterSpec = "implementation = Map::class,\n" +
-                        "example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE",
+                    rawParameterSpec = "example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),
+                ValidAnnotation,
             ),
         )
     }

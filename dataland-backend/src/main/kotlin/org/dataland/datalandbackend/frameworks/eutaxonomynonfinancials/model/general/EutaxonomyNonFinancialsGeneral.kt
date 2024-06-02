@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.general
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo
@@ -28,10 +29,8 @@ data class EutaxonomyNonFinancialsGeneral(
 
     val numberOfEmployees: BigDecimal? = null,
 
-    @field:Schema(
-        implementation = Map::class,
-        example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE,
-    )
+    @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
+    @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
 
 )
