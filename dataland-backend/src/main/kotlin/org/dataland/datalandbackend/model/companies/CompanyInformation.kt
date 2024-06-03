@@ -45,4 +45,6 @@ data class CompanyInformation(
     val isTeaserCompany: Boolean?,
 
     val website: String?,
+
+    var parentCompanyId: String?,
 )

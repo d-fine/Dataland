@@ -47,6 +47,10 @@ data class StoredCompanyEntity(
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
+    // todo try @oneToOne mapping
+    @Column(name = "parent_company_id")
+    var parentCompanyId: String?,
+
     @OneToMany(mappedBy = "company")
     val dataRegisteredByDataland: MutableList<DataMetaInformationEntity>,
 
@@ -87,6 +91,7 @@ data class StoredCompanyEntity(
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,
                 website = website,
+                parentCompanyId = parentCompanyId,
             ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
         )
