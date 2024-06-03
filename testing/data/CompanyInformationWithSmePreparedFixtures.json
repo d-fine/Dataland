@@ -2,109 +2,101 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Carolineboro",
-			"headquartersPostalCode": null,
-			"sector": "relationships",
+			"headquarters": "Mobile",
+			"headquartersPostalCode": "90004-5932",
+			"sector": "e-commerce",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"5P3CbWaRc2Le",
-					"XKuQ7HIKm5Wj"
+					"d6UNOGShl3Zv"
 				],
 				"PermId": [
-					"y0wS7p8tYG"
+					"83TsCbfWZc"
 				],
-				"Ticker": [
-					"9K3jNe2"
-				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"vEZCqpBt9rCqLjH"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CV",
+			"countryCode": "MW",
 			"companyAlternativeNames": [
-				"Harris - Douglas",
-				"Renner - Lind"
+				"Cremin Group",
+				"Satterfield and Sons",
+				"Spencer and Sons"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://bewitched-cherry.net",
-			"isTeaserCompany": false,
-			"parentCompanyLei": "hd9w2nasawMBDN1xT4xl"
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://fancy-cluster.com/",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-13",
+					"reportingDate": "2024-04-06",
 					"sectors": [
-						"23.2",
-						"25.5",
-						"47.91",
-						"50.10"
+						"01.13",
+						"22.23",
+						"45.20",
+						"46.65",
+						"80.10"
 					],
-					"numberOfEmployees": 723,
-					"fiscalYearStart": "2024-11-07",
+					"numberOfEmployees": 7950,
+					"fiscalYearStart": "2024-05-25",
 					"referencedReports": {
-						"IntegratedReport": {
+						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-07-15",
-							"currency": "SHP"
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-06",
+							"currency": "UGX"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-08-22",
-							"currency": "PAB"
+							"reportDate": "2023-02-23",
+							"currency": "EUR"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 74532.05,
-					"operatingCostInEur": 93805.6,
-					"capitalAssetsInEur": 91244.32
+					"revenueInEur": 18572.51,
+					"operatingCostInEur": 88324.46,
+					"capitalAssetsInEur": 54018.58
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 45369.86,
+						"value": 25178.6,
 						"dataSource": {
-							"page": 1135,
-							"fileName": "IntegratedReport",
+							"page": 874,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "metrics"
 						},
-						"comment": "input neural bus",
-						"quality": "Audited"
+						"comment": "override 1080p pixel",
+						"quality": "Reported"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 35090.71,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 4602.83,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 53291.89,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 92354.58,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Snow",
 						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	}
 ]
