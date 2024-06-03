@@ -68,7 +68,7 @@ data class StoredCompanyEntity(
     @JsonValue
     override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
         val identifierMap = mutableMapOf<IdentifierType, MutableList<String>>()
-        for (identifierType in IdentifierType.values()) {
+        for (identifierType in IdentifierType.entries) {
             identifierMap[identifierType] = mutableListOf()
         }
 
