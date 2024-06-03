@@ -141,6 +141,7 @@ class CompanyAlterationManager(
         patch.countryCode?.let { companyEntity.countryCode = it }
         patch.website?.let { companyEntity.website = it }
         patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
+        patch.parentCompanyLei?.let { companyEntity.parentCompanyLei = it }
 
         if (patch.companyAlternativeNames != null) {
             companyEntity.companyAlternativeNames = patch.companyAlternativeNames
@@ -177,6 +178,7 @@ class CompanyAlterationManager(
         storedCompanyEntity.countryCode = companyInformation.countryCode
         storedCompanyEntity.website = companyInformation.website
         storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false
+        storedCompanyEntity.parentCompanyLei = companyInformation.parentCompanyLei
         storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
         companyIdentifierRepositoryInterface.deleteAllByCompany(
             storedCompanyEntity,
