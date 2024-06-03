@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.PrivateDataManager
-import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationIdAndLogIt
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,7 +59,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
-        val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = dataId)
+        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
@@ -77,7 +77,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             dataId: String,
             hash: String):
         ResponseEntity<InputStreamResource> {
-        val correlationId = generateCorrelationIdAndLogIt(companyId = null, dataId = dataId)
+        val correlationId = generateCorrelationId(companyId = null, dataId = dataId)
         val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
@@ -106,7 +106,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             val authentication = DatalandAuthentication.fromContextOrNull()
             val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>()
             metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-                val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = null)
+                val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
                 val data = privateDataManager.getPrivate${frameworkIdentifier?cap_first}Data(it.dataId, correlationId)
                 frameworkDataAndMetaInfo.add(
                     DataAndMetaInformation(

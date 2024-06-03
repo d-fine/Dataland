@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationIdAndLogIt
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackend.utils.canUserBypassQa
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -46,7 +46,7 @@ abstract class DataController<T>(
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().toEpochMilli()
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
-        val correlationId = generateCorrelationIdAndLogIt(companyId = companyAssociatedData.companyId, dataId = null)
+        val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val dataIdOfPostedData = dataManager.processDataStorageRequest(
             datasetToStore,
@@ -83,7 +83,7 @@ abstract class DataController<T>(
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
-        val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = dataId)
+        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
@@ -109,7 +109,7 @@ abstract class DataController<T>(
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-            val correlationId = generateCorrelationIdAndLogIt(companyId = companyId, dataId = null)
+            val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
             val dataAsString = dataManager.getPublicDataSet(
                 it.dataId, DataType.valueOf(it.dataType),
                 correlationId,

@@ -23,7 +23,7 @@ object IdUtils {
      * with a companyId and/or dataId
      * @returns the correlationId
      */
-    fun generateCorrelationIdAndLogIt(companyId: String?, dataId: String?): String {
+    fun generateCorrelationId(companyId: String?, dataId: String?): String {
         val correlationId = generateUUID()
         logger.info(
             logMessageBuilder.generateCorrelationIdMessage(

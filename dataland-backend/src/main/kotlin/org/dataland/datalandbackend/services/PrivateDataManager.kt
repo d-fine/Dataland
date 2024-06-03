@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdAndHashToEurodatIdMappingRepository
-import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationIdAndLogIt
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackend.utils.IdUtils.generateUUID
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
@@ -66,7 +66,7 @@ class PrivateDataManager(
         documents: Array<MultipartFile>?,
     ): DataMetaInformation {
         val uploadTime = Instant.now().toEpochMilli()
-        val correlationId = generateCorrelationIdAndLogIt(companyId = companyAssociatedSmeData.companyId, dataId = null)
+        val correlationId = generateCorrelationId(companyId = companyAssociatedSmeData.companyId, dataId = null)
         logger.info(
             "Received MiNaBo data for companyId ${companyAssociatedSmeData.companyId} to be stored. " +
                 "Will be processed with correlationId $correlationId",
