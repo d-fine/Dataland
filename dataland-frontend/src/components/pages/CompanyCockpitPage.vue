@@ -11,6 +11,7 @@
           :key="framework"
           :is-user-allowed-to-view="isUserAllowedToViewForFramework(framework)"
           :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+          :is-user-uploader="isUserUploader"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="

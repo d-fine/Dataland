@@ -32,15 +32,37 @@
     >
       PROVIDE DATA
     </a>
+    <a
+      v-if="!showProvideDataButton && !useMobileView && isUserUploader"
+      class="summary-panel__provide-button"
+      @click="openDialog"
+      @pointerenter="onCursorEnterProvideButton"
+      @pointerleave="onCursorLeaveProvideButton"
+      :data-test="`${framework}-claim-data-ownership-button`"
+    >
+      CLAIM COMPANY OWNERSHIP
+    </a>
   </div>
+  <ClaimOwnershipDialog
+    :dialog-is-open="dialogIsOpen"
+    :company-name="companyName"
+    :company-id="companyId"
+    :claim-is-submitted="claimIsSubmitted"
+    @claim-submitted="onClaimSubmitted"
+    @close-dialog="onCloseDialog"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from "vue";
+import { computed, inject, ref, watch } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { useRouter } from "vue-router";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import type Keycloak from "keycloak-js";
 
 const router = useRouter();
 
@@ -50,6 +72,7 @@ const props = defineProps<{
   numberOfProvidedReportingPeriods?: number | null;
   isUserAllowedToView: boolean | undefined;
   isUserAllowedToUpload: boolean | undefined;
+  isUserUploader: boolean | undefined;
 }>();
 
 const euTaxonomyFrameworks = new Set<DataTypeEnum>([
@@ -76,6 +99,11 @@ const subtitle = computed(() => {
 const injectedUseMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
+const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+
+const companyName = ref("");
+const dialogIsOpen = ref(false);
+const claimIsSubmitted = ref(false);
 const showProvideDataButton = computed(() => {
   return props.isUserAllowedToUpload && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
@@ -93,14 +121,64 @@ let provideDataButtonHovered: boolean = false;
 
 /**
  * If no other clickable component on the panel is hovered and the user can access the viewpage of the provided framework
- * the view page is visted
+ * the view page is visited
  */
 function onClickPanel(): void {
   if (!provideDataButtonHovered && hasAccessibleViewPage.value && props.isUserAllowedToView) {
     void router.push(`/companies/${props.companyId}/frameworks/${props.framework}`);
   }
 }
+/**
+ * handles the emitted claim event
+ */
+function onClaimSubmitted() {
+  claimIsSubmitted.value = true;
+}
+/**
+ * handles the close button click event of the dialog
+ */
+function onCloseDialog() {
+  dialogIsOpen.value = false;
+}
+/**
+ * Uses the dataland API to retrieve information about the company identified by the local
+ * companyId object.
+ */
+async function getCompanyName() {
+  try {
+    if (props.companyId != undefined) {
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
+        .companyDataController;
+      companyName.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data.companyName;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
+watch([(): string => props.companyId], async () => dummyName(), { immediate: true });
+
+/**
+ * This method controls if the claim dialog is shown and tracks whether a claim request has been made and retrievs
+ * the company name necessary for the claim request
+ */
+async function dummyName(): Promise<void> {
+  try {
+    dialogIsOpen.value = false;
+    claimIsSubmitted.value = false;
+    await getCompanyName();
+  } catch (err) {
+    console.error(err);
+  }
+}
+/**
+ * opens the dialog
+ */
+function openDialog() {
+  if (authenticated) {
+    dialogIsOpen.value = true;
+  }
+}
 /**
  * Sets flag for tracking the cursor hovered state of the provide data button to true
  */
