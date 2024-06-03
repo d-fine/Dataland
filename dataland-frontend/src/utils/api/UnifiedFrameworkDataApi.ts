@@ -4,7 +4,7 @@ import { type DataMetaInformation } from "@clients/backend";
 import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
-export interface FrameworkDataApi<FrameworkDataType> {
+export interface BaseFrameworkDataApi<FrameworkDataType> {
   getAllCompanyData(
     companyId: string,
     showOnlyActive?: boolean,
@@ -15,9 +15,21 @@ export interface FrameworkDataApi<FrameworkDataType> {
     dataId: string,
     options?: AxiosRequestConfig,
   ): AxiosPromise<CompanyAssociatedData<FrameworkDataType>>;
+}
+
+export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
   postFrameworkData(
     data: CompanyAssociatedData<FrameworkDataType>,
     bypassQa?: boolean,
+    options?: AxiosRequestConfig,
+  ): AxiosPromise<DataMetaInformation>;
+}
+
+export interface PrivateFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
+  getPrivateDocument(dataId: string, hash: string, options?: AxiosRequestConfig): AxiosPromise<File>;
+  postFrameworkData(
+    companyAssociatedSmeData: CompanyAssociatedData<FrameworkDataType>,
+    documents: Array<File>,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataMetaInformation>;
 }
@@ -43,7 +55,7 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
 };
 
 class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
-  implements FrameworkDataApi<FrameworkDataTypes[K]["data"]>
+  implements PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]>
 {
   private readonly apiSuffix: FrameworkDataTypes[K]["apiSuffix"];
   private readonly openApiDataController: OpenApiDataControllerApi<
@@ -109,6 +121,6 @@ export function translateFrameworkApi<K extends keyof FrameworkDataTypes>(
     FrameworkNameObjectTranslation<FrameworkDataTypes[K]["apiSuffix"]>,
     FrameworkDataTypes[K]["data"]
   >,
-): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
   return new OpenApiUnificationAdapter(apiSuffix, openApiDataController);
 }

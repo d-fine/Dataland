@@ -19,13 +19,22 @@ class LogMessageBuilder {
     val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
 
     /**
-     * Generates a message to inform that a correlation ID was generated for a request in association with a company ID
-     * @param correlationId The generated correlation ID
-     * @param companyId The company ID associated with the request
+     * Generates a message to inform that a correlationId has generated been for an operation and potentially
+     * logs the companyId and/or dataId in association with this operation to improve traceability.
+     * @param correlationId that has been generated
+     * @param companyId associated with the operation
+     * @param dataId associated with the operation
      * @returns the message to log
      */
-    fun generatedCorrelationIdMessage(correlationId: String, companyId: String): String {
-        return "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
+    fun generateCorrelationIdMessage(correlationId: String, companyId: String?, dataId: String?): String {
+        val parts = mutableListOf<String>()
+
+        companyId?.let { parts.add("companyId: $it") }
+        dataId?.let { parts.add("dataId: $it") }
+
+        val idParts = parts.joinToString(" and ")
+
+        return "Generated correlationId '$correlationId' for an operation associated with $idParts."
     }
 
     /**

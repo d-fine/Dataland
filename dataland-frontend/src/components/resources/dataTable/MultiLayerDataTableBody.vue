@@ -1,6 +1,6 @@
 <template>
   <template v-for="(cellOrSectionConfig, idx) in config" :key="idx">
-    <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
+    <template v-if="isCellOrSectionVisible(cellOrSectionConfig, dataAndMetaInfo)">
       <tr
         v-if="cellOrSectionConfig.type == 'cell'"
         v-show="isVisible"
@@ -25,7 +25,7 @@
           >
         </td>
         <td
-          v-for="(mldtDataset, idx) in mldtDatasets"
+          v-for="(sinlgeDataAndMetaInfo, idx) in dataAndMetaInfo"
           :key="idx"
           :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
@@ -33,7 +33,8 @@
           class="vertical-align-top"
         >
           <MultiLayerDataTableCell
-            :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)"
+            :content="cellOrSectionConfig.valueGetter(sinlgeDataAndMetaInfo.data)"
+            :meta-info="sinlgeDataAndMetaInfo.metaInfo"
             :inReviewMode="inReviewMode"
           />
         </td>
@@ -50,7 +51,7 @@
           @click="toggleSection(idx)"
           v-show="isVisible"
         >
-          <td :colspan="mldtDatasets.length + 1" :class="isTopLevel ? 'pl-2' : null">
+          <td :colspan="dataAndMetaInfo.length + 1" :class="isTopLevel ? 'pl-2' : null">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <i
@@ -69,7 +70,7 @@
         </tr>
         <MultiLayerDataTableBody
           :config="cellOrSectionConfig.children"
-          :mldtDatasets="mldtDatasets"
+          :dataAndMetaInfo="dataAndMetaInfo"
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
           :inReviewMode="inReviewMode"
@@ -92,7 +93,6 @@
 import {
   isCellOrSectionVisible,
   type MLDTConfig,
-  type MLDTDataset,
   type MLDTSectionConfig,
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import ChevronDownIcon from "primevue/icons/chevrondown";
@@ -101,6 +101,7 @@ import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayer
 import { computed, onMounted, ref } from "vue";
 import MultiLayerDataTableCell from "@/components/resources/dataTable/MultiLayerDataTableCell.vue";
 import Tooltip from "primevue/tooltip";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
@@ -130,7 +131,7 @@ function expandSectionsOnPageLoad(): void {
 }
 
 const columnWidthStyle = computed(() => {
-  return `width: ${70 / props.mldtDatasets.length}%`;
+  return `width: ${70 / props.dataAndMetaInfo.length}%`;
 });
 
 /**
@@ -140,7 +141,7 @@ const columnWidthStyle = computed(() => {
  * @returns a boolean stating if the crossed-eye-symbol shall be added to the section label
  */
 function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>): boolean {
-  const datasetThatIsBeingReviewed = props.mldtDatasets[0].dataset;
+  const datasetThatIsBeingReviewed = props.dataAndMetaInfo[0].data;
   if (element.areThisSectionAndAllParentSectionsDisplayedForTheDataset) {
     return !element.areThisSectionAndAllParentSectionsDisplayedForTheDataset(datasetThatIsBeingReviewed);
   } else return false;
@@ -148,7 +149,7 @@ function shouldAddCrossedEyeSymbolToSectionLabel(element: MLDTSectionConfig<T>):
 
 const props = defineProps<{
   config: MLDTConfig<T>;
-  mldtDatasets: Array<MLDTDataset<T>>;
+  dataAndMetaInfo: Array<DataAndMetaInformation<T>>;
   isTopLevel: boolean;
   isVisible: boolean;
   inReviewMode: boolean;
