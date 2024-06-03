@@ -79,7 +79,7 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
-            cy.wait(100);
+            cy.wait(500);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
@@ -135,6 +135,7 @@ describeIf(
              * @param dataId the latest version of sme data for the company
              */
             function checkDocumentIsDownloadable(companyId: string, dataId: string): void {
+              cy.wait(500);
               cy.visitAndCheckAppMount("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/" + dataId);
 
               MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "false").click();
