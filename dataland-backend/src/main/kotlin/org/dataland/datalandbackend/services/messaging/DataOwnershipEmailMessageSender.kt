@@ -7,7 +7,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -21,8 +20,6 @@ class DataOwnershipEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     /**
      * Function that generates the message object for data ownership request mails
      * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
@@ -52,7 +49,6 @@ class DataOwnershipEmailMessageSender(
             "Data Ownership Request",
             properties,
         )
-        logger.info(objectMapper.writeValueAsString(message))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SendInternalEmail,
