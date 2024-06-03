@@ -13,13 +13,13 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
     type: "section",
     label: "General",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Basic Information",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
