@@ -83,9 +83,10 @@ class FrameworkViewConfigBuilder(
         }
         val outputJobs = listOf(
             Pair("/specific/viewconfig/$frameworkDefinition", baseDirectoryPath / "BaseFrameworkDefinition.ts"),
-            Pair("/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
+            Pair(
+                "/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
                 baseDirectoryPath / "FrontendFrameworkDefinition.ts",
-                ),
+            ),
         )
         for ((template, outputPath) in outputJobs) {
             generatedTsFiles.add(outputPath)
