@@ -38,7 +38,7 @@
               :inReviewMode="slotProps.inReviewMode"
             />
             <MultiLayerDataTableFrameworkPanel
-              v-if="frameworkViewConfiguration!!.type == 'MultiLayerDataTable'"
+              v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
               :frameworkIdentifier="dataType"
               :companyId="companyId"
               :display-configuration="frameworkViewConfiguration!!.configuration"
