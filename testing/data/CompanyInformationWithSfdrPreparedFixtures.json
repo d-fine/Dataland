@@ -1029,7 +1029,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://whispered-prejudice.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {

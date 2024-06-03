@@ -141,7 +141,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://welcome-ideology.net/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -349,7 +350,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://nifty-horseradish.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "GMIIqwpDDcF1pv1IbRFd"
 		},
 		"t": {
 			"general": {
@@ -512,7 +514,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://silver-runaway.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -688,7 +691,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://mellow-machinery.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "wTnQ6NpLbPNv1PbPvjsc"
 		},
 		"t": {
 			"general": {
@@ -1006,7 +1010,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://unwelcome-location.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -1185,7 +1190,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://gigantic-break.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -1293,7 +1299,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://jubilant-coincidence.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "F4rFmay4LEqXlmZvVBNO"
 		},
 		"t": {
 			"general": {
@@ -1400,7 +1407,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://damp-sigh.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -1627,7 +1635,8 @@
 			],
 			"companyLegalForm": null,
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "tN4kJYDu0baLQ76YQNba"
 		},
 		"t": {
 			"general": {
@@ -1868,7 +1877,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://tidy-sense.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -2081,7 +2091,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://wrathful-scow.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -2179,7 +2190,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://delectable-limit.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "cbMRk0YK1yJrwH1Sjtbq"
 		},
 		"t": {
 			"general": {
@@ -2558,7 +2570,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://finished-fail.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -2701,7 +2714,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://square-washer.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -2850,7 +2864,8 @@
 			],
 			"companyLegalForm": null,
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "toy40vANHdCO8L2ODSiR"
 		},
 		"t": {
 			"general": {
@@ -2990,7 +3005,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -3129,7 +3145,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH",
 			"website": "https://sticky-passive.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -3322,7 +3339,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://drafty-webpage.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -3418,7 +3436,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://prudent-consciousness.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "R51UohHbNFxWWSVEXjfz"
 		},
 		"t": {
 			"general": {
@@ -3633,7 +3652,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://this-rag.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -3774,7 +3794,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://spherical-mode.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -4111,7 +4132,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://stormy-paperback.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "FgaYNojZfgRVd3hcxyqo"
 		},
 		"t": {
 			"general": {
@@ -4230,7 +4252,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://standard-friction.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -4409,7 +4432,8 @@
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://stiff-chit-chat.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -4823,7 +4847,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://major-envy.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -4930,7 +4955,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://shocked-briefing.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -5168,7 +5194,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://criminal-consequence.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -5342,7 +5369,8 @@
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -5441,7 +5469,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://frayed-fail.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "7cAwSreEYVU5abneoLLZ"
 		},
 		"t": {
 			"general": {
@@ -5773,7 +5802,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://cuddly-ceiling.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -5918,7 +5948,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": "https://informal-clerk.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -6116,7 +6147,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://extra-small-prejudice.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "7sZxCObjfoHbdCSNzIOX"
 		},
 		"t": {
 			"general": {
@@ -6297,7 +6329,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://strict-beginning.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -6498,7 +6531,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://helpful-direction.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "QFknXpwW3ue1ZH5WCNCL"
 		},
 		"t": {
 			"general": {
@@ -6657,7 +6691,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://periodic-river.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -6838,7 +6873,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://strict-handle.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -7104,7 +7140,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -7367,7 +7404,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://regular-adviser.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "qRkOvCe9COrMeGX10Eb3"
 		},
 		"t": {
 			"general": {
@@ -7725,7 +7763,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://dutiful-initiative.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {

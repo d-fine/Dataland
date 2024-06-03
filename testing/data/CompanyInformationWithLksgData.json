@@ -952,7 +952,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://anchored-breakthrough.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -1797,7 +1798,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://immaculate-tune-up.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "L2SRO7bOHZvdFMsYpO5f"
 		},
 		"t": {
 			"general": {
@@ -3408,7 +3410,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://cruel-permission.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -4269,7 +4272,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -5124,7 +5128,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://arctic-teapot.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "oOD4KypY2d1vUze73lZv"
 		},
 		"t": {
 			"general": {
@@ -6010,7 +6015,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -6935,7 +6941,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://whimsical-passion.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "GswXqhValnDWprfGzSNv"
 		},
 		"t": {
 			"general": {
@@ -7845,7 +7852,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": "https://positive-pearl.name",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -8619,7 +8627,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "PcJovpM8LYWj4Tpct9XT"
 		},
 		"t": {
 			"general": {
@@ -9433,7 +9442,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -10258,7 +10268,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://winding-airport.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "MRzwPeF1UPGB8o78JOfD"
 		},
 		"t": {
 			"general": {
@@ -11127,7 +11138,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://pale-skill.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -12012,7 +12024,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://breakable-netbook.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -12890,7 +12903,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://frail-skeleton.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -13809,7 +13823,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://insecure-payment.net/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -15433,7 +15448,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": "https://accomplished-feast.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -16277,7 +16293,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://striped-essence.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -17097,7 +17114,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://impolite-controversy.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -17883,7 +17901,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://white-musculature.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -18738,7 +18757,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://deserted-round.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -20532,7 +20552,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://conscious-moonscape.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -21494,7 +21515,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://conscious-ocean.net/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -22400,7 +22422,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "VamhI2yEFJCVxJVpLCZa"
 		},
 		"t": {
 			"general": {
@@ -23219,7 +23242,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -24056,7 +24080,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://useless-toe.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "ekshgLA3Zf4iTltVh2vR"
 		},
 		"t": {
 			"general": {
@@ -24908,7 +24933,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://wide-eyed-chord.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -25792,7 +25818,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://welcome-regulation.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "CnHHBDWaKjy0yJa1dlms"
 		},
 		"t": {
 			"general": {
@@ -26621,7 +26648,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://virtual-trove.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -27488,7 +27516,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://mealy-transom.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "6XzvxSFlnXJmEcyw8jqE"
 		},
 		"t": {
 			"general": {
@@ -28428,7 +28457,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "AG",
 			"website": "https://square-newsletter.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -29263,7 +29293,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://defensive-command.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "HYrHVvYSJDh21KieTalm"
 		},
 		"t": {
 			"general": {
@@ -30888,7 +30919,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://worldly-variety.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "s9OYABRyqCqq6v3MByky"
 		},
 		"t": {
 			"general": {
@@ -32606,7 +32638,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH",
 			"website": "https://rosy-measure.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "5CFGec23KnxGJncVPMlS"
 		},
 		"t": {
 			"general": {
@@ -33472,7 +33505,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://serpentine-nectar.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -34277,7 +34311,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://immediate-proof.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "iiL8KXGOQfGmfQalrjVX"
 		},
 		"t": {
 			"general": {
@@ -36027,7 +36062,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -36821,7 +36857,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://shiny-integral.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -37665,7 +37702,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://handy-story-telling.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -39361,7 +39399,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://bold-vote.name",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "xgGUrGVoyqncBJBCF7cR"
 		},
 		"t": {
 			"general": {
@@ -40971,7 +41010,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://imperturbable-trachoma.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "hPG7HT6Bj7gRu2bxv1il"
 		},
 		"t": {
 			"general": {

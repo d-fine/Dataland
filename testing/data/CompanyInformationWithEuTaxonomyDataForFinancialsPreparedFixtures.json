@@ -353,7 +353,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://gargantuan-excellence.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "lmWofWAbz1ZXrrZRaln2"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -505,7 +506,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": "https://colorless-intention.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -626,7 +628,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://questionable-captain.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "IP8mbrEC448ICuJzKdnp"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -754,7 +757,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://kind-pudding.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -1134,7 +1138,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://prestigious-intelligence.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "JZPbZVVTKq7rZWU2biya"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -1344,7 +1349,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://smart-description.biz",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [

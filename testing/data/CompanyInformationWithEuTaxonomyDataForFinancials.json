@@ -533,7 +533,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://kind-latex.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -1087,7 +1088,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -1193,7 +1195,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://idolized-lacquerware.name",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -1365,7 +1368,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://growing-objection.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -1504,7 +1508,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": "https://angry-fir.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -1741,7 +1746,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://pricey-chef.net/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -2088,7 +2094,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://rude-maple.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -2225,7 +2232,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://handsome-booking.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -2306,7 +2314,8 @@
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://straight-fusarium.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -2606,7 +2615,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://silver-understatement.net/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -2912,7 +2922,8 @@
 			],
 			"companyLegalForm": null,
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -3409,7 +3420,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -3720,7 +3732,8 @@
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": "https://repentant-charge.name",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -4027,7 +4040,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://pungent-decline.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "0HUoi6JFV5YLZvGxZRq1"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -4422,7 +4436,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://private-gnat.name/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -4811,7 +4826,8 @@
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://merry-muskrat.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "PiaElN1R8Qd5nhkoMoYE"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -5239,7 +5255,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://enchanting-downforce.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "OhPJDqKMEioEqCMKaVkn"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -5599,7 +5616,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://every-comprehension.info",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "7xK8WJgJM41dBIjfGLNE"
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -5992,7 +6010,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://spotted-irony.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -6232,7 +6251,8 @@
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -6775,7 +6795,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://pretty-frenzy.org",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "86cvIWkQYHatcrUuGKXA"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -7016,7 +7037,8 @@
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -7313,7 +7335,8 @@
 			],
 			"companyLegalForm": "GmbH",
 			"website": "https://irritating-guava.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "kIEbMCkdgybPJJrEhGvg"
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -7516,7 +7539,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -7708,7 +7732,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://serene-illiteracy.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "WsGvPg5O6NHmIcSyytR4"
 		},
 		"t": {
 			"financialServicesTypes": null,
@@ -8170,7 +8195,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://giving-earth.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "GRywLPD7iarutsx5oBPy"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -8561,7 +8587,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -9055,7 +9082,8 @@
 			],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -9405,7 +9433,8 @@
 			],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://worthwhile-composite.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -9523,7 +9552,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": null,
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -9688,7 +9718,8 @@
 			],
 			"companyLegalForm": null,
 			"website": "https://near-humidity.com",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "cgS8fnyq0XSTqjPBemrT"
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -9969,7 +10000,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://monstrous-coffee.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
@@ -10226,7 +10258,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://disloyal-wastebasket.com/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"financialServicesTypes": [
