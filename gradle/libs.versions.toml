@@ -40,7 +40,7 @@ okhttp3 = "4.12.0"
 
 moshi = "1.15.1"
 
-mockito = "5.2.0"
+mockito = "5.12.0"
 
 junit-jupiter = "5.10.2"
 
@@ -175,15 +175,15 @@ springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
 freemarker = "org.freemarker:freemarker:_"
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.11.1"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.13.0"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
 
 jodconverter-local = "org.jodconverter:jodconverter-local:4.4.7"
 
-itext-core = "com.itextpdf:itext-core:8.0.3"
+itext-core = "com.itextpdf:itext-core:8.0.4"
 
-layout = "com.itextpdf:layout:8.0.3"
+layout = "com.itextpdf:layout:8.0.4"
 
 tika-core = "org.apache.tika:tika-core:2.9.2"
 
