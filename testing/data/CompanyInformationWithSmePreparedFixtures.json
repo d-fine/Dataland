@@ -2,113 +2,98 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Korey",
-			"headquartersPostalCode": "91575",
-			"sector": "lifetime value",
+			"headquarters": "Carolineboro",
+			"headquartersPostalCode": null,
+			"sector": "relationships",
 			"identifiers": {
-				"Lei": [
-					"CZgxycKSMys5zmyoQG34"
-				],
+				"Lei": [],
 				"Isin": [
-					"DNgRQ1c4ekMr"
+					"5P3CbWaRc2Le",
+					"XKuQ7HIKm5Wj"
 				],
-				"PermId": [],
+				"PermId": [
+					"y0wS7p8tYG"
+				],
 				"Ticker": [
-					"TdeV72P"
+					"9K3jNe2"
 				],
-				"Duns": [
-					"vbSk8rrkF"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"y4yWlyQMldFQllT"
+					"vEZCqpBt9rCqLjH"
 				]
 			},
-			"countryCode": "PH",
+			"countryCode": "CV",
 			"companyAlternativeNames": [
-				"Berge Group",
-				"Feeney Inc",
-				"Prohaska Group",
-				"Sporer - Reichel"
+				"Harris - Douglas",
+				"Renner - Lind"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://fumbling-secretion.info/",
-			"isTeaserCompany": false
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://bewitched-cherry.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "hd9w2nasawMBDN1xT4xl"
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-29",
+					"reportingDate": "2024-09-13",
 					"sectors": [
-						"49.39",
-						"85.10",
-						"86"
+						"23.2",
+						"25.5",
+						"47.91",
+						"50.10"
 					],
-					"numberOfEmployees": 1754,
-					"fiscalYearStart": "2024-10-15",
+					"numberOfEmployees": 723,
+					"fiscalYearStart": "2024-11-07",
 					"referencedReports": {
-						"AnnualReport": {
+						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
+							"fileName": "IntegratedReport",
 							"isGroupLevel": "No",
-							"reportDate": "2023-01-29",
-							"currency": "PEN"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-02-19",
-							"currency": "SBD"
+							"reportDate": "2023-07-15",
+							"currency": "SHP"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-09-20",
-							"currency": "AOA"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-06",
-							"currency": "HUF"
+							"reportDate": "2023-08-22",
+							"currency": "PAB"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 68985.05,
-					"operatingCostInEur": 13441.8,
-					"capitalAssetsInEur": 80362.61
+					"revenueInEur": 74532.05,
+					"operatingCostInEur": 93805.6,
+					"capitalAssetsInEur": 91244.32
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between15And20Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 78809.71,
+						"value": 45369.86,
 						"dataSource": {
-							"page": 45,
-							"fileName": "SustainabilityReport",
+							"page": 1135,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "interfaces"
 						},
-						"comment": "parse online port",
-						"quality": "Estimated"
+						"comment": "input neural bus",
+						"quality": "Audited"
 					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 35090.71,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 53291.89,
 					"naturalHazardsCovered": [
 						"Avalanche",
 						"EarthQuake",
@@ -120,6 +105,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]

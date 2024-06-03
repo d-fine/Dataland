@@ -48,5 +48,6 @@ export function generateCompanyInformation(): CompanyInformation {
     companyLegalForm: valueOrNull(pickOneElement(legalForms)),
     website: valueOrNull(faker.internet.url()),
     isTeaserCompany: false,
+    parentCompanyLei: getRandomIdentifiers()["Lei"][0], //todo discuss if its easy to use lei that exists
   };
 }
