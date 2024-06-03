@@ -137,7 +137,6 @@ describe("As a user I want to be able to register for an account and be able to 
                 .click()
                 .get("button[id='signOutButton']")
                 .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-              cy.pause();
               cy.task("setTotpKey", totpKey);
             });
         });
