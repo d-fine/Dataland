@@ -15,12 +15,15 @@ import { uploadSmeFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { UploadReports } from "@sharedUtils/components/UploadReports";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
 
 let smeFixtureForTest: FixtureData<SmeData>;
 
 let tokenForAdminUser: string;
 let storedTestCompany: StoredCompany;
 let dataMetaInfoOfTestDataset: DataMetaInformation;
+const uploadReports = new UploadReports("referencedReports");
 before(function () {
   cy.fixture("CompanyInformationWithSmePreparedFixtures").then(function (jsonContent) {
     const preparedFixturesSme = jsonContent as Array<FixtureData<SmeData>>;
@@ -92,16 +95,47 @@ describeIf(
                   smeFixtureForTest.t as unknown as Record<string, object>,
                   frontendSubmittedSmeDataset as unknown as Record<string, object>,
                 );
+                return uploadRealFile(storedTestCompany.companyId, dataMetaInformationOfReuploadedDataset.dataId);
+              })
+              .then(() => {
                 checkDocumentIsDownloadable(storedTestCompany.companyId, dataMetaInformationOfReuploadedDataset.dataId);
               });
+
+            /**
+             * uploads a real file and replaces the fake file for power consumption
+             * @param companyId the company associated to the data uploaded
+             * @param dataId the latest version of sme data for the company
+             */
+            function uploadRealFile(companyId: string, dataId: string): void {
+              cy.visitAndCheckAppMount(
+                "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/upload?templateDataId=" + dataId,
+              );
+              uploadReports.selectFile(TEST_PDF_FILE_NAME);
+              uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+              uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+              cy.get('div[name="fileName"]').click();
+              cy.get("ul.p-dropdown-items li").contains(TEST_PDF_FILE_NAME).click();
+              cy.intercept({
+                url: `**/api/data/${DataTypeEnum.Sme}`,
+                times: 1,
+              }).as("postCompanyAssociatedData");
+              submitButton.clickButton();
+              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (postResponseInterception) => {
+                  cy.url().should("eq", getBaseUrl() + "/datasets");
+                  dataMetaInformationOfReuploadedDataset = postResponseInterception.response
+                    ?.body as DataMetaInformation;
+                },
+              );
+            }
+
             /**
              * validates that the document pertaining to power consumption is displayed correctly and can be downloaded by the data owner
              * @param companyId the company associated to the data uploaded
              * @param dataId the latest version of sme data for the company
              */
             function checkDocumentIsDownloadable(companyId: string, dataId: string): void {
-              cy.wait(100);
-              cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/" + dataId);
+              cy.visitAndCheckAppMount("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/" + dataId);
 
               MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "false").click();
               MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "false").click();
@@ -109,13 +143,13 @@ describeIf(
                 .find("a.link")
                 .should("include.text", "MWh")
                 .click();
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/SustainabilityReport.pdf`;
+              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
               cy.readFile(expectedPathToDownloadedReport).should("not.exist");
               cy.intercept("**/documents/*").as("documentDownload");
               cy.get('[data-test="download-link"]').click();
               cy.wait("@documentDownload");
               cy.wait(500);
-              cy.readFile(expectedPathToDownloadedReport, "binary", {
+              cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
                 timeout: Cypress.env("medium_timeout_in_ms") as number,
               }).then((expectedFileBinary) => {
                 cy.task("calculateHash", expectedFileBinary).then((expectedFileHash) => {
