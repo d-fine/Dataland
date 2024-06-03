@@ -16,13 +16,10 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
   - [ ] The feature branch is deployed to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
   - [ ] It's verified that the CD run is green
-  - [ ] The new feature is manually used/tested/observed on the clone server by the reviewer
-  - [ ] The new feature is manually used/tested/observed on dev server by an additional team member, that has not worked on the story
+  - [ ] The new feature is manually used/tested/observed on the clone server
   - [ ] The feature branch is deployed to dev1 with `Reset non-user related Docker Volumes & Re-populate` turned on, and it's verified that the CD run is green  
 - [ ] ELSE, the new version is deployed to the dev server "dev1" using this branch
   - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on 
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
-  - [ ] The new feature is manually used/tested/observed on dev server by the reviewer
-  - [ ] The new feature is manually used/tested/observed on dev server by an additional team member, that has not worked on the story
-
+  - [ ] The new feature is manually used/tested/observed on dev server
