@@ -38,42 +38,10 @@
               :inReviewMode="slotProps.inReviewMode"
             />
             <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.EsgQuestionnaire"
-              :frameworkIdentifier="DataTypeEnum.EsgQuestionnaire"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(esgQuestionnaireDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-            />
-            <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.Lksg"
-              :frameworkIdentifier="DataTypeEnum.Lksg"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(lksgDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-            />
-            <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.Sfdr"
-              :frameworkIdentifier="DataTypeEnum.Sfdr"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(sfdrDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-            />
-            <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.Heimathafen"
-              :frameworkIdentifier="DataTypeEnum.Heimathafen"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(heimathafenDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-            />
-            <MultiLayerDataTableFrameworkPanel
-              v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
+              v-if="frameworkViewConfiguration!!.type == 'MultiLayerDataTable'"
               :frameworkIdentifier="dataType"
               :companyId="companyId"
-              :displayConfiguration="frameworkViewConfiguration!!.configuration"
+              :display-configuration="frameworkViewConfiguration!!.configuration"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -122,28 +90,12 @@ import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2p
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
 import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT";
-import { esgQuestionnaireDataModel } from "@/frameworks/esg-questionnaire/UploadConfig";
-import { lksgDataModel } from "@/frameworks/lksg/UploadConfig";
-import { sfdrDataModel } from "@/frameworks/sfdr/UploadConfig";
-import { heimathafenDataModel } from "@/frameworks/heimathafen/UploadConfig";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
   computed: {
     p2pDataModel() {
       return p2pDataModel;
-    },
-    esgQuestionnaireDataModel() {
-      return esgQuestionnaireDataModel;
-    },
-    lksgDataModel() {
-      return lksgDataModel;
-    },
-    sfdrDataModel() {
-      return sfdrDataModel;
-    },
-    heimathafenDataModel() {
-      return heimathafenDataModel;
     },
     frameworkConfiguration(): FrontendFrameworkDefinition<unknown> | undefined {
       return this.dataType ? getFrontendFrameworkDefinition(this.dataType) : undefined;
