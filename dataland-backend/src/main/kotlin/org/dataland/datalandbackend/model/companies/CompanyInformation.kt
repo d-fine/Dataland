@@ -46,5 +46,5 @@ data class CompanyInformation(
 
     val website: String?,
 
-    var parentCompanyId: String?,
+    var parentCompanyLei: String?,
 )

@@ -35,8 +35,6 @@ class CompanyAlterationManager(
         companyId: String,
         companyInformation: CompanyInformation,
     ): StoredCompanyEntity {
-        val parentCompany =
-            companyInformation.parentCompanyId?.let { companyQueryManager.getCompanyById(it) }
         val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
             companyName = companyInformation.companyName,
@@ -50,7 +48,7 @@ class CompanyAlterationManager(
             countryCode = companyInformation.countryCode,
             isTeaserCompany = companyInformation.isTeaserCompany ?: false,
             website = companyInformation.website,
-            parentCompany = parentCompany,
+            parentCompanyLei = companyInformation.parentCompanyLei,
         )
 
         return companyRepository.save(newCompanyEntity)
