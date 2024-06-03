@@ -1,7 +1,7 @@
 # Dataland
 Dataland is a platform to distribute ESG data. This repository contains the code for the Dataland Platform.
 
-# Getting Started 
+# Getting Started  
 Clone the repository and set environmental variables by executing `setEnvironmentVariables.ps1`. Some of the required 
 variables are left blank and have to be set by the user locally since they contain sensitiv information. To start the 
 application locally you can run `resetDevelopmentStack.sh` or `startDevelopmentStack.sh`. Please note that you will have
