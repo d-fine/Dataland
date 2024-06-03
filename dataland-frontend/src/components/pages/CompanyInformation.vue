@@ -55,16 +55,17 @@
         </div>
         <div class="company-details__info">
           <span>Parent Company: </span>
-          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer" data-test="parent-visible">
+          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
             <a
               class="link"
               style="display: inline-flex; color: black"
+              data-test="parent-visible"
               @click="visitParentCompany(assertDefined(companyInformation.parentCompanyLei))"
             >
               {{ companyInformation.parentCompanyLei }}</a
             ></span
           >
-          <span v-if="!hasParentCompany" class="font-semibold">—</span>
+          <span v-if="!hasParentCompany" data-test="parent-visible" class="font-semibold">—</span>
         </div>
       </div>
     </div>

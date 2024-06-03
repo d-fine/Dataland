@@ -41,6 +41,11 @@ describe("Component tests for the company info sheet", function (): void {
     cy.get('[data-test="lei-visible"]').should("have.text", companyInformationForTest.identifiers["Lei"][0]);
     cy.get('[data-test="headquarter-visible"]').should("have.text", companyInformationForTest.headquarters);
     cy.get('[data-test="sector-visible"]').should("have.text", companyInformationForTest.sector);
+    if (companyInformationForTest.parentCompanyLei) {
+      cy.get('[data-test="parent-visible"]').should("have.text", companyInformationForTest.parentCompanyLei);
+    } else {
+      cy.get('[data-test="parent-visible"]').should("have.text", "—");
+    }
   });
 
   it("Check visibility of review request buttons", function () {
