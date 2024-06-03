@@ -5,8 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
@@ -49,9 +47,8 @@ data class StoredCompanyEntity(
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
-    @ManyToOne
-    @JoinColumn(name = "parent_company")
-    var parentCompany: StoredCompanyEntity?,
+    @Column(name = "parent_company_lei")
+    var parentCompanyLei: String?,
 
     @OneToMany(mappedBy = "company")
     val dataRegisteredByDataland: MutableList<DataMetaInformationEntity>,
@@ -93,7 +90,7 @@ data class StoredCompanyEntity(
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,
                 website = website,
-                parentCompanyId = parentCompany?.companyId,
+                parentCompanyLei = parentCompanyLei,
             ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
         )

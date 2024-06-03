@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param countryCode of the country of origin
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
  * @param website the url under which the company website can be reached
+ * @param parentCompanyLei the lei of the parent company
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
@@ -46,5 +47,5 @@ data class CompanyInformation(
 
     val website: String?,
 
-    var parentCompanyLei: String?,
+    val parentCompanyLei: String?,
 )
