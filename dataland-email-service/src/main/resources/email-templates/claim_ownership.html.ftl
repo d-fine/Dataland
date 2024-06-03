@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <td colspan="3">
-            <br> Exciting news! 📣<br>Your data are in high demand on Dataland! ${firstName} ${lastName} is requesting data<br>from ${companyName}.</td>
+            <br> Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data<br>from ${companyName}.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
