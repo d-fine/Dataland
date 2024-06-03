@@ -3723,6 +3723,10 @@
           "website": {
             "type": "string",
             "nullable": true
+          },
+          "parentCompanyId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
