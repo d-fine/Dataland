@@ -117,11 +117,10 @@ describe("As a user I want to be able to register for an account and be able to 
             .get("div[id='profile-picture-dropdown-toggle']")
             .click()
             .get("a[id='profile-picture-dropdown-settings-button']")
-            .click()
-            .get("div[id='landing-signingin'] > a")
-            .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number })
-            .click()
-            .get("button:contains('Set up authenticator application')")
+            .click();
+          cy.get("button:contains('Account security')").should("exist").click();
+          cy.get("a:contains('Signing in')").should("exist").click();
+          cy.get("button:contains('Set up authenticator application')")
             .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number })
             .click()
             .get("a:contains('Unable to scan')")
@@ -138,7 +137,7 @@ describe("As a user I want to be able to register for an account and be able to 
                 .click()
                 .get("button[id='signOutButton']")
                 .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-
+              cy.pause();
               cy.task("setTotpKey", totpKey);
             });
         });
