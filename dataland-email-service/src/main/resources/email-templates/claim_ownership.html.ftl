@@ -19,7 +19,8 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data<br>from ${companyName}.</td>
+        <td colspan="3">Greetings<#if firstName?has_content && lastName?has_content> ${firstName} ${lastName}!<#elseif !firstName?has_content && !lastName?has_content>!</#if>
+            <br> Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data<br>from ${companyName}.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>

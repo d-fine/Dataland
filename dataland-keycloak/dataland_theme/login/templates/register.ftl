@@ -103,11 +103,8 @@
             let last_name_field = document.getElementById("lastName");
 
             submit_button.addEventListener("click", function () {
-                console.log("changing names");
                 if(!first_name_field.value) first_name_field.value = "-";
                 if(!last_name_field.value) last_name_field.value = "-";
-                console.log("first name: " + first_name_field.value);
-                console.log("last name: " + last_name_field.value);
             });
         </script>
 
