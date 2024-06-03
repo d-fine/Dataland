@@ -15,7 +15,7 @@ class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication()
         get() = jwt.getClaimAsString("preferred_username")
 
     val firstName: String
-        get() = jwt.getClaimAsString("given_name") ?: "" // todo check if this is best practise
+        get() = jwt.getClaimAsString("given_name") ?: ""
 
     val lastName: String
         get() = jwt.getClaimAsString("family_name") ?: ""
