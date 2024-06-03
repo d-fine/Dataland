@@ -2,101 +2,124 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Mobile",
-			"headquartersPostalCode": "90004-5932",
-			"sector": "e-commerce",
+			"headquarters": "West Korey",
+			"headquartersPostalCode": "91575",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"CZgxycKSMys5zmyoQG34"
+				],
 				"Isin": [
-					"d6UNOGShl3Zv"
+					"DNgRQ1c4ekMr"
 				],
-				"PermId": [
-					"83TsCbfWZc"
+				"PermId": [],
+				"Ticker": [
+					"TdeV72P"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"vbSk8rrkF"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"y4yWlyQMldFQllT"
+				]
 			},
-			"countryCode": "MW",
+			"countryCode": "PH",
 			"companyAlternativeNames": [
-				"Cremin Group",
-				"Satterfield and Sons",
-				"Spencer and Sons"
+				"Berge Group",
+				"Feeney Inc",
+				"Prohaska Group",
+				"Sporer - Reichel"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://fancy-cluster.com/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://fumbling-secretion.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-04-06",
+					"reportingDate": "2024-10-29",
 					"sectors": [
-						"01.13",
-						"22.23",
-						"45.20",
-						"46.65",
-						"80.10"
+						"49.39",
+						"85.10",
+						"86"
 					],
-					"numberOfEmployees": 7950,
-					"fiscalYearStart": "2024-05-25",
+					"numberOfEmployees": 1754,
+					"fiscalYearStart": "2024-10-15",
 					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-01-29",
+							"currency": "PEN"
+						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-07-06",
-							"currency": "UGX"
+							"isGroupLevel": "No",
+							"reportDate": "2023-02-19",
+							"currency": "SBD"
 						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-09-20",
+							"currency": "AOA"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-02-23",
-							"currency": "EUR"
+							"reportDate": "2023-05-06",
+							"currency": "HUF"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 18572.51,
-					"operatingCostInEur": 88324.46,
-					"capitalAssetsInEur": 54018.58
+					"revenueInEur": 68985.05,
+					"operatingCostInEur": 13441.8,
+					"capitalAssetsInEur": 80362.61
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 25178.6,
+						"value": 78809.71,
 						"dataSource": {
-							"page": 874,
-							"fileName": "ESEFReport",
+							"page": 45,
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "ROI"
 						},
-						"comment": "override 1080p pixel",
-						"quality": "Reported"
+						"comment": "parse online port",
+						"quality": "Estimated"
 					},
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 4602.83,
+					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Over75Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 92354.58,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
 					"naturalHazardsCovered": [
 						"Avalanche",
+						"EarthQuake",
+						"Flooding",
+						"Hail",
+						"Snow",
 						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2021"
 	}
 ]

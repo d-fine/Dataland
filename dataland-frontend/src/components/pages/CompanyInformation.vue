@@ -54,7 +54,7 @@
           <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
         </div>
         <div class="company-details__info">
-          <span>Parent Company (Lei): </span>
+          <span>Parent Company (LEI): </span>
           <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
             <a
               class="link"
