@@ -46,9 +46,9 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
             val result = statement.resultSet
 
             while (result.next()) {
-                var temp: String = result.getString("blob_id")
+                val temp: String = result.getString("blob_id")
                 validFileReferences.add(temp)
-                logger.info("Adding to known documents list: " + temp)
+                logger.info("Adding to known documents list: $temp")
             }
         } else {
             throw IOException("Error while accessing blob_items table in database")
@@ -74,17 +74,13 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
      * Remove company reports with invalid fileReference from map of company reports.
      * If no company reports are left, replace referencedReports with null.
      */
-    private fun replaceFaultyFileReferenceReferencedReports(
-        companyReportMap: JSONObject,
-        obj: JSONObject,
-        targetObjectName: String,
-    ) {
+    private fun replaceFaultyFileReferenceReferencedReports(companyReportMap: JSONObject, obj: JSONObject) {
         val keysToBeRemoved: ArrayList<String> = ArrayList()
 
         companyReportMap.keys().forEach {
             val companyReport = companyReportMap.getOrJavaNull(it) as JSONObject?
             if (companyReport !== null) {
-                val fileReference = companyReport.get("fileReference") as String
+                val fileReference = companyReport["fileReference"] as String
                 if (isFaultyFileReference(fileReference)) {
                     logger.info(
                         "Remove reference to document from CompanyReport Map." +
@@ -98,22 +94,18 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
             companyReportMap.remove(key)
         }
         if (companyReportMap.isEmpty) {
-            obj.put(targetObjectName, null as Any?)
+            obj.put(referencedReportsKey, null as Any?)
         }
     }
 
     /**
      * Replace dataSource with null if fileReference is invalid
      */
-    private fun replaceFaultyFileReferenceDataSource(
-        dataSource: JSONObject,
-        obj: JSONObject,
-        targetObjectName: String,
-    ) {
-        val fileReference = dataSource.get("fileReference") as String
+    private fun replaceFaultyFileReferenceDataSource(dataSource: JSONObject, obj: JSONObject) {
+        val fileReference = dataSource["fileReference"] as String
         if (isFaultyFileReference(fileReference)) {
-            logger.info("Replace reference to document with null. Broken file reference: " + fileReference)
-            obj.put(targetObjectName, null as Any?)
+            logger.info("Replace reference to document with null. Broken file reference: $fileReference")
+            obj.put(dataSourceKey, null as Any?)
         }
     }
 
@@ -126,14 +118,14 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
     ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
-            val dataSource = obj.getOrJavaNull("dataSource") as JSONObject?
+            val dataSource = obj.getOrJavaNull(dataSourceKey) as JSONObject?
             if (dataSource !== null) {
-                replaceFaultyFileReferenceDataSource(dataSource, obj, "dataSource")
+                replaceFaultyFileReferenceDataSource(dataSource, obj)
             }
 
-            val companyReportList = obj.getOrJavaNull("referencedReports") as JSONObject?
+            val companyReportList = obj.getOrJavaNull(referencedReportsKey) as JSONObject?
             if (companyReportList !== null) {
-                replaceFaultyFileReferenceReferencedReports(companyReportList, obj, "referencedReports")
+                replaceFaultyFileReferenceReferencedReports(companyReportList, obj)
             }
             if ((dataSource == null) && (companyReportList == null)) {
                 obj.keys().forEach {
@@ -147,6 +139,9 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
         return fileReference.matches(regex)
     }
 
+    private val dataSourceKey = "dataSource"
+    private val referencedReportsKey = "referencedReports"
+
     /**
      * Migrate the data points
      *
@@ -157,6 +152,7 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
      * Both cases are handled separately.
      *
      */
+
     fun migrateFaultyFileReferences(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
         dataset.keys().forEach {
