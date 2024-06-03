@@ -30,6 +30,9 @@ class BulkDataRequestEmailMessageSender(
     ) {
         val properties = mapOf(
             "User" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).userDescription,
+            "E-Mail" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
+            "First Name" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).firstName,
+            "Last Name" to (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).lastName,
             "Reporting Periods" to formatReportingPeriods(bulkDataRequest.reportingPeriods),
             "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", ") { it.value },
             "Accepted Companies (Dataland ID)" to acceptedCompanyIdentifiers.joinToString(", "),
