@@ -108,8 +108,8 @@ const dataAndMetaInformationForDisplay = shallowRef<DataAndMetaInformation<Frame
 watch(
   [
     (): string => props.companyId,
-    (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay,
     (): string => props.frameworkIdentifier,
+    (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay,
   ],
 
   async () => reloadDisplayData(++updateCounter.value),
