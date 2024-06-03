@@ -64,7 +64,6 @@ dependencies {
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
-    testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
     testImplementation(Spring.security.spring_security_test)
 }
