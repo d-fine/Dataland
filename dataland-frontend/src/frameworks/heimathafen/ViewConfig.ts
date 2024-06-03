@@ -56,7 +56,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Methodik",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -338,7 +338,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Keine Armut",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -409,7 +409,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Kein Hunger",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -480,7 +480,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Gesundheit und Wohlergehen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -559,7 +559,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Hochwertige Bildung",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -632,7 +632,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Geschlechtergleichheit",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -711,7 +711,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -799,7 +799,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Bezahlbare und saubere Energie",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -878,7 +878,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -967,7 +967,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Industrie, Innovation und Infrastruktur",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1055,7 +1055,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Weniger Ungleichheiten",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1132,7 +1132,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Nachhaltige Städte und Gemeinden",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1212,7 +1212,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Nachhaltiger Konsum und Produktion",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1298,7 +1298,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Maßnahmen zum Klimaschutz",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1377,7 +1377,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Leben unter Wasser",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1448,7 +1448,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Leben and Land",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1519,7 +1519,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1607,7 +1607,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Impactmerkmale - Partnerschaften zur Erreichung der Ziele",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1695,7 +1695,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Implementierung",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1969,13 +1969,13 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
     label: "Environmental",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Nachhaltigskeitsrisiken",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2099,7 +2099,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAIs",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2180,7 +2180,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAI - biologische Vielfalt",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2251,7 +2251,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAI - Wasser",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2317,7 +2317,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAI - Abfall",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2383,7 +2383,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAI - Umwelt auf dem Land",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2454,7 +2454,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "SFDR",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2473,7 +2473,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Kontroverse Geschäftsfelder - Tabakerzeugung",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2542,7 +2542,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Kontroverse Geschäftsfelder - Kohleförderung und -verteilung",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2618,13 +2618,13 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
     label: "Social",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Nachhaltigskeitsrisiken",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2742,7 +2742,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAI - sozial",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2809,7 +2809,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "PAI - Soziales auf dem Land",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2880,7 +2880,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "SFDR",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2899,7 +2899,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Kontroverse Geschäftsfelder - Waffen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2997,7 +2997,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Kontroverse Geschäftsfelder",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -3023,13 +3023,13 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
     label: "Governance",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Good Governance",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -3090,7 +3090,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Good Governance - UNGC",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -3141,7 +3141,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       {
         type: "section",
         label: "Bestechung und Korruption",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
