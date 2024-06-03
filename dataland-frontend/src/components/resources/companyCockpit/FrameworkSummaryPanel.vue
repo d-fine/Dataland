@@ -40,7 +40,7 @@
       @pointerleave="onCursorLeaveProvideButton"
       :data-test="`${framework}-claim-data-ownership-button`"
     >
-      CLAIM COMPANY OWNERSHIP
+      CLAIM OWNERSHIP
     </a>
   </div>
   <ClaimOwnershipDialog
@@ -130,26 +130,32 @@ function onClickPanel(): void {
 }
 /**
  * handles the emitted claim event
+ * @returns the claimIsSubmitted value
  */
-function onClaimSubmitted() {
+function onClaimSubmitted(): boolean {
   claimIsSubmitted.value = true;
+  return claimIsSubmitted.value;
 }
 /**
  * handles the close button click event of the dialog
+ * @returns the dialogIsOpen value
  */
-function onCloseDialog() {
+function onCloseDialog(): boolean {
   dialogIsOpen.value = false;
+  return dialogIsOpen.value;
 }
 /**
  * Uses the dataland API to retrieve information about the company identified by the local
  * companyId object.
+ * @returns the company name
  */
-async function getCompanyName() {
+async function getCompanyName(): Promise<string> {
   try {
     if (props.companyId != undefined) {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
         .companyDataController;
       companyName.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data.companyName;
+      return companyName.value;
     }
   } catch (error) {
     console.error(error);
@@ -173,10 +179,12 @@ async function dummyName(): Promise<void> {
 }
 /**
  * opens the dialog
+ * @returns the dialogIsOpen value
  */
-function openDialog() {
+function openDialog(): boolean {
   if (authenticated) {
     dialogIsOpen.value = true;
+    return dialogIsOpen.value;
   }
 }
 /**
