@@ -136,15 +136,19 @@ describe("Tests for the MultiLayerDataTable component", () => {
     },
   ];
 
+  const baseMetaInfo = {
+    companyId: "not-relevant-for-test",
+    dataType: DataTypeEnum.Heimathafen,
+    uploadTime: 111111111,
+    currentlyActive: true,
+    qaStatus: QaStatus.Accepted,
+  };
+
   const dummyFrameworkTestDataAndMetaInfo1: DataAndMetaInformation<DummyFrameworkForTest> = {
     metaInfo: {
+      ...baseMetaInfo,
       dataId: "does-not-matter-abc1",
-      companyId: "not-relevant-for-test1",
-      dataType: DataTypeEnum.Heimathafen,
-      uploadTime: 111111111,
       reportingPeriod: "Testing 1",
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
     data: {
       stringOnLevel1: "Dataset 1 - String 1",
@@ -152,15 +156,12 @@ describe("Tests for the MultiLayerDataTable component", () => {
       stringOnLevel3: "Dataset 1 - String 3",
     },
   };
+
   const dummyFrameworkTestDataAndMetaInfo2: DataAndMetaInformation<DummyFrameworkForTest> = {
     metaInfo: {
+      ...baseMetaInfo,
       dataId: "does-not-matter-abc2",
-      companyId: "not-relevant-for-test2",
-      dataType: DataTypeEnum.Heimathafen,
-      uploadTime: 111111111,
       reportingPeriod: "Testing 2",
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
     data: {
       stringOnLevel1: "Dataset 2 - String 1",
@@ -168,15 +169,12 @@ describe("Tests for the MultiLayerDataTable component", () => {
       stringOnLevel3: "Dataset 2 - String 3",
     },
   };
+
   const dummyFrameworkTestDataAndMetaInfo3: DataAndMetaInformation<DummyFrameworkForTest> = {
     metaInfo: {
+      ...baseMetaInfo,
       dataId: "does-not-matter-abc3",
-      companyId: "not-relevant-for-test3",
-      dataType: DataTypeEnum.Heimathafen,
-      uploadTime: 111111111,
       reportingPeriod: "Testing 3",
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
     data: {
       stringOnLevel1: undefined,
