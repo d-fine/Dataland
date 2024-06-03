@@ -3,6 +3,8 @@ import { PublicFrameworkDefinitions } from "@/frameworks/BasePublicFrameworkRegi
 
 /**
  * Gets the base framework definition for a specific public framework identified by its identifier string
+ * It is critical that no files in the base-framework-definition dependency tree import .vue files
+ * as this code is shared with the tests that do not know how to handle such files
  * @param identifier of the public framework
  * @returns the base framework definition
  */

@@ -68,7 +68,7 @@ class EurodatDataStore(
                 storeBlobInEurodat(dataId, correlationId, hashAsArrayElement, eurodatId, eurodatCredentials)
             }
             logger.info(
-                "Documents with hash: $hashAsArrayElement, eurodatId: $eurodatId for dataId: $dataId was " +
+                "Document with hash: $hashAsArrayElement, eurodatId: $eurodatId for dataId: $dataId was " +
                     "stored in eurodat storage. CorrelationId: $correlationId",
             )
         }

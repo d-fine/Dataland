@@ -136,12 +136,12 @@ describe("Component test for the company cockpit", () => {
   }
   /**
    * Validates the sme framework summary panel
-   * @param iAmDataOwner is the current user company data owner
+   * @param isDataOwner is the current user company data owner
    */
-  function validateSmeFrameworkSummaryPanel(iAmDataOwner: boolean): void {
+  function validateSmeFrameworkSummaryPanel(isDataOwner: boolean): void {
     const frameworkName = "sme";
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-    if (iAmDataOwner) {
+    if (isDataOwner) {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
     } else {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
@@ -153,9 +153,9 @@ describe("Component test for the company cockpit", () => {
   /**
    * Validates the framework summary panels by asserting their existence and checking for their contents
    * @param isProvideDataButtonExpected determines if a provide-data-button is expected to be found in the panels
-   * @param iAmDataOwner is the current user company data owner
+   * @param isDataOwner is the current user company data owner
    */
-  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, iAmDataOwner: boolean = false): void {
+  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, isDataOwner: boolean = false): void {
     Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary).forEach(
       ([frameworkName, aggregatedFrameworkDataSummary]: [string, AggregatedFrameworkDataSummary]) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
@@ -165,7 +165,7 @@ describe("Component test for the company cockpit", () => {
           aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods.toString(),
         );
         if (frameworkName == "sme") {
-          validateSmeFrameworkSummaryPanel(iAmDataOwner);
+          validateSmeFrameworkSummaryPanel(isDataOwner);
           return;
         }
         if (isProvideDataButtonExpected) {
