@@ -4,6 +4,8 @@ import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@example.com`;
+  const firstName = "Dummy";
+  const lastName = "User";
   const passwordBytes = crypto.getRandomValues(new Uint32Array(8));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
@@ -46,7 +48,12 @@ describe("As a user I want to be able to register for an account and be able to 
       .get("#email")
       .should("exist")
       .type(email, { force: true })
-
+      .get("#firstName")
+      .should("exist")
+      .type(firstName, { force: true })
+      .get("#lastName")
+      .should("exist")
+      .type(lastName, { force: true })
       .get("#password")
       .should("exist")
       .type(randomHexPassword, { force: true })
@@ -123,6 +130,7 @@ describe("As a user I want to be able to register for an account and be able to 
             .click()
             .get("a[id='profile-picture-dropdown-settings-button']")
             .click();
+          cy.wait(100);
           cy.get("button:contains('Account security')").should("exist").click();
           cy.get("a:contains('Signing in')").should("exist").click();
           cy.get("button:contains('Set up Authenticator application')")
