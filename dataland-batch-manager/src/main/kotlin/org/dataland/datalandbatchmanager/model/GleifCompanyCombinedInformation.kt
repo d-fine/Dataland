@@ -1,0 +1,47 @@
+package org.dataland.datalandbatchmanager.model
+
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+
+data class GleifCompanyCombinedInformation (
+    val gleifCompanyInformation: GleifCompanyInformation,
+    val finalParentLei: String? = null,
+) {
+    /**
+     * function to transform a company information object from GLEIF to the corresponding Dataland object.
+     * @return the Dataland companyInformation object with the information of the corresponding GLEIF object
+     */
+    fun toCompanyPost(): CompanyInformation {
+        return CompanyInformation(
+            companyName = gleifCompanyInformation.companyName,
+            companyAlternativeNames = null,
+            companyLegalForm = null,
+            countryCode = gleifCompanyInformation.countryCode,
+            headquarters = gleifCompanyInformation.headquarters,
+            headquartersPostalCode = gleifCompanyInformation.headquartersPostalCode,
+            sector = null,
+            website = null,
+            identifiers = mapOf(
+                "Lei" to listOf(gleifCompanyInformation.lei),
+            ),
+            parentCompanyLei = finalParentLei,
+        )
+    }
+
+    /**
+     * Transform the GLEIF company information to a PATCH object that can be used to update the information of the
+     * company using the Dataland API
+     */
+    fun toCompanyPatch(): CompanyInformationPatch {
+        return CompanyInformationPatch(
+            companyName = gleifCompanyInformation.companyName,
+            countryCode = gleifCompanyInformation.countryCode,
+            headquarters = gleifCompanyInformation.headquarters,
+            headquartersPostalCode = gleifCompanyInformation.headquartersPostalCode,
+            identifiers = mapOf(
+                "Lei" to listOf(gleifCompanyInformation.lei),
+            ),
+            parentCompanyLei = finalParentLei,
+        )
+    }
+}

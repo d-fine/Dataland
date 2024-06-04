@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifRelationShipInformation
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
 import java.io.File
@@ -41,6 +42,15 @@ class GleifCsvParser {
         return CsvMapper()
             .registerModule(kotlinModule())
             .readerFor(GleifCompanyInformation::class.java)
+            .with(CsvSchema.emptySchema().withHeader())
+            .readValues(bufferedReader)
+    }
+
+    fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader):
+        MappingIterator<GleifRelationshipInformation> {
+        return CsvMapper()
+            .registerModule(kotlinModule())
+            .readerFor(GleifRelationshipInformation::class.java)
             .with(CsvSchema.emptySchema().withHeader())
             .readValues(bufferedReader)
     }

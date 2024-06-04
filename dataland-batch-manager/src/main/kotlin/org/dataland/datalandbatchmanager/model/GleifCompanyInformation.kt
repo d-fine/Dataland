@@ -25,39 +25,5 @@ data class GleifCompanyInformation(
     @JsonProperty("Entity.HeadquartersAddress.Country")
     val countryCode: String,
 ) {
-    /**
-     * function to transform a company information object from GLEIF to the corresponding Dataland object.
-     * @return the Dataland companyInformation object with the information of the corresponding GLEIF object
-     */
-    fun toCompanyPost(): CompanyInformation {
-        return CompanyInformation(
-            companyName = companyName,
-            companyAlternativeNames = null,
-            companyLegalForm = null,
-            countryCode = countryCode,
-            headquarters = headquarters,
-            headquartersPostalCode = headquartersPostalCode,
-            sector = null,
-            website = null,
-            identifiers = mapOf(
-                "Lei" to listOf(lei),
-            ),
-        )
-    }
 
-    /**
-     * Transform the GLEIF company information to a PATCH object that can be used to update the information of the
-     * company using the Dataland API
-     */
-    fun toCompanyPatch(): CompanyInformationPatch {
-        return CompanyInformationPatch(
-            companyName = companyName,
-            countryCode = countryCode,
-            headquarters = headquarters,
-            headquartersPostalCode = headquartersPostalCode,
-            identifiers = mapOf(
-                "Lei" to listOf(lei),
-            ),
-        )
-    }
 }

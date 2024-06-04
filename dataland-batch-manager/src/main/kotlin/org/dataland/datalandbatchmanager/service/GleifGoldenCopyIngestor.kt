@@ -2,6 +2,7 @@ package org.dataland.datalandbatchmanager.service
 
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
+import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +33,7 @@ class GleifGoldenCopyIngestor(
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
     @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
+    @Autowired private val relationShipExtractor: RelationshipExtractor,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
@@ -76,8 +78,10 @@ class GleifGoldenCopyIngestor(
             waitForBackend()
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
+            processRelationshipFile(updateAllCompanies = false)
             processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             processIsinMappingFile()
+
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -113,6 +117,18 @@ class GleifGoldenCopyIngestor(
             }
         }
         logger.info("Finished processing of file $zipFile in ${formatExecutionTime(duration)}.")
+    }
+
+    @Synchronized
+    private fun processRelationshipFile(updateAllCompanies: Boolean = false) {
+        logger.info("Starting parent mapping update cycle for latest file.")
+        val newRelationshipFile = File.createTempFile("gleif_relationship_update", ".csv")
+        val duration = measureTime {
+            gleifApiAccessor.getFullGoldenCopyRR(newRelationshipFile)
+            relationShipExtractor.prepareFinalParentMapping(newRelationshipFile)
+            if (updateAllCompanies) companyUploader.updateRelationships(relationShipExtractor.finalParentMapping)
+        }
+        logger.info("Finished processing of file $newRelationshipFile in ${formatExecutionTime(duration)}.")
     }
 
     /**
@@ -166,7 +182,9 @@ class GleifGoldenCopyIngestor(
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach { companyUploader.uploadOrPatchSingleCompany(it) }
+                    .forEach {companyUploader.uploadOrPatchSingleCompany(
+                        GleifCompanyCombinedInformation(it,
+                        relationShipExtractor.finalParentMapping.getOrDefault(it.lei, null))) }
             }.get()
         } finally {
             uploadThreadPool.shutdown()

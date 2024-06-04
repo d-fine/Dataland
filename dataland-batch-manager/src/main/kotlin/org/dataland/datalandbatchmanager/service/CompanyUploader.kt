@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -84,14 +84,14 @@ class CompanyUploader(
      * This function absorbs errors and logs them.
      */
     fun uploadOrPatchSingleCompany(
-        companyInformation: GleifCompanyInformation,
+        companyInformation: GleifCompanyCombinedInformation,
     ) {
         var patchCompanyId: String? = null
         retryOnCommonApiErrors {
             try {
                 logger.info(
-                    "Uploading company data for ${companyInformation.companyName} " +
-                        "(LEI: ${companyInformation.lei})",
+                    "Uploading company data for ${companyInformation.gleifCompanyInformation.companyName} " +
+                        "(LEI: ${companyInformation.gleifCompanyInformation.lei})",
                 )
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
@@ -106,7 +106,8 @@ class CompanyUploader(
 
         patchCompanyId?.let {
             logger.info(
-                "Company Data for Company ${companyInformation.companyName} (LEI: ${companyInformation.lei}) " +
+                "Company Data for Company ${companyInformation.gleifCompanyInformation.companyName} " +
+                        "(LEI: ${companyInformation.gleifCompanyInformation.lei}) " +
                     "already present on Dataland. Proceeding to patch company with id $it",
             )
             patchSingleCompany(it, companyInformation)
@@ -118,7 +119,7 @@ class CompanyUploader(
      */
     private fun patchSingleCompany(
         companyId: String,
-        companyInformation: GleifCompanyInformation,
+        companyInformation: GleifCompanyCombinedInformation,
     ) {
         retryOnCommonApiErrors {
             companyDataControllerApi.patchCompanyById(
@@ -126,6 +127,38 @@ class CompanyUploader(
                 companyInformation.toCompanyPatch(),
             )
         }
+    }
+
+    /**
+     * Updates the final / ultimate parents of all companies.
+     * @param finalParentMapping the parent-mapping with the format "LEI"->"LEI"
+     */
+    fun updateRelationships(finalParentMapping: Map<String, String>) {
+        for ((startLei, endLei) in finalParentMapping) {
+            val companyId = searchCompanyByLEI(startLei)
+            logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
+            companyDataControllerApi.patchCompanyById(
+                companyId,
+                CompanyInformationPatch(parentCompanyLei=endLei),
+            )
+        }
+    }
+
+    private fun searchCompanyByLEI(lei: String): String {
+        var companyId = ""
+        retryOnCommonApiErrors {
+            logger.info("Searching for company with LEI: $lei")
+            companyId = try {
+                companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
+            } catch (e: ClientException) {
+                if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    logger.error("Could not find company with LEI: $lei")
+                    return@retryOnCommonApiErrors
+                }
+                throw e
+            }
+        }
+        return companyId
     }
 
     /**
@@ -137,20 +170,9 @@ class CompanyUploader(
     ) {
         @Suppress("unused")
         for ((lei, newIsins) in leiIsinMapping) {
-            retryOnCommonApiErrors {
-                logger.info("Searching for company with LEI: $lei")
-                val companyId = try {
-                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
-                } catch (e: ClientException) {
-                    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                        logger.error("Could not find company with LEI: $lei")
-                        return@retryOnCommonApiErrors
-                    }
-                    throw e
-                }
-                logger.info("Patching company with ID: $companyId and LEI: $lei")
-                updateIsinsOfCompany(newIsins, companyId)
-            }
+            val companyId = searchCompanyByLEI(lei)
+            logger.info("Patching company with ID: $companyId and LEI: $lei")
+            updateIsinsOfCompany(newIsins, companyId)
         }
     }
 

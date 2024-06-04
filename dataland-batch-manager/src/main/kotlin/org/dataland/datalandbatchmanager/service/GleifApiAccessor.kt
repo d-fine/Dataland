@@ -34,7 +34,7 @@ class GleifApiAccessor(
      * @param targetFile the local target file to be written
      */
     fun getLastMonthGoldenCopyDelta(targetFile: File) {
-        downloadFileFromGleif("latest.csv?delta=LastMonth", targetFile, "Golden Copy Delta File")
+        downloadFileFromGleif("lei2/latest.csv?delta=LastMonth", targetFile, "Golden Copy Delta File")
     }
 
     /**
@@ -42,7 +42,15 @@ class GleifApiAccessor(
      * @param targetFile the local target file to be written
      */
     fun getFullGoldenCopy(targetFile: File) {
-        downloadFileFromGleif("latest.csv", targetFile, "full Golden Copy File")
+        downloadFileFromGleif("lei2/latest.csv", targetFile, "full Golden Copy File")
+    }
+
+    /**
+     * Downloads the complete relationship golden copy file
+     * @param targetFile the local target file to be written
+     */
+    fun getFullGoldenCopyRR(targetFile: File) {
+        downloadFileFromGleif("rr/latest.csv", targetFile, "full Golden Copy RR File")
     }
 
     /**
