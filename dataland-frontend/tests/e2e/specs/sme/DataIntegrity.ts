@@ -110,11 +110,11 @@ describeIf(
               cy.visitAndCheckAppMount(
                 "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/upload?templateDataId=" + dataId,
               );
-              uploadReports.selectFile(TEST_PDF_FILE_NAME);
-              uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
-              uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+              uploadReports.selectFile(`${TEST_PDF_FILE_NAME}3`);
+              uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}-private`);
+              uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
               cy.get('div[name="fileName"]').click();
-              cy.get("ul.p-dropdown-items li").contains(TEST_PDF_FILE_NAME).click();
+              cy.get("ul.p-dropdown-items li").contains(`${TEST_PDF_FILE_NAME}-private`).click();
               cy.intercept({
                 url: `**/api/data/${DataTypeEnum.Sme}`,
                 times: 1,
@@ -144,7 +144,7 @@ describeIf(
                 .find("a.link")
                 .should("include.text", "MWh")
                 .click();
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
               cy.readFile(expectedPathToDownloadedReport).should("not.exist");
               cy.intercept("**/documents/*").as("documentDownload");
               cy.get('[data-test="download-link"]').click();
