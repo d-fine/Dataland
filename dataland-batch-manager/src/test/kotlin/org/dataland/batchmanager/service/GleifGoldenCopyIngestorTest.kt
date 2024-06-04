@@ -117,7 +117,7 @@ class GleifGoldenCopyIngestorTest {
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
         val mockFileUtils = mockStatic(FileUtils::class.java)
         companyIngestor.processFullGoldenCopyFileIfEnabled()
-        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(2))
+        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(3))
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
         mockStaticFile.close()
         mockFileUtils.close()

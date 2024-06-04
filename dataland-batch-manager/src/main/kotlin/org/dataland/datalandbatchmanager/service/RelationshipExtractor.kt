@@ -1,31 +1,28 @@
 package org.dataland.datalandbatchmanager.service
 
+import com.fasterxml.jackson.databind.MappingIterator
+import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.dataland.datalandbatchmanager.model.GleifRelationshipTypes
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.io.File
 
 /**
  * The class to create the list of mapping from child to parent
  */
 @Component
-class RelationshipExtractor(
-    @Autowired private val gleifParser: GleifCsvParser,
-) {
-
+class RelationshipExtractor {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val mappings = mutableMapOf<GleifRelationshipTypes, MutableMap<String, String>>()
     var finalParentMapping = mutableMapOf<String, String>()
 
     /**
      *
      */
-    fun prepareFinalParentMapping(newMappingFile: File): Map<String, String> {
-        parseCsvToGroupedMap(newMappingFile)
+    fun prepareFinalParentMapping(gleifParser: MappingIterator<GleifRelationshipInformation>): Map<String, String> {
+        val mappings = parseCsvToGroupedMap(gleifParser)
 
         val ultimateParentMapping = mappings[GleifRelationshipTypes.IS_ULTIMATELY_CONSOLIDATED_BY]
-        val finalDirectParentMapping = findFinalDirectParent()
+        val directParentMapping = mappings[GleifRelationshipTypes.IS_DIRECTLY_CONSOLIDATED_BY]
+        val finalDirectParentMapping = findFinalDirectParent(directParentMapping)
 
         if (ultimateParentMapping == null) {
             throw NotImplementedError("No GLEIF relationship information for IS_ULTIMATELY_CONSOLIDATED_BY found")
@@ -46,46 +43,53 @@ class RelationshipExtractor(
      * Iterate through chain of direct parents to find final parent.
      * If infinite loop encountered: ignore it
      */
-    private fun findFinalDirectParent(): Map<String, String> {
+    private fun findFinalDirectParent(directParentMapping: Map<String, String>?): Map<String, String> {
         val finalDirectParentMapping = mutableMapOf<String, String>()
 
-        val directParentMapping = mappings[GleifRelationshipTypes.IS_DIRECTLY_CONSOLIDATED_BY]
-
         directParentMapping?.keys?.forEach { startNode ->
-
-            val leisAlreadyTraversed: Set<String> = emptySet()
-            var previousLEI = startNode
-
-            while (true) {
-                val targetLEI = directParentMapping.getOrElse(previousLEI) { null }
-                if (targetLEI == null) {
-                    finalDirectParentMapping[startNode] = previousLEI
-                    break
-                } else {
-                    if (targetLEI in leisAlreadyTraversed) {
-                        logger.info("Could not find final parent node because of infinite loop for LEI $startNode")
-                        break
-                    }
-                    leisAlreadyTraversed.plus(targetLEI)
-                    previousLEI = targetLEI
-                }
+            val finalParent = findFinalDirectParentOneLei(startNode, directParentMapping)
+            if (finalParent != null) {
+                finalDirectParentMapping[startNode] = finalParent
             }
         }
 
         return finalDirectParentMapping
     }
 
-    /**
-     * Coverts CSV file to a map of RelationshipType - (Map of startLEI - endLEI)
-     * @param csvFile the file to be parsed
-     */
-    private fun parseCsvToGroupedMap(zipFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
-        val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
+    private fun findFinalDirectParentOneLei(startNode: String, directParentMapping: Map<String, String>): String? {
+        val leisAlreadyTraversed: MutableSet<String> = mutableSetOf()
+        var finalParent: String? = null
+        var previousLEI = startNode
+        leisAlreadyTraversed.add(startNode)
 
-        gleifCsvParser.forEach { entry ->
+        while (true) {
+            val targetLEI = directParentMapping.getOrElse(previousLEI) { null }
+            val alreadyTraversed = (targetLEI in leisAlreadyTraversed)
+            if ((targetLEI == null) || alreadyTraversed) {
+                if (!alreadyTraversed) {
+                    finalParent = previousLEI
+                } else {
+                    logger.info("Could not find final parent node because of circular references for LEI $startNode")
+                }
+                break
+            }
+            leisAlreadyTraversed.add(targetLEI)
+            previousLEI = targetLEI
+        }
+        return finalParent
+    }
+
+    /**
+     * Converts the zipped CSV file to a map of RelationshipType - (Map of startLEI - endLEI)
+     * @param zipFile the file to be parsed
+     */
+    private fun parseCsvToGroupedMap(gleifParser: MappingIterator<GleifRelationshipInformation>):
+        MutableMap<GleifRelationshipTypes, MutableMap<String, String>> {
+        val mappings = mutableMapOf<GleifRelationshipTypes, MutableMap<String, String>>()
+        gleifParser.forEach { entry ->
             val relationShipMap = mappings.getOrPut(entry.relationshipType) { mutableMapOf() }
             relationShipMap[entry.startNode] = entry.endNode
         }
+        return mappings
     }
 }

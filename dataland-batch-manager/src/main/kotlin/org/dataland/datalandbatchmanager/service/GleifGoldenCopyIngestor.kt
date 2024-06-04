@@ -77,8 +77,8 @@ class GleifGoldenCopyIngestor(
 
             waitForBackend()
             logger.info("Retrieving all company data available via GLEIF.")
-            val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processRelationshipFile(updateAllCompanies = false)
+            val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             processIsinMappingFile()
         } else {
@@ -92,6 +92,7 @@ class GleifGoldenCopyIngestor(
         waitForBackend()
         prepareGleifDeltaFile()
         processIsinMappingFile()
+        processRelationshipFile(updateAllCompanies = true)
     }
 
     /**
@@ -115,7 +116,7 @@ class GleifGoldenCopyIngestor(
                 }
             }
         }
-        logger.info("Finished processing of file $zipFile in ${formatExecutionTime(duration)}.")
+        logger.info("Finished processing of GLEIF file $zipFile in ${formatExecutionTime(duration)}.")
     }
 
     @Synchronized
@@ -124,10 +125,12 @@ class GleifGoldenCopyIngestor(
         val newRelationshipFile = File.createTempFile("gleif_relationship_update", ".csv")
         val duration = measureTime {
             gleifApiAccessor.getFullGoldenCopyRR(newRelationshipFile)
-            relationShipExtractor.prepareFinalParentMapping(newRelationshipFile)
+            val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
+            val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
+            relationShipExtractor.prepareFinalParentMapping(gleifCsvParser)
             if (updateAllCompanies) companyUploader.updateRelationships(relationShipExtractor.finalParentMapping)
         }
-        logger.info("Finished processing of file $newRelationshipFile in ${formatExecutionTime(duration)}.")
+        logger.info("Finished processing of GLEIF RR file $newRelationshipFile in ${formatExecutionTime(duration)}.")
     }
 
     /**

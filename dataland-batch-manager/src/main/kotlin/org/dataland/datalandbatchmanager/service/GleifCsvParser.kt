@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
 import java.io.File
