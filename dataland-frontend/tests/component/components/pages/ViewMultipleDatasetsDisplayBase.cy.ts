@@ -5,21 +5,23 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
-  QaStatus, EsgQuestionnaireData,
+  QaStatus,
+  type SfdrData,
+  DataAndMetaInformationEsgQuestionnaireData,
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 describe("Component test for the view multiple dataset display base component", () => {
   let preparedFixturesLksg: Array<FixtureData<LksgData>>;
-  let preparedFixturesEsg: Array<FixtureData<EsgQuestionnaireData>>;
+  let preparedFixturesSfdr: Array<FixtureData<SfdrData>>;
 
   before(function () {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
       preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
     });
-    cy.fixture("CompanyInformationWithEsgQuestionnairePreparedFixtures").then(function (jsonContent) {
-      preparedFixturesEsg = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
+    cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
+      preparedFixturesSfdr = jsonContent as Array<FixtureData<SfdrData>>;
     });
   });
 
@@ -94,14 +96,46 @@ describe("Component test for the view multiple dataset display base component", 
   });
 
   it("Check, if the Dropdown for frameworks display data", () => {
-    const preparedFixtureLksg = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixturesLksg);
-    const preparedFixtureEsg = getPreparedFixture("EsgQuestionnaire-dataset-with-no-null-fields", preparedFixturesEsg);
+    const preparedFixtureSfdr = getPreparedFixture("TestForDropDown", preparedFixturesSfdr);
+    const preparedFixtureLksg = getPreparedFixture("TestForDropDown", preparedFixturesLksg);
+
+    const mockedDataLksg = constructCompanyApiResponseForLksg(preparedFixtureLksg.t);
+    const mockedDataSfdr = constructCompanyApiResponseForSfdr(preparedFixtureSfdr.t)
+
+    cy.intercept(`/api/companies/*/info`, preparedFixtureLksg.companyInformation);
+    cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedDataLksg]);
+
+    cy.intercept(`/api/companies/*/info`, preparedFixtureSfdr.companyInformation);
+    cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedDataSfdr]);
+
+    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
+      status: 200,
+      body: [mockedDataLksg.metaInfo, mockedDataSfdr.metaInfo],
+    });
+
+    cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
+      keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyId: mockedDataLksg.metaInfo.companyId,
+        dataType: DataTypeEnum.Lksg,
+        viewInPreviewMode: false,
+      },
+    })
+
+
+    //cy.get('[data-test="chooseFrameworkDropdown"').select("Sdfr")
+
+    cy.get('[data-test=chooseFrameworkDropdown]').click()
+    cy.get('.dropdown-option:contains("SFDR")').click()
+
+    // cy.get('[data-cy=multiLayerDataTable]').should('be.visible');
+
+
   });
 
-  cy.visit('https://your-app-url.com')
-  cy.get('#dropdown').click()
 
-  cy.get('[data-cy=multiLayerDataTable]').should('be.visible');
 
 });
 
@@ -128,6 +162,24 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
     uploaderUserId: "mock-uploader-id",
   };
   return { metaInfo: metaData, data: lksgData };
+}
+
+function constructCompanyApiResponseForSfdr(baseDataset: SfdrData): DataAndMetaInformationEsgQuestionnaireData {
+  const reportingYear = 2023;
+  const reportingDate = `${reportingYear}-01-01`;
+  const sfdrData: SfdrData = structuredClone(baseDataset);
+  sfdrData.general.general.dataDate = reportingDate;
+  const metaData: DataMetaInformation = {
+    dataId: `dataset-b`,
+    reportingPeriod: reportingYear.toString(),
+    qaStatus: QaStatus.Accepted,
+    currentlyActive: true,
+    dataType: DataTypeEnum.EsgQuestionnaire,
+    companyId: "mock-company-id",
+    uploadTime: 0,
+    uploaderUserId: "mock-uploader-id",
+  };
+  return { metaInfo: metaData, data: sfdrData };
 }
 
 /**

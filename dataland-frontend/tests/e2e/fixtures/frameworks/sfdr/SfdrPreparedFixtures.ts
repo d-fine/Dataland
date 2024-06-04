@@ -2,6 +2,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type SfdrData, YesNo } from "@clients/backend";
 import { generateSfdrData, generateSfdrFixtures } from "./SfdrDataFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
+import {generateLksgFixtures} from "@e2e/fixtures/frameworks/lksg/LksgDataFixtures";
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
 
@@ -15,6 +16,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
     manipulateFixtureForOneFilledSubcategory,
     generateFixtureWithBrokenFileReference,
+    generateFixtureWithRandomData,
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
@@ -199,4 +201,14 @@ function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): F
   input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsLocationBasedInTonnes!.dataSource!.fileReference =
     brokenFileReference;
   return input;
+}
+
+/**
+ * Generates an SFDR dataset for testing the drop-down menu.
+ * @returns the dataset
+ */
+function generateFixtureWithRandomData(): FixtureData<SfdrData> {
+  const newFixture = generateSfdrFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = "TestForDropDown";
+  return newFixture;
 }
