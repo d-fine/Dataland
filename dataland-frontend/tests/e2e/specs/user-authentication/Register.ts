@@ -120,7 +120,7 @@ describe("As a user I want to be able to register for an account and be able to 
             .click();
           cy.get("button:contains('Account security')").should("exist").click();
           cy.get("a:contains('Signing in')").should("exist").click();
-          cy.get("button:contains('Set up authenticator application')")
+          cy.get("button:contains('Set up Authenticator application')")
             .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number })
             .click()
             .get("a:contains('Unable to scan')")
