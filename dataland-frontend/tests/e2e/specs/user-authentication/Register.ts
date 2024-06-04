@@ -97,6 +97,7 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.contains("a", returnEmail as string).click();
       cy.wait(1000);
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
+      cy.wait(100);
       cy.get('button[data-testid="save-user"]').click({ force: true });
     });
   });
@@ -137,7 +138,7 @@ describe("As a user I want to be able to register for an account and be able to 
               const totpKey = text.replace(/\s/g, "");
               cy.get("input[id='totp']").type(authenticator.generate(totpKey)).get("input[id='saveTOTPBtn']").click();
               cy.pause();
-              cy.get("button:contains('admin')").click();
+              cy.get(`button:contains('${firstName} ${lastName}')`).click();
               cy.get("a:contains('Sign out')").should("exist", {
                 timeout: Cypress.env("medium_timeout_in_ms") as number,
               });
