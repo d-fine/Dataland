@@ -89,12 +89,13 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
         .type(returnEmail as string, { force: true })
-        .type("{enter}")
-        .wait(100);
+        .type("{enter}");
+      cy.wait(1000);
       cy.get("table");
-      cy.wait(300);
+      cy.wait(1000);
       console.log("email:", returnEmail as string); //todo
       cy.contains("a", returnEmail as string).click();
+      cy.wait(1000);
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
       cy.get('button[data-testid="save-user"]').click({ force: true });
     });
