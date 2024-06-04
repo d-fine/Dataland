@@ -19,7 +19,7 @@
       :reports="sortedReports"
     />
     <MultiLayerDataTable
-      :mldtDatasets="mldtDatasets"
+      :dataAndMetaInfo="sortedDataAndMetaInfo"
       :inReviewMode="inReviewMode"
       :config="
         editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
@@ -50,9 +50,7 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
+import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -70,28 +68,25 @@ const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 
-const mldtDatasets = computed(() => {
-  const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
-  return sortedDataAndMetaInformation.map((singleDataSet) => ({
-    headerLabel: singleDataSet.metaInfo.reportingPeriod,
-    dataset: singleDataSet.data,
-  }));
+const sortedDataAndMetaInfo = computed(() => {
+  return sortDatasetsByReportingPeriod(rawDataAndMetaInfoForDisplay.value);
 });
 
 const sortedReportingPeriods = computed(() => {
-  return mldtDatasets.value.map((mldtDataset) => mldtDataset.headerLabel);
+  return sortedDataAndMetaInfo.value.map((singleDataAndMetaInfo) => singleDataAndMetaInfo.metaInfo.reportingPeriod);
 });
 
 const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
-      return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EutaxonomyNonFinancialsData).general?.referencedReports,
+      return sortedDataAndMetaInfo.value.map(
+        (singleDataAndMetaInfo) =>
+          (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports,
       );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
-      return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForFinancials).referencedReports,
+      return sortedDataAndMetaInfo.value.map(
+        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports,
       );
     }
     default: {
@@ -103,7 +98,7 @@ const sortedReports = computed(() => {
 
 const updateCounter = ref(0);
 const status = ref<ViewPanelStates>("LoadingDatasets");
-const dataAndMetaInformationForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
+const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
 
 watch(
   [
@@ -123,9 +118,9 @@ watch(
 async function reloadDisplayData(currentCounter: number): Promise<void> {
   status.value = "LoadingDatasets";
   try {
-    const datasetsForDisplay = await loadDataForDisplay(props.companyId, props.singleDataMetaInfoToDisplay);
+    const fetchedDataAndMetaInfo = await loadDataForDisplay(props.companyId, props.singleDataMetaInfoToDisplay);
     if (updateCounter.value == currentCounter) {
-      dataAndMetaInformationForDisplay.value = datasetsForDisplay;
+      rawDataAndMetaInfoForDisplay.value = fetchedDataAndMetaInfo;
       status.value = "DisplayingDatasets";
     }
   } catch (err) {
@@ -147,23 +142,14 @@ async function loadDataForDisplay(
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-  const frameworkDefinition = getFrontendFrameworkDefinition(
-    props.frameworkIdentifier,
-  ) as FrontendFrameworkDefinition<FrameworkDataType>;
-  let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
-  if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-  } else {
-    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
-  }
-
-  if (singleDataMetaInfoToDisplay) {
-    const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-
-    return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-  } else {
-    return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+  const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider);
+  if (dataControllerApi) {
+    if (singleDataMetaInfoToDisplay) {
+      const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
+      return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
+    } else {
+      return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+    }
   }
 }
 </script>

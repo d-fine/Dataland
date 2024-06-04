@@ -5,39 +5,12 @@ creation URL (or simply copy this md file into the description)
 
 # Maintenance tasks (to be completed by the assignee)
 
-## Dataland
+## Dataland repository
 
-### Problematic updates
+### Dependency updates
 
-See the list of known issues on the internal Dataland Wiki.
-Being present on this list does not mean that we simply skip the update, instead we are just aware that it may cause a problem.
-If an issue arises from a new update that cannot be solved in the scope of MM, add it to the wiki page and create a ticket in the backlog.
-
-### Gradle update
-
-- [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
-- [ ] Update versions in `versions.properties`
-- [ ] Update the gradle wrapper: execute `gradlew wrapper --gradle-version X.Y.Z` with X.Y.Z being the latest released version
-
-### Dataland frontend
-
-- [ ] Update node version in `dataland-frontend/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
-  `package.json`
-- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
-  for security issues
-
-### Dataland keycloak theme
-
-- [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
-- [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
-  `package.json`
-- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
-  for security issues
-
-### Dataland automated QA service
-
-- [ ] Update package versions in `dataland-automated-qa-service/requirements.txt`
+- [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
+consult the internal Dataland Wiki.
 
 ### Dataland EuroDaT client
 
@@ -47,67 +20,16 @@ If an issue arises from a new update that cannot be solved in the scope of MM, a
   the currently used version of the client. 
   1. Edit the docker compose file by adding a `ports` section with the entry `"8080:8080"` to the "eurodat-client" and start it
   2. Open a shell and navigate to the `dataland-eurodat-client` subproject 
-  3. Execute the following snippet of code: `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
+  3. Execute the following snippet of code (requires python): `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
   4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
-
-### Dockerfile updates
-
-Update versions in the following dockerfiles
-
-- [ ] `./dataland-api-key-manager/Dockerfile`
-- [ ] `./dataland-api-key-manager/DockerfileBase`
-- [ ] `./dataland-api-key-manager/DockerfileTest`
-- [ ] `./dataland-automated-qa-service/Dockerfile`
-- [ ] `./dataland-automated-qa-service/DockerfileBase`
-- [ ] `./dataland-automated-qa-service/DockerfileTest`
-- [ ] `./dataland-backend/Dockerfile`
-- [ ] `./dataland-backend/DockerfileBase`
-- [ ] `./dataland-backend/DockerfileTest`
-- [ ] `./dataland-batch-manager/Dockerfile`
-- [ ] `./dataland-batch-manager/DockerfileBase`
-- [ ] `./dataland-community-manager/Dockerfile`
-- [ ] `./dataland-community-manager/DockerfileBase`
-- [ ] `./dataland-community-manager/DockerfileTest`
-- [ ] `./dataland-document-manager/Dockerfile`
-- [ ] `./dataland-document-manager/DockerfileBase`
-- [ ] `./dataland-document-manager/DockerfileTest`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileBase`
-- [ ] `./dataland-dummy-eurodat-client/DockerfileTest`
-- [ ] `./dataland-e2etests/Dockerfile`
-- [ ] `./dataland-e2etests/DockerfileBase`
-- [ ] `./dataland-email-service/Dockerfile`
-- [ ] `./dataland-email-service/DockerfileBase`
-- [ ] `./dataland-email-service/DockerfileTest`
-- [ ] `./dataland-external-storage/Dockerfile`
-- [ ] `./dataland-external-storage/DockerfileBase`
-- [ ] `./dataland-external-storage/DockerfileTest`
-- [ ] `./dataland-frontend/Dockerfile`
-- [ ] `./dataland-frontend/DockerfileTest`
-- [ ] `./dataland-framework-toolbox/excel-to-csv/Dockerfile`
-- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
-- [ ] `./dataland-inbound-proxy/Dockerfile`
-- [ ] `./dataland-internal-storage/Dockerfile`
-- [ ] `./dataland-internal-storage/DockerfileBase`
-- [ ] `./dataland-internal-storage/DockerfileTest`
-- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
-- [ ] `./dataland-pgadmin/Dockerfile`
-- [ ] `./dataland-qa-service/Dockerfile`
-- [ ] `./dataland-qa-service/DockerfileBase`
-- [ ] `./dataland-qa-service/DockerfileTest`
-- [ ] `./dataland-rabbitmq/Dockerfile`
-- [ ] `./base-dockerfiles/DockerfileGradle`
-- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
-  document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
-- [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
-  service that is not covered by the tasks above)
 
 ## Server updates
 
-Note: First manually create backups of the servers with a short retention duration.
-Then start the update with one of the dev servers and deploy to it after the update.
-If everything was fine, proceed with other servers. Double check for Prod.
+Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
+before applying any changes and align with the team when to apply them.
 
-Note: currently there seems to be an issue with the docker-compose plugin
+Start the update with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
+fine, proceed with other servers.
 
 Execute `sudo apt-get update && sudo apt-get upgrade` on
 
@@ -115,48 +37,13 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev2.dataland.com
 - [ ] dev3.dataland.com
 - [ ] test.dataland.com
-- [ ] clone.dataland.com
 - [ ] letsencrypt.dataland.com
-- [ ] (OPT) dataland.com
+- [ ] dataland.com (align beforehand)
 
-### ssh-keys maintenance
+## ssh-keys maintenance
 
-check that all ssh-keys are set and erased from people that have left
-
-- [ ] dev1.dataland.com
-- [ ] dev2.dataland.com
-- [ ] dev3.dataland.com
-- [ ] test.dataland.com
-- [ ] clone.dataland.com
-- [ ] letsencrypt.dataland.com
-- [ ] (OPT) dataland.com
-
-## Check keycloak automatic logout if inactive
-
-- [ ] Check that you are automatically logged out if you are idle for too long and also get notified about this by a
-  pop-up. Timeouts are defined as `TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS`
-  in `./dataland-frontend/src/utils/Constants.ts` and `ssoSessionIdleTimeout`
-  in `./dataland-keycloak/realms/datalandsecurity-realm.json`.
-
-## Check e-mails sent by keycloak
-
-- [ ] Check that the verification e-mail is sent and displayed correctly
-- [ ] Check that the reset password e-mail is sent and displayed correctly
-- [ ] Check that the password can be reset
-- [ ] Check that account linking via e-mail verification works correctly
-- [ ] Check that account linking via username & password verification works correctly
-
-## Check e-mails sent by backend
-
-- [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to dataland@d-fine.com
-  contains the right attachments and is displayed correctly.
-- [ ] Check that once a user has been made data owner that user receives an e-mail informing them about the data
-ownership approval as well as the number of open requests related to the company they own now.
-
-## Check e-mails sent by community manager
-
-- [ ] Check that the data request answered e-mail is sent and displayed correctly
-- [ ] Check that the data request closed e-mail is sent and displayed correctly
+- [ ] Make sure the ssh-keys file reflects the current team composition. Execute the update script as described in the 
+  internal wiki.
 
 ## Check RabbitMQ dead letter queue and disk space
 
@@ -169,29 +56,23 @@ ownership approval as well as the number of open requests related to the company
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
-## Check that links to external webpages are working
-- [ ] Go to the frameworks/upload page and check that the link to WWF Pathway to Paris is still working as intended.
-
 ## Check that the main branch has no sonar issues
 - [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
-  findings fix them.
+  findings, either fix them directly or bring them up for discussion with the team.
 
 ## Conclusion
 
-- [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to a dev server using this branch
     - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
     - [ ] It's verified that everything seems to be working fine by manually using the website
-    - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] This template and the internal wiki page have been updated to reflect the latest state of tasks required and known issues with upgrades
 - [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in
   future commits
 
 # Review (to be completed by the reviewer)
 
-- [ ] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
-- [ ] A peer-review has been executed
-  - [ ] The code has been manually inspected by someone who did not implement the feature
+- [ ] The GitHub Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by GitHub.
+- [ ] The changes have been peer-reviewed by someone who did not implement them
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
@@ -200,15 +81,8 @@ ownership approval as well as the number of open requests related to the company
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] It's verified that everything seems to be working fine by manually using the website
-  - [ ] All implemented Social Logins have been tested manually in the UI
-  - [ ] The "mailto:*" buttons ("I am interested" and "Get in touch") on the landing page work.
-  - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
-    authorization has worked by assuring that you get a 200 response
-- [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
-- [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
-  authorization has worked by assuring that you get a 200 response
 - [ ] It is assured that deploying this feature branch over the current main does not break anything
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
   - [ ] Deploy the feature branch to clone with `Reset non-user related Docker Volumes & Re-populate` turned off

@@ -7,8 +7,12 @@ import {
   type HeimathafenData,
 } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
-import type * as Cypress from "cypress";
+import {
+  KEYCLOAK_ROLE_PREMIUM_USER,
+  KEYCLOAK_ROLE_UPLOADER,
+  KEYCLOAK_ROLE_USER,
+  KEYCLOAK_ROLES,
+} from "@/utils/KeycloakUtils";
 import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
 import { computed } from "vue";
 
@@ -16,6 +20,7 @@ describe("Component test for the company cockpit", () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
+  const companyDataOwnerId = "mock-data-owner-id";
 
   before(function () {
     cy.fixture("CompanyInformationWithHeimathafenData").then(function (jsonContent) {
@@ -44,12 +49,12 @@ describe("Component test for the company cockpit", () => {
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
 
-    cy.intercept("**/api/companies/*/data-owners/mock-data-owner-id", {
+    cy.intercept(`**/api/companies/*/data-owners/${companyDataOwnerId}`, {
       status: 200,
     }).as("fetchUserIsDataOwnerTrue");
     if (hasCompanyDataOwner) {
       cy.intercept("**/api/companies/*/data-owners", {
-        body: ["company-owner-id"],
+        body: [companyDataOwnerId],
       }).as("fetchHasCompanyDataOwnersFalse");
     }
   }
@@ -129,12 +134,28 @@ describe("Component test for the company cockpit", () => {
   function validateClaimOwnershipPanel(isThisExpected: boolean): void {
     cy.get("[data-test='claimOwnershipPanelLink']").should(isThisExpected ? "exist" : "not.exist");
   }
+  /**
+   * Validates the sme framework summary panel
+   * @param isDataOwner is the current user company data owner
+   */
+  function validateSmeFrameworkSummaryPanel(isDataOwner: boolean): void {
+    const frameworkName = "sme";
+    const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
+    if (isDataOwner) {
+      cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
+    } else {
+      cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
+        "not.exist",
+      );
+    }
+  }
 
   /**
    * Validates the framework summary panels by asserting their existence and checking for their contents
    * @param isProvideDataButtonExpected determines if a provide-data-button is expected to be found in the panels
+   * @param isDataOwner is the current user company data owner
    */
-  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean): void {
+  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, isDataOwner: boolean = false): void {
     Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary).forEach(
       ([frameworkName, aggregatedFrameworkDataSummary]: [string, AggregatedFrameworkDataSummary]) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
@@ -143,7 +164,10 @@ describe("Component test for the company cockpit", () => {
           "contain",
           aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods.toString(),
         );
-
+        if (frameworkName == "sme") {
+          validateSmeFrameworkSummaryPanel(isDataOwner);
+          return;
+        }
         if (isProvideDataButtonExpected) {
           if (frameworkName != "heimathafen") {
             cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
@@ -245,13 +269,13 @@ describe("Component test for the company cockpit", () => {
     const isProvideDataButtonExpected = true;
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyDataOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], "mock-data-owner-id").then(() => {
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyDataOwnerId).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner(hasCompanyDataOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
+      validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
   });
@@ -259,9 +283,30 @@ describe("Component test for the company cockpit", () => {
     const hasCompanyDataOwner = false;
     const isSingleDataRequestButtonExpected = true;
     mockRequestsOnMounted(hasCompanyDataOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], "mock-data-owner-id").then(() => {
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], companyDataOwnerId).then(() => {
       waitForRequestsOnMounted();
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
+    });
+  });
+
+  it("Check the Sme summary panel behaviour if the user is company owner", () => {
+    const hasCompanyDataOwner = true;
+    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+      mockRequestsOnMounted(hasCompanyDataOwner);
+      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyDataOwnerId).then(() => {
+        waitForRequestsOnMounted();
+        validateSmeFrameworkSummaryPanel(true);
+      });
+    });
+  });
+  it("Check the Sme summary panel behaviour if the user is not company owner", () => {
+    const hasCompanyDataOwner = true;
+    KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
+      mockRequestsOnMounted(hasCompanyDataOwner);
+      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]).then(() => {
+        waitForRequestsOnMounted();
+        validateSmeFrameworkSummaryPanel(false);
+      });
     });
   });
 

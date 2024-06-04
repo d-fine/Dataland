@@ -143,10 +143,10 @@ import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/Yes
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { getFilledKpis } from "@/utils/DataPoint";
 import { heimathafenDataModel } from "@/frameworks/heimathafen/UploadConfig";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 export default defineComponent({
   setup() {
@@ -245,28 +245,31 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Builds an api to get and upload Heimathafen data
+     * @returns the api
+     */
+    buildHeimathafenDataApi(): PublicFrameworkDataApi<HeimathafenData> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Heimathafen);
+      if (frameworkDefinition) {
+        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+      }
+    },
+
+    /**
      * Loads the Heimathafen-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadHeimathafenData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-      let HeimathafenDataControllerApi: FrameworkDataApi<HeimathafenData>;
-      if (frameworkDefinition) {
-        HeimathafenDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
-          undefined,
-          apiClientProvider.axiosInstance,
-        );
-        const dataResponse = await HeimathafenDataControllerApi.getFrameworkData(dataId);
-        const HeimathafenResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(HeimathafenResponseData.data);
-        this.companyAssociatedHeimathafenData = objectDropNull(
-          HeimathafenResponseData as ObjectType,
-        ) as CompanyAssociatedDataHeimathafenData;
-      }
-
+      const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
+      const dataResponse = await heimathafenDataControllerApi.getFrameworkData(dataId);
+      const heimathafenResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
+      this.companyAssociatedHeimathafenData = objectDropNull(
+        heimathafenResponseData as ObjectType,
+      ) as CompanyAssociatedDataHeimathafenData;
       this.waitingForData = false;
     },
     /**
@@ -278,16 +281,8 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
-        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Heimathafen);
-        let HeimathafenDataControllerApi: FrameworkDataApi<HeimathafenData>;
-        if (frameworkDefinition) {
-          HeimathafenDataControllerApi = frameworkDefinition.getFrameworkApiClient(
-            undefined,
-            apiClientProvider.axiosInstance,
-          );
-          await HeimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
-        }
+        const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
+        await heimathafenDataControllerApi.postFrameworkData(this.companyAssociatedHeimathafenData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";

@@ -8,8 +8,8 @@
   "separateMultipleMajor": true,
   "minimumReleaseAge": "14 days",
   "schedule": [
-    "after 10pm every weekday",
-    "before 5am every weekday",
+    "after 8pm every weekday",
+    "before 8am every weekday",
     "every weekend"
   ],
   "packageRules": [

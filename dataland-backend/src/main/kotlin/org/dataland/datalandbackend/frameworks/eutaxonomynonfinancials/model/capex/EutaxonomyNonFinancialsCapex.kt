@@ -16,6 +16,7 @@ import kotlin.collections.MutableList
  * The data-model for the Capex section
  */
 data class EutaxonomyNonFinancialsCapex(
+    @field:Valid()
     val totalAmount: CurrencyDataPoint? = null,
 
     @field:Valid()

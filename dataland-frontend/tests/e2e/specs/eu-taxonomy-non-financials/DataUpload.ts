@@ -1,7 +1,6 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
-  type CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
 } from "@clients/backend";
@@ -154,7 +153,7 @@ describeIf(
               );
               expect(`${TEST_PDF_FILE_NAME}2` in submittedReferencedReports).to.equal(true);
               if (TEST_PDF_FILE_NAME in submittedReferencedReports) {
-                frontendDocumentHash = (submittedReferencedReports[TEST_PDF_FILE_NAME] as CompanyReport).fileReference;
+                frontendDocumentHash = submittedReferencedReports[TEST_PDF_FILE_NAME].fileReference;
               }
             }).as("submitData");
             cy.get('button[data-test="submitButton"]').click();
