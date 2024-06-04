@@ -34,6 +34,10 @@ describe("Component tests for the company info sheet", function (): void {
     cy.intercept(`**/api/companies?searchString=${dummyParentCompanyLei}**`, {
       body: [
         {
+          companyId: "otherCompanyId",
+          lei: "otherParentCompanyLei",
+        },
+        {
           companyId: dummyParentCompanyId,
           lei: dummyParentCompanyLei,
         },
@@ -52,8 +56,10 @@ describe("Component tests for the company info sheet", function (): void {
       cy.get('[data-test="lei-visible"]').should("have.text", companyInformationForTest.identifiers["Lei"][0]);
       cy.get('[data-test="headquarter-visible"]').should("have.text", companyInformationForTest.headquarters);
       cy.get('[data-test="sector-visible"]').should("have.text", companyInformationForTest.sector);
-      cy.get('[data-test="parent-visible"]').should("have.text", companyInformationForTest.parentCompanyLei).click();
-      cy.wait("@getParentCompanyId")
+      cy.get('[data-test="parent-visible"]')
+        .should("have.text", companyInformationForTest.parentCompanyLei)
+        .click()
+        .wait("@getParentCompanyId")
         .wrap(mounted.component)
         .its("$route.path")
         .should("eq", `/companies/${dummyParentCompanyId}`);
