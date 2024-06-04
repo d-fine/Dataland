@@ -71,7 +71,6 @@ export default defineComponent({
     this.dataPointDisplay = dialogRefData.dataPointDisplay;
     this.dataId = dialogRefData.dataId;
     this.dataType = dialogRefData.dataType;
-    console.log(this.dataType);
   },
   computed: {
     dataSourceLabel() {
