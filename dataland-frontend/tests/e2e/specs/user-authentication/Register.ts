@@ -89,16 +89,14 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
         .type(returnEmail as string, { force: true })
-        .type("{enter}");
+        .type("{enter}")
+        .wait(100);
       cy.get("table");
-      cy.wait(100);
+      cy.wait(300);
       console.log("email:", returnEmail as string); //todo
       cy.contains("a", returnEmail as string).click();
-      cy.wait(100);
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
-      cy.wait(100);
       cy.get('button[data-testid="save-user"]').click({ force: true });
-      cy.wait(200);
     });
   });
   it("Checks that one can login to the newly registered account", () => {
@@ -138,6 +136,7 @@ describe("As a user I want to be able to register for an account and be able to 
               const totpKey = text.replace(/\s/g, "");
               cy.get("input[id='totp']").type(authenticator.generate(totpKey)).get("input[id='saveTOTPBtn']").click();
               cy.pause();
+              cy.get("button:contains('admin')").click();
               cy.get("a:contains('Sign out')").should("exist", {
                 timeout: Cypress.env("medium_timeout_in_ms") as number,
               });
