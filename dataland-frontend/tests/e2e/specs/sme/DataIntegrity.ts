@@ -79,7 +79,7 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
-            cy.wait(500);
+            cy.wait(1000);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
