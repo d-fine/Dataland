@@ -130,7 +130,7 @@ describeIf(
             }
 
             /**
-             * validates that the document pertaining to power consumption is displayed correctly and can be downloaded by the data owner
+             * validates that the document pertaining to power consumption is displayed correctly and can be downloaded by data owner
              * @param companyId the company associated to the data uploaded
              * @param dataId the latest version of sme data for the company
              */
