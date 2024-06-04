@@ -37,4 +37,14 @@ class V15__MigrateGetRidOfFaultyDatasourcesTest {
             instance::migrateFaultyFileReferences,
         )
     }
+
+    @Test
+    fun `check migration script for faulty file references in assurance data point`() {
+        TestUtils().testMigrationOfSingleDataset(
+            "eutaxonomy-non-financials",
+            "V15/originalEuTaxonomyNonFinancialDatabaseEntry.json",
+            "V15/expectedEuTaxonomyNonFinancialDatabaseEntry.json",
+            V15__MigrateGetRidOfFaultyDatasources()::migrateFaultyFileReferences,
+        )
+    }
 }
