@@ -134,6 +134,7 @@ import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   type CompanyReport,
   DataTypeEnum,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
@@ -169,6 +170,8 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 export default defineComponent({
   setup() {
     return {
@@ -271,15 +274,24 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Builds an api to get and upload EU Taxonomy non-financials data
+     * @returns the api
+     */
+    buildEuTaxonomyNonFinancialsDataApi(): PublicFrameworkDataApi<EutaxonomyNonFinancialsData> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials);
+      if (frameworkDefinition) {
+        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+      }
+    },
+    /**
      * Loads the EutaxonomyNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadEutaxonomyNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const euTaxonomyForNonFinancialsDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
+      const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
 
       const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(dataId);
       const euTaxonomyNonFinancialsResponseData = dataResponse.data;
@@ -309,9 +321,7 @@ export default defineComponent({
           await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
         }
 
-        const euTaxonomyForNonFinancialsDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
+        const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
         await euTaxonomyForNonFinancialsDataControllerApi.postFrameworkData(
           this.companyAssociatedEutaxonomyNonFinancialsData,
         );

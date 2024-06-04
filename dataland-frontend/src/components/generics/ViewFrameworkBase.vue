@@ -30,7 +30,7 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
-            <div class="flex align-content-start align-items-center pl-3" v-if="dataType !== DataTypeEnum.Sme">
+            <div class="flex align-content-start align-items-center pl-3">
               <InputSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
@@ -109,7 +109,7 @@ import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type DataMetaInformation, type CompanyInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
@@ -188,9 +188,6 @@ export default defineComponent({
   computed: {
     ReportingPeriodTableActions() {
       return ReportingPeriodTableActions;
-    },
-    DataTypeEnum() {
-      return DataTypeEnum;
     },
     isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";

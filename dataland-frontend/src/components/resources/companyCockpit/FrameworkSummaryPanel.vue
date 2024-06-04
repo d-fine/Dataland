@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView ? 'summary-panel--interactive' : ''}`"
+    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView && isUserAllowedToView ? 'summary-panel--interactive' : ''}`"
     @click="onClickPanel"
   >
     <div>
@@ -48,6 +48,7 @@ const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
+  isUserAllowedToView: boolean | undefined;
   isUserAllowedToUpload: boolean | undefined;
 }>();
 
@@ -95,7 +96,7 @@ let provideDataButtonHovered: boolean = false;
  * the view page is visted
  */
 function onClickPanel(): void {
-  if (!provideDataButtonHovered && hasAccessibleViewPage.value) {
+  if (!provideDataButtonHovered && hasAccessibleViewPage.value && props.isUserAllowedToView) {
     void router.push(`/companies/${props.companyId}/frameworks/${props.framework}`);
   }
 }
