@@ -180,7 +180,7 @@ class CompanyManagerTest(
         website = null,
         identifiers = mapOf(),
         isTeaserCompany = false,
-        parentCompanyLei = null,
+        parentCompanyLei = "dummyParentCompanyLei",
     )
     private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
         uploadModifiedBaseCompany(company9, null, "3$expectedSearchString")
