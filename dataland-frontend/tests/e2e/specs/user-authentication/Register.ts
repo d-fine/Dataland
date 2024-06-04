@@ -91,9 +91,14 @@ describe("As a user I want to be able to register for an account and be able to 
         .type(returnEmail as string, { force: true })
         .type("{enter}");
       cy.get("table");
+      cy.wait(100);
+      console.log("email:", returnEmail as string); //todo
       cy.contains("a", returnEmail as string).click();
+      cy.wait(100);
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
+      cy.wait(100);
       cy.get('button[data-testid="save-user"]').click({ force: true });
+      cy.wait(200);
     });
   });
   it("Checks that one can login to the newly registered account", () => {
@@ -131,12 +136,12 @@ describe("As a user I want to be able to register for an account and be able to 
             .invoke("text")
             .then((text) => {
               const totpKey = text.replace(/\s/g, "");
-              cy.get("input[id='totp']")
-                .type(authenticator.generate(totpKey))
-                .get("input[id='saveTOTPBtn']")
-                .click()
-                .get("button[id='signOutButton']")
-                .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.get("input[id='totp']").type(authenticator.generate(totpKey)).get("input[id='saveTOTPBtn']").click();
+              cy.pause();
+              cy.get("a:contains('Sign out')").should("exist", {
+                timeout: Cypress.env("medium_timeout_in_ms") as number,
+              });
+              console.log("setKey:", totpKey); //todo
               cy.task("setTotpKey", totpKey);
             });
         });
@@ -146,6 +151,7 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.task("getEmail").then((returnEmail) => {
         cy.task("getPassword").then((returnPassword) => {
           cy.task("getTotpKey").then((key) => {
+            console.log("key: ", key); //todo
             const username = returnEmail as string;
             const password = returnPassword as string;
             const totpKey = key as string;
