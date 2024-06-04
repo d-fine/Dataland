@@ -107,7 +107,7 @@ class CompanyUploader(
         patchCompanyId?.let {
             logger.info(
                 "Company Data for Company ${companyInformation.gleifCompanyInformation.companyName} " +
-                        "(LEI: ${companyInformation.gleifCompanyInformation.lei}) " +
+                    "(LEI: ${companyInformation.gleifCompanyInformation.lei}) " +
                     "already present on Dataland. Proceeding to patch company with id $it",
             )
             patchSingleCompany(it, companyInformation)
@@ -139,7 +139,7 @@ class CompanyUploader(
             logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
             companyDataControllerApi.patchCompanyById(
                 companyId,
-                CompanyInformationPatch(parentCompanyLei=endLei),
+                CompanyInformationPatch(parentCompanyLei = endLei),
             )
         }
     }

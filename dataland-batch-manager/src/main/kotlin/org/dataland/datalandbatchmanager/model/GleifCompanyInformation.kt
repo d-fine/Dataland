@@ -2,8 +2,6 @@ package org.dataland.datalandbatchmanager.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 
 /**
  * Data class containing the relevant information from the GLEIF csv files
@@ -24,6 +22,4 @@ data class GleifCompanyInformation(
 
     @JsonProperty("Entity.HeadquartersAddress.Country")
     val countryCode: String,
-) {
-
-}
+)

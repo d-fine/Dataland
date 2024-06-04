@@ -81,7 +81,6 @@ class GleifGoldenCopyIngestor(
             processRelationshipFile(updateAllCompanies = false)
             processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             processIsinMappingFile()
-
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -182,9 +181,14 @@ class GleifGoldenCopyIngestor(
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach {companyUploader.uploadOrPatchSingleCompany(
-                        GleifCompanyCombinedInformation(it,
-                        relationShipExtractor.finalParentMapping.getOrDefault(it.lei, null))) }
+                    .forEach {
+                        companyUploader.uploadOrPatchSingleCompany(
+                            GleifCompanyCombinedInformation(
+                                it,
+                                relationShipExtractor.finalParentMapping.getOrDefault(it.lei, null),
+                            ),
+                        )
+                    }
             }.get()
         } finally {
             uploadThreadPool.shutdown()

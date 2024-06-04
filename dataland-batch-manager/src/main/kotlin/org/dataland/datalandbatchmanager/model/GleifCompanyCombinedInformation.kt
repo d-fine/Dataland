@@ -3,7 +3,10 @@ package org.dataland.datalandbatchmanager.model
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 
-data class GleifCompanyCombinedInformation (
+/**
+ * Data class combining the information found in the GLEIF LEI and RR files
+ */
+data class GleifCompanyCombinedInformation(
     val gleifCompanyInformation: GleifCompanyInformation,
     val finalParentLei: String? = null,
 ) {

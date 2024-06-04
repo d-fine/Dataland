@@ -31,22 +31,22 @@ class CompanyUploaderTest {
 
     private val dummyCompanyInformation1 = GleifCompanyCombinedInformation(
         GleifCompanyInformation(
-        companyName = "CompanyName1",
-        countryCode = "CompanyCountry",
-        headquarters = "CompanyCity",
-        headquartersPostalCode = "CompanyPostalCode",
-        lei = "DummyLei1",
-        )
+            companyName = "CompanyName1",
+            countryCode = "CompanyCountry",
+            headquarters = "CompanyCity",
+            headquartersPostalCode = "CompanyPostalCode",
+            lei = "DummyLei1",
+        ),
     )
 
     private val dummyCompanyInformation2 = GleifCompanyCombinedInformation(
         GleifCompanyInformation(
-        companyName = "CompanyName2",
-        countryCode = "CompanyCountry",
-        headquarters = "CompanyCity",
-        headquartersPostalCode = "CompanyPostalCode",
-        lei = "DummyLei2",
-        )
+            companyName = "CompanyName2",
+            countryCode = "CompanyCountry",
+            headquarters = "CompanyCity",
+            headquartersPostalCode = "CompanyPostalCode",
+            lei = "DummyLei2",
+        ),
     )
 
     @BeforeEach
