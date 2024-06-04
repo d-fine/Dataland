@@ -8,7 +8,7 @@ application locally you can run `resetDevelopmentStack.sh` or `startDevelopmentS
 to use your own certificates if you do not have access to the dataland infrastructure. The corresponding parts in the
 scripts have to be adapted manually. 
 
-# License
+# License 
 This project is free and open-source software licensed under the [GNU Affero General Public License v3](LICENSE)
 (AGPL-3.0). Commercial use of this software is allowed. If derivative works are distributed, you need to be published
 the derivative work under the same license. Here, derivative works includes web publications. That means, if you build
