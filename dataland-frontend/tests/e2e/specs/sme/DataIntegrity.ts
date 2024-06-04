@@ -144,7 +144,8 @@ describeIf(
                 .find("a.link")
                 .should("include.text", "MWh")
                 .click();
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
+              const expectedPathToDownloadedReport =
+                Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
               cy.readFile(expectedPathToDownloadedReport).should("not.exist");
               cy.intercept("**/documents/*").as("documentDownload");
               cy.get('[data-test="download-link"]').click();
