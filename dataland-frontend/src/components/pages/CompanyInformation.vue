@@ -57,8 +57,8 @@
           <span>Parent Company (LEI): </span>
           <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
             <a
-              class="link"
-              style="display: inline-flex; color: black"
+              class="link --underlined"
+              style="display: inline-flex"
               data-test="parent-visible"
               @click="visitParentCompany(assertDefined(companyInformation.parentCompanyLei))"
             >
@@ -199,7 +199,7 @@ export default defineComponent({
           return this.$router.push(parentCompanyUrl);
         }
       }
-      console.error("The displayed Lei doesnt match any company on Dataland.");
+      console.error("The displayed Lei does not match any company on Dataland.");
     },
     /**
      * Updates the hasCompanyDataOwner in an async way

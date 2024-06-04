@@ -7,10 +7,10 @@ import {
   type EutaxonomyNonFinancialsData,
   EutaxonomyNonFinancialsDataControllerApi,
 } from "@clients/backend";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class EutaxonomyNonFinancialsApiClient implements FrameworkDataApi<EutaxonomyNonFinancialsData> {
+export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<EutaxonomyNonFinancialsData> {
   private readonly openApiDataController: EutaxonomyNonFinancialsDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {

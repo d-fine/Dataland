@@ -107,7 +107,7 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/frameworks/sfdr/UploadConfig";
-import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum } from "@clients/backend";
+import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -143,6 +143,8 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 
 const referenceableReportsFieldId = "referenceableReports";
 
@@ -251,16 +253,25 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Builds an api to get and upload Sfdr data
+     * @returns the api
+     */
+    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Sfdr);
+      if (frameworkDefinition) {
+        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+      }
+    },
+
+    /**
      * Loads the SFDR-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const sfdrDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
-
+      const sfdrDataControllerApi = this.buildSfdrDataApi();
       const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
@@ -292,9 +303,7 @@ export default defineComponent({
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
 
-        const sfdrDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
+        const sfdrDataControllerApi = this.buildSfdrDataApi();
         await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;

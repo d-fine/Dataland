@@ -1,9 +1,9 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from "@e2e/utils/Cypress";
 import { getKeycloakToken, login, logout } from "@e2e/utils/Auth";
-import { CompanyDataControllerApi, type CompanyDataOwners, Configuration } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM } from "@/utils/Constants";
+import { postDataOwner } from "@e2e/utils/DataOwnerUtils";
 
 describeIf(
   "As a user, I expect to be able to upload data for one company for which I am data owner",
@@ -44,18 +44,3 @@ describeIf(
     });
   },
 );
-
-/**
- * Method that sets a user as a data owner of the specified company
- * @param token authentication token of the user doing the post request
- * @param userId of the user that should be set as a data owner
- * @param companyId of the company for which the user should be set as a data owner
- * @returns the api response of the postDataOwner endpoint
- */
-export async function postDataOwner(token: string, userId: string, companyId: string): Promise<CompanyDataOwners> {
-  const apiResponse = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postDataOwner(
-    companyId,
-    userId,
-  );
-  return apiResponse.data;
-}

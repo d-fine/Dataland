@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.controller.SmeDataController
+import org.dataland.datalandbackend.frameworks.sme.SmeDataController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter

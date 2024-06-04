@@ -2,10 +2,10 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from "axios";
 import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
 import { type Configuration, type DataMetaInformation, type SfdrData, SfdrDataControllerApi } from "@clients/backend";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class SfdrApiClient implements FrameworkDataApi<SfdrData> {
+export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
   private readonly openApiDataController: SfdrDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {

@@ -10,20 +10,20 @@
               </div>
             </th>
             <th
-              v-for="(mldtDataset, idx) in mldtDatasets"
+              v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo"
               :key="idx"
               class="horizontal-headers-size"
               :data-dataset-index="idx"
             >
               <div class="p-column-header-content">
-                <span class="p-column-title">{{ mldtDataset.headerLabel }}</span>
+                <span class="p-column-title">{{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}</span>
               </div>
             </th>
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
           <MultiLayerDataTableBody
-            :mldtDatasets="mldtDatasets"
+            :dataAndMetaInfo="dataAndMetaInfo"
             :inReviewMode="inReviewMode"
             :config="config"
             :isTopLevel="true"
@@ -43,12 +43,13 @@
 </style>
 
 <script setup lang="ts" generic="T">
-import { type MLDTConfig, type MLDTDataset } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 defineProps<{
   config: MLDTConfig<T>;
-  mldtDatasets: Array<MLDTDataset<T>>;
+  dataAndMetaInfo: Array<DataAndMetaInformation<T>>;
   ariaLabel?: string;
   inReviewMode: boolean;
 }>();
