@@ -58,7 +58,7 @@ export default defineComponent({
     return {
       dataPointDisplay: undefined as DataPointDisplay | undefined,
       dataId: undefined as string | undefined,
-        dataType: undefined as string | undefinde,
+      dataType: undefined as string | undefined,
     };
   },
   mounted() {
@@ -70,8 +70,8 @@ export default defineComponent({
     };
     this.dataPointDisplay = dialogRefData.dataPointDisplay;
     this.dataId = dialogRefData.dataId;
-    this.dataType = dialogRefData.dataType
-      console.log(this.dataType)
+    this.dataType = dialogRefData.dataType;
+    console.log(this.dataType);
   },
   computed: {
     dataSourceLabel() {
