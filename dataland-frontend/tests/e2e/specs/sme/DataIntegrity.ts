@@ -16,7 +16,7 @@ import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
-import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
+import {TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH} from "@sharedUtils/ConstantsForPdfs";
 
 let smeFixtureForTest: FixtureData<SmeData>;
 
@@ -79,7 +79,7 @@ describeIf(
               times: 1,
             }).as("postCompanyAssociatedData");
             submitButton.clickButton();
-            cy.wait(500);
+            cy.wait(5000);
             cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
               .then((postResponseInterception) => {
                 cy.url().should("eq", getBaseUrl() + "/datasets");
@@ -147,11 +147,11 @@ describeIf(
               const expectedPathToDownloadedReport =
                 Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
               cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-              cy.intercept("**/documents/*").as("documentDownload");
-              cy.get('[data-test="download-link"]').click();
-              cy.wait("@documentDownload");
+              cy.intercept("**/data/sme/documents/*").as("documentDownload");
+              cy.get('[data-test="Report-Download-some-document-private"]').click();
               cy.wait(500);
-              cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+              cy.wait("@documentDownload");
+              cy.readFile(`../${TEST_PDF_FILE_BASEPATH}/${TEST_PDF_FILE_NAME}-private.pdf`, "binary", {
                 timeout: Cypress.env("medium_timeout_in_ms") as number,
               }).then((expectedFileBinary) => {
                 cy.task("calculateHash", expectedFileBinary).then((expectedFileHash) => {
