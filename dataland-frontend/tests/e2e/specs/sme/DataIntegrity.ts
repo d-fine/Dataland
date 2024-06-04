@@ -110,7 +110,7 @@ describeIf(
               cy.visitAndCheckAppMount(
                 "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sme + "/upload?templateDataId=" + dataId,
               );
-              uploadReports.selectFile(`${TEST_PDF_FILE_NAME}3`);
+              uploadReports.selectFile(`${TEST_PDF_FILE_NAME}-private`);
               uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}-private`);
               uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
               cy.get('div[name="fileName"]').click();
