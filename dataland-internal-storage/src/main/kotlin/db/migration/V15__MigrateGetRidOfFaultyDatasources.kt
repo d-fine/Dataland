@@ -127,10 +127,8 @@ class V15__MigrateGetRidOfFaultyDatasources : BaseJavaMigration() {
             if (companyReportList !== null) {
                 replaceFaultyFileReferenceReferencedReports(companyReportList, obj)
             }
-            if ((dataSource == null) && (companyReportList == null)) {
-                obj.keys().forEach {
-                    checkRecursivelyForFaultyFileReferences(obj, it)
-                }
+            obj.keys().forEach {
+                checkRecursivelyForFaultyFileReferences(obj, it)
             }
         }
     }
