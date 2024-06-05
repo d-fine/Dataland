@@ -100,7 +100,6 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.wait(1000);
       cy.get("table");
       cy.wait(1000);
-      console.log("email:", returnEmail as string); //todo
       cy.contains("a", returnEmail as string).click();
       cy.wait(1000);
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
@@ -149,7 +148,6 @@ describe("As a user I want to be able to register for an account and be able to 
               cy.get("a:contains('Sign out')").should("exist", {
                 timeout: Cypress.env("medium_timeout_in_ms") as number,
               });
-              console.log("setKey:", totpKey); //todo
               cy.task("setTotpKey", totpKey);
             });
         });
@@ -159,7 +157,6 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.task("getEmail").then((returnEmail) => {
         cy.task("getPassword").then((returnPassword) => {
           cy.task("getTotpKey").then((key) => {
-            console.log("key: ", key); //todo
             const username = returnEmail as string;
             const password = returnPassword as string;
             const totpKey = key as string;
