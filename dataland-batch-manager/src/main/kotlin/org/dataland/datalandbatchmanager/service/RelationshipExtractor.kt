@@ -18,23 +18,27 @@ class RelationshipExtractor {
     fun prepareFinalParentMapping(gleifParser: MappingIterator<GleifRelationshipInformation>): Map<String, String> {
         val mappings = parseCsvToGroupedMap(gleifParser)
 
-        val finalParentMapping  = mappings[GleifRelationshipTypes.IS_ULTIMATELY_CONSOLIDATED_BY] ?: mutableMapOf()
-        val orderOfImportance = listOf(GleifRelationshipTypes.IS_DIRECTLY_CONSOLIDATED_BY,
-                                       GleifRelationshipTypes.IS_FUNDMANAGED_BY,
-                                       GleifRelationshipTypes.IS_SUBFUND_OF,
-                                       GleifRelationshipTypes.IS_INTERNATIONAL_BRANCH_OF,
-                                       GleifRelationshipTypes.IS_FEEDER_TO,)
+        val localFinalParentMapping = mappings[GleifRelationshipTypes.IS_ULTIMATELY_CONSOLIDATED_BY] ?: mutableMapOf()
+        val orderOfImportance = listOf(
+            GleifRelationshipTypes.IS_DIRECTLY_CONSOLIDATED_BY,
+            GleifRelationshipTypes.IS_FUNDMANAGED_BY,
+            GleifRelationshipTypes.IS_SUBFUND_OF,
+            GleifRelationshipTypes.IS_INTERNATIONAL_BRANCH_OF,
+            GleifRelationshipTypes.IS_FEEDER_TO,
+        )
 
         orderOfImportance.forEach { relationshipType ->
             val relationshipMap = mappings[relationshipType]
             relationshipMap?.keys?.forEach { startLei ->
-                if (startLei !in finalParentMapping) {
-                    relationshipMap[startLei]?.let{parentLei -> finalParentMapping[startLei] = parentLei }
+                if (startLei !in localFinalParentMapping) {
+                    relationshipMap[startLei]?.let { parentLei -> localFinalParentMapping[startLei] = parentLei }
                 }
             }
         }
 
-        return finalParentMapping
+        finalParentMapping = localFinalParentMapping
+
+        return localFinalParentMapping
     }
 
     /**

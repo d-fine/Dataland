@@ -13,10 +13,12 @@ import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -81,7 +83,7 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the relationship update makes the intended calls` () {
+    fun `check that the relationship update makes the intended calls`() {
         val finalParentMapping = mutableMapOf<String, String>()
         val mockLei = "abcd"
         val mockCompanyID = "testCompanyId"
@@ -93,19 +95,17 @@ class CompanyUploaderTest {
 
         companyUploader.updateRelationships(finalParentMapping)
 
-        val compPatch = CompanyInformationPatch(parentCompanyLei=mockParentLei)
+        val compPatch = CompanyInformationPatch(parentCompanyLei = mockParentLei)
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
         verify(mockCompanyDataControllerApi, times(1)).patchCompanyById(mockCompanyID, compPatch)
     }
 
     @Test
-    fun `check that an exception is thrown when ` () {
+    fun `test if any ClientException except status not found leads to a retry`() {
         val finalParentMapping = mutableMapOf<String, String>()
         val mockLei = "abcd"
-        val mockCompanyID = "testCompanyId"
-        val mockParentLei = "defg"
-        finalParentMapping[mockLei] = mockParentLei
+        finalParentMapping[mockLei] = "defg"
 
         `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_IMPLEMENTED.value()))
@@ -114,7 +114,25 @@ class CompanyUploaderTest {
 
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
             .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
+        verify(mockCompanyDataControllerApi, never()).patchCompanyById(companyId=anyString(),
+                                             companyInformationPatch=any(CompanyInformationPatch::class.java))
+    }
 
+    @Test
+    fun `test if ClientException http not found does not lead to multiple retries`() {
+        val finalParentMapping = mutableMapOf<String, String>()
+        val mockLei = "abcd"
+        finalParentMapping[mockLei] = "defg"
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+            .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
+
+        companyUploader.updateRelationships(finalParentMapping)
+
+        verify(mockCompanyDataControllerApi, times(1))
+            .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
+        verify(mockCompanyDataControllerApi, never()).patchCompanyById(companyId=anyString(),
+            companyInformationPatch=any(CompanyInformationPatch::class.java))
     }
 
     @Test

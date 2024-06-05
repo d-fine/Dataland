@@ -135,7 +135,7 @@ class CompanyUploader(
      */
     fun updateRelationships(finalParentMapping: Map<String, String>) {
         for ((startLei, endLei) in finalParentMapping) {
-            val companyId = searchCompanyByLEI(startLei)
+            val companyId = searchCompanyByLEI(startLei) ?: continue
             logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
             companyDataControllerApi.patchCompanyById(
                 companyId,
@@ -144,8 +144,8 @@ class CompanyUploader(
         }
     }
 
-    private fun searchCompanyByLEI(lei: String): String {
-        var companyId = ""
+    private fun searchCompanyByLEI(lei: String): String? {
+        var companyId: String? = null
         retryOnCommonApiErrors {
             logger.info("Searching for company with LEI: $lei")
             companyId = try {
@@ -170,7 +170,7 @@ class CompanyUploader(
     ) {
         @Suppress("unused")
         for ((lei, newIsins) in leiIsinMapping) {
-            val companyId = searchCompanyByLEI(lei)
+            val companyId = searchCompanyByLEI(lei) ?: continue
             logger.info("Patching company with ID: $companyId and LEI: $lei")
             updateIsinsOfCompany(newIsins, companyId)
         }
