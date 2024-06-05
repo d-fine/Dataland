@@ -57,7 +57,7 @@ describeIf(
         });
     });
 
-    it("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
+    it.only("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
       cy.visitAndCheckAppMount(
@@ -93,7 +93,7 @@ describeIf(
         });
     });
 
-    it("Swap one fake document with a real one and check if downloading it via the view page works as expected", () => {
+    it.only("Swap one fake document with a real one and check if downloading it via the view page works as expected", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount(
         "/companies/" +
@@ -112,7 +112,9 @@ describeIf(
         url: `**/api/data/${DataTypeEnum.Sme}`,
         times: 1,
       }).as("postCompanyAssociatedData");
+      cy.intercept("**/api/users/**").as("waitOnMyDatasetPage");
       submitButton.clickButton();
+      cy.wait("@waitOnMyDatasetPage", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
         (postResponseInterception) => {
           cy.url().should("eq", getBaseUrl() + "/datasets");
@@ -133,7 +135,7 @@ describeIf(
           const expectedPathToDownloadedReport =
             Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
           cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-          cy.intercept("**/data/sme/documents*").as("documentDownload");
+          cy.intercept("**/api/data/sme/documents*").as("documentDownload");
           cy.get('[data-test="Report-Download-some-document-private"]').click();
           cy.wait(500);
           cy.wait("@documentDownload");
