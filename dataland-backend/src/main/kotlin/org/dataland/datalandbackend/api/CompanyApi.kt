@@ -269,7 +269,7 @@ interface CompanyApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
@@ -296,7 +296,7 @@ interface CompanyApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun putCompanyById(
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
