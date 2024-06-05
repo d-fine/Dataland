@@ -61,7 +61,7 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection("Brands").image;
-  expect(images?.length).to.eq(15);
+  expect(images?.length).to.eq(16);
   images!.forEach((image, index) => {
     const filename = image.split("/").slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
