@@ -25,6 +25,7 @@ const autoExpandingCategoryNames = new Set([
   "emissionsFromManureAndFertiliserAndLivestock",
   "animalWelfare",
   "animalFeed",
+  "externalFeedCertification",
   "material",
 ]);
 

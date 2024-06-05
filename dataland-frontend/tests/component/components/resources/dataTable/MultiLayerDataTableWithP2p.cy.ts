@@ -59,8 +59,8 @@ describe("Component test for P2pPanel", () => {
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
       .should("be.visible");
 
-    getSectionHead("Livestock farming");
-    //getSectionHead("Animal feed");
+    getSectionHead("Livestock farming").click();
+    getSectionHead("Animal feed").click();
     cy.get("span[data-test=Report-Download-Policy]").next("i[data-test=download-icon]").should("be.visible");
 
     getSectionHead("Cement");
