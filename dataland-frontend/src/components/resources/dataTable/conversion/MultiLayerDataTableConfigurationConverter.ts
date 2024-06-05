@@ -9,7 +9,21 @@ import { getDataModelFieldCellConfig } from "@/components/resources/dataTable/co
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
-const autoExpandingCategoryNames = new Set(["general", "masterData"]);
+const autoExpandingCategoryNames = new Set([
+  "general",
+  "masterData",
+  "ammonia",
+  "automotive",
+  "hvcPlastics",
+  "commercialRealEstate",
+  "residentialRealEstate",
+  "steel",
+  "freightTransportByRoad",
+  "electricityGeneration",
+  "livestockFarming",
+  "cement",
+  "decarbonisation",
+]);
 
 /**
  * Converts a Data-Model-Ts Category to a MLDTSectionConfig
