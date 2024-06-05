@@ -9,7 +9,8 @@
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
-          :is-user-allowed-to-upload="isUserAllowedToUpload"
+          :is-user-allowed-to-view="isUserAllowedToViewForFramework(framework)"
+          :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
@@ -35,7 +36,7 @@ import type { Content, Page } from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
@@ -54,7 +55,7 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
     isClaimPanelVisible() {
-      return !this.isUserDataOwner && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner;
+      return !this.isAnyDataOwnerExisting && isCompanyIdValid(this.companyId);
     },
   },
   watch: {
@@ -62,18 +63,14 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await this.setUploaderRightsForUser();
-          this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
-            newCompanyId as string,
-            this.getKeycloakPromise,
-          );
+          await this.setUserRights();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
       }
     },
     async authenticated() {
-      await this.setUploaderRightsForUser();
+      await this.setUserRights();
     },
   },
   components: {
@@ -91,7 +88,7 @@ export default defineComponent({
     };
   },
   created() {
-    void this.setUploaderRightsForUser();
+    void this.setUserRights();
   },
   props: {
     companyId: {
@@ -109,22 +106,15 @@ export default defineComponent({
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       isUserDataOwner: false,
-      hasCompanyDataOwner: false,
-      isUserAllowedToUpload: false,
+      isUserUploader: false,
+      isAnyDataOwnerExisting: false,
       footerContent,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    void this.updateHasCompanyDataOwner();
   },
   methods: {
-    /**
-     * Updates the hasCompanyDataOwner in an async way
-     */
-    async updateHasCompanyDataOwner() {
-      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
-    },
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -137,24 +127,52 @@ export default defineComponent({
     },
 
     /**
-     * Set if the user is allowed to upload data for the current company
-     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
+     * Checks if the user is allowed to view datasets for the framework
+     * @param framework to check for
+     * @returns a boolean as result of this check
      */
-    async setUploaderRightsForUser() {
+    isUserAllowedToViewForFramework(framework: DataTypeEnum): boolean {
       if (this.authenticated) {
-        await isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
-          .then((result) => {
-            this.isUserDataOwner = result;
-            this.isUserAllowedToUpload = result;
-          })
-          .then(() => {
-            if (!this.isUserAllowedToUpload) {
-              return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
-                this.isUserAllowedToUpload = result;
-              });
-            }
-          });
+        return this.isUserDataOwner || this.isFrameworkPublic(framework);
       }
+    },
+
+    /**
+     * Checks if the user is allowed to upload datasets for the framework
+     * @param framework to check for
+     * @returns a boolean as result of this check
+     */
+    isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
+      return this.isUserDataOwner || (this.isFrameworkPublic(framework) && this.isUserUploader);
+    },
+
+    /**
+     * Checks if the framework is a public framework
+     * @param framework to check for
+     * @returns a boolean as result of this check
+     */
+    isFrameworkPublic(framework: DataTypeEnum): boolean {
+      return !PRIVATE_FRAMEWORKS.includes(framework);
+    },
+
+    /**
+     * Set user access rights and ownership info
+     */
+    async setUserRights() {
+      await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise)
+        .then((result) => {
+          this.isAnyDataOwnerExisting = result;
+        })
+        .then(() => {
+          return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
+            this.isUserDataOwner = result;
+          });
+        })
+        .then(() => {
+          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
+            this.isUserUploader = result;
+          });
+        });
     },
   },
 });

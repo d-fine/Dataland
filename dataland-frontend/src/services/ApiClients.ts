@@ -7,7 +7,7 @@ import { RequestControllerApi, type RequestControllerApiInterface } from "@clien
 import axios, { type AxiosInstance } from "axios";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import * as backendApis from "@clients/backend/api";
 
@@ -104,7 +104,7 @@ export class ApiClientProvider {
    */
   getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
     framework: K,
-  ): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+  ): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, undefined, this.axiosInstance);
   }
 }

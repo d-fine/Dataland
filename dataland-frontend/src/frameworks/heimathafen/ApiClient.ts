@@ -7,10 +7,10 @@ import {
   type HeimathafenData,
   HeimathafenDataControllerApi,
 } from "@clients/backend";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class HeimathafenApiClient implements FrameworkDataApi<HeimathafenData> {
+export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenData> {
   private readonly openApiDataController: HeimathafenDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {

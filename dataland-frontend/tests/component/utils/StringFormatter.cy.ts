@@ -1,4 +1,7 @@
 import { convertKebabCaseToPascalCase, humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { DataTypeEnum } from "@clients/backend";
+import { PublicFrameworkDefinitions } from "@/frameworks/BasePublicFrameworkRegistryImports";
+import { PrivateFrameworkDefinitions } from "@/frameworks/BasePrivateFrameworkRegistryImports";
 
 describe("Unit test for StringFormatter", () => {
   it("Check if specific keywords are converted correctly", () => {
@@ -19,6 +22,13 @@ describe("Unit test for StringFormatter", () => {
   it("Check that numbers are humanized correctly", () => {
     expect(humanizeStringOrNumber(220)).to.equal("220");
     expect(humanizeStringOrNumber(2.523)).to.equal("2.523");
+  });
+
+  it("Check that framework identifiers are being formatted correctly", () => {
+    expect(humanizeStringOrNumber(DataTypeEnum.Heimathafen)).to.equal(
+      PublicFrameworkDefinitions[DataTypeEnum.Heimathafen].label,
+    );
+    expect(humanizeStringOrNumber(DataTypeEnum.Sme)).to.equal(PrivateFrameworkDefinitions[DataTypeEnum.Sme].label);
   });
 
   it("Check that kebab case is converted correctly to camel case", () => {

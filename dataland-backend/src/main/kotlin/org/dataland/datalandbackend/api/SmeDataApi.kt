@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.frameworks.sme.model.SmeData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -96,6 +97,7 @@ interface SmeDataApi {
         ],
     )
     @GetMapping(
+        value = ["/documents"],
         produces = [
             "application/json",
             "application/pdf",
@@ -109,4 +111,37 @@ interface SmeDataApi {
         @RequestParam("dataId") dataId: String,
         @RequestParam("hash") hash: String,
     ): ResponseEntity<InputStreamResource>
+
+    /**
+     * A method to retrieve sme datasets together with their meta info for one specific company identified by its
+     * company ID, optionally filtered to one specific reporting period
+     * @param companyId identifier of the company in Dataland
+     * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones)
+     * @param reportingPeriod identifies a specific reporting period (e.g. a year or quarter)
+     * @return a list of all sme datasets for the chosen company, filtered by the chosen arguments
+     */
+    @Operation(
+        summary = "Retrieve sme datasets with meta info.",
+        description = "All sme datasets with meta info for the given company ID are retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "Successfully retrieved sme datasets with meta info.",
+            ),
+        ],
+    )
+    @GetMapping(
+        value = ["/companies/{companyId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "(hasRole('ROLE_USER') " +
+            "and @DataOwnersManager.isCurrentUserDataOwnerForCompany(#companyId))",
+    )
+    fun getFrameworkDatasetsForCompany(
+        @PathVariable("companyId") companyId: String,
+        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
+        @RequestParam reportingPeriod: String? = null,
+    ): ResponseEntity<List<DataAndMetaInformation<SmeData>>>
 }
