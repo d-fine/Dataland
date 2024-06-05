@@ -109,7 +109,6 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
       cy.get('button[data-testid="save-user"]').click({ force: true });
       cy.wait("@savedUserProfileSettings");
-      cy.pause();
     });
   });
   it("Checks that one can login to the newly registered account", () => {
