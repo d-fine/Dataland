@@ -33,7 +33,7 @@ class GleifGoldenCopyIngestor(
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
     @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
-    @Autowired private val relationShipExtractor: RelationshipExtractor,
+    @Autowired private val relationshipExtractor: RelationshipExtractor,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
@@ -126,11 +126,11 @@ class GleifGoldenCopyIngestor(
         logger.info("Starting parent mapping update cycle for latest file.")
         val newRelationshipFile = File.createTempFile("gleif_relationship_golden_copy", ".zip")
         val duration = measureTime {
-            gleifApiAccessor.getFullGoldenCopyRR(newRelationshipFile)
+            gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
             val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
-            relationShipExtractor.prepareFinalParentMapping(gleifCsvParser)
-            if (updateAllCompanies) companyUploader.updateRelationships(relationShipExtractor.finalParentMapping)
+            relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
+            if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
         }
         logger.info("Finished processing of GLEIF RR file $newRelationshipFile in ${formatExecutionTime(duration)}.")
     }
@@ -190,7 +190,7 @@ class GleifGoldenCopyIngestor(
                         companyUploader.uploadOrPatchSingleCompany(
                             GleifCompanyCombinedInformation(
                                 it,
-                                relationShipExtractor.finalParentMapping.getOrDefault(it.lei, null),
+                                relationshipExtractor.finalParentMapping.getOrDefault(it.lei, null),
                             ),
                         )
                     }

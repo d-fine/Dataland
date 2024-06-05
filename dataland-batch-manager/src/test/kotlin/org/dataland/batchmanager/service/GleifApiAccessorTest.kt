@@ -68,6 +68,13 @@ class GleifApiAccessorTest {
     }
 
     @Test
+    fun `test if download of full golden copy relationships works fine under the right conditions`() {
+        `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
+        GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl).getFullGoldenCopyOfRelationships(File("test"))
+        mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
+    }
+
+    @Test
     fun `test if download delta file works fine under the right conditions`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
         GleifApiAccessor(mockHttpClient, dummyUrl, dummyUrl).getLastMonthGoldenCopyDelta(File("test"))

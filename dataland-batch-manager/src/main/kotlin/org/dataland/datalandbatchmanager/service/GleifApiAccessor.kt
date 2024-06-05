@@ -49,7 +49,7 @@ class GleifApiAccessor(
      * Downloads the complete relationship golden copy file
      * @param targetFile the local target file to be written
      */
-    fun getFullGoldenCopyRR(targetFile: File) {
+    fun getFullGoldenCopyOfRelationships(targetFile: File) {
         downloadFileFromGleif("rr/latest.csv", targetFile, "full Golden Copy RR File")
     }
 

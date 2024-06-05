@@ -1,12 +1,10 @@
 package org.dataland.batchmanager.service
 
+import org.dataland.batchmanager.utils.ZipFileCreator
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
 
 class RelationshipExtractorTest {
 
@@ -47,15 +45,9 @@ bb,dd,IS_FEEDER_TO"""
     fun `integration test to see if the mapping returns a final parent mapping as expected`() {
         val relationshipExtractor = RelationshipExtractor()
 
-        val zipBytes = ByteArrayOutputStream()
-        val zipStream = ZipOutputStream(zipBytes)
-        val buffer = testFileContent.toByteArray()
-        zipStream.putNextEntry(ZipEntry("some.csv"))
-        zipStream.write(buffer, 0, buffer.size)
-        zipStream.closeEntry()
-        zipStream.close()
         val zipFile = File("zip.zip")
-        zipFile.writeBytes(zipBytes.toByteArray())
+        ZipFileCreator.createZipFile(zipFile, testFileContent)
+
         val bufferedReader = GleifCsvParser().getCsvStreamFromZip(zipFile)
         val mappingIterator = GleifCsvParser().readGleifRelationshipDataFromBufferedReader(bufferedReader)
 
