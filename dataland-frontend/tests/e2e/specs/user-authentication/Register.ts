@@ -80,6 +80,10 @@ describe("As a user I want to be able to register for an account and be able to 
   });
 
   it("Checks that the admin console is working and a newly registered user can be verified", () => {
+    cy.intercept("GET", "/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com").as("typedUsernameInSearch");
+    cy.intercept("GET", "/keycloak/admin/realms/datalandsecurity/users/*userProfileMetadata=true").as(
+      "openedDummyUserProfile",
+    );
     cy.task("getEmail").then((returnEmail) => {
       cy.visit("http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users");
       cy.get("h1").should("exist").should("contain", "Sign in to your account");
@@ -93,18 +97,22 @@ describe("As a user I want to be able to register for an account and be able to 
         .get("#kc-login")
         .should("exist")
         .click();
+
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
         .type(returnEmail as string, { force: true })
         .type("{enter}");
-      cy.wait(1000);
+      cy.wait("@typedUsernameInSearch");
       cy.get("table");
-      cy.wait(1000);
       cy.contains("a", returnEmail as string).click();
-      cy.wait(1000);
+      cy.wait("@openedDummyUserProfile");
+      cy.intercept("GET", "keycloak/admin/realms/datalandsecurity/users/*userProfileMetadata=true").as(
+        "savedUserProfileSettings",
+      );
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
-      cy.wait(100);
       cy.get('button[data-testid="save-user"]').click({ force: true });
+      cy.wait("@savedUserProfileSettings");
+      cy.pause();
     });
   });
   it("Checks that one can login to the newly registered account", () => {
