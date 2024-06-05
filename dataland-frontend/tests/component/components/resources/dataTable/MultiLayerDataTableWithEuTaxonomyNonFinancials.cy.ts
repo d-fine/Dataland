@@ -110,8 +110,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       getCellValueContainer("Total Amount", 2)
         .invoke("text")
         .should("match", new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
-      getCellValueContainer("Total Amount", 2);
-      /*
+      getCellValueContainer("Total Amount", 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.contains("td", gammaCapexTotalAmountFormattedString).should("exist");
         cy.contains("td", assertDefined(gammaCapexTotalAmount.quality).toString()).should("exist");
@@ -120,11 +119,9 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
           "exist",
         );
       });
-       */
       cy.get("body").type("{esc}");
 
-      getCellValueContainer("Aligned Activities", 2);
-      /*
+      getCellValueContainer("Aligned Activities", 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get("tr")
           .contains("td", assertDefined(gammaCapexFirstAlignedActivity.activityName))
@@ -133,11 +130,9 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
           .invoke("text")
           .should("match", /^0 %$/);
       });
-       */
       cy.get("body").type("{esc}");
 
-      getCellValueContainer("Non-Aligned Activities", 2);
-      /*
+      getCellValueContainer("Non-Aligned Activities", 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get("tr")
           .contains("td", assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
@@ -149,7 +144,6 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
             new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`),
           );
       });
-       */
     });
   });
 
