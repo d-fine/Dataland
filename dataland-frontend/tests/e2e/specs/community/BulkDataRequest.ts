@@ -1,4 +1,4 @@
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type BulkDataRequestResponse } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -16,7 +16,7 @@ describeIf(
   () => {
     let permIdOfExistingCompany: string;
     before(() => {
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const companyToUpload = generateDummyCompanyInformation(`Test Co. ${new Date().getTime()}`);
         permIdOfExistingCompany = assertDefined(companyToUpload.identifiers[IdentifierType.PermId][0]);
         await uploadCompanyViaApi(token, companyToUpload);
