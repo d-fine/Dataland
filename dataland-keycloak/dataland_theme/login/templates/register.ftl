@@ -95,19 +95,6 @@
                 LOGIN TO ACCOUNT
             </Button>
         </div>
-
-        <script>
-            let submit_button = document.getElementById("register_button");
-
-            let first_name_field = document.getElementById("firstName");
-            let last_name_field = document.getElementById("lastName");
-
-            submit_button.addEventListener("click", function () {
-                if(!first_name_field.value) first_name_field.value = "-";
-                if(!last_name_field.value) last_name_field.value = "-";
-            });
-        </script>
-
         <script type="text/javascript" src="${url.resourcesPath}/passwordStrength.js"></script>
     </#if>
 </@layout.registrationLayout>
