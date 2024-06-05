@@ -30,7 +30,7 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
    * @param eligibilityKpis the dataset used as the source of truth
    */
   function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
-    getSectionHead(financialCompanyType, true).click();
+    getSectionHead(financialCompanyType, true);
     getCellValueContainer(euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent).should(
       "contain",
       formatPercentageNumberAsString(assertDefined(eligibilityKpis.taxonomyEligibleActivityInPercent?.value)),
@@ -86,8 +86,8 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
       formatPercentageNumberAsString(assertDefined(testData.creditInstitutionKpis!.greenAssetRatioInPercent?.value)),
     );
 
-    getSectionHead("Eligibility KPIs", true).click();
-    getSectionHead("Credit Institution", true).click();
+    getSectionHead("Eligibility KPIs", true);
+    getSectionHead("Credit Institution", true);
   }
 
   /**
@@ -102,8 +102,8 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
         assertDefined(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.value),
       ),
     );
-    getSectionHead("Eligibility KPIs", true).click();
-    getSectionHead("Insurance or Reinsurance", true).click();
+    getSectionHead("Eligibility KPIs", true);
+    getSectionHead("Insurance or Reinsurance", true);
   }
 
   /**
