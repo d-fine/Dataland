@@ -19,6 +19,8 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
     private val dataType = "LkSG"
     private val contactMessage = "something"
     private val receiverEmail = "testReceiver@somewhere.com"
+    private val dummyFirstName = "testUserName"
+    private val dummyLastName = "testUserLastName"
 
     private fun buildTestEmail(
         reportingPeriods: String,
@@ -30,6 +32,8 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
             "dataType" to dataType,
             "reportingPeriods" to reportingPeriods,
             "message" to contactMessage,
+            "firstName" to dummyFirstName,
+            "lastName" to dummyLastName,
         )
 
         val email = DataRequestedClaimOwnershipEmailFactory(
@@ -57,6 +61,8 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
         assertTrue(email.content.htmlContent.contains(requesterEmail))
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(email.content.htmlContent.contains(dataType))
+        assertTrue(email.content.htmlContent.contains(dummyFirstName))
+        assertTrue(email.content.htmlContent.contains(dummyLastName))
         assertTrue(email.content.htmlContent.contains(reportingPeriods))
         assertTrue(
             email.content.htmlContent.contains(

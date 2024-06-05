@@ -80,6 +80,12 @@ class SingleDataRequestEmailMessageSender(
             "companyId" to messageInformation.datalandCompanyId,
             "companyName" to companyName,
             "requesterEmail" to messageInformation.userAuthentication.username,
+            "firstName" to messageInformation.userAuthentication.firstName.takeIf {
+                it.isNotBlank()
+            },
+            "lastName" to messageInformation.userAuthentication.lastName.takeIf {
+                it.isNotBlank()
+            },
             "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
             "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
