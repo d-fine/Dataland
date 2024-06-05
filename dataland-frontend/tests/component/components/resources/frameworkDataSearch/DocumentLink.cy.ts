@@ -1,5 +1,6 @@
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("check that the progress spinner works correctly for the document link component", function (): void {
   it("Check that there are no icons before and after triggering a download", function (): void {
@@ -13,11 +14,7 @@ describe("check that the progress spinner works correctly for the document link 
       props: {
         downloadName: "Test",
         fileReference: "dummyFileReference",
-      },
-      data() {
-        return {
-          percentCompleted: undefined,
-        };
+        dataType: DataTypeEnum.Heimathafen,
       },
     }).then(() => {
       validateNoIcons();
@@ -34,6 +31,7 @@ describe("check that the progress spinner works correctly for the document link 
       props: {
         downloadName: "Test",
         fileReference: "dummyFileReference",
+        dataType: DataTypeEnum.Heimathafen,
       },
       data() {
         return {

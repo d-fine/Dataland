@@ -1,12 +1,17 @@
 <template>
   <div class="flex" v-if="content.displayComponentName == MLDTDisplayComponents.HighlightHiddenCellDisplay">
     <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" v-if="inReviewMode" />
-    <MultiLayerDataTableCell :content="content.displayValue.innerContents" :inReviewMode="inReviewMode" />
+    <MultiLayerDataTableCell
+      :content="content.displayValue.innerContents"
+      :metaInfo="metaInfo"
+      :inReviewMode="inReviewMode"
+    />
   </div>
   <div v-if="content.displayComponentName == MLDTDisplayComponents.DataPointWrapperDisplayComponent">
-    <DataPointWrapperDisplayComponent :content="content">
+    <DataPointWrapperDisplayComponent :content="content" :metaInfo="metaInfo">
       <MultiLayerDataTableCell
         :content="content.displayValue.innerContents"
+        :meta-info="metaInfo"
         v-if="!hasBlankInnerContents"
         :inReviewMode="inReviewMode"
       />
@@ -28,6 +33,7 @@ import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/Mo
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 import DataPointWrapperDisplayComponent from "@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue";
 import FreeTextDisplayComponent from "@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue";
+import { type DataMetaInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
@@ -57,6 +63,10 @@ export default defineComponent({
   props: {
     content: {
       type: Object as () => AvailableMLDTDisplayObjectTypes,
+      required: true,
+    },
+    metaInfo: {
+      type: Object as () => DataMetaInformation,
       required: true,
     },
     inReviewMode: {

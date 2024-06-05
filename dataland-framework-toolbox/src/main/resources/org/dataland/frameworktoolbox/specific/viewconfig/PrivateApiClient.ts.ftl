@@ -7,10 +7,10 @@ import {
   type ${frameworkBaseName}Data,
   ${frameworkBaseName}DataControllerApi,
 } from "@clients/backend";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class ${frameworkBaseName}ApiClient implements FrameworkDataApi<${frameworkBaseName}Data> {
+export class ${frameworkBaseName}ApiClient implements PrivateFrameworkDataApi<${frameworkBaseName}Data> {
   private readonly openApiDataController: ${frameworkBaseName}DataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
@@ -23,18 +23,22 @@ export class ${frameworkBaseName}ApiClient implements FrameworkDataApi<${framewo
     reportingPeriod?: string,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataAndMetaInformation<${frameworkBaseName}Data>[]> {
-    return this.openApiDataController.getAllCompany${frameworkBaseName}Data(companyId, showOnlyActive, reportingPeriod, options);
+    return this.openApiDataController.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod, options);
   }
 
   getFrameworkData(dataId: string, options?: AxiosRequestConfig): AxiosPromise<CompanyAssociatedData<${frameworkBaseName}Data>> {
     return this.openApiDataController.getCompanyAssociated${frameworkBaseName}Data(dataId, options);
   }
 
+  getPrivateDocument(dataId: string, hash: string, options?: AxiosRequestConfig): AxiosPromise<File> {
+    return this.openApiDataController.getPrivateDocument(dataId, hash, options);
+  }
+
   postFrameworkData(
-    data: CompanyAssociatedData<${frameworkBaseName}Data>,
-    bypassQa?: boolean,
+    companyAssociated${frameworkBaseName}Data: CompanyAssociatedData<${frameworkBaseName}Data>,
+    documents: Array<File>,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataMetaInformation> {
-    return this.openApiDataController.postCompanyAssociated${frameworkBaseName}Data(data, bypassQa, options);
+    return this.openApiDataController.post${frameworkBaseName}JsonAndDocuments(companyAssociated${frameworkBaseName}Data, documents, options);
   }
 }
