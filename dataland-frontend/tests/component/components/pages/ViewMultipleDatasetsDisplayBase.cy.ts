@@ -2,12 +2,12 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
 import {
   type DataAndMetaInformationLksgData,
+  type DataAndMetaInformationSfdrData,
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
-  QaStatus,
   type SfdrData,
-  DataAndMetaInformationEsgQuestionnaireData,
+  QaStatus,
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
@@ -20,6 +20,7 @@ describe("Component test for the view multiple dataset display base component", 
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
       preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
     });
+
     cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
       preparedFixturesSfdr = jsonContent as Array<FixtureData<SfdrData>>;
     });
@@ -96,21 +97,29 @@ describe("Component test for the view multiple dataset display base component", 
   });
 
   it("Check, if the Dropdown for frameworks display data", () => {
-    const preparedFixtureSfdr = getPreparedFixture("TestForDropDown", preparedFixturesSfdr);
     const preparedFixtureLksg = getPreparedFixture("TestForDropDown", preparedFixturesLksg);
+    const preparedFixtureSfdr = getPreparedFixture("TestForDropDown", preparedFixturesSfdr);
 
     const mockedDataLksg = constructCompanyApiResponseForLksg(preparedFixtureLksg.t);
     const mockedDataSfdr = constructCompanyApiResponseForSfdr(preparedFixtureSfdr.t)
 
+    cy.log(mockedDataSfdr.data.general.general.fiscalYearEnd)
+    cy.log(mockedDataSfdr.data.general.general.dataDate)
+
     cy.intercept(`/api/companies/*/info`, preparedFixtureLksg.companyInformation);
     cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedDataLksg]);
-
-    cy.intercept(`/api/companies/*/info`, preparedFixtureSfdr.companyInformation);
-    cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedDataSfdr]);
-
     cy.intercept(`/api/metadata?companyId=mock-company-id`, {
       status: 200,
-      body: [mockedDataLksg.metaInfo, mockedDataSfdr.metaInfo],
+      body: [mockedDataLksg.metaInfo],
+    });
+
+    cy.wait(2000)
+
+    cy.intercept(`/api/companies/*/info`, preparedFixtureSfdr.companyInformation);
+    cy.intercept(`/api/data/sfdr/companies/mock-company-id`, [mockedDataSfdr]);
+    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
+      status: 200,
+      body: [mockedDataSfdr.metaInfo],
     });
 
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
@@ -118,16 +127,21 @@ describe("Component test for the view multiple dataset display base component", 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
-        companyId: mockedDataLksg.metaInfo.companyId,
-        dataType: DataTypeEnum.Lksg,
+        companyId: mockedDataSfdr.metaInfo.companyId,
+        dataType: DataTypeEnum.Sfdr,
         viewInPreviewMode: false,
       },
     }).then((mounted) => {
-      //cy.get('[data-test="chooseFrameworkDropdown"').select("SFDR");
-      cy.get('[data-test="chooseFrameworkDropdown"]').click();
-      cy.get('.dropdown-item-class').get('SFDR').click();
+      cy.get('div[data-test="chooseFrameworkDropdown"]').contains("LkSG").click();
+      cy.pause();
+      //cy.get('[data-test="chooseFrameworkDropdown"').contains("LkSG").click()
+      cy.get('[data-test="chooseFrameworkDropdown"]').invoke('val', 'LkSG').trigger('change');
 
-      cy.get('[data-test="MultiLayerDataTableFrameworkPanelOthers"]').should('be.visible');
+      //cy.get('[data-test="chooseFrameworkDropdown.contains(SFDR)"]').click();
+      //cy.get('.dropdown-item-class').click().contains('SFDR');
+      // cy.get("a:contains('Login')").click();
+
+      cy.get('div[data-test="MultiLayerDataTableFrameworkPanelOthers"]').should('be.visible');
     });
   });
 });
@@ -157,7 +171,7 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
   return { metaInfo: metaData, data: lksgData };
 }
 
-function constructCompanyApiResponseForSfdr(baseDataset: SfdrData): DataAndMetaInformationEsgQuestionnaireData {
+function constructCompanyApiResponseForSfdr(baseDataset: SfdrData): DataAndMetaInformationSfdrData {
   const reportingYear = 2023;
   const reportingDate = `${reportingYear}-01-01`;
   const sfdrData: SfdrData = structuredClone(baseDataset);
@@ -167,7 +181,7 @@ function constructCompanyApiResponseForSfdr(baseDataset: SfdrData): DataAndMetaI
     reportingPeriod: reportingYear.toString(),
     qaStatus: QaStatus.Accepted,
     currentlyActive: true,
-    dataType: DataTypeEnum.EsgQuestionnaire,
+    dataType: DataTypeEnum.Sfdr,
     companyId: "mock-company-id",
     uploadTime: 0,
     uploaderUserId: "mock-uploader-id",
