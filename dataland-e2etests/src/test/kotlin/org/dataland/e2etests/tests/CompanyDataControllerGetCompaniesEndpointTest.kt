@@ -217,12 +217,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testIdentifier = UUID.randomUUID().toString()
         val testName = "SubstringSearch"
-        val companyIdentifier = mapOf(
-            IdentifierType.Lei.value to listOf(testIdentifier),
-        )
-        val companyInformation = CompanyInformation(
-            testName, "", companyIdentifier, "", listOf(),
-        )
+        val companyIdentifier = mapOf(IdentifierType.Lei.value to listOf(testIdentifier))
+        val companyInformation = CompanyInformation(testName, "", companyIdentifier, "", listOf())
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
