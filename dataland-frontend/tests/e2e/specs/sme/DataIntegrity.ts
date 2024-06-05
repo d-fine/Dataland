@@ -93,7 +93,7 @@ describeIf(
         });
     });
 
-    it("Swap one fake document with a real one and check if it can be downloaded in the view page", () => {
+    it("Swap one fake document with a real one and check if downloading it via the view page works as expected", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visitAndCheckAppMount(
         "/companies/" +
