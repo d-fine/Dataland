@@ -128,8 +128,6 @@ class CompanyUploaderTest {
             .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
     }
 
-
-
     @Test
     fun `check that the upload requests are succesfully sent on the first try if the environment is ideal`() {
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)

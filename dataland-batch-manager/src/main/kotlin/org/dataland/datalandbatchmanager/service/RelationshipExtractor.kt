@@ -13,7 +13,9 @@ class RelationshipExtractor {
     var finalParentMapping = mutableMapOf<String, String>()
 
     /**
-     *
+     *  Converts the return object of the relationship file csv parser to a final map of child lei - parent lei
+     *  according to a simple logic.
+     *  @return The final mapping of child LEI to parent LEI as MutableMap<String, String>
      */
     fun prepareFinalParentMapping(gleifParser: MappingIterator<GleifRelationshipInformation>): Map<String, String> {
         val mappings = parseCsvToGroupedMap(gleifParser)
@@ -29,16 +31,22 @@ class RelationshipExtractor {
 
         orderOfImportance.forEach { relationshipType ->
             val relationshipMap = mappings[relationshipType]
-            relationshipMap?.keys?.forEach { startLei ->
-                if (startLei !in localFinalParentMapping) {
-                    relationshipMap[startLei]?.let { parentLei -> localFinalParentMapping[startLei] = parentLei }
-                }
-            }
+            loopAndAddToFinalParentMapIfNotPresent(relationshipMap, localFinalParentMapping)
         }
-
         finalParentMapping = localFinalParentMapping
 
         return localFinalParentMapping
+    }
+
+    private fun loopAndAddToFinalParentMapIfNotPresent(
+        relationshipMap: MutableMap<String, String>?,
+        localFinalParentMapping: MutableMap<String, String>,
+    ) {
+        relationshipMap?.keys?.forEach { startLei ->
+            if (startLei !in localFinalParentMapping) {
+                relationshipMap[startLei]?.let { parentLei -> localFinalParentMapping[startLei] = parentLei }
+            }
+        }
     }
 
     /**
