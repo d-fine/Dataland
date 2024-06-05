@@ -122,21 +122,14 @@ describe("Component test for the view multiple dataset display base component", 
         dataType: DataTypeEnum.Lksg,
         viewInPreviewMode: false,
       },
-    })
+    }).then((mounted) => {
+      //cy.get('[data-test="chooseFrameworkDropdown"').select("SFDR");
+      cy.get('[data-test="chooseFrameworkDropdown"]').click();
+      cy.get('.dropdown-item-class').get('SFDR').click();
 
-
-    //cy.get('[data-test="chooseFrameworkDropdown"').select("Sdfr")
-
-    cy.get('[data-test=chooseFrameworkDropdown]').click()
-    cy.get('.dropdown-option:contains("SFDR")').click()
-
-    // cy.get('[data-cy=multiLayerDataTable]').should('be.visible');
-
-
+      cy.get('[data-test="MultiLayerDataTableFrameworkPanelOthers"]').should('be.visible');
+    });
   });
-
-
-
 });
 
 /**

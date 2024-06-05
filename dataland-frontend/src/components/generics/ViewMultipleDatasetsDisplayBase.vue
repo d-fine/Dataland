@@ -28,6 +28,7 @@
               :display-configuration="configForEuTaxonomyFinancialsMLDT"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
+              data-test="MultiLayerDataTableFrameworkPanelFinancials"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
@@ -36,6 +37,7 @@
               :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
+              data-test="MultiLayerDataTableFrameworkPanelP2P"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
@@ -44,6 +46,7 @@
               :display-configuration="frameworkViewConfiguration!!.configuration"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
+              data-test="MultiLayerDataTableFrameworkPanelOthers"
             />
           </div>
         </div>
