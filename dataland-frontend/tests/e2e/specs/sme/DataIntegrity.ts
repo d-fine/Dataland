@@ -113,7 +113,8 @@ describeIf(
         times: 1,
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
-      cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(
+      cy.wait(2000)
+      cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
         (postResponseInterception) => {
           cy.url().should("eq", getBaseUrl() + "/datasets");
           const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
@@ -138,11 +139,11 @@ describeIf(
           cy.wait(500);
           cy.wait("@documentDownload");
           cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, "binary", {
-            timeout: Cypress.env("long_timeout_in_ms") as number,
+            timeout: Cypress.env("medium_timeout_in_ms") as number,
           }).then((expectedFileBinary) => {
             cy.task("calculateHash", expectedFileBinary).then((expectedFileHash) => {
               cy.readFile(expectedPathToDownloadedReport, "binary", {
-                timeout: Cypress.env("long_timeout_in_ms") as number,
+                timeout: Cypress.env("medium_timeout_in_ms") as number,
               }).then((receivedFileHash) => {
                 cy.task("calculateHash", receivedFileHash).should("eq", expectedFileHash);
               });
