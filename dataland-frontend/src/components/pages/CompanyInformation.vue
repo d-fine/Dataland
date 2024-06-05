@@ -78,12 +78,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, type PropType } from "vue";
-import {
-  type BasicCompanyInformation,
-  type CompanyInformation,
-  type DataTypeEnum,
-  IdentifierType,
-} from "@clients/backend";
+import { type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
@@ -92,7 +87,7 @@ import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
-import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -186,20 +181,17 @@ export default defineComponent({
      * @returns route push
      */
     async visitParentCompany(parentCompanyLei: string) {
-      const matchingCompanies: BasicCompanyInformation[] = await getCompanyDataForFrameworkDataSearchPage(
-        parentCompanyLei,
-        new Set(),
-        new Set(),
-        new Set(),
-        assertDefined(this.getKeycloakPromise)(),
-      );
-      for (const item of matchingCompanies) {
-        if (item.lei == parentCompanyLei) {
-          const parentCompanyUrl = `/companies/${item.companyId}`;
-          return this.$router.push(parentCompanyUrl);
-        }
+      try {
+        const matchingCompanies = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+          parentCompanyLei,
+          assertDefined(this.getKeycloakPromise)(),
+          1,
+        );
+        const parentCompanyUrl = `/companies/${matchingCompanies[0].companyId}`;
+        return this.$router.push(parentCompanyUrl);
+      } catch (e) {
+        console.error("The displayed Lei does not match any company on Dataland.");
       }
-      console.error("The displayed Lei does not match any company on Dataland.");
     },
     /**
      * Updates the hasCompanyDataOwner in an async way

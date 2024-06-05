@@ -31,12 +31,8 @@ describe("Component tests for the company info sheet", function (): void {
       body: mockedStoredDataRequests,
     }).as("fetchUserRequests");
 
-    cy.intercept(`**/api/companies?searchString=${dummyParentCompanyLei}**`, {
+    cy.intercept(`**/api/companies/names?searchString=${dummyParentCompanyLei}**`, {
       body: [
-        {
-          companyId: "otherCompanyId",
-          lei: "otherParentCompanyLei",
-        },
         {
           companyId: dummyParentCompanyId,
           lei: dummyParentCompanyLei,
