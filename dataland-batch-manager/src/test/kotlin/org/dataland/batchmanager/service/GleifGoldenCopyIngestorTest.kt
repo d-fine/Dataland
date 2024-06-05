@@ -119,6 +119,7 @@ class GleifGoldenCopyIngestorTest {
         companyIngestor.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(3))
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
+        verify(mockGleifCsvParser, times(1)).readGleifRelationshipDataFromBufferedReader(any() ?: emptyBufferedReader)
         mockStaticFile.close()
         mockFileUtils.close()
     }

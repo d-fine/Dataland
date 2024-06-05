@@ -13,6 +13,7 @@ import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -77,6 +78,43 @@ class CompanyUploaderTest {
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, "1000")
         verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
+    }
+
+    @Test
+    fun `check that the relationship update makes the intended calls` () {
+        val finalParentMapping = mutableMapOf<String, String>()
+        val mockLei = "abcd"
+        val mockCompanyID = "testCompanyId"
+        val mockParentLei = "defg"
+        finalParentMapping[mockLei] = mockParentLei
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+            .thenReturn(CompanyId(mockCompanyID))
+
+        companyUploader.updateRelationships(finalParentMapping)
+
+        val compPatch = CompanyInformationPatch(parentCompanyLei=mockParentLei)
+
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
+        verify(mockCompanyDataControllerApi, times(1)).patchCompanyById(mockCompanyID, compPatch)
+    }
+
+    @Test
+    fun `check that an exception is thrown when ` () {
+        val finalParentMapping = mutableMapOf<String, String>()
+        val mockLei = "abcd"
+        val mockCompanyID = "testCompanyId"
+        val mockParentLei = "defg"
+        finalParentMapping[mockLei] = mockParentLei
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+            .thenThrow(ClientException(statusCode = HttpStatus.NOT_IMPLEMENTED.value()))
+
+        companyUploader.updateRelationships(finalParentMapping)
+
+        verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
+            .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
+
     }
 
     @Test

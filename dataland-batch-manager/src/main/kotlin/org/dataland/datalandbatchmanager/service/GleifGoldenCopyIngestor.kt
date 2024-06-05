@@ -77,6 +77,8 @@ class GleifGoldenCopyIngestor(
 
             waitForBackend()
             logger.info("Retrieving all company data available via GLEIF.")
+
+            // Process relationship file before LEI file to have info available upon company upload
             processRelationshipFile(updateAllCompanies = false)
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
@@ -122,7 +124,7 @@ class GleifGoldenCopyIngestor(
     @Synchronized
     private fun processRelationshipFile(updateAllCompanies: Boolean = false) {
         logger.info("Starting parent mapping update cycle for latest file.")
-        val newRelationshipFile = File.createTempFile("gleif_relationship_update", ".csv")
+        val newRelationshipFile = File.createTempFile("gleif_relationship_golden_copy", ".zip")
         val duration = measureTime {
             gleifApiAccessor.getFullGoldenCopyRR(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
