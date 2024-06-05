@@ -83,7 +83,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if patching identifiers works as expected`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyInformationToUpload = apiAccessor
             .testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithRandomIdentifiers(1)
@@ -283,7 +283,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company twice and receive the expected error code and message`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithRandomIdentifiers(1).first()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val storedCompany = apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
 
         val storedCompanyIdentifier = storedCompany
