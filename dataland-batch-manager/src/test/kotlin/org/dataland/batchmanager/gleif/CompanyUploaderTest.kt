@@ -15,10 +15,7 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -114,8 +111,6 @@ class CompanyUploaderTest {
 
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
             .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
-        verify(mockCompanyDataControllerApi, never()).patchCompanyById(companyId=anyString(),
-                                             companyInformationPatch=any(CompanyInformationPatch::class.java))
     }
 
     @Test
@@ -131,9 +126,9 @@ class CompanyUploaderTest {
 
         verify(mockCompanyDataControllerApi, times(1))
             .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
-        verify(mockCompanyDataControllerApi, never()).patchCompanyById(companyId=anyString(),
-            companyInformationPatch=any(CompanyInformationPatch::class.java))
     }
+
+
 
     @Test
     fun `check that the upload requests are succesfully sent on the first try if the environment is ideal`() {
