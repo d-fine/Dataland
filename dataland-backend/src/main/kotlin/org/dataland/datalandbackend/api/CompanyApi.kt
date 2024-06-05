@@ -53,7 +53,7 @@ interface CompanyApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postCompany(
         @Valid @RequestBody
         companyInformation: CompanyInformation,
