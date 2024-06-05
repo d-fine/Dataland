@@ -128,7 +128,7 @@ describe("Component test for the view multiple dataset display base component", 
       // @ts-ignore
       props: {
         companyId: mockedDataSfdr.metaInfo.companyId,
-        dataType: DataTypeEnum.Sfdr,
+        dataType: DataTypeEnum.Lksg,
         viewInPreviewMode: false,
       },
     }).then((mounted) => {
