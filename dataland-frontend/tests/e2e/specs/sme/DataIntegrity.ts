@@ -57,7 +57,7 @@ describeIf(
         });
     });
 
-    it("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
+    it("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded on", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
       cy.visitAndCheckAppMount(
