@@ -103,6 +103,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       });
 
       it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
+        cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount("/companies");
         verifySearchResultTableExists();
 
