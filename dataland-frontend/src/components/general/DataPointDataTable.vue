@@ -19,6 +19,7 @@
                 :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
                 :file-reference="dataPointDisplay.dataSource.fileReference"
                 :data-id="dataId"
+                :data-type="dataType"
                 show-icon
               />
             </td>
@@ -57,6 +58,7 @@ export default defineComponent({
     return {
       dataPointDisplay: undefined as DataPointDisplay | undefined,
       dataId: undefined as string | undefined,
+      dataType: undefined as string | undefined,
     };
   },
   mounted() {
@@ -64,9 +66,11 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       dataPointDisplay: DataPointDisplay;
       dataId: string;
+      dataType: string;
     };
     this.dataPointDisplay = dialogRefData.dataPointDisplay;
     this.dataId = dialogRefData.dataId;
+    this.dataType = dialogRefData.dataType;
   },
   computed: {
     dataSourceLabel() {
