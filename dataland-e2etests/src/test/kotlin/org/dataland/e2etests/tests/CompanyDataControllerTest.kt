@@ -62,7 +62,7 @@ class CompanyDataControllerTest {
             companyName = startingCompanyInformation.companyName + "-UPDATED",
             website = "Updated Website",
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
             companyId,
             patchObject,
@@ -120,7 +120,7 @@ class CompanyDataControllerTest {
         val patchObject = CompanyInformationPatch(
             companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
             companyId,
             patchObject,
@@ -142,7 +142,7 @@ class CompanyDataControllerTest {
             identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
             countryCode = "DE",
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, putCompanyInformation)
         assertEquals(
             putCompanyInformation.companyName, updatedCompany.companyInformation.companyName,
@@ -178,7 +178,7 @@ class CompanyDataControllerTest {
         val put2CompanyInformation = put1CompanyInformation.copy(
             identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
         assertTrue(
             put1CompanyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() ==
