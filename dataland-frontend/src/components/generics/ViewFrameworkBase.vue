@@ -28,6 +28,7 @@
               class="fill-dropdown always-fill"
               dropdownIcon="pi pi-angle-down"
               @change="handleChangeFrameworkEvent"
+              data-test="chooseFrameworkDropdown"
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
