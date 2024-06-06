@@ -9,10 +9,7 @@ export class BaseSmeFrameworkDefinition implements BasePrivateFrameworkDefinitio
   readonly identifier = "sme";
   readonly explanation = "Small and medium-sized enterprises questionnaire";
   readonly label = "SME";
-  getPrivateFrameworkApiClient(
-    configuration?: Configuration,
-    axiosInstance?: AxiosInstance,
-  ): PrivateFrameworkDataApi<SmeData> {
+  getPrivateFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): PrivateFrameworkDataApi<SmeData> {
     return new SmeApiClient(configuration, axiosInstance);
   }
 }
