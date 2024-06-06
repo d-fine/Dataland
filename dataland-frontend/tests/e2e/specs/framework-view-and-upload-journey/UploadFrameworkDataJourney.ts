@@ -22,10 +22,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     },
     () => {
-      beforeEach(function () {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-      });
-
       const uniqueCompanyMarkerA = Date.now().toString() + "AAA";
       const uniqueCompanyMarkerB = Date.now().toString() + "BBB";
       const testCompanyNameForApiUpload =
@@ -121,6 +117,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       });
 
       it("Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland", function () {
+        cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount("/companies/choose");
         const identifierDoesExistMessage = "There already exists a company with this ID";
         cy.contains(identifierDoesExistMessage).should("not.exist");
@@ -217,6 +214,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         "Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks," +
           " and verify pages and elements.",
         function () {
+          cy.ensureLoggedIn(uploader_name, uploader_pw);
           cy.visitAndCheckAppMount("/companies");
           verifySearchResultTableExists();
           cy.get("button").contains("New Dataset").click({ force: true });
