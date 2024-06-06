@@ -86,8 +86,8 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
       formatPercentageNumberAsString(assertDefined(testData.creditInstitutionKpis!.greenAssetRatioInPercent?.value)),
     );
 
-    getSectionHead("Eligibility KPIs", true);
-    getSectionHead("Credit Institution", true);
+    getSectionHead("Eligibility KPIs", true).should("exist");
+    getSectionHead("Credit Institution", true).should("exist");
   }
 
   /**
@@ -102,8 +102,8 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
         assertDefined(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.value),
       ),
     );
-    getSectionHead("Eligibility KPIs", true);
-    getSectionHead("Insurance or Reinsurance", true);
+    getSectionHead("Eligibility KPIs", true).should("exist");
+    getSectionHead("Insurance or Reinsurance", true).should("exist");
   }
 
   /**

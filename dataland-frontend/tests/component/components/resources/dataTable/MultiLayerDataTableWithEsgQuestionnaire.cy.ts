@@ -34,8 +34,8 @@ describe("Component Test for the ESG Questionnaire view Page with its componenet
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
     mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
-    getSectionHead("Umwelt");
-    getSectionHead("Treibhausgasemissionen");
+    getSectionHead("Umwelt").should("exist");
+    getSectionHead("Treibhausgasemissionen").should("exist");
     getCellValueContainer("Treibhausgas-Berichterstattung und Prognosen").click();
 
     cy.get("div").contains("Historische Daten");
@@ -49,7 +49,7 @@ describe("Component Test for the ESG Questionnaire view Page with its componenet
       cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope3));
     }
     cy.get("body").type("{esc}");
-    getSectionHead("Energieverbrauch");
+    getSectionHead("Energieverbrauch").should("exist");
     getCellValueContainer("Berichterstattung Energieverbrauch").children().should("not.have.text");
   });
 
@@ -60,8 +60,8 @@ describe("Component Test for the ESG Questionnaire view Page with its componenet
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
     mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
-    getSectionHead("Unternehmensführung/ Governance");
-    getSectionHead("Sonstige");
+    getSectionHead("Unternehmensführung/ Governance").should("exist");
+    getSectionHead("Sonstige").should("exist");
     getCellValueContainer("Wirtschaftsprüfer").contains(
       assertDefined(preparedFixtureForTest.t.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
     );
@@ -74,7 +74,7 @@ describe("Component Test for the ESG Questionnaire view Page with its componenet
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
     mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
-    getSectionHead("ESG Berichte");
+    getSectionHead("ESG Berichte").should("exist");
     getCellValueContainer("Aktuelle Berichte").click();
     cy.get("span").contains("Beschreibung des Berichts");
     const aktuelleBerichte = assertDefined(preparedFixtureForTest.t.allgemein?.esgBerichte?.aktuelleBerichte);

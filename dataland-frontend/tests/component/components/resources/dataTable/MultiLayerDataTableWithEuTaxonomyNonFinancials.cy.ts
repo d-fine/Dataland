@@ -91,7 +91,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         2,
       );
 
-      getSectionHead("Revenue");
+      getSectionHead("Revenue").should("exist");
       getCellValueContainer("Total Amount", 0)
         .invoke("text")
         .should("match", /^0\s*EUR\s.*/);
