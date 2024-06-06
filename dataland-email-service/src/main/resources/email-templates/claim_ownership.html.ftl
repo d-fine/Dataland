@@ -19,7 +19,8 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data<br>from ${companyName}.</td>
+        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland!
+            <#if firstName?? || lastName??>The user <#if firstName??>${firstName} </#if><#if lastName??>${lastName} </#if><#else>A user </#if>is requesting data from ${companyName}.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
@@ -82,18 +83,18 @@
                     </td>
                 </tr>
                 <#if message??>
-                <tr>
-                    <td style="height: 20px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="color:#8c8c8c">Message:</td>
-                </tr>
-                <tr>
-                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold;">${message}</td>
-                </tr>
+                    <tr>
+                        <td style="height: 20px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#8c8c8c">Message:</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 5px; height: 5px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">${message}</td>
+                    </tr>
                 </#if>
                 <tr>
                     <td style="height: 7px"></td>
