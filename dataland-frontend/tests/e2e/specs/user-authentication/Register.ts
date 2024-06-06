@@ -4,6 +4,8 @@ import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@example.com`;
+  const firstName = "Dummy";
+  const lastName = "User";
   const passwordBytes = crypto.getRandomValues(new Uint32Array(8));
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
@@ -46,7 +48,12 @@ describe("As a user I want to be able to register for an account and be able to 
       .get("#email")
       .should("exist")
       .type(email, { force: true })
-
+      .get("#firstName")
+      .should("exist")
+      .type(firstName, { force: true })
+      .get("#lastName")
+      .should("exist")
+      .type(lastName, { force: true })
       .get("#password")
       .should("exist")
       .type(randomHexPassword, { force: true })
@@ -86,14 +93,22 @@ describe("As a user I want to be able to register for an account and be able to 
         .get("#kc-login")
         .should("exist")
         .click();
+      cy.intercept("GET", "/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com").as("typedUsernameInSearch");
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
         .type(returnEmail as string, { force: true })
         .type("{enter}");
+      cy.wait("@typedUsernameInSearch");
       cy.get("table");
+      cy.intercept("GET", "/keycloak/admin/realms/datalandsecurity/users/*rue").as("openedDummyUserProfile");
       cy.contains("a", returnEmail as string).click();
+      cy.wait("@openedDummyUserProfile");
+      cy.intercept("GET", "keycloak/admin/realms/datalandsecurity/users/*userProfileMetadata=true").as(
+        "savedUserProfileSettings",
+      );
       cy.get('input[id="kc-user-email-verified"]').click({ force: true });
       cy.get('button[data-testid="save-user"]').click({ force: true });
+      cy.wait("@savedUserProfileSettings");
     });
   });
   it("Checks that one can login to the newly registered account", () => {
@@ -117,11 +132,11 @@ describe("As a user I want to be able to register for an account and be able to 
             .get("div[id='profile-picture-dropdown-toggle']")
             .click()
             .get("a[id='profile-picture-dropdown-settings-button']")
-            .click()
-            .get("div[id='landing-signingin'] > a")
-            .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number })
-            .click()
-            .get("button:contains('Set up authenticator application')")
+            .click();
+          cy.wait(100);
+          cy.get("button:contains('Account security')").should("exist").click();
+          cy.get("a:contains('Signing in')").should("exist").click();
+          cy.get("button:contains('Set up Authenticator application')")
             .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number })
             .click()
             .get("a:contains('Unable to scan')")
@@ -132,13 +147,11 @@ describe("As a user I want to be able to register for an account and be able to 
             .invoke("text")
             .then((text) => {
               const totpKey = text.replace(/\s/g, "");
-              cy.get("input[id='totp']")
-                .type(authenticator.generate(totpKey))
-                .get("input[id='saveTOTPBtn']")
-                .click()
-                .get("button[id='signOutButton']")
-                .should("be.visible", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-
+              cy.get("input[id='totp']").type(authenticator.generate(totpKey)).get("input[id='saveTOTPBtn']").click();
+              cy.get(`button:contains('${firstName} ${lastName}')`).click();
+              cy.get("a:contains('Sign out')").should("exist", {
+                timeout: Cypress.env("medium_timeout_in_ms") as number,
+              });
               cy.task("setTotpKey", totpKey);
             });
         });
