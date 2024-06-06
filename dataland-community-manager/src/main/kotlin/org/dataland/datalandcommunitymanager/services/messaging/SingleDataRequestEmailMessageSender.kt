@@ -43,6 +43,9 @@ class SingleDataRequestEmailMessageSender(
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
         val properties = mapOf(
             "User" to messageInformation.userAuthentication.userDescription,
+            "E-Mail" to messageInformation.userAuthentication.username,
+            "First Name" to messageInformation.userAuthentication.firstName,
+            "Last Name" to messageInformation.userAuthentication.lastName,
             "Data Type" to messageInformation.dataType.value,
             "Reporting Periods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "Dataland Company ID" to messageInformation.datalandCompanyId,
@@ -77,6 +80,12 @@ class SingleDataRequestEmailMessageSender(
             "companyId" to messageInformation.datalandCompanyId,
             "companyName" to companyName,
             "requesterEmail" to messageInformation.userAuthentication.username,
+            "firstName" to messageInformation.userAuthentication.firstName.takeIf {
+                it.isNotBlank()
+            },
+            "lastName" to messageInformation.userAuthentication.lastName.takeIf {
+                it.isNotBlank()
+            },
             "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
             "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
             "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
