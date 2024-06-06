@@ -212,7 +212,6 @@ export default defineComponent({
       } catch (e) {
         console.error(e);
       }
-      console.log(this.hasParentCompany);
     },
     /**
      * Uses the dataland API to retrieve information about the company identified by the local
@@ -230,7 +229,6 @@ export default defineComponent({
           } else {
             this.hasParentCompany = false;
           }
-          console.log(this.hasParentCompany);
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
