@@ -19,7 +19,7 @@ data class SmeBasicBiodiversity(
 
     val percentualChangeNatureOrientedOnSite: BigDecimal? = null,
 
-    val totalNatureOrientedAreaOffSitePrevious_year: BigDecimal? = null,
+    val totalNatureOrientedAreaOffSitePreviousYear: BigDecimal? = null,
 
     val totalNatureOrientedAreaOffSiteReportingYear: BigDecimal? = null,
 

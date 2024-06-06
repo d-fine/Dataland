@@ -1,10 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.sme
 
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
-import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.springframework.stereotype.Component
 import java.io.File
 

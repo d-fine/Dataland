@@ -23,7 +23,8 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  */
 function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
-  input.t.general.basicInformation.sectors = generateNaceCodes(2);
-  input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
+  //TODO Rework this function to work with new datamodel
+  //input.t.general.basicInformation.sectors = generateNaceCodes(2);
+  //input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
   return input;
 }

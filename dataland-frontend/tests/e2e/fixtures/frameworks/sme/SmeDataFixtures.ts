@@ -33,6 +33,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
     basic: {
         basisForPreparation: {
             reportingBasis: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+            subsidiary: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),
         },
         practicesForTransitioningTowardsAMoreSustainableEconomy: {
             undertakenMeasures: dataGenerator.randomParagraphs(),
@@ -57,7 +58,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
             totalNatureOrientedAreaOnSitePreviousYear: dataGenerator.randomFloat(),
             totalNatureOrientedAreaOnSiteReportingYear: dataGenerator.randomFloat(),
             percentualChangeNatureOrientedOnSite: dataGenerator.randomPercentageValue(),
-            totalNatureOrientedAreaOffSitePrevious_year: dataGenerator.randomFloat(),
+            totalNatureOrientedAreaOffSitePreviousYear: dataGenerator.randomFloat(),
             totalNatureOrientedAreaOffSiteReportingYear: dataGenerator.randomFloat(),
             percentualChangeNatureOrientedOffSite: dataGenerator.randomPercentageValue(),
             totalUseOfLandPreviousYear: dataGenerator.randomFloat(),

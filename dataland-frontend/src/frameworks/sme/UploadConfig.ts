@@ -22,6 +22,17 @@ export const smeDataModel = [    {
                 showIf: ():boolean => true,
     
                 },
+            {
+                name: "subsidiary",
+                label: "Subsidiary",
+                description: "Please provide a list of your subsidiaries including their registered addresses.",
+    
+    
+                component: "ProductionSitesFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
      
             ],
             },
@@ -227,8 +238,8 @@ export const smeDataModel = [    {
                 validation: "between:0,100",
                 },
             {
-                name: "totalNatureOrientedAreaOffSitePrevious_year",
-                label: "Total nature-oriented area off-site previous_year",
+                name: "totalNatureOrientedAreaOffSitePreviousYear",
+                label: "Total nature-oriented area off-site previous year",
                 description: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
     
     

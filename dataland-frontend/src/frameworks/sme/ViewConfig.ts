@@ -9,6 +9,7 @@ import {formatStringForDatatable} from "@/components/resources/dataTable/convers
 import {getOriginalNameFromTechnicalName} from "@/components/resources/dataTable/conversion/Utils";
 import {formatYesNoValueForDatatable} from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import {wrapDisplayValueWithDatapointInformation} from "@/components/resources/dataTable/conversion/DataPoints";
+import {formatLksgProductionSitesForDisplay} from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
 export const smeViewConfiguration: MLDTConfig<SmeData> = [    {
       type: "section",
       label: "Basic",
@@ -28,6 +29,15 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [    {
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.basic?.basisForPreparation?.reportingBasis?.value), "Reporting Basis", dataset.basic?.basisForPreparation?.reportingBasis)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Subsidiary",
+              explanation: "Please provide a list of your subsidiaries including their registered addresses.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatLksgProductionSitesForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary")
             ,
             },
             ],
@@ -212,11 +222,11 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [    {
             },
             {
               type: "cell",
-              label: "Total nature-oriented area off-site previous_year",
+              label: "Total nature-oriented area off-site previous year",
               explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePrevious_year, "")
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePreviousYear, "")
             ,
             },
             {
