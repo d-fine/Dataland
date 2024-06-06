@@ -225,7 +225,9 @@ export default defineComponent({
             .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           if (this.companyInformation.parentCompanyLei != null) {
-            void this.getParentCompany(this.companyInformation.parentCompanyLei);
+            this.getParentCompany(this.companyInformation.parentCompanyLei).catch(() => {
+              console.error(`Unable to find company with LEI: ${this.companyInformation?.parentCompanyLei}`);
+            });
           } else {
             this.hasParentCompany = false;
           }
