@@ -1,0 +1,977 @@
+{
+  "general": {
+    "masterData": {
+      "dataDate": "2024-07-22",
+      "headOfficeInGermany": "Yes",
+      "groupOfCompanies": "Yes",
+      "groupOfCompaniesName": "architectures",
+      "industry": [
+        "32.9",
+        "63.91",
+        "77.40"
+      ],
+      "numberOfEmployees": 46622.49,
+      "seasonalOrMigrantWorkers": "No",
+      "shareOfTemporaryWorkers": "Between25And50",
+      "annualTotalRevenue": {
+        "amount": 7293732280.38,
+        "currency": "TOP"
+      },
+      "fixedAndWorkingCapital": {
+        "amount": 6823915005.66,
+        "currency": "WST"
+      }
+    },
+    "productionSpecific": {
+      "manufacturingCompany": "No",
+      "capacity": "e-markets",
+      "productionViaSubcontracting": "Yes",
+      "subcontractingCompaniesCountries": {
+        "DE": [
+          "01.25",
+          "02.20",
+          "42.1",
+          "46.38"
+        ],
+        "GB": [
+          "66.21"
+        ]
+      },
+      "productionSites": "No",
+      "numberOfProductionSites": 55424.1,
+      "listOfProductionSites": [
+        {
+          "nameOfProductionSite": "Little - Fisher",
+          "addressOfProductionSite": {
+            "streetAndHouseNumber": "Raynor Forges 91200",
+            "postalCode": "12677",
+            "city": "Pharr",
+            "state": "Indiana",
+            "country": "NZ"
+          },
+          "listOfGoodsOrServices": [
+            "12.00",
+            "20.52",
+            "25.6",
+            "50.2"
+          ]
+        },
+        {
+          "nameOfProductionSite": "Rolfson - Carter",
+          "addressOfProductionSite": {
+            "streetAndHouseNumber": "Anika Parks 4483",
+            "postalCode": "86381",
+            "city": "Gottliebfield",
+            "state": "Connecticut",
+            "country": "LR"
+          },
+          "listOfGoodsOrServices": [
+            "16.22",
+            "19.2",
+            "23.13"
+          ]
+        },
+        {
+          "nameOfProductionSite": "Gibson Group",
+          "addressOfProductionSite": {
+            "streetAndHouseNumber": "E 5th Street 27138",
+            "postalCode": "85482",
+            "city": "Ernsermouth",
+            "state": "Vermont",
+            "country": "CR"
+          },
+          "listOfGoodsOrServices": [
+            "35.2",
+            "88.10"
+          ]
+        }
+      ],
+      "market": "Both",
+      "specificProcurement": [
+        "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
+        "ShortLivedAndChangingBusinessRelationships",
+        "HighPricePressure"
+      ]
+    },
+    "productionSpecificOwnOperations": {
+      "mostImportantProducts": [],
+      "procurementCategories": {
+        "Products": {
+          "procuredProductTypesAndServicesNaceCodes": [
+            "02.20",
+            "46.35"
+          ],
+          "numberOfSuppliersPerCountryCode": {
+            "lifetime value": 2005,
+            "metrics": 5799,
+            "experiences": 3116,
+            "web services": 5943
+          },
+          "shareOfTotalProcurementInPercent": 4
+        },
+        "RawMaterials": {
+          "procuredProductTypesAndServicesNaceCodes": [
+            "23.44",
+            "28.25",
+            "82.20"
+          ],
+          "numberOfSuppliersPerCountryCode": {},
+          "shareOfTotalProcurementInPercent": 18
+        },
+        "Services": {
+          "procuredProductTypesAndServicesNaceCodes": [
+            "01.30",
+            "02.40",
+            "11",
+            "30.3",
+            "45.2"
+          ],
+          "numberOfSuppliersPerCountryCode": {},
+          "shareOfTotalProcurementInPercent": 13
+        }
+      }
+    }
+  },
+  "governance": {
+    "riskManagementOwnOperations": {
+      "riskManagementSystem": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "riskAnalysisInFiscalYear": "No",
+      "risksIdentified": "Yes",
+      "identifiedRisks": [
+        {
+          "riskPosition": "WithholdingAdequateWages",
+          "measuresTaken": "Yes",
+          "listedMeasures": "platforms"
+        },
+        {
+          "riskPosition": "ExportImportOfHazardousWaste",
+          "measuresTaken": "No",
+          "listedMeasures": "supply-chains"
+        },
+        {
+          "riskPosition": "ExportImportOfHazardousWaste",
+          "measuresTaken": "No",
+          "listedMeasures": "e-business"
+        },
+        {
+          "riskPosition": "ProductionAndUseOfPersistentOrganicPollutants",
+          "measuresTaken": "No",
+          "listedMeasures": "e-commerce"
+        },
+        {
+          "riskPosition": "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "measuresTaken": "No",
+          "listedMeasures": "e-commerce"
+        }
+      ],
+      "regulatedRiskManagementResponsibility": "Yes"
+    },
+    "grievanceMechanismOwnOperations": {
+      "grievanceHandlingMechanism": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "grievanceHandlingReportingAccessible": "No",
+      "appropriateGrievanceHandlingInformation": "No",
+      "appropriateGrievanceHandlingSupport": "No",
+      "accessToExpertiseForGrievanceHandling": "Yes",
+      "grievanceComplaints": "Yes",
+      "complaintsNumber": 63218.41,
+      "complaintsRiskPosition": [
+        {
+          "riskPositions": [
+            "ChildLabor",
+            "UnequalTreatmentOfEmployment",
+            "UseOfMercuryOrMercuryWaste",
+            "Slavery",
+            "DisregardForOccupationalHealthOrSafety",
+            "ForcedLabor"
+          ],
+          "specifiedComplaint": "portals",
+          "measuresTaken": "Yes",
+          "listedMeasures": "users"
+        },
+        {
+          "riskPositions": [
+            "DisregardForOccupationalHealthOrSafety",
+            "DisregardForFreedomOfAssociation",
+            "WithholdingAdequateWages",
+            "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+            "UnequalTreatmentOfEmployment"
+          ],
+          "specifiedComplaint": "convergence",
+          "measuresTaken": "Yes",
+          "listedMeasures": "initiatives"
+        },
+        {
+          "riskPositions": [
+            "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+            "ExportImportOfHazardousWaste",
+            "UseOfMercuryOrMercuryWaste",
+            "DisregardForFreedomOfAssociation",
+            "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+            "Slavery",
+            "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+            "UnequalTreatmentOfEmployment",
+            "WithholdingAdequateWages"
+          ],
+          "specifiedComplaint": "channels",
+          "measuresTaken": "Yes",
+          "listedMeasures": "supply-chains"
+        }
+      ],
+      "publicAccessToGrievanceHandling": "No",
+      "whistleblowerProtection": "Yes",
+      "dueDiligenceProcessForGrievanceHandling": "No"
+    },
+    "certificationsPoliciesAndResponsibilities": {
+      "codeOfConduct": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "codeOfConductTraining": "Yes",
+      "supplierCodeOfConduct": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "policyStatement": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "humanRightsStrategy": "lifetime value",
+      "environmentalImpactPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "fairWorkingConditionsPolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "responsibilitiesForFairWorkingConditions": "Yes",
+      "responsibilitiesForTheEnvironment": "No",
+      "responsibilitiesForOccupationalSafety": "Yes",
+      "amforiBsci": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "betterWorkProgram": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "ecoManagementAndAuditSchemeEmas": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "flaFairLaborCodeAndComplianceBenchmarksForAgriculture": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "flaFairLaborCodeAndComplianceBenchmarksForManufacturing": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "fairtradeTraderStandard": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "globalOrganicTextileStandardGots": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "gotsOrganicInConversion": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iatf16949": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso10007": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso14001": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso20400": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso26000": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso31000": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso37001": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso37002": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso37301": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso44001": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso45001": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso50001": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "iso9001": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7abcde"
+        }
+      },
+      "isoIec27001": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "isoIecTs33061": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "isoIecIeee15288": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "naturlandStandards": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "responsibleBusinessAlliance": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "sa8000": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "sedexMembersEthicalTradeAuditSmeta": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "textileExchangeGlobalRecycledStandard": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "znuStandardNachhaltigerWirtschaften": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "additionalCertifications": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      }
+    },
+    "generalViolations": {
+      "legalProceedings": "No",
+      "humanRightsOrEnvironmentalViolations": "No",
+      "humanRightsOrEnvironmentalViolationsDefinition": [
+        {
+          "riskPosition": "UseOfMercuryOrMercuryWaste",
+          "measuresTaken": "No",
+          "listedMeasures": "e-markets"
+        },
+        {
+          "riskPosition": "ProductionAndUseOfPersistentOrganicPollutants",
+          "measuresTaken": "No",
+          "listedMeasures": "experiences"
+        },
+        {
+          "riskPosition": "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "measuresTaken": "No",
+          "listedMeasures": "blockchains"
+        },
+        {
+          "riskPosition": "ExportImportOfHazardousWaste",
+          "measuresTaken": "No",
+          "listedMeasures": "metrics"
+        },
+        {
+          "riskPosition": "ForcedLabor",
+          "measuresTaken": "No",
+          "listedMeasures": "methodologies"
+        }
+      ],
+      "highRiskCountriesRawMaterials": "Yes",
+      "highRiskCountriesRawMaterialsLocation": [
+        "AL",
+        "US",
+        "DE",
+        "AZ"
+      ],
+      "highRiskCountriesActivity": "No",
+      "highRiskCountries": [
+        "AZ",
+        "US"
+      ],
+      "highRiskCountriesProcurement": "Yes",
+      "highRiskCountriesProcurementName": [
+        "AZ",
+        "AL"
+      ]
+    }
+  },
+  "social": {
+    "childLabor": {
+      "employeeSUnder18": "No",
+      "employeeSUnder15": "No",
+      "employeeSUnder18InApprenticeship": "Yes",
+      "worstFormsOfChildLaborProhibition": "No",
+      "worstFormsOfChildLaborForms": "lifetime value",
+      "measuresForPreventionOfEmploymentUnderLocalMinimumAge": "Yes",
+      "employmentUnderLocalMinimumAgePreventionEmploymentContracts": "Yes",
+      "employmentUnderLocalMinimumAgePreventionJobDescription": "No",
+      "employmentUnderLocalMinimumAgePreventionIdentityDocuments": "No",
+      "employmentUnderLocalMinimumAgePreventionTraining": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge": "No",
+      "childLaborPreventionPolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "additionalChildLaborOtherMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "additionalChildLaborOtherMeasuresDescription": "content"
+    },
+    "forcedLaborSlavery": {
+      "forcedLaborAndSlaveryPractices": "Yes",
+      "forcedLaborAndSlaveryPracticesSpecification": "synergies",
+      "forcedLaborAndSlaveryPreventionMeasures": "Yes",
+      "forcedLaborAndSlaveryPreventionEmploymentContracts": "Yes",
+      "forcedLaborAndSlaveryPreventionIdentityDocuments": "Yes",
+      "forcedLaborAndSlaveryPreventionFreeMovement": "No",
+      "forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
+      "forcedLaborAndSlaveryPreventionTraining": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "forcedLaborPreventionPolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "forcedLaborAndSlaveryPreventionOtherMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "forcedLaborAndSlaveryPreventionOtherMeasuresDescription": "Cupiditas confido candidus adulatio absens adeptio crur adeptio. Dignissimos placeat spargo terreo statua tempora conscendo viduo. Delego contra cursim tutamen labore caterva astrum.\nAmbulo uterque amplitudo substantia. Tertius pauper aliquam aestas infit. Tripudio numquam aliqua.\nVelit caecus somniculosus speculum necessitatibus stabilis tunc condico adulescens venustas. Ventosus templum video commemoro astrum accusamus. Somnus amplitudo accusantium succedo ambulo argumentum combibo.\nQuam succurro sollers molestias calcar caritas caterva arma. Credo ipsum amicitia agnitio concedo occaecati defluo. Vinitor accusator solitudo beneficium infit crudelis dicta quae atrox caelestis.\nCras teneo aperio stabilis autem aequitas. Sui tamquam supplanto arguo. Sit accusantium aduro constans tres adsuesco vergo iusto."
+    },
+    "withholdingAdequateWages": {
+      "adequateWageWithholding": "No",
+      "adequateWagesMeasures": "No",
+      "documentedWorkingHoursAndWages": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "adequateLivingWage": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "regularWagesProcessFlow": "Yes",
+      "fixedHourlyWages": "No",
+      "fixedPieceworkWages": "Yes",
+      "adequateWageOtherMeasures": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "bla"
+        }
+      },
+      "adequateWageOtherMeasuresDescription": "infrastructures"
+    },
+    "disregardForOccupationalHealthSafety": {
+      "lowSkillWork": "Yes",
+      "hazardousMachines": "No",
+      "oshMeasures": "No",
+      "oshPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "oshTraining": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "healthAndSafetyPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "bla"
+        }
+      },
+      "otherOshMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "otherOshMeasuresDescription": "schemas",
+      "under10WorkplaceAccidents": "Yes"
+    },
+    "disregardForFreedomOfAssociation": {
+      "freedomOfAssociation": "No",
+      "employeeRepresentation": 82.68,
+      "freedomOfAssociationDisregardPrevention": "Yes",
+      "discriminationForTradeUnionMembers": "Yes",
+      "freedomOfOperationForTradeUnion": "No",
+      "freedomOfAssociationTraining": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "worksCouncil": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "freedomOfAssociationOtherMeasures": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "freedomOfAssociationOtherMeasuresDescription": "ROI"
+    },
+    "unequalTreatmentOfEmployment": {
+      "unequalTreatmentOfEmployment": "Yes",
+      "unequalTreatmentOfEmploymentPreventionMeasures": "Yes",
+      "diversityAndInclusionRole": "No",
+      "preventionOfMistreatments": "No",
+      "unequalTreatmentPreventionTraining": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "equalOpportunitiesOfficer": "No",
+      "equalEmploymentPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "unequalTreatmentPreventionOtherMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "unequalTreatmentPreventionOtherMeasuresDescription": "bandwidth"
+    },
+    "contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
+      "harmfulSoilChange": "No",
+      "soilDegradation": "Yes",
+      "soilErosion": "Yes",
+      "soilBorneDiseases": "Yes",
+      "soilContamination": "No",
+      "soilSalinization": "No",
+      "soilProtectionPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "soilSpotChecks": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "harmfulWaterPollution": "No",
+      "fertilizersOrPollutants": "No",
+      "wasteWaterFiltration": "Yes",
+      "waterProtectionPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "waterSpotChecks": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "harmfulAirPollution": "No",
+      "airFiltration": "Yes",
+      "airQualityProtectionPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "airQualitySpotChecks": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "harmfulNoiseEmission": "No",
+      "reductionOfNoiseEmissions": "Yes",
+      "noiseReductionPolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "noiseEmissionsSpotChecks": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "excessiveWaterConsumption": "No",
+      "waterSavingMeasures": "No",
+      "waterSavingMeasuresName": "markets",
+      "waterUseReductionPolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "waterConsumptionSpotChecks": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "waterSources": "Yes",
+      "contaminationPreventionMeasures": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "contaminationPreventionMeasuresDescription": "infrastructures"
+    },
+    "unlawfulEvictionDeprivationOfLandForestAndWater": {
+      "unlawfulEvictionAndTakingOfLand": "No",
+      "unlawfulEvictionAndTakingOfLandRisk": "functionalities",
+      "unlawfulEvictionAndTakingOfLandMeasures": "No",
+      "modelContractsForLandPurchaseOrLeasing": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "involvementOfLocalsInDecisionMaking": "Yes",
+      "governanceOfTenurePolicy": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "unlawfulEvictionAndTakingOfLandOtherMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "unlawfulEvictionAndTakingOfLandOtherMeasuresDescription": "blockchains"
+    },
+    "useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
+      "useOfPrivatePublicSecurityForces": "Yes",
+      "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "Yes",
+      "instructionOfSecurityForces": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "humanRightsTraining": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "stateSecurityForces": "Yes",
+      "privateSecurityForces": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "useOfPrivatePublicSecurityForcesMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "useOfPrivatePublicSecurityForcesMeasuresDescription": "Ulterius astrum quidem corona cedo nobis calcar taceo advoco. Contabesco agnosco carpo est casso suggero copia ipsa trans crustulum. Ratione chirographum summa adduco venustas ultio.\nVix arx animi cras suffoco esse quasi deorsum umbra ars. Arcus uberrime auditor tracto cerno tener. Arceo uter textor attollo crastinus tenetur.\nTabesco deripio pax vado debitis beatae baiulus ipsam bis. Pectus suadeo calculus canis collum testimonium arceo subiungo totidem nulla. Voluptate defleo sunt auctus crur triumphus.\nCrapula cerno venio solutio adaugeo complectus. Eius pecto acsi acquiro. Cursus carpo decretum summa consuasor defaeco et.\nQuo cenaculum iure cupiditate. Acquiro claudeo abundans super doloribus hic dicta cubitum. Ter admoveo vester comprehendo statim tutis crustulum caste tribuo."
+    }
+  },
+  "environmental": {
+    "useOfMercuryMercuryWasteMinamataConvention": {
+      "mercuryAndMercuryWasteHandling": "Yes",
+      "mercuryAddedProductsHandling": "No",
+      "mercuryAddedProductsHandlingRiskOfExposure": "Yes",
+      "mercuryAddedProductsHandlingRiskOfDisposal": "No",
+      "mercuryAndMercuryCompoundsProductionAndUse": "Yes",
+      "mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure": "Yes",
+      "mercuryAndMercuryWasteUsePreventionMeasures": "No",
+      "mercuryAndMercuryWasteHandlingPolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "mercuryAndMercuryWasteUsePreventionOtherMeasures": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "mercuryAndMercuryWasteUsePreventionOtherMeasuresDescription": "ROI"
+    },
+    "productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
+      "persistentOrganicPollutantsProductionAndUse": "Yes",
+      "persistentOrganicPollutantsUsed": "convergence",
+      "persistentOrganicPollutantsProductionAndUseRiskOfExposure": "No",
+      "persistentOrganicPollutantsProductionAndUseRiskOfDisposal": "Yes",
+      "persistentOrganicPollutantsUsePreventionMeasures": "No",
+      "persistentOrganicPollutantsUsePolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "persistentOrganicPollutantsUsePreventionOtherMeasures": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "persistentOrganicPollutantsUsePreventionOtherMeasuresDescription": "Patruus combibo advoco. Reiciendis suffoco adnuo cauda vulnus adsum. Decipio taceo molestias porro id synagoga.\nAuxilium bellicus agnitio repellendus. Stultus tracto cultura adaugeo deleniti vado deserunt vomer. Desolo aegre vulgo eum vulgo.\nDeprecator vergo cinis cribro illum. Tener tolero terminatio defendo curis tot alo. Ducimus veniam tenus aiunt careo cogito cado vitiosus colligo."
+    },
+    "exportImportOfHazardousWasteBaselConvention": {
+      "persistentOrganicPollutantsProductionAndUseTransboundaryMovements": "Yes",
+      "persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
+      "hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein": "No",
+      "hazardousWasteTransboundaryMovementsOutsideOecdEuOrLiechtenstein": "Yes",
+      "hazardousWasteTransportPreventionMeasures": "Yes",
+      "wastePolicy": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Policy",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "hazardousWasteTransportPreventionOtherMeasures": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "abcdec418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "hazardousWasteTransportPreventionOtherMeasuresDescription": "Cenaculum exercitationem desolo abundans verecundia temperantia volup spoliatio solum cunae. Tondeo admoneo cicuta quas asper soleo. Alveus civis suggero nesciunt pecco dignissimos tripudio.",
+      "hazardousWasteDisposal": "Yes",
+      "hazardousWasteDisposalRiskOfImport": "Yes",
+      "hazardousWasteDisposalOtherWasteImport": "No",
+      "hazardousWasteDisposalOtherWasteImportDescription": "Sed substantia adstringo alius antepono. Tego usus complectus spes catena vacuus cunctatio avaritia vetus. Quibusdam adstringo tremo demulceo victoria bos tactus.\nA caritas cultura traho. Minus varietas tum terror molestias crastinus. Vinum amaritudo vir acquiro.\nTollo veniam ulterius absum defero blandior. Verbera compello rerum vel. Curiositas fuga una coruscus thymbra canis.\nSoleo desipio amor volva consequatur subvenio blanditiis. Caput possimus tamdiu territo amiculum sponte. Crux patria acerbitas.\nCibo verto eaque ascisco. Molestiae eveniet alioqui super adsidue eum aequus arca urbanus tredecim. Tenax aptus cur aureus."
+    }
+  },
+  "attachment": {
+    "attachment": {
+      "attachment": {
+        "value": "No",
+        "dataSource": {
+          "fileName": "Certification",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      }
+    }
+  }
+}
