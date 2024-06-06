@@ -8,6 +8,7 @@ describe("Component tests for the company info sheet", function (): void {
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
   const dummyParentCompanyLei = "dummyParentLei";
   const dummyParentCompanyId = "dummyParentCompanyId";
+  const dummyParentCompanyName = "dummyParent Company";
   let mockedStoredDataRequests: StoredDataRequest[];
   before(function () {
     cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
@@ -35,7 +36,7 @@ describe("Component tests for the company info sheet", function (): void {
       body: [
         {
           companyId: dummyParentCompanyId,
-          lei: dummyParentCompanyLei,
+          companyName: dummyParentCompanyName,
         },
       ],
     }).as("getParentCompanyId");
@@ -49,16 +50,12 @@ describe("Component tests for the company info sheet", function (): void {
       void mounted.wrapper.setProps({
         companyId: dummyCompanyId,
       });
+      cy.wait("@getParentCompanyId");
       cy.get('[data-test="lei-visible"]').should("have.text", companyInformationForTest.identifiers["Lei"][0]);
       cy.get('[data-test="headquarter-visible"]').should("have.text", companyInformationForTest.headquarters);
       cy.get('[data-test="sector-visible"]').should("have.text", companyInformationForTest.sector);
-      cy.get('[data-test="parent-visible"]')
-        .should("have.text", companyInformationForTest.parentCompanyLei)
-        .click()
-        .wait("@getParentCompanyId")
-        .wrap(mounted.component)
-        .its("$route.path")
-        .should("eq", `/companies/${dummyParentCompanyId}`);
+      cy.get('[data-test="parent-visible"]').should("have.text", dummyParentCompanyName).click();
+      cy.wrap(mounted.component).its("$route.path").should("eq", `/companies/${dummyParentCompanyId}`);
     });
   });
 
