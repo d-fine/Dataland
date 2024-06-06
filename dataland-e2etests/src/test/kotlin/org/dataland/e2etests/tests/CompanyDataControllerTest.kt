@@ -266,7 +266,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1).first()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
