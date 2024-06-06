@@ -89,7 +89,7 @@ export default defineComponent({
   data() {
     return {
       KEYCLOAK_ROLE_UPLOADER,
-      isAdmin = undefined as boolean | undefined,
+      isAdmin: undefined as boolean | undefined,
     };
   },
   computed: {
