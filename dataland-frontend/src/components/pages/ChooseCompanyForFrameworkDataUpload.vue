@@ -9,7 +9,7 @@
           <template #content>
             <div class="grid">
               <div class="col-9">
-                <div id="option1Container" class="grid bottom-border-section">
+                <div id="option1Container" :class="['grid', { 'bottom-border-section': isAdmin }]">
                   <div id="option1Label" class="col-3 p-3">
                     <h4 v-if="isAdmin" id="option1Title">Option 01</h4>
                     <h3>Select a company</h3>
@@ -23,7 +23,7 @@
                       @select-company="pushToChooseFrameworkForDataUploadPageForItem"
                       class="w-12"
                     />
-                    <div class="mt-6">
+                    <div v-if="isAdmin" class="mt-6">
                       <span>Can't find the company? </span>
                       <a @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
                         >Add it.</a
