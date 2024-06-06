@@ -137,10 +137,12 @@ class CompanyUploader(
         for ((startLei, endLei) in finalParentMapping) {
             val companyId = searchCompanyByLEI(startLei) ?: continue
             logger.info("Updating relationship of company with ID: $companyId and LEI: $startLei")
-            companyDataControllerApi.patchCompanyById(
-                companyId,
-                CompanyInformationPatch(parentCompanyLei = endLei),
-            )
+            retryOnCommonApiErrors {
+                companyDataControllerApi.patchCompanyById(
+                    companyId,
+                    CompanyInformationPatch(parentCompanyLei = endLei),
+                )
+            }
         }
     }
 
@@ -181,9 +183,11 @@ class CompanyUploader(
             IdentifierType.Isin.value to isins.toList(),
         )
         val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
-        companyDataControllerApi.patchCompanyById(
-            companyId,
-            companyPatch,
-        )
+        retryOnCommonApiErrors {
+            companyDataControllerApi.patchCompanyById(
+                companyId,
+                companyPatch,
+            )
+        }
     }
 }
