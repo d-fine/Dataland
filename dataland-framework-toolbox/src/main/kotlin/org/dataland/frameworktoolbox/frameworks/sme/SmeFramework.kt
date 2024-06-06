@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.sme
 
+import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -11,7 +12,7 @@ import java.io.File
  * Definition of the SME framework
  */
 @Component
-class SmeFramework : PavedRoadFramework(
+class SmeFramework : InDevelopmentPavedRoadFramework(
     identifier = "sme",
     label = "SME",
     explanation = "Small and medium-sized enterprises questionnaire",
@@ -19,7 +20,7 @@ class SmeFramework : PavedRoadFramework(
     order = 6,
     isPrivateFramework = true,
 ) {
-    override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+   /* override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {
             viewPageExpandOnPageLoad = true
             edit<ComponentGroup>("basicInformation") {
@@ -27,4 +28,6 @@ class SmeFramework : PavedRoadFramework(
             }
         }
     }
+
+    */
 }

@@ -3,9 +3,7 @@ package org.dataland.datalandbackend.frameworks.sme.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.frameworks.sme.model.general.SmeGeneral
-import org.dataland.datalandbackend.frameworks.sme.model.insurances.SmeInsurances
-import org.dataland.datalandbackend.frameworks.sme.model.power.SmePower
+import org.dataland.datalandbackend.frameworks.sme.model.basic.SmeBasic
 
 /**
  * The root data-model for the Sme Framework
@@ -14,12 +12,6 @@ import org.dataland.datalandbackend.frameworks.sme.model.power.SmePower
 @DataType("sme", 6)
 data class SmeData(
     @field:Valid()
-    val general: SmeGeneral,
-
-    @field:Valid()
-    val power: SmePower? = null,
-
-    @field:Valid()
-    val insurances: SmeInsurances? = null,
+    val basic: SmeBasic? = null,
 
 )

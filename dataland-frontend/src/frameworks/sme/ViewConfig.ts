@@ -2,281 +2,935 @@
 import { type SmeData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
-import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
-import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-export const smeViewConfiguration: MLDTConfig<SmeData> = [
-  {
-    type: "section",
-    label: "General",
-    expandOnPageLoad: true,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "section",
-        label: "Basic Information",
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Reporting Date",
-            explanation: "Please select a date on which the specified values can be considered valid.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.basicInformation?.reportingDate),
-          },
-          {
-            type: "cell",
-            label: "Sectors",
-            explanation:
-              "Please select the industry sectors in which your company was mainly active in the relevant fiscal year.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNaceCodesForDatatable(dataset.general?.basicInformation?.sectors, "Sectors"),
-          },
-          {
-            type: "cell",
-            label: "Number of Employees",
-            explanation: "Please provide the number of workforce employed by your company in the relevant fiscal year.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.basicInformation?.numberOfEmployees, ""),
-          },
-          {
-            type: "cell",
-            label: "Fiscal Year Start",
-            explanation: "Please provide the starting date of the company's fiscal year to which you refer.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.basicInformation?.fiscalYearStart),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Financial Information",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Revenue in EUR",
-            explanation: "Please provide your company's revenue in the relevant year in Euro.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.financialInformation?.revenueInEur, "EUR"),
-          },
-          {
-            type: "cell",
-            label: "Operating Cost in EUR",
-            explanation: "Please provide your company's operating cost in the relevant fiscal year in Euro.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.financialInformation?.operatingCostInEur, "EUR"),
-          },
-          {
-            type: "cell",
-            label: "Capital assets in EUR",
-            explanation:
-              "Please provide the value of your company's capital assets in the relevant fiscal year in Euro.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.financialInformation?.capitalAssetsInEur, "EUR"),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "section",
-    label: "Power",
-    expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "section",
-        label: "Investments",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Investments in enhancing energy efficiency",
-            explanation:
-              "Please provide the fraction of your company's total investments that was primarily spent to enhance energy efficiency in the last fiscal year.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                LessThan1Percent: "Less than 1 percent",
-                Between1And5Percent: "Between 1 and 5 percent",
-                Between5And10Percent: "Between 5 and 10 percent",
-                Between10And15Percent: "Between 10 and 15 percent",
-                Between15And20Percent: "Between 15 and 20 percent",
-                Between20And25Percent: "Between 20 and 25 percent",
-                Over25Percent: "Over 25 percent",
-              };
-              return formatStringForDatatable(
-                dataset.power?.investments?.investmentsInEnhancingEnergyEfficiency
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.power?.investments?.investmentsInEnhancingEnergyEfficiency,
-                      mappings,
-                    )
-                  : "",
-              );
+import {formatNumberForDatatable} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import {formatFreeTextForDatatable} from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
+import {formatPercentageForDatatable} from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
+import {formatStringForDatatable} from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import {getOriginalNameFromTechnicalName} from "@/components/resources/dataTable/conversion/Utils";
+import {formatYesNoValueForDatatable} from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import {wrapDisplayValueWithDatapointInformation} from "@/components/resources/dataTable/conversion/DataPoints";
+export const smeViewConfiguration: MLDTConfig<SmeData> = [    {
+      type: "section",
+      label: "Basic",
+      expandOnPageLoad: false,
+      shouldDisplay: (): boolean => true
+    ,
+      children: [    {
+          type: "section",
+          label: "Basis for Preparation",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Reporting Basis",
+              explanation: "Has the sustainability report been prepared on a consolidated basis (i.e., the report includes information of the undertaking and its subsidiaries) or on an individual basis (i.e., the report is limited only to the information of the undertaking)?",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.basic?.basisForPreparation?.reportingBasis?.value), "Reporting Basis", dataset.basic?.basisForPreparation?.reportingBasis)
+            ,
             },
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Consumption",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Power consumption in MWh",
-            explanation: "Please provide your company's power consumption in the relevant fiscal year in MWh.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.power?.consumption?.powerConsumptionInMwh?.value, "MWh"),
-                "Power consumption in MWh",
-                dataset.power?.consumption?.powerConsumptionInMwh,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Power from renewable sources",
-            explanation:
-              "Please provide information whether your company has been primarily using power from renewable sources in the relevant fiscal year.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.power?.consumption?.powerFromRenewableSources),
-          },
-          {
-            type: "cell",
-            label: "Energy consumption heating and hot water in MWh",
-            explanation:
-              "Please provide your company's power consumption for heating and hot water generation in the relevant fiscal year in MWh.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.power?.consumption?.energyConsumptionHeatingAndHotWaterInMwh, "MWh"),
-          },
-          {
-            type: "cell",
-            label: "Primary energy source for heating and hot water",
-            explanation:
-              "Please provide the energy source primarily used by your company for heating/hot water generation in the relevant fiscal year.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Oil: "Oil",
-                Gas: "Gas",
-                Electric: "Electric",
-                DistrictHeating: "District Heating",
-              };
-              return formatStringForDatatable(
-                dataset.power?.consumption?.primaryEnergySourceForHeatingAndHotWater
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.power?.consumption?.primaryEnergySourceForHeatingAndHotWater,
-                      mappings,
-                    )
-                  : "",
-              );
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Practices for transitioning towards a more sustainable economy",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Undertaken measures",
+              explanation: "Please, describe specific practices for transitioning towards a more sustainable economy in case you have them in place.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatFreeTextForDatatable(dataset.basic?.practicesForTransitioningTowardsAMoreSustainableEconomy?.undertakenMeasures)
+            ,
             },
-          },
-          {
-            type: "cell",
-            label: "Energy consumption covered by own renewable power generation",
-            explanation:
-              "Please provide the portion of consumed power generated by your own renewable sources relative to your company's total power consumption in the relevant fiscal year.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                LessThan25Percent: "Less than 25 percent",
-                Between25And50Percent: "Between 25 and 50 percent",
-                Between50And75Percent: "Between 50 and 75 percent",
-                Over75Percent: "Over 75 percent",
-              };
-              return formatStringForDatatable(
-                dataset.power?.consumption?.energyConsumptionCoveredByOwnRenewablePowerGeneration
-                  ? getOriginalNameFromTechnicalName(
-                      dataset.power?.consumption?.energyConsumptionCoveredByOwnRenewablePowerGeneration,
-                      mappings,
-                    )
-                  : "",
-              );
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Energy and greenhous gas emissions",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Energy Fossil Fuels",
+              explanation: "Please disclose your total energy consumption in MWh (in the reporting period) for\n- fossil fuels ",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.energyFossilFuels, "MWh")
+            ,
             },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "section",
-    label: "Insurances",
-    expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "section",
-        label: "Natural Hazards",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Insurance against natural hazards",
-            explanation:
-              "Please provide information whether your company has insurance against natural hazards at its branch/production site generating most revenue, or its headquarters.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.insurances?.naturalHazards?.insuranceAgainstNaturalHazards),
-          },
-          {
-            type: "cell",
-            label: "Amount covered by insurance against natural hazards in EUR",
-            explanation:
-              "Please provide the amount covered by the insurance in EUR. In case your company has different policies for different natural hazards please provide the average amount covered.",
-            shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.insurances?.naturalHazards?.insuranceAgainstNaturalHazards == "Yes",
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(
-                dataset.insurances?.naturalHazards?.amountCoveredByInsuranceAgainstNaturalHazardsInEur,
-                "EUR",
-              ),
-          },
-          {
-            type: "cell",
-            label: "Natural Hazards covered",
-            explanation: "Please identify all natural hazards covered by your insurance.",
-            shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.insurances?.naturalHazards?.insuranceAgainstNaturalHazards == "Yes",
-            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Hail: "Hail",
-                Wind: "Wind",
-                Flooding: "Flooding",
-                EarthQuake: "Earth Quake",
-                Avalanche: "Avalanche",
-                Snow: "Snow",
-              };
-              return formatListOfStringsForDatatable(
-                dataset.insurances?.naturalHazards?.naturalHazardsCovered?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings),
-                ),
-                "Natural Hazards covered",
-              );
+            {
+              type: "cell",
+              label: "Electricity total",
+              explanation: "- electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotal?.value, "MWh"), "Electricity total", dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotal)
+            ,
             },
-          },
+            {
+              type: "cell",
+              label: "Electricity non-renewable",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityNonRenewable, "MWh")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Electricity renewable",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityRenewable, "MWh")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total Emissions",
+              explanation: "Please disclose your estimated gross greenhouse gas (GHG) emissions in tons of CO2 equivalents (tCO2eq) considering the content of the GHG Protocol Corporate Standard.\n(a) total GHG emissions in tCO2eq",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissions?.value, "tCO2eq"), "Total Emissions", dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissions)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Scope 1 Emissions",
+              explanation: "(b) the Scope 1 GHG emissions in tCO2eq (from owned or controlled sources)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.scope1Emissions?.value, "tCO2eq"), "Scope 1 Emissions", dataset.basic?.energyAndGreenhousGasEmissions?.scope1Emissions)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Scope 2 Emissions",
+              explanation: "(c) the Scope 2 emissions in tCO2eq (i.e., emissions from the generation of purchased energy)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.scope2Emissions?.value, "tCO2eq"), "Scope 2 Emissions", dataset.basic?.energyAndGreenhousGasEmissions?.scope2Emissions)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Scope 3 Emissions",
+              explanation: "(d) Scope 3 emissions, in case you can provide them",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.scope3Emissions?.value, "tCO2eq"), "Scope 3 Emissions", dataset.basic?.energyAndGreenhousGasEmissions?.scope3Emissions)
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Pollution of air, water, soil",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Dummy Value Please Delete",
+              explanation: "Dummy Value Please Delete",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.basic?.pollutionOfAirWaterSoil?.dummyValuePleaseDelete)
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Biodiversity",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Total sealed area previous year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaPreviousYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total sealed area reporting year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaReportingYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "percentual change sealed area",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeSealedArea)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total nature-oriented area on-site previous year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSitePreviousYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total nature-oriented area on-site reporting year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSiteReportingYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "percentual change nature-oriented on-site",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeNatureOrientedOnSite)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total nature-oriented area off-site previous_year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePrevious_year, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total nature-oriented area off-site reporting year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSiteReportingYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "percentual change nature-oriented off-site",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeNatureOrientedOffSite)
+            ,
+            },
+            {
+              type: "cell",
+              label: "total use of land previous year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandPreviousYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "total use of land reporting year",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandReportingYear, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "percentual change land use",
+              explanation: "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeLandUse)
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Water",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Water withdrawal all sites",
+              explanation: "Please, disclose your total water withdrawal (in m^3), i.e., the amount of water drawn into the boundaries of the organisation (or facility); pay additional attention to sites located in areas of high water-stress.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.basic?.water?.waterWithdrawalAllSites?.value, "Cubic Meters"), "Water withdrawal all sites", dataset.basic?.water?.waterWithdrawalAllSites)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Water withdrawal stress sites",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.waterWithdrawalStressSites, "Cubic Meters")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Water discharge all sites",
+              explanation: "If applicable, we aim to determine your water consumption (as the difference between water withdrawal and water discharge). Hence, please disclose your respective water discharge from your production processes.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.waterDischargeAllSites, "Cubic Meters")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Water discharge stress sites",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.waterDischargeStressSites, "Cubic Meters")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Rainwater all sites",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.rainwaterAllSites, "Cubic Meters")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Rainwater stress sits",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.rainwaterStressSits, "Cubic Meters")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Water consumption all sites",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.waterConsumptionAllSites, "Cubic Meters")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Water consumption stress sites",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.water?.waterConsumptionStressSites, "Cubic Meters")
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Resource use, circular economy and waste management",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Total weight materials",
+              explanation: "In case you operate manufacturing, construction and/or packaging processes, please provide the share of recycled content in your products and packaging (in per cent based on weight, during the reporting period) For this we require the total weight  (in tons, in the reporting year) of both recycled and overall materials used in products and packaging. \n\nMoreover, please provide the share of recycable content in your products and packaging (in per cent based on weight, during the reporting period). For this we require the  total weight  (in tons, in the reporting year) of both recycable materials used in products and packaging. ",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.totalWeightMaterials, "tons")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Weight recycled materials",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycledMaterials, "tons")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Percentage recycled materials",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecycledMaterials)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Weight recycable materials",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycableMaterials, "tons")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Percentage recycable materials",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecycableMaterials)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Measure waste",
+              explanation: "Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
+            const mappings = {
+                WeightPreferred: "weight (preferred)",
+                Volume: "volume",
+            }
+            return formatStringForDatatable(
+            dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste ? getOriginalNameFromTechnicalName(dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste, mappings) : ""
+            )
+            }
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Workforce - General Characteristics",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Measure employees",
+              explanation: "You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
+            const mappings = {
+                FullTimeEquivalents: "full-time equivalents",
+                HeadCount: "head count",
+            }
+            return formatStringForDatatable(
+            dataset.basic?.workforceGeneralCharacteristics?.measureEmployees ? getOriginalNameFromTechnicalName(dataset.basic?.workforceGeneralCharacteristics?.measureEmployees, mappings) : ""
+            )
+            }
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number employees full-time",
+              explanation: "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number employees head",
+              explanation: "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number temporary contract full-time",
+              explanation: "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberTemporaryContractFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number temporary contract head",
+              explanation: "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberTemporaryContractHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number permanent contract full-time",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberPermanentContractFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number permanent contract head",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberPermanentContractHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number male full-time",
+              explanation: "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberMaleFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number male head",
+              explanation: "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberMaleHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number female full-time",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberFemaleFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number female head",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberFemaleHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number other full-time",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberOtherFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number other head ",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberOtherHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number not reported full-time",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberNotReportedFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number not reported head",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberNotReportedHead, "head count")
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Workforce - Health and Safety",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Total hours",
+              explanation: "Please provide the total number of hours worked in a year by all your employees.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.totalHours, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number accidents",
+              explanation: "Please disclose the number of work related accidents in the reporting year.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberAccidents, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Accident level",
+              explanation: "Please provide work-related accidents, namely the number of work related accidents per 100 full-time workers over a yearly timeframe (assuming 2000 work hours per worker per year).",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.accidentLevel, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number fatalities total full-time",
+              explanation: "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberFatalitiesTotalFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number fatalities total head",
+              explanation: "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberFatalitiesTotalHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number fatalities accident full-time",
+              explanation: "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberFatalitiesAccidentFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number fatalities accident head",
+              explanation: "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberFatalitiesAccidentHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number fatalities health full-time",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberFatalitiesHealthFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number fatalities health head",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberFatalitiesHealthHead, "head count")
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Workforce - Renumeration, collective bargaining, and training",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Number minimum wage full-time",
+              explanation: "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberMinimumWageFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number minimum wage head",
+              explanation: "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberMinimumWageHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Percentage minimum wage",
+              explanation: "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.percentageMinimumWage)
+            ,
+            },
+            {
+              type: "cell",
+              label: "more than half",
+              explanation: "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.moreThanHalf)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Entry level wage",
+              explanation: "Please provide the minimum wage you pay as well as the entry level wage.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.entryLevelWage, "Euro")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Minimum wage",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.minimumWage, "Euro")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Wage ratio",
+              explanation: "Please provide the ratio of entry level wage and minimum wage.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.wageRatio, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Pay gap basis",
+              explanation: "Please, in the following provide pay rates and work hours. On which basis do you prefer to report?",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
+            const mappings = {
+                Annual: "annual",
+                Weekly: "weekly",
+            }
+            return formatStringForDatatable(
+            dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis ? getOriginalNameFromTechnicalName(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGapBasis, mappings) : ""
+            )
+            }
+            ,
+            },
+            {
+              type: "cell",
+              label: "Gross pay male",
+              explanation: "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male respectively for female employees. ",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayMale, "Euro")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Gross pay female",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayFemale, "Euro")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total work hours male",
+              explanation: "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursMale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total work hours female",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursFemale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Average work hours male",
+              explanation: "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursMale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Average work hours female",
+    
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursFemale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "average hourly pay male",
+              explanation: "What is the average hourly pay for male employees?",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMale, "Euro\/h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "average hourly pay female",
+              explanation: "What is the average hourly pay for female employees?",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayFemale, "Euro\/h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "pay gap",
+              explanation: "What is your pay gap? ",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGap, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number bargaining agreements full-time",
+              explanation: "Please state the number of employees covered by collective bargaining agreements.",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsFullTime, "full-time equivalents")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number bargaining agreements head",
+              explanation: "Please state the number of employees covered by collective bargaining agreements.",
+              shouldDisplay: (dataset: SmeData): boolean => dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count"
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsHead, "head count")
+            ,
+            },
+            {
+              type: "cell",
+              label: "ratio bargaining agreement",
+              explanation: "Please provide the ratio of employees with a bargaining agreement with respect to all your employees.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.ratioBargainingAgreement)
+            ,
+            },
+            {
+              type: "cell",
+              label: "total training hours male",
+              explanation: "Please state the total and average numbers of annual training hours per employee, broken down by gender, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalTrainingHoursMale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "total training hours female",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalTrainingHoursFemale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "average training hours male",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageTrainingHoursMale, "h")
+            ,
+            },
+            {
+              type: "cell",
+              label: "average training hours female",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageTrainingHoursFemale, "h")
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Workers in the value chain, affected communities, consumers, and end-users",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Negative effects",
+              explanation: "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatFreeTextForDatatable(dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.negativeEffects)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Number convictions",
+              explanation: "In case of convictions and fines in the reporting period, please disclose the number of convictions and the total amount of fines incurred for the violation of anti-corruption or anti-bribery laws.",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.numberConvictions, "")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Sum fines",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.sumFines, "Euro")
+            ,
+            },
+            ],
+    
+        },
         ],
-      },
-    ],
-  },
-];
+    
+    },
+    ];

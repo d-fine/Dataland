@@ -22,11 +22,11 @@ abstract class InDevelopmentPavedRoadFramework(
     frameworkTemplateCsvFile: File,
     order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
-    privateFrameworkBoolean: Boolean = false,
+    isPrivateFramework: Boolean = false,
 ) :
     PavedRoadFramework(
         identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures,
-        privateFrameworkBoolean,
+        isPrivateFramework,
     ) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
