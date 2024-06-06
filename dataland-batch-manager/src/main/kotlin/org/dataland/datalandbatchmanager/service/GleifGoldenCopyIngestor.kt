@@ -79,7 +79,7 @@ class GleifGoldenCopyIngestor(
             logger.info("Retrieving all company data available via GLEIF.")
 
             // Process relationship file before LEI file to have info available upon company upload
-            processRelationshipFile(updateAllCompanies = false)
+            // processRelationshipFile(updateAllCompanies = false)
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             processIsinMappingFile()
@@ -89,7 +89,7 @@ class GleifGoldenCopyIngestor(
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 0 3 * * SUN")
+    @Scheduled(cron = "0 0/30 * * * *")
     private fun processUpdates() {
         waitForBackend()
         prepareGleifDeltaFile()
