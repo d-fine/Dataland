@@ -101,7 +101,12 @@ const status = ref<ViewPanelStates>("LoadingDatasets");
 const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
 
 watch(
-  [(): string => props.companyId, (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay],
+  [
+    (): string => props.companyId,
+    (): string => props.frameworkIdentifier,
+    (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay,
+  ],
+
   async () => reloadDisplayData(++updateCounter.value),
   { immediate: true },
 );
