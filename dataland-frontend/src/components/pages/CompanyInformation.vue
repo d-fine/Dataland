@@ -108,7 +108,7 @@ export default defineComponent({
       hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      hasParentCompany: null as boolean | null,
+      hasParentCompany: undefined as boolean | undefined,
       parentCompany: null as CompanyIdAndName | null,
     };
   },
@@ -163,25 +163,6 @@ export default defineComponent({
     void this.updateHasCompanyDataOwner();
   },
   watch: {
-    async hasParentCompany(hasParent) {
-      if (hasParent && this.companyInformation != null && this.companyInformation.parentCompanyLei != null) {
-        try {
-          const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-            this.companyInformation.parentCompanyLei,
-            assertDefined(this.getKeycloakPromise)(),
-            1,
-          );
-          if (companyIdAndNames.length > 0) {
-            this.parentCompany = companyIdAndNames[0];
-            this.hasParentCompany = true;
-          } else {
-            this.hasParentCompany = false;
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    },
     async companyId(newCompanyId) {
       try {
         void this.setDataOwnershipStatus();
@@ -217,6 +198,27 @@ export default defineComponent({
       this.dialogIsOpen = false;
     },
     /**
+     * Gets the parent company based on the lei
+     * @param parentCompanyLei lei of the parent company
+     */
+    async getParentCompany(parentCompanyLei: string) {
+      try {
+        const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+          parentCompanyLei,
+          assertDefined(this.getKeycloakPromise)(),
+          1,
+        );
+        if (companyIdAndNames.length > 0) {
+          this.parentCompany = companyIdAndNames[0];
+          this.hasParentCompany = true;
+        } else {
+          this.hasParentCompany = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    /**
      * Uses the dataland API to retrieve information about the company identified by the local
      * companyId object.
      */
@@ -227,7 +229,12 @@ export default defineComponent({
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
-          this.hasParentCompany = this.companyInformation.parentCompanyLei != null;
+          if (this.companyInformation.parentCompanyLei != null) {
+            void this.getParentCompany(this.companyInformation.parentCompanyLei);
+          } else {
+            this.hasParentCompany = false;
+          }
+          console.log(this.parentCompany);
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
