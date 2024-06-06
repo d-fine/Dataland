@@ -54,18 +54,18 @@
           <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
         </div>
         <div class="company-details__info">
-          <span>Parent Company (LEI): </span>
-          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
+          <span>Parent Company: </span>
+          <span v-if="hasParentCompany && parentCompany" class="font-semibold" style="cursor: pointer">
             <a
-              class="link --underlined"
-              style="display: inline-flex"
+              class="link"
+              style="display: inline-flex; color: black"
               data-test="parent-visible"
-              @click="visitParentCompany(assertDefined(companyInformation.parentCompanyLei))"
+              @click="visitParentCompany()"
             >
-              {{ companyInformation.parentCompanyLei }}</a
+              {{ parentCompany.companyName }}</a
             ></span
           >
-          <span v-if="!hasParentCompany" data-test="parent-visible" class="font-semibold">—</span>
+          <span v-if="(hasParentCompany = false)" data-test="parent-visible" class="font-semibold">—</span>
         </div>
       </div>
     </div>
@@ -78,7 +78,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, type PropType } from "vue";
-import { type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
+import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
@@ -108,7 +108,8 @@ export default defineComponent({
       hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      hasParentCompany: false,
+      hasParentCompany: null as boolean | null,
+      parentCompany: null as CompanyIdAndName | null,
     };
   },
   computed: {
@@ -162,6 +163,25 @@ export default defineComponent({
     void this.updateHasCompanyDataOwner();
   },
   watch: {
+    async hasParentCompany(hasParent) {
+      if (hasParent && this.companyInformation != null && this.companyInformation.parentCompanyLei != null) {
+        try {
+          const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+            this.companyInformation.parentCompanyLei,
+            assertDefined(this.getKeycloakPromise)(),
+            1,
+          );
+          if (companyIdAndNames.length > 0) {
+            this.parentCompany = companyIdAndNames[0];
+            this.hasParentCompany = true;
+          } else {
+            this.hasParentCompany = false;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    },
     async companyId(newCompanyId) {
       try {
         void this.setDataOwnershipStatus();
@@ -174,23 +194,14 @@ export default defineComponent({
     },
   },
   methods: {
-    assertDefined,
     /**
      * triggers route push to parent company if the parent company exists
-     * @param parentCompanyLei the lei of the parent company
      * @returns route push
      */
-    async visitParentCompany(parentCompanyLei: string) {
-      try {
-        const matchingCompanies = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
-          parentCompanyLei,
-          assertDefined(this.getKeycloakPromise)(),
-          1,
-        );
-        const parentCompanyUrl = `/companies/${matchingCompanies[0].companyId}`;
+    async visitParentCompany() {
+      if (this.parentCompany) {
+        const parentCompanyUrl = `/companies/${this.parentCompany.companyId}`;
         return this.$router.push(parentCompanyUrl);
-      } catch (e) {
-        console.error("The displayed Lei does not match any company on Dataland.");
       }
     },
     /**
