@@ -23,6 +23,6 @@ class TestUtils {
             JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
         )
         migration(originalDataEntity)
-        Assertions.assertEquals(originalDataEntity, expectedDataEntity)
+        Assertions.assertEquals(expectedDataEntity, originalDataEntity)
     }
 }
