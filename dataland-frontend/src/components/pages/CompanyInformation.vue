@@ -234,7 +234,6 @@ export default defineComponent({
           } else {
             this.hasParentCompany = false;
           }
-          console.log(this.parentCompany);
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
