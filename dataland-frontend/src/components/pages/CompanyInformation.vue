@@ -55,17 +55,12 @@
         </div>
         <div class="company-details__info">
           <span>Parent Company: </span>
-          <span v-if="hasParentCompany && parentCompany" class="font-semibold" style="cursor: pointer">
-            <a
-              class="link"
-              style="display: inline-flex; color: black"
-              data-test="parent-visible"
-              @click="visitParentCompany()"
-            >
-              {{ parentCompany.companyName }}</a
+          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
+            <a class="link" style="display: inline-flex" data-test="parent-visible" @click="visitParentCompany()">
+              {{ parentCompany?.companyName }}</a
             ></span
           >
-          <span v-if="(hasParentCompany = false)" data-test="parent-visible" class="font-semibold">—</span>
+          <span v-if="!hasParentCompany" data-test="parent-visible" class="font-semibold">—</span>
         </div>
       </div>
     </div>
@@ -217,6 +212,7 @@ export default defineComponent({
       } catch (e) {
         console.error(e);
       }
+      console.log(this.hasParentCompany);
     },
     /**
      * Uses the dataland API to retrieve information about the company identified by the local
@@ -234,6 +230,7 @@ export default defineComponent({
           } else {
             this.hasParentCompany = false;
           }
+          console.log(this.hasParentCompany);
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
