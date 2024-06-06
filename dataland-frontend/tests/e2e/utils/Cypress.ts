@@ -11,6 +11,7 @@ export const premium_user_name = "data_premium_user";
 export const premium_user_pw = getStringCypressEnv("KEYCLOAK_PREMIUM_USER_PASSWORD");
 export const admin_name = "data_admin";
 export const admin_pw = getStringCypressEnv("KEYCLOAK_DATALAND_ADMIN_PASSWORD");
+export const admin_userId = "136a9394-4873-4a61-a25b-65b1e8e7cc2f";
 
 /**
  * A higher level function that operates on a list of elements (dataArray) and applys a

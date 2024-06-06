@@ -3,7 +3,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { describeIf } from "@e2e/support/TestUtility";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
-import { getAllFrameworkIdentifiers } from "@/frameworks/BaseFrameworkRegistry";
+import { getAllPublicFrameworkIdentifiers } from "@/frameworks/BasePublicFrameworkRegistry";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
 describeIf(
@@ -17,7 +17,7 @@ describeIf(
 
     before(function () {
       const dataTypesWithoutToolboxSupport = Object.keys(frameworkFixtureMap);
-      const dataTypesWithToolboxSupport = getAllFrameworkIdentifiers();
+      const dataTypesWithToolboxSupport = getAllPublicFrameworkIdentifiers();
       prepopulatedDataTypes = dataTypesWithoutToolboxSupport.concat(dataTypesWithToolboxSupport);
       const fixtures = Object.values(frameworkFixtureMap).concat(
         dataTypesWithToolboxSupport.map((dataType) =>

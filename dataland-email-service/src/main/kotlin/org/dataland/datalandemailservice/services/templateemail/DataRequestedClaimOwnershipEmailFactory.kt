@@ -21,6 +21,8 @@ class DataRequestedClaimOwnershipEmailFactory(
         val companyId = "companyId"
         val companyName = "companyName"
         val requesterEmail = "requesterEmail"
+        val firstName = "firstName"
+        val lastName = "lastName"
         val dataType = "dataType"
         val reportingPeriods = "reportingPeriods"
         val message = "message"
@@ -31,7 +33,7 @@ class DataRequestedClaimOwnershipEmailFactory(
         keys.companyId, keys.companyName,
         keys.requesterEmail, keys.dataType, keys.reportingPeriods,
     )
-    override val optionalProperties = setOf(keys.message)
+    override val optionalProperties = setOf(keys.message, keys.firstName, keys.lastName)
 
     override val templateFile = "/claim_ownership.html.ftl"
     override fun buildSubject(properties: Map<String, String?>): String {

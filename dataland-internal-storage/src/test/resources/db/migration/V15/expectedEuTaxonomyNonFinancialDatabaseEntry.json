@@ -1,0 +1,38 @@
+{
+  "general": {
+    "fiscalYearDeviation": "Deviation",
+    "fiscalYearEnd": "2021-06-30",
+    "scopeOfEntities": null,
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": "No",
+    "assurance": {
+      "value": "None",
+      "provider": "KPMG"
+    },
+    "numberOfEmployees": 820
+  },
+  "revenue": {
+    "totalAmount": {
+      "value": 1026035000,
+      "quality": "Reported",
+      "comment": null,
+      "currency": "EUR"
+    },
+    "nonEligibleShare": null,
+    "eligibleShare": null,
+    "nonAlignedShare": null,
+    "nonAlignedActivities": null,
+    "alignedShare": null,
+    "substantialContributionToClimateChangeMitigationInPercent": null,
+    "substantialContributionToClimateChangeAdaptationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
+    "substantialContributionToTransitionToACircularEconomyInPercent": null,
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+    "alignedActivities": null,
+    "enablingShareInPercent": null,
+    "transitionalShareInPercent": null
+  },
+  "capex": null,
+  "opex": null
+}

@@ -1,5 +1,5 @@
-import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
-import { FrameworkDefinitions } from "@/frameworks/FrontendFrameworkRegistryImports";
+import { FrontendFrameworkDefinitions } from "@/frameworks/FrontendFrameworkRegistryImports";
+import { type FrontendFrameworkDefinition } from "@/frameworks/BaseFrameworkDefinition";
 
 /**
  * Retrieve the framework definition for the provided framework identifier if it exists
@@ -7,8 +7,8 @@ import { FrameworkDefinitions } from "@/frameworks/FrontendFrameworkRegistryImpo
  * @returns the framework definition if it exists
  */
 export function getFrontendFrameworkDefinition(identifier: string): FrontendFrameworkDefinition<object> | undefined {
-  for (const key in FrameworkDefinitions) {
-    const frameworkDefinition = FrameworkDefinitions[key];
+  for (const key in FrontendFrameworkDefinitions) {
+    const frameworkDefinition = FrontendFrameworkDefinitions[key];
     if (frameworkDefinition.identifier === identifier) {
       return frameworkDefinition;
     }
@@ -21,5 +21,5 @@ export function getFrontendFrameworkDefinition(identifier: string): FrontendFram
  * @returns a list of all available framework identifiers
  */
 export function getAllFrameworkIdentifiers(): string[] {
-  return Object.values(FrameworkDefinitions).map((it) => it.identifier);
+  return Object.values(FrontendFrameworkDefinitions).map((it) => it.identifier);
 }
