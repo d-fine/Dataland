@@ -224,7 +224,12 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.get('td[data-cell-label="Fiscal Year End"]').should("be.visible");
 
         cy.get('div[data-test="chooseFrameworkDropdown"]').click().get("li:contains('LkSG')").click();
-        cy.get('td[data-cell-label="Group of Companies"]').should("be.visible");
+        cy.get('td[data-cell-label="Data Date"]')
+          .should("be.visible")
+          .next("td")
+          .find("span")
+          .should("be.visible")
+          .contains("2022-07-30");
       }
 
       it(
