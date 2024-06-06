@@ -1,0 +1,66 @@
+{
+  "general": {
+    "fiscalYearDeviation": "Deviation",
+    "fiscalYearEnd": "2021-06-30",
+    "scopeOfEntities": null,
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": "No",
+    "assurance": {
+      "value": "None",
+      "dataSource": {
+        "page": 119,
+        "tagName": null,
+        "fileName": "Annual Report",
+        "fileReference": "8699d7086b78a27fca11c58153b4cc0192ef4d20ef561de3fdb7d202f929a1f7"
+      },
+      "provider": "KPMG"
+    },
+    "numberOfEmployees": 820,
+    "referencedReports": {
+      "Annual Report": {
+        "fileReference": "8699d7086b78a27fca11c58153b4cc0192ef4d20ef561de3fdb7d202f929a1f7",
+        "fileName": "Annual Report",
+        "isGroupLevel": null,
+        "reportDate": null,
+        "currency": "EUR"
+      },
+      "Sustainability Report": {
+        "fileReference": "892e0a00e3ee18ce6d22d0ae7ca6329ec99f929430160f9d10012ee181585286",
+        "fileName": "Sustainability Report",
+        "isGroupLevel": null,
+        "reportDate": null,
+        "currency": "EUR"
+      }
+    }
+  },
+  "revenue": {
+    "totalAmount": {
+      "value": 1026035000,
+      "quality": "Reported",
+      "comment": null,
+      "dataSource": {
+        "page": 57,
+        "tagName": null,
+        "fileName": "Annual Report",
+        "fileReference": "8699d7086b78a27fca11c58153b4cc0192ef4d20ef561de3fdb7d202f929a1f7"
+      },
+      "currency": "EUR"
+    },
+    "nonEligibleShare": null,
+    "eligibleShare": null,
+    "nonAlignedShare": null,
+    "nonAlignedActivities": null,
+    "alignedShare": null,
+    "substantialContributionToClimateChangeMitigationInPercent": null,
+    "substantialContributionToClimateChangeAdaptationInPercent": null,
+    "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": null,
+    "substantialContributionToTransitionToACircularEconomyInPercent": null,
+    "substantialContributionToPollutionPreventionAndControlInPercent": null,
+    "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": null,
+    "alignedActivities": null,
+    "enablingShareInPercent": null,
+    "transitionalShareInPercent": null
+  },
+  "capex": null,
+  "opex": null
+}

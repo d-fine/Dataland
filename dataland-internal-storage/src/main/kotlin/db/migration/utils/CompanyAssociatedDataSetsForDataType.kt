@@ -52,7 +52,7 @@ fun migrateCompanyAssociatedDataOfDatatype(
 ) {
     val dataTableEntities = getCompanyAssociatedDatasetsForDataType(context, dataType)
     dataTableEntities.forEach {
-        logger.info("Migrating dataset with id: ${it.dataId}")
+        logger.info("Migrating $dataType dataset with id: ${it.dataId}")
         migrate(it)
         it.executeUpdateQuery(context!!)
     }

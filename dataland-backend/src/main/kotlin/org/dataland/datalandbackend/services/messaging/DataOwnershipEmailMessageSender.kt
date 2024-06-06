@@ -36,7 +36,10 @@ class DataOwnershipEmailMessageSender(
     ) {
         val properties = mapOf(
             "User" to userAuthentication.userDescription,
+            "E-Mail" to userAuthentication.username,
             "Company (Dataland ID)" to datalandCompanyId,
+            "First Name" to userAuthentication.firstName,
+            "Last Name" to userAuthentication.lastName,
             "Company Name" to companyName,
             "Comment" to comment,
         )

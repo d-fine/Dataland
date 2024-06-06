@@ -88,7 +88,10 @@ import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkD
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
+import {
+  type FrontendFrameworkDefinition,
+  type FrameworkViewConfiguration,
+} from "@/frameworks/BaseFrameworkDefinition";
 import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT";
 
 export default defineComponent({
@@ -119,6 +122,7 @@ export default defineComponent({
     },
     dataType: {
       type: String,
+      required: true,
     },
     dataId: {
       type: String,
