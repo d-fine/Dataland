@@ -24,7 +24,6 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     generateFixtureForOneLksgDataSetWithProductionSites,
     generateFixtureToContainSubcontractingCountries,
     generateFixtureWithBrokenFileReference,
-    generateFixtureWithRandomData,
   ];
   const preparedFixturesBeforeManipulation = generateLksgFixtures(manipulatorFunctions.length);
 
@@ -213,15 +212,3 @@ function generateFixtureWithBrokenFileReference(): FixtureData<LksgData> {
     brokenFileReference;
   return newFixture;
 }
-
-
-/**
- * Generates an LKSG dataset for testing the drop-down menu.
- * @returns the dataset
- */
-function generateFixtureWithRandomData(): FixtureData<LksgData> {
-  const newFixture = generateLksgFixtures(1, 0)[0];
-  newFixture.companyInformation.companyName = "TestForDropDown";
-  return newFixture;
-}
-

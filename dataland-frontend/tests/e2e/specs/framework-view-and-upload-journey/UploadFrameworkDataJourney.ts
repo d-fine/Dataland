@@ -202,7 +202,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`,
           );
         cy.go("back");
-
         cy.get("div[id=lksgContainer").find(`a.text-primary:contains(LkSG)`).click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
           .url()
@@ -210,6 +209,22 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             "contain",
             `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`,
           );
+      }
+
+      /**
+       * Checks if dataset of a framework is rendered on the "ViewFrameworkData"-page after using the dropdown
+       * to select a framework. In the test, it is expected that the change from Eu-Taxo-Financials to LkSG and
+       * vice versa renders the dataset".
+       */
+      function checkIfDropDownSwitchRendersData(): void {
+        cy.get('div[data-test="chooseFrameworkDropdown"]')
+          .click()
+          .get("li:contains('EU Taxonomy for financial companies')")
+          .click();
+        cy.get('td[data-cell-label="Fiscal Year End"]').should("be.visible");
+
+        cy.get('div[data-test="chooseFrameworkDropdown"]').click().get("li:contains('LkSG')").click();
+        cy.get('td[data-cell-label="Group of Companies"]').should("be.visible");
       }
 
       it(
@@ -246,6 +261,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             dataIdOfSecondEuTaxoFinancialsUpload,
             dataIdOfLksgUpload,
           );
+
+          checkIfDropDownSwitchRendersData();
         },
       );
     },

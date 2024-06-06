@@ -2,32 +2,25 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
 import {
   type DataAndMetaInformationLksgData,
-  type DataAndMetaInformationSfdrData,
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
-  type SfdrData,
   QaStatus,
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 describe("Component test for the view multiple dataset display base component", () => {
-  let preparedFixturesLksg: Array<FixtureData<LksgData>>;
-  let preparedFixturesSfdr: Array<FixtureData<SfdrData>>;
+  let preparedFixtures: Array<FixtureData<LksgData>>;
 
   before(function () {
     cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
-      preparedFixturesLksg = jsonContent as Array<FixtureData<LksgData>>;
-    });
-
-    cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
-      preparedFixturesSfdr = jsonContent as Array<FixtureData<SfdrData>>;
+      preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
     });
   });
 
   it("Checks, if the toggle of hidden fields works for empty and conditional fields", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixturesLksg);
+    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksg(preparedFixture.t);
     const companyInformationObject = preparedFixture.companyInformation;
     cy.intercept(`/api/companies/mock-company-id/info`, companyInformationObject);
@@ -55,7 +48,7 @@ describe("Component test for the view multiple dataset display base component", 
   });
 
   it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixturesLksg);
+    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
     const mockedData2024 = constructCompanyApiResponseForLksg(preparedFixture.t);
     mockedData2024.metaInfo.dataId = "id-2024";
     mockedData2024.metaInfo.reportingPeriod = "2024";
@@ -95,55 +88,6 @@ describe("Component test for the view multiple dataset display base component", 
         );
     });
   });
-
-  it("Check, if the Dropdown for frameworks display data", () => {
-    const preparedFixtureLksg = getPreparedFixture("TestForDropDown", preparedFixturesLksg);
-    const preparedFixtureSfdr = getPreparedFixture("TestForDropDown", preparedFixturesSfdr);
-
-    const mockedDataLksg = constructCompanyApiResponseForLksg(preparedFixtureLksg.t);
-    const mockedDataSfdr = constructCompanyApiResponseForSfdr(preparedFixtureSfdr.t)
-
-    cy.log(mockedDataSfdr.data.general.general.fiscalYearEnd)
-    cy.log(mockedDataSfdr.data.general.general.dataDate)
-
-    cy.intercept(`/api/companies/*/info`, preparedFixtureLksg.companyInformation);
-    cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedDataLksg]);
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
-      status: 200,
-      body: [mockedDataLksg.metaInfo],
-    });
-
-    cy.wait(2000)
-
-    cy.intercept(`/api/companies/*/info`, preparedFixtureSfdr.companyInformation);
-    cy.intercept(`/api/data/sfdr/companies/mock-company-id`, [mockedDataSfdr]);
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, {
-      status: 200,
-      body: [mockedDataSfdr.metaInfo],
-    });
-
-    cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
-      keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      props: {
-        companyId: mockedDataSfdr.metaInfo.companyId,
-        dataType: DataTypeEnum.Lksg,
-        viewInPreviewMode: false,
-      },
-    }).then((mounted) => {
-      cy.get('div[data-test="chooseFrameworkDropdown"]').contains("LkSG").click();
-      cy.pause();
-      //cy.get('[data-test="chooseFrameworkDropdown"').contains("LkSG").click()
-      cy.get('[data-test="chooseFrameworkDropdown"]').invoke('val', 'LkSG').trigger('change');
-
-      //cy.get('[data-test="chooseFrameworkDropdown.contains(SFDR)"]').click();
-      //cy.get('.dropdown-item-class').click().contains('SFDR');
-      // cy.get("a:contains('Login')").click();
-
-      cy.get('div[data-test="MultiLayerDataTableFrameworkPanelOthers"]').should('be.visible');
-    });
-  });
 });
 
 /**
@@ -169,24 +113,6 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
     uploaderUserId: "mock-uploader-id",
   };
   return { metaInfo: metaData, data: lksgData };
-}
-
-function constructCompanyApiResponseForSfdr(baseDataset: SfdrData): DataAndMetaInformationSfdrData {
-  const reportingYear = 2023;
-  const reportingDate = `${reportingYear}-01-01`;
-  const sfdrData: SfdrData = structuredClone(baseDataset);
-  sfdrData.general.general.dataDate = reportingDate;
-  const metaData: DataMetaInformation = {
-    dataId: `dataset-b`,
-    reportingPeriod: reportingYear.toString(),
-    qaStatus: QaStatus.Accepted,
-    currentlyActive: true,
-    dataType: DataTypeEnum.Sfdr,
-    companyId: "mock-company-id",
-    uploadTime: 0,
-    uploaderUserId: "mock-uploader-id",
-  };
-  return { metaInfo: metaData, data: sfdrData };
 }
 
 /**
