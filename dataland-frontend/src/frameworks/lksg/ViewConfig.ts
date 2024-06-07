@@ -133,7 +133,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Production-specific",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -250,7 +250,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Production-specific - Own Operations",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -286,13 +286,13 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
     label: "Governance",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Risk management - Own Operations",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -356,7 +356,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Grievance mechanism - Own Operations",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -491,7 +491,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Certifications, policies and responsibilities",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1090,7 +1090,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "General violations",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1205,13 +1205,13 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
     label: "Social",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Child labor",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1373,7 +1373,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Forced labor, slavery",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1509,7 +1509,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Withholding adequate wages",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1614,7 +1614,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Disregard for occupational health/safety",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1727,7 +1727,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Disregard for freedom of association",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1843,7 +1843,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Unequal treatment of employment",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1957,7 +1957,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2387,7 +2387,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Unlawful eviction/deprivation of land, forest and water",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2507,7 +2507,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Use of private/public security forces with disregard for human rights",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2642,13 +2642,13 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
     label: "Environmental",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Use of mercury, mercury waste (Minamata Convention)",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2797,7 +2797,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Production and use of persistent organic pollutants (POPs Convention)",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -2922,7 +2922,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
       {
         type: "section",
         label: "Export/import of hazardous waste (Basel Convention)",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -3097,7 +3097,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
   {
     type: "section",
     label: "Attachment",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
