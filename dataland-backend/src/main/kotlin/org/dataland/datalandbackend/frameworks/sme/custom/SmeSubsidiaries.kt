@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.generics.Address
 
 /**
  * --- API model ---
- * Production Sites for Lksg framework
+ * Subsidiaries class for vsme framework
  */
 data class SmeSubsidiaries(
     val nameOfSubsidiary: String?,
