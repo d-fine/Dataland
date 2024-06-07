@@ -9,7 +9,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 /**
  * Represents the subsidiaries component for vsme
  */
-class SmeSubsidiariesComponent(
+class SmeSubsidiaryComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SmeSimpleCustomComponentBase(
@@ -28,7 +28,7 @@ class SmeSubsidiariesComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.sme.custom.SmeSubsidiaries",
+                        "org.dataland.datalandbackend.frameworks.sme.custom.SmeSubsidiary",
                         true,
                     ),
 

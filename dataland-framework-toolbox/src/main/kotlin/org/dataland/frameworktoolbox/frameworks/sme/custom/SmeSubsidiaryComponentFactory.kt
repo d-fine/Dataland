@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  * Generates the ProductionSite component
  */
 @Component
-class SmeSubsidiariesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class SmeSubsidiaryComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
         row.component == "Sme Subsidiary"
@@ -26,7 +26,7 @@ class SmeSubsidiariesComponentFactory(@Autowired val templateDiagnostic: Templat
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<SmeSubsidiariesComponent>(
+        return componentGroup.create<SmeSubsidiaryComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

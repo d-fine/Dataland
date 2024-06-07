@@ -3874,6 +3874,69 @@
           }
         }
       },
+      "Address": {
+        "required": [
+          "city",
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "streetAndHouseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "BaseDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyAssociatedDataSmeData": {
         "required": [
           "companyId",
@@ -3890,47 +3953,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/SmeData"
-          }
-        }
-      },
-      "CompanyReport": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileReference": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
           }
         }
       },
@@ -3985,17 +4007,6 @@
           }
         }
       },
-      "NaturalHazardsCoveredOptions": {
-        "type": "string",
-        "enum": [
-          "Hail",
-          "Wind",
-          "Flooding",
-          "EarthQuake",
-          "Avalanche",
-          "Snow"
-        ]
-      },
       "QualityOptions": {
         "type": "string",
         "enum": [
@@ -4006,175 +4017,188 @@
           "NA"
         ]
       },
-      "SmeData": {
-        "required": [
-          "general"
-        ],
+      "ReleaseMedium": {
+        "type": "string",
+        "enum": [
+          "Air",
+          "Soil",
+          "Water"
+        ]
+      },
+      "SmeBasic": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SmeGeneral"
-          },
-          "power": {
+          "basisForPreparation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmePower"
+                "$ref": "#/components/schemas/SmeBasicBasisForPreparation"
               }
             ]
           },
-          "insurances": {
+          "practicesForTransitioningTowardsAMoreSustainableEconomy": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmeInsurances"
+                "$ref": "#/components/schemas/SmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy"
               }
             ]
-          }
-        }
-      },
-      "SmeGeneral": {
-        "required": [
-          "basicInformation"
-        ],
-        "type": "object",
-        "properties": {
-          "basicInformation": {
-            "$ref": "#/components/schemas/SmeGeneralBasicInformation"
           },
-          "financialInformation": {
+          "energyAndGreenhousGasEmissions": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmeGeneralFinancialInformation"
+                "$ref": "#/components/schemas/SmeBasicEnergyAndGreenhousGasEmissions"
               }
             ]
-          }
-        }
-      },
-      "SmeGeneralBasicInformation": {
-        "required": [
-          "fiscalYearStart",
-          "numberOfEmployees",
-          "reportingDate",
-          "sectors"
-        ],
-        "type": "object",
-        "properties": {
-          "reportingDate": {
-            "type": "string",
-            "format": "date"
           },
-          "sectors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "numberOfEmployees": {
-            "type": "integer"
-          },
-          "fiscalYearStart": {
-            "type": "string",
-            "format": "date"
-          },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            },
-            "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
-          }
-        }
-      },
-      "SmeGeneralFinancialInformation": {
-        "type": "object",
-        "properties": {
-          "revenueInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "operatingCostInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "capitalAssetsInEur": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "SmeInsurances": {
-        "type": "object",
-        "properties": {
-          "naturalHazards": {
+          "pollutionOfAirWaterSoil": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmeInsurancesNaturalHazards"
+                "$ref": "#/components/schemas/SmeBasicPollutionOfAirWaterSoil"
+              }
+            ]
+          },
+          "biodiversity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicBiodiversity"
+              }
+            ]
+          },
+          "water": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicWater"
+              }
+            ]
+          },
+          "resourceUseCircularEconomyAndWasteManagement": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicResourceUseCircularEconomyAndWasteManagement"
+              }
+            ]
+          },
+          "workforceGeneralCharacteristics": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicWorkforceGeneralCharacteristics"
+              }
+            ]
+          },
+          "workforceHealthAndSafety": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicWorkforceHealthAndSafety"
+              }
+            ]
+          },
+          "workforceRenumerationCollectiveBargainingAndTraining": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicWorkforceRenumerationCollectiveBargainingAndTraining"
+              }
+            ]
+          },
+          "workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers"
               }
             ]
           }
         }
       },
-      "SmeInsurancesNaturalHazards": {
+      "SmeBasicBasisForPreparation": {
         "type": "object",
         "properties": {
-          "insuranceAgainstNaturalHazards": {
+          "reportingBasis": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },
-          "amountCoveredByInsuranceAgainstNaturalHazardsInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "naturalHazardsCovered": {
+          "subsidiary": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/NaturalHazardsCoveredOptions"
+              "$ref": "#/components/schemas/SmeSubsidiary"
             }
           }
         }
       },
-      "SmePower": {
+      "SmeBasicBiodiversity": {
         "type": "object",
         "properties": {
-          "investments": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerInvestments"
-              }
-            ]
+          "totalSealedAreaPreviousYear": {
+            "type": "number",
+            "nullable": true
           },
-          "consumption": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumption"
-              }
-            ]
+          "totalSealedAreaReportingYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentualChangeSealedArea": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOnSitePreviousYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOnSiteReportingYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentualChangeNatureOrientedOnSite": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOffSitePreviousYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOffSiteReportingYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentualChangeNatureOrientedOffSite": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalUseOfLandPreviousYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalUseOfLandReportingYear": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentualChangeLandUse": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
-      "SmePowerConsumption": {
+      "SmeBasicEnergyAndGreenhousGasEmissions": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMwh": {
+          "energyFossilFuels": {
+            "type": "number",
+            "nullable": true
+          },
+          "electricityTotal": {
             "nullable": true,
             "allOf": [
               {
@@ -4182,7 +4206,293 @@
               }
             ]
           },
-          "powerFromRenewableSources": {
+          "electricityNonRenewable": {
+            "type": "number",
+            "nullable": true
+          },
+          "electricityRenewable": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope1Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "SmeBasicPollutionOfAirWaterSoil": {
+        "type": "object",
+        "properties": {
+          "pollutionEmission": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/SmePollutionEmission"
+            }
+          }
+        }
+      },
+      "SmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy": {
+        "type": "object",
+        "properties": {
+          "undertakenMeasures": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SmeBasicResourceUseCircularEconomyAndWasteManagement": {
+        "type": "object",
+        "properties": {
+          "totalWeightMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "weightRecycledMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentageRecycledMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "weightRecycableMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentageRecycableMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "measureWaste": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions"
+              }
+            ]
+          }
+        }
+      },
+      "SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions": {
+        "type": "string",
+        "enum": [
+          "WeightPreferred",
+          "Volume"
+        ]
+      },
+      "SmeBasicWater": {
+        "type": "object",
+        "properties": {
+          "waterWithdrawalAllSites": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "waterWithdrawalStressSites": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterDischargeAllSites": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterDischargeStressSites": {
+            "type": "number",
+            "nullable": true
+          },
+          "rainwaterAllSites": {
+            "type": "number",
+            "nullable": true
+          },
+          "rainwaterStressSits": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterConsumptionAllSites": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterConsumptionStressSites": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "SmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
+        "type": "object",
+        "properties": {
+          "negativeEffects": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberConvictions": {
+            "type": "number",
+            "nullable": true
+          },
+          "sumFines": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "SmeBasicWorkforceGeneralCharacteristics": {
+        "type": "object",
+        "properties": {
+          "measureEmployees": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions"
+              }
+            ]
+          },
+          "numberEmployeesFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberEmployeesHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberTemporaryContractFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberTemporaryContractHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberPermanentContractFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberPermanentContractHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberMaleFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberMaleHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberFemaleFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberFemaleHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOtherFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOtherHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberNotReportedFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberNotReportedHead": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "SmeBasicWorkforceHealthAndSafety": {
+        "type": "object",
+        "properties": {
+          "totalHours": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberAccidents": {
+            "type": "integer",
+            "nullable": true
+          },
+          "accidentLevel": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberFatalitiesTotalFullTime": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberFatalitiesTotalHead": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberFatalitiesAccidentFullTime": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberFatalitiesAccidentHead": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberFatalitiesHealthFullTime": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberFatalitiesHealthHead": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "SmeBasicWorkforceRenumerationCollectiveBargainingAndTraining": {
+        "type": "object",
+        "properties": {
+          "numberMinimumWageFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberMinimumWageHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentageMinimumWage": {
+            "type": "number",
+            "nullable": true
+          },
+          "moreThanHalf": {
             "nullable": true,
             "allOf": [
               {
@@ -4190,70 +4500,154 @@
               }
             ]
           },
-          "energyConsumptionHeatingAndHotWaterInMwh": {
+          "entryLevelWage": {
             "type": "number",
             "nullable": true
           },
-          "primaryEnergySourceForHeatingAndHotWater": {
+          "minimumWage": {
+            "type": "number",
+            "nullable": true
+          },
+          "wageRatio": {
+            "type": "number",
+            "nullable": true
+          },
+          "payGapBasis": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions"
+                "$ref": "#/components/schemas/SmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions"
               }
             ]
           },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions"
-              }
-            ]
+          "grossPayMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "grossPayFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalWorkHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalWorkHoursFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageWorkHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageWorkHoursFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageHourlyPayMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageHourlyPayFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "payGap": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberBargainingAgreementsFullTime": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberBargainingAgreementsHead": {
+            "type": "number",
+            "nullable": true
+          },
+          "ratioBargainingAgreement": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalTrainingHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalTrainingHoursFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageTrainingHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageTrainingHoursFemale": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
-      "SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions": {
+      "SmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions": {
         "type": "string",
         "enum": [
-          "LessThan25Percent",
-          "Between25And50Percent",
-          "Between50And75Percent",
-          "Over75Percent"
+          "FullTimeEquivalents",
+          "HeadCount"
         ]
       },
-      "SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions": {
+      "SmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions": {
         "type": "string",
         "enum": [
-          "Oil",
-          "Gas",
-          "Electric",
-          "DistrictHeating"
+          "Annual",
+          "Weekly"
         ]
       },
-      "SmePowerInvestments": {
+      "SmeData": {
         "type": "object",
         "properties": {
-          "investmentsInEnhancingEnergyEfficiency": {
+          "basic": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions"
+                "$ref": "#/components/schemas/SmeBasic"
               }
             ]
           }
         }
       },
-      "SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions": {
-        "type": "string",
-        "enum": [
-          "LessThan1Percent",
-          "Between1And5Percent",
-          "Between5And10Percent",
-          "Between10And15Percent",
-          "Between15And20Percent",
-          "Between20And25Percent",
-          "Over25Percent"
-        ]
+      "SmePollutionEmission": {
+        "type": "object",
+        "properties": {
+          "pollutionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "emissionInKilograms": {
+            "type": "number",
+            "nullable": true
+          },
+          "releaseMedium": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReleaseMedium"
+              }
+            ]
+          }
+        }
+      },
+      "SmeSubsidiary": {
+        "required": [
+          "addressOfSubsidiary"
+        ],
+        "type": "object",
+        "properties": {
+          "nameOfSubsidiary": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressOfSubsidiary": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
       },
       "YesNo": {
         "type": "string",
@@ -4261,50 +4655,6 @@
           "Yes",
           "No"
         ]
-      },
-      "YesNoNa": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No",
-          "NA"
-        ]
-      },
-      "BaseDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
       },
       "CompanyAssociatedDataSfdrData": {
         "required": [
@@ -4322,6 +4672,47 @@
           },
           "data": {
             "$ref": "#/components/schemas/SfdrData"
+          }
+        }
+      },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isGroupLevel": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "reportDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "isGroupLevel": "Yes",
+            "reportDate": "2023-10-12",
+            "currency": "string"
           }
         }
       },
@@ -5868,6 +6259,14 @@
           }
         }
       },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
+      },
       "CompanyAssociatedDataPathwaysToParisData": {
         "required": [
           "companyId",
@@ -6869,33 +7268,6 @@
                 "$ref": "#/components/schemas/P2pCement"
               }
             ]
-          }
-        }
-      },
-      "Address": {
-        "required": [
-          "city",
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "streetAndHouseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "postalCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "type": "string"
           }
         }
       },
@@ -14404,10 +14776,14 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "companyName": {
@@ -14415,10 +14791,6 @@
           },
           "companyId": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "lei": {
             "type": "string",

@@ -9,7 +9,10 @@ import { formatStringForDatatable } from "@/components/resources/dataTable/conve
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
-import { formatLksgProductionSitesForDisplay } from "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters";
+import {
+  formatSmePollutionEmissionForDisplay,
+  formatSmeSubsidiariesForDisplay,
+} from "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters";
 export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
     type: "section",
@@ -42,7 +45,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation: "Please provide a list of your subsidiaries including their registered addresses.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatLksgProductionSitesForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary"),
+              formatSmeSubsidiariesForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary"),
           },
         ],
       },
@@ -181,11 +184,15 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
         children: [
           {
             type: "cell",
-            label: "Dummy Value Please Delete",
-            explanation: "Dummy Value Please Delete",
+            label: "Pollution Emission",
+            explanation:
+              "Please disclose, if applicable, the pollutants (with respective amounts in kg) you emit to air, water and soil in your own operations.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.basic?.pollutionOfAirWaterSoil?.dummyValuePleaseDelete),
+              formatSmePollutionEmissionForDisplay(
+                dataset.basic?.pollutionOfAirWaterSoil?.pollutionEmission,
+                "Pollution Emission",
+              ),
           },
         ],
       },

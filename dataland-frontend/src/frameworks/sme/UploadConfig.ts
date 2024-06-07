@@ -28,7 +28,7 @@ export const smeDataModel = [
             label: "Subsidiary",
             description: "Please provide a list of your subsidiaries including their registered addresses.",
 
-            component: "ProductionSitesFormField",
+            component: "SubsidiaryFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -143,11 +143,12 @@ export const smeDataModel = [
         label: "Pollution of air, water, soil",
         fields: [
           {
-            name: "dummyValuePleaseDelete",
-            label: "Dummy Value Please Delete",
-            description: "Dummy Value Please Delete",
+            name: "pollutionEmission",
+            label: "Pollution Emission",
+            description:
+              "Please disclose, if applicable, the pollutants (with respective amounts in kg) you emit to air, water and soil in your own operations.",
 
-            component: "InputTextFormField",
+            component: "SubsidiaryFormField",
             required: false,
             showIf: (): boolean => true,
           },

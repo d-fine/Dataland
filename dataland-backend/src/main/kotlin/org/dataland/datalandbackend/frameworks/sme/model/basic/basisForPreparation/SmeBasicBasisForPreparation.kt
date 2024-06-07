@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.sme.model.basic.basisForPreparation
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.sme.custom.SmeSubsidiaries
+import org.dataland.datalandbackend.frameworks.sme.custom.SmeSubsidiary
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
@@ -13,6 +13,6 @@ data class SmeBasicBasisForPreparation(
     @field:Valid()
     val reportingBasis: BaseDataPoint<YesNo>? = null,
 
-    val subsidiary: List<SmeSubsidiaries?>? = null,
+    val subsidiary: List<SmeSubsidiary?>? = null,
 
 )

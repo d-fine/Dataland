@@ -39,7 +39,7 @@ open class SmeSimpleCustomComponentBase(
                 setOf(
                     TypeScriptImport(
                         viewFormattingFunctionName,
-                        "@/components/resources/dataTable/conversion/lksg/LksgDisplayValueGetters",
+                        "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters",
                     ),
                 ),
             ),
