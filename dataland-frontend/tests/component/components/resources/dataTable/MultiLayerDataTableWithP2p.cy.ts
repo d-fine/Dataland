@@ -59,11 +59,11 @@ describe("Component test for P2pPanel", () => {
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
       .should("be.visible");
 
-    getSectionHead("Livestock farming").click();
+    getSectionHead("Livestock farming").should("exist");
     getSectionHead("Animal feed").should("exist");
     cy.get("span[data-test=Report-Download-Policy]").next("i[data-test=download-icon]").should("be.visible");
 
-    getSectionHead("Cement").click();
+    getSectionHead("Cement").should("exist");
     getSectionHead("Material").should("exist");
     getCellValueContainer("Pre-calcined clay usage").should(
       "contain.text",
@@ -73,7 +73,7 @@ describe("Component test for P2pPanel", () => {
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
     getSectionHead("Cement").should("exist");
 
-    getSectionHead("Freight transport by road").click();
+    getSectionHead("Freight transport by road").should("exist");
     getSectionHead("Technology").should("exist");
     getCellValueContainer("Drive mix per fleet segment").contains(`Show Drive mix per fleet segment`).click();
     cy.get(".p-dialog").contains(formatPercentageNumberAsString(driveMixPerFleetSegmentInPercentForSmallTrucks));
