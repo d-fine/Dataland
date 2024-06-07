@@ -2,8 +2,13 @@
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { SmeGenerator } from "@e2e/fixtures/frameworks/sme/SmeGenerator";
-import {pickOneElement, generateFixtureDataset} from "@e2e/fixtures/FixtureUtils";
-import {SmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions, SmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions, SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions, type SmeData} from "@clients/backend";
+import { pickOneElement, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import {
+  SmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions,
+  SmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions,
+  SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions,
+  type SmeData,
+} from "@clients/backend";
 
 /**
  * Generates a set number of sme fixtures
@@ -15,11 +20,7 @@ export function generateSmeFixtures(
   numFixtures: number,
   nullProbability = DEFAULT_PROBABILITY,
 ): FixtureData<SmeData>[] {
-  return generateFixtureDataset<SmeData>(
-    () => generateSmeData(nullProbability),
-    numFixtures,
-    
-  );
+  return generateFixtureDataset<SmeData>(() => generateSmeData(nullProbability), numFixtures);
 }
 
 /**
@@ -31,117 +32,123 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
   const dataGenerator = new SmeGenerator(nullProbability);
   return {
     basic: {
-        basisForPreparation: {
-            reportingBasis: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            subsidiary: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),
-        },
-        practicesForTransitioningTowardsAMoreSustainableEconomy: {
-            undertakenMeasures: dataGenerator.randomParagraphs(),
-        },
-        energyAndGreenhousGasEmissions: {
-            energyFossilFuels: dataGenerator.randomFloat(),
-            electricityTotal: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            electricityNonRenewable: dataGenerator.randomFloat(),
-            electricityRenewable: dataGenerator.randomFloat(),
-            totalEmissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope1Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope2Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        },
-        pollutionOfAirWaterSoil: {
-            dummyValuePleaseDelete: dataGenerator.randomShortString(),
-        },
-        biodiversity: {
-            totalSealedAreaPreviousYear: dataGenerator.randomFloat(),
-            totalSealedAreaReportingYear: dataGenerator.randomFloat(),
-            percentualChangeSealedArea: dataGenerator.randomPercentageValue(),
-            totalNatureOrientedAreaOnSitePreviousYear: dataGenerator.randomFloat(),
-            totalNatureOrientedAreaOnSiteReportingYear: dataGenerator.randomFloat(),
-            percentualChangeNatureOrientedOnSite: dataGenerator.randomPercentageValue(),
-            totalNatureOrientedAreaOffSitePreviousYear: dataGenerator.randomFloat(),
-            totalNatureOrientedAreaOffSiteReportingYear: dataGenerator.randomFloat(),
-            percentualChangeNatureOrientedOffSite: dataGenerator.randomPercentageValue(),
-            totalUseOfLandPreviousYear: dataGenerator.randomFloat(),
-            totalUseOfLandReportingYear: dataGenerator.randomFloat(),
-            percentualChangeLandUse: dataGenerator.randomPercentageValue(),
-        },
-        water: {
-            waterWithdrawalAllSites: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            waterWithdrawalStressSites: dataGenerator.randomFloat(),
-            waterDischargeAllSites: dataGenerator.randomFloat(),
-            waterDischargeStressSites: dataGenerator.randomFloat(),
-            rainwaterAllSites: dataGenerator.randomFloat(),
-            rainwaterStressSits: dataGenerator.randomFloat(),
-            waterConsumptionAllSites: dataGenerator.randomFloat(),
-            waterConsumptionStressSites: dataGenerator.randomFloat(),
-        },
-        resourceUseCircularEconomyAndWasteManagement: {
-            totalWeightMaterials: dataGenerator.randomFloat(),
-            weightRecycledMaterials: dataGenerator.randomFloat(),
-            percentageRecycledMaterials: dataGenerator.randomPercentageValue(),
-            weightRecycableMaterials: dataGenerator.randomFloat(),
-            percentageRecycableMaterials: dataGenerator.randomPercentageValue(),
-            measureWaste: dataGenerator.valueOrNull(pickOneElement(Object.values(SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions))),
-        },
-        workforceGeneralCharacteristics: {
-            measureEmployees: dataGenerator.valueOrNull(pickOneElement(Object.values(SmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions))),
-            numberEmployeesFullTime: dataGenerator.randomFloat(),
-            numberEmployeesHead: dataGenerator.randomFloat(),
-            numberTemporaryContractFullTime: dataGenerator.randomFloat(),
-            numberTemporaryContractHead: dataGenerator.randomFloat(),
-            numberPermanentContractFullTime: dataGenerator.randomFloat(),
-            numberPermanentContractHead: dataGenerator.randomFloat(),
-            numberMaleFullTime: dataGenerator.randomFloat(),
-            numberMaleHead: dataGenerator.randomFloat(),
-            numberFemaleFullTime: dataGenerator.randomFloat(),
-            numberFemaleHead: dataGenerator.randomFloat(),
-            numberOtherFullTime: dataGenerator.randomFloat(),
-            numberOtherHead: dataGenerator.randomFloat(),
-            numberNotReportedFullTime: dataGenerator.randomFloat(),
-            numberNotReportedHead: dataGenerator.randomFloat(),
-        },
-        workforceHealthAndSafety: {
-            totalHours: dataGenerator.randomFloat(),
-            numberAccidents: dataGenerator.randomInt(),
-            accidentLevel: dataGenerator.randomFloat(),
-            numberFatalitiesTotalFullTime: dataGenerator.randomInt(),
-            numberFatalitiesTotalHead: dataGenerator.randomInt(),
-            numberFatalitiesAccidentFullTime: dataGenerator.randomInt(),
-            numberFatalitiesAccidentHead: dataGenerator.randomInt(),
-            numberFatalitiesHealthFullTime: dataGenerator.randomInt(),
-            numberFatalitiesHealthHead: dataGenerator.randomInt(),
-        },
-        workforceRenumerationCollectiveBargainingAndTraining: {
-            numberMinimumWageFullTime: dataGenerator.randomFloat(),
-            numberMinimumWageHead: dataGenerator.randomFloat(),
-            percentageMinimumWage: dataGenerator.randomPercentageValue(),
-            moreThanHalf: dataGenerator.randomYesNo(),
-            entryLevelWage: dataGenerator.randomFloat(),
-            minimumWage: dataGenerator.randomFloat(),
-            wageRatio: dataGenerator.randomFloat(),
-            payGapBasis: dataGenerator.valueOrNull(pickOneElement(Object.values(SmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions))),
-            grossPayMale: dataGenerator.randomFloat(),
-            grossPayFemale: dataGenerator.randomFloat(),
-            totalWorkHoursMale: dataGenerator.randomFloat(),
-            totalWorkHoursFemale: dataGenerator.randomFloat(),
-            averageWorkHoursMale: dataGenerator.randomFloat(),
-            averageWorkHoursFemale: dataGenerator.randomFloat(),
-            averageHourlyPayMale: dataGenerator.randomFloat(),
-            averageHourlyPayFemale: dataGenerator.randomFloat(),
-            payGap: dataGenerator.randomFloat(),
-            numberBargainingAgreementsFullTime: dataGenerator.randomFloat(),
-            numberBargainingAgreementsHead: dataGenerator.randomFloat(),
-            ratioBargainingAgreement: dataGenerator.randomPercentageValue(),
-            totalTrainingHoursMale: dataGenerator.randomFloat(),
-            totalTrainingHoursFemale: dataGenerator.randomFloat(),
-            averageTrainingHoursMale: dataGenerator.randomFloat(),
-            averageTrainingHoursFemale: dataGenerator.randomFloat(),
-        },
-        workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers: {
-            negativeEffects: dataGenerator.randomParagraphs(),
-            numberConvictions: dataGenerator.randomFloat(),
-            sumFines: dataGenerator.randomFloat(),
-        },
+      basisForPreparation: {
+        reportingBasis: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        subsidiary: dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5),
+      },
+      practicesForTransitioningTowardsAMoreSustainableEconomy: {
+        undertakenMeasures: dataGenerator.randomParagraphs(),
+      },
+      energyAndGreenhousGasEmissions: {
+        energyFossilFuels: dataGenerator.randomFloat(),
+        electricityTotal: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        electricityNonRenewable: dataGenerator.randomFloat(),
+        electricityRenewable: dataGenerator.randomFloat(),
+        totalEmissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope1Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope2Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+      },
+      pollutionOfAirWaterSoil: {
+        dummyValuePleaseDelete: dataGenerator.randomShortString(),
+      },
+      biodiversity: {
+        totalSealedAreaPreviousYear: dataGenerator.randomFloat(),
+        totalSealedAreaReportingYear: dataGenerator.randomFloat(),
+        percentualChangeSealedArea: dataGenerator.randomPercentageValue(),
+        totalNatureOrientedAreaOnSitePreviousYear: dataGenerator.randomFloat(),
+        totalNatureOrientedAreaOnSiteReportingYear: dataGenerator.randomFloat(),
+        percentualChangeNatureOrientedOnSite: dataGenerator.randomPercentageValue(),
+        totalNatureOrientedAreaOffSitePreviousYear: dataGenerator.randomFloat(),
+        totalNatureOrientedAreaOffSiteReportingYear: dataGenerator.randomFloat(),
+        percentualChangeNatureOrientedOffSite: dataGenerator.randomPercentageValue(),
+        totalUseOfLandPreviousYear: dataGenerator.randomFloat(),
+        totalUseOfLandReportingYear: dataGenerator.randomFloat(),
+        percentualChangeLandUse: dataGenerator.randomPercentageValue(),
+      },
+      water: {
+        waterWithdrawalAllSites: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        waterWithdrawalStressSites: dataGenerator.randomFloat(),
+        waterDischargeAllSites: dataGenerator.randomFloat(),
+        waterDischargeStressSites: dataGenerator.randomFloat(),
+        rainwaterAllSites: dataGenerator.randomFloat(),
+        rainwaterStressSits: dataGenerator.randomFloat(),
+        waterConsumptionAllSites: dataGenerator.randomFloat(),
+        waterConsumptionStressSites: dataGenerator.randomFloat(),
+      },
+      resourceUseCircularEconomyAndWasteManagement: {
+        totalWeightMaterials: dataGenerator.randomFloat(),
+        weightRecycledMaterials: dataGenerator.randomFloat(),
+        percentageRecycledMaterials: dataGenerator.randomPercentageValue(),
+        weightRecycableMaterials: dataGenerator.randomFloat(),
+        percentageRecycableMaterials: dataGenerator.randomPercentageValue(),
+        measureWaste: dataGenerator.valueOrNull(
+          pickOneElement(Object.values(SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions)),
+        ),
+      },
+      workforceGeneralCharacteristics: {
+        measureEmployees: dataGenerator.valueOrNull(
+          pickOneElement(Object.values(SmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions)),
+        ),
+        numberEmployeesFullTime: dataGenerator.randomFloat(),
+        numberEmployeesHead: dataGenerator.randomFloat(),
+        numberTemporaryContractFullTime: dataGenerator.randomFloat(),
+        numberTemporaryContractHead: dataGenerator.randomFloat(),
+        numberPermanentContractFullTime: dataGenerator.randomFloat(),
+        numberPermanentContractHead: dataGenerator.randomFloat(),
+        numberMaleFullTime: dataGenerator.randomFloat(),
+        numberMaleHead: dataGenerator.randomFloat(),
+        numberFemaleFullTime: dataGenerator.randomFloat(),
+        numberFemaleHead: dataGenerator.randomFloat(),
+        numberOtherFullTime: dataGenerator.randomFloat(),
+        numberOtherHead: dataGenerator.randomFloat(),
+        numberNotReportedFullTime: dataGenerator.randomFloat(),
+        numberNotReportedHead: dataGenerator.randomFloat(),
+      },
+      workforceHealthAndSafety: {
+        totalHours: dataGenerator.randomFloat(),
+        numberAccidents: dataGenerator.randomInt(),
+        accidentLevel: dataGenerator.randomFloat(),
+        numberFatalitiesTotalFullTime: dataGenerator.randomInt(),
+        numberFatalitiesTotalHead: dataGenerator.randomInt(),
+        numberFatalitiesAccidentFullTime: dataGenerator.randomInt(),
+        numberFatalitiesAccidentHead: dataGenerator.randomInt(),
+        numberFatalitiesHealthFullTime: dataGenerator.randomInt(),
+        numberFatalitiesHealthHead: dataGenerator.randomInt(),
+      },
+      workforceRenumerationCollectiveBargainingAndTraining: {
+        numberMinimumWageFullTime: dataGenerator.randomFloat(),
+        numberMinimumWageHead: dataGenerator.randomFloat(),
+        percentageMinimumWage: dataGenerator.randomPercentageValue(),
+        moreThanHalf: dataGenerator.randomYesNo(),
+        entryLevelWage: dataGenerator.randomFloat(),
+        minimumWage: dataGenerator.randomFloat(),
+        wageRatio: dataGenerator.randomFloat(),
+        payGapBasis: dataGenerator.valueOrNull(
+          pickOneElement(Object.values(SmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions)),
+        ),
+        grossPayMale: dataGenerator.randomFloat(),
+        grossPayFemale: dataGenerator.randomFloat(),
+        totalWorkHoursMale: dataGenerator.randomFloat(),
+        totalWorkHoursFemale: dataGenerator.randomFloat(),
+        averageWorkHoursMale: dataGenerator.randomFloat(),
+        averageWorkHoursFemale: dataGenerator.randomFloat(),
+        averageHourlyPayMale: dataGenerator.randomFloat(),
+        averageHourlyPayFemale: dataGenerator.randomFloat(),
+        payGap: dataGenerator.randomFloat(),
+        numberBargainingAgreementsFullTime: dataGenerator.randomFloat(),
+        numberBargainingAgreementsHead: dataGenerator.randomFloat(),
+        ratioBargainingAgreement: dataGenerator.randomPercentageValue(),
+        totalTrainingHoursMale: dataGenerator.randomFloat(),
+        totalTrainingHoursFemale: dataGenerator.randomFloat(),
+        averageTrainingHoursMale: dataGenerator.randomFloat(),
+        averageTrainingHoursFemale: dataGenerator.randomFloat(),
+      },
+      workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers: {
+        negativeEffects: dataGenerator.randomParagraphs(),
+        numberConvictions: dataGenerator.randomFloat(),
+        sumFines: dataGenerator.randomFloat(),
+      },
     },
-}
+  };
 }

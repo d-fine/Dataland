@@ -1,7 +1,6 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type SmeData } from "@clients/backend";
 import { generateSmeFixtures } from "@e2e/fixtures/frameworks/sme/SmeDataFixtures";
-import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
 /**
  * Generates one SME prepared fixture dataset by generating a random SME dataset and afterwards manipulating some fields

@@ -231,8 +231,9 @@ export default defineComponent({
       const smeResponseData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
       this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
       this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
-      this.referencedReportsForPrefill =
-        this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
+      //TODO Fix referenced reports
+      //this.referencedReportsForPrefill =
+      //  this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
       this.waitingForData = false;
     },
 

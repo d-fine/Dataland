@@ -15,9 +15,9 @@ class SmeSubsidiariesComponent(
 ) : SmeSimpleCustomComponentBase(
     identifier = identifier,
     parent = parent,
-    viewFormattingFunctionName = "formatLksgProductionSitesForDisplay",
-    uploadComponentName = "ProductionSitesFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5)",
+    viewFormattingFunctionName = "formatSmeSubsidiariesForDisplay",
+    uploadComponentName = "SubsidiaryFormField",
+    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5)",
     randomFixtureExpression = null,
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
