@@ -14780,21 +14780,21 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           }
         }
       },
@@ -14817,10 +14817,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
