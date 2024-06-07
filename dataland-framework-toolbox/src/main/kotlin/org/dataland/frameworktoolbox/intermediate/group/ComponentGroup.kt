@@ -22,7 +22,7 @@ class ComponentGroup(
 
     var viewPageLabelBadgeColor: LabelBadgeColor? = null
     var uploadPageLabelBadgeColor: LabelBadgeColor? = null
-    var viewPageExpandOnPageLoad: Boolean = false
+    var viewPageExpandOnPageLoad: Boolean = true
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 

@@ -52,29 +52,29 @@ describe("Component test for P2pPanel", () => {
     getSectionHead("General").eq(1).click();
     getCellValueContainer("Data Date").should("be.visible");
 
-    getSectionHead("Ammonia").click();
-    getCellValueContainer("CCS technology adoption", 0, false).should("not.be.visible");
-    getSectionHead("Decarbonisation").click();
+    getSectionHead("Ammonia").should("exist");
+    getCellValueContainer("CCS technology adoption", 0, false).should("be.visible");
+    getSectionHead("Decarbonisation").should("exist");
     getCellValueContainer("CCS technology adoption")
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
       .should("be.visible");
 
-    getSectionHead("Livestock farming").click();
-    getSectionHead("Animal feed").click();
+    getSectionHead("Livestock farming").should("exist");
+    getSectionHead("Animal feed").should("exist");
     cy.get("span[data-test=Report-Download-Policy]").next("i[data-test=download-icon]").should("be.visible");
 
-    getSectionHead("Cement").click();
-    getSectionHead("Material").click();
+    getSectionHead("Cement").should("exist");
+    getSectionHead("Material").should("exist");
     getCellValueContainer("Pre-calcined clay usage").should(
       "contain.text",
       formatPercentageNumberAsString(preCalcinedClayUsageInPercent),
     );
     cy.get("em[title='Pre-calcined clay usage']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").should("contain.text", "Share of pre-calcined");
-    getSectionHead("Cement").click();
+    getSectionHead("Cement").should("exist");
 
-    getSectionHead("Freight transport by road").click();
-    getSectionHead("Technology").click();
+    getSectionHead("Freight transport by road").should("exist");
+    getSectionHead("Technology").should("exist");
     getCellValueContainer("Drive mix per fleet segment").contains(`Show Drive mix per fleet segment`).click();
     cy.get(".p-dialog").contains(formatPercentageNumberAsString(driveMixPerFleetSegmentInPercentForSmallTrucks));
   });

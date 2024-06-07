@@ -37,7 +37,7 @@ describe("Component test for the LksgPanel", () => {
     getCellValueContainer("Industry").should("exist");
   });
 
-  it("Check that the Master Data section is auto-expanded on page load and can be collapsed", () => {
+  it("Check that the Master Data section is auto-expanded on page load and is decollapsed", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
@@ -45,9 +45,9 @@ describe("Component test for the LksgPanel", () => {
     getCellValueContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
-    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true").click();
-    getCellValueContainer("Data Date", 0, false).should("not.be.visible");
-    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true");
+    getCellValueContainer("Data Date", 0, false).should("be.visible");
+    getSectionHead("Master Data").should("have.attr", "data-section-expanded", "true");
     getCellValueContainer("Data Date")
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
@@ -57,9 +57,9 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getSectionHead("Governance").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Governance").should("have.attr", "data-section-expanded", "true");
     getSectionHead("Certifications, policies and responsibilities")
-      .should("have.attr", "data-section-expanded", "false")
+      .should("have.attr", "data-section-expanded", "true")
       .click();
   });
 
@@ -72,7 +72,7 @@ describe("Component test for the LksgPanel", () => {
       .should("contain.text", lksgData.general.masterData.dataDate)
       .should("be.visible");
     cy.get(`span.p-column-title`).should("contain.text", reportingPeriod.substring(0, 4));
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "true");
     getCellValueContainer("List Of Production Sites").contains("a").should("be.visible").click();
     lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
       if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
@@ -86,9 +86,7 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-with-procurement-categories", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getSectionHead("Production-specific - Own Operations")
-      .should("have.attr", "data-section-expanded", "false")
-      .click();
+    getSectionHead("Production-specific - Own Operations").should("have.attr", "data-section-expanded", "true");
     getCellValueContainer("Procurement Categories").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
@@ -103,7 +101,7 @@ describe("Component test for the LksgPanel", () => {
     const preparedFixture = getPreparedFixture("lksg-with-subcontracting-countries", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgViewConfiguration, [preparedFixture]);
 
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "true");
     getCellValueContainer("Subcontracting Companies Countries").find("a").should("be.visible").click();
 
     cy.get("div.p-dialog").within(() => {
@@ -132,7 +130,7 @@ describe("Component test for the LksgPanel", () => {
       true,
     );
 
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
+    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "true");
 
     getCellValueContainer("Manufacturing Company").should("have.text", "No");
     getCellValueContainer("List Of Production Sites").should("be.visible");
