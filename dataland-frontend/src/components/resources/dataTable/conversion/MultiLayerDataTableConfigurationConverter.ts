@@ -12,6 +12,10 @@ import { getDataModelFieldCellConfig } from "@/components/resources/dataTable/co
 const autoExpandingCategoryNames = new Set([
   "general",
   "masterData",
+  "governance",
+  "climateTargets",
+  "emissionsPlanning",
+  "investmentPlanning",
   "ammonia",
   "decarbonisation",
   "defossilisation",
