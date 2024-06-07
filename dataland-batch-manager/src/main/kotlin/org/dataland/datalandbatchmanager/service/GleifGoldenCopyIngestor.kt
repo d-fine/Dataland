@@ -78,7 +78,6 @@ class GleifGoldenCopyIngestor(
             waitForBackend()
             logger.info("Retrieving all company data available via GLEIF.")
 
-            // Process relationship file before LEI file to have info available upon company upload
             processRelationshipFile(updateAllCompanies = false)
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
