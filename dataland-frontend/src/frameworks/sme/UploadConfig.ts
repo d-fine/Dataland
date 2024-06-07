@@ -148,7 +148,7 @@ export const smeDataModel = [
             description:
               "Please disclose, if applicable, the pollutants (with respective amounts in kg) you emit to air, water and soil in your own operations.",
 
-            component: "SubsidiaryFormField",
+            component: "PollutionEmissionFormField",
             required: false,
             showIf: (): boolean => true,
           },

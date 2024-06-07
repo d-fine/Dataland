@@ -17,13 +17,13 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
     type: "section",
     label: "Basic",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Basis for Preparation",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -52,7 +52,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Practices for transitioning towards a more sustainable economy",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -71,7 +71,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Energy and greenhous gas emissions",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -179,7 +179,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Pollution of air, water, soil",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -199,7 +199,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Biodiversity",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -315,7 +315,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Water",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -393,7 +393,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Resource use, circular economy and waste management",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -476,7 +476,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Workforce - General Characteristics",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -670,7 +670,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Workforce - Health and Safety",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -779,7 +779,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Workforce - Renumeration, collective bargaining, and training",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1078,7 +1078,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Workers in the value chain, affected communities, consumers, and end-users",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {

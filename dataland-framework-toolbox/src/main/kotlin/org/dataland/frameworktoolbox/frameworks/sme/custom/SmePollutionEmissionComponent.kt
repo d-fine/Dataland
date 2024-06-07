@@ -16,8 +16,8 @@ class SmePollutionEmissionComponent(
     identifier = identifier,
     parent = parent,
     viewFormattingFunctionName = "formatSmePollutionEmissionForDisplay",
-    uploadComponentName = "SubsidiaryFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5)",
+    uploadComponentName = "PollutionEmissionFormField",
+    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmePollutionEmission(), 0, 3)",
     randomFixtureExpression = null,
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {

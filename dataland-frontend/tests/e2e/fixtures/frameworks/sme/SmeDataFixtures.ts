@@ -50,7 +50,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
         scope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
       },
       pollutionOfAirWaterSoil: {
-        pollutionEmission: dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5),
+        pollutionEmission: dataGenerator.randomArray(() => dataGenerator.generateSmePollutionEmission(), 0, 3),
       },
       biodiversity: {
         totalSealedAreaPreviousYear: dataGenerator.randomFloat(),

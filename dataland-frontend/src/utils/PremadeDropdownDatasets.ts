@@ -1,6 +1,6 @@
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import currencyCodeData from "currency-codes/data";
-import { RiskPositionType } from "@clients/backend";
+import { ReleaseMedium, RiskPositionType } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export interface DropdownOption {
@@ -11,6 +11,7 @@ export enum DropdownDatasetIdentifier {
   CountryCodesIso2 = "ISO 2 Codes",
   CurrencyCodes = "ISO 4217 Codes",
   RiskPositions = "Risk Positions",
+  ReleaseMedium = "Release Medium",
 }
 
 export type DropdownDataset = Array<DropdownOption>;
@@ -28,6 +29,8 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
       return getCurrencyCodeDropdownDataset();
     case DropdownDatasetIdentifier.RiskPositions:
       return getRiskPositionDropdownDataset();
+    case DropdownDatasetIdentifier.ReleaseMedium:
+      return getReleaseMediumDropdownDataset();
   }
   throw Error(`Unknown dataset identifier ${datasetIdentifier as string}`);
 }
@@ -100,4 +103,18 @@ export interface ReportingPeriodTableEntry {
   dataRequestId?: string;
   actionOnClick?: ReportingPeriodTableActions;
   isClickable: boolean;
+}
+/**
+ * Retrieves a dropdown dataset of sme release medium
+ * @returns a dropdown dataset of sme release medium
+ */
+function getReleaseMediumDropdownDataset(): DropdownDataset {
+  const releaseMediumDataset: DropdownDataset = [];
+  Object.keys(ReleaseMedium).forEach((it) => {
+    releaseMediumDataset.push({
+      label: humanizeStringOrNumber(it),
+      value: it,
+    });
+  });
+  return releaseMediumDataset;
 }
