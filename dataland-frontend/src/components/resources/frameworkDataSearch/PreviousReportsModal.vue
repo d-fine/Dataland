@@ -9,7 +9,7 @@
           class="row mb-2"
           data-test="previousReportsList"
         >
-          <DocumentLink :download-name="nameInner" :fileReference="report.fileReference" show-icon />
+          <DocumentLink :download-name="`${nameInner}`" :fileReference="report.fileReference" show-icon />
         </div>
       </div>
     </div>
