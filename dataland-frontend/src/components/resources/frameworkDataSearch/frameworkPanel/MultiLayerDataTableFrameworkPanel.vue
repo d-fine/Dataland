@@ -25,7 +25,7 @@
         editMultiLayerDataTableConfigForHighlightingHiddenFields(
           displayConfiguration,
           inReviewMode,
-          hideEmptyFields ?? true,
+          hideEmptyFields ?? false,
         )
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
