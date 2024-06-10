@@ -23,15 +23,15 @@
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { type ComponentPropsOptions, defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export default defineComponent({
   name: "SingleSelectFormField",
   components: { SingleSelectFormElement, UploadFormHeader },
-  props: Object.assign(deepCopyObject(DropdownOptionFormFieldProps as ObjectType), {
+  props: {
+    ...DropdownOptionFormFieldProps,
     inputClass: { type: String, default: "long" },
     containerClass: { type: String, default: "form-field" },
     ignore: { type: Boolean, default: false },
@@ -43,10 +43,12 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    modelValue: String,
+    modelValue: {
+      type: String as PropType<String | null>,
+    },
     dataTest: String,
     validationMessages: Object,
-  }) as Readonly<ComponentPropsOptions>,
+  },
   emits: ["update:modelValue"],
   data() {
     return {

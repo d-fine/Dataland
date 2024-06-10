@@ -30,7 +30,7 @@
               :description="companyDataExplanations.companyAlternativeNames"
             />
             <PrimeButton
-              :disabled="this.enteredCompanyAlternativeName === ''"
+              :disabled="enteredCompanyAlternativeName === ''"
               @click="addCompanyAlternativeName"
               name="addAlternativeName"
               label="Add"
@@ -76,7 +76,7 @@
                 placeholder="Select"
                 validation="required"
                 validation-label="Country Code"
-                :options="allCountryCodes"
+                :options="allCountryCodes.map((it) => ({ value: it, label: it }))"
                 :label="companyDataNames.countryCode"
                 :description="companyDataExplanations.countryCode"
                 required
@@ -194,7 +194,7 @@
             name="sector"
             v-model="sector"
             placeholder="Please choose"
-            :options="gicsSectors"
+            :options="gicsSectors.map((it) => ({ value: it, label: it }))"
           />
 
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
@@ -359,10 +359,10 @@ export default defineComponent({
         headquartersPostalCode: this.headquartersPostalCode,
         sector: this.sector,
         identifiers: this.identifiers,
-        countryCode: this.countryCode,
+        countryCode: assertDefined(this.countryCode),
         isTeaserCompany: false,
         website: this.website,
-      } as CompanyInformation;
+      };
     },
     /**
      * Posts the entered company information to the backend
@@ -371,7 +371,8 @@ export default defineComponent({
       this.messageCounter++;
       try {
         const company = this.getCompanyInformation();
-        if (this.identifiers.length === 0) {
+        const hasAtLeastOneIdentifier = Object.values(this.identifiers).some((it) => it.length > 0);
+        if (!hasAtLeastOneIdentifier) {
           this.message = "Please specify at least one company identifier.";
           this.uploadSucceded = false;
         } else {
