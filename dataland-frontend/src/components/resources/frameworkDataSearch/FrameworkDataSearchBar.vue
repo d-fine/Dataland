@@ -66,11 +66,23 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 
+/**
+ * This interface defines the internal state of the autocomplete component
+ * not exposed in their typescript definition
+ */
+interface AutoCompleteInternalState {
+  focusedOptionIndex: number | null;
+  hide(): void;
+  $refs: {
+    focusInput: HTMLInputElement;
+  }
+}
+
 export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      autocomplete: ref<HTMLFormElement>(),
+      autocomplete: ref<InstanceType<typeof AutoComplete> & AutoCompleteInternalState>(),
     };
   },
   name: "FrameworkDataSearchBar",
@@ -173,8 +185,7 @@ export default defineComponent({
      * Called on button presses of the up/down keys and updates the index of the currently selected element.
      */
     getCurrentFocusedOptionIndex() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex as number;
+      this.currentFocusedOptionIndex = this.autocomplete?.focusedOptionIndex ?? -1;
     },
 
     /**
@@ -188,9 +199,7 @@ export default defineComponent({
      * Focuses the search bar
      */
     focusOnSearchBar() {
-      const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
-      const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
-      inputOfAutocompleteComponent.focus();
+      this.autocomplete?.$refs?.focusInput.focus();
     },
 
     /**
@@ -209,10 +218,8 @@ export default defineComponent({
      */
     executeSearchIfNoItemFocused() {
       if (this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        this.autocomplete.hide();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        this.autocomplete.$refs.focusInput.blur();
+        this.autocomplete?.hide();
+        this.autocomplete?.$refs.focusInput.blur();
         this.$emit("search-confirmed", this.searchBarInput);
         void this.queryCompany();
       }
