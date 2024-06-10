@@ -25,6 +25,7 @@ import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
+import { getHeaderIfItIsASingleString } from "@/utils/Axios";
 
 export default defineComponent({
   setup() {
@@ -87,9 +88,8 @@ export default defineComponent({
      * @returns the file type extension of the downloaded file
      */
     getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
-      return assertDefined(new Map(Object.entries(headers)).get("content-disposition") as string)
-        .split(".")
-        .at(-1) as DownloadableFileExtension;
+      const contentDisposition = assertDefined(getHeaderIfItIsASingleString(headers, "content-disposition")).split(".");
+      return contentDisposition[contentDisposition.length - 1] as DownloadableFileExtension;
     },
     /**
      * Extracts the content type from the http response headers
@@ -97,7 +97,7 @@ export default defineComponent({
      * @returns the mime type of the received document
      */
     getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
-      return assertDefined(new Map(Object.entries(headers)).get("content-type") as string);
+      return assertDefined(getHeaderIfItIsASingleString(headers, "content-type"));
     },
   },
 });
