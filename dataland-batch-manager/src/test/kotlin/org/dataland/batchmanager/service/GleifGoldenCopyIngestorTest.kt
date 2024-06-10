@@ -35,7 +35,7 @@ class GleifGoldenCopyIngestorTest {
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockActuatorApi = mock(ActuatorApi::class.java)
     private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
-    private val mockRelationShipExtractor = mock(RelationshipExtractor::class.java)
+    private val mockRelationshipExtractor = mock(RelationshipExtractor::class.java)
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
 
     private lateinit var oldFile: File
@@ -95,7 +95,7 @@ class GleifGoldenCopyIngestorTest {
         reset(mockCompanyUploader)
         reset(mockActuatorApi)
         reset(mockIsinDeltaBuilder)
-        reset(mockRelationShipExtractor)
+        reset(mockRelationshipExtractor)
     }
 
     @Test
@@ -103,7 +103,7 @@ class GleifGoldenCopyIngestorTest {
         val mockStaticFile = mockStatic(File::class.java)
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            mockRelationShipExtractor,
+            mockRelationshipExtractor,
             false, null, oldFile,
         )
         companyIngestor.processFullGoldenCopyFileIfEnabled()
@@ -147,7 +147,7 @@ class GleifGoldenCopyIngestorTest {
             .thenReturn(MappingIterator.emptyIterator())
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            mockRelationShipExtractor,
+            mockRelationshipExtractor,
             false, flagFile.absolutePath, oldFile,
         )
         val mockStaticFile = mockStatic(File::class.java)
@@ -161,7 +161,7 @@ class GleifGoldenCopyIngestorTest {
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            mockRelationShipExtractor,
+            mockRelationshipExtractor,
             false, flagFile.absolutePath, oldFile,
         )
 
@@ -182,7 +182,7 @@ class GleifGoldenCopyIngestorTest {
         flagFile.deleteOnExit()
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            mockRelationShipExtractor,
+            mockRelationshipExtractor,
             false, flagFile.absolutePath, oldFile,
         )
 
