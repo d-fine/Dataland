@@ -14,4 +14,5 @@ data class SmePollutionEmission(
 
     val releaseMedium: ReleaseMedium? = null,
 // TODO check if fields are sensible nullable
+    // TODO check nullable of fields
 )

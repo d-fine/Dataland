@@ -13,4 +13,5 @@ data class SmeSubsidiary(
     @field:JsonProperty(required = true)
     val addressOfSubsidiary: Address,
 // TODO can and should we use the productionSite interface here, from the structure it is the same
+    // TODO check nullable of fields
 )

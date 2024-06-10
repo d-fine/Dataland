@@ -10,7 +10,7 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 /**
- * Generates the ProductionSite component
+ * Generates the PollutionAndEmission component
  */
 @Component
 class SmePollutionEmissionComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
