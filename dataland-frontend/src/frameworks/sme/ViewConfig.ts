@@ -10,6 +10,7 @@ import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTab
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import {
+  formatSmeSiteAndAreaForDisplay,
   formatSmePollutionEmissionForDisplay,
   formatSmeSubsidiaryForDisplay,
 } from "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters";
@@ -202,6 +203,15 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
+          {
+            type: "cell",
+            label: "Sites and Areas",
+            explanation:
+              "Please, provide a list of relevant company sites adjoint to key biodiversity areas (including their country, area in hectares, adjoint biodiversity area, and level of adjointness).",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
+              formatSmeSiteAndAreaForDisplay(dataset.basic?.biodiversity?.sitesAndAreas, "Sites and Areas"),
+          },
           {
             type: "cell",
             label: "Total sealed area previous year",
@@ -891,7 +901,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male respectively for female employees. ",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayMale,
@@ -903,7 +913,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Gross pay female",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayFemale,
@@ -916,7 +926,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursMale,
@@ -928,7 +938,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Total work hours female",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.totalWorkHoursFemale,
@@ -941,7 +951,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursMale,
@@ -953,7 +963,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Average work hours female",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageWorkHoursFemale,
@@ -965,7 +975,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "average hourly pay male",
             explanation: "What is the average hourly pay for male employees?",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMale,
@@ -977,7 +987,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "average hourly pay female",
             explanation: "What is the average hourly pay for female employees?",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayFemale,
@@ -989,7 +999,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "pay gap",
             explanation: "What is your pay gap? ",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.payGap, ""),
           },

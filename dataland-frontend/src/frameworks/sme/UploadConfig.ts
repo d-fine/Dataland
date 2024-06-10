@@ -159,6 +159,16 @@ export const smeDataModel = [
         label: "Biodiversity",
         fields: [
           {
+            name: "sitesAndAreas",
+            label: "Sites and Areas",
+            description:
+              "Please, provide a list of relevant company sites adjoint to key biodiversity areas (including their country, area in hectares, adjoint biodiversity area, and level of adjointness).",
+
+            component: "SiteAndAreaFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: "totalSealedAreaPreviousYear",
             label: "Total sealed area previous year",
             description:
@@ -830,7 +840,7 @@ export const smeDataModel = [
             component: "RadioButtonsFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "grossPayMale",
@@ -842,7 +852,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "grossPayFemale",
@@ -852,7 +862,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "totalWorkHoursMale",
@@ -864,7 +874,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "totalWorkHoursFemale",
@@ -874,7 +884,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "averageWorkHoursMale",
@@ -886,7 +896,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "averageWorkHoursFemale",
@@ -896,7 +906,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "averageHourlyPayMale",
@@ -907,7 +917,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "averageHourlyPayFemale",
@@ -918,7 +928,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "payGap",
@@ -928,7 +938,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees >= "150",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == ">=150",
           },
           {
             name: "numberBargainingAgreementsFullTime",

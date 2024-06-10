@@ -3901,6 +3901,13 @@
           }
         }
       },
+      "AreaAdjointness": {
+        "type": "string",
+        "enum": [
+          "In",
+          "Near"
+        ]
+      },
       "BaseDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -4025,6 +4032,41 @@
           "Water"
         ]
       },
+      "SmeAreas": {
+        "required": [
+          "areaAddress",
+          "areaInHectare",
+          "biodiversitySensitiveArea",
+          "country",
+          "specificationOfAdjointness"
+        ],
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "areaInHectare": {
+            "type": "number"
+          },
+          "biodiversitySensitiveArea": {
+            "type": "string"
+          },
+          "areaAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "areaGeocoordinateLongitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "areaGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "specificationOfAdjointness": {
+            "$ref": "#/components/schemas/AreaAdjointness"
+          }
+        }
+      },
       "SmeBasic": {
         "type": "object",
         "properties": {
@@ -4141,6 +4183,13 @@
       "SmeBasicBiodiversity": {
         "type": "object",
         "properties": {
+          "sitesAndAreas": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/SmeSiteAndAreas"
+            }
+          },
           "totalSealedAreaPreviousYear": {
             "type": "number",
             "nullable": true
@@ -4631,6 +4680,36 @@
                 "$ref": "#/components/schemas/ReleaseMedium"
               }
             ]
+          }
+        }
+      },
+      "SmeSiteAndAreas": {
+        "required": [
+          "siteAddress",
+          "siteName"
+        ],
+        "type": "object",
+        "properties": {
+          "siteName": {
+            "type": "string"
+          },
+          "siteAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "siteGeocoordinateLongitudeval": {
+            "type": "number",
+            "nullable": true
+          },
+          "siteGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "adjointAreas": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/SmeAreas"
+            }
           }
         }
       },
@@ -14776,18 +14855,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14795,6 +14862,18 @@
           "lei": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
           }
         }
       },
@@ -14817,10 +14896,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

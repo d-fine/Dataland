@@ -53,6 +53,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
         pollutionEmission: dataGenerator.randomArray(() => dataGenerator.generateSmePollutionEmission(), 0, 3),
       },
       biodiversity: {
+        sitesAndAreas: dataGenerator.randomArray(() => dataGenerator.generateSmeSiteAndArea(), 0, 5),
         totalSealedAreaPreviousYear: dataGenerator.randomFloat(),
         totalSealedAreaReportingYear: dataGenerator.randomFloat(),
         percentualChangeSealedArea: dataGenerator.randomPercentageValue(),
