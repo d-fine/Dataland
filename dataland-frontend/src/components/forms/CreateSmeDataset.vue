@@ -183,6 +183,7 @@ export default defineComponent({
   computed: {
     yearOfReportingDate: {
       get(): string {
+          //TODO how to set the reporting period for an sme dataset?
         const reportingDataInSmeDataset = this.companyAssociatedSmeData.data?.general?.basicInformation?.reportingDate;
         if (reportingDataInSmeDataset === undefined) {
           return "";
