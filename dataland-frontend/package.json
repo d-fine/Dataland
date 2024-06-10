@@ -9,7 +9,6 @@
     "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0 --no-fix",
     "typecheck": "vue-tsc --build --force",
     "cypress": "cypress open",
-    "checkfrontendcompilation": "tsc --noEmit -P tsconfig.app.json",
     "checkcypresscompilation": "tsc --noEmit -P tsconfig.cypress-e2e.json && tsc --noEmit -P tsconfig.cypress-ct.json",
     "testcomponent": "cypress run --component",
     "testpipeline": "cypress run --spec tests/e2e/specs/index.ts",
