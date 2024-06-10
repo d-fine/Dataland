@@ -6,7 +6,12 @@
     style="min-height: 2rem"
   >
     <span class="flex-1">{{ warningMessage }}</span>
-    <router-link v-if="existsAcceptedVersion" :to="link" class="no-underline" data-test="datasetDisplayStatusLink">
+    <router-link
+      v-if="existsAcceptedVersion && link"
+      :to="link"
+      class="no-underline"
+      data-test="datasetDisplayStatusLink"
+    >
       <PrimeButton :label="buttonLabel" icon="pi pi-stopwatch" />
     </router-link>
   </div>
@@ -25,7 +30,7 @@ export default defineComponent({
       type: Object as PropType<DataMetaInformation | null>,
     },
     receivedMapOfReportingPeriodsToActiveDataMetaInfo: {
-      type: Object,
+      type: Object as PropType<Map<string, DataMetaInformation>>,
       required: true,
     },
     isMultiview: {
@@ -76,15 +81,13 @@ export default defineComponent({
       }
     },
     existsAcceptedVersion(): boolean {
-      return (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>).has(
-        this.displayedDataset?.reportingPeriod ?? "",
-      );
+      return this.receivedMapOfReportingPeriodsToActiveDataMetaInfo.has(this.displayedDataset?.reportingPeriod ?? "");
     },
     areMoreDatasetsViewableSimultaneously(): boolean {
       return (
         this.isMultiview &&
         this.displayedDataset != null &&
-        (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>).size > 1
+        this.receivedMapOfReportingPeriodsToActiveDataMetaInfo.size > 1
       );
     },
   },
