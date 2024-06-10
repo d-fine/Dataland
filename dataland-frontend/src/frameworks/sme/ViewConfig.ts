@@ -506,7 +506,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime,
@@ -519,7 +519,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead,
@@ -532,7 +532,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberTemporaryContractFullTime,
@@ -545,7 +545,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberTemporaryContractHead,
@@ -557,7 +557,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number permanent contract full-time",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberPermanentContractFullTime,
@@ -569,7 +569,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number permanent contract head",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberPermanentContractHead,
@@ -582,7 +582,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberMaleFullTime,
@@ -595,7 +595,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberMaleHead, "head count"),
           },
@@ -604,7 +604,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number female full-time",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberFemaleFullTime,
@@ -616,7 +616,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number female head",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberFemaleHead, "head count"),
           },
@@ -625,7 +625,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number other full-time",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOtherFullTime,
@@ -637,7 +637,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number other head ",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberOtherHead, "head count"),
           },
@@ -646,7 +646,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number not reported full-time",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberNotReportedFullTime,
@@ -658,7 +658,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number not reported head",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberNotReportedHead,
@@ -704,7 +704,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberFatalitiesTotalFullTime,
@@ -717,7 +717,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberFatalitiesTotalHead,
@@ -730,7 +730,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberFatalitiesAccidentFullTime,
@@ -743,7 +743,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberFatalitiesAccidentHead,
@@ -755,7 +755,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number fatalities health full-time",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberFatalitiesHealthFullTime,
@@ -767,7 +767,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number fatalities health head",
 
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberFatalitiesHealthHead,
@@ -788,7 +788,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberMinimumWageFullTime,
@@ -801,7 +801,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberMinimumWageHead,
@@ -998,7 +998,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number bargaining agreements full-time",
             explanation: "Please state the number of employees covered by collective bargaining agreements.",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsFullTime,
@@ -1010,7 +1010,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Number bargaining agreements head",
             explanation: "Please state the number of employees covered by collective bargaining agreements.",
             shouldDisplay: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsHead,

@@ -129,6 +129,7 @@ import PollutionEmissionFormField from "@/components/forms/parts/fields/Pollutio
 import SubsidiaryFormField from "@/components/forms/parts/fields/SubsidiaryFormField.vue";
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
+import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -159,6 +160,7 @@ export default defineComponent({
     SubsidiaryFormField,
     FreeTextFormField,
     YesNoBaseDataPointFormField,
+    RadioButtonsFormField,
   },
   emits: ["datasetCreated"],
   data() {
@@ -183,7 +185,7 @@ export default defineComponent({
   computed: {
     yearOfReportingDate: {
       get(): string {
-          //TODO how to set the reporting period for an sme dataset?
+        //TODO how to set the reporting period for an sme dataset?
         const reportingDataInSmeDataset = this.companyAssociatedSmeData.data?.general?.basicInformation?.reportingDate;
         if (reportingDataInSmeDataset === undefined) {
           return "";

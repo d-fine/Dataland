@@ -2,124 +2,252 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Korey",
-			"headquartersPostalCode": "91575",
-			"sector": "lifetime value",
+			"headquarters": "Lorenzoworth",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"CZgxycKSMys5zmyoQG34"
+					"zJ3VSadihRrJOTyzds1S"
 				],
 				"Isin": [
-					"DNgRQ1c4ekMr"
+					"YJ22MC4JyyfX",
+					"ojBtlk7aVeMU"
 				],
 				"PermId": [],
-				"Ticker": [
-					"TdeV72P"
-				],
+				"Ticker": [],
 				"Duns": [
-					"vbSk8rrkF"
+					"ATTnuFUJD"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"DIIn2rZKj"
+				],
 				"CompanyRegistrationNumber": [
-					"y4yWlyQMldFQllT"
+					"kAf1a4xqzM6GakW"
 				]
 			},
-			"countryCode": "PH",
+			"countryCode": "NI",
 			"companyAlternativeNames": [
-				"Berge Group",
-				"Feeney Inc",
-				"Prohaska Group",
-				"Sporer - Reichel"
+				"Rau - Gerhold",
+				"Senger Group",
+				"Torphy Inc"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://fumbling-secretion.info/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://silky-artery.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"general": {
-				"basicInformation": {
-					"reportingDate": "2024-10-29",
-					"sectors": [
-						"49.39",
-						"85.10",
-						"86"
-					],
-					"numberOfEmployees": 1754,
-					"fiscalYearStart": "2024-10-15",
-					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-01-29",
-							"currency": "PEN"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-02-19",
-							"currency": "SBD"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-09-20",
-							"currency": "AOA"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-06",
-							"currency": "HUF"
+			"basic": {
+				"basisForPreparation": {
+					"reportingBasis": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
+					},
+					"subsidiary": [
+						{
+							"nameOfSubsidiary": "Osinski, Kohler and Cummerata",
+							"addressOfSubsidiary": {
+								"streetAndHouseNumber": "Ashly Terrace 785",
+								"postalCode": "32635-7344",
+								"city": "Nyaport",
+								"state": "Nebraska",
+								"country": "BO"
+							}
+						},
+						{
+							"nameOfSubsidiary": "Thompson - Hudson",
+							"addressOfSubsidiary": {
+								"streetAndHouseNumber": "Hill Street 3930",
+								"postalCode": "71893-7619",
+								"city": "Jacobsonton",
+								"state": "California",
+								"country": "KY"
+							}
+						}
+					]
+				},
+				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
+					"undertakenMeasures": "Bellum caritas cresco acerbitas tui adficio trans statua eveniet patior. Creptio voro derideo vetus cernuus demonstro quasi. Curiositas hic perferendis quo neque talio temptatio ascit amet.\nBardus solvo curia vereor amicitia. Sed defleo dolorum cohors absconditus ancilla. Denuncio arca defleo tutamen apparatus rerum tollo celer crapula bellum.\nAuctor voluptates architecto iste. Depraedor iure paulatim. Sordeo tristis capio terreo paulatim agnosco usus.\nCommodo illo necessitatibus contigo crinis corrumpo vigilo. Terra venia sol vinitor. Tabgo terreo tersus peior acceptus desidero tactus sint."
+				},
+				"energyAndGreenhousGasEmissions": {
+					"energyFossilFuels": 32754.76,
+					"electricityTotal": {
+						"value": 84705.4,
+						"dataSource": {
+							"page": 645,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "compress mobile circuit",
+						"quality": "Reported"
+					},
+					"electricityNonRenewable": 95608.22,
+					"electricityRenewable": 75961.03,
+					"totalEmissions": {
+						"value": 13942.01,
+						"dataSource": {
+							"page": 17,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "hack primary driver",
+						"quality": "Reported"
+					},
+					"scope1Emissions": {
+						"value": 96920.94,
+						"dataSource": {
+							"page": 1051,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "override redundant bandwidth",
+						"quality": "Reported"
+					},
+					"scope2Emissions": {
+						"value": 24181.73,
+						"dataSource": {
+							"page": 253,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "quantify redundant transmitter",
+						"quality": "Incomplete"
+					},
+					"scope3Emissions": {
+						"value": 35030.06,
+						"dataSource": {
+							"page": 716,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "parse haptic microchip",
+						"quality": "Audited"
 					}
 				},
-				"financialInformation": {
-					"revenueInEur": 68985.05,
-					"operatingCostInEur": 13441.8,
-					"capitalAssetsInEur": 80362.61
-				}
-			},
-			"power": {
-				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
-				},
-				"consumption": {
-					"powerConsumptionInMwh": {
-						"value": 78809.71,
-						"dataSource": {
-							"page": 45,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+				"pollutionOfAirWaterSoil": {
+					"pollutionEmission": [
+						{
+							"pollutionType": "Meitnerium",
+							"emissionInKilograms": 3890.38,
+							"releaseMedium": "Water"
 						},
-						"comment": "parse online port",
-						"quality": "Estimated"
-					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Snow",
-						"Wind"
+						{
+							"pollutionType": "Astatine",
+							"emissionInKilograms": 24822.67,
+							"releaseMedium": "Soil"
+						}
 					]
+				},
+				"biodiversity": {
+					"totalSealedAreaPreviousYear": 19854.05,
+					"totalSealedAreaReportingYear": 75855.13,
+					"percentualChangeSealedArea": 54.69,
+					"totalNatureOrientedAreaOnSitePreviousYear": 94770.31,
+					"totalNatureOrientedAreaOnSiteReportingYear": 60170.93,
+					"percentualChangeNatureOrientedOnSite": 56.67,
+					"totalNatureOrientedAreaOffSitePreviousYear": 29410.91,
+					"totalNatureOrientedAreaOffSiteReportingYear": 33818.19,
+					"percentualChangeNatureOrientedOffSite": 57,
+					"totalUseOfLandPreviousYear": 12982.4,
+					"totalUseOfLandReportingYear": 12921.67,
+					"percentualChangeLandUse": 13.52
+				},
+				"water": {
+					"waterWithdrawalAllSites": {
+						"value": 3658.7,
+						"dataSource": {
+							"page": 1009,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "program bluetooth feed",
+						"quality": "Audited"
+					},
+					"waterWithdrawalStressSites": 93437.5,
+					"waterDischargeAllSites": 61089.82,
+					"waterDischargeStressSites": 315.51,
+					"rainwaterAllSites": 14028.64,
+					"rainwaterStressSits": 31858.18,
+					"waterConsumptionAllSites": 32140.04,
+					"waterConsumptionStressSites": 91027.01
+				},
+				"resourceUseCircularEconomyAndWasteManagement": {
+					"totalWeightMaterials": 57163.59,
+					"weightRecycledMaterials": 41560.92,
+					"percentageRecycledMaterials": 89.46,
+					"weightRecycableMaterials": 86710.55,
+					"percentageRecycableMaterials": 54.65,
+					"measureWaste": "Volume"
+				},
+				"workforceGeneralCharacteristics": {
+					"measureEmployees": "FullTimeEquivalents",
+					"numberEmployeesFullTime": 57254.24,
+					"numberEmployeesHead": 28953.27,
+					"numberTemporaryContractFullTime": 16292.23,
+					"numberTemporaryContractHead": 71317.98,
+					"numberPermanentContractFullTime": 22866.15,
+					"numberPermanentContractHead": 64503.71,
+					"numberMaleFullTime": 78117.72,
+					"numberMaleHead": 72559.51,
+					"numberFemaleFullTime": 12844.31,
+					"numberFemaleHead": 74465.31,
+					"numberOtherFullTime": 33843.66,
+					"numberOtherHead": 76946.03,
+					"numberNotReportedFullTime": 29649.55,
+					"numberNotReportedHead": 51666.08
+				},
+				"workforceHealthAndSafety": {
+					"totalHours": 40193.18,
+					"numberAccidents": 6566,
+					"accidentLevel": 18519.44,
+					"numberFatalitiesTotalFullTime": 934,
+					"numberFatalitiesTotalHead": 7824,
+					"numberFatalitiesAccidentFullTime": 7734,
+					"numberFatalitiesAccidentHead": 7039,
+					"numberFatalitiesHealthFullTime": 9141,
+					"numberFatalitiesHealthHead": 3999
+				},
+				"workforceRenumerationCollectiveBargainingAndTraining": {
+					"numberMinimumWageFullTime": 4898.28,
+					"numberMinimumWageHead": 77974.75,
+					"percentageMinimumWage": 15.85,
+					"moreThanHalf": "No",
+					"entryLevelWage": 51032.88,
+					"minimumWage": 2367.21,
+					"wageRatio": 76401.5,
+					"payGapBasis": "Annual",
+					"grossPayMale": 28595.87,
+					"grossPayFemale": 21446.62,
+					"totalWorkHoursMale": 85833.11,
+					"totalWorkHoursFemale": 94111.49,
+					"averageWorkHoursMale": 95966.88,
+					"averageWorkHoursFemale": 48621.22,
+					"averageHourlyPayMale": 21382.93,
+					"averageHourlyPayFemale": 8236.6,
+					"payGap": 51509.56,
+					"numberBargainingAgreementsFullTime": 84030.87,
+					"numberBargainingAgreementsHead": 82164.81,
+					"ratioBargainingAgreement": 70.65,
+					"totalTrainingHoursMale": 70071.18,
+					"totalTrainingHoursFemale": 41050.11,
+					"averageTrainingHoursMale": 91259.85,
+					"averageTrainingHoursFemale": 11632.41
+				},
+				"workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
+					"negativeEffects": "Convoco annus totidem stillicidium audentia appositus compono. Absorbeo adaugeo conturbo hic valde tam cena deserunt vulticulus vorax. Pecto clam assentator aliquam.\nCunctatio vulpes aequitas thermae aeger hic aedificium. Corroboro tremo adsuesco denique copiose auctor denique virtus tabernus curtus. Allatus ubi corporis caveo.",
+					"numberConvictions": 60055.2,
+					"sumFines": 19699.91
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]

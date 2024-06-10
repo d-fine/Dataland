@@ -479,7 +479,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberEmployeesHead",
@@ -491,7 +491,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "numberTemporaryContractFullTime",
@@ -503,7 +503,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberTemporaryContractHead",
@@ -515,7 +515,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "numberPermanentContractFullTime",
@@ -525,7 +525,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberPermanentContractHead",
@@ -535,7 +535,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "numberMaleFullTime",
@@ -547,7 +547,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberMaleHead",
@@ -559,7 +559,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "numberFemaleFullTime",
@@ -569,7 +569,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberFemaleHead",
@@ -579,7 +579,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "numberOtherFullTime",
@@ -589,7 +589,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberOtherHead",
@@ -599,7 +599,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "numberNotReportedFullTime",
@@ -609,7 +609,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberNotReportedHead",
@@ -619,7 +619,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
         ],
       },
@@ -667,7 +667,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             validation: "integer",
           },
           {
@@ -680,7 +680,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             validation: "integer",
           },
           {
@@ -693,7 +693,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             validation: "integer",
           },
           {
@@ -706,7 +706,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             validation: "integer",
           },
           {
@@ -717,7 +717,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             validation: "integer",
           },
           {
@@ -728,7 +728,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             validation: "integer",
           },
         ],
@@ -747,7 +747,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberMinimumWageHead",
@@ -759,7 +759,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "percentageMinimumWage",
@@ -939,7 +939,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=full-time equivalents",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
             name: "numberBargainingAgreementsHead",
@@ -950,7 +950,7 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean =>
-              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "=head count",
+              dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
             name: "ratioBargainingAgreement",
