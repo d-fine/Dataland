@@ -11,9 +11,10 @@ import {
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadFrameworkDataForPublicToolboxFramework } from "@e2e/utils/FrameworkUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
 
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
@@ -42,8 +43,8 @@ describeIf(
         const testCompanyName = "Company-Created-In-Lksg-Blanket-Test" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkData(
-              DataTypeEnum.Lksg,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              LksgBaseFrameworkDefinition,
               token,
               storedCompany.companyId,
               "2021",
@@ -138,8 +139,8 @@ describeIf(
         const testCompanyName = "Company-Created-In-Lksg-Minimal-Blanket-Test" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkData(
-              DataTypeEnum.Lksg,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              LksgBaseFrameworkDefinition,
               token,
               storedCompany.companyId,
               "2021",

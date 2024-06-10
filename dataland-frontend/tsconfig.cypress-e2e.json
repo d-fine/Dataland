@@ -29,6 +29,7 @@
       "@sharedUtils/*": [
         "./tests/sharedUtils/*"
       ]
-    }
+    },
+    "moduleResolution": "node"
   }
 }

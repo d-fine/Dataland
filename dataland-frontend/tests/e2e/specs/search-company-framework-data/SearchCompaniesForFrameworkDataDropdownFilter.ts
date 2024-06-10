@@ -9,8 +9,13 @@ import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { uploadCompanyAndFrameworkData, uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {
+  uploadFrameworkDataForLegacyFramework,
+  uploadCompanyAndFrameworkDataForPublicToolboxFramework,
+} from "@e2e/utils/FrameworkUpload";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import SfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
+
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSfdrData: Array<FixtureData<SfdrData>>;
 before(function () {
@@ -319,8 +324,8 @@ describe("As a user, I expect the search functionality on the /companies page to
 
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             const sfdrFixture = companiesWithSfdrData[0];
-            void uploadCompanyAndFrameworkData(
-              DataTypeEnum.Sfdr,
+            void uploadCompanyAndFrameworkDataForPublicToolboxFramework(
+              SfdrBaseFrameworkDefinition,
               token,
               generateDummyCompanyInformation(companyNameSfdr),
               sfdrFixture.t,
@@ -347,7 +352,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-                return uploadFrameworkData(
+                return uploadFrameworkDataForLegacyFramework(
                   DataTypeEnum.EutaxonomyFinancials,
                   token,
                   storedCompany.companyId,
