@@ -22,7 +22,7 @@
       :mldtDatasets="mldtDatasets"
       :inReviewMode="inReviewMode"
       :config="
-        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields ?? true)
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
@@ -53,6 +53,7 @@ import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/comp
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
+import { isLegacyFramework } from '@/utils/api/FrameworkDataTypes'
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -86,16 +87,16 @@ const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
       return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EutaxonomyNonFinancialsData).general?.referencedReports,
+        (mldtDataset) => (mldtDataset.dataset as EutaxonomyNonFinancialsData).general?.referencedReports ?? {},
       );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
       return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForFinancials).referencedReports,
+        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForFinancials).referencedReports ?? {},
       );
     }
     default: {
-      return null; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
+      return []; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
       // to be added and the banner will never receive "null" as an input
     }
   }
@@ -145,17 +146,19 @@ async function loadDataForDisplay(
 
   const frameworkDefinition = getFrontendFrameworkDefinition(
     props.frameworkIdentifier,
-  ) as FrontendFrameworkDefinition<FrameworkDataType>;
+  ) as FrontendFrameworkDefinition<FrameworkDataType> | undefined;
   let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
+
   if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance)
+  } else if (isLegacyFramework(props.frameworkIdentifier)) {
+    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier) as FrameworkDataApi<FrameworkDataType>
   } else {
-    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
+    throw new Error(`No frontend framework definition found for ${props.frameworkIdentifier}`);
   }
 
   if (singleDataMetaInfoToDisplay) {
     const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-
     return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
   } else {
     return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
