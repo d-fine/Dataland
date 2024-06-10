@@ -96,7 +96,7 @@ export default defineComponent({
     /**
      * Makes the API request in order to post the request for data ownership
      */
-    async submitInput(): void {
+    async submitInput(): Promise<void> {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
         .companyDataController;
       try {
