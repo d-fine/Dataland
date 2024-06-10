@@ -144,7 +144,7 @@
                       />
                       <FormKit
                         :modelValue="selectedFrameworks"
-                        type="text"
+                        type="list"
                         name="listOfFrameworkNames"
                         validation="required"
                         validation-label="List of framework names"
@@ -328,9 +328,9 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
-        reportingPeriods: this.selectedReportingPeriods as Set<string>,
-        companyIdentifiers: this.identifiers as Set<string>,
-        dataTypes: this.selectedFrameworks as Set<BulkDataRequestDataTypesEnum>,
+        reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
+        companyIdentifiers: this.identifiers as unknown as Set<string>,
+        dataTypes: this.selectedFrameworks as unknown as Set<BulkDataRequestDataTypesEnum>,
       };
     },
     /**

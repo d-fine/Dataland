@@ -72,11 +72,11 @@ export const MultiSelectFormProps = {
     required: true,
   },
   optionValue: {
-    type: [String, Function],
+    type: String,
     required: false,
   },
   optionLabel: {
-    type: [String, Function],
+    type: String,
     required: false,
   },
 };
