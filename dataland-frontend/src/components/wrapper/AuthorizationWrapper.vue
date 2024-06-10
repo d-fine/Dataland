@@ -58,12 +58,15 @@ export default defineComponent({
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
     async checkUserPermissions(): Promise<void> {
-      this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise)
+      this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
       if (!this.hasUserRequiredRole && this.allowDataOwnerForCompanyId) {
-        this.isUserDataOwner = await isUserDataOwnerForCompany(this.allowDataOwnerForCompanyId, this.getKeycloakPromise)
-        this.waitingForDataOwnershipData = false
+        this.isUserDataOwner = await isUserDataOwnerForCompany(
+          this.allowDataOwnerForCompanyId,
+          this.getKeycloakPromise,
+        );
+        this.waitingForDataOwnershipData = false;
       }
     },
   },
-})
+});
 </script>

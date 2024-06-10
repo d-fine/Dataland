@@ -22,7 +22,11 @@
       :mldtDatasets="mldtDatasets"
       :inReviewMode="inReviewMode"
       :config="
-        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields ?? true)
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(
+          displayConfiguration,
+          inReviewMode,
+          hideEmptyFields ?? true,
+        )
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
@@ -53,7 +57,7 @@ import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/comp
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
-import { isLegacyFramework } from '@/utils/api/FrameworkDataTypes'
+import { isLegacyFramework } from "@/utils/api/FrameworkDataTypes";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -144,15 +148,17 @@ async function loadDataForDisplay(
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-  const frameworkDefinition = getFrontendFrameworkDefinition(
-    props.frameworkIdentifier,
-  ) as FrontendFrameworkDefinition<FrameworkDataType> | undefined;
+  const frameworkDefinition = getFrontendFrameworkDefinition(props.frameworkIdentifier) as
+    | FrontendFrameworkDefinition<FrameworkDataType>
+    | undefined;
   let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
 
   if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance)
+    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
   } else if (isLegacyFramework(props.frameworkIdentifier)) {
-    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier) as FrameworkDataApi<FrameworkDataType>
+    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(
+      props.frameworkIdentifier,
+    ) as FrameworkDataApi<FrameworkDataType>;
   } else {
     throw new Error(`No frontend framework definition found for ${props.frameworkIdentifier}`);
   }

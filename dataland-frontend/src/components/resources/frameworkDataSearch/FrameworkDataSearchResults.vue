@@ -64,7 +64,7 @@
 import DataTable, { type DataTablePageEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
-import { defineComponent, PropType } from "vue";
+import { defineComponent, type PropType } from "vue";
 import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({

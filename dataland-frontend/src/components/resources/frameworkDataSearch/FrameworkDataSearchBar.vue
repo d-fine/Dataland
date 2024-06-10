@@ -75,7 +75,7 @@ interface AutoCompleteInternalState {
   hide(): void;
   $refs: {
     focusInput: HTMLInputElement;
-  }
+  };
 }
 
 export default defineComponent({
