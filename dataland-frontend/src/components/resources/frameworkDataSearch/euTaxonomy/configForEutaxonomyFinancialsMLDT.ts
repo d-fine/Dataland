@@ -145,7 +145,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
     type: "section",
     label: "Assurance",
     labelBadgeColor: "orange",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
@@ -171,7 +171,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
     label: "Credit Institution",
     name: "CreditInstitution",
     labelBadgeColor: "red",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
       dataset.financialServicesTypes?.includes(
         EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
@@ -320,7 +320,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
     label: "Insurance or Reinsurance",
     name: "InsuranceOrReinsurance",
     labelBadgeColor: "green",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
       dataset.financialServicesTypes?.includes(
         EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
@@ -434,7 +434,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
     label: "Asset Management",
     name: "AssetManagement",
     labelBadgeColor: "green",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
       dataset.financialServicesTypes?.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement) ??
       false,
@@ -528,7 +528,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
     label: "Investment Firm",
     name: "InvestmentFirm",
     labelBadgeColor: "blue",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
       dataset.financialServicesTypes?.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm) ??
       false,

@@ -57,7 +57,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "ESG Ziele",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -93,7 +93,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Sektoren",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -139,7 +139,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "ESG Berichte",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -194,7 +194,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Akkreditierungen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -269,7 +269,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "UN Global Concept Prinzipien",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -314,7 +314,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "OECD Leitsätze",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -359,7 +359,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Sonstige",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -396,7 +396,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Führungsstandards",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -464,7 +464,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Rechtsstreitigkeiten",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -596,7 +596,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Rating",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -649,7 +649,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Anleihen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -696,7 +696,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Risiken",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -725,13 +725,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
   {
     type: "section",
     label: "Umwelt",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Treibhausgasemissionen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -782,7 +782,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Produktion",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -821,7 +821,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Energieverbrauch",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -865,7 +865,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Energieeffizienz Immobilienanlagen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -906,7 +906,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Wasserverbrauch",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -943,7 +943,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Abfallproduktion",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1010,7 +1010,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Biodiversität",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1062,7 +1062,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Fossile Brennstoffe",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1099,7 +1099,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Taxonomie",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1172,13 +1172,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
   {
     type: "section",
     label: "Soziales",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Unternehmensstrukturänderungen",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1303,7 +1303,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Sicherheit und Weiterbildung",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1356,7 +1356,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Einkommensgleichheit",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1400,7 +1400,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Geschlechterdiversität",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1463,7 +1463,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Audit",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1511,13 +1511,13 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
   {
     type: "section",
     label: "Unternehmensführung/ Governance",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Aufsichtsrat",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1561,7 +1561,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Vergütungsausschuss",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1606,7 +1606,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Nominierungsausschuss",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1652,7 +1652,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Prüfungsausschuss",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1697,7 +1697,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Nachhaltigkeitsausschuss",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1744,7 +1744,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Sonstige",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1785,7 +1785,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Stakeholder",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1827,7 +1827,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Unternehmensrichtlinien",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1876,7 +1876,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
       {
         type: "section",
         label: "Lieferantenauswahl",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
