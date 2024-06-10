@@ -16,3 +16,12 @@ export function generateYesNo(): YesNo {
 export function generateYesNoNa(): YesNoNa {
   return pickOneElement(Object.values(YesNoNa));
 }
+
+/**
+ * Randomly returns Yes, No or Na
+ * @returns Yes, No or Na
+ */
+/*export function generateYesNoNoEvidenceFound(): YesNoNoEvidenceFound {
+  return pickOneElement(Object.values(YesNoNoEvidenceFound));
+}
+ */

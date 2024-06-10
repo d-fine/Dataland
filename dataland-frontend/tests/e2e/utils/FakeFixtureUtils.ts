@@ -64,6 +64,17 @@ export class Generator {
   guaranteedYesNoNa(): YesNoNa {
     return generateYesNoNa();
   }
+  //todo
+  /*
+  randomYesNoNa(): YesNoNoEvidenceFound | null {
+    return this.valueOrNull(this.guaranteedYesNoNoEvidenceFound());
+  }
+
+  guaranteedYesNoNa(): YesNoNoEvidenceFound {
+    return generateYesNoNoEvidenceFound();
+  }
+ 
+   */
 
   randomPercentageValue(): number | null {
     return this.valueOrNull(this.guaranteedPercentageValue());
