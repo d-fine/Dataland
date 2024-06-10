@@ -4,6 +4,9 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * Class for the yes no NoEvidenceComponent
@@ -14,23 +17,22 @@ class YesNoNoEvidenceFoundComponent(
 ) : ComponentBase(identifier, parent, "org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound") {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        /*sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+        //todo check if requireDocumentSupportIn(setOf(NoDocumentSupport, SimpleDocumentSupport)) is needed
+        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "formatYesNoNoEvidenceFound(${getTypescriptFieldAccessor(true)})",
+                    "formatYesNoNoEvidenceFoundValueForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
                         TypeScriptImport(
-                            "formatYesNoNoEvidenceFound",
-                            "@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundGetterFactory",
+                            "formatYesNoNoEvidenceFoundValueForDatatable",
+                            "@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory",
                         ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
          )
-
-         */
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
