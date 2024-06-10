@@ -10,7 +10,7 @@
         <component
           :is="frameworkToUploadComponent"
           :companyID="companyID"
-          @datasetCreated="redirectToMyDatasets(this.$router)"
+          @datasetCreated="redirectToMyDatasets($router)"
         />
       </AuthorizationWrapper>
     </TheContent>
@@ -65,8 +65,14 @@ export default defineComponent({
     };
   },
   props: {
-    companyID: String,
-    frameworkType: String,
+    companyID: {
+      type: String,
+      required: true,
+    },
+    frameworkType: {
+      type: String,
+      required: true,
+    },
   },
   methods: { redirectToMyDatasets },
   computed: {
