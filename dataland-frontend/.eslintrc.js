@@ -16,9 +16,6 @@ module.exports = {
       files: [
         'tests/sharedUtils/**/*',
         'tests/e2e/**/*',
-      ],
-      'extends': [
-        'plugin:cypress/recommended'
       ]
     }
   ],
