@@ -97,7 +97,7 @@ export function formatSmePollutionEmissionForDisplay(
   };
 }
 /**
- * Convert an object of type LksgSubcontractingCompanies into a list that can be displayed using the standard
+ * Convert an object of type SmePollutionEmission into a list that can be displayed using the standard
  * modal DataTable
  * @param datasetValue the value of the dataset
  * @returns the converted list
