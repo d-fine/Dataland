@@ -294,8 +294,8 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         ).backendClients.companyDataController.existsIdentifier(identifierType, node.value as string);
         return false;
-      } catch (error: AxiosError) {
-        if ((error as AxiosError).response.status == 404) {
+      } catch (error) {
+        if (error instanceof AxiosError && error.response?.status == 404) {
           return true;
         }
         throw error;
