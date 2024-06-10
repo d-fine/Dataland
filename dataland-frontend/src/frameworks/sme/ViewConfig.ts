@@ -11,7 +11,7 @@ import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/c
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import {
   formatSmePollutionEmissionForDisplay,
-  formatSmeSubsidiariesForDisplay,
+  formatSmeSubsidiaryForDisplay,
 } from "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters";
 export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
@@ -45,7 +45,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation: "Please provide a list of your subsidiaries including their registered addresses.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatSmeSubsidiariesForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary"),
+              formatSmeSubsidiaryForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary"),
           },
         ],
       },

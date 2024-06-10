@@ -14,6 +14,7 @@ import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/
 import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
+import { smeModalColumnHeaders } from "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -41,6 +42,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
+  SubsidiaryFormField: getModalGetterFactory("listOfSubsidiary", smeModalColumnHeaders),
+  PollutionEmissionFormField: getModalGetterFactory("pollutionEmission", smeModalColumnHeaders),
 };
 
 /**

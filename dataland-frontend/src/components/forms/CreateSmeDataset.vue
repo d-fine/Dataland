@@ -125,6 +125,10 @@ import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { getFilledKpis } from "@/utils/DataPoint";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import PollutionEmissionFormField from "@/components/forms/parts/fields/PollutionEmissionFormField.vue";
+import SubsidiaryFormField from "@/components/forms/parts/fields/SubsidiaryFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -151,6 +155,10 @@ export default defineComponent({
     YesNoFormField,
     NaceCodeFormField,
     UploadReports,
+    PollutionEmissionFormField,
+    SubsidiaryFormField,
+    FreeTextFormField,
+    YesNoBaseDataPointFormField,
   },
   emits: ["datasetCreated"],
   data() {

@@ -9,7 +9,7 @@ import { type SmeSubsidiary, type SmePollutionEmission, type ReleaseMedium } fro
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export const smeModalColumnHeaders = {
-  listOfSubsidiaries: {
+  listOfSubsidiary: {
     nameOfSubsidiary: "Name",
     addressOfSubsidiary: "Address",
   },
@@ -31,7 +31,7 @@ interface SmePollutionEmissionDisplayFormat {
  * @param fieldLabel field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatSmeSubsidiariesForDisplay(
+export function formatSmeSubsidiaryForDisplay(
   input: SmeSubsidiary[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
@@ -52,7 +52,7 @@ export function formatSmeSubsidiariesForDisplay(
         },
         data: {
           listOfRowContents: input,
-          kpiKeyOfTable: "listOfSubsidiaries",
+          kpiKeyOfTable: "listOfSubsidiary",
           columnHeaders: smeModalColumnHeaders,
         },
       },

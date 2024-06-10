@@ -15,7 +15,7 @@ class SmeSubsidiaryComponent(
 ) : SmeSimpleCustomComponentBase(
     identifier = identifier,
     parent = parent,
-    viewFormattingFunctionName = "formatSmeSubsidiariesForDisplay",
+    viewFormattingFunctionName = "formatSmeSubsidiaryForDisplay",
     uploadComponentName = "SubsidiaryFormField",
     guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5)",
     randomFixtureExpression = null,
