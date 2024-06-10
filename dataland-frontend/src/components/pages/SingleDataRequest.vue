@@ -449,8 +449,9 @@ export default defineComponent({
       return {
         companyIdentifier: this.companyIdentifier,
         dataType: this.frameworkName,
-        reportingPeriods: this.selectedReportingPeriods as Set<string>,
-        contacts: this.selectedContacts as Set<string>,
+        // as unknown as Set<string> cast required to ensure proper json is created
+        reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
+        contacts: this.selectedContacts as unknown as Set<string>,
         message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : "",
       };
     },
@@ -481,8 +482,7 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
-          const errorJSON = error.toJSON();
-          if (errorJSON.status == 403) {
+          if (error.response?.status == 403) {
             this.openMaxRequestsReachedModal();
           } else {
             const responseMessages = (error.response?.data as ErrorResponse)?.errors;
