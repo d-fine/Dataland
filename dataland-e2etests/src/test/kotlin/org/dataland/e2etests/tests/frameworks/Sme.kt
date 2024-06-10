@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
-
+/*
+//TODO Reactivate this code once the fields have been updated
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
@@ -240,3 +241,4 @@ class Sme {
         return companyAssociatedSmeDataAlpha
     }
 }
+*/
