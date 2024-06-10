@@ -21,10 +21,9 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
+import { type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import {
   getAllPrivateFrameworkIdentifiers,
@@ -32,7 +31,6 @@ import {
 } from "@/frameworks/BasePrivateFrameworkRegistry";
 import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
 import { getHeaderIfItIsASingleString } from "@/utils/Axios";
-import type { BasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkDefinition";
 
 export default defineComponent({
   setup() {
