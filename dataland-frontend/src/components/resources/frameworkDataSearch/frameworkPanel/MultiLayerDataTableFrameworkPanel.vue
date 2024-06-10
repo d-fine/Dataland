@@ -54,8 +54,6 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { isLegacyFramework } from "@/utils/api/FrameworkDataTypes";
 import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
 import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 

@@ -70,7 +70,7 @@ import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backen
  * This interface defines the internal state of the autocomplete component
  * not exposed in their typescript definition
  */
-interface AutoCompleteInternalState {
+export interface AutoCompleteInternalState {
   focusedOptionIndex: number | null;
   hide(): void;
   $refs: {
