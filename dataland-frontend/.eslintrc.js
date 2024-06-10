@@ -1,35 +1,34 @@
-require("@rushstack/eslint-patch/modern-module-resolution")
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
-  parser: 'vue-eslint-parser',
-  extends: [
-    'plugin:vue/base',
-    'eslint:recommended',
+  'extends': [
     'plugin:vue/vue3-essential',
-    '@vue/eslint-config-typescript/recommended',
+    'eslint:recommended',
+    '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:jsdoc/recommended'
   ],
+  plugins: ['jsdoc'],
+  overrides: [
+    {
+      files: [
+        'tests/sharedUtils/**/*',
+        'tests/e2e/**/*',
+      ],
+      'extends': [
+        'plugin:cypress/recommended'
+      ]
+    }
+  ],
   parserOptions: {
-    parser: '@typescript-eslint/parser',
-    project: ["tsconfig.app.json", "tsconfig.cypress-ct.json", "tsconfig.cypress-e2e.json"],
-    tsconfigRootDir: __dirname,
-    extraFileExtensions: ['.vue'],
-    sourceType: "module"
+    ecmaVersion: 'latest'
   },
-  plugins: ['@typescript-eslint', 'jsdoc'],
   rules: {
     "@typescript-eslint/consistent-type-imports": ["error", {
       "prefer": "type-imports",
       "fixStyle": "inline-type-imports"
-    }],
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-    'semi-spacing': 'error',
-    "@typescript-eslint/explicit-function-return-type": ["error", {
-      "allowTypedFunctionExpressions": true,
     }],
     "jsdoc/require-jsdoc": ["error", {
       "enableFixer": false,
