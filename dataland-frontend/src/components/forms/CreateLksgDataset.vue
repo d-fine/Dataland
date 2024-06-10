@@ -137,14 +137,14 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
-import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
 import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
 import RiskAssessmentsFormField from "@/components/forms/parts/fields/RiskAssessmentsFormField.vue";
 import GeneralViolationsAssessmentsFormField from "@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue";
 import GrievanceMechanismAssessmentsFormField from "@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue";
+import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
+import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 export default defineComponent({
   setup() {
@@ -244,27 +244,29 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Builds an api to get and upload Lksg data
+     * @returns the api
+     */
+    buildLksgDataApi(): PublicFrameworkDataApi<LksgData> {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksg);
+      if (frameworkDefinition) {
+        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+      }
+    },
+
+    /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
-      let lksgDataControllerApi: FrameworkDataApi<LksgData>;
-      if (frameworkDefinition) {
-        lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-        const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
-        const lksgResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
-        this.companyAssociatedLksgData = objectDropNull(
-          lksgResponseData as ObjectType,
-        ) as CompanyAssociatedDataLksgData;
-      } else {
-        throw TypeError("The framework seems to be undefined as the corresponding DataTypeEnum entry was not found");
-      }
-
+      const lksgDataControllerApi = this.buildLksgDataApi();
+      const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
+      const lksgResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
+      this.companyAssociatedLksgData = objectDropNull(lksgResponseData as ObjectType) as CompanyAssociatedDataLksgData;
       this.waitingForData = false;
     },
     /**
@@ -276,13 +278,8 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
-        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
-        let lksgDataControllerApi: FrameworkDataApi<LksgData>;
-        if (frameworkDefinition) {
-          lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-          await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
-        }
+        const lksgDataControllerApi = this.buildLksgDataApi();
+        await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";

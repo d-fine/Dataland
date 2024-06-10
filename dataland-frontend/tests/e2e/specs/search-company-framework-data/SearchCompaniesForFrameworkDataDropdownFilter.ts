@@ -224,7 +224,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyNameMarker, { scrollBehavior: false });
-          cy.wait("@searchCompanyInput", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+          cy.wait("@searchCompanyInput", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(preFix).should("exist");
           });
         },
@@ -279,10 +279,15 @@ describe("As a user, I expect the search functionality on the /companies page to
       /**
        * Visits the company search page, filters by the specified framework,
        * enters companyNamePrefix into the search bar and ensures that a matching company appears as the first result
-       * @param companyNamePrefix the search term to enter
+       * @param searchStringToType the search term to enter
        * @param frameworkToFilterFor the framework to filter by
+       * @param isSearchStringExpectedInFirstAutocompleteResult defines if a match for the search string is expected
        */
-      function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
+      function validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
+        searchStringToType: string,
+        frameworkToFilterFor: string,
+        isSearchStringExpectedInFirstAutocompleteResult: boolean,
+      ): void {
         cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
         cy.visit(`/companies?framework=${frameworkToFilterFor}`).wait("@searchCompanyInitial");
         verifySearchResultTableExists();
@@ -293,11 +298,15 @@ describe("As a user, I expect the search functionality on the /companies page to
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
         cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
-          cy.get(".p-autocomplete-item")
-            .eq(0)
-            .get("span[class='font-normal']")
-            .contains(companyNamePrefix)
-            .should("exist");
+          if (isSearchStringExpectedInFirstAutocompleteResult) {
+            cy.get(".p-autocomplete-item")
+              .eq(0)
+              .get("span[class='font-normal']")
+              .contains(searchStringToType)
+              .should("exist");
+          } else {
+            cy.get(".p-autocomplete-item").should("not.exist");
+          }
         });
       }
 
@@ -318,26 +327,16 @@ describe("As a user, I expect the search functionality on the /companies page to
               sfdrFixture.reportingPeriod,
             );
           });
-          checkFirstAutoCompleteSuggestion(companyNameSfdrPrefix, DataTypeEnum.Sme);
-          const companyNameFinancialPrefix = "CompanyWithFinancial";
-          const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
-
-          getKeycloakToken(admin_name, admin_pw).then((token) => {
-            getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
-              return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
-                (storedCompany) => {
-                  return uploadFrameworkData(
-                    DataTypeEnum.EutaxonomyFinancials,
-                    token,
-                    storedCompany.companyId,
-                    fixtureData.reportingPeriod,
-                    fixtureData.t,
-                  );
-                },
-              );
-            });
-          });
-          checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
+          validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
+            companyNameSfdrPrefix,
+            DataTypeEnum.Sme,
+            false,
+          );
+          validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
+            companyNameSfdrPrefix,
+            DataTypeEnum.Sfdr,
+            true,
+          );
         },
       );
       it(

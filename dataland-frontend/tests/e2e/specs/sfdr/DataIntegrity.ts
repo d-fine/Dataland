@@ -37,9 +37,9 @@ describeIf(
     function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Sfdr);
 
-      MLDT.getSectionHead("Environmental").should("have.attr", "data-section-expanded", "false").click();
-      MLDT.getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "false").click();
-      MLDT.getSectionHead("Energy performance").should("have.attr", "data-section-expanded", "false").click();
+      MLDT.getSectionHead("Environmental").should("have.attr", "data-section-expanded", "true");
+      MLDT.getSectionHead("Biodiversity").should("have.attr", "data-section-expanded", "true");
+      MLDT.getSectionHead("Energy performance").should("have.attr", "data-section-expanded", "true");
 
       MLDT.getCellValueContainer("Primary Forest And Wooded Land Of Native Species Exposure").should(
         "contain.text",

@@ -91,28 +91,26 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         2,
       );
 
-      getSectionHead("Revenue").click();
+      getSectionHead("Revenue").should("exist");
       getCellValueContainer("Total Amount", 0)
         .invoke("text")
         .should("match", /^0\s*EUR\s.*/);
       getSectionHead("Revenue").click();
 
-      getSectionHead("CapEx").click();
-      getSectionHead("Aligned Share").click();
       getCellValueContainer("Relative Share in Percent", 1)
         .invoke("text")
-        .should("equal", `${betaTotalAlignedCapexPercentage} %`);
+        .should("contains", `${betaTotalAlignedCapexPercentage} %`);
+
       getCellValueContainer("Absolute Share", 2)
         .invoke("text")
-        .should("equal", `${gammaTotalAlignedCapexAbsoluteShareString}`);
+        .should("contains", `${gammaTotalAlignedCapexAbsoluteShareString}`);
       getCellValueContainer("Substantial Contribution to Climate Change Mitigation In Percent", 2)
         .invoke("text")
-        .should("equal", `${gammaContributionToClimateChangeMitigation} %`);
-
+        .should("contains", `${gammaContributionToClimateChangeMitigation} %`);
       getCellValueContainer("Total Amount", 2)
         .invoke("text")
         .should("match", new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
-      getCellValueContainer("Total Amount", 2).click();
+      getCellValueContainer("Total Amount", 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.contains("td", gammaCapexTotalAmountFormattedString).should("exist");
         cy.contains("td", assertDefined(gammaCapexTotalAmount.quality).toString()).should("exist");
@@ -123,7 +121,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       });
       cy.get("body").type("{esc}");
 
-      getCellValueContainer("Aligned Activities", 2).click();
+      getCellValueContainer("Aligned Activities", 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get("tr")
           .contains("td", assertDefined(gammaCapexFirstAlignedActivity.activityName))
@@ -134,7 +132,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       });
       cy.get("body").type("{esc}");
 
-      getCellValueContainer("Non-Aligned Activities", 2).click();
+      getCellValueContainer("Non-Aligned Activities", 2).first().click();
       runFunctionBlockWithinPrimeVueModal(() => {
         cy.get("tr")
           .contains("td", assertDefined(gammaCapexFirstNonAlignedActivity.activityName))

@@ -72,13 +72,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
   {
     type: "section",
     label: "Environmental",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Greenhouse gas emissions ",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -292,7 +292,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Energy performance",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -528,7 +528,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Biodiversity",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -594,7 +594,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Water",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -683,7 +683,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Waste",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -810,7 +810,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Emissions",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -882,13 +882,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
   {
     type: "section",
     label: "Social",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Social and employee matters",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1369,7 +1369,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Green securities",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1390,7 +1390,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Human rights",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -1476,7 +1476,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       {
         type: "section",
         label: "Anti-corruption and anti-bribery",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {

@@ -1,5 +1,5 @@
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
-import { type FrameworkDataApi, translateFrameworkApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type PublicFrameworkDataApi, translateFrameworkApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import {
   type Configuration,
   DataTypeEnum,
@@ -20,7 +20,7 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
   framework: K,
   configuration: Configuration | undefined,
   axiosInstance?: AxiosInstance,
-): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+): PublicFrameworkDataApi<FrameworkDataTypes[K]["data"]> {
   switch (framework) {
     case DataTypeEnum.P2p:
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(

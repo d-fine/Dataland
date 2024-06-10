@@ -9,7 +9,38 @@ import { getDataModelFieldCellConfig } from "@/components/resources/dataTable/co
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
-const autoExpandingCategoryNames = new Set(["general", "masterData"]);
+const autoExpandingCategoryNames = new Set([
+  "general",
+  "masterData",
+  "governance",
+  "climateTargets",
+  "emissionsPlanning",
+  "investmentPlanning",
+  "ammonia",
+  "automotive",
+  "hvcPlastics",
+  "commercialRealEstate",
+  "residentialRealEstate",
+  "steel",
+  "freightTransportByRoad",
+  "electricityGeneration",
+  "livestockFarming",
+  "cement",
+  "decarbonisation",
+  "defossilisation",
+  "energy",
+  "technologyValueCreation",
+  "materials",
+  "recycling",
+  "buildingEfficiency",
+  "energySource",
+  "technology",
+  "emissionsFromManureAndFertiliserAndLivestock",
+  "animalWelfare",
+  "animalFeed",
+  "externalFeedCertification",
+  "material",
+]);
 
 /**
  * Converts a Data-Model-Ts Category to a MLDTSectionConfig

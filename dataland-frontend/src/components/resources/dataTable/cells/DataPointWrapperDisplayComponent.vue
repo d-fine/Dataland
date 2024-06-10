@@ -10,6 +10,8 @@
     </a>
     <DocumentLink
       v-else-if="dataPointProperties.dataSource"
+      :dataId="metaInfo.dataId"
+      :dataType="metaInfo.dataType"
       :label="dataPointProperties.value ?? undefined"
       :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
       :file-reference="dataPointProperties.dataSource.fileReference"
@@ -27,7 +29,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
@@ -37,12 +39,17 @@ export default defineComponent({
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
       required: true,
     },
+    metaInfo: {
+      type: Object as () => DataMetaInformation,
+      required: true,
+    },
   },
   data() {
     return {
       DataPointDataTable,
     };
   },
+
   computed: {
     modalOptions() {
       return {
@@ -53,6 +60,8 @@ export default defineComponent({
         },
         data: {
           dataPointDisplay: this.dataPointProperties,
+          dataId: this.metaInfo.dataId,
+          dataType: this.metaInfo.dataType,
         },
       };
     },

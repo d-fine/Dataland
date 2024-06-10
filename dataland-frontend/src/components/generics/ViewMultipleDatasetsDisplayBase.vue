@@ -28,6 +28,7 @@
               :display-configuration="configForEuTaxonomyFinancialsMLDT"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
+              data-test="MultiLayerDataTableFrameworkPanelFinancials"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
@@ -36,14 +37,16 @@
               :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
+              data-test="MultiLayerDataTableFrameworkPanelP2P"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
               :frameworkIdentifier="dataType"
               :companyId="companyId"
-              :displayConfiguration="frameworkViewConfiguration!!.configuration"
+              :display-configuration="frameworkViewConfiguration!!.configuration"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
+              data-test="MultiLayerDataTableFrameworkPanelOthers"
             />
           </div>
         </div>
@@ -88,7 +91,10 @@ import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkD
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
+import {
+  type FrontendFrameworkDefinition,
+  type FrameworkViewConfiguration,
+} from "@/frameworks/BaseFrameworkDefinition";
 import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT";
 
 export default defineComponent({
@@ -119,6 +125,7 @@ export default defineComponent({
     },
     dataType: {
       type: String,
+      required: true,
     },
     dataId: {
       type: String,

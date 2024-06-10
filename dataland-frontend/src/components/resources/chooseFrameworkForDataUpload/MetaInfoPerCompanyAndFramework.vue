@@ -28,6 +28,7 @@
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
         <PrimeButton
+          v-if="!isPrivateFramework || isDataOwner"
           class="uppercase p-button p-button-sm d-letters mt-3"
           :disabled="!isFrontendUploadFormExisting"
           label="Create Dataset"
@@ -47,14 +48,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent, type PropType, inject } from "vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import {
+  ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM,
+  ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+  PRIVATE_FRAMEWORKS,
+} from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { getDatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import type Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "MetaInfoPerCompanyAndFramework",
@@ -78,12 +85,18 @@ export default defineComponent({
       required: true,
     },
   },
-
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
       title: humanizeStringOrNumber(this.dataType),
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
+      isPrivateFramework: null as null | boolean,
+      isDataOwner: false as boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
       getDatasetStatus,
     };
@@ -92,12 +105,19 @@ export default defineComponent({
   mounted() {
     this.isFrontendViewPageExisting = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(this.dataType as DataTypeEnum);
     this.isFrontendUploadFormExisting = ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
+    this.isPrivateFramework = PRIVATE_FRAMEWORKS.includes(this.dataType as DataTypeEnum);
   },
-
+  created() {
+    void this.setDataOwnerRights();
+  },
   computed: {
     dynamicButtonTitle(): string {
       if (this.listOfFrameworkData.length === 0) {
-        return "Be the first to create this dataset";
+        if (this.isPrivateFramework && !this.isDataOwner) {
+          return "Become data owner to create a dataset";
+        } else {
+          return "Be the first to create this dataset";
+        }
       } else {
         return `Create another dataset for ${this.title}`;
       }
@@ -111,6 +131,15 @@ export default defineComponent({
      */
     calculateDatasetLink(dataMetaInfo: DataMetaInformation): string {
       return `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfo.dataId}`;
+    },
+    /**
+     * The methods determines the appropriate rights for dataowners and non dataowners
+     * @returns the boolean if user has dataowner rights or not
+     */
+    async setDataOwnerRights(): Promise<void> {
+      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((isDataOwner) => {
+        this.isDataOwner = isDataOwner;
+      });
     },
 
     /**
