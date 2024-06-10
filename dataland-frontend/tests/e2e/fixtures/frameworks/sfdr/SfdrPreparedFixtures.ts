@@ -177,7 +177,6 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
         dataDate: "2022-08-27",
         fiscalYearDeviation: "Deviation",
         fiscalYearEnd: "2023-01-01",
-        scopeOfEntities: null!,
         referencedReports: null!,
       },
     },

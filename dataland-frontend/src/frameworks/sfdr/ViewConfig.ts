@@ -5,7 +5,6 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
-import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatHighImpactClimateSectorForDisplay } from "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
@@ -25,7 +24,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: "cell",
             label: "Data Date",
-            explanation: "The date until when the information collected is valid",
+            explanation: "The year for which the data is reported",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.dataDate),
@@ -54,15 +53,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.fiscalYearEnd),
-          },
-          {
-            type: "cell",
-            label: "Scope Of Entities",
-            explanation:
-              "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.general?.scopeOfEntities),
           },
         ],
       },
@@ -223,6 +213,38 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: "cell",
+            label: "Scope 1 and 2 and 3 GHG emissions (location-based)",
+            explanation:
+              "Sum of scope 1, 2 and 3 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsLocationBasedInTonnes?.value,
+                  "Tonnes",
+                ),
+                "Scope 1 and 2 and 3 GHG emissions (location-based)",
+                dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsLocationBasedInTonnes,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Scope 1 and 2 and 3 GHG emissions (market-based)",
+            explanation:
+              "Sum of scope 1, 2 and 3 carbon emissions, using the market-based method to compute scope 2 carbon emissions",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsMarketBasedInTonnes?.value,
+                  "Tonnes",
+                ),
+                "Scope 1 and 2 and 3 GHG emissions (market-based)",
+                dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsMarketBasedInTonnes,
+              ),
+          },
+          {
+            type: "cell",
             label: "Enterprise Value",
             explanation:
               "The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).",
@@ -245,7 +267,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: "cell",
             label: "Carbon footprint",
-            explanation: "Tonnes GHG emissions / EUR million enterprise value",
+            explanation:
+              "Tonnes of GHG emissions / million of the enterprise value (in the same currency as the enterprise value)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -260,7 +283,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: "cell",
             label: "GHG intensity",
-            explanation: "Tonnes of GHG emissions / EUR million revenue",
+            explanation: "Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -270,21 +293,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 "GHG intensity",
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Fossil Fuel Sector Exposure",
-            explanation:
-              "(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure?.value,
-                ),
-                "Fossil Fuel Sector Exposure",
-                dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure,
               ),
           },
         ],
@@ -530,66 +538,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         label: "Biodiversity",
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Primary Forest And Wooded Land Of Native Species Exposure",
-            explanation:
-              "Sites/operations (partly) located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure?.value,
-                ),
-                "Primary Forest And Wooded Land Of Native Species Exposure",
-                dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Protected Areas Exposure",
-            explanation:
-              "Sites/operations (partly) located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.protectedAreasExposure?.value),
-                "Protected Areas Exposure",
-                dataset.environmental?.biodiversity?.protectedAreasExposure,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Rare Or Endangered Ecosystems Exposure",
-            explanation:
-              "Sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure?.value,
-                ),
-                "Rare Or Endangered Ecosystems Exposure",
-                dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Highly Biodiverse Grassland Exposure",
-            explanation:
-              "Sites/operations (partly) located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure?.value,
-                ),
-                "Highly Biodiverse Grassland Exposure",
-                dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure,
-              ),
-          },
-        ],
+        children: [],
       },
       {
         type: "section",
@@ -653,31 +602,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue,
               ),
           },
-          {
-            type: "cell",
-            label: "Water Management Policy",
-            explanation: "Existence of policies and procedures for water management",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.water?.waterManagementPolicy?.value),
-                "Water Management Policy",
-                dataset.environmental?.water?.waterManagementPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "High Water Stress Area Exposure",
-            explanation:
-              'Sites (partly) located in "areas of high water stress", i.e. regions where the percentage of total water withdrawn is high (60%) or extremely high (80%), without a water management policy',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.water?.highWaterStressAreaExposure?.value),
-                "High Water Stress Area Exposure",
-                dataset.environmental?.water?.highWaterStressAreaExposure,
-              ),
-          },
         ],
       },
       {
@@ -704,58 +628,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: "cell",
-            label: "Manufacture Of Agrochemical Pesticides Products",
-            explanation: "Involvement in manufacture of pesticides and other agrochemical products",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.waste?.manufactureOfAgrochemicalPesticidesProducts?.value,
-                ),
-                "Manufacture Of Agrochemical Pesticides Products",
-                dataset.environmental?.waste?.manufactureOfAgrochemicalPesticidesProducts,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Land Degradation Desertification Soil Sealing Exposure",
-            explanation: "Involvement in activities, which cause land degradation, desertification or soil sealing",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.waste?.landDegradationDesertificationSoilSealingExposure?.value,
-                ),
-                "Land Degradation Desertification Soil Sealing Exposure",
-                dataset.environmental?.waste?.landDegradationDesertificationSoilSealingExposure,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Sustainable Agriculture Policy",
-            explanation: "Sustainable land/agriculture practices or policies",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.waste?.sustainableAgriculturePolicy?.value),
-                "Sustainable Agriculture Policy",
-                dataset.environmental?.waste?.sustainableAgriculturePolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Sustainable Oceans And Seas Policy",
-            explanation: "Sustainable oceans/seas practices or policies",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.waste?.sustainableOceansAndSeasPolicy?.value),
-                "Sustainable Oceans And Seas Policy",
-                dataset.environmental?.waste?.sustainableOceansAndSeasPolicy,
-              ),
-          },
-          {
-            type: "cell",
             label: "Non-Recycled Waste",
             explanation:
               'Value of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.',
@@ -765,44 +637,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatNumberForDatatable(dataset.environmental?.waste?.nonRecycledWasteInTonnes?.value, "Tonnes"),
                 "Non-Recycled Waste",
                 dataset.environmental?.waste?.nonRecycledWasteInTonnes,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Threatened Species Exposure",
-            explanation: "Operations, which affect threatened species",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.waste?.threatenedSpeciesExposure?.value),
-                "Threatened Species Exposure",
-                dataset.environmental?.waste?.threatenedSpeciesExposure,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Biodiversity Protection Policy",
-            explanation:
-              "Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.waste?.biodiversityProtectionPolicy?.value),
-                "Biodiversity Protection Policy",
-                dataset.environmental?.waste?.biodiversityProtectionPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Deforestation Policy",
-            explanation:
-              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.waste?.deforestationPolicy?.value),
-                "Deforestation Policy",
-                dataset.environmental?.waste?.deforestationPolicy,
               ),
           },
         ],
@@ -817,7 +651,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: "cell",
             label: "Emissions of Inorganic Pollutants",
             explanation:
-              "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
+              "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminium, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -861,19 +695,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes,
               ),
           },
-          {
-            type: "cell",
-            label: "Carbon Reduction Initiatives",
-            explanation:
-              "Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.environmental?.emissions?.carbonReductionInitiatives?.value),
-                "Carbon Reduction Initiatives",
-                dataset.environmental?.emissions?.carbonReductionInitiatives,
-              ),
-          },
         ],
       },
     ],
@@ -891,243 +712,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "Human Rights Legal Proceedings",
-            explanation: "Involvement in Human Rights related legal proceedings",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings?.value,
-                ),
-                "Human Rights Legal Proceedings",
-                dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings,
-              ),
-          },
-          {
-            type: "cell",
-            label: "ILO Core Labour Standards",
-            explanation: "Abidance by the ILO Core Labour Standards",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards?.value),
-                "ILO Core Labour Standards",
-                dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Environmental Policy",
-            explanation: "Existence of an environmental policy",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.environmentalPolicy?.value),
-                "Environmental Policy",
-                dataset.social?.socialAndEmployeeMatters?.environmentalPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Corruption Legal Proceedings",
-            explanation: "Involvement in corruption-related legal proceedings",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings?.value,
-                ),
-                "Corruption Legal Proceedings",
-                dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Transparency Disclosure Policy",
-            explanation:
-              "Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy?.value,
-                ),
-                "Transparency Disclosure Policy",
-                dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Human Rights Due Diligence Policy",
-            explanation:
-              "Policies in place to support/respect human rights and conduct due diligence to ensure that business activities do not have a negative human rights impact.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy?.value,
-                ),
-                "Human Rights Due Diligence Policy",
-                dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Policy against Child Labour",
-            explanation: "Policies in place to abolish all forms of child labour.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour?.value),
-                "Policy against Child Labour",
-                dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Policy against Forced Labour",
-            explanation: "Policies in place to abolish all forms of forced labour.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour?.value,
-                ),
-                "Policy against Forced Labour",
-                dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Policy against Discrimination in the Workplace",
-            explanation: "Policies in place to eliminate discrimination in the workplace.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace?.value,
-                ),
-                "Policy against Discrimination in the Workplace",
-                dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace,
-              ),
-          },
-          {
-            type: "cell",
-            label: "ISO 14001 Certificate",
-            explanation: "The company is ISO 14001 certifified",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value),
-                "ISO 14001 Certificate",
-                dataset.social?.socialAndEmployeeMatters?.iso14001Certificate,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Policy against Bribery and Corruption",
-            explanation:
-              "Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption?.value,
-                ),
-                "Policy against Bribery and Corruption",
-                dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Fair Business Marketing Advertising Policy",
-            explanation:
-              "Policies and procedures in place to apply fair business, marketing, and advertising practices and ensure the safety and quality of goods and services.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy?.value,
-                ),
-                "Fair Business Marketing Advertising Policy",
-                dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Technologies Expertise Transfer Policy",
-            explanation:
-              "Policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy?.value,
-                ),
-                "Technologies Expertise Transfer Policy",
-                dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Fair Competition Policy",
-            explanation: "Policies and procedures in place related to fair competition and anti-competitive cartels",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy?.value),
-                "Fair Competition Policy",
-                dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Violation Of Tax Rules And Regulation",
-            explanation:
-              "Involvement in a violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value,
-                ),
-                "Violation Of Tax Rules And Regulation",
-                dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation,
-              ),
-          },
-          {
-            type: "cell",
-            label: "UN Global Compact Principles Compliance Policy",
-            explanation:
-              "Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy?.value,
-                ),
-                "UN Global Compact Principles Compliance Policy",
-                dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "OECD Guidelines For Multinational Enterprises Grievance Handling",
-            explanation:
-              "Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling
-                    ?.value,
-                ),
-                "OECD Guidelines For Multinational Enterprises Grievance Handling",
-                dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling,
-              ),
-          },
           {
             type: "cell",
             label: "Average Gross Hourly Earnings Male Employees",
@@ -1194,8 +778,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: "cell",
             label: "Board gender diversity",
-            explanation:
-              "Average ratio of female to male board members, expressed as a percentage of all board members",
+            explanation: "Percentage of female board members among all board members",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1209,37 +792,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: "cell",
-            label: "Controversial Weapons Exposure",
-            explanation:
-              "Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure?.value,
-                ),
-                "Controversial Weapons Exposure",
-                dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Workplace Accident Prevention Policy",
-            explanation: "Existence of a workplace accident prevention policy",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy?.value,
-                ),
-                "Workplace Accident Prevention Policy",
-                dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy,
-              ),
-          },
-          {
-            type: "cell",
             label: "Rate Of Accidents",
-            explanation: "(number of accidents * 200,000) / number of hours worked by all employees",
+            explanation:
+              "Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1261,47 +816,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays?.value, "Days"),
                 "Workdays Lost",
                 dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Supplier Code Of Conduct",
-            explanation:
-              "Supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.value),
-                "Supplier Code Of Conduct",
-                dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Grievance Handling Mechanism",
-            explanation: "Existence of a grievance/complaints handling mechanism related to employee matters",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism?.value,
-                ),
-                "Grievance Handling Mechanism",
-                dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Whistleblower Protection Policy",
-            explanation: "Existence of a policy on the protection of whistleblowers",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy?.value,
-                ),
-                "Whistleblower Protection Policy",
-                dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy,
               ),
           },
           {
@@ -1371,21 +885,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         label: "Green securities",
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Securities Not Certified As Green",
-            explanation:
-              "Possession of securities in investments that are not certified as green under a future EU legal act establishing an EU Green Bond Standard",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen?.value),
-                "Securities Not Certified As Green",
-                dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen,
-              ),
-          },
-        ],
+        children: [],
       },
       {
         type: "section",
@@ -1393,69 +893,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "Human Rights Policy",
-            explanation: "Existence of a human rights policy",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsPolicy?.value),
-                "Human Rights Policy",
-                dataset.social?.humanRights?.humanRightsPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Human Rights Due Diligence",
-            explanation:
-              "Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsDueDiligence?.value),
-                "Human Rights Due Diligence",
-                dataset.social?.humanRights?.humanRightsDueDiligence,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Trafficking In Human Beings Policy",
-            explanation: "Existence of a policy against trafficking in human beings",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.humanRights?.traffickingInHumanBeingsPolicy?.value),
-                "Trafficking In Human Beings Policy",
-                dataset.social?.humanRights?.traffickingInHumanBeingsPolicy,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Reported Child Labour Incidents",
-            explanation: "Reported incidents of child labor within own operations or supply chain",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value),
-                "Reported Child Labour Incidents",
-                dataset.social?.humanRights?.reportedChildLabourIncidents,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Reported Forced Or Compulsory Labour Incidents",
-            explanation: "Reported incidents of forced or compulsory labor within own operations or supply chain.",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value,
-                ),
-                "Reported Forced Or Compulsory Labour Incidents",
-                dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents,
-              ),
-          },
           {
             type: "cell",
             label: "Number Of Reported Incidents Of Human Rights Violations",

@@ -4270,42 +4270,6 @@
           "NA"
         ]
       },
-      "BaseDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
-      },
       "CompanyAssociatedDataSfdrData": {
         "required": [
           "companyId",
@@ -4383,7 +4347,7 @@
           }
         }
       },
-      "ExtendedDataPointYesNo": {
+      "ExtendedDataPointYesNoNoEvidenceFound": {
         "required": [
           "quality"
         ],
@@ -4393,7 +4357,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/YesNoNoEvidenceFound"
               }
             ]
           },
@@ -4501,7 +4465,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -4509,7 +4473,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -4517,7 +4481,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -4525,7 +4489,63 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "manufactureOfAgrochemicalPesticidesProducts": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "landDegradationDesertificationSoilSealingExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "sustainableAgriculturePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "sustainableOceansAndSeasPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "threatenedSpeciesExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "biodiversityProtectionPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "deforestationPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -4562,7 +4582,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -4985,6 +5005,22 @@
               }
             ]
           },
+          "scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5021,7 +5057,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -5038,67 +5074,11 @@
               }
             ]
           },
-          "manufactureOfAgrochemicalPesticidesProducts": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
-              }
-            ]
-          },
-          "landDegradationDesertificationSoilSealingExposure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
-              }
-            ]
-          },
-          "sustainableAgriculturePolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "sustainableOceansAndSeasPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "nonRecycledWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "threatenedSpeciesExposure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
-              }
-            ]
-          },
-          "biodiversityProtectionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "deforestationPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           }
@@ -5143,7 +5123,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5151,7 +5131,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -5202,14 +5182,6 @@
                 "currency": "string"
               }
             }
-          },
-          "scopeOfEntities": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
           }
         }
       },
@@ -5532,7 +5504,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -5545,7 +5517,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5553,7 +5525,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5561,7 +5533,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5569,7 +5541,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5577,7 +5549,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5598,7 +5570,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5606,7 +5578,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5614,7 +5586,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5622,7 +5594,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5630,7 +5602,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5638,7 +5610,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5646,7 +5618,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5654,7 +5626,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5662,7 +5634,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5670,7 +5642,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5678,7 +5650,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5686,7 +5658,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5694,7 +5666,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5702,7 +5674,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5710,7 +5682,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5718,7 +5690,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5726,7 +5698,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5782,7 +5754,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5790,7 +5762,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5814,7 +5786,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5822,7 +5794,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5830,7 +5802,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5865,6 +5837,50 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
+          }
+        }
+      },
+      "YesNoNoEvidenceFound": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NoEvidenceFound"
+        ]
+      },
+      "BaseDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
           }
         }
       },
@@ -14410,19 +14426,19 @@
           "companyId": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
+          "countryCode": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

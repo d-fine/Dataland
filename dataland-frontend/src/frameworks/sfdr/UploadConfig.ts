@@ -15,7 +15,7 @@ export const sfdrDataModel = [
           {
             name: "dataDate",
             label: "Data Date",
-            description: "The date until when the information collected is valid",
+            description: "The year for which the data is reported",
 
             component: "DateFormField",
             required: true,
@@ -58,16 +58,6 @@ export const sfdrDataModel = [
             description: "Please upload all relevant reports for this dataset in the PDF format.",
 
             component: "UploadReports",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "scopeOfEntities",
-            label: "Scope Of Entities",
-            description:
-              "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
-
-            component: "YesNoNaFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -181,6 +171,28 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: "scope1And2And3GhgEmissionsLocationBasedInTonnes",
+            label: "Scope 1 and 2 and 3 GHG emissions (location-based)",
+            description:
+              "Sum of scope 1, 2 and 3 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
+
+            unit: "Tonnes",
+            component: "BigDecimalExtendedDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "scope1And2And3GhgEmissionsMarketBasedInTonnes",
+            label: "Scope 1 and 2 and 3 GHG emissions (market-based)",
+            description:
+              "Sum of scope 1, 2 and 3 carbon emissions, using the market-based method to compute scope 2 carbon emissions",
+
+            unit: "Tonnes",
+            component: "BigDecimalExtendedDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: "enterpriseValue",
             label: "Enterprise Value",
             description:
@@ -203,7 +215,8 @@ export const sfdrDataModel = [
           {
             name: "carbonFootprintInTonnesPerMillionEURRevenue",
             label: "Carbon footprint",
-            description: "Tonnes GHG emissions / EUR million enterprise value",
+            description:
+              "Tonnes of GHG emissions / million of the enterprise value (in the same currency as the enterprise value)",
 
             unit: "Tonnes / €M Revenue",
             component: "BigDecimalExtendedDataPointFormField",
@@ -213,20 +226,10 @@ export const sfdrDataModel = [
           {
             name: "ghgIntensityInTonnesPerMillionEURRevenue",
             label: "GHG intensity",
-            description: "Tonnes of GHG emissions / EUR million revenue",
+            description: "Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)",
 
             unit: "Tonnes / €M Revenue",
             component: "BigDecimalExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "fossilFuelSectorExposure",
-            label: "Fossil Fuel Sector Exposure",
-            description:
-              "Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).",
-
-            component: "YesNoExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -412,48 +415,7 @@ export const sfdrDataModel = [
       {
         name: "biodiversity",
         label: "Biodiversity",
-        fields: [
-          {
-            name: "primaryForestAndWoodedLandOfNativeSpeciesExposure",
-            label: "Primary Forest And Wooded Land Of Native Species Exposure",
-            description:
-              "Do you have sites/operations located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "protectedAreasExposure",
-            label: "Protected Areas Exposure",
-            description:
-              "Do you have sites/operations located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "rareOrEndangeredEcosystemsExposure",
-            label: "Rare Or Endangered Ecosystems Exposure",
-            description:
-              "Do you have sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "highlyBiodiverseGrasslandExposure",
-            label: "Highly Biodiverse Grassland Exposure",
-            description:
-              "Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
+        fields: [],
       },
       {
         name: "water",
@@ -505,26 +467,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
             validation: "min:0",
           },
-          {
-            name: "waterManagementPolicy",
-            label: "Water Management Policy",
-            description:
-              "Does the company have policies and procedures for water management? If yes, please share the relevant documents with us.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "highWaterStressAreaExposure",
-            label: "High Water Stress Area Exposure",
-            description:
-              "Do you have sites/operations in or near ‘areas of high water stress’, meaning regions where the percentage of total water withdrawn is high (40-80 %) or extremely high (greater than 80 %) where the activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, definition 13.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -544,46 +486,6 @@ export const sfdrDataModel = [
             validation: "min:0",
           },
           {
-            name: "manufactureOfAgrochemicalPesticidesProducts",
-            label: "Manufacture Of Agrochemical Pesticides Products",
-            description:
-              "Are you involved in the manufacturing of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "landDegradationDesertificationSoilSealingExposure",
-            label: "Land Degradation Desertification Soil Sealing Exposure",
-            description:
-              "Is the company involved in activities which cause land degradation, desertification or soil sealing? See also Regulation, Annex I, Table 2, indicator 10.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "sustainableAgriculturePolicy",
-            label: "Sustainable Agriculture Policy",
-            description:
-              "Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "sustainableOceansAndSeasPolicy",
-            label: "Sustainable Oceans And Seas Policy",
-            description:
-              "Do you have sustainable oceans/seas practices or policies? If yes, please share the relevant documents with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: "nonRecycledWasteInTonnes",
             label: "Non-Recycled Waste",
             description:
@@ -595,35 +497,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
             validation: "min:0",
           },
-          {
-            name: "threatenedSpeciesExposure",
-            label: "Threatened Species Exposure",
-            description: "Do you have operations which affect threatened species?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "biodiversityProtectionPolicy",
-            label: "Biodiversity Protection Policy",
-            description:
-              "Do you have a biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "deforestationPolicy",
-            label: "Deforestation Policy",
-            description:
-              'Do you have a policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -634,7 +507,7 @@ export const sfdrDataModel = [
             name: "emissionsOfInorganicPollutantsInTonnes",
             label: "Emissions of Inorganic Pollutants",
             description:
-              "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
+              "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminium, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
 
             unit: "Tonnes",
             component: "BigDecimalExtendedDataPointFormField",
@@ -666,16 +539,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
             validation: "min:0",
           },
-          {
-            name: "carbonReductionInitiatives",
-            label: "Carbon Reduction Initiatives",
-            description:
-              "Do you have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
     ],
@@ -690,172 +553,6 @@ export const sfdrDataModel = [
         name: "socialAndEmployeeMatters",
         label: "Social and employee matters",
         fields: [
-          {
-            name: "humanRightsLegalProceedings",
-            label: "Human Rights Legal Proceedings",
-            description: "Have you been involved in Human Rights related legal proceedings?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "iloCoreLabourStandards",
-            label: "ILO Core Labour Standards",
-            description: "Do you abide by the ILO Core Labour Standards?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "environmentalPolicy",
-            label: "Environmental Policy",
-            description: "Do you have an environmental policy? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "corruptionLegalProceedings",
-            label: "Corruption Legal Proceedings",
-            description: "Have you been involved in corruption related legal proceedings?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "transparencyDisclosurePolicy",
-            label: "Transparency Disclosure Policy",
-            description:
-              "Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "humanRightsDueDiligencePolicy",
-            label: "Human Rights Due Diligence Policy",
-            description:
-              "Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "policyAgainstChildLabour",
-            label: "Policy against Child Labour",
-            description:
-              "Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "policyAgainstForcedLabour",
-            label: "Policy against Forced Labour",
-            description:
-              "Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "policyAgainstDiscriminationInTheWorkplace",
-            label: "Policy against Discrimination in the Workplace",
-            description:
-              "Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "iso14001Certificate",
-            label: "ISO 14001 Certificate",
-            description:
-              "Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "policyAgainstBriberyAndCorruption",
-            label: "Policy against Bribery and Corruption",
-            description:
-              "Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "fairBusinessMarketingAdvertisingPolicy",
-            label: "Fair Business Marketing Advertising Policy",
-            description:
-              "Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "technologiesExpertiseTransferPolicy",
-            label: "Technologies Expertise Transfer Policy",
-            description:
-              "Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "fairCompetitionPolicy",
-            label: "Fair Competition Policy",
-            description:
-              "Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "violationOfTaxRulesAndRegulation",
-            label: "Violation Of Tax Rules And Regulation",
-            description:
-              "Are you involved in violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "unGlobalCompactPrinciplesCompliancePolicy",
-            label: "UN Global Compact Principles Compliance Policy",
-            description:
-              "Do you have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling",
-            label: "OECD Guidelines For Multinational Enterprises Grievance Handling",
-            description:
-              "Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
           {
             name: "averageGrossHourlyEarningsMaleEmployees",
             label: "Average Gross Hourly Earnings Male Employees",
@@ -909,8 +606,7 @@ export const sfdrDataModel = [
           {
             name: "boardGenderDiversityInPercent",
             label: "Board gender diversity",
-            description:
-              "Average ratio of female to male board members, expressed as a percentage of all board members",
+            description: "Percentage of female board members among all board members",
 
             unit: "Percent",
             component: "BigDecimalExtendedDataPointFormField",
@@ -919,28 +615,10 @@ export const sfdrDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "controversialWeaponsExposure",
-            label: "Controversial Weapons Exposure",
-            description:
-              "Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "workplaceAccidentPreventionPolicy",
-            label: "Workplace Accident Prevention Policy",
-            description: "Do you have workplace accident prevention policy? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: "rateOfAccidentsInPercent",
             label: "Rate Of Accidents",
-            description: "(number of accidents * 200,000) / number of hours worked by all employees",
+            description:
+              "Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000",
 
             unit: "Percent",
             component: "BigDecimalExtendedDataPointFormField",
@@ -958,35 +636,6 @@ export const sfdrDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "min:0",
-          },
-          {
-            name: "supplierCodeOfConduct",
-            label: "Supplier Code Of Conduct",
-            description:
-              "Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "grievanceHandlingMechanism",
-            label: "Grievance Handling Mechanism",
-            description: "Do you have any grievance/complaints handling mechanism related to employee matters?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "whistleblowerProtectionPolicy",
-            label: "Whistleblower Protection Policy",
-            description:
-              "Do you have a policy on the protection of whistleblowers? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
           {
             name: "reportedIncidentsOfDiscrimination",
@@ -1037,71 +686,12 @@ export const sfdrDataModel = [
       {
         name: "greenSecurities",
         label: "Green securities",
-        fields: [
-          {
-            name: "securitiesNotCertifiedAsGreen",
-            label: "Securities Not Certified As Green",
-            description:
-              "Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
+        fields: [],
       },
       {
         name: "humanRights",
         label: "Human rights",
         fields: [
-          {
-            name: "humanRightsPolicy",
-            label: "Human Rights Policy",
-            description: "Do you have human rights policy? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "humanRightsDueDiligence",
-            label: "Human Rights Due Diligence",
-            description:
-              "Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "traffickingInHumanBeingsPolicy",
-            label: "Trafficking In Human Beings Policy",
-            description:
-              "Do you have a policy against trafficking in human beings? If yes, please share the policy with us.",
-
-            component: "YesNoBaseDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "reportedChildLabourIncidents",
-            label: "Reported Child Labour Incidents",
-            description: "Has their been any reported child labour incident (within own operations or supply chain)?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: "reportedForcedOrCompulsoryLabourIncidents",
-            label: "Reported Forced Or Compulsory Labour Incidents",
-            description:
-              "Has their been any reported forced or compulsory labour incident (within own operations or supply chain)?",
-
-            component: "YesNoExtendedDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
           {
             name: "numberOfReportedIncidentsOfHumanRightsViolations",
             label: "Number Of Reported Incidents Of Human Rights Violations",

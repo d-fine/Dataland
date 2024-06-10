@@ -48,7 +48,7 @@ class YesNoNoEvidenceFoundComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        /*sectionBuilder.addAtomicExpression(
+        sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
                 fixtureExpression = "dataGenerator.guaranteedYesNoNoEvidenceFound()",
@@ -56,7 +56,5 @@ class YesNoNoEvidenceFoundComponent(
                 nullable = isNullable,
             ),
         )
-    }
-         */
     }
 }
