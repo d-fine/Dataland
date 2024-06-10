@@ -11,9 +11,9 @@ export function uploadAllDocuments(token: string): void {
     const allFileNames = fileNames as string[];
     const pdfFileNames = allFileNames.filter((name: string) => name.endsWith(".pdf"));
     pdfFileNames.forEach((name: string) => {
-      cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
-        uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
-      });
+      cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) =>
+        uploadDocumentViaApi(token, bufferObject.data, name)
+      );
     });
   });
 }

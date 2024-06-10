@@ -4,10 +4,7 @@ import {
   type Configuration,
   DataTypeEnum,
   EuTaxonomyDataForFinancialsControllerApi,
-  EutaxonomyNonFinancialsDataControllerApi,
-  LksgDataControllerApi,
   P2pDataControllerApi,
-  SfdrDataControllerApi,
 } from "@clients/backend";
 import { assertNever } from "@/utils/TypeScriptUtils";
 import { type AxiosInstance } from "axios";
@@ -25,16 +22,6 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
   axiosInstance?: AxiosInstance,
 ): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
   switch (framework) {
-    case DataTypeEnum.Lksg:
-      return translateFrameworkApi<typeof DataTypeEnum.Lksg>(
-        "LksgData",
-        new LksgDataControllerApi(configuration, undefined, axiosInstance),
-      );
-    case DataTypeEnum.Sfdr:
-      return translateFrameworkApi<typeof DataTypeEnum.Sfdr>(
-        "SfdrData",
-        new SfdrDataControllerApi(configuration, undefined, axiosInstance),
-      );
     case DataTypeEnum.P2p:
       return translateFrameworkApi<typeof DataTypeEnum.P2p>(
         "P2pData",
@@ -44,11 +31,6 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyFinancials>(
         "EuTaxonomyDataForFinancials",
         new EuTaxonomyDataForFinancialsControllerApi(configuration, undefined, axiosInstance),
-      );
-    case DataTypeEnum.EutaxonomyNonFinancials:
-      return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
-        "EutaxonomyNonFinancialsData",
-        new EutaxonomyNonFinancialsDataControllerApi(configuration, undefined, axiosInstance),
       );
     default:
       return assertNever(framework);
