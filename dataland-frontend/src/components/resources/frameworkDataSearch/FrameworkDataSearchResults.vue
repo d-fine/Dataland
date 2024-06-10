@@ -64,7 +64,7 @@
 import DataTable, { type DataTablePageEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
@@ -76,7 +76,7 @@ export default defineComponent({
   },
   props: {
     data: {
-      type: Object,
+      type: Array as PropType<BasicCompanyInformation[]>,
       default: null,
     },
     previousRecords: {
