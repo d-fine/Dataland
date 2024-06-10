@@ -41,6 +41,7 @@ import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwne
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import { isCompanyIdValid } from "@/utils/ValidationsUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -119,7 +120,7 @@ export default defineComponent({
      * Retrieves the aggregated framework data summary
      */
     async getAggregatedFrameworkDataSummary(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(this.getKeycloakPromise()).backendClients
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
         .companyDataController;
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
@@ -132,9 +133,10 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToViewForFramework(framework: DataTypeEnum): boolean {
-      if (this.authenticated) {
-        return this.isUserDataOwner || this.isFrameworkPublic(framework);
+      if (!this.authenticated) {
+        return false;
       }
+      return this.isUserDataOwner || this.isFrameworkPublic(framework);
     },
 
     /**
@@ -159,20 +161,9 @@ export default defineComponent({
      * Set user access rights and ownership info
      */
     async setUserRights() {
-      await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise)
-        .then((result) => {
-          this.isAnyDataOwnerExisting = result;
-        })
-        .then(() => {
-          return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
-            this.isUserDataOwner = result;
-          });
-        })
-        .then(() => {
-          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
-            this.isUserUploader = result;
-          });
-        });
+      this.isAnyDataOwnerExisting = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
+      this.isUserDataOwner = await isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise);
+      this.isUserUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },
 });
