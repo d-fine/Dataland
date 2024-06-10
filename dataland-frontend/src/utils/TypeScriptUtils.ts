@@ -36,3 +36,14 @@ export function assertDefined<T>(input: T | undefined | null): T {
 export function isStringArray(input: unknown): input is string[] {
   return Array.isArray(input) && input.every((it) => typeof it === "string");
 }
+
+/**
+ * Returns true if the given object is empty
+ * @param obj the object to check
+ * @returns true if the object is empty
+ */
+export function isObjectEmpty(obj: Record<string, unknown> | null | undefined): boolean {
+  if (!obj) return true;
+  if (Object.keys(obj).length === 0) return true;
+  return Object.keys(obj).every((key) => obj[key] == null || obj[key] == undefined);
+}

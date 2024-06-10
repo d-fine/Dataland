@@ -8,12 +8,14 @@ import "primeflex/primeflex.min.css";
 import "./assets/scss/global.scss";
 import "./assets/css/ibm-plex-sans.scss";
 import "@formkit/themes/genesis";
+import "@formkit/addons/css/multistep";
 import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
 import { createPinia, type PiniaPlugin } from "pinia";
 import { PiniaSharedState } from "pinia-shared-state";
+import { createMultiStepPlugin } from "@formkit/addons";
 
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
@@ -27,7 +29,12 @@ function instantiateVueApp(): void {
       type: "native",
     }) as PiniaPlugin,
   );
-  app.use(plugin, defaultConfig);
+  app.use(
+    plugin,
+    defaultConfig({
+      plugins: [createMultiStepPlugin()],
+    }),
+  );
   app.use(DialogService);
   app.use(router);
   app.use(PrimeVue);

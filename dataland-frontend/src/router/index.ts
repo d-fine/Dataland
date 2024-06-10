@@ -35,6 +35,11 @@ const routes = [
     component: NewLandingPage,
   },
   {
+    path: "/tests",
+    name: "Test Page",
+    component: () => import("@/components/forms/v2/frameworkUpload/UploadFrameworkDataset.vue"),
+  },
+  {
     path: "/about",
     name: "About Page",
     component: AboutPage,
