@@ -6,7 +6,11 @@ import {
   type PathwaysToParisData,
 } from "@clients/backend";
 
-
+/**
+ * Check if a framework is a legacy framework
+ * @param frameworkIdentifier The identifier of the framework
+ * @returns True if the framework is a legacy framework
+ */
 export function isLegacyFramework(frameworkIdentifier: string): frameworkIdentifier is keyof FrameworkDataTypes {
   return frameworkIdentifier in legacyFrameworks;
 }

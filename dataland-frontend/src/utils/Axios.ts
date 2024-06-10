@@ -1,4 +1,4 @@
-import { RawAxiosResponseHeaders } from "axios";
+import { type RawAxiosResponseHeaders } from "axios";
 
 /**
  * Retrieve a header from the headers object if it is a single string
