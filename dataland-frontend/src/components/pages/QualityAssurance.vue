@@ -122,7 +122,7 @@ export default defineComponent({
       displayDataOfPage: [] as QaDataObject[],
       waitingForData: true,
       KEYCLOAK_ROLE_REVIEWER,
-      metaInformation: null as DataMetaInformation,
+      metaInformation: null as DataMetaInformation | null,
       companyInformation: null as CompanyInformation | null,
       qaServiceControllerApi: undefined as undefined | QaControllerApi,
       metaDataInformationControllerApi: undefined as undefined | MetaDataControllerApiInterface,
@@ -177,25 +177,19 @@ export default defineComponent({
      * @returns a promise on the fetched data object
      */
     async addDatasetAssociatedInformationToDisplayList(dataId: string): Promise<QaDataObject> {
-      try {
-        const metaDataResponse = await (
-          this.metaDataInformationControllerApi as MetaDataControllerApiInterface
-        ).getDataMetaInfo(dataId);
-        this.metaInformation = metaDataResponse.data;
-        const companyResponse = await (
-          this.companyDataControllerApi as CompanyDataControllerApiInterface
-        ).getCompanyById(this.metaInformation.companyId);
-        this.companyInformation = companyResponse.data.companyInformation;
-        return {
-          dataId: dataId,
-          metaInformation: this.metaInformation,
-          companyInformation: this.companyInformation,
-        } as QaDataObject;
-      } catch (error) {
-        if (error instanceof AxiosError && error.response.status !== 404) {
-          throw error;
-        }
-      }
+      const metaDataResponse = await (
+        this.metaDataInformationControllerApi as MetaDataControllerApiInterface
+      ).getDataMetaInfo(dataId);
+      this.metaInformation = metaDataResponse.data;
+      const companyResponse = await (this.companyDataControllerApi as CompanyDataControllerApiInterface).getCompanyById(
+        this.metaInformation.companyId,
+      );
+      this.companyInformation = companyResponse.data.companyInformation;
+      return {
+        dataId: dataId,
+        metaInformation: this.metaInformation,
+        companyInformation: this.companyInformation,
+      };
     },
     /**
      * Navigates to the view framework data page on a click on the row of the company
