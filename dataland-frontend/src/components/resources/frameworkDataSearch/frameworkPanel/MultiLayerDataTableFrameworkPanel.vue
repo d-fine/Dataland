@@ -55,10 +55,9 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import { isLegacyFramework } from "@/utils/api/FrameworkDataTypes";
 import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
+import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -150,27 +149,18 @@ async function loadDataForDisplay(
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-  const frameworkDefinition = getFrontendFrameworkDefinition(props.frameworkIdentifier) as
-    | FrontendFrameworkDefinition<FrameworkDataType>
+  const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
+    | BaseFrameworkDataApi<FrameworkDataType>
     | undefined;
-  let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
-
-  if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-  } else if (isLegacyFramework(props.frameworkIdentifier)) {
-    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(
-      props.frameworkIdentifier,
-    ) as FrameworkDataApi<FrameworkDataType>;
+  if (dataControllerApi) {
+    if (singleDataMetaInfoToDisplay) {
+      const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
+      return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
+    } else {
+      return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+    }
   } else {
-    throw new Error(`No frontend framework definition found for ${props.frameworkIdentifier}`);
-  }
-
-  if (singleDataMetaInfoToDisplay) {
-    const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-    return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-  } else {
-    return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
+    throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
   }
 }
 </script>
