@@ -1,4 +1,4 @@
-import {YesNo, YesNoNa, YesNoNoEvidenceFound} from "@clients/backend";
+import { YesNo, YesNoNa, YesNoNoEvidenceFound } from "@clients/backend";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 /**
