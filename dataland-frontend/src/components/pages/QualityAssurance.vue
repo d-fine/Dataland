@@ -76,7 +76,6 @@ import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
 import { type CompanyInformation, type DataMetaInformation } from "@clients/backend";
 import { type ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
