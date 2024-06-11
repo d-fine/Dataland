@@ -4348,6 +4348,13 @@
                 "$ref": "#/components/schemas/SmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions"
               }
             ]
+          },
+          "wasteClassification": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/SmeWasteClassificationObject"
+            }
           }
         }
       },
@@ -4727,6 +4734,52 @@
             "$ref": "#/components/schemas/Address"
           }
         }
+      },
+      "SmeWasteClassificationObject": {
+        "required": [
+          "wasteClassification"
+        ],
+        "type": "object",
+        "properties": {
+          "wasteClassification": {
+            "$ref": "#/components/schemas/WasteClassifications"
+          },
+          "typeWaste": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalAmountTons": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteRecycleOrReuseTons": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteDisposalTons": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalAmountCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteRecycleOrReuseCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteDisposalCubicMeters": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "WasteClassifications": {
+        "type": "string",
+        "enum": [
+          "NonHazardous",
+          "Hazardous"
+        ]
       },
       "YesNo": {
         "type": "string",
@@ -14855,6 +14908,18 @@
         ],
         "type": "object",
         "properties": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14862,18 +14927,6 @@
           "lei": {
             "type": "string",
             "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },
@@ -14896,10 +14949,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

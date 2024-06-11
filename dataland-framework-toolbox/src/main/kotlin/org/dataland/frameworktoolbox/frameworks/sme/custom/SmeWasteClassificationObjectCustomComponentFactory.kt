@@ -19,7 +19,7 @@ class SmeWasteClassificationObjectCustomComponentFactory(@Autowired val template
     TemplateComponentFactory {
 
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Sme Waste Classification Component"
+        row.component == "Waste Classification Component"
 
     override fun generateComponent(
         row: TemplateRow,

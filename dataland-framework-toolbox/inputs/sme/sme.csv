@@ -42,7 +42,7 @@ Moreover, please provide the share of recycable content in your products and pac
 38,Basic,"Resource use, circular economy and waste management",Weight recycable materials,,,Number,,tons,,,,
 39,Basic,"Resource use, circular economy and waste management",Percentage recycable materials,,,Percentage,,,,,,
 40,Basic,"Resource use, circular economy and waste management",Measure waste,"Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.",,Single-Select Radio Button,weight (preferred)|volume,,,,,
-41,Basic,"Resource use, circular economy and waste management",,,,Custom Component Waste,,,,,,
+41,Basic,"Resource use, circular economy and waste management",Waste Classification,,,Waste Classification Component,,,,,,
 42,Basic,Workforce - General Characteristics,Measure employees,You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.,,Single-Select Radio Button,full-time equivalents|head count,,,,,
 43,Basic,Workforce - General Characteristics,Number employees full-time,What is your number of employees? (Use full-time equivalents or head count according to your initial choice.),,Number,,full-time equivalents,,42,FullTimeEquivalents,
 44,Basic,Workforce - General Characteristics,Number employees head,What is your number of employees? (Use full-time equivalents or head count according to your initial choice.),,Number,,head count,,42,HeadCount,
