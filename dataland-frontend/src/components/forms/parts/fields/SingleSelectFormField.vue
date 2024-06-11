@@ -44,7 +44,7 @@ export default defineComponent({
       default: false,
     },
     modelValue: {
-      type: String as PropType<String | null>,
+      type: String as PropType<string | null>,
     },
     dataTest: String,
     validationMessages: Object,
