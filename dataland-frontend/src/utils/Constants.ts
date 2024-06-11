@@ -6,6 +6,8 @@ export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
 
 export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework == DataTypeEnum.Sme);
 export const ARRAY_OF_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
+
+export const ARRAY_OF_PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework !== DataTypeEnum.Sme);
 export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
 export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
 
