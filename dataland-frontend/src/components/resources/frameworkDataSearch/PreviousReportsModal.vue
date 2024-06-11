@@ -10,9 +10,9 @@
           data-test="previousReportsList"
         >
           <a
-              @click="$dialog.open(ReportDataTable, modalOptions(report, nameInner as string))"
-              class="link"
-              :data-test="`report-link-${nameInner}`"
+            @click="$dialog.open(ReportDataTable, modalOptions(report, nameInner as string))"
+            class="link"
+            :data-test="`report-link-${nameInner}`"
           >
             <span>{{ nameInner }}</span>
           </a>
@@ -30,7 +30,7 @@ import type { CompanyReport } from "@clients/backend";
 import ReportDataTable from "@/components/general/ReportDataTable.vue";
 
 export default defineComponent({
-  components: { DocumentLink , ReportDataTable },
+  components: { DocumentLink, ReportDataTable },
   inject: ["dialogRef"],
   name: "PreviousReportsModal",
   data() {

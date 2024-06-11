@@ -7,11 +7,7 @@
     </h4>
     <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
-        <a
-          @click="$dialog.open(ReportDataTable, modalOptions(report, name as string))"
-          class="link"
-          :data-test="`report-link-${name}`"
-        >
+        <a @click="openReportDataTableModal(report, name as string)" class="link" :data-test="`report-link-${name}`">
           <span>{{ name }}</span>
         </a>
       </span>
@@ -21,7 +17,8 @@
       class="link font-semibold underline mr-0 ml-auto"
       @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
       data-test="previousReportsLinkToModal"
-      >Previous years reports
+    >
+      Previous years reports
     </span>
   </div>
 </template>
@@ -43,10 +40,31 @@ export default defineComponent({
     reports: { type: Array<{ [p: string]: CompanyReport }>, required: true },
     reportingPeriods: { type: Array<string>, required: true },
   },
-  computed: {
-    modalOptions() {
-      return (report: CompanyReport, reportName: string) => ({
-        component: ReportDataTable,
+  mounted() {
+    this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
+  },
+  methods: {
+    /**
+     * Opens a modal to display the details of the selected report.
+     * @param report The report data.
+     * @param reportName The name of the report.
+     */
+    openReportDataTableModal(report: CompanyReport, reportName: string) {
+      const options = this.constructModalOptions(report, reportName);
+      this.$dialog.open(ReportDataTable, {
+        props: options.props,
+        data: options.data,
+      });
+    },
+
+    /**
+     * Constructs the modal options for the ReportDataTable.
+     * @param report The report data.
+     * @param reportName The name of the report.
+     * @returns The modal options.
+     */
+    constructModalOptions(report: CompanyReport, reportName: string) {
+      return {
         props: {
           header: "Report Details",
           modal: true,
@@ -59,18 +77,11 @@ export default defineComponent({
           reportCurrency: report.currency,
           reportGroupLevel: report.isGroupLevel,
         },
-      });
+      };
     },
-    ReportDataTable() {
-      return ReportDataTable;
-    },
-  },
-  mounted() {
-    this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
-  },
-  methods: {
+
     /**
-     * Opens a modal to display a table containing previous referenced reports
+     * Opens a modal to display a table containing previous referenced reports.
      * @param reportingPeriods States the origin year of the report.
      */
     openModalAndDisplayPreviousReportsInTable(reportingPeriods: Array<string>) {
@@ -91,8 +102,8 @@ export default defineComponent({
 
     /**
      * Returns the index of the with the newest reporting period in the array containing all reporting periods.
-     * @param reportingPeriods array containing all reporting periods.
-     * @returns index of the newest reporting period
+     * @param reportingPeriods Array containing all reporting periods.
+     * @returns Index of the newest reporting period.
      */
     calculateIndexOfNewestReportingPeriod(reportingPeriods: Array<string>): number {
       let indexOfHighestReportingPeriod = 0;
@@ -108,9 +119,9 @@ export default defineComponent({
 
     /**
      * Checks whether a report of the previous year exists.
-     * @param reports array of all reports
-     * @param indexOfNewestReport index of newest report in the reports array
-     * @returns returns a boolean wheter a report has been found
+     * @param reports Array of all reports.
+     * @param indexOfNewestReport Index of newest report in the reports array.
+     * @returns Returns a boolean whether a report has been found.
      */
     doPreviousReportsExist(reports: Array<{ [p: string]: CompanyReport }>, indexOfNewestReport: number): boolean {
       if (!reports) {
