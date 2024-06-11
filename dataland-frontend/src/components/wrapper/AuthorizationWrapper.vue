@@ -65,6 +65,8 @@ export default defineComponent({
           this.getKeycloakPromise,
         );
         this.waitingForDataOwnershipData = false;
+      } else {
+        this.waitingForDataOwnershipData = false;
       }
     },
   },

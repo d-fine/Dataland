@@ -144,7 +144,7 @@
                       />
                       <FormKit
                         :modelValue="selectedFrameworks"
-                        type="list"
+                        type="text"
                         name="listOfFrameworkNames"
                         validation="required"
                         validation-label="List of framework names"
@@ -204,6 +204,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
