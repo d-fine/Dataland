@@ -103,7 +103,6 @@ export default defineComponent({
   setup() {
     return {
       datasetsPerPage: 10,
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
     };
   },
