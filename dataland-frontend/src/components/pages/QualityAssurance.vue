@@ -77,13 +77,8 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import {
-  type CompanyDataControllerApiInterface,
-  type CompanyInformation,
-  type DataMetaInformation,
-  type MetaDataControllerApiInterface,
-} from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
+import { type CompanyInformation, type DataMetaInformation } from "@clients/backend";
+import { type ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
@@ -92,7 +87,6 @@ import Column from "primevue/column";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { type QaControllerApi } from "@clients/qaservice";
 
 export default defineComponent({
   name: "QualityAssurance",
@@ -110,6 +104,7 @@ export default defineComponent({
     return {
       datasetsPerPage: 10,
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
     };
   },
   data() {
@@ -123,9 +118,6 @@ export default defineComponent({
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation | null,
       companyInformation: null as CompanyInformation | null,
-      qaServiceControllerApi: undefined as undefined | QaControllerApi,
-      metaDataInformationControllerApi: undefined as undefined | MetaDataControllerApiInterface,
-      companyDataControllerApi: undefined as undefined | CompanyDataControllerApiInterface,
       currentPage: 0,
       footerContent,
     };
@@ -144,8 +136,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
         const dataOfPage = [] as QaDataObject[];
-        this.gatherControllerApis();
-        const response = await (this.qaServiceControllerApi as QaControllerApi).getUnreviewedDatasetsIds();
+        const response = await assertDefined(this.apiClientProvider).apiClients.qaController.getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
         const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
@@ -162,27 +153,18 @@ export default defineComponent({
       }
     },
     /**
-     * Gathers the controller APIs
-     */
-    gatherControllerApis() {
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      this.qaServiceControllerApi = apiClientProvider.apiClients.qaController;
-      this.metaDataInformationControllerApi = apiClientProvider.backendClients.metaDataController;
-      this.companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
-    },
-    /**
      * Gathers meta and company information associated with a dataset if the information can be retrieved
      * @param dataId the ID of the corresponding dataset
      * @returns a promise on the fetched data object
      */
     async addDatasetAssociatedInformationToDisplayList(dataId: string): Promise<QaDataObject> {
-      const metaDataResponse = await (
-        this.metaDataInformationControllerApi as MetaDataControllerApiInterface
-      ).getDataMetaInfo(dataId);
+      const metaDataResponse = await assertDefined(
+        this.apiClientProvider,
+      ).backendClients.metaDataController.getDataMetaInfo(dataId);
       this.metaInformation = metaDataResponse.data;
-      const companyResponse = await (this.companyDataControllerApi as CompanyDataControllerApiInterface).getCompanyById(
-        this.metaInformation.companyId,
-      );
+      const companyResponse = await assertDefined(
+        this.apiClientProvider,
+      ).backendClients.companyDataController.getCompanyById(this.metaInformation.companyId);
       this.companyInformation = companyResponse.data.companyInformation;
       return {
         dataId: dataId,
