@@ -7,12 +7,14 @@
     </h4>
     <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
-        <DocumentLink
-          data-test="documentLinkTest"
-          :download-name="name"
-          :fileReference="report.fileReference"
-          font-style="font-semibold"
-        />
+        <a
+            @click="$dialog.open(ReportDataTable, modalOptions(report))"
+            class="link"
+            :data-test="`report-link-${name}`"
+        >
+          <span>{{name}}</span>
+
+    </a>
       </span>
     </div>
     <span
@@ -30,6 +32,7 @@ import { defineComponent } from "vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
 import type { CompanyReport } from "@clients/backend";
+import ReportDataTable from "@/components/general/ReportDataTable.vue";
 
 export default defineComponent({
   name: "ShowMultipleReportsBanner",
@@ -42,6 +45,28 @@ export default defineComponent({
   props: {
     reports: { type: Array<{ [p: string]: CompanyReport }>, required: true },
     reportingPeriods: { type: Array<string>, required: true },
+  },
+  computed: {
+    modalOptions() {
+      return (report: CompanyReport) => ({
+        component: ReportDataTable,
+        props: {
+          header: "Report Details",
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          reportName: report.fileName,
+          reportReference: report.fileReference,
+          reportDate: report.reportDate,
+          reportCurrency: report.currency,
+          reportGroupLevel: report.isGroupLevel,
+        },
+      });
+    },
+    ReportDataTable() {
+      return ReportDataTable
+    },
   },
   mounted() {
     this.indexOfNewestReportingPeriod = this.calculateIndexOfNewestReportingPeriod(this.reportingPeriods);
