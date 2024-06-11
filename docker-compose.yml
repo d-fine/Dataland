@@ -505,7 +505,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://eurodat-client:8080}
-      IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:false}
+      IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR}
     extra_hosts:
      - "host.docker.internal:host-gateway"
   eurodat-client:
