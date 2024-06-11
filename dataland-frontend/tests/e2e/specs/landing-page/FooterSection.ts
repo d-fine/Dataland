@@ -7,7 +7,7 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, ARRAY_OF_PUBLIC_FRAMEWORKS } from "
 import { type DataTypeEnum } from "@clients/backend";
 
 describeIf(
-  "As a user, I expect the footer section to be present and contain relevant legal links",
+  "As a user, I expect the footer section to be present and contain relevant legal links for public frameworks",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     onlyExecuteWhenEurodatIsLive: false,
@@ -29,7 +29,7 @@ describeIf(
   },
 );
 describeIf(
-  "As a user, I expect the footer section to be present and contain relevant legal links",
+  "As a user, I expect the footer section to be present and contain relevant legal links for all frameworks",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     onlyExecuteWhenEurodatIsLive: true,
