@@ -1,6 +1,6 @@
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import currencyCodeData from "currency-codes/data";
-import { ReleaseMedium, RiskPositionType } from "@clients/backend";
+import { ReleaseMedium, RiskPositionType, WasteClassifications } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export interface DropdownOption {
@@ -12,6 +12,7 @@ export enum DropdownDatasetIdentifier {
   CurrencyCodes = "ISO 4217 Codes",
   RiskPositions = "Risk Positions",
   ReleaseMedium = "Release Medium",
+  WasteClassifications = "Waste classifications",
 }
 
 export type DropdownDataset = Array<DropdownOption>;
@@ -31,6 +32,8 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
       return getRiskPositionDropdownDataset();
     case DropdownDatasetIdentifier.ReleaseMedium:
       return getReleaseMediumDropdownDataset();
+    case DropdownDatasetIdentifier.WasteClassifications:
+      return getWasteClassificationsDropdownDataset();
   }
   throw Error(`Unknown dataset identifier ${datasetIdentifier as string}`);
 }
@@ -117,4 +120,19 @@ function getReleaseMediumDropdownDataset(): DropdownDataset {
     });
   });
   return releaseMediumDataset;
+}
+
+/**
+ * Retrieves a dropdown dataset of sme waste classification
+ * @returns a dropdown dataset of sme waste classification
+ */
+function getWasteClassificationsDropdownDataset(): DropdownDataset {
+  const WasteClassificationDataset: DropdownDataset = [];
+  Object.keys(WasteClassifications).forEach((it) => {
+    WasteClassificationDataset.push({
+      label: humanizeStringOrNumber(it),
+      value: it,
+    });
+  });
+  return WasteClassificationDataset;
 }
