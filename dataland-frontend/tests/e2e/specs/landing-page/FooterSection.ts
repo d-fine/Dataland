@@ -3,7 +3,7 @@ import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiU
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { checkFooter } from "@sharedUtils/ElementChecks";
-import { ARRAY_OF_PUBLIC_FRAMEWORKS, PRIVATE_FRAMEWORKS} from "@/utils/Constants";
+import { ARRAY_OF_PUBLIC_FRAMEWORKS, PRIVATE_FRAMEWORKS } from "@/utils/Constants";
 import { type DataTypeEnum } from "@clients/backend";
 
 describeIf(
