@@ -9,10 +9,26 @@ import { routes } from "@/router";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { defaultConfig, plugin } from "@formkit/vue";
+import { defineComponent, h } from "vue";
+import DynamicDialog from "primevue/dynamicdialog";
 
 interface DatalandMountOptions {
+  /**
+   * They global keycloak injection. Used to configure authentication for any API calls.
+   */
   keycloak?: Keycloak;
+  /**
+   * The router to use. If no router is provided, a memory router is used.
+   */
   router?: Router;
+  /**
+   * If set to true, the component is mounted with a dialog wrapper containing the component.
+   * WARNING: This implies that props will not be passed to the component directly, but to the wrapper.
+   */
+  dialogOptions?: {
+    mountWithDialog: true;
+    propsToPassToTheMountedComponent?: object;
+  };
 }
 /**
  * A higher-order function that returns a
@@ -29,6 +45,9 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     Therefore, we decided to create this un-checked meta-function.
   */
   return (component: any, options: any) => {
+    if (!options) {
+      options = {};
+    }
     options.global = options.global ?? {};
     options.global.stubs = options.global.stubs ?? {};
     options.global.plugins = options.global.plugins ?? [];
@@ -36,7 +55,19 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     options.global.plugins.push(PrimeVue);
     options.global.plugins.push(DialogService);
     options.global.provide = options.global.provide ?? {};
-    Object.assign(options.global.stubs, { transition: false });
+
+    let componentForMounting = component;
+    if (additionalOptions.dialogOptions) {
+      Object.assign(options.global.stubs, { transition: false });
+      componentForMounting = defineComponent({
+        render() {
+          return [
+            h(DynamicDialog),
+            h(component, additionalOptions.dialogOptions?.propsToPassToTheMountedComponent ?? {}),
+          ];
+        },
+      });
+    }
 
     if (additionalOptions?.router) {
       options.router = additionalOptions.router;
@@ -67,6 +98,6 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
       },
     });
 
-    return mount(component, options);
+    return mount(componentForMounting, options);
   };
 }
