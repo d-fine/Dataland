@@ -1,6 +1,11 @@
-package org.dataland.frameworktoolbox.intermediate.components
+package org.dataland.frameworktoolbox.frameworks.sfdr.custom
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -11,13 +16,13 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 /**
  * Class for the yes no NoEvidenceComponent
  */
-class YesNoNoEvidenceFoundComponent(
+class SfdrYesNoNoEvidenceFoundComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent, "org.dataland.datalandbackend.model.enums.commons.YesNoNoEvidenceFound") {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        //todo check if requireDocumentSupportIn(setOf(NoDocumentSupport, SimpleDocumentSupport)) is needed
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
@@ -36,17 +41,16 @@ class YesNoNoEvidenceFoundComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        // val uploadComponentNameToUse = when (documentSupport) {
-        //    is NoDocumentSupport -> "YesNoFormField"
-        //    is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
-        //    is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
-        //    else -> throw IllegalArgumentException(
-        //    "YesNoComponent does not support document support '$documentSupport")
-        // }
-        // uploadCategoryBuilder.addStandardUploadConfigCell(
-        //    component = this,
-        //    uploadComponentName = uploadComponentNameToUse,
-        // )
+        val uploadComponentNameToUse = when (documentSupport) {
+            is ExtendedDocumentSupport -> "YesNoNoEvidenceFoundExtendedDataPointFormField"
+            else -> throw IllegalArgumentException(
+            "YesNoNoEvidenceFoundComponent does not support document support '$documentSupport")
+         }
+         uploadCategoryBuilder.addStandardUploadConfigCell(
+            component = this,
+            uploadComponentName = uploadComponentNameToUse,
+         )
+
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {

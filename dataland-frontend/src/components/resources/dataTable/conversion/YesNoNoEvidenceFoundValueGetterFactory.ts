@@ -24,9 +24,8 @@ export function formatYesNoNoEvidenceFoundValueForDatatable(value: YesNoNoEviden
  * @param path the path to the field
  * @returns the created getter
  */
-//todo check if eslint is needed
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function yesNoValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
+//eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function yesNoNoEvidenceFoundValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
     return (dataset) => {
         return formatYesNoNoEvidenceFoundValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNoEvidenceFound | null | undefined);
     };

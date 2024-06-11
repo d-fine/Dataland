@@ -1,10 +1,11 @@
-package org.dataland.frameworktoolbox.template.components
+package org.dataland.frameworktoolbox.frameworks.sfdr.custom
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.YesNoNoEvidenceFoundComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
+import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
+import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component
  * Class for the yes no NoEvidenceComponent Factory
  */
 @Component
-class YesNoNoEvidenceFoundComponentFactory(
+class SfdrYesNoNoEvidenceFoundComponentFactory(
     @Autowired val templateDiagnostic: TemplateDiagnostic,
 ) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Yes/No/No Evidence Found"
@@ -26,7 +27,7 @@ class YesNoNoEvidenceFoundComponentFactory(
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<YesNoNoEvidenceFoundComponent>(
+        return componentGroup.create<SfdrYesNoNoEvidenceFoundComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
