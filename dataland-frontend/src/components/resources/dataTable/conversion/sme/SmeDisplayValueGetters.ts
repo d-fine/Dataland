@@ -5,7 +5,13 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { type SmeSubsidiary, type SmePollutionEmission, type ReleaseMedium } from "@clients/backend";
+import {
+  type SmeSubsidiary,
+  type SmePollutionEmission,
+  type ReleaseMedium,
+  type SmeWasteClassificationObject,
+  type SmeSiteAndAreas,
+} from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export const smeModalColumnHeaders = {
@@ -25,9 +31,9 @@ export const smeModalColumnHeaders = {
     wasteRecycleOrReuseTons: "Waste recycle or reuse tons",
     wasteDisposalTons: "Waste disposal in tons",
     totalAmountCubicMeters: "Total amount in cubic meters",
-    wasteRecycleOrReuseInCubicMeters:"Waste recycle or reuse in m³",
-    wasteDisposalCubicMeters: "Waste disposal in m³"
-  }
+    wasteRecycleOrReuseInCubicMeters: "Waste recycle or reuse in m³",
+    wasteDisposalCubicMeters: "Waste disposal in m³",
+  },
 };
 interface SmePollutionEmissionDisplayFormat {
   pollutionType: string;
@@ -36,8 +42,8 @@ interface SmePollutionEmissionDisplayFormat {
 }
 
 interface SmeWasteClassificationDisplayFormat {
-  wasteClassification: string,
-  typeWaste: string,
+  wasteClassification: string;
+  typeWaste: string;
   totalAmountTons: number;
   wasteRecycleOrReuseTons: number;
   wasteDisposalTons: number;
@@ -124,8 +130,8 @@ export function formatSmePollutionEmissionForDisplay(
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmeWasteClassificationObjectForDisplay(
-    input: SmeWasteClassificationObject[] | null | undefined,
-    fieldLabel: string,
+  input: SmeWasteClassificationObject[] | null | undefined,
+  fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
   if (!input) {
@@ -155,8 +161,6 @@ export function formatSmeWasteClassificationObjectForDisplay(
   };
 }
 
-
-
 /**
  * Convert an object of type LksgSubcontractingCompanies into a list that can be displayed using the standard
  * modal DataTable
@@ -181,7 +185,9 @@ function convertSmePollutionEmissionToListForModal(datasetValue: SmePollutionEmi
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
-function convertSmeWasteClassificationToListForModal(datasetValue: SmeWasteClassificationObject[]): SmeWasteClassificationObject[] {
+function convertSmeWasteClassificationToListForModal(
+  datasetValue: SmeWasteClassificationObject[],
+): SmeWasteClassificationObject[] {
   return datasetValue.map((item) => {
     const humanizedItem: SmeWasteClassificationDisplayFormat = {
       wasteClassification: humanizeStringOrNumber(item.wasteClassification),
@@ -191,9 +197,13 @@ function convertSmeWasteClassificationToListForModal(datasetValue: SmeWasteClass
       wasteDisposalTons: item.wasteDisposalTons!,
       totalAmountCubicMeters: item.totalAmountCubicMeters!,
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseCubicMeters!,
-      wasteDisposalCubicMeters: item.wasteDisposalCubicMeters!
+      wasteDisposalCubicMeters: item.wasteDisposalCubicMeters!,
       //TODO come back here and see if ! are really necessary
     };
     return humanizedItem;
   });
+}
+
+export function formatSmeSiteAndAreaForDisplay(datasetValue: SmeSiteAndAreas[]): SmeSiteAndAreas[] {
+  return datasetValue;
 }

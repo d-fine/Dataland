@@ -66,7 +66,7 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 
 export default defineComponent({
-  name: "GrievanceMechanismAssessmentFormElement",
+  name: "WasteClassificationFormElement",
   data() {
     return {
       wasteClassifications: getDataset(DropdownDatasetIdentifier.WasteClassifications),

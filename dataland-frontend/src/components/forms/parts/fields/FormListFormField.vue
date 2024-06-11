@@ -44,6 +44,7 @@ import GeneralViolationsAssessmentFormElement from "@/components/forms/parts/ele
 import GrievanceMechanismAssessmentFormElement from "@/components/forms/parts/elements/derived/GrievanceMechanismAssessmentFormElement.vue";
 import PollutionEmissionFormElement from "@/components/forms/parts/elements/derived/PollutionEmissionFormElement.vue";
 import SubsidiaryFormElement from "@/components/forms/parts/elements/derived/SubsidiaryFormElement.vue";
+import WasteClassificationFormElement from "@/components/forms/parts/elements/derived/WasteClassificationFormElement.vue";
 
 export default defineComponent({
   name: "FormListFormField",
@@ -62,6 +63,7 @@ export default defineComponent({
     PrimeButton,
     PollutionEmissionFormElement,
     SubsidiaryFormElement,
+    WasteClassificationFormElement,
   },
   data() {
     return {

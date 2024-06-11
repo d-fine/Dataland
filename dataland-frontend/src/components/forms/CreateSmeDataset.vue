@@ -130,6 +130,7 @@ import SubsidiaryFormField from "@/components/forms/parts/fields/SubsidiaryFormF
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
+import WasteClassificationFormField from "@/components/forms/parts/fields/WasteClassificationFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -161,6 +162,7 @@ export default defineComponent({
     FreeTextFormField,
     YesNoBaseDataPointFormField,
     RadioButtonsFormField,
+    WasteClassificationFormField,
   },
   emits: ["datasetCreated"],
   data() {
