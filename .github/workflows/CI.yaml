@@ -384,6 +384,7 @@ jobs:
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          CYPRESS_IGNORE_EXTERNAL_STORAGE: "false"
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
