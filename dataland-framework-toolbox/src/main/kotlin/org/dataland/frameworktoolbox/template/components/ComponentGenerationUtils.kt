@@ -107,5 +107,6 @@ open class ComponentGenerationUtils {
         requireNotNull(myField)
 
         myField.availableIf = DependsOnComponentValue(dependencyField, row.showWhenValueIs)
+        //TODO if condition einbauen die wenn row.showWhenValueIs = > die neue Funktion aufruft
     }
 }

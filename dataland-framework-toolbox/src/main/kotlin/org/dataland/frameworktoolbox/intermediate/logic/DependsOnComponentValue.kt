@@ -16,4 +16,6 @@ class DependsOnComponentValue(var component: ComponentBase, var value: String) :
                 "== \"${StringEscapeUtils.escapeEcmaScript(value)}\"",
         )
     }
+    //TODO Vergleichbare neue Funktion anlegen, die den Fall für > handled. Könnte DependsOnCompnentValueNumeric heißen
+    //TODO Gegebenenfalls muss für den numerischen Wert ein parseInt verwendet werden
 }
