@@ -3,30 +3,30 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table v-if="reportData" class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
-        <tr>
-          <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
-          <td>
-            <DocumentLink
-              :download-name="reportData.reportName"
-              :fileReference="reportData.reportReference"
-              data-type=""
-              font-style="font-semibold"
-              show-icon
-          />
-          </td>
-        </tr>
-        <tr v-if="reportData.reportDate">
-          <th class="headers-bg width-auto"><span class="table-left-label">Report date</span></th>
-          <td>{{ reportData.reportDate }}</td>
-        </tr>
-        <tr v-if="reportData.reportCurrency">
-          <th class="headers-bg width-auto"><span class="table-left-label">Report currency</span></th>
-          <td>{{ reportData.reportCurrency }}</td>
-        </tr>
-        <tr v-if="reportData.reportGroupLevel !== undefined">
-          <th class="headers-bg width-auto"><span class="table-left-label">Group Level</span></th>
-          <td>{{ reportData.reportGroupLevel ? 'Yes' : 'No' }}</td>
-        </tr>
+          <tr>
+            <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
+            <td>
+              <DocumentLink
+                :download-name="reportData.reportName"
+                :fileReference="reportData.reportReference"
+                data-type=""
+                font-style="font-semibold"
+                show-icon
+              />
+            </td>
+          </tr>
+          <tr v-if="reportData.reportDate">
+            <th class="headers-bg width-auto"><span class="table-left-label">Report date</span></th>
+            <td>{{ reportData.reportDate }}</td>
+          </tr>
+          <tr v-if="reportData.reportCurrency">
+            <th class="headers-bg width-auto"><span class="table-left-label">Report currency</span></th>
+            <td>{{ reportData.reportCurrency }}</td>
+          </tr>
+          <tr v-if="reportData.reportGroupLevel !== undefined">
+            <th class="headers-bg width-auto"><span class="table-left-label">Group level report?</span></th>
+            <td>{{ reportData.reportGroupLevel ? "Yes" : "No" }}</td>
+          </tr>
         </tbody>
       </table>
     </div>

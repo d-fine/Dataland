@@ -8,13 +8,12 @@
     <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <a
-            @click="$dialog.open(ReportDataTable, modalOptions(report))"
-            class="link"
-            :data-test="`report-link-${name}`"
+          @click="$dialog.open(ReportDataTable, modalOptions(report, name as string))"
+          class="link"
+          :data-test="`report-link-${name}`"
         >
-          <span>{{name}}</span>
-
-    </a>
+          <span>{{ name }}</span>
+        </a>
       </span>
     </div>
     <span
@@ -29,14 +28,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
 import type { CompanyReport } from "@clients/backend";
 import ReportDataTable from "@/components/general/ReportDataTable.vue";
 
 export default defineComponent({
   name: "ShowMultipleReportsBanner",
-  components: { DocumentLink },
   data() {
     return {
       indexOfNewestReportingPeriod: -1 as number,
@@ -48,7 +45,7 @@ export default defineComponent({
   },
   computed: {
     modalOptions() {
-      return (report: CompanyReport) => ({
+      return (report: CompanyReport, reportName: string) => ({
         component: ReportDataTable,
         props: {
           header: "Report Details",
@@ -56,7 +53,7 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          reportName: report.fileName,
+          reportName: report.fileName ? report.fileName : reportName,
           reportReference: report.fileReference,
           reportDate: report.reportDate,
           reportCurrency: report.currency,
@@ -65,7 +62,7 @@ export default defineComponent({
       });
     },
     ReportDataTable() {
-      return ReportDataTable
+      return ReportDataTable;
     },
   },
   mounted() {

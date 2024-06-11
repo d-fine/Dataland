@@ -45,7 +45,8 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  type EutaxonomyNonFinancialsData, SfdrData,
+  type EutaxonomyNonFinancialsData,
+  type SfdrData,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -92,8 +93,7 @@ const sortedReports = computed(() => {
     }
     case DataTypeEnum.Sfdr: {
       return sortedDataAndMetaInfo.value.map(
-          (singleDataAndMetaInfo) =>
-              (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports,
+        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports,
       );
     }
     default: {
