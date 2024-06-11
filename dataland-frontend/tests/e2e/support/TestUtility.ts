@@ -39,7 +39,7 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
       });
     });
   }
-  if (execConfig.onlyExecuteWhenEurodatIsLive && ignoreExternalStorage) {
+  if (execConfig.onlyExecuteWhenEurodatIsLive && !ignoreExternalStorage) {
     return describe(`${name} - Disabled`, () => {
       it(`Has been disabled because the tests are only run when eurodat is live`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed

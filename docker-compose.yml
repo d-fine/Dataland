@@ -198,7 +198,6 @@ services:
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
-      CYPRESS_IGNORE_EXTERNAL_STORAGE: ${CYPRESS_IGNORE_EXTERNAL_STORAGE:-false}
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin

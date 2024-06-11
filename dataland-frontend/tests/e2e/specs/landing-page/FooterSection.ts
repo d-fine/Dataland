@@ -3,7 +3,7 @@ import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiU
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { checkFooter } from "@sharedUtils/ElementChecks";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, ARRAY_OF_PUBLIC_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_PUBLIC_FRAMEWORKS, PRIVATE_FRAMEWORKS} from "@/utils/Constants";
 import { type DataTypeEnum } from "@clients/backend";
 
 describeIf(
@@ -29,7 +29,7 @@ describeIf(
   },
 );
 describeIf(
-  "As a user, I expect the footer section to be present and contain relevant legal links for all frameworks",
+  "As a user, I expect the footer section to be present and contain relevant legal links for private frameworks",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     onlyExecuteWhenEurodatIsLive: true,
@@ -44,7 +44,7 @@ describeIf(
         cy.visitAndCheckAppMount("/companies");
         checkFooter();
       });
-      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+      PRIVATE_FRAMEWORKS.forEach((framework) => {
         checkFooterComponent(framework);
       });
     });
