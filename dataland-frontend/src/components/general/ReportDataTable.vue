@@ -9,6 +9,7 @@
             <DocumentLink
               :download-name="reportData.reportName"
               :fileReference="reportData.reportReference"
+              data-type=""
               font-style="font-semibold"
               show-icon
           />
@@ -37,9 +38,9 @@ import { defineComponent } from "vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 export default defineComponent({
-  name: "ReportDataTable",
-  components: {DocumentLink},
+  components: { DocumentLink },
   inject: ["dialogRef"],
+  name: "ReportDataTable",
   data() {
     return {
       reportData: {
