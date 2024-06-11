@@ -397,6 +397,7 @@ jobs:
           FRONTEND_LOCATION_CONFIG: "Test"
           INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          IGNORE_EXTERNAL_STORAGE_ERROR: "false"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
