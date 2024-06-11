@@ -10,7 +10,7 @@ describeIf(
   "As a user, I expect the footer section to be present and contain relevant legal links",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteWhenEurodatIsLive: true,
+    onlyExecuteWhenEurodatIsLive: false,
   },
   () => {
     describe("Checks that the footer section is present on many pages", () => {
@@ -32,7 +32,7 @@ describeIf(
   "As a user, I expect the footer section to be present and contain relevant legal links",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    onlyExecuteWhenEurodatIsLive: false,
+    onlyExecuteWhenEurodatIsLive: true,
   },
   () => {
     describe("Checks that the footer section is present on many pages", () => {
