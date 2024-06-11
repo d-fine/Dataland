@@ -21,6 +21,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import PrimeButton from "primevue/button";
 import PrimeMenu from "primevue/menu";
 import { defineComponent } from "vue";

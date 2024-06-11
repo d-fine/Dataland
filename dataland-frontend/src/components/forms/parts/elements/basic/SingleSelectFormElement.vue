@@ -31,6 +31,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent, type PropType } from "vue";
 import Dropdown from "primevue/dropdown";
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";

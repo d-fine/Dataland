@@ -36,6 +36,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";

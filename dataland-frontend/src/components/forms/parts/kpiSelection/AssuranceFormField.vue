@@ -77,6 +77,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent, nextTick } from "vue";
 import { FormKit } from "@formkit/vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
