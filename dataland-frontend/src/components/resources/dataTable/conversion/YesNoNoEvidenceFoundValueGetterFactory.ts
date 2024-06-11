@@ -1,22 +1,24 @@
-import {YesNoNoEvidenceFound} from "@clients/backend";
-import {HumanizedYesNoNoEvidenceFound} from "@/utils/YesNoNa";
+import { type YesNoNoEvidenceFound } from "@clients/backend";
+import { HumanizedYesNoNoEvidenceFound } from "@/utils/YesNoNa";
 import {
-    AvailableMLDTDisplayObjectTypes,
-    MLDTDisplayComponentName
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayComponentName,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import {getFieldValueFromFrameworkDataset} from "@/components/resources/dataTable/conversion/Utils";
+import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 
 /**
  * Formats the provided Yes/No/NoEvidenceFound value for the data-table
  * @param value the value to display
  * @returns the value formatted for display
  */
-export function formatYesNoNoEvidenceFoundValueForDatatable(value: YesNoNoEvidenceFound | undefined | null): AvailableMLDTDisplayObjectTypes {
-    const displayValue = value ? HumanizedYesNoNoEvidenceFound[value] : "";
-    return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: displayValue,
-    };
+export function formatYesNoNoEvidenceFoundValueForDatatable(
+  value: YesNoNoEvidenceFound | undefined | null,
+): AvailableMLDTDisplayObjectTypes {
+  const displayValue = value ? HumanizedYesNoNoEvidenceFound[value] : "";
+  return {
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    displayValue: displayValue,
+  };
 }
 
 /**
@@ -24,9 +26,13 @@ export function formatYesNoNoEvidenceFoundValueForDatatable(value: YesNoNoEviden
  * @param path the path to the field
  * @returns the created getter
  */
-//eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function yesNoNoEvidenceFoundValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-    return (dataset) => {
-        return formatYesNoNoEvidenceFoundValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNoEvidenceFound | null | undefined);
-    };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function yesNoNoEvidenceFoundValueGetterFactory(
+  path: string,
+): (dataset: any) => AvailableMLDTDisplayObjectTypes {
+  return (dataset) => {
+    return formatYesNoNoEvidenceFoundValueForDatatable(
+      getFieldValueFromFrameworkDataset(path, dataset) as YesNoNoEvidenceFound | null | undefined,
+    );
+  };
 }
