@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 

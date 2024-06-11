@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {

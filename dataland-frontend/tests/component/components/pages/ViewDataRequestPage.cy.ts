@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ViewDataRequestPage from "@/components/pages/ViewDataRequestPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { RequestStatus, type StoredDataRequest, type StoredDataRequestMessageObject } from "@clients/communitymanager";

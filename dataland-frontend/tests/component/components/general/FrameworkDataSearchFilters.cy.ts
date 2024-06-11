@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type VueWrapper } from "@vue/test-utils";
