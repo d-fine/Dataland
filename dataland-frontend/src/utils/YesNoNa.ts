@@ -14,7 +14,7 @@ export const HumanizedYesNoNa: { [key in YesNoNa]: string } = {
 export const HumanizedYesNoNoEvidenceFound: { [key in YesNoNoEvidenceFound]: string } = {
   Yes: HumanizedYesNo.Yes,
   No: HumanizedYesNo.No,
-  NoEvidenceFound: "No Evidence Found",
+  NoEvidenceFound: "No evidence found",
 };
 
 /**
