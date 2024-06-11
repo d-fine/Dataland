@@ -4,14 +4,15 @@ import {
   pickOneElement,
   pickSubsetOfElements,
 } from "@e2e/fixtures/FixtureUtils";
-import {generateYesNo, generateYesNoNa, generateYesNoNoEvidenceFound} from "@e2e/fixtures/common/YesNoFixtures";
+import { generateYesNo, generateYesNoNa, generateYesNoNoEvidenceFound } from "@e2e/fixtures/common/YesNoFixtures";
 import {
   type AmountWithCurrency,
   type CurrencyDataPoint,
   type ExtendedDocumentReference,
   QualityOptions,
   type YesNo,
-  type YesNoNa, YesNoNoEvidenceFound,
+  type YesNoNa,
+  type YesNoNoEvidenceFound,
 } from "@clients/backend";
 import { generateCurrencyValue, generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments, getReferencedDocumentId } from "@e2e/utils/DocumentReference";
@@ -71,7 +72,6 @@ export class Generator {
   guaranteedYesNoNoEvidenceFound(): YesNoNoEvidenceFound {
     return generateYesNoNoEvidenceFound();
   }
-
 
   randomPercentageValue(): number | null {
     return this.valueOrNull(this.guaranteedPercentageValue());
