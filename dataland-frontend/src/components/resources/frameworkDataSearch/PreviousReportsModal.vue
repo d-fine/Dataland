@@ -9,7 +9,13 @@
           class="row mb-2"
           data-test="previousReportsList"
         >
-          <DocumentLink :download-name="nameInner" :fileReference="report.fileReference" show-icon />
+          <a
+              @click="$dialog.open(ReportDataTable, modalOptions(report, nameInner as string))"
+              class="link"
+              :data-test="`report-link-${nameInner}`"
+          >
+            <span>{{ nameInner }}</span>
+          </a>
         </div>
       </div>
     </div>
@@ -21,9 +27,10 @@ import { defineComponent } from "vue";
 import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import type { CompanyReport } from "@clients/backend";
+import ReportDataTable from "@/components/general/ReportDataTable.vue";
 
 export default defineComponent({
-  components: { DocumentLink },
+  components: { DocumentLink , ReportDataTable },
   inject: ["dialogRef"],
   name: "PreviousReportsModal",
   data() {
@@ -32,6 +39,28 @@ export default defineComponent({
       referencedReportsList: [] as Array<{ [p: string]: CompanyReport }>,
       indexOfNewestReportingPeriod: 9999 as number,
     };
+  },
+  computed: {
+    modalOptions() {
+      return (report: CompanyReport, reportName: string) => ({
+        component: ReportDataTable,
+        props: {
+          header: "Report Details",
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          reportName: report.fileName ? report.fileName : reportName,
+          reportReference: report.fileReference,
+          reportDate: report.reportDate,
+          reportCurrency: report.currency,
+          reportGroupLevel: report.isGroupLevel,
+        },
+      });
+    },
+    ReportDataTable() {
+      return ReportDataTable;
+    },
   },
   created() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
