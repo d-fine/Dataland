@@ -14,9 +14,7 @@ import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/
 import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
-import {
-  yesNoNoEvidenceFoundValueGetterFactory
-} from "@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory";
+import { yesNoNoEvidenceFoundValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
