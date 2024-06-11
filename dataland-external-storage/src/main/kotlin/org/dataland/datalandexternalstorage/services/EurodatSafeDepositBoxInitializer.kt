@@ -25,6 +25,8 @@ class EurodatSafeDepositBoxInitializer(
     @Autowired var safeDepositDatabaseResourceClient: SafeDepositDatabaseResourceApi,
     @Value("\${dataland.eurodatclient.app-name}")
     private val eurodatAppName: String,
+    @Value("\${dataland.eurodatclient.ignore-error}")
+    private val isErrorIgnored: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -32,11 +34,22 @@ class EurodatSafeDepositBoxInitializer(
      * Tries to create a safe deposit box in EuroDaT for storage of Dataland data a pre-defined number of times and
      * then throws a final exception after the retries are used up.
      */
+    @Suppress("TooGenericExceptionCaught")
     @PostConstruct
     fun createSafeDepositBox() {
         logger.info("Checking if safe deposit box exits. If not creating safe deposit box")
-        retryWrapperMethod("create SafeDepositBox in EuroDaT") {
-            isSafeDepositBoxAvailable()
+        if (isErrorIgnored) {
+            try { retryWrapperMethod("create SafeDepositBox in EuroDaT") {
+                isSafeDepositBoxAvailable()
+            } } catch (e: Exception) {
+                logger.error(
+                    "An error occurred while trying to create the eurodat safedepositbox$: ${e.message}.",
+                )
+            }
+        } else {
+            retryWrapperMethod("create SafeDepositBox in EuroDaT") {
+                isSafeDepositBoxAvailable()
+            }
         }
     }
 
