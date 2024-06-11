@@ -37,20 +37,20 @@ class SfdrYesNoNoEvidenceFoundComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
-         )
+        )
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         val uploadComponentNameToUse = when (documentSupport) {
             is ExtendedDocumentSupport -> "YesNoNoEvidenceFoundExtendedDataPointFormField"
             else -> throw IllegalArgumentException(
-            "YesNoNoEvidenceFoundComponent does not support document support '$documentSupport")
-         }
-         uploadCategoryBuilder.addStandardUploadConfigCell(
+                "YesNoNoEvidenceFoundComponent does not support document support '$documentSupport",
+            )
+        }
+        uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = uploadComponentNameToUse,
-         )
-
+        )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
