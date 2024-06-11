@@ -13,7 +13,8 @@
       data-test="multipleReportsBanner"
       v-if="
         frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
-        frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials
+        frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials ||
+        frameworkIdentifier == DataTypeEnum.Sfdr
       "
       :reporting-periods="sortedReportingPeriods"
       :reports="sortedReports"
@@ -44,7 +45,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  type EutaxonomyNonFinancialsData,
+  type EutaxonomyNonFinancialsData, SfdrData,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -87,6 +88,12 @@ const sortedReports = computed(() => {
     case DataTypeEnum.EutaxonomyFinancials: {
       return sortedDataAndMetaInfo.value.map(
         (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports,
+      );
+    }
+    case DataTypeEnum.Sfdr: {
+      return sortedDataAndMetaInfo.value.map(
+          (singleDataAndMetaInfo) =>
+              (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports,
       );
     }
     default: {
