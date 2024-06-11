@@ -50,6 +50,11 @@ describeIf(
     });
   },
 );
+
+/**
+ * This method visits the a dataset page for a given framework and checks if the footer is visible
+ * @param framework of the dataset for which the footer should be checked
+ */
 function checkFooterComponent(framework: DataTypeEnum) {
   it(`Checks that the footer is present on ${framework}`, () => {
     getKeycloakToken(reader_name, reader_pw).then((token) => {
