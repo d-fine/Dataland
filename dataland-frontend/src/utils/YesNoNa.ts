@@ -1,4 +1,4 @@
-import {type YesNo, type YesNoNa, YesNoNoEvidenceFound} from "@clients/backend";
+import { type YesNo, type YesNoNa, type YesNoNoEvidenceFound } from "@clients/backend";
 
 export const HumanizedYesNo: { [key in YesNo]: string } = {
   Yes: "Yes",
