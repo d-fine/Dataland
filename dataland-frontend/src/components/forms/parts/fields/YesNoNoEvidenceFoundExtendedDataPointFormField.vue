@@ -1,17 +1,15 @@
 <template>
-
   <div class="mb-3" :data-test="name">
     <ExtendedDataPointFormField
-        :name="name"
-        :description="description"
-        :label="label"
-        :required="required"
-        :input-class="inputClass"
-        :options="HumanizedYesNoNoEvidenceFound"
-        :check-value-validity="hasDataPointProperValue"
-        :isDataPointToggleable="isDataPointToggleable">
-      </ExtendedDataPointFormField
-    >
+      :name="name"
+      :description="description"
+      :label="label"
+      :required="required"
+      :input-class="inputClass"
+      :options="HumanizedYesNoNoEvidenceFound"
+      :check-value-validity="hasDataPointProperValue"
+      :isDataPointToggleable="isDataPointToggleable"
+    />
   </div>
 </template>
 
