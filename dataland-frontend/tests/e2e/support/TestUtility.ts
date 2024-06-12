@@ -3,6 +3,7 @@ import { type Suite } from "mocha";
 export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
   onlyExecuteOnDatabaseReset?: boolean;
+  onlyExecuteWhenEurodatIsLive?: boolean;
 }
 export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" | "previewCd";
 
@@ -16,6 +17,7 @@ export type ExecutionEnvironment = "developmentLocal" | "ci" | "developmentCd" |
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
   const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT") as ExecutionEnvironment;
   const isDatabaseReset = Cypress.env("RESET_DATABASE") as ExecutionEnvironment;
+  const ignoreExternalStorage = Cypress.env("IGNORE_EXTERNAL_STORAGE") as ExecutionEnvironment;
 
   if (execConfig.executionEnvironments.indexOf(executionEnvironment) === -1) {
     return describe(`${name} - Disabled`, () => {
@@ -33,6 +35,13 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
   ) {
     return describe(`${name} - Disabled`, () => {
       it(`Has been disabled because the tests are only run when the databases are reset`, () => {
+        // Stub-Test just so its displayed why test suit wasn't executed
+      });
+    });
+  }
+  if (execConfig.onlyExecuteWhenEurodatIsLive && ignoreExternalStorage) {
+    return describe(`${name} - Disabled`, () => {
+      it(`Has been disabled because the tests are only run when eurodat is live`, () => {
         // Stub-Test just so its displayed why test suit wasn't executed
       });
     });
