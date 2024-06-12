@@ -47,6 +47,9 @@ data class StoredCompanyEntity(
     @OneToMany(mappedBy = "company")
     var identifiers: MutableList<CompanyIdentifierEntity>,
 
+    @Column(name = "parent_company_lei")
+    var parentCompanyLei: String?,
+
     @OneToMany(mappedBy = "company")
     val dataRegisteredByDataland: MutableList<DataMetaInformationEntity>,
 
@@ -62,7 +65,7 @@ data class StoredCompanyEntity(
     @JsonValue
     override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
         val identifierMap = mutableMapOf<IdentifierType, MutableList<String>>()
-        for (identifierType in IdentifierType.values()) {
+        for (identifierType in IdentifierType.entries) {
             identifierMap[identifierType] = mutableListOf()
         }
 
@@ -87,6 +90,7 @@ data class StoredCompanyEntity(
                 countryCode = countryCode,
                 isTeaserCompany = isTeaserCompany,
                 website = website,
+                parentCompanyLei = parentCompanyLei,
             ),
             dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
         )
