@@ -62,7 +62,7 @@ class CompanyDataControllerTest {
             companyName = startingCompanyInformation.companyName + "-UPDATED",
             website = "Updated Website",
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
             companyId,
             patchObject,
@@ -83,7 +83,7 @@ class CompanyDataControllerTest {
 
     @Test
     fun `post a dummy company and check if patching identifiers works as expected`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyInformationToUpload = apiAccessor
             .testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithRandomIdentifiers(1)
@@ -120,7 +120,7 @@ class CompanyDataControllerTest {
         val patchObject = CompanyInformationPatch(
             companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
             companyId,
             patchObject,
@@ -142,7 +142,7 @@ class CompanyDataControllerTest {
             identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
             countryCode = "DE",
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, putCompanyInformation)
         assertEquals(
             putCompanyInformation.companyName, updatedCompany.companyInformation.companyName,
@@ -178,7 +178,7 @@ class CompanyDataControllerTest {
         val put2CompanyInformation = put1CompanyInformation.copy(
             identifiers = mapOf(IdentifierType.Lei.value to listOf("Test-Lei${UUID.randomUUID()}")),
         )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         var updatedCompany = apiAccessor.companyDataControllerApi.putCompanyById(companyId, put1CompanyInformation)
         assertTrue(
             put1CompanyInformation.identifiers[IdentifierType.Duns.value]!!.toSet() ==
@@ -266,7 +266,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1).first()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
@@ -283,7 +283,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company twice and receive the expected error code and message`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithRandomIdentifiers(1).first()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val storedCompany = apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
 
         val storedCompanyIdentifier = storedCompany

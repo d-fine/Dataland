@@ -1,4 +1,13 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
+import {
+  reader_name,
+  reader_pw,
+  uploader_name,
+  uploader_pw,
+  reviewer_name,
+  reviewer_pw,
+  admin_name,
+  admin_pw,
+} from "@e2e/utils/Cypress";
 import { DataTypeEnum } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -18,7 +27,7 @@ describeIf(
     const noPermissionMessage = "h1:contains('You do not have permission')";
 
     before(() => {
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+      getKeycloakToken(admin_name, admin_pw).then(async (token) => {
         const storedCompany = await uploadCompanyViaApi(token, generateCompanyInformation());
         companyId = storedCompany.companyId;
         readerAndUploaderPages = [
