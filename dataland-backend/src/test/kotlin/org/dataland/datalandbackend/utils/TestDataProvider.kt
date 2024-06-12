@@ -25,7 +25,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
 
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return getCompanyInformation(requiredQuantity)
-            .map { it.copy(identifiers = IdentifierType.values().associateWith { emptyList() }) }
+            .map { it.copy(identifiers = IdentifierType.entries.associateWith { emptyList() }) }
     }
 
     fun getEuTaxonomyNonFinancialsDataset(): EutaxonomyNonFinancialsData {
@@ -42,6 +42,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
             null,
             "",
             mutableListOf(),
+            null,
             mutableListOf(),
             "",
             false,
