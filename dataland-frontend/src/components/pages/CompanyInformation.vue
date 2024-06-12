@@ -53,6 +53,15 @@
           <span>LEI: </span>
           <span class="font-semibold" data-test="lei-visible">{{ displayLei }}</span>
         </div>
+        <div class="company-details__info">
+          <span>Parent Company: </span>
+          <span v-if="hasParentCompany" class="font-semibold" style="cursor: pointer">
+            <a class="link" style="display: inline-flex" data-test="parent-visible" @click="visitParentCompany()">
+              {{ parentCompany?.companyName }}</a
+            ></span
+          >
+          <span v-if="!hasParentCompany" data-test="parent-visible" class="font-semibold">—</span>
+        </div>
       </div>
     </div>
     <div v-else-if="companyIdDoesNotExist" class="col-12">
@@ -64,7 +73,7 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, type PropType } from "vue";
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
+import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
@@ -73,6 +82,7 @@ import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
+import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -93,6 +103,8 @@ export default defineComponent({
       hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
+      hasParentCompany: undefined as boolean | undefined,
+      parentCompany: null as CompanyIdAndName | null,
     };
   },
   computed: {
@@ -156,6 +168,16 @@ export default defineComponent({
   },
   methods: {
     /**
+     * triggers route push to parent company if the parent company exists
+     * @returns route push
+     */
+    async visitParentCompany() {
+      if (this.parentCompany) {
+        const parentCompanyUrl = `/companies/${this.parentCompany.companyId}`;
+        return this.$router.push(parentCompanyUrl);
+      }
+    },
+    /**
      * Updates the hasCompanyDataOwner in an async way
      */
     async updateHasCompanyDataOwner() {
@@ -168,6 +190,27 @@ export default defineComponent({
       this.dialogIsOpen = false;
     },
     /**
+     * Gets the parent company based on the lei
+     * @param parentCompanyLei lei of the parent company
+     */
+    async getParentCompany(parentCompanyLei: string) {
+      try {
+        const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
+          parentCompanyLei,
+          assertDefined(this.getKeycloakPromise)(),
+          1,
+        );
+        if (companyIdAndNames.length > 0) {
+          this.parentCompany = companyIdAndNames[0];
+          this.hasParentCompany = true;
+        } else {
+          this.hasParentCompany = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    /**
      * Uses the dataland API to retrieve information about the company identified by the local
      * companyId object.
      */
@@ -178,6 +221,13 @@ export default defineComponent({
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
+          if (this.companyInformation.parentCompanyLei != null) {
+            this.getParentCompany(this.companyInformation.parentCompanyLei).catch(() => {
+              console.error(`Unable to find company with LEI: ${this.companyInformation?.parentCompanyLei}`);
+            });
+          } else {
+            this.hasParentCompany = false;
+          }
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }

@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyId
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -28,20 +29,24 @@ class CompanyUploaderTest {
     private lateinit var companyUploader: CompanyUploader
     private lateinit var mockStoredCompany: StoredCompany
 
-    private val dummyCompanyInformation1 = GleifCompanyInformation(
-        companyName = "CompanyName1",
-        countryCode = "CompanyCountry",
-        headquarters = "CompanyCity",
-        headquartersPostalCode = "CompanyPostalCode",
-        lei = "DummyLei1",
+    private val dummyCompanyInformation1 = GleifCompanyCombinedInformation(
+        GleifCompanyInformation(
+            companyName = "CompanyName1",
+            countryCode = "CompanyCountry",
+            headquarters = "CompanyCity",
+            headquartersPostalCode = "CompanyPostalCode",
+            lei = "DummyLei1",
+        ),
     )
 
-    private val dummyCompanyInformation2 = GleifCompanyInformation(
-        companyName = "CompanyName2",
-        countryCode = "CompanyCountry",
-        headquarters = "CompanyCity",
-        headquartersPostalCode = "CompanyPostalCode",
-        lei = "DummyLei2",
+    private val dummyCompanyInformation2 = GleifCompanyCombinedInformation(
+        GleifCompanyInformation(
+            companyName = "CompanyName2",
+            countryCode = "CompanyCountry",
+            headquarters = "CompanyCity",
+            headquartersPostalCode = "CompanyPostalCode",
+            lei = "DummyLei2",
+        ),
     )
 
     @BeforeEach
@@ -72,6 +77,55 @@ class CompanyUploaderTest {
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, "1000")
         verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
+    }
+
+    @Test
+    fun `check that the relationship update makes the intended calls`() {
+        val finalParentMapping = mutableMapOf<String, String>()
+        val mockLei = "abcd"
+        val mockCompanyID = "testCompanyId"
+        val mockParentLei = "defg"
+        finalParentMapping[mockLei] = mockParentLei
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+            .thenReturn(CompanyId(mockCompanyID))
+
+        companyUploader.updateRelationships(finalParentMapping)
+
+        val compPatch = CompanyInformationPatch(parentCompanyLei = mockParentLei)
+
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
+        verify(mockCompanyDataControllerApi, times(1)).patchCompanyById(mockCompanyID, compPatch)
+    }
+
+    @Test
+    fun `test if any ClientException except status not found leads to a retry`() {
+        val finalParentMapping = mutableMapOf<String, String>()
+        val mockLei = "abcd"
+        finalParentMapping[mockLei] = "defg"
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+            .thenThrow(ClientException(statusCode = HttpStatus.NOT_IMPLEMENTED.value()))
+
+        companyUploader.updateRelationships(finalParentMapping)
+
+        verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
+            .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
+    }
+
+    @Test
+    fun `test if ClientException http not found does not lead to multiple retries`() {
+        val finalParentMapping = mutableMapOf<String, String>()
+        val mockLei = "abcd"
+        finalParentMapping[mockLei] = "defg"
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, mockLei))
+            .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
+
+        companyUploader.updateRelationships(finalParentMapping)
+
+        verify(mockCompanyDataControllerApi, times(1))
+            .getCompanyIdByIdentifier(IdentifierType.Lei, mockLei)
     }
 
     @Test

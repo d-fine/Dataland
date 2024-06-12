@@ -27,6 +27,10 @@ export function generateFixtureDataset<T>(
       t: data,
       reportingPeriod: reportingPeriodGenerator(data),
     });
+    if (id > 1) {
+      fixtureDataset[id - 1].companyInformation.parentCompanyLei =
+        fixtureDataset[id - 2].companyInformation.identifiers["Lei"]?.[0] ?? null;
+    }
   }
   return fixtureDataset;
 }

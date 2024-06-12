@@ -334,7 +334,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
             companyNameSfdrPrefix,
-            DataTypeEnum.Sme,
+            DataTypeEnum.P2p,
             false,
           );
           validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
