@@ -39,9 +39,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
             }
         }
         keysToBeRemoved.forEach { wastes.remove(it) }
-        // listOfWasteToBiodiversity.forEach {subFieldKey ->
 
-        // }
         dataset.put("biodiversity", biodiversity)
         if (wastes.isEmpty) dataset.remove("wastes")
     }
