@@ -36,6 +36,7 @@ describeIf(
   "As a user, I expect to be able to edit and submit Sme data via the upload form",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    onlyExecuteWhenEurodatIsLive: true,
   },
   function (): void {
     beforeEach(() => {
@@ -129,8 +130,8 @@ describeIf(
               dataMetaInformationOfReuploadedDataset.dataId,
           );
 
-          MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "false").click();
-          MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "false").click();
+          MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "true");
+          MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "true");
           MLDT.getCellValueContainer("Power consumption in MWh").find("a.link").should("include.text", "MWh").click();
           const expectedPathToDownloadedReport =
             Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;

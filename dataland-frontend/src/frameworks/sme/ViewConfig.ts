@@ -60,7 +60,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Financial Information",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -95,13 +95,13 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
     type: "section",
     label: "Power",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Investments",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -135,7 +135,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
       {
         type: "section",
         label: "Consumption",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -221,13 +221,13 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
   {
     type: "section",
     label: "Insurances",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Natural Hazards",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
