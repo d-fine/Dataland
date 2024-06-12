@@ -28,7 +28,7 @@ class SmeSiteAndAreaComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.sme.custom.SmeSiteAndAreas",
+                        "org.dataland.datalandbackend.frameworks.sme.custom.SmeSiteAndArea",
                         true,
                     ),
 
