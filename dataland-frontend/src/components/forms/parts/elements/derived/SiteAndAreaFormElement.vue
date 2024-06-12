@@ -27,15 +27,6 @@
     description="Please specify the biodiversity sensitive area"
     validation="required"
   />
-  <SingleSelectFormElement
-    name="country"
-    validation-label="Country"
-    :validation="required"
-    placeholder="Country"
-    :options="allCountry"
-    data-test="country"
-    input-class="long normal-line-height"
-  />
   <NumberFormField
     :name="'areaInHectare'"
     validation-label="area in hectare"
@@ -83,19 +74,15 @@ import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFor
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
   name: "SiteAndAreaFormElement",
   data() {
     return {
-      releaseMedium: getDataset(DropdownDatasetIdentifier.ReleaseMedium),
-      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
       adjointness: getDataset(DropdownDatasetIdentifier.Adjointness),
     };
   },
   components: {
-    SingleSelectFormElement,
     AddressFormField,
     NumberFormField,
     MultiSelectFormField,

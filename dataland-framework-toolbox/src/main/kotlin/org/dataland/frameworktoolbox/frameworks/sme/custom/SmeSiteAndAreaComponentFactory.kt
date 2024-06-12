@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  * Generates the SiteAndArea component
  */
 @Component
-class SmeSiteAndAreasComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class SmeSiteAndAreaComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
         row.component == "Sme Site And Area"
@@ -26,7 +26,7 @@ class SmeSiteAndAreasComponentFactory(@Autowired val templateDiagnostic: Templat
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<SmeSiteAndAreasComponent>(
+        return componentGroup.create<SmeSiteAndAreaComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
