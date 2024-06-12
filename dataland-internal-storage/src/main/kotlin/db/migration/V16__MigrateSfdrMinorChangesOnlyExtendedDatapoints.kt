@@ -44,6 +44,13 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         if (wastes.isEmpty) dataset.remove("waste")
     }
 
+    private fun removeScopeOfEntities(dataset: JSONObject) {
+        val general = dataset.getOrJavaNull("general") as JSONObject? ?: return
+        val generalGeneral = general.getOrJavaNull("general") as JSONObject? ?: return
+        val scopeOfEntities = generalGeneral.getOrJavaNull("scopeOfEntities")
+        if (scopeOfEntities !== null) generalGeneral.remove("scopeOfEntities")
+    }
+
     /**
      * Find the data points which are not extended and therefore do not have a mandatory
      * "quality" key.
@@ -79,6 +86,8 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         val dataset = dataTableEntity.dataJsonObject
         val environmental = dataset.getOrJavaNull("environmental") as JSONObject?
         if (environmental !== null) migrateWasteToBiodiversity(environmental)
+
+        removeScopeOfEntities(dataset)
 
         dataset.keys().forEach {
             checkRecursivelyForBaseDataPoint(dataset, it)

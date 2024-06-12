@@ -3,7 +3,8 @@
     "general": {
       "dataDate": "2023-12-18",
       "fiscalYearDeviation": "Deviation",
-      "fiscalYearEnd": "2023-12-18"
+      "fiscalYearEnd": "2023-12-18",
+      "scopeOfEntities": "Yes"
     }
   },
   "environmental": {
