@@ -167,7 +167,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
         `Data extracted from the company report. Company Reports(${expectedLatestReportingPeriod})`,
       );
-      cy.get('[data-test="referencedReportLink"]').contains(nameOfFirstReportOfExpectedLatestReportingPeriod);
+      cy.get(`[data-test="report-link-${nameOfFirstReportOfExpectedLatestReportingPeriod}"]`);
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
 
