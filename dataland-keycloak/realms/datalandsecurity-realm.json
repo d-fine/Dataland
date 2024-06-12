@@ -650,7 +650,7 @@
     "credentials" : [ ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ "terms_and_conditions" ],
-    "realmRoles" : [ "ROLE_UPLOADER", "default-roles-datalandsecurity" ],
+    "realmRoles" : [ "ROLE_ADMIN", "default-roles-datalandsecurity" ],
     "notBefore" : 0,
     "groups" : [ ]
   }, {

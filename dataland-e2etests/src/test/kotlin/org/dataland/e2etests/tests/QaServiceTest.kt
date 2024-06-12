@@ -34,8 +34,9 @@ class QaServiceTest {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1).first()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val storedCompanyInfos = apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1).first()
         dummyCompanyAssociatedData =
