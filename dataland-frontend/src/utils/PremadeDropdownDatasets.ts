@@ -1,6 +1,6 @@
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import currencyCodeData from "currency-codes/data";
-import { ReleaseMedium, RiskPositionType, WasteClassifications } from "@clients/backend";
+import { AreaAdjointness, ReleaseMedium, RiskPositionType, WasteClassifications } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 export interface DropdownOption {
@@ -13,6 +13,7 @@ export enum DropdownDatasetIdentifier {
   RiskPositions = "Risk Positions",
   ReleaseMedium = "Release Medium",
   WasteClassifications = "Waste classifications",
+  Adjointness = "Adjointness",
 }
 
 export type DropdownDataset = Array<DropdownOption>;
@@ -34,6 +35,8 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
       return getReleaseMediumDropdownDataset();
     case DropdownDatasetIdentifier.WasteClassifications:
       return getWasteClassificationsDropdownDataset();
+    case DropdownDatasetIdentifier.Adjointness:
+      return getAdjointnessDropdownDataset();
   }
   throw Error(`Unknown dataset identifier ${datasetIdentifier as string}`);
 }
@@ -135,4 +138,18 @@ function getWasteClassificationsDropdownDataset(): DropdownDataset {
     });
   });
   return WasteClassificationDataset;
+}
+/**
+ * Retrieves a dropdown dataset of sme adjointness
+ * @returns a dropdown dataset of sme adjointness
+ */
+function getAdjointnessDropdownDataset(): DropdownDataset {
+  const adjointnessDataset: DropdownDataset = [];
+  Object.keys(AreaAdjointness).forEach((it) => {
+    adjointnessDataset.push({
+      label: humanizeStringOrNumber(it),
+      value: it,
+    });
+  });
+  return adjointnessDataset;
 }

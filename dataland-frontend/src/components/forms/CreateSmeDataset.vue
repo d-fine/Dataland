@@ -131,6 +131,7 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 import WasteClassificationFormField from "@/components/forms/parts/fields/WasteClassificationFormField.vue";
+import SiteAndAreaFormField from "@/components/forms/parts/fields/SiteAndAreaFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -163,6 +164,7 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     RadioButtonsFormField,
     WasteClassificationFormField,
+    SiteAndAreaFormField,
   },
   emits: ["datasetCreated"],
   data() {
