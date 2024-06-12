@@ -64,6 +64,11 @@ export default defineComponent({
      * @returns The modal options.
      */
     constructModalOptions(report: CompanyReport, reportName: string) {
+      const reportWithName: CompanyReport = {
+        ...report,
+        fileName: report.fileName ? report.fileName : reportName,
+      };
+
       return {
         props: {
           header: "Report Details",
@@ -71,11 +76,7 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          reportName: report.fileName ? report.fileName : reportName,
-          reportReference: report.fileReference,
-          reportDate: report.reportDate,
-          reportCurrency: report.currency,
-          reportGroupLevel: report.isGroupLevel,
+          companyReport: reportWithName,
         },
       };
     },

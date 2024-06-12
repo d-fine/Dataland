@@ -10,7 +10,7 @@
           data-test="previousReportsList"
         >
           <a
-            @click="$dialog.open(ReportDataTable, modalOptions(report, nameInner as string))"
+            @click="openReportDataTableModal(report, nameInner as string)"
             class="link"
             :data-test="`report-link-${nameInner}`"
           >
@@ -25,12 +25,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import type { CompanyReport } from "@clients/backend";
 import ReportDataTable from "@/components/general/ReportDataTable.vue";
 
 export default defineComponent({
-  components: { DocumentLink, ReportDataTable },
   inject: ["dialogRef"],
   name: "PreviousReportsModal",
   data() {
@@ -40,26 +38,48 @@ export default defineComponent({
       indexOfNewestReportingPeriod: 9999 as number,
     };
   },
-  computed: {
-    modalOptions() {
-      return (report: CompanyReport, reportName: string) => ({
-        component: ReportDataTable,
+  methods: {
+    /**
+     * Opens a modal to display the details of the selected report.
+     * @param report The report data.
+     * @param reportName The name of the report.
+     */
+    openReportDataTableModal(report: CompanyReport, reportName: string) {
+      const options = this.constructModalOptions(report, reportName);
+      this.$dialog.open(ReportDataTable, {
+        props: options.props,
+        data: options.data,
+      });
+    },
+
+    /**
+     * Constructs the modal options for the ReportDataTable.
+     * @param report The report data.
+     * @param reportName The name of the report.
+     * @returns The modal options.
+     */
+    /**
+     * Constructs the modal options for the ReportDataTable.
+     * @param report The report data.
+     * @param reportName The name of the report.
+     * @returns The modal options.
+     */
+    constructModalOptions(report: CompanyReport, reportName: string) {
+      const reportWithName: CompanyReport = {
+        ...report,
+        fileName: report.fileName ? report.fileName : reportName,
+      };
+
+      return {
         props: {
           header: "Report Details",
           modal: true,
           dismissableMask: true,
         },
         data: {
-          reportName: report.fileName ? report.fileName : reportName,
-          reportReference: report.fileReference,
-          reportDate: report.reportDate,
-          reportCurrency: report.currency,
-          reportGroupLevel: report.isGroupLevel,
+          companyReport: reportWithName,
         },
-      });
-    },
-    ReportDataTable() {
-      return ReportDataTable;
+      };
     },
   },
   created() {
