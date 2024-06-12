@@ -944,7 +944,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://failing-refectory.net",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "t56DD65Gc2WXzVaZFPC2"
 		},
 		"t": {
 			"general": {
@@ -1105,7 +1106,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://important-ramie.biz/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
