@@ -9,7 +9,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 /**
  * Represents the sitesandareas component for vsme
  */
-class SmeSiteAndAreasComponent(
+class SmeSiteAndAreaComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SmeSimpleCustomComponentBase(

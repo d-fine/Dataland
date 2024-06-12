@@ -4032,41 +4032,6 @@
           "Water"
         ]
       },
-      "SmeAreas": {
-        "required": [
-          "areaAddress",
-          "areaInHectare",
-          "biodiversitySensitiveArea",
-          "country",
-          "specificationOfAdjointness"
-        ],
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "areaInHectare": {
-            "type": "number"
-          },
-          "biodiversitySensitiveArea": {
-            "type": "string"
-          },
-          "areaAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "areaGeocoordinateLongitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "areaGeocoordinateLatitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "specificationOfAdjointness": {
-            "$ref": "#/components/schemas/AreaAdjointness"
-          }
-        }
-      },
       "SmeBasic": {
         "type": "object",
         "properties": {
@@ -4187,7 +4152,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SmeSiteAndAreas"
+              "$ref": "#/components/schemas/SmeSiteAndArea"
             }
           },
           "totalSealedAreaPreviousYear": {
@@ -4690,10 +4655,14 @@
           }
         }
       },
-      "SmeSiteAndAreas": {
+      "SmeSiteAndArea": {
         "required": [
+          "areaAddress",
+          "areaInHectare",
+          "biodiversitySensitiveArea",
           "siteAddress",
-          "siteName"
+          "siteName",
+          "specificationOfAdjointness"
         ],
         "type": "object",
         "properties": {
@@ -4711,12 +4680,25 @@
             "type": "number",
             "nullable": true
           },
-          "adjointAreas": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/SmeAreas"
-            }
+          "areaInHectare": {
+            "type": "number"
+          },
+          "biodiversitySensitiveArea": {
+            "type": "string"
+          },
+          "areaAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "areaGeocoordinateLongitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "areaGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "specificationOfAdjointness": {
+            "$ref": "#/components/schemas/AreaAdjointness"
           }
         }
       },
@@ -14908,16 +14890,16 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
@@ -14949,10 +14931,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
