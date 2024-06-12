@@ -73,7 +73,13 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, type PropType } from "vue";
-import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
+import {
+  type CompanyIdAndName,
+  type CompanyInformation,
+  DataMetaInformation,
+  type DataTypeEnum,
+  IdentifierType
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
