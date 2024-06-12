@@ -27,7 +27,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
      * Move the required fields from wastes to biodiversity
      */
     private fun migrateWasteToBiodiversity(dataset: JSONObject) {
-        val wastes = dataset.getOrJavaNull("wastes") as JSONObject? ?: return
+        val wastes = dataset.getOrJavaNull("waste") as JSONObject? ?: return
         val biodiversity = dataset.getOrJavaNull("biodiversity") as JSONObject? ?: JSONObject()
 
         val keysToBeRemoved: MutableList<String> = mutableListOf()
@@ -41,7 +41,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         keysToBeRemoved.forEach { wastes.remove(it) }
 
         dataset.put("biodiversity", biodiversity)
-        if (wastes.isEmpty) dataset.remove("wastes")
+        if (wastes.isEmpty) dataset.remove("waste")
     }
 
     /**

@@ -7,7 +7,7 @@
     }
   },
   "environmental": {
-    "wastes": {
+    "waste": {
       "manufactureOfAgrochemicalPesticidesProducts": null,
       "landDegradationDesertificationSoilSealingExposure": {
         "value": "Yes",

@@ -7,7 +7,7 @@
     }
   },
   "environmental": {
-    "wastes": {
+    "waste": {
       "hazardousAndRadioactiveWasteInTonnes": {
         "value": 1002.42,
         "quality": "Estimated"
