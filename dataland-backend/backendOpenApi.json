@@ -3801,6 +3801,10 @@
           "website": {
             "type": "string",
             "nullable": true
+          },
+          "parentCompanyLei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -14704,6 +14708,10 @@
             "nullable": true
           },
           "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentCompanyLei": {
             "type": "string",
             "nullable": true
           }

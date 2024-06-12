@@ -36,6 +36,7 @@ describeIf(
   "As a user, I expect to be able to edit and submit Sme data via the upload form",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+    onlyExecuteWhenEurodatIsLive: true,
   },
   function (): void {
     beforeEach(() => {
