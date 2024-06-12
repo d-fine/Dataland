@@ -567,7 +567,8 @@
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://scornful-injunction.info/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
@@ -1145,7 +1146,8 @@
 			],
 			"companyLegalForm": "AG",
 			"website": "https://required-elf.name",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "wY459fDkjVLqxuSuHswB"
 		},
 		"t": {
 			"general": {

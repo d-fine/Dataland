@@ -2,6 +2,7 @@ package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.junit.jupiter.api.Assertions
@@ -38,7 +39,7 @@ class GleifMappingTest {
     fun `check that parsing the test file results in the expected company information objects`() {
         val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
         val gleifCompanyInformation = GleifCsvParser().readGleifDataFromBufferedReader(input).next()
-        val companyInformation = gleifCompanyInformation.toCompanyPost()
+        val companyInformation = GleifCompanyCombinedInformation(gleifCompanyInformation).toCompanyPost()
         Assertions.assertEquals(
             expectedGleifCompanyInformation,
             gleifCompanyInformation,

@@ -911,7 +911,8 @@
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://recent-union.net/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": "m6cxCKFz4nbXOvRN6mT9"
 		},
 		"t": {
 			"general": {
@@ -1028,7 +1029,8 @@
 			],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://whispered-prejudice.org/",
-			"isTeaserCompany": false
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
 		},
 		"t": {
 			"general": {
