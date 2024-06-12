@@ -1,0 +1,30 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2023-12-18",
+      "fiscalYearDeviation": "Deviation",
+      "fiscalYearEnd": "2023-12-18"
+    }
+  },
+  "environmental": {
+    "wastes": {
+      "hazardousAndRadioactiveWasteInTonnes": {
+        "value": 1002.42,
+        "quality": "Estimated"
+      },
+      "manufactureOfAgrochemicalPesticidesProducts": null,
+      "landDegradationDesertificationSoilSealingExposure": {
+        "value": "Yes",
+        "quality": "Audited"
+      },
+      "biodiversityProtectionPolicy": null
+    },
+    "biodiversity": {
+      "rareOrEndangeredEcosystemsExposure": {
+        "value": "Yes",
+        "quality": "NA"
+      }
+    }
+  },
+  "social": null
+}

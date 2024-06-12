@@ -1,0 +1,42 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2023-12-18",
+      "fiscalYearDeviation": "Deviation",
+      "fiscalYearEnd": "2023-12-18"
+    }
+  },
+  "environmental": {
+    "wastes": {
+      "manufactureOfAgrochemicalPesticidesProducts": null,
+      "landDegradationDesertificationSoilSealingExposure": {
+        "value": "Yes",
+        "quality": "Audited"
+      },
+      "sustainableAgriculturePolicy": {
+        "value": "No"
+      },
+      "sustainableOceansAndSeasPolicy": null,
+      "threatenedSpeciesExposure": {
+        "value": "Yes",
+        "dataSource": {
+          "fileName": "dummyFileName",
+          "fileReference": "dummyFileReference"
+        }
+      },
+      "biodiversityProtectionPolicy": null,
+      "deforestationPolicy": {
+        "dataSource": {
+          "fileReference": "dummyFileReference"
+        }
+      }
+    }
+  },
+  "social": {
+    "socialAndEmployeeMatters": {
+      "transparencyDisclosurePolicy": {
+        "value": "Yes"
+      }
+    }
+  }
+}
