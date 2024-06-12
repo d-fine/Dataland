@@ -27,7 +27,7 @@
 import { defineComponent } from "vue";
 import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
 import type { CompanyReport } from "@clients/backend";
-import ReportDataTable from "@/components/general/ReportDataTable.vue";
+import { openReportDataTableModal } from "@/utils/ReferencedReportsUtil";
 
 export default defineComponent({
   name: "ShowMultipleReportsBanner",
@@ -45,40 +45,12 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Opens a modal to display the details of the selected report.
-     * @param report The report data.
-     * @param reportName The name of the report.
+     * Opens a modal to display a table containing detailed information about the report.
+     * @param report the report
+     * @param reportName the name of the report
      */
     openReportDataTableModal(report: CompanyReport, reportName: string) {
-      const options = this.constructModalOptions(report, reportName);
-      this.$dialog.open(ReportDataTable, {
-        props: options.props,
-        data: options.data,
-      });
-    },
-
-    /**
-     * Constructs the modal options for the ReportDataTable.
-     * @param report The report data.
-     * @param reportName The name of the report.
-     * @returns The modal options.
-     */
-    constructModalOptions(report: CompanyReport, reportName: string) {
-      const reportWithName: CompanyReport = {
-        ...report,
-        fileName: report.fileName ? report.fileName : reportName,
-      };
-
-      return {
-        props: {
-          header: "Report Details",
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          companyReport: reportWithName,
-        },
-      };
+      openReportDataTableModal(this, report, reportName);
     },
 
     /**

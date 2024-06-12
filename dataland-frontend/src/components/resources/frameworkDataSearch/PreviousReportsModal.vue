@@ -26,7 +26,7 @@
 import { defineComponent } from "vue";
 import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import type { CompanyReport } from "@clients/backend";
-import ReportDataTable from "@/components/general/ReportDataTable.vue";
+import { openReportDataTableModal } from "@/utils/ReferencedReportsUtil";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -40,48 +40,15 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Opens a modal to display the details of the selected report.
-     * @param report The report data.
-     * @param reportName The name of the report.
+     * Opens a modal to display a table containing detailed information about the report.
+     * @param report the report
+     * @param reportNameInner the name of the report from the previous years report list
      */
-    openReportDataTableModal(report: CompanyReport, reportName: string) {
-      const options = this.constructModalOptions(report, reportName);
-      this.$dialog.open(ReportDataTable, {
-        props: options.props,
-        data: options.data,
-      });
-    },
-
-    /**
-     * Constructs the modal options for the ReportDataTable.
-     * @param report The report data.
-     * @param reportName The name of the report.
-     * @returns The modal options.
-     */
-    /**
-     * Constructs the modal options for the ReportDataTable.
-     * @param report The report data.
-     * @param reportName The name of the report.
-     * @returns The modal options.
-     */
-    constructModalOptions(report: CompanyReport, reportName: string) {
-      const reportWithName: CompanyReport = {
-        ...report,
-        fileName: report.fileName ? report.fileName : reportName,
-      };
-
-      return {
-        props: {
-          header: "Report Details",
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          companyReport: reportWithName,
-        },
-      };
+    openReportDataTableModal(report: CompanyReport, reportNameInner: string) {
+      openReportDataTableModal(this, report, reportNameInner);
     },
   },
+
   created() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
