@@ -76,9 +76,9 @@ import { defineComponent, inject, type PropType } from "vue";
 import {
   type CompanyIdAndName,
   type CompanyInformation,
-  DataMetaInformation,
+  type DataMetaInformation,
   type DataTypeEnum,
-  IdentifierType
+  IdentifierType,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
