@@ -47,8 +47,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
     private fun removeScopeOfEntities(dataset: JSONObject) {
         val general = dataset.getOrJavaNull("general") as JSONObject? ?: return
         val generalGeneral = general.getOrJavaNull("general") as JSONObject? ?: return
-        val scopeOfEntities = generalGeneral.getOrJavaNull("scopeOfEntities")
-        if (scopeOfEntities !== null) generalGeneral.remove("scopeOfEntities")
+        if (generalGeneral.has("scopeOfEntities")) generalGeneral.remove("scopeOfEntities")
     }
 
     /**
