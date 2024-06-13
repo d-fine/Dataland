@@ -28,11 +28,11 @@ import java.util.*
 
 class DataOwnerManagerTest {
 
-    lateinit var dataOwnerManager: DataOwnerManager
-    lateinit var mockDataOwnersRepository: DataOwnerRepository
-    lateinit var dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender
-    lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    lateinit var mockCompanyIdValidator: CompanyIdValidator
+    private lateinit var dataOwnerManager: DataOwnerManager
+    private lateinit var mockDataOwnersRepository: DataOwnerRepository
+    private lateinit var dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender
+    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
     private val testUserId = UUID.randomUUID().toString()
 
