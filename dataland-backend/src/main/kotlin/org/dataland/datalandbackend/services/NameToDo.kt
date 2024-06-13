@@ -27,7 +27,8 @@ class NameToDo( // TODO name
      * @return a Boolean indicating whether the user is data owner or not
      */
     @Transactional(readOnly = true)
-    fun isCurrentUserDataOwnerForCompany(companyId: String): Boolean { // TODO sehr komische Funktion... schau später nochmal genauer rein
+    fun isCurrentUserDataOwnerForCompany(companyId: String): Boolean {
+        // TODO sehr komische Funktion... schau später nochmal genauer rein
         val userId = DatalandAuthentication.fromContext().userId
         fun exceptionToThrow(cause: Throwable?) = InsufficientRightsApiException(
             "Neither uploader nor data owner",
