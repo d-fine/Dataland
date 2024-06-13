@@ -13,6 +13,12 @@ import org.json.JSONObject
  */
 class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
 
+    private val frameworksToMigrateDataPointsNoSfdr = listOf(
+        "eutaxonomy-non-financials",
+        "eutaxonomy-financials",
+        "sme",
+    )
+
     private val listOfWasteToBiodiversity = listOf(
         "manufactureOfAgrochemicalPesticidesProducts",
         "landDegradationDesertificationSoilSealingExposure",
@@ -89,11 +95,29 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
 
+    /**
+     * Remove NA option from datapoints with quality
+     */
+    fun migrateDataPoints(dataTableEntity: DataTableEntity) {
+        val dataset = dataTableEntity.dataJsonObject
+        dataset.keys().forEach {
+            checkRecursivelyForBaseDataPoint(dataset, it)
+        }
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+    }
+
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
             "sfdr",
             this::migrateSfdrData,
         )
+        frameworksToMigrateDataPointsNoSfdr.forEach {
+            migrateCompanyAssociatedDataOfDatatype(
+                context,
+                it,
+                this::migrateDataPoints,
+            )
+        }
     }
 }
