@@ -19,9 +19,8 @@
                 <span class="p-column-title" style="display: flex; align-items: center"
                   >{{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
                   <i
-                    class="material-icons pl-2"
+                    class="material-icons info-icon pl-2"
                     aria-hidden="true"
-                    style="cursor: pointer"
                     :title="singleDataAndMetaInfo.metaInfo.reportingPeriod"
                     data-pd-tooltip="true"
                     v-tooltip.top="{
