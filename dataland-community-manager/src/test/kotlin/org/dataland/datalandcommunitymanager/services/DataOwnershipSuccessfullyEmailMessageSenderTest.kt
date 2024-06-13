@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.services.messaging
+package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.Call
@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
-import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
+import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
