@@ -6,7 +6,7 @@ import {
   type SmeSubsidiary,
   type SmeWasteClassificationObject,
   type SmeSiteAndArea,
-    type SmeEmployeesPerCountry,
+  type SmeEmployeesPerCountry,
   AreaAdjointness,
 } from "@clients/backend";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
@@ -70,7 +70,7 @@ export class SmeGenerator extends Generator {
   generateSmeEmployeesPerCountry(): SmeEmployeesPerCountry {
     return {
       country: faker.location.countryCode(),
-      numberOfEmployeesInHeadCount:this.randomInt(0, 1e4),
+      numberOfEmployeesInHeadCount: this.randomInt(0, 1e4),
       numberOfEmployeesInFullTimeEquivalent: this.randomFloat(0, 1e4),
     };
   }

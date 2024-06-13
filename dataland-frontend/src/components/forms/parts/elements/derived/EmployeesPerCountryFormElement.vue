@@ -1,4 +1,15 @@
 <template>
+  <UploadFormHeader label="Country" description="Please specify the country where you have employees" />
+  <SingleSelectFormElement
+    label="Country"
+    name="country"
+    validation-label="Country"
+    :validation="required"
+    placeholder="Country"
+    :options="allCountry"
+    data-test="country"
+    input-class="long normal-line-height"
+  />
   <NumberFormField
     :name="'numberOfEmployeesInHeadCount'"
     :validation-label="validationLabel"
@@ -15,15 +26,6 @@
     :validation="validation"
     input-class="col-4 pr-0"
   />
-  <SingleSelectFormElement
-    name="country"
-    validation-label="Country"
-    :validation="required"
-    placeholder="Country"
-    :options="allCountry"
-    data-test="country"
-    input-class="long normal-line-height"
-  />
 </template>
 
 <script lang="ts">
@@ -31,10 +33,12 @@ import { defineComponent } from "vue";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 
 export default defineComponent({
   name: "EmployeesPerCountryFormElement",
   components: {
+    UploadFormHeader,
     NumberFormField,
     SingleSelectFormElement,
   },

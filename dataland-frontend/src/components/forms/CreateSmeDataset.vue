@@ -132,6 +132,7 @@ import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 import WasteClassificationFormField from "@/components/forms/parts/fields/WasteClassificationFormField.vue";
 import SiteAndAreaFormField from "@/components/forms/parts/fields/SiteAndAreaFormField.vue";
+import EmployeesPerCountryFormField from "@/components/forms/parts/fields/EmployeesPerCountryFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -165,6 +166,7 @@ export default defineComponent({
     RadioButtonsFormField,
     WasteClassificationFormField,
     SiteAndAreaFormField,
+    EmployeesPerCountryFormField,
   },
   emits: ["datasetCreated"],
   data() {

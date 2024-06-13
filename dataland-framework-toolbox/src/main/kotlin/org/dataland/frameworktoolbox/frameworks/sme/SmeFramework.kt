@@ -16,14 +16,28 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
     order = 6,
     isPrivateFramework = true,
 ) {
-   /* override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
-        framework.root.edit<ComponentGroup>("general") {
-            viewPageExpandOnPageLoad = true
-            edit<ComponentGroup>("basicInformation") {
-                viewPageExpandOnPageLoad = true
+    /*
+    override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        framework.root.edit<ComponentGroup>("basic") {
+            edit<ComponentGroup>("workforceRenumerationCollectiveBargainingAndTraining") {
+
+                edit<SingleSelectComponent>("payGapBasis") {
+                    setDependencies(this)
+                }
             }
         }
     }
 
-    */
+   private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
+       root.edit<ComponentGroup>("basic") {
+           viewPageExpandOnPageLoad = true
+           uploadPageLabelBadgeColor = LabelBadgeColor.Orange
+           viewPageLabelBadgeColor = LabelBadgeColor.Orange
+       }
+   }
+    private fun setDependencies(component: SingleSelectComponent) {
+        component.availableIf= DependsOnComponentCustomNumericValue(component,"test", null)
+
+    }
+     */
 }

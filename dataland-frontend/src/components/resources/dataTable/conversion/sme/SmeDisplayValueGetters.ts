@@ -49,9 +49,9 @@ export const smeModalColumnHeaders = {
   },
   employeesPerCountry: {
     country: "Country",
-    numberOfEmployeesInHeadCount:"Number of Employees in Head Count",
-    numberOfEmployeesInFullTimeEquivalent: "Number of Employees in Full Time Equivalents"
-  }
+    numberOfEmployeesInHeadCount: "Number of Employees in Head Count",
+    numberOfEmployeesInFullTimeEquivalent: "Number of Employees in Full Time Equivalents",
+  },
 };
 interface SmePollutionEmissionDisplayFormat {
   pollutionType: string;
@@ -263,8 +263,8 @@ export function formatSmeSiteAndAreaForDisplay(
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmeEmployeesPerCountryForDisplay(
-    input: SmeEmployeesPerCountry[] | null | undefined,
-    fieldLabel: string,
+  input: SmeEmployeesPerCountry[] | null | undefined,
+  fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
