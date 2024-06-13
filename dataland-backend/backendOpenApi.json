@@ -3939,9 +3939,6 @@
         }
       },
       "ExtendedDataPointBigDecimal": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -3949,7 +3946,12 @@
             "nullable": true
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -4006,8 +4008,7 @@
           "Audited",
           "Reported",
           "Estimated",
-          "Incomplete",
-          "NA"
+          "Incomplete"
         ]
       },
       "SmeData": {
@@ -4325,9 +4326,6 @@
         }
       },
       "ExtendedDataPointBigInteger": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -4335,7 +4333,12 @@
             "nullable": true
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -4352,9 +4355,6 @@
         }
       },
       "ExtendedDataPointYesNoNoEvidenceFound": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -4366,7 +4366,12 @@
             ]
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -14428,15 +14433,15 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
             "type": "string"

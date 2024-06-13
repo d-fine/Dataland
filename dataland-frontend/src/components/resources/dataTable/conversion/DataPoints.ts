@@ -6,7 +6,7 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
 import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 /**
@@ -50,7 +50,7 @@ export function getDataPointGetterFactory<
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
-      (dataPointAsExtendedDataPoint.quality != QualityOptions.Na && dataPointAsExtendedDataPoint.quality != null) ||
+      dataPointAsExtendedDataPoint.quality != null ||
       dataPointAsExtendedDataPoint.comment?.length ||
       dataPointAsExtendedDataPoint.dataSource?.page != null
     ) {
@@ -82,7 +82,7 @@ export function getDataPointGetterFactory<
 }
 
 interface DatapointProperties {
-  quality?: string;
+  quality?: string | null;
   dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
   comment?: string | null;
 }
@@ -105,7 +105,7 @@ export function wrapDisplayValueWithDatapointInformation(
       displayValue: {
         innerContents:
           inputValue.displayValue == "" ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
-        quality: datapointProperties?.quality,
+        quality: datapointProperties?.quality ?? undefined,
         comment: datapointProperties?.comment ?? undefined,
         dataSource: datapointProperties?.dataSource ?? undefined,
         fieldLabel: fieldLabel,
@@ -131,7 +131,7 @@ export function wrapDisplayValueWithDatapointInformation(
  */
 function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties | null | undefined): boolean {
   return <boolean>(
-    ((dataPointProperties?.quality != QualityOptions.Na && dataPointProperties?.quality != null) ||
+    (dataPointProperties?.quality != null ||
       dataPointProperties?.comment?.length ||
       (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0))
   );

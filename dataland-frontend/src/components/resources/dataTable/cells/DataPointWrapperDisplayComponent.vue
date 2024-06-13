@@ -29,7 +29,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { type DataMetaInformation, type ExtendedDocumentReference } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
@@ -82,9 +82,7 @@ export default defineComponent({
       const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
       const comment = this.dataPointProperties.comment;
       const quality = this.dataPointProperties.quality;
-      return (
-        comment != undefined || (quality != undefined && quality != QualityOptions.Na) || dataSource?.page != undefined
-      );
+      return comment != undefined || quality != undefined || dataSource?.page != undefined;
     },
   },
 });

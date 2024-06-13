@@ -189,7 +189,8 @@ export default defineComponent({
       if (!this.isDataValueProvided) {
         return this.qualityOptions;
       } else {
-        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
+        //todo double check
+        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== null);
       }
     },
     reportsName(): string[] {
@@ -251,9 +252,10 @@ export default defineComponent({
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
     handleBlurValue(isDataValueProvided: boolean) {
+      //todo
       if (!isDataValueProvided && !this.isYesNoVariant) {
-        this.qualityValue = QualityOptions.Na;
-      } else if (this.qualityValue === QualityOptions.Na) {
+        this.qualityValue = "";
+      } else if (this.qualityValue == null) {
         this.qualityValue = "";
       }
     },

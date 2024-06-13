@@ -2,85 +2,80 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Korey",
-			"headquartersPostalCode": "91575",
-			"sector": "lifetime value",
+			"headquarters": "Jevonberg",
+			"headquartersPostalCode": "31443-6901",
+			"sector": "applications",
 			"identifiers": {
 				"Lei": [
-					"CZgxycKSMys5zmyoQG34"
+					"akS2qy4yWlyQMldFQllT"
 				],
 				"Isin": [
-					"DNgRQ1c4ekMr"
+					"HRiHXmQI7eeh",
+					"3TsZpjMqJgtT"
 				],
-				"PermId": [],
+				"PermId": [
+					"ROY0w0qdTF"
+				],
 				"Ticker": [
-					"TdeV72P"
+					"NmUf6Iy"
 				],
 				"Duns": [
-					"vbSk8rrkF"
+					"elXUX9plA"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"y4yWlyQMldFQllT"
+					"eTpbAlItFmmofWC"
 				]
 			},
-			"countryCode": "PH",
+			"countryCode": "NE",
 			"companyAlternativeNames": [
-				"Berge Group",
-				"Feeney Inc",
-				"Prohaska Group",
-				"Sporer - Reichel"
+				"Hauck Inc",
+				"Parker - Kutch",
+				"Rempel LLC"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://fumbling-secretion.info/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://constant-crinoline.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-29",
+					"reportingDate": "2024-09-12",
 					"sectors": [
-						"49.39",
-						"85.10",
-						"86"
+						"05",
+						"82.20",
+						"93.21"
 					],
-					"numberOfEmployees": 1754,
-					"fiscalYearStart": "2024-10-15",
+					"numberOfEmployees": 1966,
+					"fiscalYearStart": "2024-02-20",
 					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-01-29",
-							"currency": "PEN"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-02-19",
-							"currency": "SBD"
-						},
 						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-09-20",
-							"currency": "AOA"
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-08-02",
+							"currency": "KMF"
 						},
 						"IntegratedReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-10-05",
+							"currency": "CAD"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
 							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-06",
-							"currency": "HUF"
+							"reportDate": "2023-07-11",
+							"currency": "DJF"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 68985.05,
-					"operatingCostInEur": 13441.8,
-					"capitalAssetsInEur": 80362.61
+					"revenueInEur": 23380.74,
+					"operatingCostInEur": 32379.57,
+					"capitalAssetsInEur": 77712.55
 				}
 			},
 			"power": {
@@ -89,32 +84,28 @@
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 78809.71,
+						"value": 48433.93,
 						"dataSource": {
-							"page": 45,
-							"fileName": "SustainabilityReport",
+							"page": 959,
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "architectures"
 						},
-						"comment": "parse online port",
-						"quality": "Estimated"
+						"comment": "transmit multi-byte monitor",
+						"quality": "Incomplete"
 					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 45049.96,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 89797.15,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Snow",
 						"Wind"
 					]
 				}
