@@ -64,7 +64,7 @@ class Sme {
     @BeforeAll
     fun postCompanyAndSetDataOwnership() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.companyDataControllerApi.postDataOwner(
+        apiAccessor.dataOwnerControllerApi.postDataOwner(
             UUID.fromString(companyId),
             UUID.fromString(UPLOADER_USER_ID),
         )

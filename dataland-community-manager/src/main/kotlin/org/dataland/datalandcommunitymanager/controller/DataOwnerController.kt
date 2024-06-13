@@ -3,6 +3,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.api.DataOwnerApi
 import org.dataland.datalandcommunitymanager.model.dataOwner.CompanyDataOwners
 import org.dataland.datalandcommunitymanager.services.DataOwnerManager
+import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,7 @@ import java.util.UUID
 @RestController
 class DataOwnerController(
     @Autowired private val dataOwnersManager: DataOwnerManager,
+    @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val companyApi: CompanyDataControllerApi,
 ) : DataOwnerApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -26,8 +28,8 @@ class DataOwnerController(
     override fun postDataOwner(companyId: UUID, userId: UUID): ResponseEntity<CompanyDataOwners> {
         logger.info("Received a request to post a data owner with Id $userId to company with Id $companyId.")
 
-        val storedCompany = companyApi.getCompanyById(companyId.toString())
-        val companyName = storedCompany.companyInformation.companyName
+        companyIdValidator.checkIfCompanyIdIsValid(companyId = companyId.toString())
+        val companyName = companyApi.getCompanyById(companyId.toString()).companyInformation.companyName
 
         val companyDataOwnersEntity = dataOwnersManager.addDataOwnerToCompany(
             companyId.toString(),

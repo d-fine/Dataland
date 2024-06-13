@@ -21,7 +21,7 @@ class CompanyIdValidator(
             if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                 throw ResourceNotFoundApiException(
                     "Company not found",
-                    "Dataland-backend does not know the company ID $companyId",
+                    "Dataland does not know the company ID $companyId",
                 )
             }
         }
