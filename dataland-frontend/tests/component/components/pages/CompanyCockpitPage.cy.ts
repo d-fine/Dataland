@@ -49,11 +49,11 @@ describe("Component test for the company cockpit", () => {
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
 
-    cy.intercept(`**/api/companies/*/data-owners/${companyDataOwnerId}`, {
+    cy.intercept(`**/community/companies/*/data-owners/${companyDataOwnerId}`, {
       status: 200,
     }).as("fetchUserIsDataOwnerTrue");
     if (hasCompanyDataOwner) {
-      cy.intercept("**/api/companies/*/data-owners", {
+      cy.intercept("**/community/companies/*/data-owners", {
         body: [companyDataOwnerId],
       }).as("fetchHasCompanyDataOwnersFalse");
     }
