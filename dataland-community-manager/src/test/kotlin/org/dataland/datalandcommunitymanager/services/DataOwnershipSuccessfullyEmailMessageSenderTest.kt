@@ -6,7 +6,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
-import org.dataland.datalandcommunitymanager.services.DataOwnerManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -21,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
@@ -29,7 +29,7 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
 
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
-    private val cloudEventMessageHandlerMock = Mockito.mock(CloudEventMessageHandler::class.java)
+    private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyName = "Test Inc."
     private val correlationId = UUID.randomUUID().toString()
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
@@ -37,12 +37,12 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
     private val userEmail = "$userId@example.com"
     private val numberOfOpenDataRequestsForCompany = "0"
 
-    private val authenticatedOkHttpClientMock = Mockito.mock(OkHttpClient::class.java)
+    private val authenticatedOkHttpClientMock = mock(OkHttpClient::class.java)
     private val keycloakBaseUrlMock = "http://test"
 
     @BeforeEach
     fun setupAuthentication() {
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        val mockSecurityContext = mock(SecurityContext::class.java)
         authenticationMock = AuthenticationMock.mockJwtAuthentication(
             userEmail,
             userId,
@@ -52,25 +52,24 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
         Mockito.`when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
-/*
+
     @Test
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
         mockCloudEventMessageHandlerAndSetChecks()
 
-        val   dataRequestQueryManager = DataRequestQueryManager(
-
-        )
+        val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
         val dataOwnershipSuccessfullyEmailMessageSender =
             DataOwnershipSuccessfullyEmailMessageSender(
                 cloudEventMessageHandlerMock,
                 objectMapper,
+                dataRequestQueryManager,
                 authenticatedOkHttpClientMock,
                 keycloakBaseUrlMock,
             )
 
-        val mockCall: Call = Mockito.mock(Call::class.java)
-        val mockResponse: Response = Mockito.mock(Response::class.java)
-        val mockResponseBody: ResponseBody = Mockito.mock(ResponseBody::class.java)
+        val mockCall: Call = mock(Call::class.java)
+        val mockResponse: Response = mock(Response::class.java)
+        val mockResponseBody: ResponseBody = mock(ResponseBody::class.java)
 
         val jsonStringRepresentation = "{\"email\": \"${userEmail}\", \"id\": \"${userId}\"}"
 
@@ -120,7 +119,6 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
             numberOfOpenDataRequestsForCompany,
             properties.getValue("numberOfOpenDataRequestsForCompany"),
         )
-    }  TODO */
-
+    }
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 }
