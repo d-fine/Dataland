@@ -9,16 +9,14 @@
   "environmental": {
     "biodiversity": {
       "rareOrEndangeredEcosystemsExposure": {
-        "value": "Yes",
-        "quality": "NA"
+        "value": "Yes"
       }
     }
   },
   "social": {
     "socialAndEmployeeMatters": {
       "transparencyDisclosurePolicy": {
-        "value": "Yes",
-        "quality": "NA"
+        "value": "Yes"
       }
     }
   }

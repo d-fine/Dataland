@@ -51,10 +51,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
     }
 
     /**
-     * Find the data points which are not extended and therefore do not have a mandatory
-     * "quality" key.
-     * If an object has "dataSource" or "value" keys without a "quality" key, they are considered BaseDataPoints
-     * and are updated with a "quality" value
+     * Find all data points with a quality entry of NA and remove it
      */
     private fun checkRecursivelyForBaseDataPoint(
         dataset: JSONObject,
@@ -62,16 +59,14 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
     ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
-            var hasDataSourceOrValue = false
-            var hasQuality = false
-            obj.keys().forEach { key ->
-                if (key == "dataSource") hasDataSourceOrValue = true
-                if (key == "value") hasDataSourceOrValue = true
-                if (key == "quality") hasQuality = true
+            var quality: String? = null
+            if (obj.has("quality")) {
+                quality = obj.getOrJavaNull("quality") as String?
             }
-            if (hasDataSourceOrValue && !hasQuality) {
-                obj.put("quality", "NA")
+            if (quality == null || quality == "NA") {
+                obj.remove("quality")
             }
+
             obj.keys().forEach {
                 checkRecursivelyForBaseDataPoint(obj, it)
             }

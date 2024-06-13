@@ -14,12 +14,10 @@
         "quality": "Audited"
       },
       "sustainableAgriculturePolicy": {
-        "value": "No",
-        "quality": "NA"
+        "value": "No"
       },
       "sustainableOceansAndSeasPolicy": null,
       "threatenedSpeciesExposure": {
-        "quality": "NA",
         "value": "Yes",
         "dataSource": {
           "fileName": "dummyFileName",
@@ -28,7 +26,6 @@
       },
       "biodiversityProtectionPolicy": null,
       "deforestationPolicy": {
-        "quality": "NA",
         "dataSource": {
           "fileReference": "dummyFileReference"
         }
@@ -38,8 +35,7 @@
   "social": {
     "socialAndEmployeeMatters": {
       "transparencyDisclosurePolicy": {
-        "value": "Yes",
-        "quality": "NA"
+        "value": "Yes"
       }
     }
   }
