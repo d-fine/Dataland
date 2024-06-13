@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -21,7 +19,6 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyBoolean
-import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.doNothing
@@ -58,7 +55,6 @@ class SingleDataRequestManagerTest {
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = createDataRequestProcessingUtilsMock()
-        val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
         singleDataRequestManagerMock = SingleDataRequestManager(
@@ -71,14 +67,6 @@ class SingleDataRequestManagerTest {
         )
         doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValid(anyString())
 
-        `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
-            listOf(
-                CompanyIdAndName(
-                    companyName = "Dummmy",
-                    companyId = companyIdRegexSafeCompanyId,
-                ),
-            ),
-        )
         val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)
     }
