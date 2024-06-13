@@ -46,6 +46,7 @@ import PollutionEmissionFormElement from "@/components/forms/parts/elements/deri
 import SubsidiaryFormElement from "@/components/forms/parts/elements/derived/SubsidiaryFormElement.vue";
 import WasteClassificationFormElement from "@/components/forms/parts/elements/derived/WasteClassificationFormElement.vue";
 import SiteAndAreaFormElement from "@/components/forms/parts/elements/derived/SiteAndAreaFormElement.vue";
+import EmployeesPerCountryFormElement from "@/components/forms/parts/elements/derived/EmployeesPerCountryFormElement.vue";
 
 export default defineComponent({
   name: "FormListFormField",
@@ -66,6 +67,7 @@ export default defineComponent({
     SubsidiaryFormElement,
     WasteClassificationFormElement,
     SiteAndAreaFormElement,
+    EmployeesPerCountryFormElement,
   },
   data() {
     return {

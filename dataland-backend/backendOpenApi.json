@@ -4458,6 +4458,13 @@
           "numberNotReportedHead": {
             "type": "number",
             "nullable": true
+          },
+          "employeesPerCountry": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/SmeEmployeesPerCountry"
+            }
           }
         }
       },
@@ -4635,6 +4642,26 @@
                 "$ref": "#/components/schemas/SmeBasic"
               }
             ]
+          }
+        }
+      },
+      "SmeEmployeesPerCountry": {
+        "required": [
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "numberOfEmployeesInHeadCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "numberOfEmployeesInFullTimeEquivalent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -14898,11 +14925,9 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyId": {
             "type": "string"
@@ -14910,11 +14935,13 @@
           "companyName": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           },
-          "sector": {
+          "countryCode": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }

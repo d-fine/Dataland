@@ -6,6 +6,7 @@ import {
   type SmeSubsidiary,
   type SmeWasteClassificationObject,
   type SmeSiteAndArea,
+    type SmeEmployeesPerCountry,
   AreaAdjointness,
 } from "@clients/backend";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
@@ -64,6 +65,13 @@ export class SmeGenerator extends Generator {
       siteGeocoordinateLatitude: this.randomFloat(0, 1e8),
       areaGeocoordinateLongitude: this.randomFloat(0, 1e8),
       areaGeocoordinateLatitude: this.randomFloat(0, 1e8),
+    };
+  }
+  generateSmeEmployeesPerCountry(): SmeEmployeesPerCountry {
+    return {
+      country: faker.location.countryCode(),
+      numberOfEmployeesInHeadCount:this.randomInt(0, 1e4),
+      numberOfEmployeesInFullTimeEquivalent: this.randomFloat(0, 1e4),
     };
   }
 }

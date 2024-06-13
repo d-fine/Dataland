@@ -11,6 +11,7 @@ import {
   type ReleaseMedium,
   type SmeWasteClassificationObject,
   type SmeSiteAndArea,
+  type SmeEmployeesPerCountry,
 } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
@@ -46,6 +47,11 @@ export const smeModalColumnHeaders = {
     areaGeocoordinateLatitude: "Latitude Geocoordinates of the Area",
     specificationOfAdjointness: "Adjointness of the Area to the Site",
   },
+  employeesPerCountry: {
+    country: "Country",
+    numberOfEmployeesInHeadCount:"Number of Employees in Head Count",
+    numberOfEmployeesInFullTimeEquivalent: "Number of Employees in Full Time Equivalents"
+  }
 };
 interface SmePollutionEmissionDisplayFormat {
   pollutionType: string;
@@ -217,8 +223,8 @@ function convertSmeWasteClassificationToListForModal(
 }
 
 /**
- * Generates a display modal component for all waste classification components
- * @param input list of sme waste classifications
+ * Generates a display modal component for all site and area components
+ * @param input list of sme site and area
  * @param fieldLabel Field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
@@ -243,6 +249,40 @@ export function formatSmeSiteAndAreaForDisplay(
           data: {
             listOfRowContents: input,
             kpiKeyOfTable: "siteAndArea",
+            columnHeaders: smeModalColumnHeaders,
+          },
+        },
+      },
+    };
+  }
+}
+/**
+ * Generates a display modal component for all employees per country components
+ * @param input list of sme employees per country
+ * @param fieldLabel Field label for the corresponding object
+ * @returns ModalLinkDisplayComponent to the modal (if any data is present).
+ */
+export function formatSmeEmployeesPerCountryForDisplay(
+    input: SmeEmployeesPerCountry[] | null | undefined,
+    fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  if (!input) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+      displayValue: {
+        label: `Show ${fieldLabel}`,
+        modalComponent: DetailsCompanyDataTable,
+        modalOptions: {
+          props: {
+            header: fieldLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            listOfRowContents: input,
+            kpiKeyOfTable: "employeesPerCountry",
             columnHeaders: smeModalColumnHeaders,
           },
         },

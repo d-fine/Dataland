@@ -110,6 +110,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
         numberOtherHead: dataGenerator.randomFloat(),
         numberNotReportedFullTime: dataGenerator.randomFloat(),
         numberNotReportedHead: dataGenerator.randomFloat(),
+        employeesPerCountry: dataGenerator.randomArray(() => dataGenerator.generateSmeEmployeesPerCountry(), 0, 5),
       },
       workforceHealthAndSafety: {
         totalHours: dataGenerator.randomFloat(),
