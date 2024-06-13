@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -22,14 +22,14 @@ import org.springframework.stereotype.Component
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @oaram keycloakUserControllerApiService object for using keycloak
- * @param requestControllerApi object for using request services
+ * @param requestControllerApi object for using request services TODO
  */
 
 @Component
 class DataOwnershipSuccessfullyEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val requestControllerApi: RequestControllerApi,
+    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
@@ -72,8 +72,11 @@ class DataOwnershipSuccessfullyEmailMessageSender(
      * @return the number of opened data requests
      */
     fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
-        return requestControllerApi.getAggregatedDataRequests(
-            identifierValue = datalandCompanyId, status = RequestStatus.Open,
+        return dataRequestQueryManager.getAggregatedDataRequests(
+            identifierValue = datalandCompanyId,
+            dataTypes = null,
+            reportingPeriod = null,
+            status = RequestStatus.Open,
         ).filter { it.count > 0 }.size
     }
 
