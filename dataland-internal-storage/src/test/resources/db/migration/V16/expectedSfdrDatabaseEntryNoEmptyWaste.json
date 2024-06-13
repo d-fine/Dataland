@@ -15,8 +15,7 @@
     },
     "biodiversity": {
       "rareOrEndangeredEcosystemsExposure": {
-        "value": "Yes",
-        "quality": "NA"
+        "value": "Yes"
       },
       "manufactureOfAgrochemicalPesticidesProducts": null,
       "landDegradationDesertificationSoilSealingExposure": {
