@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.configurations
 
 import okhttp3.OkHttpClient
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.DataOwnerControllerApi
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -17,13 +17,13 @@ class ApiClients(
     @Value("\${dataland.documentmanager.base-url}") private val documentManagerBaseUrl: String,
 ) {
     /**
-     * Creates an auto-authenticated version of the RequestControllerApi of the community manager
+     * Creates an auto-authenticated version of the DataOwnerControllerApi of the community manager
      */
     @Bean
-    fun getRequestApi(
+    fun getDataOwnerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): RequestControllerApi {
-        return RequestControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
+    ): DataOwnerControllerApi {
+        return DataOwnerControllerApi(communitymanagerBaseUrl, authenticatedOkHttpClient)
     }
 
     /**

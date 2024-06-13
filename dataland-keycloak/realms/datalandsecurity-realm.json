@@ -700,7 +700,7 @@
       "TERMS_AND_CONDITIONS"
     ],
     "realmRoles": [
-      "ROLE_USER",
+      "ROLE_ADMIN",
       "default-roles-datalandsecurity"
     ],
     "clientRoles": {

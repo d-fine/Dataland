@@ -1,10 +1,10 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandcommunitymanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackend.model.companies.CompanyDataOwners
+import org.dataland.datalandcommunitymanager.model.dataOwner.CompanyDataOwners
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,7 +19,7 @@ import java.util.UUID
 /**
  * Defines the restful dataland-backend API regarding (company) data ownership.
  */
-@RequestMapping("/companies")
+@RequestMapping("/companies") // TODO adjust the names of all endpoints later
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataOwnerApi {
@@ -49,7 +49,7 @@ interface DataOwnerApi {
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
     ):
-        ResponseEntity<CompanyDataOwners>
+            ResponseEntity<CompanyDataOwners>
 
     /**
      * A method to retrieve a  data owner information from companies in dataland

@@ -1,6 +1,6 @@
-package org.dataland.datalandbackend.repositories
+package org.dataland.datalandcommunitymanager.repositories
 
-import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
+import org.dataland.datalandcommunitymanager.entities.CompanyDataOwnersEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 /**

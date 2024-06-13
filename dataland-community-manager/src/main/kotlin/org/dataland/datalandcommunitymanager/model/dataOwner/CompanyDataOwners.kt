@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.companies
+package org.dataland.datalandcommunitymanager.model.dataOwner
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

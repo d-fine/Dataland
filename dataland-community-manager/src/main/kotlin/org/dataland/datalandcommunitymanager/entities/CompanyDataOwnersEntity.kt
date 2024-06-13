@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.entities
+package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection

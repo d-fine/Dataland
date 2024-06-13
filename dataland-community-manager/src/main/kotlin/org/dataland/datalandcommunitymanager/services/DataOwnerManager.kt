@@ -1,14 +1,16 @@
-package org.dataland.datalandbackend.services
+package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
-import org.dataland.datalandbackend.repositories.DataOwnerRepository
-import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
 import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandcommunitymanager.entities.CompanyDataOwnersEntity
+import org.dataland.datalandcommunitymanager.repositories.DataOwnerRepository
+import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -20,14 +22,15 @@ import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Implementation of a (company) data ownership manager for Dataland
+ * Implementation of a (company) data ownership manager for Dataland TODO description
  * @param dataOwnerRepository  JPA for data ownership relations
+ * @param companyIdValidator
  */
 @Service("DataOwnersManager")
-class DataOwnersManager(
+class DataOwnerManager(
+    @Autowired private val companyApi: CompanyDataControllerApi, // TODO unite maybe with validator?
+    @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
-    @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val metaInformationManager: DataMetaInformationManager,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
     @Autowired private val dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender,
 ) {
@@ -46,7 +49,7 @@ class DataOwnersManager(
         companyName: String,
     ): CompanyDataOwnersEntity {
         val correlationId = UUID.randomUUID().toString()
-        checkIfCompanyIsValid(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         return if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
@@ -71,15 +74,6 @@ class DataOwnersManager(
         }
     }
 
-    private fun checkIfCompanyIsValid(companyId: String) {
-        if (!companyRepository.existsById(companyId)) {
-            throw ResourceNotFoundApiException(
-                "Company is invalid",
-                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
-            )
-        }
-    }
-
     /**
      * Method to get a data owner from a given company
      * @param companyId the ID of the company to which the data owner is requested
@@ -87,6 +81,7 @@ class DataOwnersManager(
      */
     @Transactional
     fun getDataOwnerFromCompany(companyId: String): CompanyDataOwnersEntity {
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val dataOwnersOfCompany = dataOwnerRepository.findById(companyId).getOrElse {
             CompanyDataOwnersEntity(companyId, mutableListOf())
         }
@@ -101,7 +96,7 @@ class DataOwnersManager(
      */
     @Transactional
     fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
-        checkIfCompanyIsValid(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             if (dataOwnersForCompany.dataOwners.contains(userId)) {
@@ -141,7 +136,7 @@ class DataOwnersManager(
         companyId: String,
         userId: String,
     ) {
-        checkIfCompanyIsValid(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val failException = ResourceNotFoundApiException(
             "User is not a data owner",
             "The user with Id $userId is not a data owner of the company with Id $companyId.",
@@ -153,42 +148,6 @@ class DataOwnersManager(
         }
     }
 
-    /**
-     * Method to check whether the currently authenticated user is data owner of a specified company and therefore
-     * has uploader rights for this company
-     * @param companyId the ID of the company
-     * @return a Boolean indicating whether the user is data owner or not
-     */
-    @Transactional(readOnly = true)
-    fun isCurrentUserDataOwnerForCompany(companyId: String): Boolean {
-        val userId = DatalandAuthentication.fromContext().userId
-        fun exceptionToThrow(cause: Throwable?) = InsufficientRightsApiException(
-            "Neither uploader nor data owner",
-            "You don't seem be a data owner of company $companyId, which would be required for uploading this data " +
-                "set without general uploader rights.",
-            cause,
-        )
-        try {
-            checkUserCompanyCombinationForDataOwnership(companyId, userId)
-            return true
-        } catch (invalidInputApiException: InvalidInputApiException) {
-            throw exceptionToThrow(invalidInputApiException)
-        } catch (resourceNotFoundApiException: ResourceNotFoundApiException) {
-            throw exceptionToThrow(resourceNotFoundApiException)
-        }
-    }
-
-    /**
-     * Method to check whether the currently authenticated user is data owner of the specified company that is
-     * associated with a specific framework dataset.
-     * @param dataId of the framework dataset
-     * @return a Boolean indicating whether the user is data owner of the company associated with the dataset
-     */
-    @Transactional(readOnly = true)
-    fun isCurrentUserDataOwnerForCompanyOfDataId(dataId: String): Boolean {
-        val companyId = metaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
-        return isCurrentUserDataOwnerForCompany(companyId)
-    }
 
     /**
      * A method to verify if a company has data owners
@@ -196,7 +155,7 @@ class DataOwnersManager(
      */
     @Transactional(readOnly = true)
     fun checkCompanyForDataOwnership(companyId: String) {
-        checkIfCompanyIsValid(companyId)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val dataOwnersEntity = getDataOwnerFromCompany(companyId)
         if (dataOwnersEntity.dataOwners.isEmpty()) {
             throw ResourceNotFoundApiException(
@@ -219,6 +178,7 @@ class DataOwnersManager(
         correlationId: String,
     ) {
         assertAuthenticationViaJwtToken(userAuthentication)
+        companyIdValidator.checkIfCompanyIdIsValid(companyId)
         if (
             dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true
         ) {
@@ -227,16 +187,10 @@ class DataOwnersManager(
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
             )
         }
-        val companyName = companyRepository.findById(companyId).getOrElse {
-            throw ResourceNotFoundApiException(
-                "Company is invalid",
-                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
-            )
-        }.companyName
         dataOwnershipEmailMessageSender.sendDataOwnershipInternalEmailMessage(
             userAuthentication = userAuthentication as DatalandJwtAuthentication,
             datalandCompanyId = companyId,
-            companyName = companyName,
+            companyName = companyApi.getCompanyById(companyId).companyInformation.companyName,
             comment = comment,
             correlationId = correlationId,
         )
