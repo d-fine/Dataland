@@ -85,7 +85,7 @@ export default defineComponent({
      */
     reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
       let latestDate = null;
-      let referencedReports = null;
+      let referencedReports;
       switch (singleDataAndMetaInfo.metaInfo.dataType) {
         case "sfdr":
           referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;

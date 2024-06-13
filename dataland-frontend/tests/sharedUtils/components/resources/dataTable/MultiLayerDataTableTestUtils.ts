@@ -76,7 +76,6 @@ export function getCellValueContainerAndCheckIconForHiddenDisplay(
  * @param reportingYear year to check
  */
 export function checkReportingYearToolTip(reportingYear: string): void {
-  //todo add test for dates (after verfiy style of dates)
   const expectedTextInToolTip = "Dataset published on Dataland:";
   cy.get(`.material-icons[title="${reportingYear}"]`).trigger("mouseenter", "center");
   cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);

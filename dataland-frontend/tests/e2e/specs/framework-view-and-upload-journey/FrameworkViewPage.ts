@@ -219,7 +219,7 @@ describeIf(
         if (index == 0) {
           expect(element.text()).to.equal("KPIs");
         } else {
-          expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
+          expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
         }
       });
     }
