@@ -15,15 +15,15 @@
               />
             </td>
           </tr>
-          <tr v-if="companyReport.reportDate">
-            <th class="headers-bg width-auto"><span class="table-left-label">Report date</span></th>
+          <tr>
+            <th class="headers-bg width-auto"><span class="table-left-label">Publication date</span></th>
             <td>{{ companyReport.reportDate }}</td>
           </tr>
-          <tr v-if="companyReport.currency">
+          <tr>
             <th class="headers-bg width-auto"><span class="table-left-label">Report currency</span></th>
             <td>{{ companyReport.currency }}</td>
           </tr>
-          <tr v-if="companyReport.isGroupLevel !== null">
+          <tr>
             <th class="headers-bg width-auto"><span class="table-left-label">Group level report?</span></th>
             <td>{{ companyReport.isGroupLevel }}</td>
           </tr>
