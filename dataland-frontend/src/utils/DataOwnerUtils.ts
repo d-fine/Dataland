@@ -19,9 +19,10 @@ export async function isUserDataOwnerForCompany(
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     if (userId) {
       try {
-        await new ApiClientProvider(
-          keycloakPromiseGetter(),
-        ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, userId);
+        await new ApiClientProvider(keycloakPromiseGetter()).apiClients.dataOwnerController.isUserDataOwnerForCompany(
+          companyId,
+          userId,
+        );
         return true;
       } catch (error) {
         if ((error as AxiosError)?.response?.status == 404) {
@@ -44,7 +45,7 @@ export async function hasCompanyAtLeastOneDataOwner(
 ): Promise<boolean> {
   if (keyCloakPromiseGetter && isCompanyIdValid(companyId)) {
     try {
-      await new ApiClientProvider(keyCloakPromiseGetter()).backendClients.companyDataController.hasCompanyDataOwner(
+      await new ApiClientProvider(keyCloakPromiseGetter()).apiClients.dataOwnerController.hasCompanyDataOwner(
         companyId,
       );
       return true;
