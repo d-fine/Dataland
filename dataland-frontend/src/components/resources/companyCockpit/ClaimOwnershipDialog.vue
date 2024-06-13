@@ -97,10 +97,10 @@ export default defineComponent({
      * Makes the API request in order to post the request for data ownership
      */
     async submitInput(): void {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
+      const dataOwnerControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+        .dataOwnerController;
       try {
-        const axiosResponse = await companyDataControllerApi.postDataOwnershipRequest(
+        const axiosResponse = await dataOwnerControllerApi.postDataOwnershipRequest(
           this.companyId,
           this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined,
         );
