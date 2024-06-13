@@ -1,11 +1,9 @@
 package org.dataland.datalandcommunitymanager.services
 
-
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
 import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.CompanyDataOwnersEntity
@@ -147,7 +145,6 @@ class DataOwnerManager(
             throw failException
         }
     }
-
 
     /**
      * A method to verify if a company has data owners

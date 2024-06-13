@@ -5,18 +5,18 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.DataOwnerControll
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 /**
  * Implementation of a (company) data ownership manager for Dataland
- * @param dataOwnerRepository  JPA for data ownership relations
+ * @param dataOwnerRepository  JPA for data ownership relations TODO
  */
 @Service("NameToDo")
 class NameToDo( // TODO name
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val dataOwnerControllerApi: DataOwnerControllerApi,
 ) {
 
@@ -41,7 +41,7 @@ class NameToDo( // TODO name
             dataOwnerControllerApi.isUserDataOwnerForCompany(UUID.fromString(companyId), UUID.fromString(userId))
             return true
         } catch (clientException: ClientException) {
-            if (clientException.statusCode == 404) {
+            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
                 return false // TODO vllt kann man irgendwie diese custom expressison oben durchreichen?
             } else {
                 throw clientException

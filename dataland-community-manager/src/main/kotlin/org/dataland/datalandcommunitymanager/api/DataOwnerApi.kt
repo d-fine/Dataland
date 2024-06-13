@@ -49,7 +49,7 @@ interface DataOwnerApi {
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
     ):
-            ResponseEntity<CompanyDataOwners>
+        ResponseEntity<CompanyDataOwners>
 
     /**
      * A method to retrieve a  data owner information from companies in dataland
