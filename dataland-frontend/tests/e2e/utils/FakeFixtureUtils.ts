@@ -172,9 +172,7 @@ export class Generator {
       referencedReports[reportName] = {
         fileReference: getReferencedDocumentId(),
         fileName: this.valueOrNull(reportName),
-        isGroupLevel: this.randomYesNo(),
         reportDate: this.valueOrNull(generatePastDate()),
-        currency: this.valueOrNull(generateCurrencyCode()),
       };
     }
     return referencedReports;

@@ -244,9 +244,7 @@ export default defineComponent({
           this.alreadyStoredReports.push({
             fileName: key,
             fileReference: referencedReport.fileReference,
-            currency: referencedReport.currency,
             reportDate: referencedReport.reportDate,
-            isGroupLevel: referencedReport.isGroupLevel,
           });
         }
         this.emitReportsUpdatedEvent();

@@ -2,124 +2,91 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Korey",
-			"headquartersPostalCode": "91575",
-			"sector": "lifetime value",
+			"headquarters": "Lehnerbury",
+			"headquartersPostalCode": "04829",
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"CZgxycKSMys5zmyoQG34"
+					"onxMbw3ii0VSiwc5Xtat"
 				],
 				"Isin": [
-					"DNgRQ1c4ekMr"
+					"UkEst2OtZ5yU"
 				],
 				"PermId": [],
-				"Ticker": [
-					"TdeV72P"
-				],
-				"Duns": [
-					"vbSk8rrkF"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"y4yWlyQMldFQllT"
+					"tQpyGyz63SgMBLb"
 				]
 			},
-			"countryCode": "PH",
+			"countryCode": "BQ",
 			"companyAlternativeNames": [
-				"Berge Group",
-				"Feeney Inc",
-				"Prohaska Group",
-				"Sporer - Reichel"
+				"Littel, Ferry and Schneider"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://fumbling-secretion.info/",
+			"companyLegalForm": "AG",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-29",
+					"reportingDate": "2024-02-03",
 					"sectors": [
-						"49.39",
-						"85.10",
-						"86"
+						"10.73",
+						"20.17",
+						"27.12",
+						"66.29"
 					],
-					"numberOfEmployees": 1754,
-					"fiscalYearStart": "2024-10-15",
+					"numberOfEmployees": 7002,
+					"fiscalYearStart": "2024-08-31",
 					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "AnnualReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-01-29",
-							"currency": "PEN"
-						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-02-19",
-							"currency": "SBD"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-09-20",
-							"currency": "AOA"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-06",
-							"currency": "HUF"
+							"reportDate": "2023-07-30"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 68985.05,
-					"operatingCostInEur": 13441.8,
-					"capitalAssetsInEur": 80362.61
+					"revenueInEur": 59722.29,
+					"operatingCostInEur": 69127.99,
+					"capitalAssetsInEur": 18646.37
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 78809.71,
+						"value": 77478.7,
 						"dataSource": {
-							"page": 45,
+							"page": 1139,
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "platforms"
 						},
-						"comment": "parse online port",
-						"quality": "Estimated"
+						"comment": "calculate solid state card",
+						"quality": "Incomplete"
 					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 60992.68,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 89420.8,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
 						"Flooding",
-						"Hail",
-						"Snow",
-						"Wind"
+						"Snow"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]
