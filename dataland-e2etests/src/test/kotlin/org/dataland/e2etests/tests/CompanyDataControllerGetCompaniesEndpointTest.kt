@@ -163,7 +163,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
 
     @Test
     fun `search for all identifier values and check if all results contain the looked for value`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testString = UUID.randomUUID().toString()
         val testCompanyList = listOf(
             CompanyInformation(
@@ -177,6 +177,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             ),
         )
         val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first())
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         uploadTestEuTaxonomyFinancialsDataSet(companyResponse.companyId)
         testThatSearchForCompanyIdentifierWorks(IdentifierType.Isin.value, "Isin$testString")
         testThatSearchForCompanyIdentifierWorks(IdentifierType.Lei.value, "Lei$testString")
@@ -184,7 +186,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
 
     @Test
     fun `upload a company with a dataset and check if it can be found via an empty name search`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyInformation = CompanyInformation(
             "retrieve empty search string", "",
             mapOf(
@@ -194,6 +196,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
         val expectedCompany = StoredCompany(
             uploadedCompany.companyId,
@@ -210,16 +214,14 @@ class CompanyDataControllerGetCompaniesEndpointTest {
 
     @Test
     fun `search for identifier and name substring to verify substring matching in company search`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testIdentifier = UUID.randomUUID().toString()
         val testName = "SubstringSearch"
-        val companyIdentifier = mapOf(
-            IdentifierType.Lei.value to listOf(testIdentifier),
-        )
-        val companyInformation = CompanyInformation(
-            testName, "", companyIdentifier, "", listOf(),
-        )
+        val companyIdentifier = mapOf(IdentifierType.Lei.value to listOf(testIdentifier))
+        val companyInformation = CompanyInformation(testName, "", companyIdentifier, "", listOf())
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
         val expectedCompany = convertStoredToBasicCompanyInformation(
             StoredCompany(
@@ -243,7 +245,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     @Test
     fun `search for name and check the ordering of results`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyList = createCompaniesForTestingOrdering(testString)
         for (company in companyList) {
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
@@ -271,7 +273,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     @Test
     fun `search for name and check that chunking does not change the ordering of results`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyList = createCompaniesForTestingOrdering(testString)
         for (company in companyList) {
             apiAccessor.companyDataControllerApi.postCompany(company)
