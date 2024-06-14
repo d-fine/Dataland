@@ -3912,6 +3912,23 @@
           "Near"
         ]
       },
+      "BaseDataPointString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
       "BaseDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -4339,8 +4356,11 @@
         "type": "object",
         "properties": {
           "undertakenMeasures": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -4436,8 +4456,11 @@
         "type": "object",
         "properties": {
           "negativeEffects": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "numberConvictions": {
             "type": "number",
@@ -4814,7 +4837,7 @@
           "wasteClassification": {
             "$ref": "#/components/schemas/WasteClassifications"
           },
-          "typeWaste": {
+          "typeOfWaste": {
             "type": "string",
             "nullable": true
           },
@@ -9726,23 +9749,6 @@
           "TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
           "NoneOfTheAbove"
         ]
-      },
-      "BaseDataPointString": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
       },
       "CompanyAssociatedDataHeimathafenData": {
         "required": [
@@ -14941,12 +14947,6 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14955,6 +14955,12 @@
             "type": "string"
           },
           "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "lei": {
