@@ -184,12 +184,7 @@ export default defineComponent({
       return this.isDataValueProvided;
     },
     computeQualityOption(): object {
-      if (!this.isDataValueProvided) {
-        return this.qualityOptions;
-      } else {
-        //todo double check
-        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== null);
-      }
+      return this.qualityOptions;
     },
     reportsName(): string[] {
       return getFileName(this.injectReportsNameAndReferences);
