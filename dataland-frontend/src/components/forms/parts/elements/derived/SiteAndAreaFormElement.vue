@@ -2,7 +2,7 @@
   <FreeTextFormField name="siteName" label="Site Name" description="Please name the site" validation="required" />
   <AddressFormField
     data-test="AddressFormField"
-    name="addressOfSite"
+    name="siteAddress"
     description="Please state the address of the site."
     label="Site Address"
     validation="required"
@@ -45,7 +45,7 @@
   />
 
   <NumberFormField
-    :name="'areaGeocoordinateLongitudeval'"
+    :name="'areaGeocoordinateLongitude'"
     validation-label="longitudeval geocoordinate"
     label="Longitudeval Geocoordinate"
     description="Please specify the longitudeval geocoordinate of the area"
@@ -58,8 +58,8 @@
     description="Please specify the latitude geocoordinate of the area"
     input-class="col-4 pr-0"
   />
-  <MultiSelectFormField
-    name="adjointness"
+  <SingleSelectFormField
+    name="specificationOfAdjointness"
     label="Adjointness of the area"
     description="Please specify the adjointness of the area"
     :options="adjointness"
@@ -70,10 +70,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "SiteAndAreaFormElement",
@@ -85,7 +85,7 @@ export default defineComponent({
   components: {
     AddressFormField,
     NumberFormField,
-    MultiSelectFormField,
+    SingleSelectFormField,
     FreeTextFormField,
   },
   methods: {},

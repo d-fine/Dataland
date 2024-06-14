@@ -13,7 +13,7 @@
     validation="min:0"
     input-class="col-4 pr-0"
   />
-  <MultiSelectFormField
+  <SingleSelectFormField
     name="releaseMedium"
     label="Release Medium"
     description="Please specify in which medium the pollutant was released"
@@ -25,9 +25,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "PollutionEmissionFormElement",
@@ -38,7 +38,7 @@ export default defineComponent({
   },
   components: {
     NumberFormField,
-    MultiSelectFormField,
+    SingleSelectFormField,
     FreeTextFormField,
   },
   methods: {},

@@ -6,7 +6,7 @@ package org.dataland.datalandbackend.frameworks.sme.custom
  */
 data class SmeWasteClassificationObject(
     val wasteClassification: WasteClassifications,
-    val typeWaste: String?,
+    val typeOfWaste: String?,
     val totalAmountTons: Number?,
     val wasteRecycleOrReuseTons: Number?,
     val wasteDisposalTons: Number?,

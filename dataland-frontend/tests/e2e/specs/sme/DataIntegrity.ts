@@ -2,21 +2,21 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
-  //Configuration,
+  Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  //SmeDataControllerApi,
   type SmeData,
+  SmeDataControllerApi,
   type StoredCompany,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadSmeFrameworkData } from "@e2e/utils/FrameworkUpload";
-//import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
 import { TEST_PDF_FILE_NAME, TEST_PRIVATE_PDF_FILE_PATH } from "@sharedUtils/ConstantsForPdfs";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
 let smeFixtureForTest: FixtureData<SmeData>;
 
@@ -77,22 +77,22 @@ describeIf(
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
       cy.wait(500);
-      // cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
-      //  .then((postResponseInterception) => {
-      //  const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
-      //  return new SmeDataControllerApi(
-      //   new Configuration({ accessToken: tokenForAdminUser }),
-      //   ).getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId);
-      //})
-      //.then((axiosGetResponse) => {
-      // const frontendSubmittedSmeDataset = axiosGetResponse.data.data;
-      //TODO reactivate this once the used data model is updated
-      //frontendSubmittedSmeDataset.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
-      //compareObjectKeysAndValuesDeep(
-      //smeFixtureForTest.t as unknown as Record<string, object>,
-      //frontendSubmittedSmeDataset as unknown as Record<string, object>,
-      //);
-      // });
+      cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+        .then((postResponseInterception) => {
+          const dataMetaInformationOfReuploadedDataset = postResponseInterception.response?.body as DataMetaInformation;
+          return new SmeDataControllerApi(
+            new Configuration({ accessToken: tokenForAdminUser }),
+          ).getCompanyAssociatedSmeData(dataMetaInformationOfReuploadedDataset.dataId);
+        })
+        .then((axiosGetResponse) => {
+          const frontendSubmittedSmeDataset = axiosGetResponse.data.data;
+          //TODO reactivate this once the used data model is updated
+          //frontendSubmittedSmeDataset.basic insurances?.naturalHazards?.naturalHazardsCovered?.sort();
+          compareObjectKeysAndValuesDeep(
+            smeFixtureForTest.t as unknown as Record<string, object>,
+            frontendSubmittedSmeDataset as unknown as Record<string, object>,
+          );
+        });
     });
 
     it("Swap one fake document with a real one and check if downloading it via the view page works as expected", () => {
