@@ -160,7 +160,7 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
-      qualityValue: "NA",
+      qualityValue: null,
       commentValue: "",
       currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
@@ -183,7 +183,9 @@ export default defineComponent({
       return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
     },
     isDataQualityRequired(): boolean {
-      return this.isDataValueProvided;
+      return false;
+      //todo double check
+      //return this.isDataValueProvided;
     },
     computeQualityOption(): object {
       if (!this.isDataValueProvided) {

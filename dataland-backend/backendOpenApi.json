@@ -14435,15 +14435,15 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "countryCode": {
             "type": "string"
@@ -14476,10 +14476,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
