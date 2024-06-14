@@ -7,7 +7,7 @@
             <th class="headers-bg width-auto"><span class="table-left-label">Data source</span></th>
             <td>
               <DocumentLink
-                :download-name="companyReport.fileName"
+                :download-name="companyReport.fileName ? companyReport.fileName : 'Unnamed_File'"
                 :fileReference="companyReport.fileReference"
                 data-type=""
                 font-style="font-semibold"

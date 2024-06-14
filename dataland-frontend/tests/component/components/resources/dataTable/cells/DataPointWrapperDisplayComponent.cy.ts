@@ -26,6 +26,6 @@ it("tests if modal with link into position in text file works", () => {
         metaInfo: mockMetaInfos[0],
       },
     }).then(() => {});
-    cy.get('.link').should('exist');
+    cy.get(".link").should("exist");
   });
 });

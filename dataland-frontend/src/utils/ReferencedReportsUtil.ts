@@ -25,7 +25,7 @@ export function openReportDataTableModal(context: ComponentContext, report: Comp
 function constructModalOptions(report: CompanyReport, reportName: string): ModalOptions {
   const reportWithName: CompanyReport = {
     ...report,
-    fileName: report.fileName ? report.fileName : reportName ? reportName : "Unnamed_File",
+    fileName: report.fileName ? report.fileName : reportName ,
   };
 
   return {
