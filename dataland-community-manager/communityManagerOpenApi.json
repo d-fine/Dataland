@@ -140,7 +140,7 @@
         ]
       }
     },
-    "/companies/{companyId}/data-ownership-requests": {
+    "/data-ownership-requests/{companyId}": {
       "post": {
         "tags": [
           "data-owner-controller"
@@ -202,7 +202,7 @@
         ]
       }
     },
-    "/companies/{companyId}/data-owners/{userId}": {
+    "/data-owners/{companyId}/{userId}": {
       "post": {
         "tags": [
           "data-owner-controller"
@@ -493,7 +493,7 @@
         ]
       }
     },
-    "/companies/{companyId}/data-owners": {
+    "/data-owners/{companyId}": {
       "get": {
         "tags": [
           "data-owner-controller"

@@ -28,7 +28,7 @@ describeIf(
       const testCompanyName = "Company-Created-In-Data-Owner-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          cy.intercept("**/community/companies/" + storedCompany.companyId + "/data-owners/*").as("postDataOwner");
+          cy.intercept("**/community/data-owners/**").as("postDataOwner");
           void postDataOwner(token, reader_userId, storedCompany.companyId);
           cy.wait("@postDataOwner", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           logout();

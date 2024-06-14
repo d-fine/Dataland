@@ -19,7 +19,6 @@ import java.util.UUID
 /**
  * Defines the restful dataland-backend API regarding (company) data ownership.
  */
-@RequestMapping("/companies") // TODO adjust the names of all endpoints later
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataOwnerApi {
@@ -41,7 +40,7 @@ interface DataOwnerApi {
     )
     @PostMapping(
         produces = ["application/json"],
-        value = ["/{companyId}/data-owners/{userId}"],
+        value = ["/data-owners/{companyId}/{userId}"],
 
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -68,7 +67,7 @@ interface DataOwnerApi {
     )
     @GetMapping(
         produces = ["application/json"],
-        value = ["/{companyId}/data-owners"],
+        value = ["/data-owners/{companyId}"],
 
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -94,7 +93,7 @@ interface DataOwnerApi {
     )
     @DeleteMapping(
         produces = ["application/json"],
-        value = ["/{companyId}/data-owners/{userId}"],
+        value = ["/data-owners/{companyId}/{userId}"],
 
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -125,7 +124,7 @@ interface DataOwnerApi {
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/{companyId}/data-owners/{userId}"],
+        value = ["/data-owners/{companyId}/{userId}"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserRequestingForOwnId(#userId)")
     fun isUserDataOwnerForCompany(
@@ -147,7 +146,7 @@ interface DataOwnerApi {
         ],
     )
     @PostMapping(
-        value = ["/{companyId}/data-ownership-requests"],
+        value = ["/data-ownership-requests/{companyId}"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postDataOwnershipRequest(
@@ -174,7 +173,7 @@ interface DataOwnerApi {
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/{companyId}/data-owners"],
+        value = ["/data-owners/{companyId}"],
     )
     fun hasCompanyDataOwner(
         @PathVariable("companyId") companyId: UUID,

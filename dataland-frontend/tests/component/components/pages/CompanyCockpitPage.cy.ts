@@ -40,7 +40,7 @@ describe("Component test for the company cockpit", () => {
    * @param hasCompanyDataOwner has the company at least one data owner
    */
   function mockRequestsOnMounted(hasCompanyDataOwner: boolean = false): void {
-    cy.intercept(`**/api/companies/${dummyCompanyId}/info`, {
+    cy.intercept(`**/api/companies/*/info`, {
       body: companyInformationForTest,
       times: 1,
     }).as("fetchCompanyInfo");
@@ -49,11 +49,11 @@ describe("Component test for the company cockpit", () => {
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
 
-    cy.intercept(`**/community/companies/*/data-owners/${companyDataOwnerId}`, {
+    cy.intercept(`**/community/data-owners/*/${companyDataOwnerId}`, {
       status: 200,
     }).as("fetchUserIsDataOwnerTrue");
     if (hasCompanyDataOwner) {
-      cy.intercept("**/community/companies/*/data-owners", {
+      cy.intercept(`**/community/data-owners/*`, {
         body: [companyDataOwnerId],
       }).as("fetchHasCompanyDataOwnersFalse");
     }
