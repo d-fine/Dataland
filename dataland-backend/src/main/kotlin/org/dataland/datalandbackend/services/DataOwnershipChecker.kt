@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 /**
- * Implementation of a (company) data ownership manager for Dataland
- * @param dataOwnerRepository  JPA for data ownership relations TODO
+ * Service to execute data-ownership-checks to decide whether a user can access a resource or not
+ * @param dataMetaInformationManager required here to find companyIds for dataIds
+ * @param dataOwnerControllerApi gets data-ownership data from the community manager
  */
-@Service("NameToDo")
-class NameToDo( // TODO name
+@Service("DataOwnershipChecker")
+class DataOwnershipChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val dataOwnerControllerApi: DataOwnerControllerApi,
 ) {

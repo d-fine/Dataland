@@ -44,7 +44,7 @@ interface DataApi<T> {
     @PreAuthorize(
         "hasRole('ROLE_UPLOADER') or " +
             "(hasRole('ROLE_USER') and " +
-            "@NameToDo.isCurrentUserDataOwnerForCompany(#companyAssociatedData.companyId))",
+            "@DataOwnershipChecker.isCurrentUserDataOwnerForCompany(#companyAssociatedData.companyId))",
     )
     fun postCompanyAssociatedData(
         @Valid @RequestBody
