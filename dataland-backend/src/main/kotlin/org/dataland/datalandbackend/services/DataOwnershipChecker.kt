@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.DataOwnerControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -29,21 +28,13 @@ class DataOwnershipChecker(
      */
     @Transactional(readOnly = true)
     fun isCurrentUserDataOwnerForCompany(companyId: String): Boolean {
-        // TODO sehr komische Funktion... schau später nochmal genauer rein
         val userId = DatalandAuthentication.fromContext().userId
-        fun exceptionToThrow(cause: Throwable?) = InsufficientRightsApiException(
-            "Neither uploader nor data owner",
-            "You don't seem be a data owner of company $companyId, which would be required for uploading this data " +
-                "set without general uploader rights.",
-            cause,
-        )
-        try {
-            // companyQueryManager.getCompanyById(companyId) // TODO sollte ein eigenes try bekommen
+        return try {
             dataOwnerControllerApi.isUserDataOwnerForCompany(UUID.fromString(companyId), UUID.fromString(userId))
-            return true
+            true
         } catch (clientException: ClientException) {
             if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                return false // TODO vllt kann man irgendwie diese custom expressison oben durchreichen?
+                false
             } else {
                 throw clientException
             }
