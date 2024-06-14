@@ -98,13 +98,11 @@
             <UploadFormHeader
               :label="`${label} Quality`"
               description="The level of confidence associated to the value."
-              :is-required="isDataQualityRequired"
             />
             <SingleSelectFormElement
               name="quality"
               v-model="qualityValue"
               :disabled="!isDataQualityRequired"
-              :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
@@ -160,7 +158,7 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
-      qualityValue: null,
+      qualityValue: null as null | string,
       commentValue: "",
       currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
@@ -183,9 +181,7 @@ export default defineComponent({
       return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
     },
     isDataQualityRequired(): boolean {
-      return false;
-      //todo double check
-      //return this.isDataValueProvided;
+      return this.isDataValueProvided;
     },
     computeQualityOption(): object {
       if (!this.isDataValueProvided) {
@@ -254,11 +250,10 @@ export default defineComponent({
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
     handleBlurValue(isDataValueProvided: boolean) {
-      //todo
       if (!isDataValueProvided && !this.isYesNoVariant) {
-        this.qualityValue = "";
+        this.qualityValue = null;
       } else if (this.qualityValue == null) {
-        this.qualityValue = "";
+        this.qualityValue = null;
       }
     },
     /**
