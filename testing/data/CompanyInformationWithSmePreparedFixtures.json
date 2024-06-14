@@ -41,7 +41,30 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": []
+					"subsidiary": [],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-06-30",
+							"currency": "DZD"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-06-19",
+							"currency": "LRD"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-16",
+							"currency": "VND"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Caput copia vomito. Thymbra trado animadverto magni. Ciminatio aqua cunabula alienus subvenio voluptas vita.\nAter confugo bardus viridis denego tyrannus deleniti. Trado appono universe torqueo pax thema soluta varius. Victus villa curriculum conicio."

@@ -35,6 +35,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
       basisForPreparation: {
         reportingBasis: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         subsidiary: dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5),
+        referencedReports: dataGenerator.reports,
       },
       practicesForTransitioningTowardsAMoreSustainableEconomy: {
         undertakenMeasures: dataGenerator.randomParagraphs(),

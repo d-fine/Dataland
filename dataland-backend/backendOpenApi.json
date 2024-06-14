@@ -3967,6 +3967,47 @@
           }
         }
       },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isGroupLevel": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "reportDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "isGroupLevel": "Yes",
+            "reportDate": "2023-10-12",
+            "currency": "string"
+          }
+        }
+      },
       "ExtendedDataPointBigDecimal": {
         "required": [
           "quality"
@@ -4145,6 +4186,22 @@
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SmeSubsidiary"
+            }
+          },
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            },
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
             }
           }
         }
@@ -4801,6 +4858,14 @@
           "No"
         ]
       },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
+      },
       "CompanyAssociatedDataSfdrData": {
         "required": [
           "companyId",
@@ -4817,47 +4882,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/SfdrData"
-          }
-        }
-      },
-      "CompanyReport": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileReference": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
           }
         }
       },
@@ -6403,14 +6427,6 @@
             ]
           }
         }
-      },
-      "YesNoNa": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No",
-          "NA"
-        ]
       },
       "CompanyAssociatedDataPathwaysToParisData": {
         "required": [
@@ -14925,11 +14941,13 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           },
-          "lei": {
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
             "type": "string",
             "nullable": true
           },
@@ -14939,11 +14957,9 @@
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

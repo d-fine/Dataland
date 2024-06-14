@@ -32,6 +32,15 @@ export const smeDataModel = [
             required: false,
             showIf: (): boolean => true,
           },
+          {
+            name: "referencedReports",
+            label: "Referenced Reports",
+            description: "Please upload all relevant reports for this dataset in the PDF format.",
+
+            component: "UploadReports",
+            required: false,
+            showIf: (): boolean => true,
+          },
         ],
       },
       {

@@ -18,8 +18,30 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfReportingDate" />
-
+            <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
+            <div class="uploadFormSection grid">
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
+              </div>
+              <div class="col-9 form-field formFields uploaded-files">
+                <UploadFormHeader
+                  :label="'Reporting Period'"
+                  :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
+                  :is-required="true"
+                />
+                <div class="lg:col-4 md:col-6 col-12 pl-0">
+                  <Calendar
+                    data-test="reportingPeriod"
+                    v-model="reportingPeriod"
+                    inputId="icon"
+                    :showIcon="true"
+                    view="year"
+                    dateFormat="yy"
+                    validation="required"
+                  />
+                </div>
+              </div>
+            </div>
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
@@ -186,22 +208,15 @@ export default defineComponent({
       documentsToUpload: [] as DocumentToUpload[],
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       listOfFilledKpis: [] as Array<string>,
+      reportingPeriod: undefined as undefined | Date,
     };
   },
   computed: {
-    yearOfReportingDate: {
-      get(): string {
-        //TODO how to set the reporting period for an sme dataset?
-        const reportingDataInSmeDataset = this.companyAssociatedSmeData.data?.general?.basicInformation?.reportingDate;
-        if (reportingDataInSmeDataset === undefined) {
-          return "";
-        } else {
-          return reportingDataInSmeDataset.split("-")[0];
-        }
-      },
-      set() {
-        // IGNORED
-      },
+    reportingPeriodYear(): number {
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
     visibleCategories(): Category[] {
       return this.smeUploadConfig.filter((category) => category.showIf(this.companyAssociatedSmeData.data));
@@ -249,8 +264,8 @@ export default defineComponent({
       this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
       this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
       //TODO Fix referenced reports
-      //this.referencedReportsForPrefill =
-      //  this.companyAssociatedSmeData.data.general.basicInformation.referencedReports ?? {};
+      this.referencedReportsForPrefill =
+        this.companyAssociatedSmeData.data.basic?.basisForPreparation?.referencedReports ?? {};
       this.waitingForData = false;
     },
 

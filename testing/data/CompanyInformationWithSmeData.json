@@ -59,7 +59,37 @@
 								"country": "SA"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-08-09",
+							"currency": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-03-28",
+							"currency": "OMR"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-04-12",
+							"currency": "GTQ"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Calamitas explicabo claro reprehenderit bestia. Vitiosus vestrum thalassinus talio error terror. Attero soluta acies vallum volutabrum sub excepturi corrigo tutamen cogo.\nCetera stultus vulnus. Vinitor umquam facilis victoria auctor conspergo modi trans. Vir vitae ubi crastinus."
@@ -414,7 +444,37 @@
 								"country": "EE"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-05",
+							"currency": "XCD"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-11-06",
+							"currency": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-06-25",
+							"currency": "UGX"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-12-13",
+							"currency": "SHP"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Concedo umquam acies veritas tero volaticus capto utroque magnam libero. Autem benigne voluntarius iste alius. Cornu arca triduana damnatio acceptus."
@@ -658,7 +718,37 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-02-01",
+							"currency": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-04-29",
+							"currency": "AED"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-04-12",
+							"currency": "CRC"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": null,
+							"reportDate": "2023-12-25",
+							"currency": "RUB"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Stips victoria sursum thorax speciosus cado corroboro terga absque suasoria. Maxime pariatur tracto utpote auctor ante adulescens decerno. Bellum vilis baiulus saepe traho corrumpo xiphias theatrum voveo.\nSapiente delectatio tot uberrime. Coniecto trucido autus vis solium sit excepturi usitas abutor. Nam casso vesica thymbra arguo.\nAnte amet demo carbo absum sit. Cupiditas caute vel clibanus crepusculum. Aurum sumo allatus collum vitae beatus uxor vitiosus ea."
@@ -916,7 +1006,37 @@
 								"country": "ZW"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-10-12",
+							"currency": "FJD"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-03-13",
+							"currency": "TWD"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "HKD"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-08-11",
+							"currency": "AZN"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": null
@@ -1163,7 +1283,37 @@
 								"country": "MM"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-11-27",
+							"currency": "NOK"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-11",
+							"currency": "HTG"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-10-19",
+							"currency": "NOK"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-12-07",
+							"currency": "KZT"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Vallum curvo varius textus spargo solum. Confido eos valeo amoveo spero antea. Denuncio conforto amissio bestia vulgo versus ratione denego.\nQuibusdam summa id aestus adeo nostrum apparatus tolero officia velociter. Adeo trado laboriosam pecus. Vulnus supellex vallum tabula uterque depopulo."
@@ -1415,7 +1565,16 @@
 								"country": "NG"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-06-25",
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Super sponte deprecator demergo vulnero crepusculum suus subseco. Utroque carmen vox apud vero mollitia deleniti vae ambitus verecundia. Tam auctor architecto uberrime villa."
@@ -1782,7 +1941,30 @@
 								"country": "PF"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-10-20",
+							"currency": "KES"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-09-12",
+							"currency": null
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-03-01",
+							"currency": "AFN"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Contigo clamo deduco cibo curatio summa in. Volutabrum copiose deleniti auctor. Attollo tergo odit tubineus deprecator advoco amplus eum.\nConsequatur utrum vae. Abstergo repellendus tendo altus valetudo uredo at. Delectus talis quia vitium ducimus canto unus coma ascit."
@@ -2129,7 +2311,30 @@
 								"country": "EE"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-03-31",
+							"currency": "PAB"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-03-06",
+							"currency": "XAF"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Cerno urbanus cursim accusator vulgo acceptus. Aeger uberrime minus sed suppono abundans tyrannus autus valde. Arbor supplanto abutor spiritus.\nPel defetiscor peccatus caelum umerus. Inflammatio quibusdam supra coma decumbo. Tricesimus sequi velociter vitae astrum somnus recusandae deporto."
@@ -2351,7 +2556,30 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": null,
+							"currency": "AFN"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-15",
+							"currency": "TOP"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2024-01-16",
+							"currency": "IDR"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Sollers textor terror celo tui carbo. Cupressus cicuta tergiversatio carus aliquid civitas. Curvo campana tandem canto architecto eos antiquus delego claudeo tabgo.\nAmicitia demonstro tot beatae. Vilicus appello fuga triduana et. Vicinus bonus pectus caelum earum tui capto verumtamen corporis degero.\nDegenero vesper itaque. Umerus condico deprimo vir cohaero. Magnam coniecto tricesimus sperno video.\nAdmoveo tenax thermae teres condico cubicularis strues suffoco. Vel trepide carbo pecco tempora. Vulgo ciminatio bestia bardus illum velit."
@@ -2580,7 +2808,23 @@
 								"country": "PK"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "ANG"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-17",
+							"currency": "ZWL"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Averto tempus tres strues tendo. Circumvenio patior animadverto quisquam pauci derelinquo ambulo videlicet bestia. Abbas audio taedium voluptatum ademptio.\nDefendo theologus voluptatum consectetur custodia delego tum natus crapula. Vergo stabilis conqueror debeo argumentum ipsa compono stillicidium. Umquam adsuesco asperiores conitor dens sint.\nMinus voluptates cinis comptus qui contigo laudantium. Acidus acceptus amicitia vomica bellicus textor quo acidus audentia. Earum aliqua demoror casus audeo cilicium ipsum delibero tibi cribro.\nConsequatur viduo credo virtus trucido dedecor. Color censura comptus deputo cultura causa thymbra. Voluptas ullus cognatus sollers varietas videlicet solus."
@@ -2990,7 +3234,16 @@
 								"country": "GF"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "SLE"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Abscido capillus ullam maiores ducimus cado consectetur accusamus cubo amor. Bestia capillus repudiandae tot vergo paens decretum aqua carbo terra. Dolores tersus a thesis desino.\nTantum sustineo demulceo teneo pauper tendo bibo curis. Vivo attero aiunt ascit casso sponte cauda ventito carpo. Nisi asporto apud unus amicitia velut tres dolores.\nBeneficium non surculus. Vulgus aufero conor culpo dens comedo sum abscido voluptates. Verus avarus terror tollo arcesso videlicet."
@@ -3249,7 +3502,30 @@
 								"country": "LK"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-03-29",
+							"currency": "KHR"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-08",
+							"currency": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-12-22",
+							"currency": "WST"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Animadverto cerno allatus conqueror decor arcesso. Fugiat vir solitudo casus volaticus timidus vitae adflicto laboriosam claustrum. Victus vomito comitatus deporto ad color.\nSummopere auctus utpote animadverto admitto vito calamitas error officiis appello. Cerno error terga caries occaecati damnatio blanditiis considero inventore. Debilito eveniet caste aequus sophismata ager accusator.\nAdministratio advenio substantia annus. Amiculum vivo voluptatem certus arma canonicus certus. Paulatim argentum tolero eius voveo timor deripio cogo et."
@@ -3497,7 +3773,30 @@
 						"value": "Yes",
 						"dataSource": null
 					},
-					"subsidiary": []
+					"subsidiary": [],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-04",
+							"currency": "RON"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-12-20",
+							"currency": "TWD"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2024-01-05",
+							"currency": "MWK"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Suscipio volutabrum degenero amitto cilicium abbas thema adsum. Reiciendis supellex advenio. Curto tabella amaritudo accusantium volva solutio umbra nam damnatio.\nProvident est autem cumque totidem virgo cometes admoneo thymbra delibero. Atavus bellicus defungo hic eveniet antepono cariosus corona. Doloribus maiores solvo incidunt summa reiciendis.\nArto vulpes virga. Earum asporto sapiente aspernatur video comis officiis. Consequuntur adduco titulus tempore congregatio cumque dedico clementia acerbitas.\nAstrum nihil exercitationem verecundia tonsor careo modi decor sponte. Canonicus tempora audio angustus tenus vigor. Collum depulso admiratio vorago caelestis cultellus.\nTorrens quas tollo auctor corrigo tantum spoliatio aspicio antea socius. Adflicto cernuus iusto officia vulnus adimpleo vilicus convoco corrigo. Arcesso laudantium vestrum."
@@ -3789,7 +4088,23 @@
 								"country": "CG"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "LYD"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": null,
+							"reportDate": null,
+							"currency": "DJF"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Cunabula communis ver acerbitas aggredior vigilo cogito nesciunt trans angulus. Vito desipio est tabella approbo capillus talus. Quos vulariter suscipit fugit spes.\nUterque demo dolorum demergo speculum vinitor umbra bis cuius. Acceptus crustulum vivo triduana depereo concedo sapiente ea vitiosus curto. Deorsum desidero totam."
@@ -4164,7 +4479,16 @@
 								"country": "RS"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-07-31",
+							"currency": "BOB"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Thymbra tremo victus veniam. Vinitor tempus laudantium eaque speciosus iusto. Armarium varius admoneo urbs earum stella acerbitas est.\nComedo cras ullus tersus infit quibusdam. Comis aperiam soluta sub. Qui cohaero sed deorsum.\nVester ambulo ambitus tricesimus nobis. Terebro consequuntur ulciscor quae. Ad conservo volubilis."
@@ -4495,7 +4819,37 @@
 								"country": "IT"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-02",
+							"currency": null
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-04-11",
+							"currency": "MYR"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-08",
+							"currency": "XOF"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": null
@@ -4858,7 +5212,16 @@
 								"country": "AI"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-03-31",
+							"currency": "MAD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Cui aperte vigor verus. Ago quis pecco temporibus denego fugit terga sopor pectus. Molestias cerno consectetur contigo.\nEligendi calcar demum. Valeo comptus quibusdam curto valetudo adulatio. Clarus adamo rem amplitudo utrimque.\nCanto validus clibanus civis carcer. Deputo urbs atqui absque magnam toties quae uberrime dens maxime. Suggero complectus accommodo thalassinus abscido volup vomer."
@@ -5104,7 +5467,23 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-10-05",
+							"currency": "NGN"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-02-22",
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Utrum paens conforto. Comprehendo advenio deripio vitium subvenio comedo. Apud desino deprecator alter.\nBalbus adversus aeneus aedificium undique creta minus deficio. Deludo error demo ullus trans tibi. Acies auditor termes super curo studio pecto complectus viridis.\nIpsam suggero caelum cultellus officia. Vigor validus ab traho uter studio nam cometes apparatus. Corroboro arcesso autem pecus cohaero votum clamo adaugeo deripio solium.\nComplectus inflammatio suus capto auctor. Cupio centum capio cubo defleo vos certe conspergo stultus delego. Comburo facilis casso coniuratio bardus infit conventus sum eligendi verto.\nVir articulus vero. Caveo venio aedificium. Depono ultio pecto."
@@ -5339,7 +5718,23 @@
 								"country": "HT"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-10-07",
+							"currency": "NAD"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Caute strenuus currus sub benevolentia cado sui confugo necessitatibus. Doloribus talis vulgivagus celebrer solium canto tenetur addo repudiandae. Debeo bis sustineo.\nSubito spargo conspergo spargo aureus socius. Tunc copiose alter ascit vitae taceo. Stabilis curatio cerno varietas abundans."
@@ -5608,7 +6003,30 @@
 								"country": "PS"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-12-18",
+							"currency": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-24",
+							"currency": "GTQ"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-08-29",
+							"currency": "VND"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Crustulum soleo avarus virgo. Temperantia aptus totus antepono. Patrocinor velum constans appono vespillo conscendo acquiro administratio voro."
@@ -5912,7 +6330,37 @@
 								"country": "CL"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-09-29",
+							"currency": null
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-30",
+							"currency": "MUR"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": null,
+							"currency": "JOD"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-12-13",
+							"currency": "IQD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Dedico facilis contabesco corona vereor solitudo ventosus iusto. Hic sollers deserunt tertius. Valens creta id cubicularis totus odio suffragium.\nCito denego vicissitudo viridis beneficium atque quae. Tabesco denuo umquam pel. Turpis aequus cunae vulticulus utroque sapiente.\nPraesentium vereor vacuus ascit summisse conculco convoco veritatis color nihil. Commemoro valeo debilito tum placeat abutor cervus adstringo triduana. Autus cedo tabesco incidunt cui tergeo vilicus vulpes."
@@ -6154,7 +6602,16 @@
 								"country": "AT"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-08-09",
+							"currency": "LYD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Velut communis denego reprehenderit degero depopulo umquam cunae. Altus corpus coma aetas despecto solitudo. Conscendo absum tristis ullam tantillus vere admitto amoveo."
@@ -6414,7 +6871,16 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-05-28",
+							"currency": "KRW"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": null
@@ -6669,7 +7135,30 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-02-07",
+							"currency": "LYD"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-10-16",
+							"currency": "SEK"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-05-19",
+							"currency": "BWP"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": null
@@ -7047,7 +7536,23 @@
 			"basic": {
 				"basisForPreparation": {
 					"reportingBasis": null,
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-09-21",
+							"currency": "SZL"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-10",
+							"currency": "CLP"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Dolorum despecto aeternus consequuntur vereor adversus vaco turpis constans consequatur. Convoco corona ventito tepidus defetiscor conspergo tepidus astrum suppono. Consuasor synagoga peccatus cupressus culpa dedecor charisma suffoco ustilo candidus.\nSponte assentator auditor qui aestus canonicus. Adipiscor demergo spero absque corrumpo. Defluo impedit compono occaecati torrens architecto.\nAmita vitiosus aptus substantia ager teres. Utrimque canis collum. Crapula similique aperiam suus asperiores vaco.\nAcerbitas unus voluptatibus. Quod quia thema acervus vae. Correptius tego utilis antea tantum arbustum."
@@ -7369,7 +7874,37 @@
 								"country": "PN"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-10",
+							"currency": "SAR"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": null,
+							"reportDate": null,
+							"currency": "NGN"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": null,
+							"reportDate": "2023-11-27",
+							"currency": "GIP"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-08-09",
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Pax trado sum viriliter virga trucido denuncio. Vereor degero pauci sunt cuppedia. Pauper videlicet adhaero adhaero stipes communis adopto.\nAetas celo harum cruciamentum copiose totidem textor curtus defleo. Contego curtus blanditiis adopto angulus nulla studio aetas. Virga deserunt vinculum inflammatio attero crepusculum consequuntur.\nEius depereo fuga clam vere. Creator colligo torrens circumvenio delego suadeo voluptatem cometes cursim. Tutamen temeritas demulceo vergo beatus varietas cibo sollicito culpa terror.\nImpedit ago aveho arcus dedecor. Conatus commodi adamo earum bardus creator vetus tot combibo demo. Modi voluptatem bardus tego custodia casso bene.\nCavus cilicium termes blanditiis theologus volutabrum cruciamentum porro comptus culpo. Mollitia delicate cresco. Tamquam voluptates pauci beneficium cubo officiis adulatio venustas crapula."
@@ -7604,7 +8139,23 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "BTN"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-08-23",
+							"currency": "PLN"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Commodo comburo absum tolero nulla curtus sustineo conspergo confugo consequuntur. Consequatur admiratio tondeo vado deprimo dignissimos calco absens. Ipsam eum amaritudo corrupti tertius pectus triumphus templum deleniti.\nAppositus caute adamo blanditiis volup cumque argumentum thalassinus delectus quam. Solus vulgaris depopulo soleo minus defetiscor est quos tardus surgo. Curiositas tonsor sed expedita celebrer.\nAntiquus sint defetiscor vulariter molestiae contigo caelum consequuntur. Verbera absum terga. Conturbo creptio aeneus dens pel utor apostolus veritatis eaque astrum.\nThalassinus tertius ut atqui demulceo maiores quam. Auxilium alveus brevis alter stillicidium bellum denuncio amoveo optio derelinquo. Utique trepide adfero.\nDefaeco ceno commodi deserunt volup. Tibi pariatur ars verbera cui comparo. Expedita cedo clam adhaero cribro usque carbo inventore debeo pel."
@@ -7954,7 +8505,23 @@
 								"country": "EH"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-08-15",
+							"currency": "BWP"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-21",
+							"currency": "CHF"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Currus assumenda speculum comprehendo censura desolo adfectus sublime vulpes crustulum. Occaecati fuga demitto. Et spiculum velum delectatio."
@@ -8238,7 +8805,37 @@
 								"country": "IS"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": null,
+							"reportDate": null,
+							"currency": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-03-10",
+							"currency": "XOF"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-18",
+							"currency": "AWG"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-09-01",
+							"currency": "MNT"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Alii adimpleo benevolentia conicio addo aurum teneo aspernatur decipio carmen. Tibi subseco ulterius candidus depromo attollo bos. Correptius adnuo depono ago vomito summisse utpote undique odio."
@@ -8583,7 +9180,30 @@
 								"country": "ER"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-03-09",
+							"currency": "LSL"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-08-03",
+							"currency": "TZS"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-04-18",
+							"currency": "CUP"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Velociter chirographum caste vado acquiro valens. Vociferor demo color clementia. Volaticus ager cogo adinventitias itaque conscendo cras.\nVita tredecim praesentium. Expedita audio harum corrumpo sponte vesica tergiversatio repudiandae. Rem velociter tripudio pecto tripudio ipsum cogito corrigo adinventitias."
@@ -8842,7 +9462,37 @@
 								"country": "NG"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-12-10",
+							"currency": "LYD"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "ERN"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "SSP"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-07-16",
+							"currency": "MNT"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Thorax harum thymbra temperantia conventus tergeo temporibus corroboro vito appositus. Sonitus crinis candidus. Capillus totus beatae pel vulnus reprehenderit utilis timor umbra.\nAllatus explicabo conqueror bellum turba confero tertius ducimus corrupti. Aequus verecundia conitor mollitia. Conscendo decet sustineo verumtamen impedit."
@@ -9193,7 +9843,16 @@
 								"country": "VU"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-10-14",
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Utpote tenus arca autem stips. Dignissimos repellendus pauci terreo subnecto quaerat quod tener. Coaegresco ara censura.\nSpargo solum velociter adiuvo tener amissio. Thorax sunt delinquo toties spiculum. Valde bibo arx ulterius quasi.\nSocius carmen arx quod sunt vesco vaco acerbitas eius vomica. Occaecati torqueo thymbra. Confero amaritudo repudiandae nulla conculco debitis.\nCubitum dignissimos nesciunt vigor cariosus tumultus vilicus curtus attonbitus. Quae deripio aureus amicitia victoria pauci nesciunt dolor suppellex. Coerceo catena aeneus thesis."
@@ -9491,7 +10150,23 @@
 								"country": "NE"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-18",
+							"currency": "DZD"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-09-28",
+							"currency": "LAK"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Tametsi laudantium blandior. Odit cervus caritas vetus iure verecundia dedecor. Fuga valens aranea aspernatur admitto.\nArbitro aequus subvenio corrigo adeptio. Facilis ante addo antepono civis pauper ter. Adsuesco ars decimus aliquid sui delibero aufero aequitas vir tabernus."
@@ -9757,7 +10432,16 @@
 								"country": "ZM"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-02-08",
+							"currency": "VES"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Vesco arcus conor. Contego votum suppellex ipsum socius speculum adnuo. Temporibus aperte ascisco summopere copia.\nDepraedor copia contabesco succurro tondeo conscendo illum solus spoliatio communis. Ante corrigo explicabo alo totidem quasi beatus usque. Nemo cotidie crustulum clam.\nDolor vox auctus adicio territo amor unde astrum desparatus tondeo. Sperno cruciamentum teres vilicus et aestus. Ater tamquam tibi amo turbo repudiandae sollicito capio tremo.\nConqueror comedo autem ciminatio combibo sperno antea perferendis cernuus complectus. Thesis adamo nihil. Ipsum sed ars combibo suadeo aufero.\nCorrupti casso inflammatio tollo vobis vitium talus somniculosus tolero ter. Virgo dignissimos rerum modi coerceo. Tolero certe adopto benigne repellendus truculenter tego demulceo cernuus."
@@ -10132,7 +10816,16 @@
 								"country": "BD"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-03-14",
+							"currency": "GBP"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Facilis tibi deripio. Conturbo cattus a ciminatio tubineus versus sumptus denuo nam. Vulnus utrimque curatio demulceo debilito velut ante assentator delectus taedium.\nCarbo possimus turpis ipsam trado teres inventore vapulus. Tabernus adicio alo clibanus vindico pectus victoria umbra cultura comburo. Curso ex subvenio attollo.\nSono audentia sumo inventore arto succurro. Aeneus consuasor advenio. Similique voluptas audacia asporto assentator artificiose."
@@ -10441,7 +11134,16 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "CZK"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Voluntarius colo arceo pecto. Tutamen attollo quidem deduco agnosco. Demulceo suscipit voluptates capto autus omnis doloribus.\nSto aequitas artificiose coruscus. Voluptate alias canto laudantium coerceo asporto coma auctus tendo tergiversatio. Aperio quam aspernatur tracto.\nTorqueo pecto degusto vulpes alveus. Cogito delectus vorago bellicus thermae crebro amplus tenetur. Cruentus texo delectatio conduco desipio doloribus."
@@ -10687,7 +11389,23 @@
 								"country": "ID"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-03",
+							"currency": null
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-10-21",
+							"currency": "BMD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Pauper atavus appello averto verumtamen temeritas veritas. Varius molestiae vallum appello cultellus sortitus. Turba utique tamen acceptus ambulo degusto decretum veritatis.\nCuria demergo thymbra. Voluptates demoror depromo aestus dolore amaritudo sumptus taceo degenero temperantia. Ventosus deprimo magni debeo soluta verto.\nSolutio defendo aperte adopto voluptates vito ciminatio cohors vallum. Cimentarius culpo sublime comparo amicitia. Auctus ara curia cibus accusantium solitudo confugo.\nEa amicitia explicabo soleo laborum iusto adstringo stillicidium. Numquam apto sint cui. Provident ab casus."
@@ -11063,7 +11781,37 @@
 								"country": "ER"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-06-15",
+							"currency": "BGN"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "DJF"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-03-11",
+							"currency": "EGP"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": "2024-01-02",
+							"currency": "TOP"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Decipio veritatis vinco. Ascit commodo valeo desipio caelestis sponte casso demum brevis. Ambitus voluptatem alter basium cotidie videlicet cado.\nIllum sequi astrum tui tantum ustilo. Abutor virgo crinis contabesco sustineo dens advoco tandem asperiores. Stabilis templum confido celer.\nTristis tutis cunctatio. Decretum corporis deserunt. Talis paulatim absorbeo comptus dolore."
@@ -11438,7 +12186,16 @@
 								"country": "PE"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-01-27",
+							"currency": "VUV"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Repellat ater patior ager defaeco pecco dens alioqui tempus articulus. At eveniet clamo suffragium denuncio dolorum vociferor dolore conor spargo. Vespillo cena vos coniuratio beneficium curto adinventitias ago veritatis.\nRerum vero terra bonus. Subvenio vorago caput. Suadeo doloremque curis deleo saepe.\nTunc defaeco absum. Defero sunt tripudio adiuvo sopor. Adinventitias sursum demitto.\nDelinquo undique perferendis vester verus tendo. Crux tabella ceno capio. Arceo universe confugo caelum varietas surgo."
@@ -11729,7 +12486,30 @@
 			"basic": {
 				"basisForPreparation": {
 					"reportingBasis": null,
-					"subsidiary": []
+					"subsidiary": [],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-03-17",
+							"currency": "CNY"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "FKP"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-09-24",
+							"currency": "IQD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Textor temptatio suffragium. Aspicio tibi thesis dolor sollicito campana perspiciatis trado conqueror coniecto. Universe non cumque adsum ea conforto charisma cruciamentum defendo animus.\nUt corrupti artificiose cavus vallum trado coepi admiratio tergum. Aeger tamisium subnecto adicio audacia velut substantia adversus tenetur. Ultio cultura cogito aureus dens.\nArcus coma virga. Cito teneo bos alienus depraedor. Cubicularis arma sequi amo suppellex deporto conturbo incidunt delectatio.\nEsse acceptus coniuratio deficio sed. Tremo id somniculosus desparatus velociter decimus arcus in. Sum corporis acerbitas textilis alius torrens acceptus compono cubo."
@@ -12054,7 +12834,37 @@
 								"country": "SL"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "TND"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": null
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-08-29",
+							"currency": "CVE"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-02-10",
+							"currency": "MYR"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Ars absum carus coerceo pel deludo. Arcus vitae casso acquiro amitto vitae copia ascisco calculus stipes. Arbustum patrocinor civis absconditus tribuo doloribus vindico.\nDolorum vinco cerno vomito eos. Curto distinctio recusandae trans termes adeptio. Uterque considero doloremque color tener culpo neque vis.\nVoco baiulus quia. Sunt capto subvenio tunc adsuesco agnitio demitto ab. Caste claudeo ascit bellicus administratio casus tremo.\nSomniculosus amplitudo id ventus. Apparatus atrocitas torrens demoror suffragium repudiandae tribuo magni cribro copiose. Exercitationem perspiciatis sortitus appello.\nTimor tracto caterva natus correptius cunctatio video solus aduro supplanto. Admoneo defaeco minus corpus desipio arcesso assentator tactus tabesco villa. Volutabrum apud voluptates."
@@ -12462,7 +13272,23 @@
 								"country": "SE"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-05-30",
+							"currency": "MXN"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-03-17",
+							"currency": "KGS"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Copia alii dolore decimus repellat conforto. Alioqui supplanto vulgo ubi sub vulnus. Maxime quam quasi deinde colo traho subito adiuvo theca.\nRem ago suasoria taceo textus cetera cena artificiose depraedor. Altus callide degusto. Cauda torqueo cupiditate statua quam corporis.\nSubstantia coadunatio aduro curto nihil ducimus comparo spes. Causa cui catena adflicto socius. Conturbo aliquid assumenda conventus."
@@ -12714,7 +13540,23 @@
 								"country": "BZ"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "No",
+							"reportDate": "2024-01-03",
+							"currency": "IDR"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-11-02",
+							"currency": "MUR"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Adicio commodo vapulus coma nobis abscido. Colo conculco architecto adulatio ab aro aer. Decor degusto sordeo.\nAbsens advenio canonicus urbs earum. Comes conculco claudeo crastinus communis temeritas calco crapula. Comes suspendo praesentium capto ipsam infit provident utrum illo speculum.\nUsque arcesso damno clibanus cometes conculco concido crudelis sponte stips. Minima caries cicuta vulgo agnitio circumvenio crinis. Cogo vigor creator alius ara atque textus.\nViduo tepidus cena tutis textor caritas provident. Carcer timidus spectaculum surgo vilicus cedo. Defetiscor delego animus stips abutor."
@@ -12965,7 +13807,30 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": []
+					"subsidiary": [],
+					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-09-06",
+							"currency": null
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-04-15",
+							"currency": "SSP"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-03-09",
+							"currency": "UGX"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Videlicet depraedor advenio cubitum beatus sursum repellat. Neque terebro quasi voluptas appono. Alias auctus conicio cribro allatus terminatio ter.\nAdaugeo tergeo quos congregatio absens deserunt varietas adhaero sol. Attero toties comprehendo. Voluptates contabesco vitium cursim corpus contego catena recusandae confugo."
@@ -13260,7 +14125,30 @@
 			"basic": {
 				"basisForPreparation": {
 					"reportingBasis": null,
-					"subsidiary": []
+					"subsidiary": [],
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "LBP"
+						},
+						"AnnualReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "AnnualReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-11-27",
+							"currency": "GIP"
+						},
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "Yes",
+							"reportDate": "2023-09-23",
+							"currency": "AUD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Bonus cursus talio curiositas dedecor curiositas cometes non cenaculum. Vindico admiratio coniecto. Amissio cupiditate caste summa versus deporto tyrannus.\nConor vitiosus tabgo umerus traho deduco vergo aptus fugit. Facilis absens tepidus territo delectatio vere celebrer voluntarius. Tui agnosco testimonium antea."
@@ -13512,7 +14400,16 @@
 								"country": "HR"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": null,
+							"reportDate": "2023-11-19",
+							"currency": "WST"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Utor appello alius delego amaritudo comis amet nihil. Civis defleo supellex solus cado voveo averto amitto. Civitas saepe caterva adversus.\nAntiquus dicta iste. Pel acceptus voro ascit alter amplitudo et cribro. Valetudo calamitas arcesso cupressus abbas anser valens.\nBellicus asper bos summopere. Aedificium aufero tabernus nam. Ater celebrer tametsi.\nTriumphus conatus avaritia. Combibo adstringo bibo valeo comparo. Comparo repudiandae angustus alias venio."
@@ -13773,7 +14670,23 @@
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"subsidiary": null
+					"subsidiary": null,
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "XPF"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"isGroupLevel": "Yes",
+							"reportDate": null,
+							"currency": "TTD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Tactus aestus atrox tametsi. Tamisium theca totidem anser demergo undique. Adhuc statim reiciendis cursus uredo tremo spargo tonsor velit venio.\nSono quaerat tero suffragium sursum. Coaegresco sufficio dedecor articulus claudeo. Defluo soluta sodalitas.\nAdulescens tutis conicio aduro vel adeptio. Totam defendo nemo adflicto aqua comparo cui claustrum saepe modi. Eveniet compono deripio.\nTero mollitia ipsa labore depraedor illo cubitum tener. Coniuratio adfero ultio varietas. Deficio accusamus deripio ex ad ipsum tonsor cornu vindico solio.\nCupio thorax deputo cetera curtus curriculum conatus. Conservo thalassinus cibo vinco. Subseco suffoco ceno teres cognomen."
@@ -14055,7 +14968,30 @@
 								"country": "BA"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-04-22",
+							"currency": null
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-12-13",
+							"currency": null
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-01-31",
+							"currency": "GTQ"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Utpote ascisco adsum. Iste adfero vergo clementia ocer facere. Cupio crur creator thalassinus recusandae spoliatio aspicio peccatus spoliatio adipisci.\nDolorum creptio strenuus cursus. Eaque autem cum valens correptius repudiandae bestia veritas assentator. Blandior spiculum odit condico verbum vox quod cruentus.\nAccusator vicissitudo suppono. Adamo bis ustulo voveo conculco. Curso dicta stips tondeo defleo tergum validus.\nCallide tametsi capio adinventitias. Ab sufficio comminor somniculosus cruciamentum fugiat. Ubi cogo corrigo uterque despecto."
@@ -14296,7 +15232,16 @@
 								"country": "ML"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": null,
+							"isGroupLevel": "No",
+							"reportDate": "2023-05-05",
+							"currency": null
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Tollo cura depereo iure. Tergiversatio crux certe vetus ubi vulpes. Triduana conitor cerno.\nAequitas ceno acidus carus suscipio aegrotatio. Quisquam aspicio velit arcus. Sumo cibo possimus usitas cilicium tabella."
@@ -14522,7 +15467,23 @@
 								"country": "TW"
 							}
 						}
-					]
+					],
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "SustainabilityReport",
+							"isGroupLevel": "No",
+							"reportDate": "2023-11-15",
+							"currency": "VND"
+						},
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"isGroupLevel": "No",
+							"reportDate": null,
+							"currency": "GMD"
+						}
+					}
 				},
 				"practicesForTransitioningTowardsAMoreSustainableEconomy": {
 					"undertakenMeasures": "Tui temptatio coniecto libero asporto. Vero voco verto. Sit volutabrum thema temeritas.\nAmoveo stultus officia repellat pauci cultellus. Amaritudo vesica aedificium. Inventore torqueo tricesimus deprimo perferendis speculum sollicito tracto eos."
