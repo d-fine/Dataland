@@ -1,16 +1,14 @@
 package org.dataland.frameworktoolbox.frameworks.sme
 
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
-import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
+import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentCustomValue
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -29,10 +27,11 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("basic") {
-            val numberOfEmployeesInHeadCount = this.getOrNull<ComponentGroup>("workforceGeneralCharacteristics")!!.getOrNull<NumberBaseComponent>("numberEmployeesHead")
-            val numberEmployeesFullTime = this.getOrNull<ComponentGroup>("workforceGeneralCharacteristics")!!.getOrNull<NumberBaseComponent>("numberEmployeesFullTime")
+            val numberOfEmployeesInHeadCount = this.getOrNull<ComponentGroup>("workforceGeneralCharacteristics")!!
+                .getOrNull<NumberBaseComponent>("numberEmployeesHead")
+            val numberEmployeesFullTime = this.getOrNull<ComponentGroup>("workforceGeneralCharacteristics")!!
+                .getOrNull<NumberBaseComponent>("numberEmployeesFullTime")
             edit<ComponentGroup>("workforceRenumerationCollectiveBargainingAndTraining") {
-
                 edit<SingleSelectComponent>("payGapBasis") {
                     setDependencies(this, numberOfEmployeesInHeadCount!!, numberEmployeesFullTime!!)
                 }
@@ -64,15 +63,17 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
                     setDependencies(this, numberOfEmployeesInHeadCount!!, numberEmployeesFullTime!!)
                 }
             }
-
         }
     }
 
-
-
-    private fun setDependencies(component: ComponentBase, firstDependencyComponent2: NumberBaseComponent, secondDependencyComponent: NumberBaseComponent) {
-        component.availableIf= DependsOnComponentCustomValue(firstDependencyComponent2,">=150", secondDependencyComponent)
-
+    private fun setDependencies(
+        component: ComponentBase,
+        firstDependencyComponent2: NumberBaseComponent,
+        secondDependencyComponent: NumberBaseComponent,
+    ) {
+        component.availableIf = DependsOnComponentCustomValue(
+            firstDependencyComponent2, ">=150",
+            secondDependencyComponent,
+        )
     }
-
 }

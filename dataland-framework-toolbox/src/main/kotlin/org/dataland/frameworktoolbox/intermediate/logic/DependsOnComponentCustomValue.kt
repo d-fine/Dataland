@@ -9,7 +9,8 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBoo
  * A DependsOnComponentValue is a FrameworkConditional that is true
  * iff the specified component has the value given by the value property
  */
-class DependsOnComponentCustomValue(var component: ComponentBase, var value: String, var component2: ComponentBase?) : FrameworkConditional() {
+class DependsOnComponentCustomValue(var component: ComponentBase, var value: String, var component2: ComponentBase?) :
+    FrameworkConditional() {
     override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
         val operator = value.substring(0, 2)
         return if (component2 != null) {

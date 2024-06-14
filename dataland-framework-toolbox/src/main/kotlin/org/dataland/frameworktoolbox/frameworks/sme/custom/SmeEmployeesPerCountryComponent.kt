@@ -17,7 +17,8 @@ class SmeEmployeesPerCountryComponent(
     parent = parent,
     viewFormattingFunctionName = "formatSmeEmployeesPerCountryForDisplay",
     uploadComponentName = "EmployeesPerCountryFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeEmployeesPerCountry(), 0, 5)",
+    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeEmployeesPerCountry()," +
+        " 0, 5)",
     randomFixtureExpression = null,
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
