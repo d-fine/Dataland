@@ -20,13 +20,12 @@ import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Implementation of a (company) data ownership manager for Dataland TODO description
- * @param dataOwnerRepository  JPA for data ownership relations
- * @param companyIdValidator
+ * Service that handles all operations associated with data-ownership
+ *
  */
 @Service("DataOwnersManager")
 class DataOwnerManager(
-    @Autowired private val companyApi: CompanyDataControllerApi, // TODO unite maybe with validator?
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val dataOwnershipEmailMessageSender: DataOwnershipEmailMessageSender,
