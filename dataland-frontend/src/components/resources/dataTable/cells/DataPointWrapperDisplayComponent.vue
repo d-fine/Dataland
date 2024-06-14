@@ -1,22 +1,13 @@
 <template>
   <div class="flex">
     <a
-      v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
+      v-if="dataPointProperties.dataSource"
       @click="$dialog.open(DataPointDataTable, modalOptions)"
       class="link"
     >
       <slot></slot>
       <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
     </a>
-    <DocumentLink
-      v-else-if="dataPointProperties.dataSource"
-      :dataId="metaInfo.dataId"
-      :dataType="metaInfo.dataType"
-      :label="dataPointProperties.value"
-      :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
-      :file-reference="dataPointProperties.dataSource.fileReference"
-      show-icon
-    />
     <div v-else><slot></slot></div>
   </div>
 </template>
@@ -29,7 +20,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { type DataMetaInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
@@ -77,14 +68,6 @@ export default defineComponent({
         dataSource: content.dataSource,
         comment: content.comment,
       };
-    },
-    isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
-      const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
-      const comment = this.dataPointProperties.comment;
-      const quality = this.dataPointProperties.quality;
-      return (
-        comment != undefined || (quality != undefined && quality != QualityOptions.Na) || dataSource?.page != undefined
-      );
     },
   },
 });
