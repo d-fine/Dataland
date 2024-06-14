@@ -19,14 +19,6 @@
             <th class="headers-bg width-auto"><span class="table-left-label">Publication date</span></th>
             <td>{{ companyReport.reportDate }}</td>
           </tr>
-          <tr>
-            <th class="headers-bg width-auto"><span class="table-left-label">Report currency</span></th>
-            <td>{{ companyReport.currency }}</td>
-          </tr>
-          <tr>
-            <th class="headers-bg width-auto"><span class="table-left-label">Group level report?</span></th>
-            <td>{{ companyReport.isGroupLevel }}</td>
-          </tr>
         </tbody>
       </table>
     </div>

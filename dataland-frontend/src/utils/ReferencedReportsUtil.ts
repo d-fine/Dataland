@@ -4,7 +4,7 @@ import type { CompanyReport } from "@clients/backend";
 
 /**
  * Opens a modal to display the details of the selected report.
- * @param context for coupling the environment
+ * @param context for coupling the environment.
  * @param report The report data.
  * @param reportName The name of the report.
  */
@@ -25,7 +25,7 @@ export function openReportDataTableModal(context: ComponentContext, report: Comp
 function constructModalOptions(report: CompanyReport, reportName: string): ModalOptions {
   const reportWithName: CompanyReport = {
     ...report,
-    fileName: report.fileName ? report.fileName : reportName,
+    fileName: report.fileName ? report.fileName : reportName ? reportName : "Unnamed_File",
   };
 
   return {

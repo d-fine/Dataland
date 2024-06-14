@@ -1,13 +1,10 @@
 <template>
   <div class="flex">
-    <a
-      v-if="dataPointProperties.dataSource"
-      @click="$dialog.open(DataPointDataTable, modalOptions)"
-      class="link"
-    >
+    <a v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal" @click="$dialog.open(DataPointDataTable, modalOptions)" class="link">
       <slot></slot>
       <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
     </a>
+    <div v-else-if="dataPointProperties.value"><slot>{{dataPointProperties.value}}</slot></div>
     <div v-else><slot></slot></div>
   </div>
 </template>
@@ -19,12 +16,10 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataMetaInformation } from "@clients/backend";
+import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
-  components: { DocumentLink },
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
@@ -68,6 +63,14 @@ export default defineComponent({
         dataSource: content.dataSource,
         comment: content.comment,
       };
+    },
+    isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
+      const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
+      const comment = this.dataPointProperties.comment;
+      const quality = this.dataPointProperties.quality;
+      return (
+          comment != undefined || (quality != undefined && quality != QualityOptions.Na) || dataSource != undefined
+      );
     },
   },
 });
