@@ -121,25 +121,22 @@ class DataOwnerControllerTest {
         assertAccessDeniedWhenUploadingFrameworkData(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataOwnersAfterPostRequest =
-            apiAccessor.dataOwnerControllerApi.postDataOwner(firstCompanyId, dataReaderUserId)
-        validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), dataOwnersAfterPostRequest)
+        val owners = apiAccessor.dataOwnerControllerApi.postDataOwner(firstCompanyId, dataReaderUserId)
+        validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), owners)
         assertDoesNotThrow {
             apiAccessor.dataOwnerControllerApi.isUserDataOwnerForCompany(firstCompanyId, dataReaderUserId)
         }
 
-        val dataOwnersAfterDuplicatePostRequest =
-            apiAccessor.dataOwnerControllerApi.postDataOwner(firstCompanyId, dataReaderUserId)
-        validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), dataOwnersAfterDuplicatePostRequest)
+        val ownersAfterRepost = apiAccessor.dataOwnerControllerApi.postDataOwner(firstCompanyId, dataReaderUserId)
+        validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), ownersAfterRepost)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         uploadEuTaxoData(firstCompanyId, frameworkSampleData)
         assertAccessDeniedWhenUploadingFrameworkData(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataOwnersAfterRemovingUser =
-            apiAccessor.dataOwnerControllerApi.deleteDataOwner(firstCompanyId, dataReaderUserId)
-        validateDataOwnersForCompany(firstCompanyId, listOf(), dataOwnersAfterRemovingUser)
+        val ownersAfterDeletion = apiAccessor.dataOwnerControllerApi.deleteDataOwner(firstCompanyId, dataReaderUserId)
+        validateDataOwnersForCompany(firstCompanyId, listOf(), ownersAfterDeletion)
         val exceptionWhenCheckingIfUserIsDataOwner = assertThrows<ClientException> {
             apiAccessor.dataOwnerControllerApi.isUserDataOwnerForCompany(firstCompanyId, dataReaderUserId)
         }
