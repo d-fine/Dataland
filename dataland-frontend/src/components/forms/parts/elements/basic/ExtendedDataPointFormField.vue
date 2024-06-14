@@ -247,8 +247,6 @@ export default defineComponent({
     handleBlurValue(isDataValueProvided: boolean) {
       if (!isDataValueProvided && !this.isYesNoVariant) {
         this.qualityValue = null;
-      } else if (this.qualityValue == null) {
-        this.qualityValue = null;
       }
     },
     /**
