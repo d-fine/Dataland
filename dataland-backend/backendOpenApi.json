@@ -4295,9 +4295,6 @@
         }
       },
       "CurrencyDataPoint": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -4305,7 +4302,12 @@
             "nullable": true
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -14433,20 +14435,20 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "lei": {
@@ -14474,10 +14476,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
