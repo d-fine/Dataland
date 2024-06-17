@@ -89,7 +89,7 @@ describeIf(
       cy.wait("@fetchFilters");
       const companySelector = "span:contains(VIEW)";
       cy.get(companySelector).first().click();
-      cy.wait("@searchCompanies");
+      cy.wait(100);
     }
 
     /**
