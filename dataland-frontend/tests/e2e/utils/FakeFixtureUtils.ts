@@ -194,15 +194,13 @@ export class Generator {
    * @returns the generated datapoint
    */
   generateExtendedDataPoint<T>(value: T | null): ExtendedDataPoint<T> {
-    //todo
-    const qualityBucket = pickOneElement(Object.values(QualityOptions));
+    const qualityBucket = this.valueOrNull(pickOneElement(Object.values(QualityOptions)));
 
     let dataSource: ExtendedDocumentReference | null = this.valueOrNull(generateDataSource(this.reports));
     const comment: string | null = this.valueOrNull(faker.git.commitMessage());
     if (qualityBucket === QualityOptions.Audited || qualityBucket === QualityOptions.Reported) {
       dataSource = generateDataSource(this.reports);
     }
-    //todo
     return {
       value: value,
       dataSource: dataSource,
