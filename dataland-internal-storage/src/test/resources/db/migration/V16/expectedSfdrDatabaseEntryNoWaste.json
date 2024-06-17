@@ -1,0 +1,23 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2023-12-18",
+      "fiscalYearDeviation": "Deviation",
+      "fiscalYearEnd": "2023-12-18"
+    }
+  },
+  "environmental": {
+    "biodiversity": {
+      "rareOrEndangeredEcosystemsExposure": {
+        "value": "Yes"
+      }
+    }
+  },
+  "social": {
+    "socialAndEmployeeMatters": {
+      "transparencyDisclosurePolicy": {
+        "value": "Yes"
+      }
+    }
+  }
+}
