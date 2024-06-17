@@ -7,7 +7,6 @@ import {
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type ExtendedDataPointBigDecimal,
-  QualityOptions,
 } from "@clients/backend";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
@@ -65,7 +64,7 @@ function shouldValueBeDisplayedForDataPoint(dataPoint: ExtendedDataPointBigDecim
   return !!(
     dataPoint?.value != null ||
     dataPoint?.comment?.length ||
-    (dataPoint?.quality != QualityOptions.Na && dataPoint?.dataSource?.fileReference.length)
+    (dataPoint?.quality != null && dataPoint?.dataSource?.fileReference.length)
   );
 }
 

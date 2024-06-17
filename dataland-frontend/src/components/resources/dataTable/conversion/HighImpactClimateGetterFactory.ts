@@ -44,13 +44,13 @@ function convertHighImpactClimateToListForModal(
       energyConsumption: {
         value: `${value?.value ? value.value.toString() + " GWh" : "No data provided"}`,
         dataSource: value?.dataSource,
-        quality: value?.quality,
+        quality: value?.quality === null ? undefined : value?.quality,
         comment: value?.comment,
       },
       relativeEnergyConsumption: {
         value: `${revenueValue?.value ? revenueValue.value.toString() + " GWh / €M revenue" : "No data provided"}`,
         dataSource: revenueValue?.dataSource,
-        quality: revenueValue?.quality,
+        quality: revenueValue?.quality === null ? undefined : revenueValue?.quality,
         comment: revenueValue?.comment,
       },
     });
