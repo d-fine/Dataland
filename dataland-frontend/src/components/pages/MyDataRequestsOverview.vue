@@ -157,7 +157,11 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from "primevue/datatable";
+import DataTable, {
+  type DataTablePageEvent,
+  type DataTableRowClickEvent,
+  type DataTableSortEvent,
+} from "primevue/datatable";
 import Column from "primevue/column";
 import {
   frameworkHasSubTitle,
@@ -309,7 +313,7 @@ export default defineComponent({
      * @param event.originalEvent needed to get the clicked cell
      * @returns the promise of the router push action
      */
-    onRowClick(event: { data: ExtendedStoredDataRequest; originalEvent: MouseEvent | TouchEvent }) {
+    onRowClick(event: DataTableRowClickEvent) {
       const clickedElement = event.originalEvent.target as HTMLElement;
       const isResolveButtonClick = clickedElement.id === "resolveButton";
       if (!isResolveButtonClick) {
@@ -332,7 +336,7 @@ export default defineComponent({
      * @param framework dataland framework
      * @returns checks if given framework is selected
      */
-    filterFramework(framework: DataTypeEnum) {
+    filterFramework(framework: string) {
       for (const selectedFramework of this.selectedFrameworks) {
         if (framework == selectedFramework.frameworkDataType) return true;
       }

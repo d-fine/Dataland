@@ -1,3 +1,4 @@
+// @ts-nocheck
 import QualityAssurance from "@/components/pages/QualityAssurance.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";

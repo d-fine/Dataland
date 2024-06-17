@@ -6,7 +6,7 @@
         <slot />
       </div>
     </main>
-    <TheFooter :sections="landingPage?.sections" />
+    <TheFooter :sections="landingPage?.sections" :is-light-version="false" />
   </div>
 </template>
 

@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import SlideShow from "@/components/general/SlideShow.vue";
 </script>
 

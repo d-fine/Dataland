@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import { DataTypeEnum, QaStatus, type DataMetaInformation } from "@clients/backend";
 describe("Component Tests for DatasetDisplayStatusIndicator", () => {

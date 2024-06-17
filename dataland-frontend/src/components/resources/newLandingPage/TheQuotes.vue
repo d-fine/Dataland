@@ -52,7 +52,7 @@
     <transition name="fade" mode="out-in">
       <h3 class="quotes__slide-title" :key="currentCardInfo.title">
         {{ currentCardInfo.title }}
-        <span v-for="(titleSegment, index) of currentCardInfo.text.split('\n')" :key="index">
+        <span v-for="(titleSegment, index) of currentCardInfo.text?.split('\n') ?? []" :key="index">
           {{ titleSegment }}
         </span>
       </h3>

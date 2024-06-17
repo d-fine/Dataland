@@ -21,16 +21,16 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { type AxiosRequestConfig, type RawAxiosResponseHeaders } from "axios";
+import { type RawAxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataTypeEnum, type SmeData } from "@clients/backend";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import {
   getAllPrivateFrameworkIdentifiers,
   getBasePrivateFrameworkDefinition,
 } from "@/frameworks/BasePrivateFrameworkRegistry";
 import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
+import { getHeaderIfItIsASingleString } from "@/utils/Axios";
 
 export default defineComponent({
   setup() {
@@ -51,7 +51,7 @@ export default defineComponent({
     downloadName: { type: String, required: true },
     fileReference: { type: String, required: true },
     dataId: String,
-    dataType: { String, required: true },
+    dataType: String,
     showIcon: Boolean,
     fontStyle: String,
   },
@@ -64,8 +64,7 @@ export default defineComponent({
       this.percentCompleted = 0;
       try {
         const docUrl = document.createElement("a");
-        const privateFramework = getAllPrivateFrameworkIdentifiers();
-        if (privateFramework.includes(this.dataType)) {
+        if (this.isPrivateFrameworkDocumentLink) {
           await this.handlePrivateDocumentDownload(fileReference, docUrl);
         } else {
           await this.handlePublicDocumentDownload(fileReference, docUrl);
@@ -81,30 +80,35 @@ export default defineComponent({
      * @param docUrl initial reference of the document reference
      */
     async handlePrivateDocumentDownload(fileReference: string, docUrl: HTMLAnchorElement) {
+      if (!this.dataId) throw new Error("Data id is required for private framework document download");
+      if (!this.dataType) throw new Error("Data type is required for private framework document download");
+
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      let SmeDataControllerApi: PrivateFrameworkDataApi<SmeData>;
-      const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Sme);
+      let privateDataControllerApi: PrivateFrameworkDataApi<unknown>;
+      const frameworkDefinition = getBasePrivateFrameworkDefinition(this.dataType);
       if (frameworkDefinition) {
-        SmeDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
+        privateDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
-        await SmeDataControllerApi.getPrivateDocument(this.dataId.toString(), fileReference, {
-          responseType: "arraybuffer",
-          onDownloadProgress: (progressEvent) => {
-            if (progressEvent.total != null)
-              this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          },
-        } as AxiosRequestConfig).then((getDocumentsFromStorageResponse) => {
-          this.percentCompleted = 100;
-          const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-          const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
-          const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
-          docUrl.href = URL.createObjectURL(newBlob);
-          docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
-          document.body.appendChild(docUrl);
-          docUrl.click();
-        });
+        await privateDataControllerApi
+          .getPrivateDocument(this.dataId, fileReference, {
+            responseType: "arraybuffer",
+            onDownloadProgress: (progressEvent) => {
+              if (progressEvent.total != null)
+                this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            },
+          })
+          .then((getDocumentsFromStorageResponse) => {
+            this.percentCompleted = 100;
+            const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+            const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
+            docUrl.href = URL.createObjectURL(newBlob);
+            docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
+            document.body.appendChild(docUrl);
+            docUrl.click();
+          });
       }
     },
     /**
@@ -122,7 +126,7 @@ export default defineComponent({
             if (progressEvent.total != null)
               this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           },
-        } as AxiosRequestConfig)
+        })
         .then((getDocumentsFromStorageResponse) => {
           this.percentCompleted = 100;
           const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
@@ -140,9 +144,8 @@ export default defineComponent({
      * @returns the file type extension of the downloaded file
      */
     getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
-      return assertDefined(new Map(Object.entries(headers)).get("content-disposition") as string)
-        .split(".")
-        .at(-1) as DownloadableFileExtension;
+      const contentDisposition = assertDefined(getHeaderIfItIsASingleString(headers, "content-disposition")).split(".");
+      return contentDisposition[contentDisposition.length - 1] as DownloadableFileExtension;
     },
     /**
      * Extracts the content type from the http response headers
@@ -150,7 +153,12 @@ export default defineComponent({
      * @returns the mime type of the received document
      */
     getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
-      return assertDefined(new Map(Object.entries(headers)).get("content-type") as string);
+      return assertDefined(getHeaderIfItIsASingleString(headers, "content-type"));
+    },
+  },
+  computed: {
+    isPrivateFrameworkDocumentLink(): boolean {
+      return !!this.dataType && getAllPrivateFrameworkIdentifiers().includes(this.dataType);
     },
   },
 });

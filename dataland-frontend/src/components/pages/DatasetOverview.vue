@@ -58,7 +58,7 @@ export default defineComponent({
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
       waitingForData: true,
-      hasUserUploaderRights: undefined,
+      hasUserUploaderRights: undefined as boolean | undefined,
       footerContent,
     };
   },

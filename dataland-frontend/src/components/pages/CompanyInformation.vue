@@ -19,7 +19,7 @@
         </div>
         <div class="right-elements">
           <ReviewRequestButtons
-            v-if="showReviewRequestButtons"
+            v-if="!!framework && !!mapOfReportingPeriodToActiveDataset"
             :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
             :framework="framework"
             :company-id="companyId"
@@ -73,7 +73,13 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, type PropType } from "vue";
-import { type CompanyIdAndName, type CompanyInformation, type DataTypeEnum, IdentifierType } from "@clients/backend";
+import {
+  type CompanyIdAndName,
+  type CompanyInformation,
+  type DataMetaInformation,
+  type DataTypeEnum,
+  IdentifierType,
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
@@ -130,9 +136,6 @@ export default defineComponent({
       }
       return listOfItems;
     },
-    showReviewRequestButtons() {
-      return this.framework != undefined;
-    },
   },
   props: {
     companyId: {
@@ -148,7 +151,7 @@ export default defineComponent({
       required: false,
     },
     mapOfReportingPeriodToActiveDataset: {
-      type: Map,
+      type: Map as PropType<Map<string, DataMetaInformation>>,
       required: false,
     },
   },

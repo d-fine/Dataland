@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 

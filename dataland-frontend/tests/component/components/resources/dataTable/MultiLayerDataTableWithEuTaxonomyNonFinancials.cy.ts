@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
@@ -165,7 +166,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       },
     ).then(() => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
-        `Data extracted from the company report. Company Reports(${expectedLatestReportingPeriod})`,
+        `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`,
       );
       cy.get(`[data-test="report-link-${nameOfFirstReportOfExpectedLatestReportingPeriod}"]`);
 

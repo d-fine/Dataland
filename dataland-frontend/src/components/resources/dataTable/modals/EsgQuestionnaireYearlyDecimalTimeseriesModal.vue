@@ -52,7 +52,7 @@ const tableData = computed<EsgQuestionnaireDecimalTimeseriesRow<KeyList>[]>(() =
     };
 
     generatedRows.push({
-      key: key,
+      key: key as KeyList,
       label: typedElement.label,
       unitSuffix: typedElement.unitSuffix,
     });
