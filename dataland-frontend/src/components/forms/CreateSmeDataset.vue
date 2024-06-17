@@ -156,6 +156,7 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import WasteClassificationFormField from "@/components/forms/parts/fields/WasteClassificationFormField.vue";
 import SiteAndAreaFormField from "@/components/forms/parts/fields/SiteAndAreaFormField.vue";
 import EmployeesPerCountryFormField from "@/components/forms/parts/fields/EmployeesPerCountryFormField.vue";
+import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -190,6 +191,7 @@ export default defineComponent({
     WasteClassificationFormField,
     SiteAndAreaFormField,
     EmployeesPerCountryFormField,
+    ListOfBaseDataPointsFormField,
   },
   emits: ["datasetCreated"],
   data() {
@@ -264,7 +266,11 @@ export default defineComponent({
       const smeResponseData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
       this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
       this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
+      if (smeResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(smeResponseData.reportingPeriod);
+      }
       //TODO Fix referenced reports
+      //TODO reporting period needs to be loaded too
       this.referencedReportsForPrefill =
         this.companyAssociatedSmeData.data.basic?.basisForPreparation?.referencedReports ?? {};
       this.waitingForData = false;
