@@ -44,7 +44,7 @@ export class SmeGenerator extends Generator {
   generateRandomSmeWasteClassificationObject(): SmeWasteClassificationObject {
     return {
       wasteClassification: pickOneElement(Object.values(WasteClassifications)),
-      typeWaste: this.randomShortString(),
+      typeOfWaste: this.randomShortString(),
       totalAmountTons: this.randomFloat(0, 1e8),
       wasteRecycleOrReuseTons: this.randomFloat(0, 1e8),
       wasteDisposalTons: this.randomFloat(0, 1e8),

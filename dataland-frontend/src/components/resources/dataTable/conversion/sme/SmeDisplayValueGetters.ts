@@ -205,11 +205,11 @@ function convertSmePollutionEmissionToListForModal(datasetValue: SmePollutionEmi
  */
 function convertSmeWasteClassificationToListForModal(
   datasetValue: SmeWasteClassificationObject[],
-): SmeWasteClassificationObject[] {
+): SmeWasteClassificationDisplayFormat[] {
   return datasetValue.map((item) => {
     const humanizedItem: SmeWasteClassificationDisplayFormat = {
       wasteClassification: humanizeStringOrNumber(item.wasteClassification),
-      typeWaste: humanizeStringOrNumber(item.typeWaste),
+      typeWaste: humanizeStringOrNumber(item.typeOfWaste),
       totalAmountTons: item.totalAmountTons!,
       wasteRecycleOrReuseTons: item.wasteRecycleOrReuseTons!,
       wasteDisposalTons: item.wasteDisposalTons!,
