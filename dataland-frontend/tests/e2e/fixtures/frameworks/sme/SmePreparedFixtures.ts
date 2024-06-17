@@ -23,6 +23,7 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  */
 function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
+  input.companyInformation.sector = "Energy";
   input.t.general.basicInformation.sectors = generateNaceCodes(2);
   input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
   return input;

@@ -1,11 +1,6 @@
 import CompanyInformationComponent from "@/components/pages/CompanyInformation.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import {
-  type CompanyInformation,
-  type SmeData,
-  type DataMetaInformation,
-  DataTypeEnum,
-} from "@clients/backend";
+import { type CompanyInformation, type SmeData, type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { type StoredDataRequest } from "@clients/communitymanager";
 let smeFixtureForTest: FixtureData<SmeData>;
