@@ -24,13 +24,12 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
     order = 6,
     isPrivateFramework = true,
 ) {
-
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("basic") {
             val numberOfEmployeesInHeadCount = this.get<ComponentGroup>("workforceGeneralCharacteristics")
-                .get<NumberBaseComponent>("numberEmployeesHead")
+                .get<NumberBaseComponent>("numberOfEmployeesInHeadcount")
             val numberEmployeesFullTime = this.get<ComponentGroup>("workforceGeneralCharacteristics")
-                .get<NumberBaseComponent>("numberEmployeesFullTime")
+                .get<NumberBaseComponent>("numberOfEmployeesInFtes")
             edit<ComponentGroup>("workforceRenumerationCollectiveBargainingAndTraining") {
                 edit<SingleSelectComponent>("payGapBasis") {
                     setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)

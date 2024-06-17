@@ -529,166 +529,175 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
           },
           {
             type: "cell",
-            label: "Number employees full-time",
+            label: "Number of employees in FTEs",
             explanation:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number employees head",
+            label: "Number of employees in Headcount",
             explanation:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount,
                 "head count",
               ),
           },
           {
             type: "cell",
-            label: "Number temporary contract full-time",
+            label: "Number of temporary contract employees in FTEs",
             explanation:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberTemporaryContractFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number temporary contract head",
+            label: "Number of temporary contract employees in Headcount",
             explanation:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberTemporaryContractHead,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInHeadcount,
                 "head count",
               ),
           },
           {
             type: "cell",
-            label: "Number permanent contract full-time",
+            label: "Number of permanent contract employees in FTEs",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberPermanentContractFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number permanent contract head",
+            label: "Number of permanent contract employees in Headcount",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberPermanentContractHead,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInHeadcount,
                 "head count",
               ),
           },
           {
             type: "cell",
-            label: "Number male full-time",
+            label: "Number of male employees in FTEs",
             explanation:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberMaleFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number male head",
+            label: "Number of male employees in Headcount",
             explanation:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberMaleHead, "head count"),
+              formatNumberForDatatable(
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInHeadcount,
+                "head count",
+              ),
           },
           {
             type: "cell",
-            label: "Number female full-time",
+            label: "Number female employees in FTEs",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberFemaleFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberFemaleEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number female head",
+            label: "Number of female employees in Headcount",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberFemaleHead, "head count"),
+              formatNumberForDatatable(
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfFemaleEmployeesInHeadcount,
+                "head count",
+              ),
           },
           {
             type: "cell",
-            label: "Number other full-time",
+            label: "Number of other employees in FTEs",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOtherFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number other head ",
+            label: "Number of other employees head ",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.workforceGeneralCharacteristics?.numberOtherHead, "head count"),
+              formatNumberForDatatable(
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesHead,
+                "head count",
+              ),
           },
           {
             type: "cell",
-            label: "Number not reported full-time",
+            label: "Number of not reported epmloyees in FTEs",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberNotReportedFullTime,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEpmloyeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number not reported head",
+            label: "Number of not reported employees in Headcount",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberNotReportedHead,
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInHeadcount,
                 "head count",
               ),
           },
@@ -722,11 +731,11 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
           },
           {
             type: "cell",
-            label: "Number accidents",
+            label: "Number of accidents",
             explanation: "Please disclose the number of work related accidents in the reporting year.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberAccidents, ""),
+              formatNumberForDatatable(dataset.basic?.workforceHealthAndSafety?.numberOfAccidents, ""),
           },
           {
             type: "cell",
@@ -739,77 +748,77 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
           },
           {
             type: "cell",
-            label: "Number fatalities total full-time",
+            label: "Number of total fatalities in FTEs",
             explanation:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberFatalitiesTotalFullTime,
+                dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number fatalities total head",
+            label: "Number of total fatalities in Headcount",
             explanation:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberFatalitiesTotalHead,
+                dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInHeadcount,
                 "head count",
               ),
           },
           {
             type: "cell",
-            label: "Number fatalities accident full-time",
+            label: "Number of fatalities of accidents in FTEs",
             explanation:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberFatalitiesAccidentFullTime,
+                dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number fatalities accident head",
+            label: "Number of fatalities of accidents in Headcount",
             explanation:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberFatalitiesAccidentHead,
+                dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInHeadcount,
                 "head count",
               ),
           },
           {
             type: "cell",
-            label: "Number fatalities health full-time",
+            label: "Number of health fatalities in FTEs",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberFatalitiesHealthFullTime,
+                dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number fatalities health head",
+            label: "Number of health fatalities in Headcount",
 
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberFatalitiesHealthHead,
+                dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInHeadcount,
                 "head count",
               ),
           },
@@ -823,56 +832,57 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
         children: [
           {
             type: "cell",
-            label: "Number minimum wage full-time",
+            label: "Numberof  minimum wage employees in FTEs",
             explanation:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberMinimumWageFullTime,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberofMinimumWageEmployeesInFtes,
                 "full-time equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number minimum wage head",
+            label: "Numberof  minimum wage employees in Headcount",
             explanation:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (dataset: SmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberMinimumWageHead,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining
+                  ?.numberofMinimumWageEmployeesInHeadcount,
                 "head count",
               ),
           },
           {
             type: "cell",
-            label: "Percentage minimum wage",
+            label: "Percentage of minimum wage employees",
             explanation:
               "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.percentageMinimumWage,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.percentageOfMinimumWageEmployees,
               ),
           },
           {
             type: "cell",
-            label: "more than half",
+            label: "Majority of minimum wage employees",
             explanation:
               "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.moreThanHalf,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.majorityOfMinimumWageEmployees,
               ),
           },
           {
             type: "cell",
             label: "Entry level wage",
-            explanation: "Please provide the minimum wage you pay as well as the entry level wage.",
+            explanation: "Please provide the entry level wage you pay.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -883,7 +893,7 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
           {
             type: "cell",
             label: "Minimum wage",
-
+            explanation: "Please provide the minimum wage you pay.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -908,8 +918,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Please, in the following provide pay rates and work hours. On which basis do you prefer to report?",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes => {
@@ -933,8 +943,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male respectively for female employees. ",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -948,8 +958,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Gross pay female",
 
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -964,8 +974,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -979,8 +989,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Total work hours female",
 
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -995,8 +1005,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             explanation:
               "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1010,8 +1020,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "Average work hours female",
 
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1025,8 +1035,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "average hourly pay male",
             explanation: "What is the average hourly pay for male employees?",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1040,8 +1050,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "average hourly pay female",
             explanation: "What is the average hourly pay for female employees?",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1055,8 +1065,8 @@ export const smeViewConfiguration: MLDTConfig<SmeData> = [
             label: "pay gap",
             explanation: "What is your pay gap? ",
             shouldDisplay: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: SmeData): AvailableMLDTDisplayObjectTypes =>
