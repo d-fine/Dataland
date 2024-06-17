@@ -1,754 +1,746 @@
 [
 	{
-		"companyName": "Brown - Schmitt",
-		"companyId": "2f44b229-20da-4c0a-87b9-6f1341d4c4f4",
-		"lei": "ypqAiTEUV7Bxf96pmaJz",
-		"headquarters": "Port Emelia",
-		"sector": "e-commerce",
-		"countryCode": "CZ"
+		"companyName": "Hettinger - Lowe",
+		"companyId": "4f417295-2d3e-4a12-a296-72a7ac5c1010",
+		"headquarters": "West Margie",
+		"sector": "systems",
+		"countryCode": "MU"
 	},
 	{
-		"companyName": "Cormier Group",
-		"companyId": "fde06c90-1e45-4a9c-95bc-de8ef3b1c95f",
-		"lei": "EMkL4372JY2OgDkBwLiy",
-		"headquarters": "Fort Lois",
-		"sector": "models",
-		"countryCode": "KG"
+		"companyName": "Hauck - Moen",
+		"companyId": "a88fcb99-0bfc-4e14-a693-658ff4bbe9db",
+		"headquarters": "Odieboro",
+		"sector": "experiences",
+		"countryCode": "HT"
 	},
 	{
-		"companyName": "Macejkovic - Langosh",
-		"companyId": "6aef5faa-0cc6-4363-88c5-f1b3acd26066",
-		"lei": "nmxYZiIHVzQIJWP9zleC",
-		"headquarters": "San Jacinto",
-		"sector": null,
-		"countryCode": "GG"
-	},
-	{
-		"companyName": "Hermiston, Mraz and Runte",
-		"companyId": "e193004c-9468-4e4d-86d5-8464804aae62",
-		"lei": "VYntoWbgyhZLELmAGcL8",
-		"headquarters": "Grapevine",
-		"sector": "applications",
-		"countryCode": "MQ"
-	},
-	{
-		"companyName": "Schneider - Frami",
-		"companyId": "261847dc-b3e6-4a8a-a778-cabad6380215",
-		"headquarters": "Trujillo Alto",
-		"sector": "solutions",
-		"countryCode": "MF"
-	},
-	{
-		"companyName": "Carroll - Runolfsdottir",
-		"companyId": "8784ffbb-0170-4021-942e-ccb87e2e027c",
-		"lei": "5X1FY5SaCDlLbnQQPD20",
-		"headquarters": "Dillanfort",
+		"companyName": "Flatley - Mosciski",
+		"companyId": "59cd5809-da44-4bef-aac9-ef576e2484fc",
+		"headquarters": "San Antonio",
 		"sector": null,
 		"countryCode": "ES"
 	},
 	{
-		"companyName": "Maggio - Cronin",
-		"companyId": "378551b6-f4a9-4152-a38e-2e387a2210a9",
-		"lei": "DD1N6UKskGNjgvwueGYt",
-		"headquarters": "Burke",
-		"sector": null,
-		"countryCode": "IT"
+		"companyName": "Runolfsdottir Inc",
+		"companyId": "e0802df9-4da7-4456-921f-30f1d64fdd63",
+		"lei": "Js1orcbiE8jT9aOreSvt",
+		"headquarters": "Victorville",
+		"sector": "ROI",
+		"countryCode": "CD"
 	},
 	{
-		"companyName": "Schmidt, Smitham and Jakubowski",
-		"companyId": "3a4bc8a6-0106-4dd1-8768-8deda32665e8",
-		"lei": "elZTjsqnX6T9vdVYRw6v",
-		"headquarters": "Jackelineberg",
-		"sector": "architectures",
-		"countryCode": "AE"
-	},
-	{
-		"companyName": "Stroman Inc",
-		"companyId": "0c943e60-ca2f-4e2b-853b-c336fb8fef51",
-		"lei": "JxcycdhFC3M4oCvdTIp7",
-		"headquarters": "West Albin",
-		"sector": "users",
-		"countryCode": "KN"
-	},
-	{
-		"companyName": "Gulgowski, Walsh and Crooks",
-		"companyId": "d8200224-f81d-42fa-b1f6-64e7726bfc38",
-		"lei": "ThiJrqUJNL1zdCgPiZ0U",
-		"headquarters": "Port Emanueltown",
-		"sector": "lifetime value",
-		"countryCode": "MO"
-	},
-	{
-		"companyName": "McKenzie, Breitenberg and Medhurst",
-		"companyId": "b2499c37-9e62-4cb2-befc-6c282b3c1b2a",
-		"lei": "ZtoUy67NEjqI11ha5NjH",
-		"headquarters": "Fort Verniechester",
-		"sector": "convergence",
-		"countryCode": "PE"
-	},
-	{
-		"companyName": "Abbott Inc",
-		"companyId": "1f254874-642f-4a38-b0b2-1014a511a4c9",
-		"lei": "GDpe8TYp4zI1PueDB6Zm",
-		"headquarters": "Johnson City",
-		"sector": "relationships",
-		"countryCode": "RE"
-	},
-	{
-		"companyName": "Reynolds Group",
-		"companyId": "de40bba1-f340-4ab5-96b4-73fb7b3b4d45",
-		"lei": "7gpH4mH1p62xadnToBnB",
-		"headquarters": "Bryan",
-		"sector": "initiatives",
-		"countryCode": "SI"
-	},
-	{
-		"companyName": "Pfeffer Inc",
-		"companyId": "6e3f0bcd-1b91-407e-a552-b0d559056d94",
-		"headquarters": "Burke",
-		"sector": "architectures",
-		"countryCode": "SA"
-	},
-	{
-		"companyName": "Moore Inc",
-		"companyId": "3cc0b8a0-5ee2-417a-b037-4a9c67f00569",
-		"lei": "AVaHls3K1HuLnPCB4eEu",
-		"headquarters": "North Mellie",
-		"sector": "functionalities",
-		"countryCode": "LI"
-	},
-	{
-		"companyName": "Baumbach, Zboncak and Heller",
-		"companyId": "a7ab535d-fe9b-46c0-a896-1ea1aa0e046f",
-		"headquarters": "Palatine",
-		"sector": null,
-		"countryCode": "RE"
-	},
-	{
-		"companyName": "Wiza - Wilderman",
-		"companyId": "86e07b53-6954-40b8-ba69-4d6d4955cdcc",
-		"lei": "b9MJYgul4I5UQstYtHSG",
-		"headquarters": "Coachella",
-		"sector": "communities",
-		"countryCode": "BZ"
-	},
-	{
-		"companyName": "Crona, Runte and Kerluke",
-		"companyId": "0a3552c6-f5fa-42d5-bc9a-54fdd8755c7b",
-		"lei": "NPZZ6l63juLWVURB45cQ",
-		"headquarters": "Port St. Lucie",
-		"sector": null,
-		"countryCode": "VG"
-	},
-	{
-		"companyName": "Schmeler LLC",
-		"companyId": "eb7e5197-ac42-49e2-807a-df9871089090",
-		"lei": "Z9gEovjDkUzG5C3OgCYV",
-		"headquarters": "Hesperia",
-		"sector": "platforms",
-		"countryCode": "LK"
-	},
-	{
-		"companyName": "Schaefer, Hane and Spinka",
-		"companyId": "3bd824de-2cd1-48b2-b209-160cf35f7ba0",
-		"headquarters": "South Alessandraville",
-		"sector": "e-business",
-		"countryCode": "AT"
-	},
-	{
-		"companyName": "Schroeder, Raynor and Schulist",
-		"companyId": "2adbe463-74c6-4af5-b95d-4215a1a33644",
-		"headquarters": "Malden",
-		"sector": "initiatives",
-		"countryCode": "BI"
-	},
-	{
-		"companyName": "Hartmann Inc",
-		"companyId": "37a4db2c-3fdc-4bd2-a92b-4b620bcf82ad",
-		"lei": "eIbEcRjBrAdTQLVV5dqh",
-		"headquarters": "Nicolasberg",
-		"sector": null,
-		"countryCode": "MU"
-	},
-	{
-		"companyName": "Reynolds, Herzog and DuBuque",
-		"companyId": "8b31ddc7-c88d-49ba-9dee-a11b666ef35c",
-		"lei": "iSEsPxTLAYOqUPiOIMyR",
-		"headquarters": "Omaha",
-		"sector": "initiatives",
-		"countryCode": "MY"
-	},
-	{
-		"companyName": "Lubowitz - Wiegand",
-		"companyId": "3d25f14c-7843-4495-8436-bc04b27b7ba0",
-		"headquarters": "McKenziestead",
-		"sector": "mindshare",
-		"countryCode": "QA"
-	},
-	{
-		"companyName": "Zieme Inc",
-		"companyId": "c81263bb-74f7-4f22-aa0d-efb0e2840661",
-		"lei": "59a316rmvxL4mUwYZ4RT",
-		"headquarters": "Deionland",
-		"sector": "paradigms",
+		"companyName": "Thompson, Kerluke and O'Keefe",
+		"companyId": "1f0af1e2-9a5c-436d-bdda-00d3acf928ec",
+		"headquarters": "New Jaymeton",
+		"sector": "partnerships",
 		"countryCode": "KE"
 	},
 	{
-		"companyName": "Stiedemann Inc",
-		"companyId": "b999e8d0-12b3-4ee8-a40f-87e03eee368a",
-		"headquarters": "Franeyhaven",
-		"sector": null,
-		"countryCode": "HR"
+		"companyName": "Corkery - McDermott",
+		"companyId": "1d406fb4-3ce2-4c29-9889-fc354b3a2d4b",
+		"headquarters": "Zboncakworth",
+		"sector": "experiences",
+		"countryCode": "KI"
 	},
 	{
-		"companyName": "White Group",
-		"companyId": "fb1bdd6a-d1d0-47d5-9fce-0ba060834924",
-		"lei": "vsMjaZz2ZlxGlFWBcx4x",
-		"headquarters": "Modesto",
-		"sector": "e-commerce",
-		"countryCode": "FO"
+		"companyName": "Gulgowski, Jast and Torp",
+		"companyId": "5af79049-431b-42ba-a855-46e12e510ec4",
+		"lei": "88X9DM0l2lo9vW54Uuxn",
+		"headquarters": "Purdyport",
+		"sector": "communities",
+		"countryCode": "AG"
 	},
 	{
-		"companyName": "Denesik - Hansen",
-		"companyId": "cb419fd2-f4cc-4221-accf-a9db6c5e2c1b",
-		"headquarters": "Fort Alyssonfield",
-		"sector": "e-commerce",
-		"countryCode": "AT"
+		"companyName": "Aufderhar, Wolff and Emmerich",
+		"companyId": "1acd389b-d9db-455b-8993-c174a8cc0ec5",
+		"headquarters": "Brianaville",
+		"sector": "e-business",
+		"countryCode": "CM"
 	},
 	{
-		"companyName": "Sanford LLC",
-		"companyId": "1b61f8b3-147c-449c-80a1-d706cfb3cd9c",
-		"lei": "ZAA6ro05FLDRMOwgSRA2",
-		"headquarters": "New Carissa",
-		"sector": "synergies",
+		"companyName": "Bartoletti, Dibbert and Becker",
+		"companyId": "54bd1ac9-802b-471d-81b9-87f50fa4479b",
+		"headquarters": "El Monte",
+		"sector": "architectures",
 		"countryCode": "BZ"
 	},
 	{
-		"companyName": "Greenholt - Sawayn",
-		"companyId": "3829d6d1-5ca6-4b85-90a1-29994366a4cd",
-		"lei": "3nvYQTNk2WFV5UVCyB9F",
-		"headquarters": "West Vicenta",
-		"sector": "mindshare",
-		"countryCode": "AL"
+		"companyName": "Kihn Inc",
+		"companyId": "da327fcc-53ea-4746-b60a-5abe20fdf064",
+		"lei": "ssRsfhrX4TFrfIBvZswY",
+		"headquarters": "Port Scottie",
+		"sector": null,
+		"countryCode": "VC"
 	},
 	{
-		"companyName": "Hirthe, Cormier and Toy",
-		"companyId": "6866c57a-ebb5-43c0-aadb-5307943441a9",
-		"headquarters": "Daxcester",
-		"sector": "solutions",
-		"countryCode": "CG"
+		"companyName": "Cruickshank, Lindgren and Roob",
+		"companyId": "89c4b8f5-baca-4512-b97d-5540ffa2834f",
+		"headquarters": "Paucekside",
+		"sector": null,
+		"countryCode": "MP"
 	},
 	{
-		"companyName": "Koss and Sons",
-		"companyId": "b758a33e-44cc-48fa-abec-9db0acfee329",
-		"lei": "AkOAtTezsfn9chz9Zpow",
-		"headquarters": "East Ian",
-		"sector": "mindshare",
+		"companyName": "Wolf Inc",
+		"companyId": "1adb5c3f-9a82-4dd8-af0d-de40bba1f340",
+		"lei": "3Ja736gFm65GiNzVOsGd",
+		"headquarters": "West Johnathan",
+		"sector": "communities",
+		"countryCode": "US"
+	},
+	{
+		"companyName": "Glover, Kessler and Doyle",
+		"companyId": "1b9107e5-52b0-4d55-8905-6d94ad9ef492",
+		"headquarters": "Redlands",
+		"sector": "technologies",
+		"countryCode": "IQ"
+	},
+	{
+		"companyName": "Kemmer Inc",
+		"companyId": "00569f8f-4c0f-45da-8850-9c3d699ff0b7",
+		"headquarters": "Osbaldoville",
+		"sector": "deliverables",
+		"countryCode": "WF"
+	},
+	{
+		"companyName": "Reichert, Waelchi and Hoeger",
+		"companyId": "8961ea1a-a0e0-446f-a9d5-47fff37e3e8d",
+		"headquarters": "West Ceasar",
+		"sector": "portals",
+		"countryCode": "AD"
+	},
+	{
+		"companyName": "Rempel, Witting and Gleichner",
+		"companyId": "cc4617a2-c6cb-4090-92ed-0a1cdff15105",
+		"lei": "ULbKeI7o5YY2Dqjzxuxo",
+		"headquarters": "Ezequielton",
+		"sector": "applications",
+		"countryCode": "NC"
+	},
+	{
+		"companyName": "Stoltenberg, Mills and Bernhard",
+		"companyId": "77ad1a72-9f24-4a68-b4a5-e9a1a0d49feb",
+		"headquarters": "East Rubiestad",
+		"sector": "interfaces",
 		"countryCode": "LU"
 	},
 	{
-		"companyName": "D'Amore Group",
-		"companyId": "b43f1833-1e5b-4d2a-bfe7-901cb27453f7",
-		"headquarters": "Hymanside",
+		"companyName": "Schimmel, West and Roob",
+		"companyId": "ea958edb-60e9-4d18-ae33-64b5af42163e",
+		"lei": "Qm3XomunzqVEYHcat9fR",
+		"headquarters": "New Vada",
+		"sector": null,
+		"countryCode": "ET"
+	},
+	{
+		"companyName": "Pfeffer, Emard and Brekke",
+		"companyId": "2514b54f-ed20-4c62-8352-3fb321bdf74a",
+		"headquarters": "Veumchester",
+		"sector": "experiences",
+		"countryCode": "BM"
+	},
+	{
+		"companyName": "Langosh, Bechtelar and Harvey",
+		"companyId": "fe4c9322-9483-4721-8682-8e597b270421",
+		"headquarters": "South Wernerhaven",
 		"sector": "synergies",
-		"countryCode": "RE"
+		"countryCode": "ID"
 	},
 	{
-		"companyName": "Emmerich, Gibson and Schuppe",
-		"companyId": "16253216-8f76-419c-a81d-ac7bd4f73c7f",
-		"lei": "uKGo5uOsfg2XPTtk4Y1v",
-		"headquarters": "El Cajon",
-		"sector": "systems",
-		"countryCode": "FR"
+		"companyName": "Schinner Inc",
+		"companyId": "846c203f-d9c4-4ff1-b04f-cbd5e4551b3f",
+		"headquarters": "Jabariton",
+		"sector": "e-commerce",
+		"countryCode": "TF"
 	},
 	{
-		"companyName": "Rau Group",
-		"companyId": "d74d22fb-f49e-48d1-a7af-6661530b800c",
-		"lei": "dZ2dGwEF2i9wj3qTstoZ",
-		"headquarters": "West Christelle",
-		"sector": "e-markets",
-		"countryCode": "EC"
+		"companyName": "McClure - Howe",
+		"companyId": "645b2e9c-67df-4615-9eb0-a0d66a97b181",
+		"headquarters": "Independence",
+		"sector": "eyeballs",
+		"countryCode": "JP"
 	},
 	{
-		"companyName": "Runte, Towne and Cole",
-		"companyId": "dc19860c-4791-4b59-8f0f-d8fcd6e0f2e2",
-		"headquarters": "Johnstonmouth",
-		"sector": "niches",
-		"countryCode": "NA"
+		"companyName": "Lubowitz - Bartell",
+		"companyId": "427489ef-fc92-41e4-940c-412e64b083a3",
+		"lei": "wEn9DFBStIPwIPYv60Ts",
+		"headquarters": "Brooksstad",
+		"sector": "metrics",
+		"countryCode": "JE"
 	},
 	{
-		"companyName": "Langosh, Pacocha and Bednar",
-		"companyId": "a720a8fc-e60e-434b-9408-27f19d23c80c",
-		"headquarters": "Fort Eldridge",
-		"sector": "web services",
+		"companyName": "Swaniawski, Kiehn and Stanton",
+		"companyId": "b67ed37f-1355-4c73-800e-79a4054e1e67",
+		"headquarters": "Weissnatfield",
+		"sector": "technologies",
+		"countryCode": "AT"
+	},
+	{
+		"companyName": "Bernier Group",
+		"companyId": "2f91e377-40a9-47ee-9665-fb1bdd6ad1d0",
+		"lei": "UwS058IeVTvg0YxuV3dS",
+		"headquarters": "Legrosstead",
+		"sector": "bandwidth",
+		"countryCode": "VG"
+	},
+	{
+		"companyName": "Bechtelar, Pollich and Parker",
+		"companyId": "3023d36a-cb41-49fd-92f4-cc221ccfa9db",
+		"headquarters": "South Adolphusmouth",
+		"sector": null,
 		"countryCode": "TG"
 	},
 	{
-		"companyName": "Satterfield LLC",
-		"companyId": "e044d4cb-dcb5-4e3e-bd95-a6039ee436f0",
-		"headquarters": "Battle Creek",
-		"sector": "content",
-		"countryCode": "VN"
+		"companyName": "Roob Inc",
+		"companyId": "9c0a1d70-6cfb-43cd-b9c2-40b384c54fb9",
+		"headquarters": "Prosaccomouth",
+		"sector": "ROI",
+		"countryCode": "ET"
 	},
 	{
-		"companyName": "Mohr LLC",
-		"companyId": "5722a349-7818-49c8-b67d-6c3bf034f8c1",
-		"headquarters": "New Annabellshire",
-		"sector": "experiences",
-		"countryCode": "MA"
+		"companyName": "Kemmer, Bruen and Osinski",
+		"companyId": "d7fb1b62-e73b-4c3f-8431-8c86043f9f57",
+		"lei": "FV5UVCyB9FyLZExIjgeS",
+		"headquarters": "Lake Jaylanton",
+		"sector": "paradigms",
+		"countryCode": "ID"
 	},
 	{
-		"companyName": "Turcotte - Weissnat",
-		"companyId": "a4542ac8-d557-445f-bae8-747ede654e5d",
-		"headquarters": "Redondo Beach",
-		"sector": "web services",
-		"countryCode": "ZM"
+		"companyName": "Stoltenberg, Hartmann and Dietrich",
+		"companyId": "74527428-f57a-4a49-b5c9-7e3974623492",
+		"headquarters": "Sammiefurt",
+		"sector": "models",
+		"countryCode": "KH"
 	},
 	{
-		"companyName": "Lowe - Mitchell",
-		"companyId": "f76caae0-96e0-46fc-bfd3-f60cdc87160e",
-		"headquarters": "New Jeffereytown",
+		"companyName": "Fisher, Conn and Schoen",
+		"companyId": "29814382-2e77-4e52-a18a-6903fb75ee3c",
+		"headquarters": "South Marcos",
 		"sector": null,
-		"countryCode": "MK"
+		"countryCode": "SX"
 	},
 	{
-		"companyName": "Gutmann - Block",
-		"companyId": "8e4c9257-bf2b-4e26-b4a7-91dafd6f2a9d",
-		"lei": "gsHRyB4YmBOztiT9rcFO",
-		"headquarters": "Simonisside",
-		"sector": "action-items",
-		"countryCode": "FM"
+		"companyName": "Bergnaum - Strosin",
+		"companyId": "552cbe9c-7ca6-417d-8734-0fde751f08a5",
+		"lei": "wn8LQ747xoNJb4C4QLVc",
+		"headquarters": "Fort Casandrastad",
+		"sector": "content",
+		"countryCode": "MT"
 	},
 	{
-		"companyName": "Sanford - Erdman",
-		"companyId": "8bb437bb-4d98-400e-873c-eda1b2c3fb9e",
-		"lei": "2UbyNl9l8RayG6TosOkw",
-		"headquarters": "Okunevaton",
+		"companyName": "Abshire, Wisozk and Halvorson",
+		"companyId": "7e05a6f0-76e6-4f30-909a-4ea31a995108",
+		"headquarters": "Port Emilcester",
+		"sector": "interfaces",
+		"countryCode": "CC"
+	},
+	{
+		"companyName": "Pollich, Grady and Morar",
+		"companyId": "1ca4968c-c4cb-4028-afc0-259a9129ffa4",
+		"headquarters": "Quitzonfurt",
+		"sector": "technologies",
+		"countryCode": "NP"
+	},
+	{
+		"companyName": "Ullrich, Oberbrunner and Kautzer",
+		"companyId": "8898e60b-dd27-45aa-ab52-8ed16379dc6a",
+		"lei": "DesFB2dIl3fNXM0ND1ZI",
+		"headquarters": "Port Minaport",
 		"sector": "deliverables",
-		"countryCode": "BD"
+		"countryCode": "GW"
 	},
 	{
-		"companyName": "Kunze, Renner and Lynch",
-		"companyId": "75b514f7-b3bd-407d-aedb-043036818abd",
-		"headquarters": "Port Christinaburgh",
-		"sector": "initiatives",
-		"countryCode": "NA"
+		"companyName": "Monahan, Hilll and Schuppe",
+		"companyId": "d06cb82b-e686-419f-8734-11b57d17bd2f",
+		"headquarters": "Makenziebury",
+		"sector": null,
+		"countryCode": "BS"
 	},
 	{
-		"companyName": "Runolfsson Group",
-		"companyId": "bf734f9e-a2f5-4ace-bea2-3b7f4bae3d65",
-		"headquarters": "Annandale",
-		"sector": "metrics",
-		"countryCode": "NE"
+		"companyName": "Grant - West",
+		"companyId": "dea27aa3-c16b-44a5-9f9a-51833a322d40",
+		"lei": "JdRMJzZhsDTfcTLxhyWx",
+		"headquarters": "Methuen Town",
+		"sector": "interfaces",
+		"countryCode": "AT"
 	},
 	{
-		"companyName": "Brown - Ziemann",
-		"companyId": "14b571ef-832c-43f3-b02a-ec7c5aae943c",
+		"companyName": "Mayer Inc",
+		"companyId": "d126ca5b-350b-4892-a3a2-bfe48f9e373a",
+		"lei": "tLRCwGoYMdqviSfzju8a",
+		"headquarters": "Downey",
+		"sector": "ROI",
+		"countryCode": "SA"
+	},
+	{
+		"companyName": "Torp - Rolfson",
+		"companyId": "af777c09-6650-4480-8063-69705f76caae",
+		"lei": "ZAvFimg8CNwRkmrijXFS",
+		"headquarters": "Sheastead",
+		"sector": "relationships",
+		"countryCode": "GT"
+	},
+	{
+		"companyName": "Kerluke Group",
+		"companyId": "e9c801af-2815-4674-9c1e-3208420e5525",
+		"lei": "4p1SXDJIrFi4NPTrtuSV",
+		"headquarters": "Whitehaven",
+		"sector": "architectures",
+		"countryCode": "YT"
+	},
+	{
+		"companyName": "McClure, Dare and Hermann",
+		"companyId": "5cbdec5f-cd18-409e-a683-1f47ab8bb437",
+		"lei": "7SDYQqZ9CAQVVOIVzMdJ",
+		"headquarters": "Mayraworth",
+		"sector": "relationships",
+		"countryCode": "BT"
+	},
+	{
+		"companyName": "Lesch - Balistreri",
+		"companyId": "d597411a-dac6-44ac-ba7e-075b514f7b3b",
+		"headquarters": "Fort Jamaalberg",
+		"sector": "e-commerce",
+		"countryCode": "GB"
+	},
+	{
+		"companyName": "Reichel, Barrows and Gerlach",
+		"companyId": "cbcabf73-4f9e-4a2f-85ac-eea23b7f4bae",
+		"headquarters": "North Colt",
+		"sector": null,
+		"countryCode": "PF"
+	},
+	{
+		"companyName": "Kunze, Nitzsche and Nienow",
+		"companyId": "3f302aec-7c5a-4ae9-b43c-c47d7d47064b",
 		"lei": "mj4b9SJQvWsr4DihFq5H",
-		"headquarters": "Pleasanton",
+		"headquarters": "Fort Wendellcester",
 		"sector": null,
 		"countryCode": "KY"
 	},
 	{
-		"companyName": "Gerhold, Konopelski and Barrows",
-		"companyId": "56ea0684-464a-46fa-b8f6-4b970937c2da",
-		"lei": "4TlY05K4oZXKwIZPSCLg",
-		"headquarters": "West Nathanael",
-		"sector": "interfaces",
-		"countryCode": "AS"
-	},
-	{
-		"companyName": "Hand, Runolfsdottir and Hane",
-		"companyId": "7dab0a75-544d-4445-a978-7f4ada80b086",
-		"lei": "MHBlrt6BNefmlQt0RZAt",
-		"headquarters": "North Maida",
-		"sector": "synergies",
-		"countryCode": "TF"
-	},
-	{
-		"companyName": "Conroy, Turcotte and Hessel",
-		"companyId": "ff823264-8f3d-423d-9db9-9e48d2759811",
-		"headquarters": "Fort Jayda",
-		"sector": "applications",
-		"countryCode": "SM"
-	},
-	{
-		"companyName": "Kozey LLC",
-		"companyId": "cab87fe8-de09-45fd-95ee-1d01f568bbea",
-		"headquarters": "Wiltonstad",
-		"sector": null,
-		"countryCode": "CN"
-	},
-	{
-		"companyName": "Stiedemann - Rowe",
-		"companyId": "57f9e39b-a5ba-4105-8124-bcdc3d9cfdd4",
-		"lei": "mDsojBM87ziJtUqY9UvT",
-		"headquarters": "West Riverhaven",
-		"sector": "markets",
-		"countryCode": "AI"
-	},
-	{
-		"companyName": "Crooks, Brakus and Fisher",
-		"companyId": "5a740ca3-2aeb-469a-8317-09aa5d7877b1",
-		"lei": "8MeELcc1mg2ioKL90cW4",
-		"headquarters": "Predovicton",
-		"sector": "web services",
-		"countryCode": "PK"
-	},
-	{
-		"companyName": "Harber LLC",
-		"companyId": "25074d02-8d4c-4ed7-8db0-ce48e38a89eb",
-		"lei": "LdkMFjgQW5EPYsuLIk8k",
-		"headquarters": "South Helgaburgh",
-		"sector": "architectures",
-		"countryCode": "YE"
-	},
-	{
-		"companyName": "Bashirian, Halvorson and Reichert",
-		"companyId": "3b742597-9f4d-4be5-9ea2-b7275095ed0a",
-		"lei": "EmDdmlI8YsNw97bIsRye",
-		"headquarters": "Ilianabury",
-		"sector": "applications",
-		"countryCode": "BT"
-	},
-	{
-		"companyName": "Shields and Sons",
-		"companyId": "d6dea654-0aa9-4348-a060-9be0275eba03",
-		"headquarters": "Smithtown",
-		"sector": "applications",
+		"companyName": "Hilll, Zemlak and Beer",
+		"companyId": "e4b6a747-e0f0-44cb-b957-719c3355d70d",
+		"headquarters": "Beverlymouth",
+		"sector": "blockchains",
 		"countryCode": "IS"
 	},
 	{
-		"companyName": "McLaughlin, Zieme and Mraz",
-		"companyId": "4ff69071-06cb-4e33-ac50-0689a5790263",
-		"headquarters": "East Jazmincester",
-		"sector": "experiences",
-		"countryCode": "RU"
+		"companyName": "Stroman - Swaniawski",
+		"companyId": "783fd8b5-88e5-4cf9-9da1-743a1a5d20ac",
+		"headquarters": "Mauricioview",
+		"sector": "blockchains",
+		"countryCode": "DE"
 	},
 	{
-		"companyName": "Monahan - Hartmann",
-		"companyId": "ee518bc0-558c-412b-bc32-8f11ab5a5d32",
-		"headquarters": "Altenwerthfort",
-		"sector": "eyeballs",
-		"countryCode": "AL"
-	},
-	{
-		"companyName": "Nikolaus - Yundt",
-		"companyId": "ef9b8dd3-a58e-498e-98f3-d2bc2c06f5d6",
-		"headquarters": "Port Chelsie",
-		"sector": null,
-		"countryCode": "SK"
-	},
-	{
-		"companyName": "Brekke - Reinger",
-		"companyId": "02413b2f-88a4-4342-9928-03e346750621",
-		"headquarters": "Rogers",
-		"sector": "eyeballs",
-		"countryCode": "DO"
-	},
-	{
-		"companyName": "Brown Group",
-		"companyId": "83c2eb64-8f4f-4274-b67d-0cd4342e1936",
-		"lei": "f6KgDBYTI0k5ngzVUdpQ",
-		"headquarters": "Enterprise",
-		"sector": "content",
-		"countryCode": "AZ"
-	},
-	{
-		"companyName": "Pagac, Williamson and Kerluke",
-		"companyId": "4f663fa2-d1fa-46a1-846b-af2a90e44935",
-		"lei": "xmmBRbbWxw41POvL4wvX",
-		"headquarters": "Orland Park",
-		"sector": "interfaces",
+		"companyName": "Emard Inc",
+		"companyId": "d23787f8-e4b8-4067-932a-322e4f3ad84c",
+		"lei": "mzyR26yQjTLc7NrV8XIt",
+		"headquarters": "Cedar Hill",
+		"sector": "functionalities",
 		"countryCode": "PE"
 	},
 	{
-		"companyName": "Simonis, Lueilwitz and Kerluke",
-		"companyId": "c6637b41-361d-4ef7-9969-6b435938433c",
-		"headquarters": "Placentia",
-		"sector": null,
-		"countryCode": "GU"
+		"companyName": "Konopelski LLC",
+		"companyId": "d448981f-1b5a-4765-b9c2-194b7e6f2e8e",
+		"headquarters": "Gordonburgh",
+		"sector": "applications",
+		"countryCode": "KN"
 	},
 	{
-		"companyName": "Keebler - Grimes",
-		"companyId": "06239ffb-0fb3-465d-97df-6f785b04a832",
-		"lei": "1m7xeb8eBrKTRKiZOAh1",
-		"headquarters": "Carson City",
+		"companyName": "Greenfelder and Sons",
+		"companyId": "2c3ac330-5404-46cc-8203-f182755c7e62",
+		"headquarters": "Meaghanville",
+		"sector": "models",
+		"countryCode": "KR"
+	},
+	{
+		"companyName": "Bode - Hegmann",
+		"companyId": "df1adf77-cb52-45d7-8589-efe8512f8207",
+		"headquarters": "Marjoriefurt",
+		"sector": null,
+		"countryCode": "CU"
+	},
+	{
+		"companyName": "Barton - Langosh",
+		"companyId": "c8222b7d-83d6-4990-957a-fb3f66eb4e73",
+		"headquarters": "Jailynfield",
+		"sector": null,
+		"countryCode": "LY"
+	},
+	{
+		"companyName": "Mueller and Sons",
+		"companyId": "b07c1be8-68f5-49f8-99a6-c70eec5abb51",
+		"headquarters": "East Jennie",
+		"sector": "e-commerce",
+		"countryCode": "JP"
+	},
+	{
+		"companyName": "Dooley LLC",
+		"companyId": "53513269-e5bd-4121-a920-921f460bbcf5",
+		"lei": "wjIK9xWS0faG3rmWyuGM",
+		"headquarters": "La Habra",
+		"sector": "e-markets",
+		"countryCode": "MN"
+	},
+	{
+		"companyName": "Hane Inc",
+		"companyId": "ee7cc8d8-6905-42e7-b8b6-85ab06fdbdfd",
+		"lei": "hOQaqbczDoXbnuXuxZeH",
+		"headquarters": "Borisside",
+		"sector": "interfaces",
+		"countryCode": "MH"
+	},
+	{
+		"companyName": "Steuber, Purdy and Hudson",
+		"companyId": "b739ea43-4098-4b2c-9a36-e9268e585c20",
+		"lei": "G8WmmVSl6vJO1kkyO7bH",
+		"headquarters": "Bernierville",
+		"sector": "convergence",
+		"countryCode": "GA"
+	},
+	{
+		"companyName": "Bradtke LLC",
+		"companyId": "28375481-fb33-4cae-b27d-0d498591497a",
+		"headquarters": "Schadencester",
+		"sector": "content",
+		"countryCode": "CK"
+	},
+	{
+		"companyName": "Keeling Group",
+		"companyId": "7acea114-7585-47c4-9c8f-574c096ecac4",
+		"headquarters": "Grand Forks",
 		"sector": "applications",
+		"countryCode": "RW"
+	},
+	{
+		"companyName": "Stokes - Fisher",
+		"companyId": "f012e4cb-9c60-470a-be3c-205d86805724",
+		"lei": "IweOaSIoixZfZ9uhpuO0",
+		"headquarters": "Kiarrahaven",
+		"sector": "solutions",
+		"countryCode": "LT"
+	},
+	{
+		"companyName": "Cummerata - Stoltenberg",
+		"companyId": "3cb195ba-c9d1-411e-8c10-a0427c6637b4",
+		"lei": "gBfj1h3SKPyqRHzandWv",
+		"headquarters": "Fort Marilouview",
+		"sector": "web services",
+		"countryCode": "LY"
+	},
+	{
+		"companyName": "Weber, Wisozk and Kris",
+		"companyId": "8c772550-91e6-40d1-83ef-1d2d7189c377",
+		"headquarters": "Gordonstead",
+		"sector": "architectures",
+		"countryCode": "KG"
+	},
+	{
+		"companyName": "Zemlak - Witting",
+		"companyId": "5ef69fef-df38-475e-bb6a-f803952f911a",
+		"lei": "I0gFvdam2OeY8L4Eevz1",
+		"headquarters": "Bednarworth",
+		"sector": "architectures",
+		"countryCode": "SZ"
+	},
+	{
+		"companyName": "Zieme - Hauck",
+		"companyId": "016d7f2e-986f-42ac-9619-125639b5b934",
+		"headquarters": "Port Rodgerchester",
+		"sector": null,
 		"countryCode": "MK"
 	},
 	{
-		"companyName": "Ruecker Inc",
-		"companyId": "b6af8039-52f9-411a-9eb0-268f51cdb1ab",
-		"headquarters": "Flatleymouth",
-		"sector": null,
-		"countryCode": "SJ"
-	},
-	{
-		"companyName": "Collins - Yundt",
-		"companyId": "61912563-9b5b-4934-8711-df35c7954036",
-		"headquarters": "Pearland",
-		"sector": null,
-		"countryCode": "RE"
-	},
-	{
-		"companyName": "Feeney - Cummerata",
+		"companyName": "Hammes Group",
 		"companyId": "2dcb2ffe-e856-46c5-9d80-fa56fe87a1b9",
-		"headquarters": "North Leoniemouth",
+		"lei": "rea21BvEXf9Xl0lylID6",
+		"headquarters": "Kurtisborough",
 		"sector": null,
-		"countryCode": "SB"
+		"countryCode": "AQ"
 	},
 	{
 		"companyName": "Flatley Inc",
-		"companyId": "abb1a5be-847e-4281-baa2-7145ddcab702",
+		"companyId": "847e281a-a271-445d-9dca-b702f7f44ad8",
 		"headquarters": "Schummtown",
 		"sector": null,
 		"countryCode": "PM"
 	},
 	{
-		"companyName": "Parisian Group",
-		"companyId": "fe31d8d3-3353-424a-879c-04f07b250c71",
-		"lei": "m39TumVj9yyUp7CM5vDk",
-		"headquarters": "Hildegardville",
-		"sector": "convergence",
-		"countryCode": "GI"
-	},
-	{
-		"companyName": "Nicolas, Rowe and Jenkins",
-		"companyId": "fcc31327-4e54-4466-a5a2-a87f0fe71b67",
-		"headquarters": "Lake Monserratton",
+		"companyName": "Williamson - Langosh",
+		"companyId": "79c04f07-b250-4c71-a2c5-0cac62ab1687",
+		"lei": "yyUp7CM5vDkQ3XRmjX6x",
+		"headquarters": "Lake Jaydon",
 		"sector": null,
-		"countryCode": "MX"
+		"countryCode": "NC"
 	},
 	{
-		"companyName": "Treutel, Predovic and McDermott",
-		"companyId": "5279b3f6-2daf-4d71-b918-afe4041c7e5e",
-		"headquarters": "Bradtketon",
+		"companyName": "Connelly and Sons",
+		"companyId": "87f0fe71-b678-4b3f-b5ee-b9910b5904b6",
+		"headquarters": "East Weldonland",
+		"sector": "methodologies",
+		"countryCode": "TW"
+	},
+	{
+		"companyName": "Langosh, Hand and Langworth",
+		"companyId": "63fd3f32-d384-4454-aa9b-c231d02830fb",
+		"lei": "TkHG6QwBfgl3F6urnDmg",
+		"headquarters": "South Reinafurt",
+		"sector": "architectures",
+		"countryCode": "BT"
+	},
+	{
+		"companyName": "Kessler, Bergstrom and Williamson",
+		"companyId": "03488147-050a-4834-ba4a-8fefc0918293",
+		"headquarters": "Keeleytown",
 		"sector": "deliverables",
+		"countryCode": "GS"
+	},
+	{
+		"companyName": "Abernathy - Parker",
+		"companyId": "7ec48f0e-58e8-4043-8eb6-fa911774ba36",
+		"headquarters": "Emardchester",
+		"sector": "systems",
+		"countryCode": "KI"
+	},
+	{
+		"companyName": "Rice, Abernathy and Zulauf",
+		"companyId": "8bbc2cbf-5bf5-4c88-8233-0236558979a5",
+		"lei": "AKmBCACsxr2pQvqAq46P",
+		"headquarters": "Ernaport",
+		"sector": "schemas",
+		"countryCode": "UM"
+	},
+	{
+		"companyName": "Barton - O'Keefe",
+		"companyId": "4ba31372-5401-44f1-85a5-f0630b4636aa",
+		"lei": "mRgf9QtkRrb1fhJh4oy4",
+		"headquarters": "South Jorgeburgh",
+		"sector": "systems",
+		"countryCode": "ME"
+	},
+	{
+		"companyName": "O'Hara - Abbott",
+		"companyId": "9487b3d8-5a8a-4e5a-8819-bb49c2be98ee",
+		"headquarters": "South Una",
+		"sector": "niches",
 		"countryCode": "KG"
 	},
 	{
-		"companyName": "Wisoky, Hoppe and Dickinson",
-		"companyId": "27c2c64f-260f-412e-88f3-48ca36a8cbda",
-		"headquarters": "Skokie",
-		"sector": "solutions",
+		"companyName": "Schiller, Haley and Kovacek",
+		"companyId": "8f25f2a1-4ae3-475d-8c75-c38da433f5dc",
+		"lei": "dVKuOZsWFB3o0fUlZHvd",
+		"headquarters": "Fletaview",
+		"sector": null,
+		"countryCode": "BO"
+	},
+	{
+		"companyName": "Hackett - Hagenes",
+		"companyId": "dae51888-5dda-42e1-a5a5-9af6a89987d0",
+		"headquarters": "Nolanport",
+		"sector": "paradigms",
+		"countryCode": "BG"
+	},
+	{
+		"companyName": "Reilly - Pfannerstill",
+		"companyId": "8559abf7-f114-45da-ac67-380f3af7c071",
+		"headquarters": "Domenicostad",
+		"sector": "architectures",
+		"countryCode": "BZ"
+	},
+	{
+		"companyName": "Reynolds, Botsford and Blick",
+		"companyId": "747505fd-863d-49f1-b713-3d1a96300d56",
+		"lei": "fllRZVFDo3KMS9JTruhF",
+		"headquarters": "Fort Smith",
+		"sector": "initiatives",
+		"countryCode": "DO"
+	},
+	{
+		"companyName": "Bahringer, McKenzie and Erdman",
+		"companyId": "0d08e3d3-a8d9-47dc-9005-d5b7980236a9",
+		"lei": "xT37V9JfosKi3HpsxD7q",
+		"headquarters": "North Jammie",
+		"sector": "functionalities",
+		"countryCode": "IO"
+	},
+	{
+		"companyName": "Boyer - Lakin",
+		"companyId": "a267c5f0-645d-4f70-ad6d-d3c7403ada4d",
+		"headquarters": "West Jacyntheshire",
+		"sector": "e-markets",
 		"countryCode": "UG"
 	},
 	{
-		"companyName": "Bartoletti Inc",
-		"companyId": "fb48b49e-0e26-4b34-97bd-85e33c8ff0e1",
-		"lei": "hu1k2EvbgDhFwYUWM2C7",
-		"headquarters": "East Jessy",
-		"sector": null,
-		"countryCode": "SA"
-	},
-	{
-		"companyName": "Herzog - Brown",
-		"companyId": "a1faff80-5f90-4af7-9bbd-e8bbe4ef2ddc",
-		"lei": "ZjtWKfxX2VlvTx2gbVIp",
-		"headquarters": "Brookline",
-		"sector": null,
-		"countryCode": "GA"
-	},
-	{
-		"companyName": "Schumm - Altenwerth",
-		"companyId": "3ce4dd49-8809-4f94-bca5-0942a301593e",
-		"headquarters": "Kreigerville",
-		"sector": "models",
-		"countryCode": "AF"
-	},
-	{
-		"companyName": "Klocko - Lueilwitz",
-		"companyId": "7471f8bb-ff87-422f-9133-17b97852a394",
-		"headquarters": "Port Ilene",
-		"sector": "infrastructures",
-		"countryCode": "BD"
-	},
-	{
-		"companyName": "Kihn, Wilderman and Kulas",
-		"companyId": "b1488eed-16f6-4005-9d1b-e9c7ae623069",
-		"lei": "8iBfytKfRylFxDTlDw5z",
-		"headquarters": "Conorchester",
-		"sector": "channels",
-		"countryCode": "AG"
-	},
-	{
-		"companyName": "Jenkins - Gusikowski",
-		"companyId": "97b354b9-380c-44da-92a5-45c8d8f3e32a",
-		"headquarters": "Clarksville",
-		"sector": "channels",
-		"countryCode": "AL"
-	},
-	{
-		"companyName": "Marquardt - Bogisich",
-		"companyId": "91b7176d-7160-420e-bfee-6dec77205f36",
-		"lei": "kRRYYrjLfWM5rb4n4dYI",
-		"headquarters": "Madera",
-		"sector": "networks",
-		"countryCode": "US"
-	},
-	{
-		"companyName": "Ratke - Lockman",
-		"companyId": "b3e28365-6d9b-473d-966e-161215f6737a",
-		"lei": "y9VWfKZNOTvv1wuuaESf",
-		"headquarters": "Majorshire",
-		"sector": "paradigms",
-		"countryCode": "MX"
-	},
-	{
-		"companyName": "Hilll - Daugherty",
-		"companyId": "b438bbc5-3743-4ebe-a653-70bc048ecc0a",
-		"headquarters": "Maricopa",
-		"sector": null,
-		"countryCode": "CW"
-	},
-	{
-		"companyName": "Morar, Tremblay and Yundt",
-		"companyId": "8371a4af-915f-48a9-a47b-ede240d44765",
-		"headquarters": "O'Konstad",
-		"sector": null,
-		"countryCode": "MH"
-	},
-	{
-		"companyName": "Funk - Waelchi",
-		"companyId": "79bb561b-7908-414e-904c-59203a09b448",
-		"headquarters": "Fort Darrionbury",
-		"sector": "niches",
-		"countryCode": "SR"
-	},
-	{
-		"companyName": "Kohler, Pouros and Kuphal",
-		"companyId": "b3d299a9-599c-4233-992c-01f18024d18c",
-		"lei": "SDo33KOryeNLSD26QtpP",
-		"headquarters": "Uptonborough",
-		"sector": null,
-		"countryCode": "TM"
-	},
-	{
-		"companyName": "Lindgren LLC",
-		"companyId": "b7ded82c-8eb0-4f93-b5a7-e7eeeeda2bc7",
-		"lei": "HiWyLjb4s503r0zIlFJA",
-		"headquarters": "Rueckerworth",
+		"companyName": "Schowalter, Weber and Hintz",
+		"companyId": "d55875e5-aeeb-4b1a-aed0-3fe671052af2",
+		"lei": "A1v6hS3gOmAb3cF0AKgh",
+		"headquarters": "Port Santastad",
 		"sector": "users",
-		"countryCode": "GI"
+		"countryCode": "MY"
 	},
 	{
-		"companyName": "Rolfson LLC",
-		"companyId": "9ce1e5a7-a3a6-4522-8b6c-faa62f009c01",
-		"lei": "B7DkurOYdLcmUFnarXf1",
-		"headquarters": "Jeromyfurt",
-		"sector": "deliverables",
-		"countryCode": "BH"
+		"companyName": "Mertz LLC",
+		"companyId": "7ded82c8-eb0f-4935-9a7e-7eeeeda2bc7f",
+		"headquarters": "Medhurstbury",
+		"sector": null,
+		"countryCode": "GH"
 	},
 	{
-		"companyName": "Fadel - Rowe",
-		"companyId": "63c047dc-6022-477f-b2a8-1c9a6da2bbcf",
-		"headquarters": "Peabody",
+		"companyName": "Predovic, Koepp and Kunze",
+		"companyId": "f819ce1e-5a7a-43a6-b522-b6cfaa62f009",
+		"headquarters": "Wilkinsonfurt",
+		"sector": "markets",
+		"countryCode": "MR"
+	},
+	{
+		"companyName": "Hilll and Sons",
+		"companyId": "cfee2e53-d7e2-4869-81f8-4134c69e64dd",
+		"headquarters": "East Noemie",
+		"sector": null,
+		"countryCode": "DJ"
+	},
+	{
+		"companyName": "Cronin, Jacobi and Volkman",
+		"companyId": "8c84d8d5-610d-4c1e-bccc-7e44765c47cc",
+		"headquarters": "Fullerton",
+		"sector": null,
+		"countryCode": "CL"
+	},
+	{
+		"companyName": "Hirthe and Sons",
+		"companyId": "2b27a35b-aa38-4239-bc93-571103cb5281",
+		"headquarters": "Tonawanda",
 		"sector": "ROI",
-		"countryCode": "BH"
+		"countryCode": "IN"
 	},
 	{
-		"companyName": "Durgan - Simonis",
-		"companyId": "82f9b764-bfb0-4171-8280-c05abfc6e16c",
-		"lei": "TofPQbLaZU9oURkoJInu",
-		"headquarters": "Sonyaberg",
-		"sector": "supply-chains",
-		"countryCode": "TZ"
+		"companyName": "Abbott - Schumm",
+		"companyId": "f962b43c-cc71-49c9-b1e1-9acd1e784b46",
+		"lei": "QnNAyebb9SxOFYd2yn32",
+		"headquarters": "Stephonton",
+		"sector": "blockchains",
+		"countryCode": "GD"
 	},
 	{
-		"companyName": "Schultz LLC",
-		"companyId": "8891f4a5-f684-4073-93da-e1e23ea8c6b0",
-		"headquarters": "Folsom",
-		"sector": "networks",
-		"countryCode": "TL"
-	},
-	{
-		"companyName": "Rippin, Cruickshank and Jacobs",
-		"companyId": "c309d54d-15e9-4a8d-9182-e86fe3666afa",
-		"headquarters": "Fort Wayne",
+		"companyName": "Wehner - Klein",
+		"companyId": "70723fc1-96a0-4ecf-b05c-faa5e581eef5",
+		"headquarters": "Lamontworth",
 		"sector": null,
-		"countryCode": "AR"
+		"countryCode": "BN"
 	},
 	{
-		"companyName": "Zieme - Veum",
-		"companyId": "239271b6-cf21-4176-8854-9786a0d62866",
-		"lei": "fKzRjtVAZzo9HicLLLt7",
-		"headquarters": "Yadiraville",
-		"sector": "applications",
-		"countryCode": "CH"
+		"companyName": "Bradtke - Lebsack",
+		"companyId": "404b9362-616b-49bb-b334-0c81171a6c19",
+		"lei": "Z9grvVFWTzilbBKHUsj6",
+		"headquarters": "Burnsville",
+		"sector": "models",
+		"countryCode": "BS"
 	},
 	{
-		"companyName": "Lemke - Turner",
-		"companyId": "34e9a50e-e5a2-4a88-8f35-47d0c8a870f9",
-		"headquarters": "Paramount",
-		"sector": "networks",
-		"countryCode": "MH"
-	},
-	{
-		"companyName": "Smith and Sons",
-		"companyId": "0052da65-ef09-49c8-abc2-9c428ba938e1",
-		"lei": "nzcyyrWL6rjoe0femYa8",
-		"headquarters": "Pearliechester",
-		"sector": "partnerships",
-		"countryCode": "WF"
-	},
-	{
-		"companyName": "Okuneva Inc",
-		"companyId": "2bf8ed66-21ef-4326-9e62-087352e18ed8",
-		"lei": "pOUxqxut3SdTi7x4BfbH",
-		"headquarters": "South Sydneyland",
-		"sector": "e-markets",
-		"countryCode": "OM"
-	},
-	{
-		"companyName": "Hermiston - Harber",
-		"companyId": "207d2c00-bbb9-486b-b5ed-eb6282f3f73b",
-		"lei": "wJBMxoTSm3uS2CZhy0Mx",
-		"headquarters": "Ansleycester",
-		"sector": "architectures",
-		"countryCode": "WS"
-	},
-	{
-		"companyName": "Beier, Okuneva and Halvorson",
-		"companyId": "f75eb797-ebd8-49c5-b5a0-4d0b28fd783d",
-		"headquarters": "Littelcester",
+		"companyName": "Fay, Hudson and Mayer",
+		"companyId": "39fab4e0-e25c-40c1-98cc-6f5c74b875d4",
+		"lei": "GICydhSw84hin1Ou9unl",
+		"headquarters": "Ardenchester",
 		"sector": null,
+		"countryCode": "PT"
+	},
+	{
+		"companyName": "Lowe - Hayes",
+		"companyId": "ae3438e8-6c74-462e-9315-21486e8b69e9",
+		"lei": "Fv9xPpqkFOGeUQGxZU1f",
+		"headquarters": "Bradtkeport",
+		"sector": "web services",
 		"countryCode": "LK"
 	},
 	{
-		"companyName": "Strosin, Muller and MacGyver",
-		"companyId": "e5483520-7237-4931-8ee2-983c57355174",
-		"headquarters": "Alanisberg",
-		"sector": "infrastructures",
-		"countryCode": "FR"
+		"companyName": "Prohaska - Ziemann",
+		"companyId": "0411138f-cf4f-424c-b904-e2ef737d5091",
+		"headquarters": "Yakima",
+		"sector": "eyeballs",
+		"countryCode": "GI"
 	},
 	{
-		"companyName": "Hermann and Sons",
-		"companyId": "08f77b41-5463-49bb-944b-06a006a42167",
-		"headquarters": "Lake Alexandroberg",
-		"sector": "infrastructures",
-		"countryCode": "AX"
+		"companyName": "Kshlerin - Sauer",
+		"companyId": "d1aaf868-183f-4570-8f12-dfdc8d9ca28b",
+		"lei": "wI2bPidIWijt1YRC7URP",
+		"headquarters": "Koeppfurt",
+		"sector": "functionalities",
+		"countryCode": "TG"
 	},
 	{
-		"companyName": "Kub - Donnelly",
-		"companyId": "bec85bae-4f9e-4910-b982-54099dd78644",
-		"lei": "CgIQu5iPOi1eaZUYDTid",
-		"headquarters": "New Britain",
+		"companyName": "Pfeffer LLC",
+		"companyId": "a4f44bd8-7c24-4a30-9eec-a591685fb96c",
+		"headquarters": "West Matildamouth",
+		"sector": null,
+		"countryCode": "VA"
+	},
+	{
+		"companyName": "Torphy Group",
+		"companyId": "c6209fcf-e5c5-48d2-965d-ea5b8d0ed9a2",
+		"lei": "QZGYPq4Dtc64xL78bgog",
+		"headquarters": "Creminfurt",
+		"sector": "relationships",
+		"countryCode": "PL"
+	},
+	{
+		"companyName": "Muller, Ankunding and Hauck",
+		"companyId": "b378d697-6fbc-4428-8e06-4573a0724cd7",
+		"lei": "j6AjzYnmGKOQGtA3vIDX",
+		"headquarters": "Yuba City",
+		"sector": "paradigms",
+		"countryCode": "ME"
+	},
+	{
+		"companyName": "Klocko, Smith and Schroeder",
+		"companyId": "75c25ed1-b6de-4fe6-894d-7637ece5c371",
+		"lei": "BFToDvtx7c66N8ELl1u5",
+		"headquarters": "Genovevaberg",
+		"sector": null,
+		"countryCode": "MA"
+	},
+	{
+		"companyName": "Wunsch, Stehr and Hagenes",
+		"companyId": "d8514347-b670-4722-acff-52b40c34e807",
+		"headquarters": "Port Anthony",
+		"sector": "blockchains",
+		"countryCode": "AF"
+	},
+	{
+		"companyName": "Carter Inc",
+		"companyId": "c285f192-014f-493f-aa91-a55d515c7251",
+		"headquarters": "Grimesburgh",
+		"sector": "models",
+		"countryCode": "MK"
+	},
+	{
+		"companyName": "Bartell, Stiedemann and Reinger",
+		"companyId": "a38a21b8-c353-46ec-92d9-c69a5deb2ef9",
+		"lei": "dh7U7LvaybtDPPDgX1U1",
+		"headquarters": "South Declan",
+		"sector": "communities",
+		"countryCode": "TZ"
+	},
+	{
+		"companyName": "Pagac, Gerhold and Koepp",
+		"companyId": "4eb7c303-c0c4-4a67-b919-f3db2bfb337a",
+		"lei": "6OxTDzsNgctj7XYu6kFe",
+		"headquarters": "Buckeye",
 		"sector": "platforms",
-		"countryCode": "AG"
+		"countryCode": "TR"
 	},
 	{
-		"companyName": "Gutkowski - Hermann",
-		"companyId": "05dcedd1-69f6-4b24-b3b3-9bc7a8ec29da",
-		"headquarters": "Broderickberg",
-		"sector": "bandwidth",
-		"countryCode": "JP"
+		"companyName": "Metz - Mann",
+		"companyId": "6a0eaaae-d3eb-4e61-a207-6fee6f0b4ec5",
+		"headquarters": "New Luehaven",
+		"sector": "lifetime value",
+		"countryCode": "TR"
 	},
 	{
-		"companyName": "Jast LLC",
-		"companyId": "7fd963a9-3eeb-46e5-9d18-648069eaf028",
-		"headquarters": "West Noeliatown",
-		"sector": "convergence",
-		"countryCode": "MC"
+		"companyName": "Metz Group",
+		"companyId": "67c04376-22d5-45ae-8199-1fa45c7da541",
+		"lei": "uAsE0sa259ZbWBUsFDrl",
+		"headquarters": "Fort Dustyport",
+		"sector": "networks",
+		"countryCode": "TR"
 	}
 ]
