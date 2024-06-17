@@ -14,7 +14,7 @@
             class="link"
             :data-test="`report-link-${nameInner}`"
           >
-            <span>{{ nameInner }}</span>
+            <span>{{ nameInner ? nameInner : 'Unnamed_File' }}</span>h
           </a>
         </div>
       </div>
