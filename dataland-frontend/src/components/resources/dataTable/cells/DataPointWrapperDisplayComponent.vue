@@ -22,17 +22,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from '@clients/backend';
 
 export default defineComponent({
-  name: "DataPointWrapperDisplayComponent",
+  name: 'DataPointWrapperDisplayComponent',
   components: { DocumentLink },
   props: {
     content: {

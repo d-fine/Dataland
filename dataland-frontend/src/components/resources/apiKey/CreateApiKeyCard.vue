@@ -19,7 +19,7 @@
             :class="{ invalidExpiryTimeText: !isExpiryDateValid, 'text-900': isExpiryDateValid }"
             class="block font-medium mb-2"
           >
-            {{ !isExpiryDateValid ? "Please select expiration date" : "Expiration" }}
+            {{ !isExpiryDateValid ? 'Please select expiration date' : 'Expiration' }}
           </label>
           <Dropdown
             id="expiryTime"
@@ -51,7 +51,7 @@
           class="block text-600 col-7"
         >
           {{
-            expiryTimeDropdown === "noExpiry"
+            expiryTimeDropdown === 'noExpiry'
               ? `The API Key has no defined expiry date`
               : `The API Key will expire on ${expiryDateFormated}`
           }}
@@ -76,18 +76,18 @@
 </template>
 
 <script lang="ts">
-import PrimeButton from "primevue/button";
-import { defineComponent, type PropType } from "vue";
-import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import Calendar from "primevue/calendar";
-import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DataFormatUtils";
-import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { MS_PER_DAY } from "@/utils/Constants";
-import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from "@/DatalandSettings";
+import PrimeButton from 'primevue/button';
+import { defineComponent, type PropType } from 'vue';
+import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
+import Calendar from 'primevue/calendar';
+import { calculateExpiryDateAsDateString, calculateDaysFromNow } from '@/utils/DataFormatUtils';
+import UserRolesBadges from '@/components/resources/apiKey/UserRolesBadges.vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { MS_PER_DAY } from '@/utils/Constants';
+import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from '@/DatalandSettings';
 
 export default defineComponent({
-  name: "CreateApiKeyCard",
+  name: 'CreateApiKeyCard',
   components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
   props: {
     userRoles: {
@@ -97,19 +97,19 @@ export default defineComponent({
   },
   data: () => ({
     expiryTimeDays: null as null | number,
-    expiryTimeDropdown: "",
+    expiryTimeDropdown: '',
     isExpiryDateValid: true,
     minDate: new Date(new Date().getTime() + MS_PER_DAY),
     maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY),
 
     customDateInMilliseconds: null as null | number,
     days: [
-      { label: "7 days", value: 7 },
-      { label: "30 days", value: 30 },
-      { label: "60 days", value: 60 },
-      { label: "90 days", value: 90 },
-      { label: "Custom...", value: "custom" },
-      { label: "No expiry", value: "noExpiry" },
+      { label: '7 days', value: 7 },
+      { label: '30 days', value: 30 },
+      { label: '60 days', value: 60 },
+      { label: '90 days', value: 90 },
+      { label: 'Custom...', value: 'custom' },
+      { label: 'No expiry', value: 'noExpiry' },
     ],
   }),
   methods: {
@@ -119,9 +119,9 @@ export default defineComponent({
      * @param event the selection event
      */
     setExpiryTimeDays(event: DropdownChangeEvent) {
-      if (event.value === "noExpiry") {
+      if (event.value === 'noExpiry') {
         this.expiryTimeDays = null;
-      } else if (event.value === "custom") {
+      } else if (event.value === 'custom') {
         this.expiryTimeDays = this.customDateInMilliseconds
           ? calculateDaysFromNow(this.customDateInMilliseconds)
           : null;
@@ -137,9 +137,9 @@ export default defineComponent({
      */
     checkDateAndEmitGenerateApiKey() {
       if (this.expiryTimeDays) {
-        this.$emit("generateApiKey", this.expiryTimeDays);
-      } else if (this.expiryTimeDropdown === "noExpiry") {
-        this.$emit("generateApiKey");
+        this.$emit('generateApiKey', this.expiryTimeDays);
+      } else if (this.expiryTimeDropdown === 'noExpiry') {
+        this.$emit('generateApiKey');
       } else {
         this.isExpiryDateValid = false;
       }

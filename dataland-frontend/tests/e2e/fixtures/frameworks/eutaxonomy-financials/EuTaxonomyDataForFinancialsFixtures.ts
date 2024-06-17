@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 import {
   type CreditInstitutionKpis,
   type EligibilityKpis,
@@ -6,13 +6,13 @@ import {
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type InsuranceKpis,
   type InvestmentFirmKpis,
-} from "@clients/backend";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
-import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
-import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
-import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
-import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture";
+} from '@clients/backend';
+import { DEFAULT_PROBABILITY, Generator } from '@e2e/utils/FakeFixtureUtils';
+import { generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
+import { pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
+import { generateFiscalYearDeviation } from '@e2e/fixtures/common/FiscalYearDeviationFixtures';
+import { generatePastDate } from '@e2e/fixtures/common/DateFixtures';
+import { generateAssuranceDatapoint } from '@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture';
 
 /**
  * Generates a single eutaxonomy-financials fixture
@@ -20,7 +20,7 @@ import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/Assu
  * @returns a random eutaxonomy-financials fixture
  */
 export function generateEuTaxonomyDataForFinancials(
-  nullProbability = DEFAULT_PROBABILITY,
+  nullProbability = DEFAULT_PROBABILITY
 ): EuTaxonomyDataForFinancials {
   const dataGenerator = new EuFinancialsGenerator(nullProbability);
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
@@ -35,20 +35,20 @@ export class EuFinancialsGenerator extends Generator {
    * @returns a random eutaxonomy-financials fixture
    */
   generateEuTaxonomyDataForFinancialsWithTypes(
-    financialServicesTypes = this.financialServicesTypes,
+    financialServicesTypes = this.financialServicesTypes
   ): EuTaxonomyDataForFinancials {
     const eligibilityKpis = Object.fromEntries(
-      financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()]),
+      financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()])
     );
     return {
       financialServicesTypes: this.valueOrNull(financialServicesTypes),
       eligibilityKpis: this.valueOrNull(eligibilityKpis),
       creditInstitutionKpis:
-        financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : null,
+        financialServicesTypes.indexOf('CreditInstitution') >= 0 ? this.generateCreditInstitutionKpis() : null,
       investmentFirmKpis:
-        financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : null,
+        financialServicesTypes.indexOf('InvestmentFirm') >= 0 ? this.generateInvestmentFirmKpis() : null,
       insuranceKpis:
-        financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : null,
+        financialServicesTypes.indexOf('InsuranceOrReinsurance') >= 0 ? this.generateInsuranceKpis() : null,
 
       fiscalYearDeviation: this.valueOrNull(generateFiscalYearDeviation()),
       fiscalYearEnd: this.valueOrNull(generatePastDate()),

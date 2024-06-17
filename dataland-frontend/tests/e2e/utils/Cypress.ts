@@ -1,17 +1,17 @@
-import type Bluebird from "cypress/types/bluebird";
+import type Bluebird from 'cypress/types/bluebird';
 
-export const reader_name = "data_reader";
-export const reader_pw = getStringCypressEnv("KEYCLOAK_READER_PASSWORD");
-export const reader_userId = "18b67ecc-1176-4506-8414-1e81661017ca";
-export const uploader_name = "data_uploader";
-export const uploader_pw = getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD");
-export const reviewer_name = "data_reviewer";
-export const reviewer_pw = getStringCypressEnv("KEYCLOAK_REVIEWER_PASSWORD");
-export const premium_user_name = "data_premium_user";
-export const premium_user_pw = getStringCypressEnv("KEYCLOAK_PREMIUM_USER_PASSWORD");
-export const admin_name = "data_admin";
-export const admin_pw = getStringCypressEnv("KEYCLOAK_DATALAND_ADMIN_PASSWORD");
-export const admin_userId = "136a9394-4873-4a61-a25b-65b1e8e7cc2f";
+export const reader_name = 'data_reader';
+export const reader_pw = getStringCypressEnv('KEYCLOAK_READER_PASSWORD');
+export const reader_userId = '18b67ecc-1176-4506-8414-1e81661017ca';
+export const uploader_name = 'data_uploader';
+export const uploader_pw = getStringCypressEnv('KEYCLOAK_UPLOADER_PASSWORD');
+export const reviewer_name = 'data_reviewer';
+export const reviewer_pw = getStringCypressEnv('KEYCLOAK_REVIEWER_PASSWORD');
+export const premium_user_name = 'data_premium_user';
+export const premium_user_pw = getStringCypressEnv('KEYCLOAK_PREMIUM_USER_PASSWORD');
+export const admin_name = 'data_admin';
+export const admin_pw = getStringCypressEnv('KEYCLOAK_DATALAND_ADMIN_PASSWORD');
+export const admin_userId = '136a9394-4873-4a61-a25b-65b1e8e7cc2f';
 
 /**
  * A higher level function that operates on a list of elements (dataArray) and applys a
@@ -25,13 +25,13 @@ export const admin_userId = "136a9394-4873-4a61-a25b-65b1e8e7cc2f";
 export function doThingsInChunks<T>(
   dataArray: Array<T>,
   chunkSize: number,
-  processor: (element: T) => Promise<void>,
+  processor: (element: T) => Promise<void>
 ): Cypress.Chainable<void> {
   let promise: Promise<void> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
     promise = promise.then(
-      (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then(),
+      (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
     );
   }
   return cy.then((): Bluebird<void> => {
@@ -49,7 +49,7 @@ export function wrapPromiseToCypressPromise<T>(promise: Promise<T>): Bluebird<T>
     promise
       .then(
         (result): void => resolve(result),
-        (reason): void => reject(reason),
+        (reason): void => reject(reason)
       )
       .catch((reason): void => reject(reason));
   });
@@ -69,11 +69,11 @@ export function browserThen<T>(promise: Promise<T>): Cypress.Chainable<T> {
  * @returns the cypress baseUrl
  */
 export function getBaseUrl(): string {
-  const cypressBaseUrl = Cypress.config("baseUrl");
+  const cypressBaseUrl = Cypress.config('baseUrl');
   if (cypressBaseUrl) {
     return cypressBaseUrl;
   }
-  throw new Error("Cypress baseUrl is unexpectedly null");
+  throw new Error('Cypress baseUrl is unexpectedly null');
 }
 
 /**
@@ -84,7 +84,7 @@ export function getBaseUrl(): string {
  */
 export function getStringCypressEnv(variableName: string): string {
   const cypressEnv: unknown = Cypress.env(variableName);
-  if (typeof cypressEnv === "string") {
+  if (typeof cypressEnv === 'string') {
     return cypressEnv;
   }
   throw new Error(`Cypress env ${variableName} is not a string.`);

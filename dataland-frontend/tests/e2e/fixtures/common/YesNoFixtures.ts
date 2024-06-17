@@ -1,5 +1,5 @@
-import { YesNo, YesNoNa } from "@clients/backend";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { YesNo, YesNoNa } from '@clients/backend';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 /**
  * Randomly returns Yes or No

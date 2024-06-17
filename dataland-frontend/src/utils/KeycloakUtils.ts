@@ -1,5 +1,5 @@
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
 
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
@@ -8,7 +8,7 @@ import type Keycloak from "keycloak-js";
  * @returns the Keycloak-promise returned by the getter-function
  */
 export async function waitForAndReturnResolvedKeycloakPromise(
-  keycloakPromiseGetter: () => Promise<Keycloak>,
+  keycloakPromiseGetter: () => Promise<Keycloak>
 ): Promise<Keycloak> {
   const keycloakPromiseGetterAsserted: () => Promise<Keycloak> = assertDefined(keycloakPromiseGetter);
   return keycloakPromiseGetterAsserted();
@@ -26,11 +26,11 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
   } else return [];
 }
 
-export const KEYCLOAK_ROLE_USER = "ROLE_USER";
-export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
-export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
-export const KEYCLOAK_ROLE_ADMIN = "ROLE_ADMIN";
-export const KEYCLOAK_ROLE_PREMIUM_USER = "ROLE_PREMIUM_USER";
+export const KEYCLOAK_ROLE_USER = 'ROLE_USER';
+export const KEYCLOAK_ROLE_UPLOADER = 'ROLE_UPLOADER';
+export const KEYCLOAK_ROLE_REVIEWER = 'ROLE_REVIEWER';
+export const KEYCLOAK_ROLE_ADMIN = 'ROLE_ADMIN';
+export const KEYCLOAK_ROLE_PREMIUM_USER = 'ROLE_PREMIUM_USER';
 export const KEYCLOAK_ROLES = [
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
@@ -47,7 +47,7 @@ export const KEYCLOAK_ROLES = [
  */
 export async function checkIfUserHasRole(
   expectedKeycloakRole: string,
-  keycloakPromiseGetter?: () => Promise<Keycloak>,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
   if (keycloakPromiseGetter) {
     const rolesOfUser = await getKeycloakRolesForUser(keycloakPromiseGetter);

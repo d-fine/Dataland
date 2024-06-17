@@ -67,13 +67,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted, watch, inject } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
-import type Keycloak from "keycloak-js";
-import type { Section } from "@/types/ContentTypes";
-import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
-import SlideShow from "@/components/general/SlideShow.vue";
+import { computed, ref, onMounted, onUnmounted, watch, inject } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
+import type Keycloak from 'keycloak-js';
+import type { Section } from '@/types/ContentTypes';
+import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import SlideShow from '@/components/general/SlideShow.vue';
 
 interface YouTubeEvent {
   target?: {
@@ -97,7 +97,7 @@ declare global {
           events: {
             onReady: (event: YouTubeEvent) => void;
           };
-        },
+        }
       ) => {
         playVideo: () => void;
         pauseVideo: () => void;
@@ -111,7 +111,7 @@ declare global {
 const ytPlayers = ref<Map<string, { playVideo: () => void; pauseVideo: () => void; destroy: () => void }>>(new Map());
 
 const { sections } = defineProps<{ sections?: Section[] }>();
-const quotesSection = computed(() => sections?.find((section) => section.title === "Quotes"));
+const quotesSection = computed(() => sections?.find((section) => section.title === 'Quotes'));
 const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(1);
 const slideWidth = ref(640);
@@ -162,7 +162,7 @@ watch(
   () => {
     pauseAllVideos();
     showThumbnail.value = true;
-  },
+  }
 );
 
 const updateSlideWidth = (): void => {
@@ -170,12 +170,12 @@ const updateSlideWidth = (): void => {
 };
 
 onMounted(() => {
-  window.addEventListener("resize", updateSlideWidth);
+  window.addEventListener('resize', updateSlideWidth);
   updateSlideWidth();
-  const firstScriptTag = document.querySelector("script");
+  const firstScriptTag = document.querySelector('script');
   if (firstScriptTag?.parentNode) {
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
   window.onYouTubeIframeAPIReady = (): void => {
@@ -199,13 +199,13 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", updateSlideWidth);
+  window.removeEventListener('resize', updateSlideWidth);
   ytPlayers.value.forEach((player) => {
     player.destroy();
   });
 });
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 /**
  * Sends the user to the keycloak register page (if not authenticated already)
  */
@@ -348,11 +348,11 @@ const register = (): void => {
     &--left,
     &--right {
       &::before {
-        content: "";
+        content: '';
         display: block;
         width: 24px;
         height: 24px;
-        background-image: url("/static/icons/Arrow--right.svg");
+        background-image: url('/static/icons/Arrow--right.svg');
         background-size: contain;
         background-repeat: no-repeat;
       }

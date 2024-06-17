@@ -1,11 +1,11 @@
-import { type Equals } from "@/utils/TypeScriptUtils";
+import { type Equals } from '@/utils/TypeScriptUtils';
 import {
   type CompanyAssociatedDataLksgData,
   type CompanyAssociatedDataSfdrData,
   type LksgData,
   type SfdrData,
-} from "@clients/backend";
-import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
+} from '@clients/backend';
+import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 
 /**
  * NOTE: These assignments are compile-time checks of the generic interfaces.

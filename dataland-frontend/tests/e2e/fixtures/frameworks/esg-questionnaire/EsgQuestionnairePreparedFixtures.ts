@@ -1,6 +1,6 @@
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type BerichterstattungEnergieverbrauchValues, type EsgQuestionnaireData, YesNo } from "@clients/backend";
-import { generateEsgQuestionnaireFixtures } from "./EsgQuestionnaireDataFixtures";
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type BerichterstattungEnergieverbrauchValues, type EsgQuestionnaireData, YesNo } from '@clients/backend';
+import { generateEsgQuestionnaireFixtures } from './EsgQuestionnaireDataFixtures';
 
 /**
  * Generates esg-questionnaire prepared fixtures by generating random esg-questionnaire datasets and
@@ -20,7 +20,7 @@ export function generateEsgQuestionnairePreparedFixtures(): Array<FixtureData<Es
  */
 function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgQuestionnaireData> {
   const newFixture = generateEsgQuestionnaireFixtures(1, 0)[0];
-  newFixture.companyInformation.companyName = "EsgQuestionnaire-dataset-with-no-null-fields";
+  newFixture.companyInformation.companyName = 'EsgQuestionnaire-dataset-with-no-null-fields';
 
   modifyPreparedFixturesPartOne(newFixture);
   modifyPreparedFixturesPartTwo(newFixture);
@@ -89,7 +89,7 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireD
   }
   if (newFixture.t.allgemein?.esgBerichte?.aktuelleBerichte) {
     newFixture.t.allgemein?.esgBerichte?.aktuelleBerichte.push({
-      value: "Report with null data source",
+      value: 'Report with null data source',
       dataSource: null,
     });
   }
