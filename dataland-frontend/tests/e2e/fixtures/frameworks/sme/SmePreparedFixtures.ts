@@ -24,6 +24,7 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
 function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
   const smeGeneratorNoUndefined = new SmeGenerator(0);
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
+  input.companyInformation.sector = "randomSector";
   //TODO Rework this function to work with new datamodel
   input.t.basic!.basisForPreparation!.subsidiary = smeGeneratorNoUndefined.randomArray(
     () => smeGeneratorNoUndefined.generateSmeSubsidiary(),

@@ -4,7 +4,7 @@
 			"companyName": "Sme-dataset-with-no-null-fields",
 			"headquarters": "Whitemouth",
 			"headquartersPostalCode": "38249",
-			"sector": null,
+			"sector": "randomSector",
 			"identifiers": {
 				"Lei": [
 					"ITkC3T84KO9lwo0mMho2"
