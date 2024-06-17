@@ -24,7 +24,7 @@ describe("Component test for CurrencyDataPointFormField", () => {
     cy.get('div[data-test="dataQuality"] .form-field-label span.asterisk').should("not.exist");
   }
 
-  it("Quality field should be Data quality if the value field has no value and currency field should work as expected", () => {
+  it("Quality field should be 'Data quality' if the value field has no value and currency field should work as expected", () => {
     cy.mountWithPlugins(CurrencyDataPointFormField, {}).then(() => {
       cy.get('[data-test="dataPointToggleButton"]').click();
 
