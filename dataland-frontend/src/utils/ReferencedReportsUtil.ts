@@ -3,7 +3,7 @@ import type { CompanyReport } from "@clients/backend";
 
 /**
  * Opens a modal to display the details of the selected report.
- * @param context for coupling the environment.
+ * @param context For coupling the environment.
  * @param report The report data.
  * @param reportName The name of the report.
  */
