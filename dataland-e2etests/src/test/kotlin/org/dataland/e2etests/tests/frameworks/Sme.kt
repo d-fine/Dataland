@@ -1,11 +1,12 @@
 package org.dataland.e2etests.tests.frameworks
-/*
-//TODO Reactivate this code once the fields have been updated
+
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
+import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SmeData
+import org.dataland.datalandbackend.openApiClient.model.YesNoNa
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.UPLOADER_USER_ID
@@ -24,6 +25,8 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
 import java.io.File
+import java.math.BigDecimal
+import java.time.LocalDate
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -36,12 +39,11 @@ class Sme {
 
     val smeDataControllerApi = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
-    val testSmeData = sortSmeNaturalHazardsCovered(
-        FrameworkTestDataProvider(SmeData::class.java).getTData(1).first(),
-    )
+    val testSmeData = FrameworkTestDataProvider(SmeData::class.java).getTData(1).first()
 
     lateinit var dummyFileAlpha: File
     lateinit var hashAlpha: String
+    val fileNameAlpha = "Report-Alpha"
 
     lateinit var dummyFileBeta: File
     lateinit var hashBeta: String
@@ -79,7 +81,7 @@ class Sme {
 
     @Test
     fun `post SME data and check its meta info persistence and that data is not even accessible to Dataland admins `() {
-        val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
+        val smeData = setReferencedReports(testSmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", smeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha))
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
@@ -101,7 +103,7 @@ class Sme {
 
     @Test
     fun `post SME data with documents and check if data and documents can be retrieved by the data owner`() {
-        val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
+        val smeData = setReferencedReports(testSmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", smeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))
 
@@ -120,24 +122,34 @@ class Sme {
 
     @Test
     fun `post two SME datasets for the same reporting period and company and assert correct handling`() {
-        var smeData = setPowerConsumptionFileReference(testSmeData, null)
-        val companyAssociatedSmeDataAlpha = generateSmeDataWithSetNumberOfEmployees(companyId, "2022", smeData, 1)
+        var smeData = setReferencedReports(testSmeData, null)
+        val companyAssociatedSmeDataAlpha =
+            generateSmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", smeData, BigDecimal(1))
         val dataIdAlpha = postSmeDataset(companyAssociatedSmeDataAlpha).dataId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdAlpha,
         )
-        assertEquals(1, retrievedCompanyAssociatedSmeDataAlpha?.data?.general?.basicInformation?.numberOfEmployees)
+        assertEquals(
+            BigDecimal(1),
+            retrievedCompanyAssociatedSmeDataAlpha?.data?.basic?.workforceGeneralCharacteristics
+                ?.numberOfEmployeesInHeadcount,
+        )
 
-        smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
-        val companyAssociatedSmeDataBeta = generateSmeDataWithSetNumberOfEmployees(companyId, "2022", smeData, 2)
+        smeData = setReferencedReports(testSmeData, FileInfos(hashAlpha, fileNameAlpha))
+        val companyAssociatedSmeDataBeta =
+            generateSmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", smeData, BigDecimal(2))
 
         val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
         val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdBeta,
         )
-        assertEquals(2, retrievedCompanyAssociatedSmeDataBeta?.data?.general?.basicInformation?.numberOfEmployees)
+        assertEquals(
+            BigDecimal(2),
+            retrievedCompanyAssociatedSmeDataBeta?.data?.basic?.workforceGeneralCharacteristics
+                ?.numberOfEmployeesInHeadcount,
+        )
 
         val persistedDataMetaInfoAlpha = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataIdAlpha,
@@ -152,7 +164,7 @@ class Sme {
 
     @Test
     fun `post an SME dataset with duplicate file and assert that the downloaded file is unique and correct`() {
-        val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
+        val smeData = setReferencedReports(testSmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "2022", smeData)
         val dataId = postSmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
 
@@ -165,36 +177,22 @@ class Sme {
         assertEquals(hashAlpha, downloadedFile.readBytes().sha256())
     }
 
-    private fun sortSmeNaturalHazardsCovered(dataset: SmeData): SmeData {
-        return dataset.copy(
-            insurances = dataset.insurances?.copy(
-                naturalHazards = dataset.insurances?.naturalHazards?.copy(
-                    naturalHazardsCovered = dataset.insurances?.naturalHazards?.naturalHazardsCovered?.sorted(),
+    private fun setReferencedReports(dataset: SmeData, fileInfoToSetAsReport: FileInfos?): SmeData {
+        val newReferencedReports = fileInfoToSetAsReport?.let {
+            mapOf(
+                it.fileName to CompanyReport(
+                    fileReference = it.fileReference,
+                    fileName = it.fileName,
+                    isGroupLevel = YesNoNa.Yes,
+                    reportDate = LocalDate.now(),
+                    currency = "EUR",
                 ),
-            ),
-        )
-    }
-
-    private fun setPowerConsumptionFileReference(dataset: SmeData, fileReference: String?): SmeData {
-        val newDataSource = fileReference?.let {
-            dataset.power?.consumption?.powerConsumptionInMwh?.dataSource?.copy(fileReference = it)
+            )
         }
         return dataset.copy(
-            power = dataset.power?.copy(
-                consumption = dataset.power?.consumption?.copy(
-                    powerConsumptionInMwh = dataset.power?.consumption?.powerConsumptionInMwh?.copy(
-                        dataSource = newDataSource,
-                    ),
-                ),
-            ),
-        )
-    }
-
-    private fun setNumberOfEmployees(dataset: SmeData, numberOfEmployees: Int): SmeData {
-        return dataset.copy(
-            general = dataset.general.copy(
-                basicInformation = dataset.general.basicInformation.copy(
-                    numberOfEmployees = numberOfEmployees,
+            basic = dataset.basic?.copy(
+                basisForPreparation = dataset.basic?.basisForPreparation?.copy(
+                    referencedReports = newReferencedReports,
                 ),
             ),
         )
@@ -228,17 +226,30 @@ class Sme {
         }
         return null
     }
-    private fun generateSmeDataWithSetNumberOfEmployees(
+
+    private fun generateSmeDataWithSetNumberOfEmployeesInHeadCount(
         companyId: String,
         reportingPeriod: String,
         smeData: SmeData,
-        numberOfEmployees: Int,
+        numberOfEmployeesInHeadCount: BigDecimal,
     ): CompanyAssociatedDataSmeData {
-        val companyAssociatedSmeDataAlpha = CompanyAssociatedDataSmeData(
-            companyId, reportingPeriod,
-            setNumberOfEmployees(smeData, numberOfEmployees),
+        return CompanyAssociatedDataSmeData(
+            companyId,
+            reportingPeriod,
+            smeData.copy(
+                basic = smeData.basic?.let { basic ->
+                    basic.copy(
+                        workforceGeneralCharacteristics = basic.workforceGeneralCharacteristics?.copy(
+                            numberOfEmployeesInHeadcount = numberOfEmployeesInHeadCount,
+                        ),
+                    )
+                },
+            ),
         )
-        return companyAssociatedSmeDataAlpha
     }
+
+    class FileInfos(
+        val fileReference: String,
+        val fileName: String,
+    )
 }
-*/
