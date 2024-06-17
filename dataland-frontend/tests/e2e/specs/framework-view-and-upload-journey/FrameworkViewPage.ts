@@ -12,8 +12,13 @@ import {
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {
+  uploadFrameworkDataForLegacyFramework,
+  uploadFrameworkDataForPublicToolboxFramework,
+} from "@e2e/utils/FrameworkUpload";
 import { getCellValueContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
+import SfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
 
 describeIf(
   "As a user, I expect to search and select companies, see their company-cockpits and dataset-view-pages, " +
@@ -244,8 +249,8 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
           .then((storedCompany) => {
             companyIdOfAlpha = storedCompany.companyId;
-            return uploadFrameworkData(
-              DataTypeEnum.Lksg,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              LksgBaseFrameworkDefinition,
               token,
               companyIdOfAlpha,
               "2023",
@@ -256,8 +261,8 @@ describeIf(
           })
           .then(() => {
             return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-              return uploadFrameworkData(
-                DataTypeEnum.Lksg,
+              return uploadFrameworkDataForPublicToolboxFramework(
+                LksgBaseFrameworkDefinition,
                 token,
                 companyIdOfAlpha,
                 "2023",
@@ -267,8 +272,8 @@ describeIf(
           })
           .then(() => {
             return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-              return uploadFrameworkData(
-                DataTypeEnum.Lksg,
+              return uploadFrameworkDataForPublicToolboxFramework(
+                LksgBaseFrameworkDefinition,
                 token,
                 companyIdOfAlpha,
                 "2022",
@@ -277,8 +282,8 @@ describeIf(
             });
           })
           .then(() => {
-            return uploadFrameworkData(
-              DataTypeEnum.Sfdr,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              SfdrBaseFrameworkDefinition,
               token,
               companyIdOfAlpha,
               "2019",
@@ -286,7 +291,7 @@ describeIf(
             );
           })
           .then(() => {
-            return uploadFrameworkData(
+            return uploadFrameworkDataForLegacyFramework(
               DataTypeEnum.EutaxonomyFinancials,
               token,
               companyIdOfAlpha,
@@ -295,7 +300,13 @@ describeIf(
             );
           })
           .then(() => {
-            return uploadFrameworkData(DataTypeEnum.P2p, token, companyIdOfAlpha, "2015", p2pFixtures[0].t);
+            return uploadFrameworkDataForLegacyFramework(
+              DataTypeEnum.P2p,
+              token,
+              companyIdOfAlpha,
+              "2015",
+              p2pFixtures[0].t,
+            );
           });
       });
     }
@@ -309,8 +320,8 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
           .then(async (storedCompany) => {
             companyIdOfBeta = storedCompany.companyId;
-            return uploadFrameworkData(
-              DataTypeEnum.Lksg,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              LksgBaseFrameworkDefinition,
               token,
               companyIdOfBeta,
               "2015",
@@ -318,7 +329,13 @@ describeIf(
             );
           })
           .then(async () => {
-            return uploadFrameworkData(DataTypeEnum.P2p, token, companyIdOfBeta, "2014", p2pFixtures[1].t);
+            return uploadFrameworkDataForLegacyFramework(
+              DataTypeEnum.P2p,
+              token,
+              companyIdOfBeta,
+              "2014",
+              p2pFixtures[1].t,
+            );
           });
       });
     }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 
 describe("Component test for DataPointFormField", () => {

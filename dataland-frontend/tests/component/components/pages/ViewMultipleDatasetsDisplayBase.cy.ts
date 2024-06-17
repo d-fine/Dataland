@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
 import {

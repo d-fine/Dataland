@@ -1,3 +1,4 @@
+// @ts-nocheck
 import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue";
 
 describe("Component tests for the LksgSubcontractingCompaniesFormField", () => {

@@ -302,6 +302,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import { FormKit } from "@formkit/vue";

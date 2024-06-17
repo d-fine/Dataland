@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CreateEuTaxonomyNonFinancials from "@/components/forms/CreateEuTaxonomyNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";

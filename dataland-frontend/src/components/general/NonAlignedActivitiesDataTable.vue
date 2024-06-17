@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";

@@ -11,7 +11,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadFrameworkDataForLegacyFramework } from "@e2e/utils/FrameworkUpload";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
 import { selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
@@ -43,7 +43,7 @@ describeIf(
           generateDummyCompanyInformation(euTaxoFinancialsFixture.companyInformation.companyName),
         ).then((storedCompany) => {
           storedCompanyId = storedCompany.companyId;
-          return uploadFrameworkData(
+          return uploadFrameworkDataForLegacyFramework(
             DataTypeEnum.EutaxonomyFinancials,
             token,
             storedCompanyId,

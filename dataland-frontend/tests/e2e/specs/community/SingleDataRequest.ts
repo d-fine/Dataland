@@ -5,11 +5,12 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadFrameworkDataForPublicToolboxFramework } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
+import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -44,8 +45,8 @@ describeIf(
      */
     function uploadFrameworkDataForCompany(companyId: string, reportingPeriod: string): void {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadFrameworkData(
-          DataTypeEnum.Lksg,
+        return uploadFrameworkDataForPublicToolboxFramework(
+          LksgBaseFrameworkDefinition,
           token,
           companyId,
           reportingPeriod,

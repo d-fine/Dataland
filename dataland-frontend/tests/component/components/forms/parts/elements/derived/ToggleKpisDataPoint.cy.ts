@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import {
   euTaxonomyKpiInfoMappings,

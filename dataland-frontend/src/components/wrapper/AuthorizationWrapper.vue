@@ -42,7 +42,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    companyId: String,
+    allowDataOwnerForCompanyId: String,
   },
   setup() {
     return {
@@ -50,26 +50,24 @@ export default defineComponent({
     };
   },
   mounted: function () {
-    void this.setUploaderRightsForUser();
+    void this.checkUserPermissions();
   },
   methods: {
     /**
      * Set if the user is allowed to upload data for the current company
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
-    async setUploaderRightsForUser(): Promise<void> {
-      return checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise)
-        .then((hasUserRequiredRole) => {
-          this.hasUserRequiredRole = hasUserRequiredRole;
-        })
-        .then(() => {
-          if (!this.hasUserRequiredRole) {
-            return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((isUserDataOwner) => {
-              this.isUserDataOwner = isUserDataOwner;
-              this.waitingForDataOwnershipData = false;
-            });
-          }
-        });
+    async checkUserPermissions(): Promise<void> {
+      this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
+      if (!this.hasUserRequiredRole && this.allowDataOwnerForCompanyId) {
+        this.isUserDataOwner = await isUserDataOwnerForCompany(
+          this.allowDataOwnerForCompanyId,
+          this.getKeycloakPromise,
+        );
+        this.waitingForDataOwnershipData = false;
+      } else {
+        this.waitingForDataOwnershipData = false;
+      }
     },
   },
 });

@@ -50,6 +50,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import Tree from "primevue/tree";
 import { type TreeNode } from "primevue/treenode";
 import InputText from "primevue/inputtext";

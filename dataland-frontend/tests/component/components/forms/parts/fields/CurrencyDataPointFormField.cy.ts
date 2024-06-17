@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
 import { selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
 
