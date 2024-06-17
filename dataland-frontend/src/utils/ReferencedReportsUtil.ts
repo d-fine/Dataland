@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import ReportDataTable from "@/components/general/ReportDataTable.vue";
 import type { CompanyReport } from "@clients/backend";
 
@@ -53,6 +52,8 @@ interface ModalOptions {
 
 interface ComponentContext {
   $dialog: {
+    //eslint-disable-next-line@typescript-eslint/ban-ts-comment
+    //@ts-ignore
     open(component: any, options: any): void;
   };
 }

@@ -22,7 +22,7 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { type DataMetaInformation, type ExtendedDocumentReference } from "@clients/backend";
 
 export default defineComponent({
   name: "DataPointWrapperDisplayComponent",
