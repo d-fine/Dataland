@@ -5,16 +5,7 @@
   ],
   "eligibilityKpis": {
     "AssetManagement": {
-      "taxonomyEligibleActivityInPercent": {
-        "value": null,
-        "comment": "bypass solid state hard drive",
-        "dataSource": {
-          "page": 874,
-          "tagName": "deliverables",
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-        }
-      },
+      "taxonomyEligibleActivityInPercent": null,
       "taxonomyNonEligibleActivityInPercent": {
         "value": 98.39,
         "quality": "Estimated",
@@ -52,12 +43,7 @@
     },
     "InsuranceOrReinsurance": {
       "taxonomyEligibleActivityInPercent": null,
-      "taxonomyNonEligibleActivityInPercent": {
-        "value": 67.09,
-        "quality": "Incomplete",
-        "comment": "compress haptic circuit",
-        "dataSource": null
-      },
+      "taxonomyNonEligibleActivityInPercent": null,
       "derivativesInPercent": {
         "value": null,
         "comment": "navigate solid state monitor",

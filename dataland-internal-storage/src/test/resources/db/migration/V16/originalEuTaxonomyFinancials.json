@@ -7,14 +7,9 @@
     "AssetManagement": {
       "taxonomyEligibleActivityInPercent": {
         "value": null,
-        "quality": "NA",
-        "comment": "bypass solid state hard drive",
-        "dataSource": {
-          "page": 874,
-          "tagName": "deliverables",
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-        }
+        "quality": null,
+        "comment": "",
+        "dataSource": null
       },
       "taxonomyNonEligibleActivityInPercent": {
         "value": 98.39,
@@ -54,9 +49,9 @@
     "InsuranceOrReinsurance": {
       "taxonomyEligibleActivityInPercent": null,
       "taxonomyNonEligibleActivityInPercent": {
-        "value": 67.09,
-        "quality": "Incomplete",
-        "comment": "compress haptic circuit",
+        "value": null,
+        "quality": null,
+        "comment": "",
         "dataSource": null
       },
       "derivativesInPercent": {

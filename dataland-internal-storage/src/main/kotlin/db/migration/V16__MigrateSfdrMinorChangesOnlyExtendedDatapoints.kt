@@ -56,26 +56,63 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         if (generalGeneral.has("scopeOfEntities")) generalGeneral.remove("scopeOfEntities")
     }
 
+    private val dataPointFieldsToEmptyDefinition = mapOf(
+        "quality" to listOf(null),
+        "comment" to listOf("", null),
+        "dataSource" to listOf(null),
+        "value" to listOf("", null),
+        "provider" to listOf("", null), // For assurance data point
+        "currency" to listOf("", null),
+    ) // For currency data point
+
+    private fun isEmptyDataPoint(datasetObject: JSONObject): Boolean {
+        var isDataPoint = false
+        var isEmpty = true
+        dataPointFieldsToEmptyDefinition.forEach { entry ->
+            val hasKey = datasetObject.has(entry.key)
+            isDataPoint = isDataPoint || hasKey
+            if (hasKey) {
+                val castContent = when (val content = datasetObject.getOrJavaNull(entry.key)) {
+                    is JSONObject -> "not empty"
+                    is String -> content
+                    null -> null
+                    else -> "not empty"
+                }
+
+                var isEmptyElement = false
+                entry.value.forEach { isEmptyElement = isEmptyElement || (castContent == it) }
+                isEmpty = isEmpty && isEmptyElement
+            }
+        }
+        return (isDataPoint && isEmpty)
+    }
+
     /**
      * Find all data points with a quality entry of NA and remove it
      */
     private fun checkRecursivelyForBaseDataPoint(
         dataset: JSONObject,
         objectName: String,
+        toBeNulledList: MutableList<String>,
     ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
             var quality: String? = null
             if (obj.has("quality")) {
-                quality = obj.getOrJavaNull("quality") as String?
+                quality = obj.getOrJavaNull("quality") as? String
             }
             if (quality == null || quality == "NA") {
                 obj.remove("quality")
             }
+            val newToBeNulledList = mutableListOf<String>()
+            if (isEmptyDataPoint(obj)) {
+                toBeNulledList.add(objectName)
+            }
 
             obj.keys().forEach {
-                checkRecursivelyForBaseDataPoint(obj, it)
+                checkRecursivelyForBaseDataPoint(obj, it, newToBeNulledList)
             }
+            newToBeNulledList.forEach { obj.put(it, JSONObject.NULL) }
         }
     }
 
@@ -90,7 +127,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         removeScopeOfEntities(dataset)
 
         dataset.keys().forEach {
-            checkRecursivelyForBaseDataPoint(dataset, it)
+            checkRecursivelyForBaseDataPoint(dataset, it, mutableListOf())
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
@@ -101,7 +138,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
     fun migrateDataPoints(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
         dataset.keys().forEach {
-            checkRecursivelyForBaseDataPoint(dataset, it)
+            checkRecursivelyForBaseDataPoint(dataset, it, mutableListOf())
         }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
