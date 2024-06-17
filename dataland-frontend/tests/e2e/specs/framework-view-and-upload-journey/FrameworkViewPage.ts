@@ -377,7 +377,7 @@ describeIf(
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
-    it.only(
+    it(
       "Check that clicking a search result on the search page or an autocomplete suggestion on the view page" +
         " redirects the user to the company cockpit",
       () => {
