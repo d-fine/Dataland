@@ -1,6 +1,7 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type SmeData } from "@clients/backend";
 import { generateSmeFixtures } from "@e2e/fixtures/frameworks/sme/SmeDataFixtures";
+import { SmeGenerator } from "@e2e/fixtures/frameworks/sme/SmeGenerator";
 
 /**
  * Generates one SME prepared fixture dataset by generating a random SME dataset and afterwards manipulating some fields
@@ -21,9 +22,34 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  * @returns the manipulated fixture data
  */
 function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
+  const smeGeneratorNoUndefined = new SmeGenerator(0);
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
   //TODO Rework this function to work with new datamodel
-  //input.t.general.basicInformation.sectors = generateNaceCodes(2);
-  //input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
+  input.t.basic!.basisForPreparation!.subsidiary = smeGeneratorNoUndefined.randomArray(
+    () => smeGeneratorNoUndefined.generateSmeSubsidiary(),
+    1,
+    3,
+  );
+  input.t.basic!.pollutionOfAirWaterSoil!.pollutionEmission = smeGeneratorNoUndefined.randomArray(
+    () => smeGeneratorNoUndefined.generateSmePollutionEmission(),
+    1,
+    3,
+  );
+  input.t.basic!.resourceUseCircularEconomyAndWasteManagement!.wasteClassification =
+    smeGeneratorNoUndefined.randomArray(
+      () => smeGeneratorNoUndefined.generateRandomSmeWasteClassificationObject(),
+      1,
+      3,
+    );
+  input.t.basic!.biodiversity!.sitesAndAreas = smeGeneratorNoUndefined.randomArray(
+    () => smeGeneratorNoUndefined.generateSmeSiteAndArea(),
+    1,
+    3,
+  );
+  input.t.basic!.workforceGeneralCharacteristics!.employeesPerCountry = smeGeneratorNoUndefined.randomArray(
+    () => smeGeneratorNoUndefined.generateSmeEmployeesPerCountry(),
+    1,
+    3,
+  );
   return input;
 }
