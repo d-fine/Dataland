@@ -18,7 +18,7 @@ export function generateYesNoNa(): YesNoNa {
 }
 
 /**
- * Randomly returns Yes, No or Na
+ * Randomly returns Yes, No or No Evidence Found
  * @returns Yes, No or Na
  */
 export function generateYesNoNoEvidenceFound(): YesNoNoEvidenceFound {
