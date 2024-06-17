@@ -67,7 +67,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         if (obj !== null && obj is JSONObject) {
             var quality: String? = null
             if (obj.has("quality")) {
-                quality = obj.getOrJavaNull("quality") as String?
+                quality = obj.getOrJavaNull("quality") as? String
             }
             if (quality == null || quality == "NA") {
                 obj.remove("quality")
