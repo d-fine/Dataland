@@ -19,16 +19,10 @@ describe("As a user, I expect the cookie banner to render and to be functional",
           .should("exist")
           .should("contain", "Diese Webseite verwendet Cookies");
 
-        cy.get("#CybotCookiebotDialogBodyEdgeMoreDetailsLink")
-          .should("exist")
-          .click()
-          .get("#CybotCookiebotDialogDetailBodyContentCookieContainerTypes")
-          .should("exist")
-          .get("li.CookieCard")
-          .should("have.length", 5)
-          .first()
-          .get("label")
-          .should("contain", "Notwendig");
+        cy.get("#CybotCookiebotDialogBodyEdgeMoreDetailsLink").should("exist").click();
+        cy.get("#CybotCookiebotDialogDetailBodyContentCookieContainerTypes").should("exist");
+        cy.get("li.CookieCard").should("have.length", 5).first();
+        cy.get("label").should("contain", "Notwendig");
 
         cy.get("#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll").click();
         cy.get("#CybotCookiebotDialog").should("not.be.visible");

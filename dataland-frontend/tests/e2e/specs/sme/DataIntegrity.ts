@@ -76,6 +76,7 @@ describeIf(
         times: 1,
       }).as("postCompanyAssociatedData");
       submitButton.clickButton();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
         .then((postResponseInterception) => {
@@ -138,6 +139,7 @@ describeIf(
           cy.readFile(expectedPathToDownloadedReport).should("not.exist");
           cy.intercept("**/api/data/sme/documents*").as("documentDownload");
           cy.get('[data-test="Report-Download-some-document-private"]').click();
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
           cy.wait(500);
           cy.wait("@documentDownload");
           cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, "binary", {

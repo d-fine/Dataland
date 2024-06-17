@@ -32,13 +32,11 @@ describeIf(
      */
     function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
       const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
-      cy.get("input[id=search_bar_top]")
-        .should("not.be.disabled")
-        .click({ force: true })
-        .type(inputValue)
-        .should("have.value", inputValue)
-        .type("{enter}")
-        .should("have.value", inputValue);
+      cy.get("input[id=search_bar_top]").should("not.be.disabled").click({ force: true });
+      cy.get("input[id=search_bar_top]").type(inputValue);
+      cy.get("input[id=search_bar_top]").should("have.value", inputValue);
+      cy.get("input[id=search_bar_top]").type("{enter}");
+      cy.get("input[id=search_bar_top]").should("have.value", inputValue);
       cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
     }
 
@@ -132,9 +130,8 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
+            cy.get("input[id=company_search_bar_standard]").should("not.be.disabled").type(inputValue);
             cy.get("input[id=company_search_bar_standard]")
-              .should("not.be.disabled")
-              .type(inputValue)
               .should("have.value", inputValue)
               .invoke("attr", "placeholder")
               .should("contain", placeholder);
@@ -158,12 +155,10 @@ describeIf(
 
             verifySearchResultTableExists();
             cy.url().should("include", "/companies?input=abs");
-            cy.get("input[id=search_bar_top]")
-              .click({ force: true })
-              .type("{backspace}")
-              .type("{backspace}")
-              .type("{backspace}")
-              .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
+            cy.get("input[id=search_bar_top]").click({ force: true });
+            cy.get("input[id=search_bar_top]").type(
+              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`,
+            );
             cy.get("ul[class=p-autocomplete-items]").should("exist");
             cy.get("input[id=search_bar_top]").type("{downArrow}");
             cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
@@ -174,12 +169,8 @@ describeIf(
             cy.get("input[id=search_bar_top]").type("{upArrow}");
             cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
             cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-            cy.get("input[id=search_bar_top]")
-              .click({ force: true })
-              .type("{backspace}")
-              .type("{backspace}")
-              .type("{backspace}")
-              .type(testCompany.companyName);
+            cy.get("input[id=search_bar_top]").click({ force: true });
+            cy.get("input[id=search_bar_top]").type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
             cy.get(".p-autocomplete-item").eq(0).should("contain.text", testCompany.companyName).click({ force: true });
 
             validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);

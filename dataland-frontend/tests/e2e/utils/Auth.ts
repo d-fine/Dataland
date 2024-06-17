@@ -6,16 +6,11 @@ export function logout(): void {
   cy.intercept({ times: 1, url: "**/api-keys/getApiKeyMetaInfoForUser" })
     .as("apikey")
     .visitAndCheckAppMount("/api-key")
-    .wait("@apikey", { timeout: Cypress.env("short_timeout_in_ms") as number })
-    .get("div[id='profile-picture-dropdown-toggle']")
-    .click()
-    .get("a[id='profile-picture-dropdown-logout-anchor']")
-    .click()
-    .url()
-    .should("eq", getBaseUrl() + "/")
-    .get("a[aria-label='Login to account']")
-    .should("exist")
-    .should("be.visible");
+    .wait("@apikey", { timeout: Cypress.env("short_timeout_in_ms") as number });
+  cy.get("div[id='profile-picture-dropdown-toggle']").click();
+  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
+  cy.url().should("eq", getBaseUrl() + "/");
+  cy.get("a[aria-label='Login to account']").should("exist").should("be.visible");
 }
 
 let globalJwt = "";
@@ -58,16 +53,9 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
  * @param password the password to use (defaults to the password of data_reader)
  */
 export function loginWithCredentials(username = reader_name, password = reader_pw): void {
-  cy.get("#username")
-    .should("exist")
-    .type(username, { force: true })
-    .get("#password")
-    .should("exist")
-    .type(password, { force: true })
-
-    .get("#kc-login")
-    .should("exist")
-    .click();
+  cy.get("#username").should("exist").type(username, { force: true });
+  cy.get("#password").should("exist").type(password, { force: true });
+  cy.get("#kc-login").should("exist").click();
 }
 /**
  * Performs a login if required to ensure that the user is logged in with the credentials.

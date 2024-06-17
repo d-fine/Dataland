@@ -43,9 +43,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.visit("/companies").wait("@companies-meta-information");
     verifySearchResultTableExists();
     cy.url().should("eq", getBaseUrl() + "/companies");
-    cy.get("#framework-filter")
-      .click()
-      .get("div.p-multiselect-panel")
+    cy.get("#framework-filter").click();
+    cy.get("div.p-multiselect-panel")
       .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
     verifySearchResultTableExists();
@@ -104,22 +103,20 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`,
-          )
-            .wait("@companies-meta-information")
-            .get("div[class='col-12 text-left']")
-            .should("contain.text", failureMessageOnAvailableDatasetsPage)
-            .get("#country-filter")
-            .click()
-            .get('input[placeholder="Search countries"]')
-            .type(`${demoCompanyToTestForCountryName}`)
-            .get("li")
+          ).wait("@companies-meta-information");
+          cy.get("div[class='col-12 text-left']").should("contain.text", failureMessageOnAvailableDatasetsPage);
+          cy.get("#country-filter").click();
+          cy.get('input[placeholder="Search countries"]').type(`${demoCompanyToTestForCountryName}`);
+          cy.get("li")
             .contains(RegExp(`^${escapeParenthesisInRegExp(demoCompanyToTestForCountryName)}$`))
-            .click()
-            .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+            .click();
+          cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
-            .should("exist")
-            .url()
-            .should("contain", `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`);
+            .should("exist");
+          cy.url().should(
+            "contain",
+            `countryCode=${convertStringToQueryParamFormat(demoCompanyToTestFor.countryCode)}`,
+          );
         },
       );
 
@@ -143,18 +140,14 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
           cy.visit(
             `/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`,
-          )
-            .wait("@companies-meta-information")
-            .get("div[class='col-12 text-left']")
-            .should("contain.text", failureMessageOnAvailableDatasetsPage)
-            .get("#sector-filter")
-            .click()
-            .get('input[placeholder="Search sectors"]')
-            .type(`${demoCompanyToTestFor.sector!}`)
-            .get("li")
+          ).wait("@companies-meta-information");
+          cy.get("div[class='col-12 text-left']").should("contain.text", failureMessageOnAvailableDatasetsPage);
+          cy.get("#sector-filter").click();
+          cy.get('input[placeholder="Search sectors"]').type(`${demoCompanyToTestFor.sector!}`);
+          cy.get("li")
             .contains(RegExp(`^${demoCompanyToTestFor.sector!}$`))
-            .click()
-            .get("td[class='d-bg-white w-3 d-datatable-column-left']")
+            .click();
+          cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyName)
             .should("exist");
           cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector!)}`);
@@ -165,10 +158,8 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
     cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyFinancials}`);
-    cy.get("span:contains('RESET')")
-      .click()
-      .url()
-      .should("eq", getBaseUrl() + "/companies");
+    cy.get("span:contains('RESET')").click();
+    cy.url().should("eq", getBaseUrl() + "/companies");
   });
   it(
     "Check that the filter dropdowns close when you scroll, especially on the resulting query when you check a box while you are not at the top of the page",
@@ -178,21 +169,21 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit("/companies").wait("@companies-meta-information");
       verifySearchResultTableExists();
-      cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
+      cy.get("#framework-filter").click();
+      cy.get("div.p-multiselect-panel").should("exist");
 
-      cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
-      cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
-      cy.scrollTo(0, 600, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
-      cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
-      cy.scrollTo(0, 500, { duration: 300 })
-        .get("div.p-multiselect-panel")
-        .should("not.exist")
-        .get("#framework-filter")
-        .click()
-        .get("div.p-multiselect-panel")
-        .find("li.p-multiselect-item")
-        .first()
-        .click();
+      cy.scrollTo(0, 500, { duration: 300 });
+      cy.get("div.p-multiselect-panel").should("not.exist");
+      cy.get("#framework-filter").click();
+      cy.get("div.p-multiselect-panel").should("exist");
+      cy.scrollTo(0, 600, { duration: 300 });
+      cy.get("div.p-multiselect-panel").should("not.exist");
+      cy.get("#framework-filter").click();
+      cy.get("div.p-multiselect-panel").should("exist");
+      cy.scrollTo(0, 500, { duration: 300 });
+      cy.get("div.p-multiselect-panel").should("not.exist");
+      cy.get("#framework-filter").click();
+      cy.get("div.p-multiselect-panel").find("li.p-multiselect-item").first().click();
       verifySearchResultTableExists();
       cy.get("div.p-multiselect-panel").should("not.exist");
     },
@@ -226,9 +217,8 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.intercept({ url: `**/api/companies/names?searchString=${companyNameMarker}*`, times: 1 }).as(
             "searchCompanyInput",
           );
-          cy.get("input[id=search_bar_top]")
-            .click({ scrollBehavior: false })
-            .type(companyNameMarker, { scrollBehavior: false });
+          cy.get("input[id=search_bar_top]").click({ scrollBehavior: false });
+          cy.get("input[id=search_bar_top]").type(companyNameMarker, { scrollBehavior: false });
           cy.wait("@searchCompanyInput", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item").eq(0).get("span[class='font-normal']").contains(preFix).should("exist");
           });
@@ -246,35 +236,29 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
-          cy.get("#framework-filter")
-            .click()
-            .get("div.p-multiselect-panel")
+          cy.get("#framework-filter").click();
+          cy.get("div.p-multiselect-panel")
             .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           verifySearchResultTableExists();
           cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             verifySearchResultTableExists();
-            cy.get("#sector-filter")
-              .click({ scrollBehavior: false })
-              .get('input[placeholder="Search sectors"]')
-              .type(sector, { scrollBehavior: false })
-              .get("div.p-multiselect-panel")
-              .find("li:contains('No results found')")
-              .should("exist");
+            cy.get("#sector-filter").click({ scrollBehavior: false });
+            cy.get('input[placeholder="Search sectors"]').type(sector, { scrollBehavior: false });
+            cy.get("div.p-multiselect-panel").find("li:contains('No results found')").should("exist");
           });
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[id=search_bar_top]")
-            .click({ scrollBehavior: false })
-            .type(companyName, { scrollBehavior: false });
+          cy.get("input[id=search_bar_top]").click({ scrollBehavior: false });
+          cy.get("input[id=search_bar_top]").type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             const timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches = 1000;
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
           cy.visit(`/companies?input=${companyName}`);
-          cy.get("#framework-filter")
-            .click()
-            .get("div.p-multiselect-panel")
+          cy.get("#framework-filter").click();
+          cy.get("div.p-multiselect-panel")
             .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.Lksg)})`)
             .click();
           cy.get("div[class='col-12 text-left']").should("contain.text", failureMessageOnAvailableDatasetsPage);
@@ -299,9 +283,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.intercept({ url: `**searchString=${companyNameMarker}*`, times: 1 }).as(
           `searchCompanyInput_${frameworkToFilterFor}`,
         );
-        cy.get("input[id=search_bar_top]")
-          .click({ scrollBehavior: false })
-          .type(companyNameMarker, { scrollBehavior: false });
+        cy.get("input[id=search_bar_top]").click({ scrollBehavior: false });
+        cy.get("input[id=search_bar_top]").type(companyNameMarker, { scrollBehavior: false });
         cy.wait(`@searchCompanyInput_${frameworkToFilterFor}`).then(() => {
           if (isSearchStringExpectedInFirstAutocompleteResult) {
             cy.get(".p-autocomplete-item")

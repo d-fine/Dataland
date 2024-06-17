@@ -40,7 +40,9 @@ describeIf(
         },
       },
       () => {
-        cy.wait(5000)
+        const delayToWaitForPrepopulationSoThatNotAllRetriesAreWastedInstantly = 5000;
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(delayToWaitForPrepopulationSoThatNotAllRetriesAreWastedInstantly)
           .then(() => getKeycloakToken(reader_name, reader_pw))
           .then({ timeout: 120000 }, async (token) => {
             const responsePromises = prepopulatedDataTypes.map((key) =>
