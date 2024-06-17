@@ -37,7 +37,7 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapointsTest {
     }
 
     @Test
-    fun `check migration of eu-taxonomy-financials`() {
+    fun `check migration of eu taxonomy financials`() {
         TestUtils().testMigrationOfSingleDataset(
             "eu-taxonomy-financials",
             "V16/originalEuTaxonomyFinancials.json",
