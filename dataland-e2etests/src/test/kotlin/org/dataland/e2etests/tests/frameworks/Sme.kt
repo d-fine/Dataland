@@ -142,6 +142,10 @@ class Sme {
             generateSmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", smeData, BigDecimal(2))
 
         val dataIdBeta = postSmeDataset(companyAssociatedSmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
+        checkValidity(dataIdAlpha, dataIdBeta)
+    }
+
+    private fun checkValidity(dataIdAlpha: String, dataIdBeta: String) {
         val retrievedCompanyAssociatedSmeDataBeta = executeDataRetrievalWithRetries(
             smeDataControllerApi::getCompanyAssociatedSmeData, dataIdBeta,
         )
