@@ -55,7 +55,6 @@ def get_sme_data_mock(
                             					"undertakenMeasures": [
                             						{
                             							"value": "dummy",
-                            							"dataSource": null
                             						}
                             					]
                             				},
