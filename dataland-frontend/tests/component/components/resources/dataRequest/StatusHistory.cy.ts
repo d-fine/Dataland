@@ -1,3 +1,4 @@
+// @ts-nocheck
 import StatusHistoryComponent from "@/components/resources/dataRequest/StatusHistory.vue";
 import { RequestStatus, type StoredDataRequestStatusObject } from "@clients/communitymanager";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";

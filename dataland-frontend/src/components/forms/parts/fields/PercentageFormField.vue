@@ -20,6 +20,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";

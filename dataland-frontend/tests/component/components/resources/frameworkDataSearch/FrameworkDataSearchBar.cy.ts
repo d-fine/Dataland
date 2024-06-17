@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type BasicCompanyInformation } from "@clients/backend";

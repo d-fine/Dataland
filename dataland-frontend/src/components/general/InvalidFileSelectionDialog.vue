@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 

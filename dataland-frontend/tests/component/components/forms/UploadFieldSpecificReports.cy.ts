@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";

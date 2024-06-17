@@ -12,10 +12,9 @@
 </template>
 
 <script lang="ts">
-import { type ComponentPropsOptions, defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import MultiSelect from "primevue/multiselect";
 import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElementBindData",
@@ -23,11 +22,10 @@ export default defineComponent({
   emits: ["update:selectedItemsBind"],
   computed: {
     selections: {
-      get(): Array<DropdownOption> {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      get(): Array<string> {
         return this.selectedItemsBind;
       },
-      set(newValue: Array<DropdownOption>) {
+      set(newValue: Array<string>) {
         this.$emit("update:selectedItemsBind", newValue);
       },
     },
@@ -35,9 +33,9 @@ export default defineComponent({
   props: {
     ...MultiSelectFormProps,
     selectedItemsBind: {
-      type: Array,
+      type: Array as PropType<Array<string>>,
       default: () => [],
     },
-  } as Readonly<ComponentPropsOptions>,
+  },
 });
 </script>

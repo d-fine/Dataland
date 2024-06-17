@@ -10,7 +10,7 @@ import {
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadFrameworkDataForLegacyFramework } from "@e2e/utils/FrameworkUpload";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
@@ -40,7 +40,7 @@ describeIf(
         const testCompanyName = "Company-Created-In-P2p-Blanket-Test-" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkData(
+            return uploadFrameworkDataForLegacyFramework(
               DataTypeEnum.P2p,
               token,
               storedCompany.companyId,

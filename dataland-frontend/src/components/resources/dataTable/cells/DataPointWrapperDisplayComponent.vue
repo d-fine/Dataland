@@ -12,7 +12,7 @@
       v-else-if="dataPointProperties.dataSource"
       :dataId="metaInfo.dataId"
       :dataType="metaInfo.dataType"
-      :label="dataPointProperties.value"
+      :label="dataPointProperties.value ?? undefined"
       :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
       :file-reference="dataPointProperties.dataSource.fileReference"
       show-icon

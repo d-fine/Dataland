@@ -1,10 +1,11 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, type LksgData } from "@clients/backend";
+import { type LksgData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from "@e2e/utils/FrameworkUpload";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
+import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
 
 describeIf(
   "Validation for correct display of 'Rejected' badge",
@@ -29,8 +30,8 @@ describeIf(
         req.headers["REQUIRE-QA"] = "true";
       });
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyAndFrameworkData(
-          DataTypeEnum.Lksg,
+        return uploadCompanyAndFrameworkDataForPublicToolboxFramework(
+          LksgBaseFrameworkDefinition,
           token,
           generateCompanyInformation(),
           lksgFixture.t,

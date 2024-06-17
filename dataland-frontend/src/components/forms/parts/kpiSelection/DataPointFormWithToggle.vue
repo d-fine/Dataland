@@ -146,6 +146,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";

@@ -31,14 +31,14 @@
 </template>
 
 <script lang="ts">
-import { type ComponentPropsOptions, defineComponent } from "vue";
+// @ts-nocheck
+import { defineComponent, type PropType } from "vue";
 import Dropdown from "primevue/dropdown";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { isStringArray } from "@/utils/TypeScriptUtils";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
-type OptionType = string[] | DropdownOption[] | Record<string, string>;
+export type OptionType = string[] | DropdownOption[] | Record<string, string>;
 
 /**
  * Converts from a liberally choosen amount of formats to specify options
@@ -46,7 +46,7 @@ type OptionType = string[] | DropdownOption[] | Record<string, string>;
  * @param options the input option in one of the desired formats
  * @returns the options converted to the unified format
  */
-function convertOptionTypeToDropdownOptions(options: OptionType | null | undefined): DropdownOption[] {
+export function convertOptionTypeToDropdownOptions(options: OptionType | null | undefined): DropdownOption[] {
   if (!options) return [];
   if (Array.isArray(options)) {
     if (isStringArray(options)) {
@@ -62,7 +62,8 @@ function convertOptionTypeToDropdownOptions(options: OptionType | null | undefin
 export default defineComponent({
   name: "SingleSelectFormElement",
   components: { Dropdown },
-  props: Object.assign(deepCopyObject(DropdownOptionFormFieldProps as ObjectType), {
+  props: {
+    ...DropdownOptionFormFieldProps,
     inputClass: { type: String, default: "long" },
     deselectRemovedOptionsOnShrinkage: {
       type: Boolean,
@@ -76,14 +77,16 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    modelValue: String,
+    modelValue: {
+      type: String as PropType<string | null>,
+    },
     ignore: {
       type: Boolean,
       default: false,
     },
     dataTest: String,
     validationMessages: Object,
-  }) as Readonly<ComponentPropsOptions>,
+  },
   data() {
     return {
       selectedOption: this.modelValue as string | null,

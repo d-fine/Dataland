@@ -46,7 +46,7 @@
 
           <div class="flex align-content-end align-items-center">
             <QualityAssuranceButtons
-              v-if="isReviewableByCurrentUser"
+              v-if="isReviewableByCurrentUser && !!singleDataMetaInfoToDisplay"
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />

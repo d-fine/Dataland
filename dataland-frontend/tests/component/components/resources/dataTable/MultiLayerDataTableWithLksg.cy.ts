@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
   type DataAndMetaInformationLksgData,

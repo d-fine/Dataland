@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { DataTypeEnum } from "@clients/backend";

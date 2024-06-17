@@ -41,14 +41,6 @@ export default defineComponent({
       default: false,
     },
   },
-  mounted() {
-    if (!this.dataType) {
-      return this.gotoNotFound();
-    }
-    if (!this.multiViewFrameworks.includes(this.dataType)) {
-      return this.gotoNotFound();
-    }
-  },
   methods: {
     /**
      * Navigate to the not found page.
@@ -56,6 +48,14 @@ export default defineComponent({
     gotoNotFound() {
       void this.$router.push("/nocontent");
     },
+  },
+  mounted() {
+    if (!this.dataType) {
+      return this.gotoNotFound();
+    }
+    if (!this.multiViewFrameworks.includes(this.dataType)) {
+      return this.gotoNotFound();
+    }
   },
   computed: {
     multiViewFrameworks(): string[] {

@@ -1,15 +1,13 @@
 <template>
   <div class="next-to-each-other my-4">
     <h4 class="m-0" data-test="frameworkNewDataTableTitle">
-      {{
-        `Data extracted from the company report. Company Reports(${reportingPeriods[indexOfNewestReportingPeriod]}):`
-      }}
+      Data extracted from the company report. Company Reports ({{ reportingPeriods[indexOfNewestReportingPeriod] }}):
     </h4>
-    <div id="reportList" style="display: flex">
+    <div class="flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <DocumentLink
           data-test="documentLinkTest"
-          :download-name="name"
+          :download-name="`${name}`"
           :fileReference="report.fileReference"
           font-style="font-semibold"
         />
