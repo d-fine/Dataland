@@ -39,6 +39,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";

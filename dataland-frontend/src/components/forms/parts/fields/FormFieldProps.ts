@@ -1,6 +1,4 @@
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { deepCopyObject, type ObjectType } from "@/utils/UpdateObjectUtils";
-import { type ComponentPropsOptions } from "vue";
 
 export const BaseFormFieldProps = {
   name: {
@@ -32,21 +30,24 @@ export const BaseFormFieldProps = {
   },
 };
 
-export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(BaseFormFieldProps), {
+export const FormFieldPropsWithPlaceholder = {
+  ...BaseFormFieldProps,
   placeholder: {
     type: String,
     default: "",
   },
-}) as Readonly<ComponentPropsOptions>;
+};
 
-export const DateFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+export const DateFormFieldProps = {
+  ...FormFieldPropsWithPlaceholder,
   todayAsMax: {
     type: Boolean,
     default: false,
   },
-}) as Readonly<ComponentPropsOptions>;
+};
 
-export const DropdownOptionFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+export const DropdownOptionFormFieldProps = {
+  ...FormFieldPropsWithPlaceholder,
   options: {
     type: Array as () => Array<DropdownOption> | undefined,
     required: true,
@@ -54,26 +55,28 @@ export const DropdownOptionFormFieldProps = Object.assign(deepCopyObject(FormFie
   placeholder: {
     default: "Please Select",
   },
-}) as Readonly<ComponentPropsOptions>;
+};
 
-export const OptionsFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+export const OptionsFormFieldProps = {
+  ...FormFieldPropsWithPlaceholder,
   options: {
     type: Object,
     required: true,
   },
-}) as Readonly<ComponentPropsOptions>;
+};
 
-export const MultiSelectFormProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder as ObjectType), {
+export const MultiSelectFormProps = {
+  ...FormFieldPropsWithPlaceholder,
   options: {
     type: Array as () => Array<DropdownOption>,
     required: true,
   },
   optionValue: {
-    type: [String, Function],
+    type: String,
     required: false,
   },
   optionLabel: {
-    type: [String, Function],
+    type: String,
     required: false,
   },
-}) as Readonly<ComponentPropsOptions>;
+};

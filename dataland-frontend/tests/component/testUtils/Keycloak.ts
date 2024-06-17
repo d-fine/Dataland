@@ -14,7 +14,7 @@ export interface KeycloakMockConfiguration {
  * @param config some configuration options that specify the user you want to imitate
  * @returns a mocked keycloak object sufficient to trick the dataland frontend
  */
-export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak {
+export function minimalKeycloakMock(config: KeycloakMockConfiguration = {}): Keycloak {
   const mock = {
     token: "mocked-token",
     authenticated: config.authenticated ?? true,

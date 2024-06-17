@@ -12,8 +12,9 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadFrameworkDataForPublicToolboxFramework } from "@e2e/utils/FrameworkUpload";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+import EuTaxonomyNonFinancialsBaseFrameworkDefinition from "@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 before(function () {
@@ -42,8 +43,8 @@ describeIf(
 
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkData(
-              DataTypeEnum.EutaxonomyNonFinancials,
+            return uploadFrameworkDataForPublicToolboxFramework(
+              EuTaxonomyNonFinancialsBaseFrameworkDefinition,
               token,
               storedCompany.companyId,
               "2021",

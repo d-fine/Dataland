@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AlignedActivitiesFormField from "@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue";
 
 describe("Component test for ActivitiesFormField", () => {

@@ -5,6 +5,7 @@ import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type DataMetaInformation } from "@clients/backend";
 import { minimalKeycloakMock } from "./Keycloak";
+import { getMountingFunction } from "@ct/testUtils/Mount";
 
 /**
  * Mounts the MultiLayerDataTableFrameworkPanel with the given dataset
@@ -65,16 +66,16 @@ export function mountMLDTFrameworkPanel<Framework extends keyof FrameworkDataTyp
   reviewMode = false,
 ): Cypress.Chainable {
   cy.intercept(`/api/data/${frameworkIdentifier}/companies/${companyId}`, datasetsToDisplay);
-  return cy.mountWithDialog(
-    MultiLayerDataTableFrameworkPanel,
-    {
-      keycloak: minimalKeycloakMock({}),
+  return getMountingFunction({
+    keycloak: minimalKeycloakMock(),
+    dialogOptions: {
+      mountWithDialog: true,
+      propsToPassToTheMountedComponent: {
+        companyId: companyId,
+        frameworkIdentifier: frameworkIdentifier,
+        displayConfiguration: displayConfiguration,
+        inReviewMode: reviewMode,
+      },
     },
-    {
-      companyId: companyId,
-      frameworkIdentifier: frameworkIdentifier,
-      displayConfiguration: displayConfiguration,
-      inReviewMode: reviewMode,
-    },
-  );
+  })(MultiLayerDataTableFrameworkPanel);
 }

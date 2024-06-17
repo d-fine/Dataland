@@ -1,4 +1,9 @@
-import { type DataTypeEnum, type DataMetaInformationForMyDatasets, QaStatus } from "@clients/backend";
+import {
+  type DataTypeEnum,
+  type DataMetaInformationForMyDatasets,
+  QaStatus,
+  type DataMetaInformation,
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -28,10 +33,17 @@ export class DatasetTableInfo {
  * @param dataMetaInfo the dataset containing different status indicators (i.e QaStatus, currentlyActive,...)
  * @returns a unified DatasetStatus
  */
-export function getDatasetStatus(dataMetaInfo: DataMetaInformationForMyDatasets): DatasetStatus {
-  if (dataMetaInfo.qualityStatus == QaStatus.Accepted) {
+export function getDatasetStatus(dataMetaInfo: DataMetaInformationForMyDatasets | DataMetaInformation): DatasetStatus {
+  let qaStatus: QaStatus;
+  if ("qualityStatus" in dataMetaInfo) {
+    qaStatus = dataMetaInfo.qualityStatus;
+  } else {
+    qaStatus = dataMetaInfo.qaStatus;
+  }
+
+  if (qaStatus == QaStatus.Accepted) {
     return dataMetaInfo.currentlyActive ? DatasetStatus.QaApproved : DatasetStatus.Superseded;
-  } else if (dataMetaInfo.qualityStatus == QaStatus.Rejected) {
+  } else if (qaStatus == QaStatus.Rejected) {
     return DatasetStatus.QaRejected;
   } else {
     return DatasetStatus.QaPending;

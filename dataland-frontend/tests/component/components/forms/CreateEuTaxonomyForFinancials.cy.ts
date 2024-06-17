@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";

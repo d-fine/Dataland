@@ -7,13 +7,9 @@
   ],
   "compilerOptions": {
     "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "types": ["vite/client"],
     "baseUrl": ".",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
-    // Setting the following to true breaks the imports of the auto-generated clients
     "verbatimModuleSyntax": false,
     "paths": {
       "@/*": [

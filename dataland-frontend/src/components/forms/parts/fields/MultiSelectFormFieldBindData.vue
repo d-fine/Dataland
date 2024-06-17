@@ -17,8 +17,7 @@
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { type ComponentPropsOptions, defineComponent } from "vue";
-import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { defineComponent } from "vue";
 import MultiSelectFormElementBindData from "@/components/forms/parts/elements/basic/MultiSelectFormElementBindData.vue";
 import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
 
@@ -28,11 +27,10 @@ export default defineComponent({
   emits: ["update:selectedItemsBindInternal"],
   computed: {
     internalSelections: {
-      get(): Array<DropdownOption> {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      get(): Array<string> {
         return this.selectedItemsBindInternal;
       },
-      set(newValue: Array<DropdownOption>) {
+      set(newValue: Array<string>) {
         this.$emit("update:selectedItemsBindInternal", newValue);
       },
     },
@@ -40,9 +38,9 @@ export default defineComponent({
   props: {
     ...MultiSelectFormProps,
     selectedItemsBindInternal: {
-      type: Array,
+      type: Array as () => Array<string>,
       default: () => [],
     },
-  } as Readonly<ComponentPropsOptions>,
+  },
 });
 </script>

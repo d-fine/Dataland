@@ -18,7 +18,11 @@ import {
   uploader_pw,
 } from "@e2e/utils/Cypress";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {
+  uploadFrameworkDataForLegacyFramework,
+  uploadFrameworkDataForPublicToolboxFramework,
+} from "@e2e/utils/FrameworkUpload";
+import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
 
 describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
@@ -48,7 +52,7 @@ describeIf(
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadFrameworkData(
+        return uploadFrameworkDataForLegacyFramework(
           DataTypeEnum.EutaxonomyFinancials,
           token,
           storedCompany.companyId,
@@ -66,13 +70,18 @@ describeIf(
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
       const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadFrameworkData(DataTypeEnum.Lksg, token, storedCompany.companyId, "2022", data.t, false).then(
-          (dataMetaInfo) => {
-            cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
-            cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
-            testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
-          },
-        );
+        return uploadFrameworkDataForPublicToolboxFramework(
+          LksgBaseFrameworkDefinition,
+          token,
+          storedCompany.companyId,
+          "2022",
+          data.t,
+          false,
+        ).then((dataMetaInfo) => {
+          cy.intercept(`**/api/metadata/${dataMetaInfo.dataId}`).as("getMetadataOfUploadedDataset");
+          cy.intercept(`**/api/companies/${storedCompany.companyId}`).as("getCompanyInformationOfUploadedCompany");
+          testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
+        });
       });
     });
   },

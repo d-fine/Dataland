@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";

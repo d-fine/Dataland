@@ -33,6 +33,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";

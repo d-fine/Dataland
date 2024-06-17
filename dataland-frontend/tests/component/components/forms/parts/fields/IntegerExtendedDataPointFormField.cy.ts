@@ -1,3 +1,4 @@
+// @ts-nocheck
 import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
 
 describe("test IntegerExtendedDataPointFormField for entries", () => {

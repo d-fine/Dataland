@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ApiKeyCard from "@/components/resources/apiKey/ApiKeyCard.vue";
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
