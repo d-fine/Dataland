@@ -100,7 +100,7 @@ export default defineComponent({
     /**
      * Generates the toolTip for reportingYear given DataAndMetaInformation.
      * @param singleDataAndMetaInfo DataAndMetaInformation of a framework.
-     * @returns string the toolTip
+     * @returns string the toolTip.
      */
     // @ts-ignore
     reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
