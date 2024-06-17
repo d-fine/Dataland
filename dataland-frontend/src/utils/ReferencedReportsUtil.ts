@@ -19,7 +19,7 @@ export function openReportDataTableModal(context: ComponentContext, report: Comp
  * Constructs the modal options for the ReportDataTable.
  * @param report The report data.
  * @param reportName The name of the report.
- * @returns The modal options
+ * @returns The modal options.
  */
 function constructModalOptions(report: CompanyReport, reportName: string): ModalOptions {
   const reportWithName: CompanyReport = {
