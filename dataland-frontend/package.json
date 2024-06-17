@@ -70,9 +70,5 @@
     "vite": "^5.2.10",
     "vite-plugin-istanbul": "^6.0.0",
     "vue-tsc": "^2.0.21"
-  },
-  "lint-staged": {
-    "*.vue": "eslint --fix",
-    "*.ts": "eslint --fix"
   }
 }
