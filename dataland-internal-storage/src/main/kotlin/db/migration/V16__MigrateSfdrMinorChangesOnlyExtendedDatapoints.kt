@@ -63,18 +63,14 @@ class V16__MigrateSfdrMinorChangesOnlyExtendedDatapoints : BaseJavaMigration() {
         dataset: JSONObject,
         objectName: String,
     ) {
-        val obj = dataset.getOrJavaNull(objectName)
-        if (obj !== null && obj is JSONObject) {
-            var quality: String? = null
-            if (obj.has("quality")) {
-                quality = obj.getOrJavaNull("quality") as? String
+        val obj = dataset.getOrJavaNull(objectName) as? JSONObject
+        obj?.let {
+            val quality = it.getOrJavaNull("quality") as? String
+            if (quality.isNullOrEmpty() || quality == "NA") {
+                it.remove("quality")
             }
-            if (quality == null || quality == "NA") {
-                obj.remove("quality")
-            }
-
-            obj.keys().forEach {
-                checkRecursivelyForBaseDataPoint(obj, it)
+            it.keys().forEach { key ->
+                checkRecursivelyForBaseDataPoint(it, key)
             }
         }
     }
