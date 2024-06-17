@@ -51,14 +51,10 @@ def get_sme_data_mock(
         reporting_period="reporting period",
         data=SmeData.from_dict({
             "basic": {
-                            "practicesForTransitioningTowardsAMoreSustainableEconomy": {
-                            					"undertakenMeasures": [
-                            						{
-                            							"value": "dummy",
-                            						}
-                            					]
-                            				},
-                      },
+                "energyAndGreenhousGasEmissions": {
+                    "energyFossilFuels": 1,
+                }
+            },
         }),
     )
 
@@ -78,8 +74,8 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
         self.assertIsInstance(data_resource.data, SmeData)
         self.assertEqual(
-        "dummy",
-        data_resource.data.basic.practicesForTransitioningTowardsAMoreSustainableEconomy.undertakenMeasures[0].value
+        1,
+        data_resource.data.basic.energyAndGreenhousGasEmissions.energyFossilFuels
         )
 
     def test_document_is_fetched_correctly(self) -> None:
