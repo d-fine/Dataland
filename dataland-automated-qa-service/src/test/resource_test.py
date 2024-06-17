@@ -75,7 +75,7 @@ class ResourceTest(unittest.TestCase):
         self.assertIsInstance(data_resource.data, SmeData)
         self.assertEqual(
         1,
-        data_resource.data.basic.energy_and_greenhous_gas_emissions.energyFossilFuels
+        data_resource.data.basic.energy_and_greenhous_gas_emissions.energy_fossil_fuels
         )
 
     def test_document_is_fetched_correctly(self) -> None:
