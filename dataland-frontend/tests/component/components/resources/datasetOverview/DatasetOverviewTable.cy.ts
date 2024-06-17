@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { type DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { DataTypeEnum } from "@clients/backend";

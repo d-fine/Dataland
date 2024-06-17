@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import {
   KEYCLOAK_ROLE_USER,
   KEYCLOAK_ROLE_UPLOADER,
@@ -29,7 +29,8 @@ export default defineComponent({
   name: "UserRolesBadges",
   props: {
     userRoles: {
-      type: Array,
+      type: Array as PropType<string[]>,
+      required: true,
     },
   },
   data() {

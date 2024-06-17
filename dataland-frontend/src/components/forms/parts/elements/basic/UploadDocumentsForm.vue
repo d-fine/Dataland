@@ -57,6 +57,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";

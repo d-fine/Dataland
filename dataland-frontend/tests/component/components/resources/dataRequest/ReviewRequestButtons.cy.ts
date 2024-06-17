@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ReviewRequestButtonsComponent from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";

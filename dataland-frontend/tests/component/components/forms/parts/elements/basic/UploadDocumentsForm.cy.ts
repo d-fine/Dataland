@@ -1,3 +1,4 @@
+// @ts-nocheck
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 

@@ -155,12 +155,12 @@ export default defineComponent({
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
-      currentCombinedFilter: <FrameworkDataSearchFilterInterface>{
+      currentCombinedFilter: {
         companyNameFilter: "",
         frameworkFilter: [],
         sectorFilter: [],
         countryCodeFilter: [],
-      },
+      } as FrameworkDataSearchFilterInterface,
       scrollEmittedByToggleSearchBar: false,
       hiddenSearchBarHeight: 0,
       searchBarId: "search_bar_top",

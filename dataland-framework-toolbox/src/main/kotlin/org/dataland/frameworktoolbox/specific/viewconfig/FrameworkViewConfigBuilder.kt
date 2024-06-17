@@ -113,7 +113,7 @@ class FrameworkViewConfigBuilder(
         buildApiClient(frameworkConfigDir / "ApiClient.ts", privateFrameworkBoolean)
         buildFrameworkDefinitionTs(frameworkConfigDir, privateFrameworkBoolean)
 
-        into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
+        into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
 
         EsLintRunner(into, generatedTsFiles).run()
     }

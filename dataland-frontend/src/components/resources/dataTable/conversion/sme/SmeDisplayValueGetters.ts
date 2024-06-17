@@ -12,6 +12,7 @@ import {
   type SmeWasteClassificationObject,
   type SmeSiteAndArea,
   type SmeEmployeesPerCountry,
+  type WasteClassifications,
 } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
@@ -60,7 +61,7 @@ interface SmePollutionEmissionDisplayFormat {
 }
 
 interface SmeWasteClassificationDisplayFormat {
-  wasteClassification: string;
+  wasteClassification: WasteClassifications;
   typeWaste: string;
   totalAmountTons: number;
   wasteRecycleOrReuseTons: number;
@@ -208,7 +209,7 @@ function convertSmeWasteClassificationToListForModal(
 ): SmeWasteClassificationDisplayFormat[] {
   return datasetValue.map((item) => {
     const humanizedItem: SmeWasteClassificationDisplayFormat = {
-      wasteClassification: humanizeStringOrNumber(item.wasteClassification),
+      wasteClassification: item.wasteClassification,
       typeWaste: humanizeStringOrNumber(item.typeOfWaste),
       totalAmountTons: item.totalAmountTons!,
       wasteRecycleOrReuseTons: item.wasteRecycleOrReuseTons!,
@@ -217,6 +218,7 @@ function convertSmeWasteClassificationToListForModal(
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseCubicMeters!,
       wasteDisposalCubicMeters: item.wasteDisposalCubicMeters!,
       //TODO come back here and see if ! are really necessary
+      //TODO check why humanzeStringOrNumber doesnt work for wasteClassification, see riskposition for lksg
     };
     return humanizedItem;
   });

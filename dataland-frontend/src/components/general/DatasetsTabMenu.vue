@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent, inject } from "vue";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";

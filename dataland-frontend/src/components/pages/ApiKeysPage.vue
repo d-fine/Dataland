@@ -17,7 +17,7 @@
 
         <MiddleCenterDiv
           data-test="noApiKeyWelcomeComponent"
-          v-if="!userAlreadyHasApiKey && !waitingForData && this.pageState !== 'create'"
+          v-if="!userAlreadyHasApiKey && !waitingForData && pageState !== 'create'"
           class="col-12"
         >
           <div>
@@ -30,7 +30,7 @@
         <div
           data-test="CreateApiKeyCard"
           class="col-12 md:col-7 lg:col-7"
-          v-if="this.pageState === 'create' && !waitingForData"
+          v-if="pageState === 'create' && !waitingForData"
         >
           <CreateApiKeyCard
             :userRoles="userRolesAccordingToKeycloak"
@@ -58,7 +58,7 @@
                   <div class="p-input-icon-right border-round-sm paper-section pl-1 col-10 fs-lg">
                     <PrimeTextarea
                       ref="newKeyHolderRef"
-                      v-on:focus="$event.target.select()"
+                      @focus="($event.target as HTMLTextAreaElement).select()"
                       :autoResize="true"
                       cols="5"
                       v-model="newKey"

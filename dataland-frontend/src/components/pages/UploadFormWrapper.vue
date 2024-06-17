@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section">
-      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID">
+      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :allow-data-owner-for-company-id="companyID">
         <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
@@ -10,7 +10,7 @@
         <component
           :is="frameworkToUploadComponent"
           :companyID="companyID"
-          @datasetCreated="redirectToMyDatasets(this.$router)"
+          @datasetCreated="redirectToMyDatasets($router)"
         />
       </AuthorizationWrapper>
     </TheContent>
@@ -66,8 +66,14 @@ export default defineComponent({
     };
   },
   props: {
-    companyID: String,
-    frameworkType: String,
+    companyID: {
+      type: String,
+      required: true,
+    },
+    frameworkType: {
+      type: String,
+      required: true,
+    },
   },
   methods: { redirectToMyDatasets },
   computed: {

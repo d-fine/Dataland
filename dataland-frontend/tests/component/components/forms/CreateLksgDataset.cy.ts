@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";

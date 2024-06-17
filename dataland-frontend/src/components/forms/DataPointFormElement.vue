@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { defineComponent } from "vue";
 

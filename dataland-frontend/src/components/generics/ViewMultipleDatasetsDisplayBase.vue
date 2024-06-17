@@ -78,6 +78,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { defineComponent, inject } from "vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";

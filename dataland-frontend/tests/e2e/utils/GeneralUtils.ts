@@ -1,9 +1,5 @@
-import { type CompanyInformation, type DataTypeEnum } from "@clients/backend";
-import { type CyHttpMessages, type Interception } from "cypress/types/net-stubbing";
-import { getKeycloakToken } from "./Auth";
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "./Cypress";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
-import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
+import { type DataTypeEnum } from "@clients/backend";
+import { type Interception } from "cypress/types/net-stubbing";
 
 /**
  * Visits the edit page for a framework via UI navigation.
@@ -25,37 +21,6 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
   cy.get('[data-test="editDatasetButton"]').click();
   return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
-}
-
-/**
- * Uploads a company via POST-request, then an EU Taxonomy dataset for the uploaded company via the form in the
- * frontend, and then visits the view page where that dataset is displayed
- * @param frameworkDataType The EU Taxanomy framework being tested
- * @param companyInformation Company information to be used for the company upload
- * @param testData EU Taxonomy dataset to be uploaded
- * @param formFill Steps involved to fill data of the upload form
- * @param submissionDataIntercept performs checks on the request itself
- * @param afterDatasetSubmission is performed after the data has been submitted
- */
-export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
-  frameworkDataType: DataTypeEnum,
-  companyInformation: CompanyInformation,
-  testData: T,
-  formFill: (data: T) => void,
-  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
-  afterDatasetSubmission: (companyId: string) => void,
-): void {
-  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-    return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-      (storedCompany): void => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
-        cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${frameworkDataType}/upload`);
-        formFill(testData);
-        submitFilledInEuTaxonomyForm(submissionDataIntercept);
-        afterDatasetSubmission(storedCompany.companyId);
-      },
-    );
-  });
 }
 
 /**

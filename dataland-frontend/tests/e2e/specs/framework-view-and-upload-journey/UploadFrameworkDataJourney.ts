@@ -13,7 +13,11 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import {
+  uploadFrameworkDataForLegacyFramework,
+  uploadFrameworkDataForPublicToolboxFramework,
+} from "@e2e/utils/FrameworkUpload";
+import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(
@@ -54,7 +58,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             .then((storedCompany) => {
               const preparedFixture = getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures);
               storedCompanyForManyDatasetsCompany = storedCompany;
-              return uploadFrameworkData(
+              return uploadFrameworkDataForLegacyFramework(
                 DataTypeEnum.EutaxonomyFinancials,
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
@@ -72,7 +76,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                     "eligible-activity-Point-26",
                     euTaxoFinancialPreparedFixtures,
                   );
-                  return uploadFrameworkData(
+                  return uploadFrameworkDataForLegacyFramework(
                     DataTypeEnum.EutaxonomyFinancials,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
@@ -83,8 +87,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
                   const preparedFixture = getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures);
-                  return uploadFrameworkData(
-                    DataTypeEnum.Lksg,
+                  return uploadFrameworkDataForPublicToolboxFramework(
+                    LksgBaseFrameworkDefinition,
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     generateReportingPeriod(),
