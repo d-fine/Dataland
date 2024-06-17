@@ -10,7 +10,7 @@ import java.math.BigInteger
 data class SmeBasicWorkforceHealthAndSafety(
     val totalHours: BigDecimal? = null,
 
-    val numberAccidents: BigInteger? = null,
+    val numberOfAccidents: BigInteger? = null,
 
     val accidentLevel: BigDecimal? = null,
 

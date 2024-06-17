@@ -4483,59 +4483,59 @@
               }
             ]
           },
-          "numberEmployeesFullTime": {
+          "numberOfEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberEmployeesHead": {
+          "numberOfEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "numberTemporaryContractFullTime": {
+          "numberOfTemporaryContractEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberTemporaryContractHead": {
+          "numberOfTemporaryContractEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "numberPermanentContractFullTime": {
+          "numberOfPermanentContractEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberPermanentContractHead": {
+          "numberOfPermanentContractEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "numberMaleFullTime": {
+          "numberOfMaleEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberMaleHead": {
+          "numberOfMaleEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "numberFemaleFullTime": {
+          "numberFemaleEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberFemaleHead": {
+          "numberOfFemaleEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "numberOtherFullTime": {
+          "numberOfOtherEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberOtherHead": {
+          "numberOfOtherEmployeesHead": {
             "type": "number",
             "nullable": true
           },
-          "numberNotReportedFullTime": {
+          "numberOfNotReportedEpmloyeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberNotReportedHead": {
+          "numberOfNotReportedEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
@@ -4555,7 +4555,7 @@
             "type": "number",
             "nullable": true
           },
-          "numberAccidents": {
+          "numberOfAccidents": {
             "type": "integer",
             "nullable": true
           },
@@ -14953,15 +14953,15 @@
           "companyId": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",

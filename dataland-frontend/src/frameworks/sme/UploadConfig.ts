@@ -497,8 +497,8 @@ export const smeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberEmployeesFullTime",
-            label: "Number employees full-time",
+            name: "numberOfEmployeesInFtes",
+            label: "Number of employees in FTEs",
             description:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
 
@@ -509,8 +509,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberEmployeesHead",
-            label: "Number employees head",
+            name: "numberOfEmployeesInHeadcount",
+            label: "Number of employees in Headcount",
             description:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
 
@@ -521,8 +521,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberTemporaryContractFullTime",
-            label: "Number temporary contract full-time",
+            name: "numberOfTemporaryContractEmployeesInFtes",
+            label: "Number of temporary contract employees in FTEs",
             description:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
 
@@ -533,8 +533,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberTemporaryContractHead",
-            label: "Number temporary contract head",
+            name: "numberOfTemporaryContractEmployeesInHeadcount",
+            label: "Number of temporary contract employees in Headcount",
             description:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
 
@@ -545,8 +545,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberPermanentContractFullTime",
-            label: "Number permanent contract full-time",
+            name: "numberOfPermanentContractEmployeesInFtes",
+            label: "Number of permanent contract employees in FTEs",
 
             unit: "full-time equivalents",
             component: "NumberFormField",
@@ -555,8 +555,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberPermanentContractHead",
-            label: "Number permanent contract head",
+            name: "numberOfPermanentContractEmployeesInHeadcount",
+            label: "Number of permanent contract employees in Headcount",
 
             unit: "head count",
             component: "NumberFormField",
@@ -565,8 +565,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberMaleFullTime",
-            label: "Number male full-time",
+            name: "numberOfMaleEmployeesInFtes",
+            label: "Number of male employees in FTEs",
             description:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
 
@@ -577,8 +577,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberMaleHead",
-            label: "Number male head",
+            name: "numberOfMaleEmployeesInHeadcount",
+            label: "Number of male employees in Headcount",
             description:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
 
@@ -589,8 +589,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberFemaleFullTime",
-            label: "Number female full-time",
+            name: "numberFemaleEmployeesInFtes",
+            label: "Number female employees in FTEs",
 
             unit: "full-time equivalents",
             component: "NumberFormField",
@@ -599,8 +599,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberFemaleHead",
-            label: "Number female head",
+            name: "numberOfFemaleEmployeesInHeadcount",
+            label: "Number of female employees in Headcount",
 
             unit: "head count",
             component: "NumberFormField",
@@ -609,8 +609,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberOtherFullTime",
-            label: "Number other full-time",
+            name: "numberOfOtherEmployeesInFtes",
+            label: "Number of other employees in FTEs",
 
             unit: "full-time equivalents",
             component: "NumberFormField",
@@ -619,8 +619,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberOtherHead",
-            label: "Number other head ",
+            name: "numberOfOtherEmployeesHead",
+            label: "Number of other employees head ",
 
             unit: "head count",
             component: "NumberFormField",
@@ -629,8 +629,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberNotReportedFullTime",
-            label: "Number not reported full-time",
+            name: "numberOfNotReportedEpmloyeesInFtes",
+            label: "Number of not reported epmloyees in FTEs",
 
             unit: "full-time equivalents",
             component: "NumberFormField",
@@ -639,8 +639,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberNotReportedHead",
-            label: "Number not reported head",
+            name: "numberOfNotReportedEmployeesInHeadcount",
+            label: "Number of not reported employees in Headcount",
 
             unit: "head count",
             component: "NumberFormField",
@@ -675,8 +675,8 @@ export const smeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberAccidents",
-            label: "Number accidents",
+            name: "numberOfAccidents",
+            label: "Number of accidents",
             description: "Please disclose the number of work related accidents in the reporting year.",
 
             component: "NumberFormField",
@@ -867,8 +867,8 @@ export const smeDataModel = [
             component: "RadioButtonsFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -882,8 +882,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -895,8 +895,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -910,8 +910,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -923,8 +923,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -938,8 +938,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -951,8 +951,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -965,8 +965,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -979,8 +979,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
@@ -992,8 +992,8 @@ export const smeDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (dataset: SmeData): boolean => {
-              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesHead ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberEmployeesFullTime ?? 0;
+              const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
