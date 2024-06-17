@@ -25,6 +25,12 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
     isPrivateFramework = true,
 ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        val fieldsToAddDependency = arrayOf(
+            "grossPayMale", "grossPayFemale", "totalWorkHoursMale",
+            "totalWorkHoursFemale", "averageWorkHoursMale", "averageWorkHoursFemale", "averageHourlyPayMale",
+            "averageHourlyPayFemale", "payGap",
+        )
+
         framework.root.edit<ComponentGroup>("basic") {
             val numberOfEmployeesInHeadCount = this.get<ComponentGroup>("workforceGeneralCharacteristics")
                 .get<NumberBaseComponent>("numberOfEmployeesInHeadcount")
@@ -32,40 +38,18 @@ class SmeFramework : InDevelopmentPavedRoadFramework(
                 .get<NumberBaseComponent>("numberOfEmployeesInFtes")
             edit<ComponentGroup>("workforceRenumerationCollectiveBargainingAndTraining") {
                 edit<SingleSelectComponent>("payGapBasis") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
+                    setDependency(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
                 }
-                edit<NumberBaseComponent>("grossPayMale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("grossPayFemale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("totalWorkHoursMale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("totalWorkHoursFemale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("averageWorkHoursMale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("averageWorkHoursFemale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("averageHourlyPayMale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("averageHourlyPayFemale") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
-                }
-                edit<NumberBaseComponent>("payGap") {
-                    setDependencies(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
+                fieldsToAddDependency.forEach { fieldIdentifier ->
+                    edit<NumberBaseComponent>(fieldIdentifier) {
+                        setDependency(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
+                    }
                 }
             }
         }
     }
 
-    private fun setDependencies(
+    private fun setDependency(
         component: ComponentBase,
         firstDependencyComponent2: NumberBaseComponent,
         secondDependencyComponent: NumberBaseComponent,
