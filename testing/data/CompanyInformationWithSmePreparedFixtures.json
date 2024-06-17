@@ -4,7 +4,7 @@
 			"companyName": "Sme-dataset-with-no-null-fields",
 			"headquarters": "Lehnerbury",
 			"headquartersPostalCode": "04829",
-			"sector": null,
+			"sector": "Energy",
 			"identifiers": {
 				"Lei": [
 					"onxMbw3ii0VSiwc5Xtat"
