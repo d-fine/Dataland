@@ -20,6 +20,5 @@ data class SmeSiteAndArea(
     val areaGeocoordinateLatitude: BigDecimal?,
     val specificationOfAdjointness: AreaAdjointness,
 // TODO siteAddress as Address or plain string?
-    // TODO should we remove country as it is redundant
 
 )
