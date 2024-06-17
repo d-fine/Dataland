@@ -1,16 +1,16 @@
-import type Keycloak from 'keycloak-js';
-import type { Router } from 'vue-router';
-import { mount } from 'cypress/vue';
-import { createPinia } from 'pinia';
-import PrimeVue from 'primevue/config';
-import DialogService from 'primevue/dialogservice';
-import { createMemoryHistory, createRouter } from 'vue-router';
-import { routes } from '@/router';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { defaultConfig, plugin } from '@formkit/vue';
-import { defineComponent, h } from 'vue';
-import DynamicDialog from 'primevue/dynamicdialog';
+import type Keycloak from "keycloak-js";
+import type { Router } from "vue-router";
+import { mount } from "cypress/vue";
+import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import DialogService from "primevue/dialogservice";
+import { createMemoryHistory, createRouter } from "vue-router";
+import { routes } from "@/router";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defaultConfig, plugin } from "@formkit/vue";
+import { defineComponent, h } from "vue";
+import DynamicDialog from "primevue/dynamicdialog";
 
 interface DatalandMountOptions {
   /**

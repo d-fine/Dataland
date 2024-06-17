@@ -1,17 +1,17 @@
-import { faker } from '@faker-js/faker';
-import { type CompanyInformation } from '@clients/backend';
-import { valueOrNull } from '@e2e/utils/FakeFixtureUtils';
-import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement } from '@e2e/fixtures/FixtureUtils';
+import { faker } from "@faker-js/faker";
+import { type CompanyInformation } from "@clients/backend";
+import { valueOrNull } from "@e2e/utils/FakeFixtureUtils";
+import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 
 const legalForms = [
-  'Public Limited Company (PLC)',
-  'Private Limited Company (Ltd)',
-  'Limited Liability Partnership (LLP)',
-  'Partnership without Limited Liability',
-  'Sole Trader',
-  'GmbH',
-  'AG',
-  'GmbH & Co. KG',
+  "Public Limited Company (PLC)",
+  "Private Limited Company (Ltd)",
+  "Limited Liability Partnership (LLP)",
+  "Partnership without Limited Liability",
+  "Sole Trader",
+  "GmbH",
+  "AG",
+  "GmbH & Co. KG",
 ];
 
 /**
@@ -20,13 +20,13 @@ const legalForms = [
  */
 function getRandomIdentifiers(): { [p: string]: string[] } {
   const identifiers: { [p: string]: string[] } = {};
-  identifiers['Lei'] = pickOneOrNoElement([faker.string.alphanumeric(20)]);
-  identifiers['Isin'] = pickSubsetOfElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 1, 2);
-  identifiers['PermId'] = pickOneOrNoElement([faker.string.alphanumeric(10)]);
-  identifiers['Ticker'] = pickOneOrNoElement([faker.string.alphanumeric(7)]);
-  identifiers['Duns'] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
-  identifiers['VatNumber'] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
-  identifiers['CompanyRegistrationNumber'] = pickOneOrNoElement([faker.string.alphanumeric(15)]);
+  identifiers["Lei"] = pickOneOrNoElement([faker.string.alphanumeric(20)]);
+  identifiers["Isin"] = pickSubsetOfElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 1, 2);
+  identifiers["PermId"] = pickOneOrNoElement([faker.string.alphanumeric(10)]);
+  identifiers["Ticker"] = pickOneOrNoElement([faker.string.alphanumeric(7)]);
+  identifiers["Duns"] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
+  identifiers["VatNumber"] = pickOneOrNoElement([faker.string.alphanumeric(9)]);
+  identifiers["CompanyRegistrationNumber"] = pickOneOrNoElement([faker.string.alphanumeric(15)]);
   return identifiers;
 }
 

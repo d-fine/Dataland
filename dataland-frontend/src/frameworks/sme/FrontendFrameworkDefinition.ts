@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from '@/frameworks/BaseFrameworkDefinition';
-import { smeViewConfiguration } from '@/frameworks/sme/ViewConfig';
-import { BaseSmeFrameworkDefinition } from '@/frameworks/sme/BaseFrameworkDefinition';
-import { type SmeData } from '@clients/backend';
+} from "@/frameworks/BaseFrameworkDefinition";
+import { smeViewConfiguration } from "@/frameworks/sme/ViewConfig";
+import { BaseSmeFrameworkDefinition } from "@/frameworks/sme/BaseFrameworkDefinition";
+import { type SmeData } from "@clients/backend";
 
 export class FrontendSmeFrameworkDefinition
   extends BaseSmeFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendSmeFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<SmeData> {
     return {
-      type: 'MultiLayerDataTable',
+      type: "MultiLayerDataTable",
       configuration: smeViewConfiguration,
     };
   }

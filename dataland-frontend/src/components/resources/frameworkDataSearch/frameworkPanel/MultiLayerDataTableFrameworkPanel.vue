@@ -25,7 +25,7 @@
         editMultiLayerDataTableConfigForHighlightingHiddenFields(
           displayConfiguration,
           inReviewMode,
-          hideEmptyFields ?? false
+          hideEmptyFields ?? false,
         )
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
@@ -37,29 +37,29 @@
 </template>
 
 <script setup generic="FrameworkDataType" lang="ts">
-import MultiLayerDataTable from '@/components/resources/dataTable/MultiLayerDataTable.vue';
-import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { computed, inject, ref, shallowRef, watch } from 'vue';
-import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
-import { sortDatasetsByReportingPeriod } from '@/utils/DataTableDisplay';
+import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { computed, inject, ref, shallowRef, watch } from "vue";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
 import {
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   type EutaxonomyNonFinancialsData,
-} from '@clients/backend';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
-import { type BaseFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+} from "@clients/backend";
+import type Keycloak from "keycloak-js";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
+import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
+import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
-type ViewPanelStates = 'LoadingDatasets' | 'DisplayingDatasets' | 'Error';
+type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 
 const props = defineProps<{
   companyId: string;
@@ -68,7 +68,7 @@ const props = defineProps<{
   displayConfiguration: MLDTConfig<FrameworkDataType>;
   inReviewMode: boolean;
 }>();
-const injecHideEmptyFields = inject<{ value: boolean }>('hideEmptyFields');
+const injecHideEmptyFields = inject<{ value: boolean }>("hideEmptyFields");
 const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields?.value);
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
@@ -86,12 +86,12 @@ const sortedReports = computed(() => {
     case DataTypeEnum.EutaxonomyNonFinancials: {
       return sortedDataAndMetaInfo.value.map(
         (singleDataAndMetaInfo) =>
-          (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports ?? {}
+          (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports ?? {},
       );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
       return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports ?? {}
+        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports ?? {},
       );
     }
     default: {
@@ -102,7 +102,7 @@ const sortedReports = computed(() => {
 });
 
 const updateCounter = ref(0);
-const status = ref<ViewPanelStates>('LoadingDatasets');
+const status = ref<ViewPanelStates>("LoadingDatasets");
 const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
 
 watch(
@@ -113,7 +113,7 @@ watch(
   ],
 
   async () => reloadDisplayData(++updateCounter.value),
-  { immediate: true }
+  { immediate: true },
 );
 
 /**
@@ -121,17 +121,17 @@ watch(
  * @param currentCounter the value of the request counter at call-time.
  */
 async function reloadDisplayData(currentCounter: number): Promise<void> {
-  status.value = 'LoadingDatasets';
+  status.value = "LoadingDatasets";
   try {
     const fetchedDataAndMetaInfo = await loadDataForDisplay(props.companyId, props.singleDataMetaInfoToDisplay);
     if (updateCounter.value == currentCounter) {
       rawDataAndMetaInfoForDisplay.value = fetchedDataAndMetaInfo;
-      status.value = 'DisplayingDatasets';
+      status.value = "DisplayingDatasets";
     }
   } catch (err) {
     console.error(err);
     if (updateCounter.value == currentCounter) {
-      status.value = 'Error';
+      status.value = "Error";
     }
   }
 }
@@ -144,7 +144,7 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
  */
 async function loadDataForDisplay(
   companyId: string,
-  singleDataMetaInfoToDisplay?: DataMetaInformation
+  singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
   const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as

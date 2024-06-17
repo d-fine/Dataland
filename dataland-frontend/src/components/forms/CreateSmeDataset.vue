@@ -78,7 +78,7 @@
                   <a
                     v-if="subcategoryVisibilityMap.get(subcategory) ?? true"
                     @click="smoothScroll(`#${category.name}-${subcategory.name}`)"
-                    >{{ category.label + ': ' + subcategory.label }}</a
+                    >{{ category.label + ": " + subcategory.label }}</a
                   >
                 </li>
               </ul>
@@ -91,49 +91,49 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from '@formkit/vue';
-import { computed, defineComponent, inject } from 'vue';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { useRoute } from 'vue-router';
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
-import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import { smoothScroll } from '@/utils/SmoothScroll';
-import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
-import { ApiClientProvider } from '@/services/ApiClients';
-import Card from 'primevue/card';
-import Calendar from 'primevue/calendar';
-import type Keycloak from 'keycloak-js';
-import PrimeButton from 'primevue/button';
-import { type Category, type Subcategory } from '@/utils/GenericFrameworkTypes';
-import { AxiosError } from 'axios';
-import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum, type SmeData } from '@clients/backend';
-import { smeDataModel } from '@/frameworks/sme/UploadConfig';
-import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
-import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
-import SuccessMessage from '@/components/messages/SuccessMessage.vue';
-import FailMessage from '@/components/messages/FailMessage.vue';
-import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
-import { type DocumentToUpload } from '@/utils/FileUploadUtils';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
-import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import { getFilledKpis } from '@/utils/DataPoint';
-import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
-import { type PrivateFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { FormKit } from "@formkit/vue";
+import { computed, defineComponent, inject } from "vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { useRoute } from "vue-router";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
+import UploadReports from "@/components/forms/parts/UploadReports.vue";
+import { smoothScroll } from "@/utils/SmoothScroll";
+import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import { ApiClientProvider } from "@/services/ApiClients";
+import Card from "primevue/card";
+import Calendar from "primevue/calendar";
+import type Keycloak from "keycloak-js";
+import PrimeButton from "primevue/button";
+import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
+import { AxiosError } from "axios";
+import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum, type SmeData } from "@clients/backend";
+import { smeDataModel } from "@/frameworks/sme/UploadConfig";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
+import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
+import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { getFilledKpis } from "@/utils/DataPoint";
+import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
+import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: 'CreateSmeDataset',
+  name: "CreateSmeDataset",
   components: {
     FormKit,
     UploadFormHeader,
@@ -153,15 +153,15 @@ export default defineComponent({
     NaceCodeFormField,
     UploadReports,
   },
-  emits: ['datasetCreated'],
+  emits: ["datasetCreated"],
   data() {
     return {
-      formId: 'createSmeForm',
+      formId: "createSmeForm",
       waitingForData: true,
       companyAssociatedSmeData: {} as CompanyAssociatedDataSmeData,
       smeUploadConfig: smeDataModel,
       route: useRoute(),
-      message: '',
+      message: "",
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postSmeDataProcessed: false,
@@ -178,9 +178,9 @@ export default defineComponent({
       get(): string {
         const reportingDataInSmeDataset = this.companyAssociatedSmeData.data?.general?.basicInformation?.reportingDate;
         if (reportingDataInSmeDataset === undefined) {
-          return '';
+          return "";
         } else {
-          return reportingDataInSmeDataset.split('-')[0];
+          return reportingDataInSmeDataset.split("-")[0];
         }
       },
       set() {
@@ -202,7 +202,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
+    if (dataId && typeof dataId === "string") {
       void this.loadSmeData(dataId);
     } else {
       this.waitingForData = false;
@@ -246,19 +246,19 @@ export default defineComponent({
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSmeData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
         }
         const Files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const smeDataControllerApi = this.buildSmeDataApi();
         await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
-        this.$emit('datasetCreated');
-        this.message = 'Upload successfully executed.';
+        this.$emit("datasetCreated");
+        this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
-          this.message = 'An error occurred: ' + error.message;
+          this.message = "An error occurred: " + error.message;
         } else if (error.message) {
           this.message = formatAxiosErrorMessage(error as Error);
         }

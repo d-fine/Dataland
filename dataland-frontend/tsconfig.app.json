@@ -1,6 +1,10 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["src/**/*", "src/**/*.vue", "build/clients/**/*"],
+  "include": [
+    "src/**/*",
+    "src/**/*.vue",
+    "build/clients/**/*"
+  ],
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -8,8 +12,12 @@
     "baseUrl": ".",
     "verbatimModuleSyntax": false,
     "paths": {
-      "@/*": ["./src/*"],
-      "@clients/*": ["./build/clients/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@clients/*": [
+        "./build/clients/*"
+      ]
     }
   }
 }

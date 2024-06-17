@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'DownloadProgressSpinner',
+  name: "DownloadProgressSpinner",
   props: {
     percentCompleted: { type: Number, default: undefined },
   },

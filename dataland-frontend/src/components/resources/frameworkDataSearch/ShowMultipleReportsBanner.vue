@@ -24,13 +24,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import PreviousReportsModal from '@/components/resources/frameworkDataSearch/PreviousReportsModal.vue';
-import type { CompanyReport } from '@clients/backend';
+import { defineComponent } from "vue";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
+import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
-  name: 'ShowMultipleReportsBanner',
+  name: "ShowMultipleReportsBanner",
   components: { DocumentLink },
   data() {
     return {
@@ -57,7 +57,7 @@ export default defineComponent({
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {
-          header: 'Previous years reports',
+          header: "Previous years reports",
           modal: true,
           dismissableMask: true,
         },

@@ -18,33 +18,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
+import { defineComponent, inject } from "vue";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import type Keycloak from "keycloak-js";
 
 export default defineComponent({
-  name: 'CompanyCockpitPage',
+  name: "CompanyCockpitPage",
   components: {
     ClaimOwnershipDialog,
   },
   inject: {
     injectedUseMobileView: {
-      from: 'useMobileView',
+      from: "useMobileView",
       default: false,
     },
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   data() {
     return {
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      companyName: '',
+      companyName: "",
     };
   },
   watch: {

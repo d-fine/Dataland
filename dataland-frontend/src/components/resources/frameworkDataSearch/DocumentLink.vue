@@ -19,23 +19,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { type RawAxiosResponseHeaders } from 'axios';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { type PrivateFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { defineComponent, inject } from "vue";
+import type Keycloak from "keycloak-js";
+import { type RawAxiosResponseHeaders } from "axios";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import {
   getAllPrivateFrameworkIdentifiers,
   getBasePrivateFrameworkDefinition,
-} from '@/frameworks/BasePrivateFrameworkRegistry';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
-import { getHeaderIfItIsASingleString } from '@/utils/Axios';
+} from "@/frameworks/BasePrivateFrameworkRegistry";
+import DownloadProgressSpinner from "@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue";
+import { getHeaderIfItIsASingleString } from "@/utils/Axios";
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   data() {
@@ -43,7 +43,7 @@ export default defineComponent({
       percentCompleted: undefined as number | undefined,
     };
   },
-  name: 'DocumentLink',
+  name: "DocumentLink",
   components: { DownloadProgressSpinner },
   props: {
     label: String,
@@ -63,7 +63,7 @@ export default defineComponent({
       const fileReference: string = this.fileReference;
       this.percentCompleted = 0;
       try {
-        const docUrl = document.createElement('a');
+        const docUrl = document.createElement("a");
         if (this.isPrivateFrameworkDocumentLink) {
           await this.handlePrivateDocumentDownload(fileReference, docUrl);
         } else {
@@ -80,8 +80,8 @@ export default defineComponent({
      * @param docUrl initial reference of the document reference
      */
     async handlePrivateDocumentDownload(fileReference: string, docUrl: HTMLAnchorElement) {
-      if (!this.dataId) throw new Error('Data id is required for private framework document download');
-      if (!this.dataType) throw new Error('Data type is required for private framework document download');
+      if (!this.dataId) throw new Error("Data id is required for private framework document download");
+      if (!this.dataType) throw new Error("Data type is required for private framework document download");
 
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       let privateDataControllerApi: PrivateFrameworkDataApi<unknown>;
@@ -89,11 +89,11 @@ export default defineComponent({
       if (frameworkDefinition) {
         privateDataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(
           undefined,
-          apiClientProvider.axiosInstance
+          apiClientProvider.axiosInstance,
         );
         await privateDataControllerApi
           .getPrivateDocument(this.dataId, fileReference, {
-            responseType: 'arraybuffer',
+            responseType: "arraybuffer",
             onDownloadProgress: (progressEvent) => {
               if (progressEvent.total != null)
                 this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -105,7 +105,7 @@ export default defineComponent({
             const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
             docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute('download', `${this.downloadName}.${fileExtension}`);
+            docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
             document.body.appendChild(docUrl);
             docUrl.click();
           });
@@ -121,7 +121,7 @@ export default defineComponent({
         .documentController;
       await documentControllerApi
         .getDocument(fileReference, {
-          responseType: 'arraybuffer',
+          responseType: "arraybuffer",
           onDownloadProgress: (progressEvent) => {
             if (progressEvent.total != null)
               this.percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -133,7 +133,7 @@ export default defineComponent({
           const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
           const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
           docUrl.href = URL.createObjectURL(newBlob);
-          docUrl.setAttribute('download', `${this.downloadName}.${fileExtension}`);
+          docUrl.setAttribute("download", `${this.downloadName}.${fileExtension}`);
           document.body.appendChild(docUrl);
           docUrl.click();
         });
@@ -144,7 +144,7 @@ export default defineComponent({
      * @returns the file type extension of the downloaded file
      */
     getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
-      const contentDisposition = assertDefined(getHeaderIfItIsASingleString(headers, 'content-disposition')).split('.');
+      const contentDisposition = assertDefined(getHeaderIfItIsASingleString(headers, "content-disposition")).split(".");
       return contentDisposition[contentDisposition.length - 1] as DownloadableFileExtension;
     },
     /**
@@ -153,7 +153,7 @@ export default defineComponent({
      * @returns the mime type of the received document
      */
     getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
-      return assertDefined(getHeaderIfItIsASingleString(headers, 'content-type'));
+      return assertDefined(getHeaderIfItIsASingleString(headers, "content-type"));
     },
   },
   computed: {
@@ -162,5 +162,5 @@ export default defineComponent({
     },
   },
 });
-type DownloadableFileExtension = 'pdf' | 'xlsx' | 'xls' | 'ods';
+type DownloadableFileExtension = "pdf" | "xlsx" | "xls" | "ods";
 </script>

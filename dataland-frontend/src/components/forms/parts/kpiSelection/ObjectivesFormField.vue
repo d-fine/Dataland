@@ -29,40 +29,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import UploadFormSubcategoryHeader from '@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue';
+import { defineComponent } from "vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import UploadFormSubcategoryHeader from "@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue";
 
 export default defineComponent({
-  name: 'ObjectivesFormField',
+  name: "ObjectivesFormField",
   components: { UploadFormHeader, YesNoFormField, UploadFormSubcategoryHeader },
   data() {
     return {
       objectives: [
         {
-          name: 'Climate change mitigation',
-          key: 'ClimateChangeMitigation',
+          name: "Climate change mitigation",
+          key: "ClimateChangeMitigation",
         },
         {
-          name: 'Climate change adaptation',
-          key: 'ClimateChangeAdaptation',
+          name: "Climate change adaptation",
+          key: "ClimateChangeAdaptation",
         },
         {
-          name: 'Sustainable use and protection of water and marine resources',
-          key: 'SustainableUseAndProtectionOfWaterAndMarineResources',
+          name: "Sustainable use and protection of water and marine resources",
+          key: "SustainableUseAndProtectionOfWaterAndMarineResources",
         },
         {
-          name: 'Transition to a circular economy',
-          key: 'TransitionToACircularEconomy',
+          name: "Transition to a circular economy",
+          key: "TransitionToACircularEconomy",
         },
         {
-          name: 'Pollution prevention and control',
-          key: 'PollutionPreventionAndControl',
+          name: "Pollution prevention and control",
+          key: "PollutionPreventionAndControl",
         },
         {
-          name: 'Protection and restoration of biodiversity and ecosystems',
-          key: 'ProtectionAndRestorationOfBiodiversityAndEcosystems',
+          name: "Protection and restoration of biodiversity and ecosystems",
+          key: "ProtectionAndRestorationOfBiodiversityAndEcosystems",
         },
       ],
     };

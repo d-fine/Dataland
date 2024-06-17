@@ -1,15 +1,15 @@
-import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
-import { type DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
-import { type DataPointDisplay } from '@/utils/DataPoint';
+import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
+import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
+import { type DataPointDisplay } from "@/utils/DataPoint";
 
 export enum MLDTDisplayComponentName {
-  StringDisplayComponent = 'StringDisplayComponent',
-  FreeTextDisplayComponent = 'FreeTextDisplayComponent',
-  DocumentLinkDisplayComponent = 'DocumentLinkDisplayComponent',
-  ModalLinkDisplayComponent = 'ModalLinkDisplayComponent',
-  HighlightHiddenCellDisplay = 'HighlightHiddenCellDisplay',
-  DataPointDisplayComponent = 'DataPointDisplayComponent',
-  DataPointWrapperDisplayComponent = 'DataPointWrapperDisplayComponent',
+  StringDisplayComponent = "StringDisplayComponent",
+  FreeTextDisplayComponent = "FreeTextDisplayComponent",
+  DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
+  ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
+  HighlightHiddenCellDisplay = "HighlightHiddenCellDisplay",
+  DataPointDisplayComponent = "DataPointDisplayComponent",
+  DataPointWrapperDisplayComponent = "DataPointWrapperDisplayComponent",
 }
 
 export type MLDTDisplayComponentTypes = {
@@ -49,5 +49,5 @@ export type AvailableMLDTDisplayObjectTypes = {
 
 export const MLDTDisplayObjectForEmptyString: AvailableMLDTDisplayObjectTypes = {
   displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-  displayValue: '',
+  displayValue: "",
 };

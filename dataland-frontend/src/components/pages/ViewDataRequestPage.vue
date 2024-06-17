@@ -165,26 +165,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import TheHeader from '@/components/generics/TheHeader.vue';
-import BackButton from '@/components/general/BackButton.vue';
-import TheFooter from '@/components/generics/TheFooter.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
-import type Keycloak from 'keycloak-js';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { badgeClass, patchDataRequest } from '@/utils/RequestUtils';
-import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import PrimeButton from 'primevue/button';
-import PrimeDialog from 'primevue/dialog';
-import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import { type DataTypeEnum, QaStatus } from '@clients/backend';
-import TheContent from '@/components/generics/TheContent.vue';
-import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
+import { defineComponent, inject } from "vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
+import BackButton from "@/components/general/BackButton.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import type Keycloak from "keycloak-js";
+import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from "@/utils/StringFormatter";
+import { badgeClass, patchDataRequest } from "@/utils/RequestUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import PrimeButton from "primevue/button";
+import PrimeDialog from "primevue/dialog";
+import EmailDetails from "@/components/resources/dataRequest/EmailDetails.vue";
+import { type DataTypeEnum, QaStatus } from "@clients/backend";
+import TheContent from "@/components/generics/TheContent.vue";
+import StatusHistory from "@/components/resources/dataRequest/StatusHistory.vue";
 
 export default defineComponent({
-  name: 'ViewDataRequest',
+  name: "ViewDataRequest",
   components: {
     TheContent,
     EmailDetails,
@@ -204,7 +204,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   data() {
@@ -213,7 +213,7 @@ export default defineComponent({
       successModalIsVisible: false,
       isDatasetAvailable: false,
       storedDataRequest: {} as StoredDataRequest,
-      companyName: '',
+      companyName: "",
       showNewMessageDialog: false,
       emailContacts: undefined as Set<string> | undefined,
       emailMessage: undefined as string | undefined,
@@ -255,12 +255,12 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           const dataset = await new ApiClientProvider(
-            this.getKeycloakPromise()
+            this.getKeycloakPromise(),
           ).backendClients.metaDataController.getListOfDataMetaInfo(
             storedDataRequest.datalandCompanyId,
             storedDataRequest.dataType as DataTypeEnum,
             undefined,
-            storedDataRequest.reportingPeriod
+            storedDataRequest.reportingPeriod,
           );
           for (const dataMetaInfo of dataset.data) {
             if (dataMetaInfo.qaStatus == QaStatus.Accepted) {
@@ -281,7 +281,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           this.storedDataRequest = (
             await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.getDataRequestById(
-              this.requestId
+              this.requestId,
             )
           ).data;
         }
@@ -298,7 +298,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           this.companyName = (
             await new ApiClientProvider(this.getKeycloakPromise()).backendClients.companyDataController.getCompanyInfo(
-              companyId
+              companyId,
             )
           ).data.companyName;
         }
@@ -316,7 +316,7 @@ export default defineComponent({
           RequestStatus.Withdrawn as RequestStatus,
           undefined,
           undefined,
-          this.getKeycloakPromise
+          this.getKeycloakPromise,
         );
       } catch (error) {
         console.error(error);
@@ -372,7 +372,7 @@ export default defineComponent({
      */
     formatContactsToString(contacts: Set<string>) {
       const contactsList = Array.from(contacts);
-      return contactsList.join(', ');
+      return contactsList.join(", ");
     },
     /**
      * Shows or hides the Modal depending on the current state

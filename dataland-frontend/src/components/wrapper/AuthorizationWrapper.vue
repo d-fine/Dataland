@@ -20,15 +20,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { isUserDataOwnerForCompany } from '@/utils/DataOwnerUtils';
-import TheContent from '@/components/generics/TheContent.vue';
-import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
+import { defineComponent, inject } from "vue";
+import type Keycloak from "keycloak-js";
+import { checkIfUserHasRole } from "@/utils/KeycloakUtils";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import TheContent from "@/components/generics/TheContent.vue";
+import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 
 export default defineComponent({
-  name: 'AuthorizationWrapper',
+  name: "AuthorizationWrapper",
   components: { TheContent, MiddleCenterDiv },
   data() {
     return {
@@ -46,7 +46,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   mounted: function () {
@@ -62,7 +62,7 @@ export default defineComponent({
       if (!this.hasUserRequiredRole && this.allowDataOwnerForCompanyId) {
         this.isUserDataOwner = await isUserDataOwnerForCompany(
           this.allowDataOwnerForCompanyId,
-          this.getKeycloakPromise
+          this.getKeycloakPromise,
         );
         this.waitingForDataOwnershipData = false;
       } else {

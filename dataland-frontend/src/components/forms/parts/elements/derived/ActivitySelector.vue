@@ -59,19 +59,19 @@
 
 <script lang="ts">
 // @ts-nocheck
-import Tree from 'primevue/tree';
-import { type TreeNode } from 'primevue/treenode';
-import OverlayPanel from 'primevue/overlaypanel';
-import { defineComponent, ref } from 'vue';
-import RadioButton from 'primevue/radiobutton';
-import PrimeButton from 'primevue/button';
-import { activityTree } from '@/components/forms/parts/elements/derived/ActivityTree';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
-import UploadFormSubcategoryHeader from '@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue';
-import { convertNace } from '@/utils/NaceCodeConverter';
+import Tree from "primevue/tree";
+import { type TreeNode } from "primevue/treenode";
+import OverlayPanel from "primevue/overlaypanel";
+import { defineComponent, ref } from "vue";
+import RadioButton from "primevue/radiobutton";
+import PrimeButton from "primevue/button";
+import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
+import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import UploadFormSubcategoryHeader from "@/components/forms/parts/elements/basic/UploadFormSubcategoryHeader.vue";
+import { convertNace } from "@/utils/NaceCodeConverter";
 
 export default defineComponent({
-  name: 'ActivitySelector',
+  name: "ActivitySelector",
   components: {
     UploadFormSubcategoryHeader,
     MultiSelectFormField,
@@ -87,7 +87,7 @@ export default defineComponent({
   },
   data: () => ({
     allActivities: activityTree,
-    selectedActivityValue: '',
+    selectedActivityValue: "",
   }),
   computed: {
     selectedActivities() {
@@ -110,7 +110,7 @@ export default defineComponent({
         return (this.selectedActivities.naceCodes as Array<TreeNode>).map((naceCode: string) => {
           const naceCodeWithoutLetter: string = naceCode.substring(1);
           const convertedNaceCode = convertNace(
-            naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter
+            naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter,
           );
 
           return { label: convertedNaceCode, value: naceCode };

@@ -11,11 +11,11 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from 'vue';
-import { smoothScroll } from '@/utils/SmoothScroll';
+import { defineComponent } from "vue";
+import { smoothScroll } from "@/utils/SmoothScroll";
 
 export default defineComponent({
-  name: 'JumpLinksSection',
+  name: "JumpLinksSection",
   props: {
     onThisPageLinks: {
       type: Array,

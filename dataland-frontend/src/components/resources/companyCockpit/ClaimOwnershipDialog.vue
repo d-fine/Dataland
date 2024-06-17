@@ -45,19 +45,19 @@
 </template>
 
 <script lang="ts">
-import PrimeDialog from 'primevue/dialog';
-import PrimeButton from 'primevue/button';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { inject, defineComponent } from 'vue';
-import type Keycloak from 'keycloak-js';
-import { FormKit } from '@formkit/vue';
+import PrimeDialog from "primevue/dialog";
+import PrimeButton from "primevue/button";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { inject, defineComponent } from "vue";
+import type Keycloak from "keycloak-js";
+import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
-  name: 'ClaimOwnershipDialog',
+  name: "ClaimOwnershipDialog",
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   components: {
@@ -67,7 +67,7 @@ export default defineComponent({
   },
   data() {
     return {
-      claimOwnershipMessage: '',
+      claimOwnershipMessage: "",
       dialogIsVisible: false,
     };
   },
@@ -91,7 +91,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['claimSubmitted', 'closeDialog'],
+  emits: ["claimSubmitted", "closeDialog"],
   methods: {
     /**
      * Makes the API request in order to post the request for data ownership
@@ -102,10 +102,10 @@ export default defineComponent({
       try {
         const axiosResponse = await companyDataControllerApi.postDataOwnershipRequest(
           this.companyId,
-          this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined
+          this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined,
         );
         if (axiosResponse.status == 200) {
-          this.$emit('claimSubmitted');
+          this.$emit("claimSubmitted");
         }
       } catch (error) {
         console.error(error);
@@ -116,7 +116,7 @@ export default defineComponent({
      */
     closeDialog(): void {
       this.dialogIsVisible = false;
-      this.$emit('closeDialog');
+      this.$emit("closeDialog");
     },
   },
   watch: {

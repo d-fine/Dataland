@@ -1,22 +1,22 @@
 // @ts-nocheck
-import CreateEuTaxonomyNonFinancials from '@/components/forms/CreateEuTaxonomyNonFinancials.vue';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
-import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from '@clients/backend';
-import { submitButton } from '@sharedUtils/components/SubmitButton';
-import DataPointFormWithToggle from '@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue';
-import { UploadReports } from '@sharedUtils/components/UploadReports';
-import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
-import { getFilledKpis } from '@/utils/DataPoint';
+import CreateEuTaxonomyNonFinancials from "@/components/forms/CreateEuTaxonomyNonFinancials.vue";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
+import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from "@clients/backend";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
+import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
+import { UploadReports } from "@sharedUtils/components/UploadReports";
+import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
+import { getFilledKpis } from "@/utils/DataPoint";
 
-describe('Component tests for the Eu Taxonomy for non financials that test dependent fields', () => {
-  const uploadReports = new UploadReports('referencedReports');
+describe("Component tests for the Eu Taxonomy for non financials that test dependent fields", () => {
+  const uploadReports = new UploadReports("referencedReports");
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
    * whose name equals the one of a file selected before
    */
   function checkFileWithExistingFilenameIsNotBeingAdded(): void {
-    const reportThatCanBeUploaded = 'test-report';
+    const reportThatCanBeUploaded = "test-report";
     const reportThatAlreadyExists = TEST_PDF_FILE_NAME;
     uploadReports.selectFile(reportThatCanBeUploaded);
     uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportThatCanBeUploaded);
@@ -33,13 +33,13 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   function checkFileWithExistingFilenameOpensDialogWithWarning(): void {
     uploadReports.selectFile(TEST_PDF_FILE_NAME);
     cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
-    cy.get('input[type=file]').selectFile(
+    cy.get("input[type=file]").selectFile(
       `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
-      { force: true }
+      { force: true },
     );
-    cy.get('.p-dialog-content').should('contain.text', 'Files with duplicate names');
-    cy.get('.p-dialog-header-close').click();
-    cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should('have.length', 1);
+    cy.get(".p-dialog-content").should("contain.text", "Files with duplicate names");
+    cy.get(".p-dialog-header-close").click();
+    cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("have.length", 1);
   }
 
   /**
@@ -47,10 +47,10 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
    * whose name contains an illegal character
    */
   function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
-    uploadReports.selectDummyFile('Invalid:Filename', 400);
-    cy.get('.p-dialog-content').should('contain.text', 'File names containing illegal characters');
-    cy.get('.p-dialog-header-close').click();
-    cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should('not.exist');
+    uploadReports.selectDummyFile("Invalid:Filename", 400);
+    cy.get(".p-dialog-content").should("contain.text", "File names containing illegal characters");
+    cy.get(".p-dialog-header-close").click();
+    cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should("not.exist");
   }
 
   /**
@@ -62,7 +62,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     const reportNameB = `${TEST_PDF_FILE_NAME}2`;
     uploadReports.selectFile(reportNameB);
 
-    cy.get('.p-dialog-content').should('not.exist');
+    cy.get(".p-dialog-content").should("not.exist");
     uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameA);
     uploadReports.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameB);
 
@@ -85,11 +85,11 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
   function checkThatFilesMustBeReferenced(): void {
     uploadReports.fillAllFormsOfReportsSelectedForUpload();
     submitButton.clickButton();
-    cy.get('[data-test="failedUploadMessage"]').should('exist').should('contain.text', 'test-report');
+    cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
     cy.get('[data-test="failedUploadMessage"]')
-      .should('exist')
-      .should('satisfy', (element: JQuery<HTMLElement>) => {
-        const expectedStrings = ['Not all uploaded reports are used', 'test-report'];
+      .should("exist")
+      .should("satisfy", (element: JQuery<HTMLElement>) => {
+        const expectedStrings = ["Not all uploaded reports are used", "test-report"];
         const elementText = element.text();
         return expectedStrings.every((expectedString) => elementText.includes(expectedString));
       });
@@ -100,26 +100,26 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateGeneralSection(reports: string[]): void {
-    cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-trigger').click();
-    cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
-    cy.get('div.p-datepicker').find('span:contains("11")').click();
-    cy.get('input[name="fiscalYearEnd"]').invoke('val').should('contain', '11');
+    cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
+    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
+    cy.get("div.p-datepicker").find('span:contains("11")').click();
+    cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
     cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"]').check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
     cy.get('div[data-test="scopeOfEntities"]').find('input[value="Yes"]').check();
     cy.get('div[data-test="euTaxonomyActivityLevelReporting"]').find('input[value="Yes"]').check();
-    cy.get('input[name="numberOfEmployees"]').clear().type('-13');
+    cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
-    cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
-    cy.get('input[name="numberOfEmployees"]').clear().type('333');
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('input[name="numberOfEmployees"]').clear().type("333");
     cy.get('div[data-test="nfrdMandatory"]').find('input[value="Yes"]').check();
     selectItemFromDropdownByIndex(cy.get('div[name="value"'), 2);
-    cy.get('input[name="provider"]').clear().type('Assurance Provider');
+    cy.get('input[name="provider"]').clear().type("Assurance Provider");
     selectItemFromDropdownByValue(cy.get('div[label="General"] div[name="fileName"]'), reports[0]);
-    cy.get('div[label="General"] input[name="page"]').first().clear().type('-13');
+    cy.get('div[label="General"] input[name="page"]').first().clear().type("-13");
     cy.get('div[label="General"] em[title="Page"]').click();
-    cy.get(`[data-message-type="validation"]`).should('contain', 'at least 0').should('exist');
-    cy.get('div[label="General"] input[name="page"]').first().clear().type('3');
+    cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+    cy.get('div[label="General"] input[name="page"]').first().clear().type("3");
   }
 
   /**
@@ -127,79 +127,79 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateOtherSections(reports: string[]): void {
-    cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="value"]').clear().type('130000');
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="value"]').clear().type("130000");
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="currency"]'), 1);
     selectItemFromDropdownByValue(
       cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="fileName"]'),
-      reports[0]
+      reports[0],
     );
 
     cy.get('div[label="Revenue"] div[data-test="totalAmount"] input[name="page"]')
       .not('[type="hidden"]')
       .clear()
-      .type('5');
+      .type("5");
 
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[data-test="totalAmount"] div[name="quality"]'), 2);
-    cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type('just a comment');
+    cy.get('div[label="Revenue"] div[data-test="totalAmount"] textarea[name="comment"]').clear().type("just a comment");
 
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type('a');
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("a");
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
-      .should('contain', 'must be a number')
-      .should('exist');
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type('120');
+      .should("contain", "must be a number")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("120");
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
-      .should('contain', 'must be between 0 and 100')
-      .should('exist');
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type('25');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type('5000');
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(0).clear().type("25");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(0).clear().type("5000");
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(0), 5);
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type('50');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type('4000');
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(1).clear().type("50");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(1).clear().type("4000");
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(1), 51);
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
-      .type('a');
+      .type("a");
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
-      .should('contain', 'must be a number')
-      .should('exist');
+      .should("contain", "must be a number")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
-      .type('-12');
+      .type("-12");
     cy.get('div[label="Revenue"] em[title="Eligible Revenue"]').click();
     cy.get(`div[label="Revenue"] [data-message-type="validation"]`)
-      .should('contain', 'must be between 0 and 100')
-      .should('exist');
+      .should("contain", "must be between 0 and 100")
+      .should("exist");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
-      .type('15');
+      .type("15");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
       .clear()
-      .type('15');
+      .type("15");
     cy.get(
-      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"]'
+      'div[label="Revenue"] input[name="substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent"]',
     )
       .clear()
-      .type('15');
+      .type("15");
     cy.get('div[label="Revenue"] input[name="substantialContributionToTransitionToACircularEconomyInPercent"]')
       .clear()
-      .type('15');
+      .type("15");
     cy.get('div[label="Revenue"] input[name="substantialContributionToPollutionPreventionAndControlInPercent"]')
       .clear()
-      .type('15');
+      .type("15");
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
       .clear()
-      .type('15');
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type('11');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type('12000');
+      .type("15");
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(2).clear().type("11");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(2).clear().type("12000");
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(2), 51);
-    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type('13');
-    cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type('13000');
+    cy.get('div[label="Revenue"] input[name="relativeShareInPercent"]').eq(3).clear().type("13");
+    cy.get('div[label="Revenue"] input[name="amount"]').eq(3).clear().type("13000");
     selectItemFromDropdownByIndex(cy.get('div[label="Revenue"] div[name="currency"]').eq(3), 53);
-    cy.get('div[label="Revenue"] input[name="enablingShareInPercent"]').clear().type('12');
-    cy.get('div[label="Revenue"] input[name="transitionalShareInPercent"]').clear().type('12');
+    cy.get('div[label="Revenue"] input[name="enablingShareInPercent"]').clear().type("12");
+    cy.get('div[label="Revenue"] input[name="transitionalShareInPercent"]').clear().type("12");
   }
 
   /**
@@ -208,76 +208,76 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
    */
   function createMockCompanyAssociatedDataEutaxoNonFinancials(): CompanyAssociatedDataEutaxonomyNonFinancialsData {
     return {
-      companyId: 'abc',
-      reportingPeriod: '2020',
+      companyId: "abc",
+      reportingPeriod: "2020",
       data: {
         capex: {
           totalAmount: {
-            quality: 'Estimated',
+            quality: "Estimated",
             dataSource: {
               fileName: `${TEST_PDF_FILE_NAME}FileCopy`,
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
-            comment: 'test',
+            comment: "test",
             value: 12000000,
-            currency: 'EUR',
+            currency: "EUR",
           },
         },
         opex: {
           totalAmount: {
-            quality: 'Estimated',
+            quality: "Estimated",
             dataSource: {
-              fileName: 'None...',
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+              fileName: "None...",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
-            comment: 'test',
+            comment: "test",
             value: 10000000,
-            currency: 'EUR',
+            currency: "EUR",
           },
         },
         revenue: {
           totalAmount: {
-            quality: 'Estimated',
+            quality: "Estimated",
             dataSource: {
-              fileName: 'None...',
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+              fileName: "None...",
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 12,
             },
-            comment: 'test',
+            comment: "test",
             value: 40000000,
-            currency: 'EUR',
+            currency: "EUR",
           },
         },
         general: {
-          fiscalYearDeviation: 'Deviation',
-          fiscalYearEnd: '2023-09-11',
-          scopeOfEntities: 'Yes',
-          nfrdMandatory: 'Yes',
-          euTaxonomyActivityLevelReporting: 'Yes',
+          fiscalYearDeviation: "Deviation",
+          fiscalYearEnd: "2023-09-11",
+          scopeOfEntities: "Yes",
+          nfrdMandatory: "Yes",
+          euTaxonomyActivityLevelReporting: "Yes",
           assurance: {
-            value: 'None',
-            provider: 'Assurance Provider',
+            value: "None",
+            provider: "Assurance Provider",
             dataSource: {
               fileName: TEST_PDF_FILE_NAME,
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
               page: 1,
             },
           },
           numberOfEmployees: 333,
           referencedReports: {
             [`${TEST_PDF_FILE_NAME}FileCopy`]: {
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              isGroupLevel: 'No',
-              reportDate: '2023-07-12',
-              currency: 'EUR',
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              isGroupLevel: "No",
+              reportDate: "2023-07-12",
+              currency: "EUR",
             },
             [TEST_PDF_FILE_NAME]: {
-              fileReference: 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7',
-              isGroupLevel: 'No',
-              reportDate: '2023-07-12',
-              currency: 'EUR',
+              fileReference: "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7",
+              isGroupLevel: "No",
+              reportDate: "2023-07-12",
+              currency: "EUR",
             },
           },
         },
@@ -287,14 +287,14 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
 
   const companyAssociatedDataEutaxoNonFinancials = createMockCompanyAssociatedDataEutaxoNonFinancials();
 
-  it('Check that warning appears if two pdf files with same name or illegal character are selected for upload', () => {
+  it("Check that warning appears if two pdf files with same name or illegal character are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
       CreateEuTaxonomyNonFinancials,
       {
         keycloak: minimalKeycloakMock({}),
       },
-      { companyID: 'company-id-does-not-matter-in-this-test' }
+      { companyID: "company-id-does-not-matter-in-this-test" },
     ).then(() => {
       checkFileWithExistingFilenameOpensDialogWithWarning();
       checkFileWithIllegalCharacterOpensDialogWithWarning();
@@ -302,7 +302,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it('Open upload page prefilled and assure that new file needs unique name and has to be referenced ', () => {
+  it("Open upload page prefilled and assure that new file needs unique name and has to be referenced ", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateEuTaxonomyNonFinancials, {
       keycloak: minimalKeycloakMock({}),
@@ -318,7 +318,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it('Open upload page, fill out and validate the upload form, except for new activities', () => {
+  it("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateEuTaxonomyNonFinancials, {
       keycloak: minimalKeycloakMock({}),

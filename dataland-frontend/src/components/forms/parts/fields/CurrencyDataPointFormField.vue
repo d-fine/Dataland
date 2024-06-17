@@ -35,17 +35,17 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from 'vue';
-import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
-import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
-import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import { hasDataPointProperValue } from '@/utils/DataPoint';
-import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { defineComponent } from "vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
+import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import { hasDataPointProperValue } from "@/utils/DataPoint";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
-  name: 'CurrencyDataPointFormField',
+  name: "CurrencyDataPointFormField",
   computed: {
     DropdownDatasetIdentifier() {
       return DropdownDatasetIdentifier;

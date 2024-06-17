@@ -126,30 +126,30 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent, nextTick } from 'vue';
-import InputSwitch from 'primevue/inputswitch';
-import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import { FormKit } from '@formkit/vue';
-import { QualityOptions } from '@clients/backend';
-import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
-import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
-import { type ExtendedDataPoint } from '@/utils/DataPoint';
-import { isValidFileName, noReportLabel } from '@/utils/DataSource';
-import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { defineComponent, nextTick } from "vue";
+import InputSwitch from "primevue/inputswitch";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { FormKit } from "@formkit/vue";
+import { QualityOptions } from "@clients/backend";
+import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
+import { type ExtendedDataPoint } from "@/utils/DataPoint";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
-  name: 'ExtendedDataPointFormField',
+  name: "ExtendedDataPointFormField",
   components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
   inject: {
     injectReportsNameAndReferences: {
-      from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
+      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
       default: {} as ObjectType,
     },
     injectlistOfFilledKpis: {
-      from: 'listOfFilledKpis',
+      from: "listOfFilledKpis",
       default: [] as Array<string>,
     },
   },
@@ -161,8 +161,8 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
-      qualityValue: 'NA',
-      commentValue: '',
+      qualityValue: "NA",
+      commentValue: "",
       currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
@@ -219,7 +219,7 @@ export default defineComponent({
     },
     dataTest: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   watch: {
@@ -243,7 +243,7 @@ export default defineComponent({
      * @param newCheckboxValue value after changing value that must be reflected in checkboxes
      */
     setCheckboxValue(newCheckboxValue: string) {
-      if (newCheckboxValue && newCheckboxValue !== '') {
+      if (newCheckboxValue && newCheckboxValue !== "") {
         this.checkboxValue = [newCheckboxValue];
       }
     },
@@ -255,7 +255,7 @@ export default defineComponent({
       if (!isDataValueProvided && !this.isYesNoVariant) {
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
-        this.qualityValue = '';
+        this.qualityValue = "";
       }
     },
     /**

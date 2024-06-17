@@ -19,14 +19,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import FinancialShareFormField from '@/components/forms/parts/kpiSelection/FinancialShareFormField.vue';
-import ObjectivesFormField from '@/components/forms/parts/kpiSelection/ObjectivesFormField.vue';
-import ActivitySelector from '@/components/forms/parts/elements/derived/ActivitySelector.vue';
-import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import { defineComponent } from "vue";
+import FinancialShareFormField from "@/components/forms/parts/kpiSelection/FinancialShareFormField.vue";
+import ObjectivesFormField from "@/components/forms/parts/kpiSelection/ObjectivesFormField.vue";
+import ActivitySelector from "@/components/forms/parts/elements/derived/ActivitySelector.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 
 export default defineComponent({
-  name: 'AlignedActivitiesFormElements',
+  name: "AlignedActivitiesFormElements",
   components: {
     YesNoFormField,
     ActivitySelector,

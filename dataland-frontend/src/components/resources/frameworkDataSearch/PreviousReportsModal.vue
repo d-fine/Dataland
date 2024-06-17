@@ -17,15 +17,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import type { CompanyReport } from '@clients/backend';
+import { defineComponent } from "vue";
+import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   components: { DocumentLink },
-  inject: ['dialogRef'],
-  name: 'PreviousReportsModal',
+  inject: ["dialogRef"],
+  name: "PreviousReportsModal",
   data() {
     return {
       reportingPeriods: [] as Array<string>,

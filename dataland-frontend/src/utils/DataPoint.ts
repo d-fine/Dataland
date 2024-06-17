@@ -1,5 +1,5 @@
-import { type BaseDocumentReference, type ExtendedDocumentReference, type QualityOptions } from '@clients/backend';
-import { type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type BaseDocumentReference, type ExtendedDocumentReference, type QualityOptions } from "@clients/backend";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export interface ExtendedDataPoint<T> {
   value?: T | null;
@@ -27,7 +27,7 @@ export type DataPointDisplay = {
  * @returns the result of the evaluation
  */
 export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean {
-  return dataPoint.value != undefined && dataPoint.value != '';
+  return dataPoint.value != undefined && dataPoint.value != "";
 }
 
 /**
@@ -38,9 +38,9 @@ export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean 
 export function getFilledKpis(dataResponseData: object): string[] {
   const listOfFilledKpis: string[] = [];
   Object.values(dataResponseData).forEach((category) => {
-    if (category && typeof category === 'object') {
+    if (category && typeof category === "object") {
       Object.values(category as ObjectType).forEach((subCategory) => {
-        if (subCategory && typeof subCategory === 'object') {
+        if (subCategory && typeof subCategory === "object") {
           Object.keys(subCategory).forEach((kpi) => {
             if (subCategory[kpi as keyof typeof subCategory]) {
               listOfFilledKpis.push(kpi);

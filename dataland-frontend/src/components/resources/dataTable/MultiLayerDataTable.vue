@@ -43,9 +43,9 @@
 </style>
 
 <script setup lang="ts" generic="T">
-import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
-import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 defineProps<{
   config: MLDTConfig<T>;
