@@ -695,8 +695,8 @@ export const smeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberFatalitiesTotalFullTime",
-            label: "Number fatalities total full-time",
+            name: "numberOfTotalFatalitiesInFtes",
+            label: "Number of total fatalities in FTEs",
             description:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
 
@@ -708,8 +708,8 @@ export const smeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberFatalitiesTotalHead",
-            label: "Number fatalities total head",
+            name: "numberOfTotalFatalitiesInHeadcount",
+            label: "Number of total fatalities in Headcount",
             description:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
 
@@ -721,8 +721,8 @@ export const smeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberFatalitiesAccidentFullTime",
-            label: "Number fatalities accident full-time",
+            name: "numberOfFatalitiesOfAccidentsInFtes",
+            label: "Number of fatalities of accidents in FTEs",
             description:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
 
@@ -734,8 +734,8 @@ export const smeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberFatalitiesAccidentHead",
-            label: "Number fatalities accident head",
+            name: "numberOfFatalitiesOfAccidentsInHeadcount",
+            label: "Number of fatalities of accidents in Headcount",
             description:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
 
@@ -747,8 +747,8 @@ export const smeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberFatalitiesHealthFullTime",
-            label: "Number fatalities health full-time",
+            name: "numberOfHealthFatalitiesInFtes",
+            label: "Number of health fatalities in FTEs",
 
             unit: "full-time equivalents",
             component: "NumberFormField",
@@ -758,8 +758,8 @@ export const smeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberFatalitiesHealthHead",
-            label: "Number fatalities health head",
+            name: "numberOfHealthFatalitiesInHeadcount",
+            label: "Number of health fatalities in Headcount",
 
             unit: "head count",
             component: "NumberFormField",
@@ -775,8 +775,8 @@ export const smeDataModel = [
         label: "Workforce - Renumeration, collective bargaining, and training",
         fields: [
           {
-            name: "numberMinimumWageFullTime",
-            label: "Number minimum wage full-time",
+            name: "numberofMinimumWageEmployeesInFtes",
+            label: "Numberof  minimum wage employees in FTEs",
             description:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
 
@@ -787,8 +787,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberMinimumWageHead",
-            label: "Number minimum wage head",
+            name: "numberofMinimumWageEmployeesInHeadcount",
+            label: "Numberof  minimum wage employees in Headcount",
             description:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
 
@@ -799,8 +799,8 @@ export const smeDataModel = [
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "percentageMinimumWage",
-            label: "Percentage minimum wage",
+            name: "percentageOfMinimumWageEmployees",
+            label: "Percentage of minimum wage employees",
             description:
               "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
 
@@ -811,8 +811,8 @@ export const smeDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "moreThanHalf",
-            label: "more than half",
+            name: "majorityOfMinimumWageEmployees",
+            label: "Majority of minimum wage employees",
             description:
               "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
 
@@ -823,7 +823,7 @@ export const smeDataModel = [
           {
             name: "entryLevelWage",
             label: "Entry level wage",
-            description: "Please provide the minimum wage you pay as well as the entry level wage.",
+            description: "Please provide the entry level wage you pay.",
 
             unit: "Euro",
             component: "NumberFormField",
@@ -833,6 +833,7 @@ export const smeDataModel = [
           {
             name: "minimumWage",
             label: "Minimum wage",
+            description: "Please provide the minimum wage you pay.",
 
             unit: "Euro",
             component: "NumberFormField",

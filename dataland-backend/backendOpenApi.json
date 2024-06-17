@@ -4563,27 +4563,27 @@
             "type": "number",
             "nullable": true
           },
-          "numberFatalitiesTotalFullTime": {
+          "numberOfTotalFatalitiesInFtes": {
             "type": "integer",
             "nullable": true
           },
-          "numberFatalitiesTotalHead": {
+          "numberOfTotalFatalitiesInHeadcount": {
             "type": "integer",
             "nullable": true
           },
-          "numberFatalitiesAccidentFullTime": {
+          "numberOfFatalitiesOfAccidentsInFtes": {
             "type": "integer",
             "nullable": true
           },
-          "numberFatalitiesAccidentHead": {
+          "numberOfFatalitiesOfAccidentsInHeadcount": {
             "type": "integer",
             "nullable": true
           },
-          "numberFatalitiesHealthFullTime": {
+          "numberOfHealthFatalitiesInFtes": {
             "type": "integer",
             "nullable": true
           },
-          "numberFatalitiesHealthHead": {
+          "numberOfHealthFatalitiesInHeadcount": {
             "type": "integer",
             "nullable": true
           }
@@ -4592,19 +4592,19 @@
       "SmeBasicWorkforceRenumerationCollectiveBargainingAndTraining": {
         "type": "object",
         "properties": {
-          "numberMinimumWageFullTime": {
+          "numberofMinimumWageEmployeesInFtes": {
             "type": "number",
             "nullable": true
           },
-          "numberMinimumWageHead": {
+          "numberofMinimumWageEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "percentageMinimumWage": {
+          "percentageOfMinimumWageEmployees": {
             "type": "number",
             "nullable": true
           },
-          "moreThanHalf": {
+          "majorityOfMinimumWageEmployees": {
             "nullable": true,
             "allOf": [
               {
@@ -14947,21 +14947,21 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -14988,10 +14988,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

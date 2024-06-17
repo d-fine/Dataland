@@ -8,13 +8,13 @@ import java.math.BigDecimal
  * The data-model for the WorkforceRenumerationCollectiveBargainingAndTraining section
  */
 data class SmeBasicWorkforceRenumerationCollectiveBargainingAndTraining(
-    val numberMinimumWageFullTime: BigDecimal? = null,
+    val numberofMinimumWageEmployeesInFtes: BigDecimal? = null,
 
-    val numberMinimumWageHead: BigDecimal? = null,
+    val numberofMinimumWageEmployeesInHeadcount: BigDecimal? = null,
 
-    val percentageMinimumWage: BigDecimal? = null,
+    val percentageOfMinimumWageEmployees: BigDecimal? = null,
 
-    val moreThanHalf: YesNo? = null,
+    val majorityOfMinimumWageEmployees: YesNo? = null,
 
     val entryLevelWage: BigDecimal? = null,
 
