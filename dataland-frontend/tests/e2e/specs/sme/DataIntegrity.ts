@@ -106,9 +106,10 @@ describeIf(
           dataMetaInfoOfTestDataset.dataId,
       );
       uploadReports.selectFile(`${TEST_PDF_FILE_NAME}-private`);
+      cy.wait(5000);
       uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}-private`);
       uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
-      cy.get('div[name="fileName"]').click();
+      cy.get('[data-test="electricityTotal"]').find('div[name="fileName"]').click();
       cy.get("ul.p-dropdown-items li").contains(`${TEST_PDF_FILE_NAME}-private`).click();
       cy.intercept({
         url: `**/api/data/${DataTypeEnum.Sme}`,
@@ -131,9 +132,12 @@ describeIf(
               dataMetaInformationOfReuploadedDataset.dataId,
           );
 
-          MLDT.getSectionHead("Power").should("have.attr", "data-section-expanded", "true");
-          MLDT.getSectionHead("Consumption").should("have.attr", "data-section-expanded", "true");
-          MLDT.getCellValueContainer("Power consumption in MWh").find("a.link").should("include.text", "MWh").click();
+          MLDT.getSectionHead("Energy and greenhous gas emissions").should(
+            "have.attr",
+            "data-section-expanded",
+            "true",
+          );
+          MLDT.getCellValueContainer("Electricity total").find("a.link").should("include.text", "MWh").click();
           const expectedPathToDownloadedReport =
             Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
           cy.readFile(expectedPathToDownloadedReport).should("not.exist");
