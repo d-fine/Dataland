@@ -239,6 +239,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           " and verify pages and elements.",
         function () {
           cy.ensureLoggedIn(uploader_name, uploader_pw);
+
           cy.visitAndCheckAppMount("/companies");
           verifySearchResultTableExists();
           cy.get("button").contains("New Dataset").click({ force: true });
