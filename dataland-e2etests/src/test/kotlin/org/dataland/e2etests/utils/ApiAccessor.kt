@@ -154,8 +154,9 @@ class ApiAccessor {
     ): List<UploadInfo> {
         val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadConfig.uploadingTechnicalUser)
         listOfFrameworkData.forEach { frameworkDataSet ->
             listOfCompanyInformation.zip(storedCompanyInfos).forEach { pair ->
                 val receivedDataMetaInformation = frameworkDataUploadFunction(

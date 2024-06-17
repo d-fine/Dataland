@@ -217,7 +217,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           const preFix = "ThisCompanyHasNoDataSet";
           const companyName = preFix + companyNameMarker;
           const sector = "SectorWithNoDataSet";
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.intercept({ url: "**/api/companies*", times: 1 }).as("searchCompanyInitial");
@@ -241,7 +241,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = "ThisCompanyShouldNeverBeFound12349876";
           const sector = "ThisSectorShouldNeverAppearInDropdown";
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
@@ -334,7 +334,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
             companyNameSfdrPrefix,
-            DataTypeEnum.Sme,
+            DataTypeEnum.P2p,
             false,
           );
           validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(

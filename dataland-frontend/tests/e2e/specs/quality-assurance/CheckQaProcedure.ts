@@ -8,7 +8,15 @@ import {
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { getBaseUrl, reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import {
+  admin_name,
+  admin_pw,
+  getBaseUrl,
+  reviewer_name,
+  reviewer_pw,
+  uploader_name,
+  uploader_pw,
+} from "@e2e/utils/Cypress";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
   uploadFrameworkDataForLegacyFramework,
@@ -35,7 +43,7 @@ describeIf(
         preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
 
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
         return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
       });

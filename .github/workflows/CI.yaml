@@ -387,6 +387,7 @@ jobs:
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
+          CYPRESS_IGNORE_EXTERNAL_STORAGE: "false"
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
@@ -400,6 +401,7 @@ jobs:
           FRONTEND_LOCATION_CONFIG: "Test"
           INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          IGNORE_EXTERNAL_STORAGE_ERROR: "false"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v4
