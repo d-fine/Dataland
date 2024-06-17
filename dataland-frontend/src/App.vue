@@ -4,19 +4,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import DynamicDialog from "primevue/dynamicdialog";
-import Keycloak from "keycloak-js";
-import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
+import { computed, defineComponent, ref } from 'vue';
+import DynamicDialog from 'primevue/dynamicdialog';
+import Keycloak from 'keycloak-js';
+import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import {
   SessionDialogMode,
   startSessionSetIntervalFunctionAndReturnItsId,
   updateTokenAndItsExpiryTimestampAndStoreBoth,
-} from "@/utils/SessionTimeoutUtils";
-import SessionDialog from "@/components/general/SessionDialog.vue";
-import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
-import { useSharedSessionStateStore } from "@/stores/Stores";
-import { ApiClientProvider } from "@/services/ApiClients";
+} from '@/utils/SessionTimeoutUtils';
+import SessionDialog from '@/components/general/SessionDialog.vue';
+import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
+import { useSharedSessionStateStore } from '@/stores/Stores';
+import { ApiClientProvider } from '@/services/ApiClients';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -25,7 +25,7 @@ const storeWindowWidth = (): void => {
 };
 
 export default defineComponent({
-  name: "app",
+  name: 'app',
   components: { DynamicDialog },
 
   data() {
@@ -46,7 +46,7 @@ export default defineComponent({
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
         this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
           this.resolvedKeycloakPromise,
-          openSessionWarningModalBound,
+          openSessionWarningModalBound
         );
       }
     },
@@ -76,7 +76,7 @@ export default defineComponent({
     return {
       getKeycloakPromise: (): Promise<Keycloak> => {
         if (this.keycloakPromise) return this.keycloakPromise;
-        throw new Error("The Keycloak promise has not yet been initialised. This should not be possible...");
+        throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
       },
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
@@ -89,10 +89,10 @@ export default defineComponent({
   },
 
   mounted() {
-    window.addEventListener("resize", storeWindowWidth);
+    window.addEventListener('resize', storeWindowWidth);
   },
   unmounted() {
-    window.removeEventListener("resize", storeWindowWidth);
+    window.removeEventListener('resize', storeWindowWidth);
   },
 
   methods: {
@@ -105,15 +105,15 @@ export default defineComponent({
       keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({
-          onLoad: "check-sso",
-          silentCheckSsoRedirectUri: window.location.origin + "/static/silent-check-sso.html",
-          pkceMethod: "S256",
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: window.location.origin + '/static/silent-check-sso.html',
+          pkceMethod: 'S256',
         })
         .then((authenticated) => {
           this.keycloakAuthenticated = authenticated;
         })
         .catch((error) => {
-          console.log("Error in init Keycloak ", error);
+          console.log('Error in init Keycloak ', error);
           this.keycloakAuthenticated = false;
         })
         .then((): Keycloak => {
@@ -127,7 +127,7 @@ export default defineComponent({
      * in the url which triggers a pop-up to open and inform the user that she/he was just logged out.
      */
     handleAuthLogout() {
-      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "?externalLogout=true");
+      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, '?externalLogout=true');
     },
 
     /**

@@ -31,15 +31,15 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import type Keycloak from "keycloak-js";
-import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
-import { useRouter } from "vue-router";
-import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { inject, onMounted, ref } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import type Keycloak from 'keycloak-js';
+import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
+import { useRouter } from 'vue-router';
+import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from '@/utils/KeycloakUtils';
 
 const router = useRouter();
-const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const isUserLoggedIn = ref<undefined | boolean>(undefined);
 const { isLandingPage } = defineProps<{
   isLandingPage: boolean;
@@ -51,7 +51,7 @@ const login = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (keycloak.authenticated) return;
-      if (window.location.pathname == "/") {
+      if (window.location.pathname == '/') {
         loginAndRedirectToSearchPage(keycloak);
       } else {
         keycloak.login().catch((error) => console.error(error));
@@ -64,7 +64,7 @@ const login = (): void => {
  * Sends the user to back to the platform
  */
 const backToPlatform = (): void => {
-  void router.push({ path: "/companies" });
+  void router.push({ path: '/companies' });
 };
 
 onMounted(() => {
@@ -82,7 +82,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (keycloak.authenticated) return;
-      if (window.location.pathname == "/") {
+      if (window.location.pathname == '/') {
         registerAndRedirectToSearchPage(keycloak);
       } else {
         keycloak.register().catch((error) => console.error(error));
@@ -112,7 +112,7 @@ const register = (): void => {
       border-bottom: 2px solid transparent;
 
       &::before {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         left: -20px;
@@ -120,14 +120,14 @@ const register = (): void => {
         transform: translateY(-50%);
         width: 16px;
         height: 16px;
-        background-image: url("/static/icons/User.svg");
+        background-image: url('/static/icons/User.svg');
         background-size: cover;
       }
       &:hover {
         border-bottom: 2px solid var(--primary-orange);
         color: var(--primary-orange);
         &::before {
-          background-image: url("/static/icons/User-hover.svg");
+          background-image: url('/static/icons/User-hover.svg');
         }
       }
     }

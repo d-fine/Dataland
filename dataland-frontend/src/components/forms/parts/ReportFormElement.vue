@@ -39,17 +39,17 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import Calendar from "primevue/calendar";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import { defineComponent } from 'vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import Calendar from 'primevue/calendar';
+import { getHyphenatedDate } from '@/utils/DataFormatUtils';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
 export default defineComponent({
-  name: "ReportFormElement",
+  name: 'ReportFormElement',
   components: { YesNoFormField, FormKit, UploadFormHeader, Calendar, SingleSelectFormField },
   data() {
     return {

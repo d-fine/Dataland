@@ -58,18 +58,18 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import MultiSelect from "primevue/multiselect";
-import { optionsForHighImpactClimateSectors } from "@/types/HighImpactClimateSectors";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import { defineComponent } from 'vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import MultiSelect from 'primevue/multiselect';
+import { optionsForHighImpactClimateSectors } from '@/types/HighImpactClimateSectors';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 
 export default defineComponent({
-  name: "HighImpactClimateSectorsFormField",
+  name: 'HighImpactClimateSectorsFormField',
   inject: {
     injectClimateSectors: {
-      from: "climateSectorsForPrefill",
+      from: 'climateSectorsForPrefill',
       default: [] as string[],
     },
   },

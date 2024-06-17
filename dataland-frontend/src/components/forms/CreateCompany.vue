@@ -209,31 +209,31 @@
 </template>
 
 <script lang="ts">
-import { FormKit } from "@formkit/vue";
-import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { type CompanyInformation, IdentifierType } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
-import PrimeButton from "primevue/button";
-import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import Tooltip from "primevue/tooltip";
+import { FormKit } from '@formkit/vue';
+import Card from 'primevue/card';
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { type CompanyInformation, IdentifierType } from '@clients/backend';
+import { ApiClientProvider } from '@/services/ApiClients';
+import PrimeButton from 'primevue/button';
+import { getAllCountryCodes } from '@/utils/CountryCodeConverter';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import Tooltip from 'primevue/tooltip';
 import {
   companyDataNames,
   companyDataExplanations,
   gicsSectors,
-} from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { AxiosError } from "axios";
-import { type FormKitNode } from "@formkit/core";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+} from '@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { AxiosError } from 'axios';
+import { type FormKitNode } from '@formkit/core';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
 export default defineComponent({
-  name: "CreateCompany",
+  name: 'CreateCompany',
   components: {
     SingleSelectFormField,
     UploadFormHeader,
@@ -246,34 +246,34 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
-  emits: ["companyCreated"],
+  emits: ['companyCreated'],
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   data: () => ({
-    companyName: "",
+    companyName: '',
     companyAlternativeNames: [] as Array<string>,
-    companyLegalForm: "",
-    headquarters: "",
-    headquartersPostalCode: "",
+    companyLegalForm: '',
+    headquarters: '',
+    headquartersPostalCode: '',
     countryCode: null as null | string,
-    lei: "",
-    isin: "",
-    ticker: "",
-    permId: "",
-    duns: "",
-    companyRegistrationNumber: "",
-    vatNumber: "",
+    lei: '',
+    isin: '',
+    ticker: '',
+    permId: '',
+    duns: '',
+    companyRegistrationNumber: '',
+    vatNumber: '',
     sector: null as null | string,
-    website: "",
+    website: '',
     checkCustomInputs,
     identifiers: {} as { [key: string]: Array<string> },
-    enteredCompanyAlternativeName: "",
+    enteredCompanyAlternativeName: '',
     allCountryCodes: getAllCountryCodes(),
     postCompanyProcessed: false,
-    message: "",
+    message: '',
     uploadSucceded: false,
     messageCounter: 0,
     companyDataExplanations,
@@ -291,7 +291,7 @@ export default defineComponent({
     async identifierDoesNotExistValidator(node: FormKitNode, identifierType: IdentifierType): Promise<boolean> {
       try {
         await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)()
         ).backendClients.companyDataController.existsIdentifier(identifierType, node.value as string);
         return false;
       } catch (error) {
@@ -307,7 +307,7 @@ export default defineComponent({
      * @param identifierValue the value of the identifier
      */
     setIdentifier(identifierType: IdentifierType, identifierValue: string): void {
-      if (identifierValue !== "") {
+      if (identifierValue !== '') {
         this.identifiers[identifierType] = [identifierValue];
       }
     },
@@ -330,12 +330,12 @@ export default defineComponent({
      */
     addCompanyAlternativeName(): void {
       if (
-        this.enteredCompanyAlternativeName !== "" &&
+        this.enteredCompanyAlternativeName !== '' &&
         !this.companyAlternativeNames.includes(this.enteredCompanyAlternativeName)
       ) {
         this.companyAlternativeNames.push(this.enteredCompanyAlternativeName);
       }
-      this.enteredCompanyAlternativeName = "";
+      this.enteredCompanyAlternativeName = '';
     },
     /**
      * Removes the n-th company alternative name from the corresponding array
@@ -373,26 +373,26 @@ export default defineComponent({
         const company = this.getCompanyInformation();
         const hasAtLeastOneIdentifier = Object.values(this.identifiers).some((it) => it.length > 0);
         if (!hasAtLeastOneIdentifier) {
-          this.message = "Please specify at least one company identifier.";
+          this.message = 'Please specify at least one company identifier.';
           this.uploadSucceded = false;
         } else {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;
           const response = await companyDataControllerApi.postCompany(company);
           const newCompanyId = response.data.companyId;
-          this.$emit("companyCreated", newCompanyId);
-          this.$formkit.reset("createCompanyForm");
+          this.$emit('companyCreated', newCompanyId);
+          this.$formkit.reset('createCompanyForm');
           this.companyAlternativeNames = new Array<string>();
-          this.message = "New company has the ID: " + newCompanyId;
+          this.message = 'New company has the ID: ' + newCompanyId;
           this.uploadSucceded = true;
         }
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+          this.message = 'An error occurred: ' + error.message;
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {

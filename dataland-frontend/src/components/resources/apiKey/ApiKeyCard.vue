@@ -45,16 +45,16 @@
 </template>
 
 <script lang="ts">
-import PrimeButton from "primevue/button";
-import PrimeDialog from "primevue/dialog";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { defineComponent, type PropType } from "vue";
-import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
+import PrimeButton from 'primevue/button';
+import PrimeDialog from 'primevue/dialog';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { defineComponent, type PropType } from 'vue';
+import UserRolesBadges from '@/components/resources/apiKey/UserRolesBadges.vue';
 
 export default defineComponent({
-  name: "ApiKeyCard",
+  name: 'ApiKeyCard',
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
-  emits: ["revokeKey"],
+  emits: ['revokeKey'],
   props: {
     expiryDateInMilliseconds: {
       type: Number,
@@ -75,7 +75,7 @@ export default defineComponent({
       } else if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds < Date.now()) {
         return `The API Key expired on ${convertUnixTimeInMsToDateString(this.expiryDateInMilliseconds)}`;
       } else {
-        return "The API Key has no defined expiry date";
+        return 'The API Key has no defined expiry date';
       }
     },
   },

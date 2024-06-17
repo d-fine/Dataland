@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
-import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
-import { type TreeNode } from "primevue/treenode";
-import { pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
-import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
+import { faker } from '@faker-js/faker';
+import { activityTree } from '@/components/forms/parts/elements/derived/ActivityTree';
+import { type TreeNode } from 'primevue/treenode';
+import { pickOneElement, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
+import { naceCodeMap } from '@/components/forms/parts/elements/derived/NaceCodeTree';
 
 /**
  * Generates a list of sorted NACE codes
@@ -22,9 +22,9 @@ export function generateNaceCodes(min = 0, max = 5): string[] {
  */
 export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: string): string[] | null {
   for (const node of activityTree) {
-    if (node.type === "header" && node.children) {
+    if (node.type === 'header' && node.children) {
       for (const childNode of node.children) {
-        if (childNode.type === "child" && childNode.value === activityName) {
+        if (childNode.type === 'child' && childNode.value === activityName) {
           return getRandomNumberOfNaceCodes(childNode);
         }
       }
@@ -40,13 +40,13 @@ export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: stri
  */
 function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | null {
   let naceCodesToReturn: string[] | null = null;
-  if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === "string")) {
+  if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === 'string')) {
     const allNaceCodesForActivity = childNode.naceCodes as string[];
     const listWithRandomNumberOfNaceCodes = Array.from(
       { length: faker.number.int({ min: 1, max: allNaceCodesForActivity.length }) },
       () => {
         return pickOneElement(allNaceCodesForActivity);
-      },
+      }
     );
     naceCodesToReturn = [...new Set(listWithRandomNumberOfNaceCodes)];
   }

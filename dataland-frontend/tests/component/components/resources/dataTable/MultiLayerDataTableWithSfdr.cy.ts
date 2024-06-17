@@ -1,35 +1,35 @@
 // @ts-nocheck
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import {
   type DataMetaInformation,
   type DataAndMetaInformationSfdrData,
   DataTypeEnum,
   QaStatus,
   type SfdrData,
-} from "@clients/backend";
+} from '@clients/backend';
 
 import {
   mountMLDTFrameworkPanelFromFakeFixture,
   mountMLDTFrameworkPanel,
-} from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
-import { getCellValueContainer } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
-import { sfdrViewConfiguration } from "@/frameworks/sfdr/ViewConfig";
+} from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
+import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
+import { sfdrViewConfiguration } from '@/frameworks/sfdr/ViewConfig';
 
-describe("Component tests for SfdrPanel", () => {
+describe('Component tests for SfdrPanel', () => {
   let preparedFixtures: Array<FixtureData<SfdrData>>;
   const sfdrDisplayConfiguration = sfdrViewConfiguration;
   before(function () {
-    cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
+    cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
     });
   });
 
-  it("Check SFDR view page for company with one SFDR data set works and displays the fiscal year end correctly", () => {
-    const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
+  it('Check SFDR view page for company with one SFDR data set works and displays the fiscal year end correctly', () => {
+    const preparedFixture = getPreparedFixture('companyWithOneFilledSfdrSubcategory', preparedFixtures);
     const sfdrData = preparedFixture.t;
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    getCellValueContainer("Fiscal Year End").should("contain.text", sfdrData.general.general.fiscalYearEnd);
+    getCellValueContainer('Fiscal Year End').should('contain.text', sfdrData.general.general.fiscalYearEnd);
   });
 
   /**
@@ -52,9 +52,9 @@ describe("Component tests for SfdrPanel", () => {
         qaStatus: QaStatus.Accepted,
         currentlyActive: true,
         dataType: DataTypeEnum.Sfdr,
-        companyId: "mock-company-id",
+        companyId: 'mock-company-id',
         uploadTime: 0,
-        uploaderUserId: "mock-uploader-id",
+        uploaderUserId: 'mock-uploader-id',
       };
 
       sfdrDatasets.push({
@@ -65,23 +65,23 @@ describe("Component tests for SfdrPanel", () => {
     return sfdrDatasets;
   }
 
-  it("Check SFDR view page for company with six SFDR datasets reported in different years", () => {
-    const preparedFixture = getPreparedFixture("companyWithOneFilledSfdrSubcategory", preparedFixtures);
+  it('Check SFDR view page for company with six SFDR datasets reported in different years', () => {
+    const preparedFixture = getPreparedFixture('companyWithOneFilledSfdrSubcategory', preparedFixtures);
     const mockedData = constructCompanyApiResponseForSfdrSixYears(preparedFixture.t);
     mountMLDTFrameworkPanel(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, mockedData);
-    getCellValueContainer("Fiscal Year End", 5).should("contain.text", "2023-01-01");
+    getCellValueContainer('Fiscal Year End', 5).should('contain.text', '2023-01-01');
 
     for (let indexOfColumn = 0; indexOfColumn < 6; indexOfColumn++) {
-      cy.get(`th[data-dataset-index=${indexOfColumn}]`).should("contain.text", (2028 - indexOfColumn).toString());
+      cy.get(`th[data-dataset-index=${indexOfColumn}]`).should('contain.text', (2028 - indexOfColumn).toString());
     }
   });
 
-  it("Check SFDR view page for a dataset which has null values", () => {
-    const preparedFixture = getPreparedFixture("sfdr-a-lot-of-nulls", preparedFixtures);
+  it('Check SFDR view page for a dataset which has null values', () => {
+    const preparedFixture = getPreparedFixture('sfdr-a-lot-of-nulls', preparedFixtures);
 
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    cy.contains("span", "2023-01-01").should("exist");
-    cy.contains("td.headers-bg", "Data Date").should("exist");
+    cy.contains('span', '2023-01-01').should('exist');
+    cy.contains('td.headers-bg', 'Data Date').should('exist');
   });
 });

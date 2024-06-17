@@ -15,14 +15,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import { type DataMetaInformation } from "@clients/backend";
-import { compareReportingPeriods } from "@/utils/DataTableDisplay";
-import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
-import { type StoredDataRequest } from "@clients/communitymanager";
+import { defineComponent, type PropType } from 'vue';
+import { type DataMetaInformation } from '@clients/backend';
+import { compareReportingPeriods } from '@/utils/DataTableDisplay';
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
+import { type StoredDataRequest } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "SelectReportingPeriodDialog",
+  name: 'SelectReportingPeriodDialog',
   data() {
     return {
       dataTableContents: [] as ReportingPeriodTableEntry[],
@@ -33,14 +33,14 @@ export default defineComponent({
       type: Map as PropType<Map<string, DataMetaInformation>>,
     },
     answeredDataRequests: {
-      type: Object as PropType<Pick<StoredDataRequest, "reportingPeriod" | "dataRequestId">[]>,
+      type: Object as PropType<Pick<StoredDataRequest, 'reportingPeriod' | 'dataRequestId'>[]>,
     },
     actionOnClick: {
       type: String as PropType<ReportingPeriodTableActions>,
       required: true,
     },
   },
-  emits: ["selectedReportingPeriod"],
+  emits: ['selectedReportingPeriod'],
   mounted() {
     this.setReportingPeriodDataTableContents();
   },
@@ -52,7 +52,7 @@ export default defineComponent({
     setReportingPeriodDataTableContents(): void {
       if (this.mapOfReportingPeriodToActiveDataset) {
         const sortedReportingPeriodMetaInfoPairs = Array.from(this.mapOfReportingPeriodToActiveDataset.entries()).sort(
-          (firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0]),
+          (firstElement, secondElement) => compareReportingPeriods(firstElement[0], secondElement[0])
         );
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
           const answeredDataRequestIds = this.answeredDataRequests

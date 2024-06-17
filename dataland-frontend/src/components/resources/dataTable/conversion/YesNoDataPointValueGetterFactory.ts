@@ -1,13 +1,13 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type YesNoNa } from "@clients/backend";
-import { type ExtendedDataPoint } from "@/utils/DataPoint";
-import { HumanizedYesNoNa } from "@/utils/YesNoNa";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
+import { type Field } from '@/utils/GenericFrameworkTypes';
+import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type YesNoNa } from '@clients/backend';
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
+import { HumanizedYesNoNa } from '@/utils/YesNoNa';
+import { getDataPointGetterFactory } from '@/components/resources/dataTable/conversion/DataPoints';
 
 const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
-  Yes: "Certified",
-  No: "Uncertified",
+  Yes: 'Certified',
+  No: 'Uncertified',
   NA: HumanizedYesNoNa.NA,
 };
 
@@ -19,7 +19,7 @@ const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
  */
 export function yesNoDataPointValueGetterFactory(
   path: string,
-  field: Field,
+  field: Field
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return getDataPointGetterFactory<YesNoNa>(
@@ -27,11 +27,11 @@ export function yesNoDataPointValueGetterFactory(
     field,
     (dataPoint?: ExtendedDataPoint<YesNoNa>): string | undefined => {
       const lowerFieldLabel = field.label.toLowerCase();
-      const isCertificationField = lowerFieldLabel.includes("certificate") || lowerFieldLabel.includes("certification");
+      const isCertificationField = lowerFieldLabel.includes('certificate') || lowerFieldLabel.includes('certification');
       const humanReadableValue = isCertificationField
-        ? certificateHumanReadableYesNoMap[dataPoint?.value ?? "NA"]
-        : HumanizedYesNoNa[dataPoint?.value ?? "NA"];
-      return dataPoint?.value ? humanReadableValue : "";
-    },
+        ? certificateHumanReadableYesNoMap[dataPoint?.value ?? 'NA']
+        : HumanizedYesNoNa[dataPoint?.value ?? 'NA'];
+      return dataPoint?.value ? humanReadableValue : '';
+    }
   );
 }

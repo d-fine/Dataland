@@ -3,8 +3,8 @@ import {
   generateArray,
   pickOneElement,
   pickSubsetOfElements,
-} from "@e2e/fixtures/FixtureUtils";
-import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
+} from '@e2e/fixtures/FixtureUtils';
+import { generateYesNo, generateYesNoNa } from '@e2e/fixtures/common/YesNoFixtures';
 import {
   type AmountWithCurrency,
   type CurrencyDataPoint,
@@ -12,17 +12,17 @@ import {
   QualityOptions,
   type YesNo,
   type YesNoNa,
-} from "@clients/backend";
-import { generateCurrencyValue, generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateReferencedDocuments, getReferencedDocumentId } from "@e2e/utils/DocumentReference";
-import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
-import { generateFutureDate, generatePastDate } from "@e2e/fixtures/common/DateFixtures";
-import { faker } from "@faker-js/faker";
-import { generateDataSource } from "@e2e/fixtures/common/DataSourceFixtures";
+} from '@clients/backend';
+import { generateCurrencyValue, generateFloat, generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
+import { generateReferencedDocuments, getReferencedDocumentId } from '@e2e/utils/DocumentReference';
+import { generateCurrencyCode } from '@e2e/fixtures/common/CurrencyFixtures';
+import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
+import { generateFutureDate, generatePastDate } from '@e2e/fixtures/common/DateFixtures';
+import { faker } from '@faker-js/faker';
+import { generateDataSource } from '@e2e/fixtures/common/DataSourceFixtures';
 
 export const DEFAULT_PROBABILITY = 0.2;
-const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
+const possibleReports = ['AnnualReport', 'SustainabilityReport', 'IntegratedReport', 'ESEFReport'];
 
 /**
  * Randomly returns the specified value or null
