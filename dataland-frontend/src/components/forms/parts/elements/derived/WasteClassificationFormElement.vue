@@ -64,6 +64,7 @@ import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDa
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "WasteClassificationFormElement",
@@ -72,6 +73,7 @@ export default defineComponent({
       wasteClassifications: getDataset(DropdownDatasetIdentifier.WasteClassifications),
     };
   },
+  props: BaseFormFieldProps,
   components: {
     InputTextFormField,
     SingleSelectFormField,

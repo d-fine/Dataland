@@ -13,10 +13,12 @@
 <script lang="ts">
 import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
 import { defineComponent } from "vue";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 export default defineComponent({
   name: "SiteAndAreaFormField",
   components: {
     FormListFormField,
   },
+  props: BaseFormFieldProps,
 });
 </script>

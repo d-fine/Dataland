@@ -4,7 +4,7 @@
     label="Country"
     name="country"
     validation-label="Country"
-    :validation="required"
+    :required="required"
     placeholder="Country"
     :options="allCountry"
     data-test="country"
@@ -34,6 +34,7 @@ import SingleSelectFormElement from "@/components/forms/parts/elements/basic/Sin
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "EmployeesPerCountryFormElement",
@@ -47,5 +48,6 @@ export default defineComponent({
       allCountry: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
     };
   },
+  props: BaseFormFieldProps,
 });
 </script>
