@@ -46,6 +46,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
 import {
+  type CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
@@ -86,20 +87,22 @@ const sortedReportingPeriods = computed(() => {
 const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
-      return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) =>
-          (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports ?? {},
-      );
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports,
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.EutaxonomyFinancials: {
-      return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports ?? {},
-      );
+      return sortedDataAndMetaInfo.value
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports)
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.Sfdr: {
-      return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports,
-      );
+      return sortedDataAndMetaInfo.value
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports)
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     default: {
       return []; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
