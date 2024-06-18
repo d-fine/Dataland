@@ -42,6 +42,5 @@ export default defineComponent({
     FreeTextFormField,
   },
   methods: {},
-  //TODO check name, validation, validationLable as those lead to console warnings
 });
 </script>
