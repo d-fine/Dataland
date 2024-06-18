@@ -2,11 +2,7 @@
   <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - SME</template>
     <template #content>
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading SME data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedSmeData"
@@ -116,7 +112,6 @@
 import { FormKit } from "@formkit/vue";
 import { computed, defineComponent, inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { smoothScroll } from "@/utils/SmoothScroll";
@@ -128,7 +123,7 @@ import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataSmeData, type CompanyReport, DataTypeEnum, type SmeData } from "@clients/backend";
+import { type CompanyAssociatedDataSmeData, DataTypeEnum, type SmeData } from "@clients/backend";
 import { smeDataModel } from "@/frameworks/sme/UploadConfig";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -143,9 +138,8 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import { getFilledKpis } from "@/utils/DataPoint";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
 import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import PollutionEmissionFormField from "@/components/forms/parts/fields/PollutionEmissionFormField.vue";
@@ -197,10 +191,8 @@ export default defineComponent({
   data() {
     return {
       formId: "createSmeForm",
-      waitingForData: true,
       companyAssociatedSmeData: {} as CompanyAssociatedDataSmeData,
       smeUploadConfig: smeDataModel,
-      route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -209,8 +201,6 @@ export default defineComponent({
       checkCustomInputs,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       documentsToUpload: [] as DocumentToUpload[],
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      listOfFilledKpis: [] as Array<string>,
       reportingPeriod: undefined as undefined | Date,
     };
   },
@@ -234,17 +224,9 @@ export default defineComponent({
       required: true,
     },
   },
-  created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
-      void this.loadSmeData(dataId);
-    } else {
-      this.waitingForData = false;
-    }
-  },
   methods: {
     /**
-     * Builds an api to get and upload Sme data
+     * Builds an api to upload Sme data
      * @returns the api
      */
     buildSmeDataApi(): PrivateFrameworkDataApi<SmeData> {
@@ -253,27 +235,6 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
-    },
-
-    /**
-     * Loads the SME-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
-     * @param dataId the id of the dataset to load
-     */
-    async loadSmeData(dataId: string): Promise<void> {
-      this.waitingForData = true;
-      const smeDataControllerApi = this.buildSmeDataApi();
-      const smeResponseData = (await smeDataControllerApi.getFrameworkData(dataId)).data;
-      this.listOfFilledKpis = getFilledKpis(smeResponseData.data);
-      this.companyAssociatedSmeData = objectDropNull(smeResponseData as ObjectType) as CompanyAssociatedDataSmeData;
-      if (smeResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(smeResponseData.reportingPeriod);
-      }
-      //TODO Fix referenced reports
-      //TODO reporting period needs to be loaded too
-      this.referencedReportsForPrefill =
-        this.companyAssociatedSmeData.data.basic?.basisForPreparation?.referencedReports ?? {};
-      this.waitingForData = false;
     },
 
     /**
@@ -322,12 +283,6 @@ export default defineComponent({
     return {
       namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
         return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
-      }),
-      referencedReportsForPrefill: computed(() => {
-        return this.referencedReportsForPrefill;
-      }),
-      listOfFilledKpis: computed(() => {
-        return this.listOfFilledKpis;
       }),
     };
   },
