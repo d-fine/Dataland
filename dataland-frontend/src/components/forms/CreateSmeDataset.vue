@@ -288,9 +288,9 @@ export default defineComponent({
             Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
         }
-        const Files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
+        const files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const smeDataControllerApi = this.buildSmeDataApi();
-        await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, Files);
+        await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, files);
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
