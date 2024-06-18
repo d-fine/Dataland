@@ -49,6 +49,7 @@ export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
   const downloadLinkSelector = `span[data-test="Report-Download-${TEST_PDF_FILE_NAME}"]`;
   cy.readFile(expectedPathToDownloadedReport).should("not.exist");
   cy.intercept("**/documents/*").as("documentDownload");
+  cy.get(`[data-test="report-link-${TEST_PDF_FILE_NAME}"]`).click();
   cy.get(downloadLinkSelector).click();
   cy.wait("@documentDownload");
   cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
