@@ -63,7 +63,7 @@ import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkD
 import { type DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import {
   type CountryCodeSelectableItem,
   type FrameworkSelectableItem,
@@ -199,7 +199,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      this.availableFrameworks = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
         const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {
