@@ -13,14 +13,6 @@ let tokenForAdminUser: string;
 let storedTestCompany: StoredCompany;
 const uploadReports = new UploadReports("referencedReports");
 /*TODO
-- Mach beide Tests zu einem
-- Der Test geht auf die upload page, trägt ein paar Daten (in die custom components v.a.) ein
-- Danach selektiert er auch noch ein pdf file
-- Anschließend klickt er auf submit
-- Dann auf die view page des datasets und checken, ob der download funktioniert
-
-
-- Deaktivier EDIT button für sme
 - Eröffne backlog item um EDIT Funktionalität wieder einzuführen
  */
 describeIf(
@@ -46,21 +38,10 @@ describeIf(
         });
     });
 
-    it("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
-      cy.visitAndCheckAppMount(
-        "/companies/" + storedTestCompany.companyId + "/frameworks/" + DataTypeEnum.Sme + "/upload",
-      );
-      //cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-      cy.get("h1").should("contain", storedTestCompany.companyInformation.companyName);
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Sme}`,
-        times: 1,
-      }).as("postCompanyAssociatedData");
-      //TODO Refactor to make it more readable
-      cy.get('[data-test="reportingPeriod"]').click();
-      cy.get("div.p-datepicker").get("div.p-yearpicker").click();
+    /**
+     * Fill out the vsme subsidiary section
+     */
+    function fillOutSubsidiarySection() {
       cy.get('[data-test="addNewSubsidiaryButton"]').click();
       cy.get('[data-test="subsidiarySection"]').should("exist");
       cy.get('[data-test="subsidiarySection"]').get('[name="nameOfSubsidiary"]').type("Test-Subsidiary");
@@ -81,12 +62,22 @@ describeIf(
         .find('[data-test="AddressFormField"]')
         .find('[name="postalCode"]')
         .type("12345");
+    }
+    /**
+     * Fill out the vsme pollution emission section
+     */
+    function fillOutPollutionEmissionSection() {
       cy.get('[data-test="PollutionEmissionSection"]').should("exist");
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="pollutionType"]').type("Test-Waste-Type");
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="emissionInKilograms"]').type("12345");
       cy.get('[data-test="PollutionEmissionSection"]').find('[name="releaseMedium"]').first().click();
       //TODO select of releaseMedium is strange, why first() necessary
       cy.get("ul.p-dropdown-items li").contains(`Air`).click();
+    }
+    /**
+     * Fill out the vsme site and area section
+     */
+    function fillOutSiteAndAreaSection() {
       cy.get('[data-test="SiteAndAreaSection"]').should("exist");
       cy.get('[data-test="SiteAndAreaSection"]').get('[name="siteName"]').type("Test-Site-Name");
       cy.get('[data-test="SiteAndAreaSection"]')
@@ -134,6 +125,11 @@ describeIf(
       //TODO select of releaseMedium is strange, why first() necessary
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="specificationOfAdjointness"]').first().click();
       cy.get("ul.p-dropdown-items li").contains(`In`).click();
+    }
+    /**
+     * Fill out the vsme waste classification section
+     */
+    function fillOutWasteClassificationSection() {
       cy.get('[data-test="WasteClassificationSection"]').should("exist");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteClassification"]').first().click();
       cy.get("ul.p-dropdown-items li").contains(`Hazardous`).click();
@@ -144,6 +140,11 @@ describeIf(
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountCubicMeters"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseCubicMeters"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalCubicMeters"]').type("12345");
+    }
+    /**
+     * Fill out the vsme employees per country section
+     */
+    function fillOutEmployeesPerCountrySection() {
       cy.get('[data-test="addNewEmployeesPerCountryButton"]').click();
       cy.get('[data-test="employeesPerCountrySection"]').should("exist");
       cy.get('[data-test="employeesPerCountrySection"]').find('[data-test="country"]').click();
@@ -152,10 +153,11 @@ describeIf(
       cy.get('[data-test="employeesPerCountrySection"]')
         .find('[name="numberOfEmployeesInFullTimeEquivalent"]')
         .type("12345");
-      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}-private`);
-      uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}-private`);
-      uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
-
+    }
+    /**
+     * Fill out a datapoint with an attached document
+     */
+    function fillOutOneDatePointWithAttachedDocument() {
       cy.get('[data-test="electricityTotal"]')
         .find('div[data-test="toggleDataPointWrapper"]')
         .find('div[data-test="dataPointToggleButton"]')
@@ -165,6 +167,39 @@ describeIf(
       cy.get("ul.p-dropdown-items li").contains(`Audited`).click();
       cy.get('[data-test="electricityTotal"]').find('div[name="fileName"]').click();
       cy.get("ul.p-dropdown-items li").contains(`${TEST_PDF_FILE_NAME}-private`).click();
+    }
+    /**
+     * Upload a document and verify that it worked
+     */
+    function uploadDocument() {
+      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}-private`);
+      uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}-private`);
+      uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
+    }
+
+    it("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
+      cy.visitAndCheckAppMount(
+        "/companies/" + storedTestCompany.companyId + "/frameworks/" + DataTypeEnum.Sme + "/upload",
+      );
+      //cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+      cy.get("h1").should("contain", storedTestCompany.companyInformation.companyName);
+      cy.intercept({
+        url: `**/api/data/${DataTypeEnum.Sme}`,
+        times: 1,
+      }).as("postCompanyAssociatedData");
+      //TODO Refactor to make it more readable
+      cy.get('[data-test="reportingPeriod"]').click();
+      cy.get("div.p-datepicker").get("div.p-yearpicker").click();
+      fillOutSubsidiarySection();
+      fillOutPollutionEmissionSection();
+      fillOutSiteAndAreaSection();
+      fillOutWasteClassificationSection();
+      fillOutEmployeesPerCountrySection();
+      uploadDocument();
+
+      fillOutOneDatePointWithAttachedDocument();
       cy.intercept({
         url: `**/api/data/${DataTypeEnum.Sme}`,
         times: 1,
