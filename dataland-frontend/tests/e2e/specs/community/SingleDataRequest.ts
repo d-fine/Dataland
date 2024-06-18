@@ -7,7 +7,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkDataForPublicToolboxFramework } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
 import LksgBaseFrameworkDefinition from "@/frameworks/lksg/BaseFrameworkDefinition";
@@ -134,7 +134,7 @@ describeIf(
     function checkDropdownLabels(): void {
       const dropdown = cy.get("[data-test='datapoint-framework']");
       dropdown.should("exist").click();
-      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+      FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         cy.get(".p-dropdown-item").contains(humanizeStringOrNumber(framework)).should("exist");
       });
       dropdown.click();

@@ -12,7 +12,17 @@ import { postDataOwner } from "@e2e/utils/DataOwnerUtils";
 let tokenForAdminUser: string;
 let storedTestCompany: StoredCompany;
 const uploadReports = new UploadReports("referencedReports");
+/*TODO
+- Mach beide Tests zu einem
+- Der Test geht auf die upload page, trägt ein paar Daten (in die custom components v.a.) ein
+- Danach selektiert er auch noch ein pdf file
+- Anschließend klickt er auf submit
+- Dann auf die view page des datasets und checken, ob der download funktioniert
 
+
+- Deaktivier EDIT button für sme
+- Eröffne backlog item um EDIT Funktionalität wieder einzuführen
+ */
 describeIf(
   "As a user, I expect to be able to edit and submit Sme data via the upload form",
   {

@@ -63,7 +63,7 @@ import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 
 /**
@@ -108,7 +108,7 @@ export default defineComponent({
       default(): FrameworkDataSearchFilterInterface {
         return {
           companyNameFilter: "",
-          frameworkFilter: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+          frameworkFilter: FRAMEWORKS_WITH_VIEW_PAGE,
           sectorFilter: [],
           countryCodeFilter: [],
         };

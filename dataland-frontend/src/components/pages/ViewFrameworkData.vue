@@ -59,14 +59,7 @@ export default defineComponent({
   },
   computed: {
     multiViewFrameworks(): string[] {
-      const standardMultiViewFrameworks = [
-        DataTypeEnum.EutaxonomyFinancials,
-        DataTypeEnum.EutaxonomyNonFinancials,
-        DataTypeEnum.Lksg,
-        DataTypeEnum.Sfdr,
-        DataTypeEnum.P2p,
-        DataTypeEnum.Sme,
-      ] as string[];
+      const standardMultiViewFrameworks = [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.P2p] as string[];
 
       for (const frameworkId of getAllFrameworkIdentifiers()) {
         standardMultiViewFrameworks.push(frameworkId);

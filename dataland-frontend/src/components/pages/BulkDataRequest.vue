@@ -210,7 +210,7 @@ import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { type DataTypeEnum, type ErrorResponse } from "@clients/backend";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -380,7 +380,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum: DataTypeEnum) => {
+      this.availableFrameworks = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum: DataTypeEnum) => {
         return {
           value: dataTypeEnum,
           label: humanizeStringOrNumber(dataTypeEnum),
