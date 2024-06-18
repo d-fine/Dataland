@@ -7,6 +7,6 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
  * Interface of the generic extended data point
  */
 interface ExtendedDataPoint<T> : BaseDataPoint<T> {
-    val quality: QualityOptions
+    val quality: QualityOptions?
     val comment: String?
 }
