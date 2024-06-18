@@ -1,7 +1,7 @@
 <template>
   <FreeTextFormField name="siteName" label="Site Name" description="Please name the site" validation="required" />
   <AddressFormField
-    data-test="AddressFormField"
+    data-test="AddressFormFieldSite"
     name="siteAddress"
     description="Please state the address of the site."
     label="Site Address"
@@ -37,7 +37,7 @@
   />
 
   <AddressFormField
-    data-test="AddressFormField"
+    data-test="AddressFormFieldArea"
     name="areaAddress"
     description="Please state the address of the area."
     label="Area Address"
