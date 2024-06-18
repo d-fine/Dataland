@@ -39,29 +39,38 @@ describeIf(
     });
 
     /**
+     * Fills out an AddressFormField
+     * @param inputSection the section to which the AddressFormField belongs to
+     * @param inputAdressFormField the actual name of the data-test marker of the respective AddressFormField
+     */
+    function fillOutAdressFormField(inputSection: string, inputAdressFormField: string) {
+      cy.get(`[data-test=${inputSection}]`)
+        .find(`[data-test=${inputAdressFormField}]`)
+        .find('[name="streetAndHouseNumber"]')
+        .type("Test-Address");
+      cy.get(`[data-test=${inputSection}]`)
+        .find(`[data-test=${inputAdressFormField}]`)
+        .find('[data-test="country"]')
+        .click();
+      cy.get("ul.p-dropdown-items li").contains(`Afghanistan`).click();
+      cy.get(`[data-test=${inputSection}]`)
+        .find(`[data-test=${inputAdressFormField}]`)
+        .find('[name="city"]')
+        .type("Test-City");
+      cy.get(`[data-test=${inputSection}]`)
+        .find(`[data-test=${inputAdressFormField}]`)
+        .find('[name="postalCode"]')
+        .type("12345");
+    }
+
+    /**
      * Fill out the vsme subsidiary section
      */
     function fillOutSubsidiarySection() {
       cy.get('[data-test="addNewSubsidiaryButton"]').click();
       cy.get('[data-test="subsidiarySection"]').should("exist");
       cy.get('[data-test="subsidiarySection"]').get('[name="nameOfSubsidiary"]').type("Test-Subsidiary");
-      cy.get('[data-test="subsidiarySection"]')
-        .find('[data-test="AddressFormField"]')
-        .find('[name="streetAndHouseNumber"]')
-        .type("Test-Address");
-      cy.get('[data-test="subsidiarySection"]')
-        .find('[data-test="AddressFormField"]')
-        .find('[data-test="country"]')
-        .click();
-      cy.get("ul.p-dropdown-items li").contains(`Afghanistan`).click();
-      cy.get('[data-test="subsidiarySection"]')
-        .find('[data-test="AddressFormField"]')
-        .find('[name="city"]')
-        .type("Test-City");
-      cy.get('[data-test="subsidiarySection"]')
-        .find('[data-test="AddressFormField"]')
-        .find('[name="postalCode"]')
-        .type("12345");
+      fillOutAdressFormField("subsidiarySection", "AddressFormField");
     }
     /**
      * Fill out the vsme pollution emission section
@@ -80,45 +89,13 @@ describeIf(
     function fillOutSiteAndAreaSection() {
       cy.get('[data-test="SiteAndAreaSection"]').should("exist");
       cy.get('[data-test="SiteAndAreaSection"]').get('[name="siteName"]').type("Test-Site-Name");
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldSite"]')
-        .find('[name="streetAndHouseNumber"]')
-        .type("Test-Address-Site");
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldSite"]')
-        .find('[data-test="country"]')
-        .click();
-      cy.get("ul.p-dropdown-items li").contains(`Afghanistan`).click();
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldSite"]')
-        .find('[name="city"]')
-        .type("Test-City");
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldSite"]')
-        .find('[name="postalCode"]')
-        .type("12345");
+      fillOutAdressFormField("SiteAndAreaSection", "AddressFormFieldSite");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="siteGeocoordinateLongitudeval"]').type("12345");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="siteGeocoordinateLatitude"]').type("12345");
       cy.get('[data-test="SiteAndAreaSection"]')
         .get('[name="biodiversitySensitiveArea"]')
         .type("Test-Site-Biodiversity-Area");
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldArea"]')
-        .find('[name="streetAndHouseNumber"]')
-        .type("Test-Address-Site");
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldArea"]')
-        .find('[data-test="country"]')
-        .click();
-      cy.get("ul.p-dropdown-items li").contains(`Afghanistan`).click();
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldArea"]')
-        .find('[name="city"]')
-        .type("Test-City");
-      cy.get('[data-test="SiteAndAreaSection"]')
-        .find('[data-test="AddressFormFieldArea"]')
-        .find('[name="postalCode"]')
-        .type("12345");
+      fillOutAdressFormField("SiteAndAreaSection", "AddressFormFieldArea");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaInHectare"]').type("12345");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLatitude"]').type("12345");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLongitude"]').type("12345");
