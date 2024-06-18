@@ -1,6 +1,7 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
 import { getStringCypressEnv } from "@e2e/utils/Cypress";
+import { isString } from "@/utils/TypeScriptUtils";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@example.com`;
@@ -52,6 +53,9 @@ describe("As a user I want to be able to register for an account and be able to 
 
   it("Checks that the admin console is working and a newly registered user can be verified", () => {
     cy.task("getEmail").then((returnEmail) => {
+      if (!isString(returnEmail)) {
+        throw new Error("Email retrieved by task is not a string. Cannot proceed.");
+      }
       cy.visit("http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users");
       cy.get("h1").should("exist").should("contain", "Sign in to your account");
       cy.url().should("contain", "realms/master");
@@ -61,12 +65,11 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.intercept("GET", "/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com").as("typedUsernameInSearch");
       cy.get("input")
         .should("have.class", "pf-c-text-input-group__text-input")
-        .type(returnEmail as string, { force: true });
-      cy.get("input").type("{enter}");
+        .type(`${returnEmail}{enter}`, { force: true });
       cy.wait("@typedUsernameInSearch");
       cy.get("table");
       cy.intercept("GET", "/keycloak/admin/realms/datalandsecurity/users/*rue").as("openedDummyUserProfile");
-      cy.contains("a", returnEmail as string).click();
+      cy.contains("a", returnEmail).click();
       cy.wait("@openedDummyUserProfile");
       cy.intercept("GET", "keycloak/admin/realms/datalandsecurity/users/*userProfileMetadata=true").as(
         "savedUserProfileSettings",
@@ -80,7 +83,10 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.visit("/");
     cy.task("getEmail").then((returnEmail) => {
       cy.task("getPassword").then((returnPassword) => {
-        login(returnEmail as string, returnPassword as string);
+        if (!isString(returnEmail) || !isString(returnPassword)) {
+          throw new Error("Email or password retrieved by task is not a string. Cannot proceed.");
+        }
+        login(returnEmail, returnPassword);
       });
     });
     logout();
@@ -90,9 +96,10 @@ describe("As a user I want to be able to register for an account and be able to 
     it("Should be possible to setup 2FA on the newly created account", () => {
       cy.task("getEmail").then((returnEmail) => {
         cy.task("getPassword").then((returnPassword) => {
-          const username = returnEmail as string;
-          const password = returnPassword as string;
-          login(username, password);
+          if (!isString(returnEmail) || !isString(returnPassword)) {
+            throw new Error("Email or password retrieved by task is not a string. Cannot proceed.");
+          }
+          login(returnEmail, returnPassword);
           cy.visitAndCheckAppMount("/companies");
           cy.get("div[id='profile-picture-dropdown-toggle']").click();
           cy.get("a[id='profile-picture-dropdown-settings-button']").click();
@@ -126,12 +133,12 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.task("getEmail").then((returnEmail) => {
         cy.task("getPassword").then((returnPassword) => {
           cy.task("getTotpKey").then((key) => {
-            const username = returnEmail as string;
-            const password = returnPassword as string;
-            const totpKey = key as string;
+            if (!isString(returnEmail) || !isString(returnPassword) || !isString(key)) {
+              throw new Error("Email or password or TOTP key retrieved by task is not a string. Cannot proceed.");
+            }
 
-            login(username, password, () => {
-              return authenticator.generate(totpKey);
+            login(returnEmail, returnPassword, () => {
+              return authenticator.generate(key);
             });
           });
         });
