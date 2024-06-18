@@ -4,7 +4,7 @@ import { type ObjectType } from "@/utils/UpdateObjectUtils";
 export interface ExtendedDataPoint<T> {
   value?: T | null;
   dataSource?: ExtendedDocumentReference | null;
-  quality: QualityOptions;
+  quality?: QualityOptions | null;
   comment?: string | null;
 }
 
