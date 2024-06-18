@@ -18,5 +18,5 @@ data class CompanyReport(
 
     override val fileName: String? = null,
 
-    val reportDate: LocalDate? = null,
+    val publicationDate: LocalDate? = null,
 ) : BaseDocumentReference

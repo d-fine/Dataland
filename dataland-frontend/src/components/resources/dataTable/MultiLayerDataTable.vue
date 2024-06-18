@@ -123,9 +123,9 @@ export default defineComponent({
       if (referencedReports) {
         for (const key in referencedReports) {
           const companyReport: CompanyReport | undefined = referencedReports[key];
-          const reportDate = companyReport?.reportDate;
-          if (reportDate && (!latestDate || reportDate > latestDate)) {
-            latestDate = reportDate;
+          const publicationDate = companyReport?.publicationDate;
+          if (publicationDate && (!latestDate || publicationDate > latestDate)) {
+            latestDate = publicationDate;
           }
         }
       }

@@ -3910,33 +3910,13 @@
             "type": "string",
             "nullable": true
           },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
+          "publicationDate": {
             "type": "string",
             "format": "date",
             "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
           }
         },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
-          }
-        }
+        "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
       },
       "ExtendedDataPointBigDecimal": {
         "type": "object",
@@ -4089,15 +4069,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -4265,14 +4237,6 @@
         "enum": [
           "Yes",
           "No"
-        ]
-      },
-      "YesNoNa": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No",
-          "NA"
         ]
       },
       "CompanyAssociatedDataSfdrData": {
@@ -5184,15 +5148,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -9221,6 +9177,14 @@
           "NoneOfTheAbove"
         ]
       },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
+      },
       "BaseDataPointString": {
         "type": "object",
         "properties": {
@@ -11721,15 +11685,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -12386,15 +12342,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -14441,15 +14389,15 @@
           "companyId": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",

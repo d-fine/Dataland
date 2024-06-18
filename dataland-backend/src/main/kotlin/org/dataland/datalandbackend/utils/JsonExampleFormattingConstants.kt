@@ -92,7 +92,7 @@ object JsonExampleFormattingConstants {
     private const val companyReport = "{" +
         "\"fileReference\": \"string\"," +
         "\"fileName\": \"string\"," +
-        "\"reportDate\": \"2023-10-12\"," +
+        "\"publicationDate\": \"2023-10-12\"," +
         "}"
 
     const val REFERENCED_REPORTS_DEFAULT_VALUE: String = "{" +

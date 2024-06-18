@@ -180,7 +180,7 @@ export class Generator {
       referencedReports[reportName] = {
         fileReference: getReferencedDocumentId(),
         fileName: this.valueOrNull(reportName),
-        reportDate: this.valueOrNull(generatePastDate()),
+        publicationDate: this.valueOrNull(generatePastDate()),
       };
     }
     return referencedReports;

@@ -8,15 +8,15 @@
       />
       <div class="md:col-6 col-12 p-0">
         <Calendar
-          data-test="reportDate"
+          data-test="publicationDate"
           inputId="icon"
-          :modelValue="reportDateAsDate"
+          :modelValue="publicationDateAsDate"
           :showIcon="true"
           dateFormat="D, M dd, yy"
           @update:modelValue="reportingDateChanged($event)"
         />
       </div>
-      <FormKit type="text" :modelValue="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
+      <FormKit type="text" :modelValue="hyphenatedDate" name="publicationDate" :outer-class="{ 'hidden-input': true }" />
     </div>
 
     <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
@@ -35,7 +35,7 @@ export default defineComponent({
   components: { FormKit, UploadFormHeader, Calendar },
   data() {
     return {
-      reportDateAsDate: undefined as undefined | Date,
+      publicationDateAsDate: undefined as undefined | Date,
     };
   },
   mounted() {
@@ -50,14 +50,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    reportDate: {
+    publicationDate: {
       type: String,
     },
   },
   computed: {
     hyphenatedDate() {
-      if (this.reportDateAsDate) {
-        return getHyphenatedDate(this.reportDateAsDate);
+      if (this.publicationDateAsDate) {
+        return getHyphenatedDate(this.publicationDateAsDate);
       }
       return undefined;
     },
@@ -67,14 +67,14 @@ export default defineComponent({
      * computes an actual date object from the date string
      */
     getDateFromString() {
-      this.reportDateAsDate = this.reportDate && this.reportDate.length > 1 ? new Date(this.reportDate) : undefined;
+      this.publicationDateAsDate = this.publicationDate && this.publicationDate.length > 1 ? new Date(this.publicationDate) : undefined;
     },
     /**
      * Emits the event that the reporting date was changed
      * @param newDate the new date
      */
     reportingDateChanged(newDate: Date) {
-      this.reportDateAsDate = newDate;
+      this.publicationDateAsDate = newDate;
     },
   },
 });

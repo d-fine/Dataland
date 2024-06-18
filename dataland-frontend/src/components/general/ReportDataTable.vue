@@ -17,7 +17,7 @@
           </tr>
           <tr>
             <th class="headers-bg width-auto"><span class="table-left-label">Publication date</span></th>
-            <td>{{ companyReport.reportDate }}</td>
+            <td>{{ companyReport.publicationDate }}</td>
           </tr>
         </tbody>
       </table>
