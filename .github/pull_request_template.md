@@ -5,6 +5,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github. 
 - [ ] A peer-review has been executed
   - [ ] The code has been manually inspected by someone who did not implement the feature
+  - [ ] If this PR includes work on the frontend, at least one `@ts-nocheck` is removed. Additionally, there should not be any `@ts-nocheck` in files modified by this PR. If no `@ts-nocheck` are left: Celebrate :tada: :confetti_ball: type-safety and remove this entry. 
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one test exists testing the new feature
   - [ ] If you have created new test files, make sure that they are included in a test container and actually run in the CI

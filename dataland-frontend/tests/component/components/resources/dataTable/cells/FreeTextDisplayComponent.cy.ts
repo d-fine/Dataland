@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FreeTextDisplayComponent from "@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue";
 
 const shortTestString = "Short String";

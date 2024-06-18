@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";

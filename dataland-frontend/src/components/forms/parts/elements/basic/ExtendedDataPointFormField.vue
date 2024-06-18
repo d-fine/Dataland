@@ -98,13 +98,11 @@
             <UploadFormHeader
               :label="`${label} Quality`"
               description="The level of confidence associated to the value."
-              :is-required="isDataQualityRequired"
             />
             <SingleSelectFormElement
               name="quality"
               v-model="qualityValue"
               :disabled="!isDataQualityRequired"
-              :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
@@ -125,6 +123,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent, nextTick } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -160,7 +159,7 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
-      qualityValue: "NA",
+      qualityValue: null as null | string,
       commentValue: "",
       currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
@@ -186,11 +185,7 @@ export default defineComponent({
       return this.isDataValueProvided;
     },
     computeQualityOption(): object {
-      if (!this.isDataValueProvided) {
-        return this.qualityOptions;
-      } else {
-        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
-      }
+      return this.qualityOptions;
     },
     reportsName(): string[] {
       return getFileName(this.injectReportsNameAndReferences);
@@ -252,9 +247,7 @@ export default defineComponent({
      */
     handleBlurValue(isDataValueProvided: boolean) {
       if (!isDataValueProvided && !this.isYesNoVariant) {
-        this.qualityValue = QualityOptions.Na;
-      } else if (this.qualityValue === QualityOptions.Na) {
-        this.qualityValue = "";
+        this.qualityValue = null;
       }
     },
     /**

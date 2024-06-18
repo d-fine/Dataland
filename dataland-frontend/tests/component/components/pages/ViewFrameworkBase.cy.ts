@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";

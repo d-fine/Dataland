@@ -1,3 +1,4 @@
+// @ts-nocheck
 import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
 
 describe("Component tests for the NaceCodeSelector", () => {

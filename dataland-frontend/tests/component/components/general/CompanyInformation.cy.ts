@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CompanyInformationComponent from "@/components/pages/CompanyInformation.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type CompanyInformation, type SmeData, type DataMetaInformation, DataTypeEnum } from "@clients/backend";

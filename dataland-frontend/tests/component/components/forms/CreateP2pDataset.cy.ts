@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";

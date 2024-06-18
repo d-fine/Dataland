@@ -33,10 +33,10 @@ export default defineComponent({
       type: Map as PropType<Map<string, DataMetaInformation>>,
     },
     answeredDataRequests: {
-      type: Object as () => StoredDataRequest[],
+      type: Object as PropType<Pick<StoredDataRequest, "reportingPeriod" | "dataRequestId">[]>,
     },
     actionOnClick: {
-      type: String as () => ReportingPeriodTableActions,
+      type: String as PropType<ReportingPeriodTableActions>,
       required: true,
     },
   },
@@ -56,10 +56,10 @@ export default defineComponent({
         );
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
           const answeredDataRequestIds = this.answeredDataRequests
-            ?.filter((answeredDataRequest: StoredDataRequest) => {
+            ?.filter((answeredDataRequest) => {
               return answeredDataRequest.reportingPeriod == key;
             })
-            .map((answeredDataRequest: StoredDataRequest) => {
+            .map((answeredDataRequest) => {
               return answeredDataRequest.dataRequestId;
             });
           let isClickable;

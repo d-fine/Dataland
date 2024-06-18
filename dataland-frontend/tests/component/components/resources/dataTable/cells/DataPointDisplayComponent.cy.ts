@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 

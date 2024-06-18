@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import ReportDataTable from "@/components/general/ReportDataTable.vue";
 import type { CompanyReport } from "@clients/backend";
 
 /**
  * Opens a modal to display the details of the selected report.
- * @param context for coupling the environment.
+ * @param context For coupling the environment.
  * @param report The report data.
  * @param reportName The name of the report.
  */
@@ -53,6 +52,8 @@ interface ModalOptions {
 
 interface ComponentContext {
   $dialog: {
+    //eslint-disable-next-line@typescript-eslint/ban-ts-comment
+    //@ts-ignore
     open(component: any, options: any): void;
   };
 }

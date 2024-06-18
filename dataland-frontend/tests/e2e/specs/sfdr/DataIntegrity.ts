@@ -7,11 +7,12 @@ import { selectSingleReportAndFillWithData } from "@e2e/utils/UploadUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
-import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from "@sharedUtils/Dropdown";
+import SfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -139,8 +140,8 @@ describeIf(
       const uniqueCompanyMarker = Date.now().toString();
       const companyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyAndFrameworkData(
-          DataTypeEnum.Sfdr,
+        return uploadCompanyAndFrameworkDataForPublicToolboxFramework(
+          SfdrBaseFrameworkDefinition,
           token,
           generateDummyCompanyInformation(companyName),
           testSfdrCompany.t,

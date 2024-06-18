@@ -16,8 +16,8 @@
               :data-dataset-index="idx"
             >
               <div class="p-column-header-content">
-                <span class="p-column-title" style="display: flex; align-items: center"
-                  >{{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
+                <span class="p-column-title" style="display: flex; align-items: center">
+                  {{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
                   <i
                     class="material-icons info-icon pl-2"
                     aria-hidden="true"
@@ -28,8 +28,8 @@
                       class: 'd-tooltip',
                     }"
                     >info</i
-                  ></span
-                >
+                  >
+                </span>
               </div>
             </th>
           </tr>
@@ -76,12 +76,33 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
+  props: {
+    config: {
+      // @ts-ignore
+      type: Object as () => MLDTConfig<T>,
+      required: true,
+    },
+    dataAndMetaInfo: {
+      // @ts-ignore
+      type: Array as () => Array<DataAndMetaInformation<T>>,
+      required: true,
+    },
+    ariaLabel: {
+      type: String,
+      required: false,
+    },
+    inReviewMode: {
+      type: Boolean,
+      required: true,
+    },
+  },
   methods: {
     /**
      * Generates the toolTip for reportingYear given DataAndMetaInformation.
-     * @param singleDataAndMetaInfo DataAndMetaInformation of a framework.
-     * @returns string the toolTip
+     * @param singleDataAndMetaInfo the DataAndMetaInformation of a framework.
+     * @returns string the toolTip.
      */
+    // @ts-ignore
     reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
       let latestDate = null;
       let referencedReports;
@@ -113,24 +134,6 @@ export default defineComponent({
         "Dataset published on Dataland:\n " +
         convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
       return mostRecentSourceToolTip + datasetPublishedToolTip;
-    },
-  },
-  props: {
-    config: {
-      type: Object as () => MLDTConfig<T>,
-      required: true,
-    },
-    dataAndMetaInfo: {
-      type: Array as () => Array<DataAndMetaInformation<T>>,
-      required: true,
-    },
-    ariaLabel: {
-      type: String,
-      required: false,
-    },
-    inReviewMode: {
-      type: Boolean,
-      required: true,
     },
   },
 });

@@ -23,7 +23,11 @@
       :dataAndMetaInfo="sortedDataAndMetaInfo"
       :inReviewMode="inReviewMode"
       :config="
-        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(
+          displayConfiguration,
+          inReviewMode,
+          hideEmptyFields ?? false,
+        )
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
@@ -42,6 +46,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
 import {
+  type CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
@@ -53,6 +58,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
+import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -81,15 +87,22 @@ const sortedReportingPeriods = computed(() => {
 const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
-      return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) =>
-          (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports,
-      );
+      return sortedDataAndMetaInfo.value
+        .map(
+          (singleDataAndMetaInfo) =>
+            (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports,
+        )
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.EutaxonomyFinancials: {
-      return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports,
-      );
+      return sortedDataAndMetaInfo.value
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports)
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
+    }
+    case DataTypeEnum.Sfdr: {
+      return sortedDataAndMetaInfo.value
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports)
+        .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     case DataTypeEnum.Sfdr: {
       return sortedDataAndMetaInfo.value.map(
@@ -97,7 +110,7 @@ const sortedReports = computed(() => {
       );
     }
     default: {
-      return null; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
+      return []; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
       // to be added and the banner will never receive "null" as an input
     }
   }
@@ -149,7 +162,9 @@ async function loadDataForDisplay(
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider);
+  const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
+    | BaseFrameworkDataApi<FrameworkDataType>
+    | undefined;
   if (dataControllerApi) {
     if (singleDataMetaInfoToDisplay) {
       const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
@@ -157,6 +172,8 @@ async function loadDataForDisplay(
     } else {
       return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
     }
+  } else {
+    throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
   }
 }
 </script>
