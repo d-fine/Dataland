@@ -250,7 +250,7 @@
                 "lksg",
                 "p2p",
                 "sfdr",
-                "sme",
+                "vsme",
                 "esg-questionnaire",
                 "heimathafen"
               ]
@@ -480,7 +480,7 @@
                   "lksg",
                   "p2p",
                   "sfdr",
-                  "sme",
+                  "vsme",
                   "esg-questionnaire",
                   "heimathafen"
                 ]
@@ -795,7 +795,7 @@
               "lksg",
               "p2p",
               "sfdr",
-              "sme",
+              "vsme",
               "esg-questionnaire",
               "heimathafen"
             ]
@@ -874,7 +874,7 @@
             "type": "array",
             "example": [
               "p2p",
-              "sme"
+              "vsme"
             ],
             "items": {
               "type": "string",
@@ -884,7 +884,7 @@
                 "lksg",
                 "p2p",
                 "sfdr",
-                "sme",
+                "vsme",
                 "esg-questionnaire",
                 "heimathafen"
               ]
@@ -1093,7 +1093,7 @@
               "lksg",
               "p2p",
               "sfdr",
-              "sme",
+              "vsme",
               "esg-questionnaire",
               "heimathafen"
             ]
