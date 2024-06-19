@@ -14,7 +14,7 @@
     validation="required"
   />
   <NumberFormField
-    :name="'totalAmountInTons'"
+    :name="'totalAmountOfWasteInTons'"
     :validation-label="validationLabel"
     label="Total amount of waste in tons"
     description="Please specify the total amount of waste in tons"
@@ -38,7 +38,7 @@
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'totalAmountInCubicMeters'"
+    :name="'totalAmountOfWasteInCubicMeters'"
     :validation-label="validationLabel"
     label="Total amount of waste in m³"
     description="Please specify the total amount of waste in m³"

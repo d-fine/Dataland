@@ -21,7 +21,7 @@ export class VsmeGenerator extends Generator {
    */
   generateVsmeSubsidiary(): VsmeSubsidiary {
     return {
-      nameOfSubsidiary: this.valueOrNull(faker.company.name()),
+      nameOfSubsidiary: faker.company.name(),
       addressOfSubsidiary: generateAddress(this.nullProbability),
     };
   }
@@ -31,7 +31,7 @@ export class VsmeGenerator extends Generator {
    */
   generateVsmePollutionEmission(): VsmePollutionEmission {
     return {
-      pollutionType: this.valueOrNull(faker.science.chemicalElement())?.name,
+      pollutionType: faker.science.chemicalElement()?.name,
       emissionInKilograms: this.valueOrNull(generateFloat()),
       releaseMedium: pickOneElement(Object.values(ReleaseMedium)),
     };
@@ -44,11 +44,11 @@ export class VsmeGenerator extends Generator {
   generateRandomVsmeWasteClassificationObject(): VsmeWasteClassificationObject {
     return {
       wasteClassification: pickOneElement(Object.values(WasteClassifications)),
-      typeOfWaste: this.randomShortString(),
-      totalAmountInTons: this.randomFloat(0, 1e8),
+      typeOfWaste: this.guaranteedShortString(),
+      totalAmountOfWasteInTons: this.randomFloat(0, 1e8),
       wasteRecycleOrReuseInTons: this.randomFloat(0, 1e8),
       wasteDisposalInTons: this.randomFloat(0, 1e8),
-      totalAmountInCubicMeters: this.randomFloat(0, 1e2),
+      totalAmountOfWasteInCubicMeters: this.randomFloat(0, 1e2),
       wasteRecycleOrReuseInCubicMeters: this.randomFloat(0, 1e2),
       wasteDisposalInCubicMeters: this.randomFloat(0, 1e2),
     };

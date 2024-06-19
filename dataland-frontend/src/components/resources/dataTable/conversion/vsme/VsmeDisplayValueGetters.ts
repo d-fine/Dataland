@@ -63,12 +63,12 @@ interface VsmePollutionEmissionDisplayFormat {
 interface VsmeWasteClassificationDisplayFormat {
   wasteClassification: WasteClassifications;
   typeWaste: string;
-  totalAmountInTons: number;
-  wasteRecycleOrReuseInTons: number;
-  wasteDisposalInTons: number;
-  totalAmountInCubicMeters: number;
-  wasteRecycleOrReuseInCubicMeters: number;
-  wasteDisposalInCubicMeters: number;
+  totalAmountOfWasteInTons: number | undefined;
+  wasteRecycleOrReuseInTons: number | undefined;
+  wasteDisposalInTons: number | undefined;
+  totalAmountOfWasteInCubicMeters: number | undefined;
+  wasteRecycleOrReuseInCubicMeters: number | undefined;
+  wasteDisposalInCubicMeters: number | undefined;
 }
 
 /**
@@ -211,10 +211,10 @@ function convertVsmeWasteClassificationToListForModal(
     const humanizedItem: VsmeWasteClassificationDisplayFormat = {
       wasteClassification: item.wasteClassification,
       typeWaste: humanizeStringOrNumber(item.typeOfWaste),
-      totalAmountInTons: item.totalAmountInTons!,
+      totalAmountOfWasteInTons: item.totalAmountOfWasteInTons!,
       wasteRecycleOrReuseInTons: item.wasteRecycleOrReuseInTons!,
       wasteDisposalInTons: item.wasteDisposalInTons!,
-      totalAmountInCubicMeters: item.totalAmountInCubicMeters!,
+      totalAmountOfWasteInCubicMeters: item.totalAmountOfWasteInCubicMeters!,
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseInCubicMeters!,
       wasteDisposalInCubicMeters: item.wasteDisposalInCubicMeters!,
       //TODO come back here and see if ! are really necessary
