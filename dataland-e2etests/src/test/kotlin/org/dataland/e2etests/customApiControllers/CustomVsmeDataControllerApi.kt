@@ -8,12 +8,12 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import java.io.File
 
-class CustomSmeDataControllerApi(private val token: String) {
+class CustomVsmeDataControllerApi(private val token: String) {
 
     private val client = OkHttpClient()
 
@@ -24,15 +24,15 @@ class CustomSmeDataControllerApi(private val token: String) {
         return jsonAdapter.fromJson(inputString)!!
     }
 
-    private fun transferCompanyAssociatedDataSmeDataToJson(input: CompanyAssociatedDataSmeData):
+    private fun transferCompanyAssociatedDataSmeDataToJson(input: CompanyAssociatedDataVsmeData):
         String {
-        val jsonAdapter: JsonAdapter<CompanyAssociatedDataSmeData> =
-            moshi.adapter(CompanyAssociatedDataSmeData::class.java)
+        val jsonAdapter: JsonAdapter<CompanyAssociatedDataVsmeData> =
+            moshi.adapter(CompanyAssociatedDataVsmeData::class.java)
         return jsonAdapter.toJson(input)
     }
 
     private fun buildRequestForPostingCompanyAssociatedSmeData(
-        companyAssociatedSmeData: CompanyAssociatedDataSmeData,
+        companyAssociatedSmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
     ): Request {
         val requestBodyBuilder = MultipartBody.Builder()
@@ -61,7 +61,7 @@ class CustomSmeDataControllerApi(private val token: String) {
     }
 
     fun postCompanyAssociatedDataSmeData(
-        companyAssociatedSmeData: CompanyAssociatedDataSmeData,
+        companyAssociatedSmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
     ):
         DataMetaInformation {
