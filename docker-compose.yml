@@ -198,6 +198,7 @@ services:
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
+      CYPRESS_IGNORE_EXTERNAL_STORAGE: ${CYPRESS_IGNORE_EXTERNAL_STORAGE}
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
@@ -505,6 +506,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://eurodat-client:8080}
+      IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
      - "host.docker.internal:host-gateway"
   eurodat-client:

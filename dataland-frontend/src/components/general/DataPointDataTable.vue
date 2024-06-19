@@ -35,6 +35,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";

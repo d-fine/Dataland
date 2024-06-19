@@ -48,7 +48,7 @@
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
 
 export default defineComponent({
@@ -61,7 +61,8 @@ export default defineComponent({
       default: null,
     },
     userRoles: {
-      type: Array,
+      type: Array as PropType<string[]>,
+      required: true,
     },
   },
   data: () => ({

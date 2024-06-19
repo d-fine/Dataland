@@ -9,17 +9,17 @@
     panelClass="d-framework-data-search-dropdown"
     optionLabel="displayName"
     optionDisabled="disabled"
-    @before-show="this.overlayVisible = true"
-    @before-hide="this.overlayVisible = false"
+    @before-show="overlayVisible = true"
+    @before-hide="overlayVisible = false"
   >
     <template #dropdownicon>
       <div :class="selectionButtonClasses">
         <div class="selection-button-content" :id="filterId">
-          <template v-if="this.modelValue.length === 1">
+          <template v-if="modelValue.length === 1">
             {{ modelValue[0].displayName }}
           </template>
           <template v-else>{{ filterName }}</template>
-          <span v-if="this.modelValue.length > 0" class="p-badge p-component p-badge-no-gutter ml-1 round">
+          <span v-if="modelValue.length > 0" class="p-badge p-component p-badge-no-gutter ml-1 round">
             {{ modelValue.length }}</span
           >
           <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">

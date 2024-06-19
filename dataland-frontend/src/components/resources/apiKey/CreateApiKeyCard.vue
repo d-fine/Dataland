@@ -77,8 +77,8 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import { defineComponent } from "vue";
-import Dropdown from "primevue/dropdown";
+import { defineComponent, type PropType } from "vue";
+import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DataFormatUtils";
 import UserRolesBadges from "@/components/resources/apiKey/UserRolesBadges.vue";
@@ -91,7 +91,8 @@ export default defineComponent({
   components: { PrimeButton, Dropdown, Calendar, UserRolesBadges },
   props: {
     userRoles: {
-      type: Array,
+      type: Array as PropType<string[]>,
+      required: true,
     },
   },
   data: () => ({
@@ -117,7 +118,7 @@ export default defineComponent({
      * Updates the local expiry date based on the selected value or the value of the date time selector if "custom" was selected
      * @param event the selection event
      */
-    setExpiryTimeDays(event: HTMLSelectElement) {
+    setExpiryTimeDays(event: DropdownChangeEvent) {
       if (event.value === "noExpiry") {
         this.expiryTimeDays = null;
       } else if (event.value === "custom") {

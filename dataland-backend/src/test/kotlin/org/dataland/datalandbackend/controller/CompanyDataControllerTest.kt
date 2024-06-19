@@ -46,6 +46,7 @@ internal class CompanyDataControllerTest(
         identifiers = mapOf(
             IdentifierType.Lei to listOf(testLei),
         ),
+        parentCompanyLei = null,
     )
 
     @Test

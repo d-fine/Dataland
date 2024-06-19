@@ -11,7 +11,7 @@
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
           <div>
             <router-link
-              v-if="this.isFrontendViewPageExisting"
+              v-if="isFrontendViewPageExisting"
               :to="calculateDatasetLink(dataMetaInfo)"
               class="text-primary font-semibold underline"
             >
@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent, type PropType, inject } from "vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
@@ -81,7 +81,7 @@ export default defineComponent({
       required: true,
     },
     listOfFrameworkData: {
-      type: Array,
+      type: Array as PropType<DataMetaInformation[]>,
       required: true,
     },
   },

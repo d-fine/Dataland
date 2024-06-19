@@ -233,7 +233,7 @@ fun generateCompaniesWithOneRandomValueForEachIdentifierType(
         ),
         countryCode = "DE",
     )
-    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
     for (identifierType in uniqueIdentifiersMap.keys) {
         apiAccessor.companyDataControllerApi.postCompany(
             baseCompany.copy(

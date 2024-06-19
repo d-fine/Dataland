@@ -9,7 +9,13 @@
           class="row mb-2"
           data-test="previousReportsList"
         >
-          <DocumentLink :download-name="nameInner" :fileReference="report.fileReference" show-icon />
+          <a
+            @click="openReportDataTableModal(report, nameInner as string)"
+            class="link"
+            :data-test="`report-link-${nameInner}`"
+          >
+            <span>{{ nameInner ? nameInner : "Unnamed_File" }}</span>
+          </a>
         </div>
       </div>
     </div>
@@ -19,11 +25,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import type { CompanyReport } from "@clients/backend";
+import { openReportDataTableModal } from "@/utils/ReferencedReportsUtil";
 
 export default defineComponent({
-  components: { DocumentLink },
   inject: ["dialogRef"],
   name: "PreviousReportsModal",
   data() {
@@ -33,6 +38,17 @@ export default defineComponent({
       indexOfNewestReportingPeriod: 9999 as number,
     };
   },
+  methods: {
+    /**
+     * Opens a modal to display a table containing detailed information about the report.
+     * @param report the report
+     * @param reportNameInner the name of the report from the previous years report list
+     */
+    openReportDataTableModal(report: CompanyReport, reportNameInner: string) {
+      openReportDataTableModal(this, report, reportNameInner);
+    },
+  },
+
   created() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {

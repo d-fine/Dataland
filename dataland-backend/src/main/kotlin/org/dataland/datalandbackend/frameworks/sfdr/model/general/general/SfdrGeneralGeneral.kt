@@ -4,7 +4,6 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.general.general
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.documents.CompanyReport
-import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.time.LocalDate
 
@@ -21,7 +20,5 @@ data class SfdrGeneralGeneral(
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
-
-    val scopeOfEntities: YesNoNa? = null,
 
 )

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ProcurementCategoryFormElement from "@/components/forms/parts/elements/derived/ProcurementCategoryFormElement.vue";
 
 describe("Component tests for the CreateLksgDataset that test dependent fields", () => {

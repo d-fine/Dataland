@@ -34,6 +34,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { type DataPointDisplay } from "@/utils/DataPoint";

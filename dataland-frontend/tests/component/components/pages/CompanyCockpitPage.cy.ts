@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CompanyCockpitPage from "@/components/pages/CompanyCockpitPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {

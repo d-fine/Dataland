@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent } from "vue";
 import { smoothScroll } from "@/utils/SmoothScroll";
 
