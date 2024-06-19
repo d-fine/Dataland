@@ -10,7 +10,7 @@ class V17__MigrateReferencedReportsTest {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V17/originalSfdr.json",
-            "V16/expectedSfdr.json",
+            "V17/expectedSfdr.json",
             { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr") }
         )
     }
