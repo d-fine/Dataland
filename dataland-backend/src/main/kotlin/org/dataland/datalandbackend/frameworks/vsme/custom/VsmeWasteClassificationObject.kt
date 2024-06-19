@@ -7,10 +7,10 @@ package org.dataland.datalandbackend.frameworks.vsme.custom
 data class VsmeWasteClassificationObject(
     val wasteClassification: WasteClassifications,
     val typeOfWaste: String?,
-    val totalAmountTons: Number?,
-    val wasteRecycleOrReuseTons: Number?,
-    val wasteDisposalTons: Number?,
-    val totalAmountCubicMeters: Number?,
-    val wasteRecycleOrReuseCubicMeters: Number?,
-    val wasteDisposalCubicMeters: Number?,
+    val totalAmountInTons: Number?,
+    val wasteRecycleOrReuseInTons: Number?,
+    val wasteDisposalInTons: Number?,
+    val totalAmountInCubicMeters: Number?,
+    val wasteRecycleOrReuseInCubicMeters: Number?,
+    val wasteDisposalInCubicMeters: Number?,
 )

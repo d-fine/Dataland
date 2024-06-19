@@ -4842,27 +4842,27 @@
             "type": "string",
             "nullable": true
           },
-          "totalAmountTons": {
+          "totalAmountInTons": {
             "type": "number",
             "nullable": true
           },
-          "wasteRecycleOrReuseTons": {
+          "wasteRecycleOrReuseInTons": {
             "type": "number",
             "nullable": true
           },
-          "wasteDisposalTons": {
+          "wasteDisposalInTons": {
             "type": "number",
             "nullable": true
           },
-          "totalAmountCubicMeters": {
+          "totalAmountInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "wasteRecycleOrReuseCubicMeters": {
+          "wasteRecycleOrReuseInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "wasteDisposalCubicMeters": {
+          "wasteDisposalInCubicMeters": {
             "type": "number",
             "nullable": true
           }
@@ -14970,10 +14970,14 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
@@ -14983,10 +14987,6 @@
             "type": "string"
           },
           "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "sector": {
             "type": "string",
             "nullable": true
           }
@@ -15011,10 +15011,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
