@@ -15,8 +15,8 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the SmeSimpleCustomComponentBase component
- * @param viewFormattingFunctionName the name of the formatting function for the view page in SmeDisplayValueGetters.ts
+ * Represents the VsmeSimpleCustomComponentBase component
+ * @param viewFormattingFunctionName the name of the formatting function for the view page in VsmeDisplayValueGetters.ts
  */
 open class VsmeSimpleCustomComponentBase(
     identifier: String,
