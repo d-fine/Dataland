@@ -29,8 +29,8 @@ from dataland_backend_api_documentation_client.models.company_associated_data_sf
 from dataland_backend_api_documentation_client.models.company_associated_data_pathways_to_paris_data import (
     CompanyAssociatedDataPathwaysToParisData,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
-    CompanyAssociatedDataSmeData,
+from dataland_backend_api_documentation_client.models.company_associated_data_vsme_data import (
+    CompanyAssociatedDataVsmeData,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_esg_questionnaire_data import (
     CompanyAssociatedDataEsgQuestionnaireData,
