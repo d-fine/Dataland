@@ -20,6 +20,9 @@ describe("Component tests for the data request review buttons", function (): voi
   before(() => {
     cy.fixture("DataRequestsMock").then((jsonContent) => {
       mockedRequests = jsonContent as Array<StoredDataRequest>;
+      if (mockedRequests[0].reportingPeriod === "2022") {
+        mockedRequests[0].reportingPeriod = "2024";
+      }
     });
   });
 

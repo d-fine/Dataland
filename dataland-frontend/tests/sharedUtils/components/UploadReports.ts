@@ -9,7 +9,10 @@ export class UploadReports extends UploadDocuments {
   fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload: number = 1): void {
     this.validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload);
     cy.get(`${this.uploadReportsSelector} [data-test="report-to-upload-form"]`).each((element) => {
-      cy.wrap(element).find(`[data-test="publicationDate"] button`).should("have.class", "p-datepicker-trigger").click();
+      cy.wrap(element)
+        .find(`[data-test="publicationDate"] button`)
+        .should("have.class", "p-datepicker-trigger")
+        .click();
       cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
       cy.get("div.p-datepicker").find(`span:contains("12")`).click();
     });

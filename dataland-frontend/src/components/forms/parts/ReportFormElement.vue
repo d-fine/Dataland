@@ -16,7 +16,12 @@
           @update:modelValue="reportingDateChanged($event)"
         />
       </div>
-      <FormKit type="text" :modelValue="hyphenatedDate" name="publicationDate" :outer-class="{ 'hidden-input': true }" />
+      <FormKit
+        type="text"
+        :modelValue="hyphenatedDate"
+        name="publicationDate"
+        :outer-class="{ 'hidden-input': true }"
+      />
     </div>
 
     <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
@@ -67,7 +72,8 @@ export default defineComponent({
      * computes an actual date object from the date string
      */
     getDateFromString() {
-      this.publicationDateAsDate = this.publicationDate && this.publicationDate.length > 1 ? new Date(this.publicationDate) : undefined;
+      this.publicationDateAsDate =
+        this.publicationDate && this.publicationDate.length > 1 ? new Date(this.publicationDate) : undefined;
     },
     /**
      * Emits the event that the reporting date was changed

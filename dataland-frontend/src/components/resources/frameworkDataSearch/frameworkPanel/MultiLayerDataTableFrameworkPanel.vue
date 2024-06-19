@@ -104,11 +104,6 @@ const sortedReports = computed(() => {
         .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports)
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
-    case DataTypeEnum.Sfdr: {
-      return sortedDataAndMetaInfo.value.map(
-        (singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports,
-      );
-    }
     default: {
       return []; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
       // to be added and the banner will never receive "null" as an input
