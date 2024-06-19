@@ -14,4 +14,34 @@ class V17__MigrateReferencedReportsTest {
             { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr") }
         )
     }
+
+    @Test
+    fun `check migration script for SME `() {
+        TestUtils().testMigrationOfSingleDataset(
+            "sme",
+            "V17/originalSme.json",
+            "V17/expectedSme.json",
+            { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "sme") }
+        )
+    }
+
+    @Test
+    fun `check migration script for Non Financial `() {
+        TestUtils().testMigrationOfSingleDataset(
+            "eutaxonomy-non-financials",
+            "V17/originalNonFinancial.json",
+            "V17/expectedNonFinancial.json",
+            { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") }
+        )
+    }
+
+    @Test
+    fun `check migration script for Financial `() {
+        TestUtils().testMigrationOfSingleDataset(
+            "eutaxonomy-financials",
+            "V17/originalFinancial.json",
+            "V17/expectedFinancial.json",
+            { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") }
+        )
+    }
 }
