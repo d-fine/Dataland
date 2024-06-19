@@ -111,8 +111,8 @@ export interface ReportingPeriodTableEntry {
   isClickable: boolean;
 }
 /**
- * Retrieves a dropdown dataset of sme release medium
- * @returns a dropdown dataset of sme release medium
+ * Retrieves a dropdown dataset of vsme release medium
+ * @returns a dropdown dataset of vsme release medium
  */
 function getReleaseMediumDropdownDataset(): DropdownDataset {
   const releaseMediumDataset: DropdownDataset = [];
@@ -126,8 +126,8 @@ function getReleaseMediumDropdownDataset(): DropdownDataset {
 }
 
 /**
- * Retrieves a dropdown dataset of sme waste classification
- * @returns a dropdown dataset of sme waste classification
+ * Retrieves a dropdown dataset of vsme waste classification
+ * @returns a dropdown dataset of vsme waste classification
  */
 function getWasteClassificationsDropdownDataset(): DropdownDataset {
   const WasteClassificationDataset: DropdownDataset = [];
@@ -140,8 +140,8 @@ function getWasteClassificationsDropdownDataset(): DropdownDataset {
   return WasteClassificationDataset;
 }
 /**
- * Retrieves a dropdown dataset of sme adjointness
- * @returns a dropdown dataset of sme adjointness
+ * Retrieves a dropdown dataset of vsme adjointness
+ * @returns a dropdown dataset of vsme adjointness
  */
 function getAdjointnessDropdownDataset(): DropdownDataset {
   const adjointnessDataset: DropdownDataset = [];
