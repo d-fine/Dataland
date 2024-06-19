@@ -14,7 +14,7 @@
     validation="required"
   />
   <NumberFormField
-    :name="'totalAmountTons'"
+    :name="'totalAmountInTons'"
     :validation-label="validationLabel"
     label="Total amount of waste in tons"
     description="Please specify the total amount of waste in tons"
@@ -22,7 +22,7 @@
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'wasteRecycleOrReuseTons'"
+    :name="'wasteRecycleOrReuseInTons'"
     :validation-label="validationLabel"
     label="Recycled or reused waste in tons"
     description="Please specify the recycled or reused waste in tons"
@@ -30,7 +30,7 @@
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'wasteDisposalTons'"
+    :name="'wasteDisposalInTons'"
     :validation-label="validationLabel"
     label="Waste disposal in tons"
     description="Please specify the waste disposal in tons"
@@ -38,7 +38,7 @@
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'totalAmountCubicMeters'"
+    :name="'totalAmountInCubicMeters'"
     :validation-label="validationLabel"
     label="Total amount of waste in m³"
     description="Please specify the total amount of waste in m³"
@@ -46,7 +46,7 @@
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'wasteRecycleOrReuseCubicMeters'"
+    :name="'wasteRecycleOrReuseInCubicMeters'"
     :validation-label="validationLabel"
     label="Recycled or reused waste in m³"
     description="Please specify the recycled or reused waste in m³"
@@ -54,7 +54,7 @@
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'wasteDisposalCubicMeters'"
+    :name="'wasteDisposalInCubicMeters'"
     :validation-label="validationLabel"
     label="Waste disposal in m³"
     description="Please specify the waste disposal in m³"
