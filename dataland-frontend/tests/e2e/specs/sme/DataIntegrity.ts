@@ -50,12 +50,12 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
       cy.visitAndCheckAppMount(
-        "/companies/" + storedTestCompany.companyId + "/frameworks/" + DataTypeEnum.Sme + "/upload",
+        "/companies/" + storedTestCompany.companyId + "/frameworks/" + DataTypeEnum.Vsme + "/upload",
       );
       //cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.get("h1").should("contain", storedTestCompany.companyInformation.companyName);
       cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Sme}`,
+        url: `**/api/data/${DataTypeEnum.Vsme}`,
         times: 1,
       }).as("postCompanyAssociatedData");
       //TODO Refactor to make it more readable
@@ -166,7 +166,7 @@ describeIf(
       cy.get('[data-test="electricityTotal"]').find('div[name="fileName"]').click();
       cy.get("ul.p-dropdown-items li").contains(`${TEST_PDF_FILE_NAME}-private`).click();
       cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Sme}`,
+        url: `**/api/data/${DataTypeEnum.Vsme}`,
         times: 1,
       }).as("postCompanyAssociatedData");
       cy.intercept("**/api/users/**").as("waitOnMyDatasetPage");
@@ -181,7 +181,7 @@ describeIf(
             "/companies/" +
               storedTestCompany.companyId +
               "/frameworks/" +
-              DataTypeEnum.Sme +
+              DataTypeEnum.Vsme +
               "/" +
               dataMetaInformationOfReuploadedDataset.dataId,
           );

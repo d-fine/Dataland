@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.frameworks.sme.SmeDataController
+import org.dataland.datalandbackend.frameworks.vsme.VsmeDataController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter
@@ -33,7 +33,7 @@ class MultipartJackson2HttpMessageConverter(
     }
 
     override fun canRead(type: Type, contextClass: Class<*>?, mediaType: MediaType?): Boolean {
-        if (contextClass != SmeDataController::class.java || type.typeName != SME_DATA_TYPENAME) {
+        if (contextClass != VsmeDataController::class.java || type.typeName != SME_DATA_TYPENAME) {
             return false
         }
         return super.canRead(type, contextClass, mediaType)

@@ -2,8 +2,8 @@ import {
   Configuration,
   type DataMetaInformation,
   type CompanyInformation,
-  type SmeData,
-  SmeDataControllerApi,
+  type VsmeData,
+  VsmeDataControllerApi,
 } from "@clients/backend";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -181,12 +181,15 @@ export async function uploadSmeFrameworkData(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: SmeData,
+  data: VsmeData,
   documents: File[],
 ): Promise<DataMetaInformation> {
   await postDataOwner(token, admin_userId, companyId);
-  const smeDataControllerApi = new SmeDataControllerApi(new Configuration({ accessToken: token }));
+  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
 
-  const response = await smeDataControllerApi.postSmeJsonAndDocuments({ companyId, reportingPeriod, data }, documents);
+  const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
+    { companyId, reportingPeriod, data },
+    documents,
+  );
   return response.data;
 }

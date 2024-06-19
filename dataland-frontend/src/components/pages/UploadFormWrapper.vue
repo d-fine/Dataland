@@ -93,8 +93,8 @@ export default defineComponent({
           return CreateHeimathafenDataset;
         case `${DataTypeEnum.EsgQuestionnaire}`:
           return CreateEsgQuestionnaireDataset;
-        case `${DataTypeEnum.Sme}`:
-          return CreateSmeDataset;
+        case `${DataTypeEnum.Vsme}`:
+          return CreateSmeDataset; //todo refactor
         default:
           return null;
       }

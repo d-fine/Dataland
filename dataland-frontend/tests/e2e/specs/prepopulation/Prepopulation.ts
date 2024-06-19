@@ -14,9 +14,10 @@ import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
 } from "@/frameworks/BasePublicFrameworkRegistry";
-import { DataTypeEnum, type SmeData } from "@clients/backend";
+import { DataTypeEnum, type VsmeData } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
+import Vsme from "@e2e/fixtures/frameworks/vsme";
 
 const chunkSize = 15;
 
@@ -122,12 +123,12 @@ describe(
      */
     function uploadSmeFixtures(chunkSize: number, numberOfSmeFixturesToUpload: number): void {
       describeIf(
-        `Upload and validate data for framework ${DataTypeEnum.Sme}`,
+        `Upload and validate data for framework ${DataTypeEnum.Vsme}`,
         {
           executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
         },
         () => {
-          let fixtureData: Array<FixtureData<SmeData>> = [];
+          let fixtureData: Array<FixtureData<VsmeData>> = [];
 
           before(function () {
             cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
@@ -135,7 +136,7 @@ describe(
             });
           });
 
-          it(`Upload data for framework ${DataTypeEnum.Sme}`, () => {
+          it(`Upload data for framework ${DataTypeEnum.Vsme}`, () => {
             cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await uploadCompanyViaApi(token, fixtureDataClosure.companyInformation);
@@ -150,7 +151,7 @@ describe(
             });
           });
           it("Checks that all the uploaded company ids and data ids can be retrieved", function () {
-            checkUploadedData(DataTypeEnum.Sme, fixtureData.length);
+            checkUploadedData(DataTypeEnum.Vsme, fixtureData.length);
           });
         },
       );

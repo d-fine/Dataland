@@ -36,6 +36,7 @@ class FrameworkRegistryImportsUpdater {
         writeIntoRegistryTsFiles(repository, freeMarkerContext)
     }
 
+    // todo extend for private registry file
     private fun writeIntoRegistryTsFiles(repository: DatalandRepository, freeMarkerContext: Any) {
         val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
         val jobs = listOf(
