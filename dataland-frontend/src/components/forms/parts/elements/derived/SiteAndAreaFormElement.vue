@@ -25,7 +25,6 @@
     name="biodiversitySensitiveArea"
     label="Biodiversity Sensitive Areae"
     description="Please specify the biodiversity sensitive area"
-    validation="required"
   />
   <NumberFormField
     :name="'areaInHectare'"

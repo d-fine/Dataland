@@ -3,6 +3,7 @@
     name="nameOfSubsidiary"
     description="Please state the name of the subsidiary."
     label="Subsidiary"
+    validation="required"
   />
   <AddressFormField
     data-test="AddressFormField"

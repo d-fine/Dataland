@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.frameworks.vsme.custom
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.sme.ReleaseMedium
 import java.math.BigDecimal
 
@@ -8,11 +9,10 @@ import java.math.BigDecimal
  * Pollution emission class for vsme framework
  */
 data class VsmePollutionEmission(
-    val pollutionType: String?,
+    @field:JsonProperty(required = true)
+    val pollutionType: String,
 
     val emissionInKilograms: BigDecimal? = null,
-
-    val releaseMedium: ReleaseMedium? = null,
-// TODO check if fields are sensible nullable
-    // TODO check nullable of fields
+    @field:JsonProperty(required = true)
+    val releaseMedium: ReleaseMedium,
 )

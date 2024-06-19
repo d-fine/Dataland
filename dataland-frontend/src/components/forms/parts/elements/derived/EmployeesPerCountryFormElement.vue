@@ -9,6 +9,7 @@
     :options="allCountry"
     data-test="country"
     input-class="long normal-line-height"
+    validation="required"
   />
   <NumberFormField
     :name="'numberOfEmployeesInHeadCount'"

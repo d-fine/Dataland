@@ -7,7 +7,12 @@
     placeholder="Select Waste Classification"
     validation="required"
   />
-  <InputTextFormField name="typeOfWaste" description="Please state type of waste." label="Type Of waste" />
+  <InputTextFormField
+    name="typeOfWaste"
+    description="Please state type of waste."
+    label="Type Of waste"
+    validation="required"
+  />
   <NumberFormField
     :name="'totalAmountTons'"
     :validation-label="validationLabel"
