@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * --- API model ---
  * Pollution emission class for vsme framework
  */
-data class SmePollutionEmission(
+data class VsmePollutionEmission(
     val pollutionType: String?,
 
     val emissionInKilograms: BigDecimal? = null,

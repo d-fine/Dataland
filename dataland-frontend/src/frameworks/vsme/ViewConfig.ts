@@ -9,12 +9,12 @@ import { formatStringForDatatable } from "@/components/resources/dataTable/conve
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import {
-  formatSmeEmployeesPerCountryForDisplay,
-  formatSmeWasteClassificationObjectForDisplay,
-  formatSmeSiteAndAreaForDisplay,
-  formatSmePollutionEmissionForDisplay,
-  formatSmeSubsidiaryForDisplay,
-} from "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters";
+  formatVsmeEmployeesPerCountryForDisplay,
+  formatVsmeWasteClassificationObjectForDisplay,
+  formatVsmeSiteAndAreaForDisplay,
+  formatVsmePollutionEmissionForDisplay,
+  formatVsmeSubsidiaryForDisplay,
+} from "@/components/resources/dataTable/conversion/vsme/SmeDisplayValueGetters";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
   {
@@ -48,7 +48,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             explanation: "Please provide a list of your subsidiaries including their registered addresses.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatSmeSubsidiaryForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary"),
+              formatVsmeSubsidiaryForDisplay(dataset.basic?.basisForPreparation?.subsidiary, "Subsidiary"),
           },
         ],
       },
@@ -196,7 +196,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               "Please disclose, if applicable, the pollutants (with respective amounts in kg) you emit to air, water and soil in your own operations.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatSmePollutionEmissionForDisplay(
+              formatVsmePollutionEmissionForDisplay(
                 dataset.basic?.pollutionOfAirWaterSoil?.pollutionEmission,
                 "Pollution Emission",
               ),
@@ -216,7 +216,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               "Please, provide a list of relevant company sites adjoint to key biodiversity areas (including their country, area in hectares, adjoint biodiversity area, and level of adjointness).",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatSmeSiteAndAreaForDisplay(dataset.basic?.biodiversity?.sitesAndAreas, "Sites and Areas"),
+              formatVsmeSiteAndAreaForDisplay(dataset.basic?.biodiversity?.sitesAndAreas, "Sites and Areas"),
           },
           {
             type: "cell",
@@ -493,7 +493,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatSmeWasteClassificationObjectForDisplay(
+              formatVsmeWasteClassificationObjectForDisplay(
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.wasteClassification,
                 "Waste Classification",
               ),
@@ -708,7 +708,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               "Please list your employees presented by the country they work in. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatSmeEmployeesPerCountryForDisplay(
+              formatVsmeEmployeesPerCountryForDisplay(
                 dataset.basic?.workforceGeneralCharacteristics?.employeesPerCountry,
                 "Employees Per Country",
               ),

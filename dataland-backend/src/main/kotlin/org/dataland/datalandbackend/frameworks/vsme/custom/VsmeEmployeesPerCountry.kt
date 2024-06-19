@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * --- API model ---
  * Employees per country class for vsme framework
  */
-data class SmeEmployeesPerCountry(
+data class VsmeEmployeesPerCountry(
     @field:JsonProperty(required = true)
     val country: String,
 

@@ -8,7 +8,7 @@ import java.math.BigDecimal
  * --- API model ---
  * Sites and area class for vsme framework
  */
-data class SmeSiteAndArea(
+data class VsmeSiteAndArea(
     val siteName: String,
     val siteAddress: Address,
     val siteGeocoordinateLongitudeval: BigDecimal?,

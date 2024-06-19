@@ -10,13 +10,13 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 /**
- * Generates the EmployeesPerCountry component
+ * Generates the Subsidiary component
  */
 @Component
-class SmeEmployeesPerCountryComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class VsmeSubsidiaryComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Employees Per Country"
+        row.component == "Vsme Subsidiary"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -26,7 +26,7 @@ class SmeEmployeesPerCountryComponentFactory(@Autowired val templateDiagnostic: 
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<SmeEmployeesPerCountryComponent>(
+        return componentGroup.create<VsmeSubsidiaryComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

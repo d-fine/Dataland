@@ -26,28 +26,28 @@ function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<VsmeData
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
   input.companyInformation.sector = "randomSector";
   input.t.basic!.basisForPreparation!.subsidiary = smeGeneratorNoUndefined.randomArray(
-    () => smeGeneratorNoUndefined.generateSmeSubsidiary(),
+    () => smeGeneratorNoUndefined.generateVsmeSubsidiary(),
     1,
     3,
   );
   input.t.basic!.pollutionOfAirWaterSoil!.pollutionEmission = smeGeneratorNoUndefined.randomArray(
-    () => smeGeneratorNoUndefined.generateSmePollutionEmission(),
+    () => smeGeneratorNoUndefined.generateVsmePollutionEmission(),
     1,
     3,
   );
   input.t.basic!.resourceUseCircularEconomyAndWasteManagement!.wasteClassification =
     smeGeneratorNoUndefined.randomArray(
-      () => smeGeneratorNoUndefined.generateRandomSmeWasteClassificationObject(),
+      () => smeGeneratorNoUndefined.generateRandomVsmeWasteClassificationObject(),
       1,
       3,
     );
   input.t.basic!.biodiversity!.sitesAndAreas = smeGeneratorNoUndefined.randomArray(
-    () => smeGeneratorNoUndefined.generateSmeSiteAndArea(),
+    () => smeGeneratorNoUndefined.generateVsmeSiteAndArea(),
     1,
     3,
   );
   input.t.basic!.workforceGeneralCharacteristics!.employeesPerCountry = smeGeneratorNoUndefined.randomArray(
-    () => smeGeneratorNoUndefined.generateSmeEmployeesPerCountry(),
+    () => smeGeneratorNoUndefined.generateVsmeEmployeesPerCountry(),
     1,
     3,
   );
