@@ -104,17 +104,17 @@ class Vsme {
     @Test
     fun `post VSME data with documents and check if data and documents can be retrieved by the data owner`() {
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        val companyAssociatedDataSmeData = CompanyAssociatedDataVsmeData(companyId, "2023", vsmeData)
+        val companyAssociatedDataVsmeData = CompanyAssociatedDataVsmeData(companyId, "2023", vsmeData)
         val dataMetaInfoInResponse = postVsmeDataset(
-            companyAssociatedDataSmeData,
+            companyAssociatedDataVsmeData,
             listOf(dummyFileAlpha, dummyFileBeta),
         )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val retrievedCompanyAssociatedSmeData = executeDataRetrievalWithRetries(
+        val retrievedCompanyAssociatedVsmeData = executeDataRetrievalWithRetries(
             vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataMetaInfoInResponse.dataId,
         )
-        assertEquals(companyAssociatedDataSmeData, retrievedCompanyAssociatedSmeData)
+        assertEquals(companyAssociatedDataVsmeData, retrievedCompanyAssociatedVsmeData)
 
         val downloadedAlpha = vsmeDataControllerApi.getPrivateDocument(dataMetaInfoInResponse.dataId, hashAlpha)
         assertEquals(hashAlpha, downloadedAlpha.readBytes().sha256())
@@ -126,25 +126,25 @@ class Vsme {
     @Test
     fun `post two VSME datasets for the same reporting period and company and assert correct handling`() {
         var vsmeData = setReferencedReports(testVsmeData, null)
-        val companyAssociatedSmeDataAlpha =
+        val companyAssociatedVsmeDataAlpha =
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(1))
-        val dataIdAlpha = postVsmeDataset(companyAssociatedSmeDataAlpha).dataId
+        val dataIdAlpha = postVsmeDataset(companyAssociatedVsmeDataAlpha).dataId
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val retrievedCompanyAssociatedSmeDataAlpha = executeDataRetrievalWithRetries(
+        val retrievedCompanyAssociatedVsmeDataAlpha = executeDataRetrievalWithRetries(
             vsmeDataControllerApi::getCompanyAssociatedVsmeData, dataIdAlpha,
         )
         assertEquals(
             BigDecimal(1),
-            retrievedCompanyAssociatedSmeDataAlpha?.data?.basic?.workforceGeneralCharacteristics
+            retrievedCompanyAssociatedVsmeDataAlpha?.data?.basic?.workforceGeneralCharacteristics
                 ?.numberOfEmployeesInHeadcount,
         )
 
         vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        val companyAssociatedSmeDataBeta =
+        val companyAssociatedVsmeDataBeta =
             generateVsmeDataWithSetNumberOfEmployeesInHeadCount(companyId, "2022", vsmeData, BigDecimal(2))
 
-        val dataIdBeta = postVsmeDataset(companyAssociatedSmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
+        val dataIdBeta = postVsmeDataset(companyAssociatedVsmeDataBeta, listOf(dummyFileAlpha, dummyFileBeta)).dataId
         checkValidity(dataIdAlpha, dataIdBeta)
     }
 
@@ -172,8 +172,8 @@ class Vsme {
     @Test
     fun `post an VSME dataset with duplicate file and assert that the downloaded file is unique and correct`() {
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
-        val companyAssociatedSmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
-        val dataId = postVsmeDataset(companyAssociatedSmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
+        val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2022", vsmeData)
+        val dataId = postVsmeDataset(companyAssociatedVsmeData, listOf(dummyFileAlpha, dummyFileAlpha)).dataId
 
         val persistedDataMetaInfo = executeDataRetrievalWithRetries(
             apiAccessor.metaDataControllerApi::getDataMetaInfo, dataId,
