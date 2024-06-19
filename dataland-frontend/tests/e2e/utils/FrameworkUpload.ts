@@ -177,7 +177,7 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
  * @param documents the documents to upload
  * @returns a promise on the created data meta information
  */
-export async function uploadSmeFrameworkData(
+export async function uploadVsmeFrameworkData(
   token: string,
   companyId: string,
   reportingPeriod: string,

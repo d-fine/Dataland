@@ -1,16 +1,16 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
-    <template #title>New Dataset - SME</template>
+    <template #title>New Dataset - VSME</template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="companyAssociatedSmeData"
+            v-model="companyAssociatedVsmeData"
             :actions="false"
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postSmeData"
+            @submit="postVsmeData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
@@ -58,7 +58,7 @@
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                         <component
-                          v-if="field.showIf(companyAssociatedSmeData.data)"
+                          v-if="field.showIf(companyAssociatedVsmeData.data)"
                           :is="field.component"
                           :label="field.label"
                           :placeholder="field.placeholder"
@@ -83,7 +83,7 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postSmeDataProcessed">
+          <div v-if="postVsmeDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
@@ -123,8 +123,8 @@ import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { type CompanyAssociatedDataSmeData, DataTypeEnum, type SmeData } from "@clients/backend";
-import { smeDataModel } from "@/frameworks/sme/UploadConfig";
+import { type CompanyAssociatedDataVsmeData, DataTypeEnum, type VsmeData } from "@clients/backend";
+import { vsmeDataModel } from "@/frameworks/vsme/UploadConfig";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
@@ -158,7 +158,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "CreateSmeDataset",
+  name: "CreateVsmeDataset",
   components: {
     FormKit,
     UploadFormHeader,
@@ -190,13 +190,13 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      formId: "createSmeForm",
-      companyAssociatedSmeData: {} as CompanyAssociatedDataSmeData,
-      smeUploadConfig: smeDataModel,
+      formId: "createVsmeForm",
+      companyAssociatedVsmeData: {} as CompanyAssociatedDataVsmeData,
+      vsmeUploadConfig: vsmeDataModel,
       message: "",
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postSmeDataProcessed: false,
+      postVsmeDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
@@ -212,10 +212,10 @@ export default defineComponent({
       return 0;
     },
     visibleCategories(): Category[] {
-      return this.smeUploadConfig.filter((category) => category.showIf(this.companyAssociatedSmeData.data));
+      return this.vsmeUploadConfig.filter((category) => category.showIf(this.companyAssociatedVsmeData.data));
     },
     subcategoryVisibilityMap(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.smeUploadConfig, this.companyAssociatedSmeData.data);
+      return createSubcategoryVisibilityMap(this.vsmeUploadConfig, this.companyAssociatedVsmeData.data);
     },
   },
   props: {
@@ -226,32 +226,32 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Builds an api to upload Sme data
+     * Builds an api to upload Vsme data
      * @returns the api
      */
-    buildSmeDataApi(): PrivateFrameworkDataApi<SmeData> {
+    buildVsmeDataApi(): PrivateFrameworkDataApi<VsmeData> {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Sme);
+      const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Vsme);
       if (frameworkDefinition) {
         return frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
     },
 
     /**
-     * Sends data to add SME data
+     * Sends data to add VSME data
      */
-    async postSmeData(): Promise<void> {
+    async postVsmeData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.companyAssociatedSmeData.data as ObjectType,
+            this.companyAssociatedVsmeData.data as ObjectType,
             Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
           );
         }
         const files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
-        const smeDataControllerApi = this.buildSmeDataApi();
-        await smeDataControllerApi.postFrameworkData(this.companyAssociatedSmeData, files);
+        const vsmeDataControllerApi = this.buildVsmeDataApi();
+        await vsmeDataControllerApi.postFrameworkData(this.companyAssociatedVsmeData, files);
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
@@ -264,7 +264,7 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postSmeDataProcessed = true;
+        this.postVsmeDataProcessed = true;
       }
     },
     /**

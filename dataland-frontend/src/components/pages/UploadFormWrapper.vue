@@ -42,7 +42,7 @@ import TheContent from "@/components/generics/TheContent.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import CreateHeimathafenDataset from "@/components/forms/CreateHeimathafenDataset.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
-import CreateSmeDataset from "@/components/forms/CreateSmeDataset.vue";
+import CreateVsmeDataset from "@/components/forms/CreateVsmeDataset.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
@@ -94,7 +94,7 @@ export default defineComponent({
         case `${DataTypeEnum.EsgQuestionnaire}`:
           return CreateEsgQuestionnaireDataset;
         case `${DataTypeEnum.Vsme}`:
-          return CreateSmeDataset; //todo refactor
+          return CreateVsmeDataset;
         default:
           return null;
       }

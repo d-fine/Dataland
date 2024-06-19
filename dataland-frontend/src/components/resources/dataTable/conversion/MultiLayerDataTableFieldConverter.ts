@@ -14,7 +14,7 @@ import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/
 import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
 import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
-import { smeModalColumnHeaders } from "@/components/resources/dataTable/conversion/vsme/SmeDisplayValueGetters";
+import { vsmeModalColumnHeaders } from "@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters";
 import { yesNoNoEvidenceFoundValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
@@ -44,8 +44,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
-  SubsidiaryFormField: getModalGetterFactory("listOfSubsidiary", smeModalColumnHeaders),
-  PollutionEmissionFormField: getModalGetterFactory("pollutionEmission", smeModalColumnHeaders),
+  SubsidiaryFormField: getModalGetterFactory("listOfSubsidiary", vsmeModalColumnHeaders),
+  PollutionEmissionFormField: getModalGetterFactory("pollutionEmission", vsmeModalColumnHeaders),
 };
 
 /**
