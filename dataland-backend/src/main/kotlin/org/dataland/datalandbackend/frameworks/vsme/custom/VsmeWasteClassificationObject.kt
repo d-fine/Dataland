@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.vsme.custom
  * --- API model ---
  * Subsidiaries class for vsme framework
  */
-data class SmeWasteClassificationObject(
+data class VsmeWasteClassificationObject(
     val wasteClassification: WasteClassifications,
     val typeOfWaste: String?,
     val totalAmountTons: Number?,

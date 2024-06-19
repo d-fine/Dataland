@@ -19,7 +19,7 @@ export class VsmeGenerator extends Generator {
    * Generates a random subsidiary
    * @returns a random subsidiary
    */
-  generateSmeSubsidiary(): SmeSubsidiary {
+  generateVsmeSubsidiary(): SmeSubsidiary {
     return {
       nameOfSubsidiary: this.valueOrNull(faker.company.name()),
       addressOfSubsidiary: generateAddress(this.nullProbability),
@@ -29,7 +29,7 @@ export class VsmeGenerator extends Generator {
    * Generates a random pollution emission
    * @returns a random pollution emission
    */
-  generateSmePollutionEmission(): SmePollutionEmission {
+  generateVsmePollutionEmission(): SmePollutionEmission {
     return {
       pollutionType: this.valueOrNull(faker.science.chemicalElement())?.name,
       emissionInKilograms: this.valueOrNull(generateFloat()),
@@ -41,7 +41,7 @@ export class VsmeGenerator extends Generator {
    * Generates a random waste classification object
    * @returns a random waste classification object
    */
-  generateRandomSmeWasteClassificationObject(): SmeWasteClassificationObject {
+  generateRandomVsmeWasteClassificationObject(): SmeWasteClassificationObject {
     return {
       wasteClassification: pickOneElement(Object.values(WasteClassifications)),
       typeOfWaste: this.randomShortString(),
@@ -53,7 +53,7 @@ export class VsmeGenerator extends Generator {
       wasteDisposalCubicMeters: this.randomFloat(0, 1e2),
     };
   }
-  generateSmeSiteAndArea(): SmeSiteAndArea {
+  generateVsmeSiteAndArea(): SmeSiteAndArea {
     return {
       siteName: faker.company.name(),
       areaAddress: generateAddress(this.nullProbability),
@@ -67,7 +67,7 @@ export class VsmeGenerator extends Generator {
       areaGeocoordinateLatitude: this.randomFloat(0, 1e8),
     };
   }
-  generateSmeEmployeesPerCountry(): SmeEmployeesPerCountry {
+  generateVsmeEmployeesPerCountry(): SmeEmployeesPerCountry {
     return {
       country: faker.location.countryCode(),
       numberOfEmployeesInHeadCount: this.randomInt(0, 1e4),

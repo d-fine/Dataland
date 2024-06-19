@@ -6,12 +6,12 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import {
-  type SmeSubsidiary,
-  type SmePollutionEmission,
+  type VsmeSubsidiary,
+  type VsmePollutionEmission,
   type ReleaseMedium,
-  type SmeWasteClassificationObject,
-  type SmeSiteAndArea,
-  type SmeEmployeesPerCountry,
+  type VsmeWasteClassificationObject,
+  type VsmeSiteAndArea,
+  type VsmeEmployeesPerCountry,
   type WasteClassifications,
 } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
@@ -78,7 +78,7 @@ interface SmeWasteClassificationDisplayFormat {
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmeSubsidiaryForDisplay(
-  input: SmeSubsidiary[] | null | undefined,
+  input: VsmeSubsidiary[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
@@ -112,7 +112,7 @@ export function formatSmeSubsidiaryForDisplay(
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmePollutionEmissionForDisplay(
-  input: SmePollutionEmission[] | null | undefined,
+  input: VsmePollutionEmission[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
@@ -149,7 +149,7 @@ export function formatSmePollutionEmissionForDisplay(
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmeWasteClassificationObjectForDisplay(
-  input: SmeWasteClassificationObject[] | null | undefined,
+  input: VsmeWasteClassificationObject[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
@@ -186,7 +186,7 @@ export function formatSmeWasteClassificationObjectForDisplay(
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
-function convertSmePollutionEmissionToListForModal(datasetValue: SmePollutionEmission[]): SmePollutionEmission[] {
+function convertSmePollutionEmissionToListForModal(datasetValue: VsmePollutionEmission[]): VsmePollutionEmission[] {
   return datasetValue.map((item) => {
     const humanizedItem: SmePollutionEmissionDisplayFormat = {
       pollutionType: humanizeStringOrNumber(item.pollutionType),
@@ -205,7 +205,7 @@ function convertSmePollutionEmissionToListForModal(datasetValue: SmePollutionEmi
  * @returns the converted list
  */
 function convertSmeWasteClassificationToListForModal(
-  datasetValue: SmeWasteClassificationObject[],
+  datasetValue: VsmeWasteClassificationObject[],
 ): SmeWasteClassificationDisplayFormat[] {
   return datasetValue.map((item) => {
     const humanizedItem: SmeWasteClassificationDisplayFormat = {
@@ -231,7 +231,7 @@ function convertSmeWasteClassificationToListForModal(
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmeSiteAndAreaForDisplay(
-  input: SmeSiteAndArea[] | null | undefined,
+  input: VsmeSiteAndArea[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
@@ -265,7 +265,7 @@ export function formatSmeSiteAndAreaForDisplay(
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
 export function formatSmeEmployeesPerCountryForDisplay(
-  input: SmeEmployeesPerCountry[] | null | undefined,
+  input: VsmeEmployeesPerCountry[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {

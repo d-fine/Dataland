@@ -18,7 +18,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
  * Represents the SmeSimpleCustomComponentBase component
  * @param viewFormattingFunctionName the name of the formatting function for the view page in SmeDisplayValueGetters.ts
  */
-open class SmeSimpleCustomComponentBase(
+open class VsmeSimpleCustomComponentBase(
     identifier: String,
     parent: FieldNodeParent,
     val viewFormattingFunctionName: String,
@@ -39,7 +39,7 @@ open class SmeSimpleCustomComponentBase(
                 setOf(
                     TypeScriptImport(
                         viewFormattingFunctionName,
-                        "@/components/resources/dataTable/conversion/sme/SmeDisplayValueGetters",
+                        "@/components/resources/dataTable/conversion/vsme/SmeDisplayValueGetters",
                     ),
                 ),
             ),

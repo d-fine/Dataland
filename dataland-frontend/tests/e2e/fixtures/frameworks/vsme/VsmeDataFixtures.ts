@@ -34,7 +34,7 @@ export function generateVsmeData(nullProbability = DEFAULT_PROBABILITY): VsmeDat
     basic: {
       basisForPreparation: {
         reportingBasis: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-        subsidiary: dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5),
+        subsidiary: dataGenerator.randomArray(() => dataGenerator.generateVsmeSubsidiary(), 0, 5),
         referencedReports: dataGenerator.reports,
       },
       practicesForTransitioningTowardsAMoreSustainableEconomy: {
@@ -53,10 +53,10 @@ export function generateVsmeData(nullProbability = DEFAULT_PROBABILITY): VsmeDat
         scope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
       },
       pollutionOfAirWaterSoil: {
-        pollutionEmission: dataGenerator.randomArray(() => dataGenerator.generateSmePollutionEmission(), 0, 3),
+        pollutionEmission: dataGenerator.randomArray(() => dataGenerator.generateVsmePollutionEmission(), 0, 3),
       },
       biodiversity: {
-        sitesAndAreas: dataGenerator.randomArray(() => dataGenerator.generateSmeSiteAndArea(), 0, 5),
+        sitesAndAreas: dataGenerator.randomArray(() => dataGenerator.generateVsmeSiteAndArea(), 0, 5),
         totalSealedAreaPreviousYear: dataGenerator.randomFloat(),
         totalSealedAreaReportingYear: dataGenerator.randomFloat(),
         percentualChangeSealedArea: dataGenerator.randomPercentageValue(),
@@ -90,7 +90,7 @@ export function generateVsmeData(nullProbability = DEFAULT_PROBABILITY): VsmeDat
           pickOneElement(Object.values(VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions)),
         ),
         wasteClassification: dataGenerator.randomArray(
-          () => dataGenerator.generateRandomSmeWasteClassificationObject(),
+          () => dataGenerator.generateRandomVsmeWasteClassificationObject(),
           0,
           3,
         ),
@@ -113,7 +113,7 @@ export function generateVsmeData(nullProbability = DEFAULT_PROBABILITY): VsmeDat
         numberOfOtherEmployeesHead: dataGenerator.randomFloat(),
         numberOfNotReportedEpmloyeesInFtes: dataGenerator.randomFloat(),
         numberOfNotReportedEmployeesInHeadcount: dataGenerator.randomFloat(),
-        employeesPerCountry: dataGenerator.randomArray(() => dataGenerator.generateSmeEmployeesPerCountry(), 0, 5),
+        employeesPerCountry: dataGenerator.randomArray(() => dataGenerator.generateVsmeEmployeesPerCountry(), 0, 5),
       },
       workforceHealthAndSafety: {
         totalHours: dataGenerator.randomFloat(),

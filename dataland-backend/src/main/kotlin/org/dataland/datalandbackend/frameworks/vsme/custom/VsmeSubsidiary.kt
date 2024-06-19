@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.generics.Address
  * --- API model ---
  * Subsidiaries class for vsme framework
  */
-data class SmeSubsidiary(
+data class VsmeSubsidiary(
     val nameOfSubsidiary: String?,
 
     @field:JsonProperty(required = true)

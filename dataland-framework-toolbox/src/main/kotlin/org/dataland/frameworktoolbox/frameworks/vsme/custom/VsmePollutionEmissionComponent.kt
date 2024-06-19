@@ -9,15 +9,16 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 /**
  * Represents the pollution component for vsme
  */
-class SmePollutionEmissionComponent(
+class VsmePollutionEmissionComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : SmeSimpleCustomComponentBase(
+) : VsmeSimpleCustomComponentBase(
     identifier = identifier,
     parent = parent,
-    viewFormattingFunctionName = "formatSmePollutionEmissionForDisplay",
+    viewFormattingFunctionName = "formatVsmePollutionEmissionForDisplay",
     uploadComponentName = "PollutionEmissionFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmePollutionEmission(), 0, 3)",
+    guaranteedFixtureExpression = "dataGenerator.randomArray(() => " +
+            "dataGenerator.generateVsmePollutionEmission(), 0, 3)",
     randomFixtureExpression = null,
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {

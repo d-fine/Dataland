@@ -10,13 +10,13 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 /**
- * Generates the Subsidiary component
+ * Generates the SiteAndArea component
  */
 @Component
-class SmeSubsidiaryComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class VsmeSiteAndAreaComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Sme Subsidiary"
+        row.component == "Vsme Site And Area"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -26,7 +26,7 @@ class SmeSubsidiaryComponentFactory(@Autowired val templateDiagnostic: TemplateD
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<SmeSubsidiaryComponent>(
+        return componentGroup.create<VsmeSiteAndAreaComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

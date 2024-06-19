@@ -7,19 +7,22 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 
 /**
- * Represents the sitesandareas component for vsme
+ * Describes a custom component for classification of waste including several fields with additional information
  */
-class SmeSiteAndAreaComponent(
+class VsmeWasteClassificationObjectCustomComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : SmeSimpleCustomComponentBase(
+) : VsmeSimpleCustomComponentBase(
     identifier = identifier,
     parent = parent,
-    viewFormattingFunctionName = "formatSmeSiteAndAreaForDisplay",
-    uploadComponentName = "SiteAndAreaFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeSiteAndArea(), 0, 5)",
-    randomFixtureExpression = null,
+    viewFormattingFunctionName = "formatVsmeWasteClassificationObjectForDisplay",
+    uploadComponentName = "WasteClassificationFormField",
+    guaranteedFixtureExpression = "dataGenerator.guaranteedArray(() => " +
+        "dataGenerator.generateRandomVsmeWasteClassificationObject(), 0, 3)",
+    randomFixtureExpression = "dataGenerator.randomArray(() => dataGenerator." +
+        "generateRandomVsmeWasteClassificationObject(), 0, 3)",
 ) {
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -28,13 +31,11 @@ class SmeSiteAndAreaComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeSiteAndArea",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeWasteClassificationObject",
                         true,
                     ),
-
                 ),
             ),
-
         )
     }
 }

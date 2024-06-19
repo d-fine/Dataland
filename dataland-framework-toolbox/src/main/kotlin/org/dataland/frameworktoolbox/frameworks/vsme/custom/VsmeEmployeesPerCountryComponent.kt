@@ -9,15 +9,16 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 /**
  * Represents the subsidiaries component for vsme
  */
-class SmeSubsidiaryComponent(
+class VsmeEmployeesPerCountryComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : SmeSimpleCustomComponentBase(
+) : VsmeSimpleCustomComponentBase(
     identifier = identifier,
     parent = parent,
-    viewFormattingFunctionName = "formatSmeSubsidiaryForDisplay",
-    uploadComponentName = "SubsidiaryFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateSmeSubsidiary(), 0, 5)",
+    viewFormattingFunctionName = "formatVsmeEmployeesPerCountryForDisplay",
+    uploadComponentName = "EmployeesPerCountryFormField",
+    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateVsmeEmployeesPerCountry()," +
+        " 0, 5)",
     randomFixtureExpression = null,
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -28,7 +29,7 @@ class SmeSubsidiaryComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeSubsidiary",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeEmployeesPerCountry",
                         true,
                     ),
 

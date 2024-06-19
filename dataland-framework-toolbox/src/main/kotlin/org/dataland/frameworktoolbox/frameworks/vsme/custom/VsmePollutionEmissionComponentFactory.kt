@@ -9,17 +9,14 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 /**
- * Generates the Waste Classification Custom Component
+ * Generates the PollutionAndEmission component
  */
-
 @Component
-class SmeWasteClassificationObjectCustomComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class VsmePollutionEmissionComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
-
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Waste Classification Component"
+        row.component == "Vsme Pollution Emission"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -29,7 +26,7 @@ class SmeWasteClassificationObjectCustomComponentFactory(@Autowired val template
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<SmeWasteClassificationObjectCustomComponent>(
+        return componentGroup.create<VsmePollutionEmissionComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
