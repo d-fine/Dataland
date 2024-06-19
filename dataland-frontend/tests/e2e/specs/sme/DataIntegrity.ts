@@ -115,7 +115,9 @@ describeIf(
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTons"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInTons"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInCubicMeters"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInCubicMeters"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]')
+        .find('[name="wasteRecycleOrReuseInCubicMeters"]')
+        .type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInCubicMeters"]').type("12345");
     }
     /**
