@@ -2,11 +2,11 @@ import { Generator } from "@e2e/utils/FakeFixtureUtils";
 import {
   ReleaseMedium,
   WasteClassifications,
-  type SmePollutionEmission,
-  type SmeSubsidiary,
-  type SmeWasteClassificationObject,
-  type SmeSiteAndArea,
-  type SmeEmployeesPerCountry,
+  type VsmePollutionEmission,
+  type VsmeSubsidiary,
+  type VsmeWasteClassificationObject,
+  type VsmeSiteAndArea,
+  type VsmeEmployeesPerCountry,
   AreaAdjointness,
 } from "@clients/backend";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
@@ -19,7 +19,7 @@ export class VsmeGenerator extends Generator {
    * Generates a random subsidiary
    * @returns a random subsidiary
    */
-  generateVsmeSubsidiary(): SmeSubsidiary {
+  generateVsmeSubsidiary(): VsmeSubsidiary {
     return {
       nameOfSubsidiary: this.valueOrNull(faker.company.name()),
       addressOfSubsidiary: generateAddress(this.nullProbability),
@@ -29,7 +29,7 @@ export class VsmeGenerator extends Generator {
    * Generates a random pollution emission
    * @returns a random pollution emission
    */
-  generateVsmePollutionEmission(): SmePollutionEmission {
+  generateVsmePollutionEmission(): VsmePollutionEmission {
     return {
       pollutionType: this.valueOrNull(faker.science.chemicalElement())?.name,
       emissionInKilograms: this.valueOrNull(generateFloat()),
@@ -41,7 +41,7 @@ export class VsmeGenerator extends Generator {
    * Generates a random waste classification object
    * @returns a random waste classification object
    */
-  generateRandomVsmeWasteClassificationObject(): SmeWasteClassificationObject {
+  generateRandomVsmeWasteClassificationObject(): VsmeWasteClassificationObject {
     return {
       wasteClassification: pickOneElement(Object.values(WasteClassifications)),
       typeOfWaste: this.randomShortString(),
@@ -53,7 +53,7 @@ export class VsmeGenerator extends Generator {
       wasteDisposalCubicMeters: this.randomFloat(0, 1e2),
     };
   }
-  generateVsmeSiteAndArea(): SmeSiteAndArea {
+  generateVsmeSiteAndArea(): VsmeSiteAndArea {
     return {
       siteName: faker.company.name(),
       areaAddress: generateAddress(this.nullProbability),
@@ -67,7 +67,7 @@ export class VsmeGenerator extends Generator {
       areaGeocoordinateLatitude: this.randomFloat(0, 1e8),
     };
   }
-  generateVsmeEmployeesPerCountry(): SmeEmployeesPerCountry {
+  generateVsmeEmployeesPerCountry(): VsmeEmployeesPerCountry {
     return {
       country: faker.location.countryCode(),
       numberOfEmployeesInHeadCount: this.randomInt(0, 1e4),

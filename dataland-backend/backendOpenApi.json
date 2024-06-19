@@ -14974,13 +14974,13 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "companyName": {
