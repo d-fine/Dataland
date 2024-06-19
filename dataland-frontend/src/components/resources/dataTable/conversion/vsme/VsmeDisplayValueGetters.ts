@@ -16,7 +16,7 @@ import {
 } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
-export const smeModalColumnHeaders = {
+export const vsmeModalColumnHeaders = {
   listOfSubsidiary: {
     nameOfSubsidiary: "Name",
     addressOfSubsidiary: "Address",
@@ -99,7 +99,7 @@ export function formatSmeSubsidiaryForDisplay(
         data: {
           listOfRowContents: input,
           kpiKeyOfTable: "listOfSubsidiary",
-          columnHeaders: smeModalColumnHeaders,
+          columnHeaders: vsmeModalColumnHeaders,
         },
       },
     },
@@ -136,7 +136,7 @@ export function formatSmePollutionEmissionForDisplay(
         data: {
           listOfRowContents: convertedValueForModal,
           kpiKeyOfTable: "pollutionEmission",
-          columnHeaders: smeModalColumnHeaders,
+          columnHeaders: vsmeModalColumnHeaders,
         },
       },
     },
@@ -173,7 +173,7 @@ export function formatSmeWasteClassificationObjectForDisplay(
         data: {
           listOfRowContents: convertedValueForModal,
           kpiKeyOfTable: "wasteClassification",
-          columnHeaders: smeModalColumnHeaders,
+          columnHeaders: vsmeModalColumnHeaders,
         },
       },
     },
@@ -251,7 +251,7 @@ export function formatSmeSiteAndAreaForDisplay(
           data: {
             listOfRowContents: input,
             kpiKeyOfTable: "siteAndArea",
-            columnHeaders: smeModalColumnHeaders,
+            columnHeaders: vsmeModalColumnHeaders,
           },
         },
       },
@@ -285,7 +285,7 @@ export function formatSmeEmployeesPerCountryForDisplay(
           data: {
             listOfRowContents: input,
             kpiKeyOfTable: "employeesPerCountry",
-            columnHeaders: smeModalColumnHeaders,
+            columnHeaders: vsmeModalColumnHeaders,
           },
         },
       },
