@@ -4747,31 +4747,27 @@
         }
       },
       "VsmePollutionEmission": {
+        "required": [
+          "pollutionType",
+          "releaseMedium"
+        ],
         "type": "object",
         "properties": {
           "pollutionType": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "emissionInKilograms": {
             "type": "number",
             "nullable": true
           },
           "releaseMedium": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReleaseMedium"
-              }
-            ]
+            "$ref": "#/components/schemas/ReleaseMedium"
           }
         }
       },
       "VsmeSiteAndArea": {
         "required": [
           "areaAddress",
-          "areaInHectare",
-          "biodiversitySensitiveArea",
           "siteAddress",
           "siteName",
           "specificationOfAdjointness"
@@ -4793,10 +4789,12 @@
             "nullable": true
           },
           "areaInHectare": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "biodiversitySensitiveArea": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "areaAddress": {
             "$ref": "#/components/schemas/Address"
@@ -4816,13 +4814,13 @@
       },
       "VsmeSubsidiary": {
         "required": [
-          "addressOfSubsidiary"
+          "addressOfSubsidiary",
+          "nameOfSubsidiary"
         ],
         "type": "object",
         "properties": {
           "nameOfSubsidiary": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "addressOfSubsidiary": {
             "$ref": "#/components/schemas/Address"
@@ -4831,6 +4829,7 @@
       },
       "VsmeWasteClassificationObject": {
         "required": [
+          "typeOfWaste",
           "wasteClassification"
         ],
         "type": "object",
@@ -4839,10 +4838,9 @@
             "$ref": "#/components/schemas/WasteClassifications"
           },
           "typeOfWaste": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
-          "totalAmountInTons": {
+          "totalAmountOfWasteInTons": {
             "type": "number",
             "nullable": true
           },
@@ -4854,7 +4852,7 @@
             "type": "number",
             "nullable": true
           },
-          "totalAmountInCubicMeters": {
+          "totalAmountOfWasteInCubicMeters": {
             "type": "number",
             "nullable": true
           },
@@ -14970,6 +14968,12 @@
         ],
         "type": "object",
         "properties": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14978,12 +14982,6 @@
             "type": "string"
           },
           "companyName": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
             "type": "string"
           },
           "lei": {
