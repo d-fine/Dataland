@@ -209,7 +209,7 @@ export default defineComponent({
       if (this.reportingPeriod) {
         return this.reportingPeriod.getFullYear();
       }
-      return 0;
+      return undefined;
     },
     visibleCategories(): Category[] {
       return this.vsmeUploadConfig.filter((category) => category.showIf(this.companyAssociatedVsmeData.data));

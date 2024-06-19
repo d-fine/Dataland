@@ -7,7 +7,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 
 /**
- * Represents the subsidiaries component for vsme
+ * Represents the Subsidiary component for vsme
  */
 class VsmeSubsidiaryComponent(
     identifier: String,
