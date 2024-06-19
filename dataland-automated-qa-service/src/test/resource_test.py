@@ -13,10 +13,10 @@ from dataland_backend_api_documentation_client.models.data_meta_information impo
 from dataland_backend_api_documentation_client import AuthenticatedClient
 from dataland_backend_api_documentation_client.models.data_type_enum import DataTypeEnum
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
-from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
-    CompanyAssociatedDataSmeData,
+from dataland_backend_api_documentation_client.models.company_associated_data_vsme_data import (
+    CompanyAssociatedDataVsmeData,
 )
-from dataland_backend_api_documentation_client.models.sme_data import SmeData
+from dataland_backend_api_documentation_client.models.vsme_data import VsmeData
 
 
 class TestResource(Resource):
@@ -45,11 +45,11 @@ def get_sme_data_mock(
     data_type: DataTypeEnum,  # noqa: ARG001
     data_id: str,  # noqa: ARG001
     client: AuthenticatedClient,  # noqa: ARG001
-) -> CompanyAssociatedDataSmeData:
-    return CompanyAssociatedDataSmeData(
+) -> CompanyAssociatedDataVsmeData:
+    return CompanyAssociatedDataVsmeData(
         company_id="company-id",
         reporting_period="reporting period",
-        data=SmeData.from_dict({
+        data=VsmeData.from_dict({
             "basic": {
                 "energyAndGreenhousGasEmissions": {
                     "energyFossilFuels": 1,
@@ -72,7 +72,7 @@ class ResourceTest(unittest.TestCase):
         data_resource = DataResource("data-id")
         self.assertEqual("data-id", data_resource.id)
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
-        self.assertIsInstance(data_resource.data, SmeData)
+        self.assertIsInstance(data_resource.data, VsmeData)
         self.assertEqual(
         1,
         data_resource.data.basic.energy_and_greenhous_gas_emissions.energy_fossil_fuels
