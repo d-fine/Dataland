@@ -207,7 +207,7 @@ describeIf(
           const expectedPathToDownloadedReport =
             Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
           cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-          cy.intercept("**/api/data/vsme/documents*").as("documentDownload");
+          cy.intercept("**/api/data/" + DataTypeEnum.Vsme + "/documents*").as("documentDownload");
           cy.get('[data-test="Report-Download-some-document-private"]').click();
           cy.wait(500);
           cy.wait("@documentDownload");

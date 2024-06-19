@@ -13,7 +13,7 @@ import org.dataland.e2etests.UPLOADER_USER_ID
 import org.dataland.e2etests.UPLOADER_USER_NAME
 import org.dataland.e2etests.UPLOADER_USER_PASSWORD
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.customApiControllers.CustomSmeDataControllerApi
+import org.dataland.e2etests.customApiControllers.CustomVsmeDataControllerApi
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
@@ -35,7 +35,7 @@ class Vsme {
     private val apiAccessor = ApiAccessor()
 
     val keycloakTokenUploader = apiAccessor.jwtHelper.requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
-    val customSmeDataControllerApi = CustomSmeDataControllerApi(keycloakTokenUploader)
+    val customVsmeDataControllerApi = CustomVsmeDataControllerApi(keycloakTokenUploader)
 
     val vsmeDataControllerApi = VsmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
@@ -105,8 +105,10 @@ class Vsme {
     fun `post VSME data with documents and check if data and documents can be retrieved by the data owner`() {
         val vsmeData = setReferencedReports(testVsmeData, FileInfos(hashAlpha, fileNameAlpha))
         val companyAssociatedDataSmeData = CompanyAssociatedDataVsmeData(companyId, "2023", vsmeData)
-        val dataMetaInfoInResponse = postVsmeDataset(companyAssociatedDataSmeData,
-            listOf(dummyFileAlpha, dummyFileBeta))
+        val dataMetaInfoInResponse = postVsmeDataset(
+            companyAssociatedDataSmeData,
+            listOf(dummyFileAlpha, dummyFileBeta),
+        )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val retrievedCompanyAssociatedSmeData = executeDataRetrievalWithRetries(
@@ -207,7 +209,7 @@ class Vsme {
         companyAssociatedDataSmeData: CompanyAssociatedDataVsmeData,
         documents: List<File> = listOf(),
     ): DataMetaInformation {
-        return customSmeDataControllerApi.postCompanyAssociatedDataSmeData(
+        return customVsmeDataControllerApi.postCompanyAssociatedDataSmeData(
             companyAssociatedDataSmeData,
             documents,
         )
