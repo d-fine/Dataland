@@ -40,7 +40,7 @@ describeIf(
 
     /**
      * Fills out an AddressFormField
-     * @param inputSection the section to which the AddressFormField belongs t
+     * @param inputSection the section to which the AddressFormField belongs to
      * @param inputAdressFormField the actual name of the data-test marker of the respective AddressFormField
      */
     function fillOutAdressFormField(inputSection: string, inputAdressFormField: string) {
