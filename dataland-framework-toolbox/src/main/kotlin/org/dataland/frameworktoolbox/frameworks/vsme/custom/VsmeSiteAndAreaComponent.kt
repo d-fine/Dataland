@@ -7,7 +7,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 
 /**
- * Represents the sitesandareas component for vsme
+ * Represents the SiteAndArea component for vsme
  */
 class VsmeSiteAndAreaComponent(
     identifier: String,

@@ -7,7 +7,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 
 /**
- * Represents the pollution component for vsme
+ * Represents the PollutionEmission component for vsme
  */
 class VsmePollutionEmissionComponent(
     identifier: String,
