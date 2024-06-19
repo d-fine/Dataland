@@ -41,7 +41,7 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
     )
 
 
-def get_sme_data_mock(
+def get_vsme_data_mock(
     data_type: DataTypeEnum,  # noqa: ARG001
     data_id: str,  # noqa: ARG001
     client: AuthenticatedClient,  # noqa: ARG001
@@ -68,10 +68,10 @@ class ResourceTest(unittest.TestCase):
     def test_data_is_fetched_correctly(self) -> None:
         data_resources.get_access_token = Mock()
         data_resources.get_data_meta_info = get_data_meta_info_mock
-        data_resources._get_data = get_sme_data_mock  # noqa: SLF001
+        data_resources._get_data = get_vsme_data_mock  # noqa: SLF001
         data_resource = DataResource("data-id")
         self.assertEqual("data-id", data_resource.id)
-        self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
+        self.assertEqual(DataTypeEnum.VSME, data_resource.meta_info.data_type)
         self.assertIsInstance(data_resource.data, VsmeData)
         self.assertEqual(
         1,
