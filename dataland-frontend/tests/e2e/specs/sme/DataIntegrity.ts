@@ -16,7 +16,7 @@ const uploadReports = new UploadReports("referencedReports");
 - Eröffne backlog item um EDIT Funktionalität wieder einzuführen
  */
 describeIf(
-  "As a user, I expect to be able to edit and submit Sme data via the upload form",
+  "As a user, I expect to be able to edit and submit Vsme data via the upload form",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     onlyExecuteWhenEurodatIsLive: true,
@@ -24,7 +24,7 @@ describeIf(
   function (): void {
     beforeEach(() => {
       const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-Sme-Blanket-Test-" + uniqueCompanyMarker;
+      const testCompanyName = "Company-Created-In-Vsme-Blanket-Test-" + uniqueCompanyMarker;
 
       getKeycloakToken(admin_name, admin_pw)
         .then((token: string) => {
@@ -154,7 +154,7 @@ describeIf(
       uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
     }
 
-    it("Create a company and a Sme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
+    it("Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
       cy.visitAndCheckAppMount(
@@ -207,7 +207,7 @@ describeIf(
           const expectedPathToDownloadedReport =
             Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
           cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-          cy.intercept("**/api/data/sme/documents*").as("documentDownload");
+          cy.intercept("**/api/data/vsme/documents*").as("documentDownload");
           cy.get('[data-test="Report-Download-some-document-private"]').click();
           cy.wait(500);
           cy.wait("@documentDownload");

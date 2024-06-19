@@ -1,6 +1,6 @@
 /**
- * As a user, I want the SME upload page to exist and behave like I expect
+ * As a user, I want the VSME upload page to exist and behave like I expect
  */
-describe("Blanket test for SME-framework upload page", () => {
+describe("Blanket test for VSME-framework upload page", () => {
   require("./DataIntegrity");
 });
