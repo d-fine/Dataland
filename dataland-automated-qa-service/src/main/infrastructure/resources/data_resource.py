@@ -67,7 +67,7 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.LKSG: CompanyAssociatedDataLksgData,
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
         DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
-        DataTypeEnum.SME: CompanyAssociatedDataVsmeData,
+        DataTypeEnum.VSME: CompanyAssociatedDataVsmeData,
         DataTypeEnum.ESG_QUESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
         DataTypeEnum.HEIMATHAFEN: CompanyAssociatedDataHeimathafenData,
     }
