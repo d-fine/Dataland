@@ -1,0 +1,93 @@
+{
+  "financialServicesTypes": [
+    "InsuranceOrReinsurance",
+    "AssetManagement",
+    "CreditInstitution",
+    "InvestmentFirm"
+  ],
+  "eligibilityKpis": null,
+  "creditInstitutionKpis": {
+    "interbankLoansInPercent": {
+      "value": 55.42,
+      "dataSource": {
+        "page": 718,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "blockchains"
+      },
+      "comment": "navigate multi-byte sensor",
+      "quality": null
+    },
+    "tradingPortfolioInPercent": {
+      "value": 14.19,
+      "dataSource": {
+        "page": 752,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "methodologies"
+      },
+      "comment": "reboot cross-platform bus",
+      "quality": null
+    },
+    "tradingPortfolioAndInterbankLoansInPercent": {
+      "value": null,
+      "dataSource": null,
+      "comment": "calculate haptic system",
+      "quality": "Estimated"
+    },
+    "greenAssetRatioInPercent": {
+      "value": 62.13,
+      "dataSource": {
+        "page": 390,
+        "fileName": "ESEFReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "architectures"
+      },
+      "comment": "index primary array",
+      "quality": "Estimated"
+    }
+  },
+  "investmentFirmKpis": {
+    "greenAssetRatioInPercent": {
+      "value": 41.01,
+      "dataSource": {
+        "page": 1162,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "metrics"
+      },
+      "comment": null,
+      "quality": "Estimated"
+    }
+  },
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "value": 55.71,
+      "dataSource": {
+        "page": 363,
+        "fileName": "SustainabilityReport",
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "tagName": "ROI"
+      },
+      "comment": null,
+      "quality": "Incomplete"
+    }
+  },
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": "2023-03-16",
+  "scopeOfEntities": "No",
+  "nfrdMandatory": "No",
+  "euTaxonomyActivityLevelReporting": "Yes",
+  "assurance": {
+    "value": "ReasonableAssurance",
+    "provider": "Daugherty - Lind",
+    "dataSource": {
+      "page": 132,
+      "fileName": "AnnualReport",
+      "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "tagName": "technologies"
+    }
+  },
+  "numberOfEmployees": 5530,
+  "referencedReports": null
+}
