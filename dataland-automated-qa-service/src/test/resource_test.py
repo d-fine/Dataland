@@ -33,7 +33,7 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
     return DataMetaInformation(
         data_id="data-id",
         company_id="company-id",
-        data_type=DataTypeEnum.SME,
+        data_type=DataTypeEnum.VSME,
         upload_time=0,
         reporting_period="reporting period",
         currently_active=True,
