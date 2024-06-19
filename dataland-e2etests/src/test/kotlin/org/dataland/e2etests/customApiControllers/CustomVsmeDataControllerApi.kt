@@ -24,23 +24,23 @@ class CustomVsmeDataControllerApi(private val token: String) {
         return jsonAdapter.fromJson(inputString)!!
     }
 
-    private fun transferCompanyAssociatedDataSmeDataToJson(input: CompanyAssociatedDataVsmeData):
+    private fun transferCompanyAssociatedDataVsmeDataToJson(input: CompanyAssociatedDataVsmeData):
         String {
         val jsonAdapter: JsonAdapter<CompanyAssociatedDataVsmeData> =
             moshi.adapter(CompanyAssociatedDataVsmeData::class.java)
         return jsonAdapter.toJson(input)
     }
 
-    private fun buildRequestForPostingCompanyAssociatedSmeData(
-        companyAssociatedSmeData: CompanyAssociatedDataVsmeData,
+    private fun buildRequestForPostingCompanyAssociatedVsmeData(
+        companyAssociatedVsmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
     ): Request {
         val requestBodyBuilder = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
-                "companyAssociatedSmeData",
+                "companyAssociatedVsmeData",
                 null,
-                transferCompanyAssociatedDataSmeDataToJson(companyAssociatedSmeData).toRequestBody(),
+                transferCompanyAssociatedDataVsmeDataToJson(companyAssociatedVsmeData).toRequestBody(),
             )
 
         documents.forEach { file ->
@@ -54,20 +54,20 @@ class CustomVsmeDataControllerApi(private val token: String) {
         val requestBody = requestBodyBuilder.build()
 
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/data/sme")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/data/vsme")
             .post(requestBody)
             .addHeader("Authorization", "Bearer $token")
             .build()
     }
 
     fun postCompanyAssociatedDataVsmeData(
-        companyAssociatedSmeData: CompanyAssociatedDataVsmeData,
+        companyAssociatedVsmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
     ):
         DataMetaInformation {
         val response = client.newCall(
-            buildRequestForPostingCompanyAssociatedSmeData(
-                companyAssociatedSmeData,
+            buildRequestForPostingCompanyAssociatedVsmeData(
+                companyAssociatedVsmeData,
                 documents,
             ),
         ).execute()
