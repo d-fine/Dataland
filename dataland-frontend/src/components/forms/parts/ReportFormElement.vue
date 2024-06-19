@@ -2,10 +2,7 @@
   <FormKit :name="name" type="group">
     <!-- Date of the report -->
     <div class="form-field">
-      <UploadFormHeader
-        label="Publication Date"
-        description="The publication date of the report."
-      />
+      <UploadFormHeader label="Publication Date" description="The publication date of the report." />
       <div class="md:col-6 col-12 p-0">
         <Calendar
           data-test="publicationDate"

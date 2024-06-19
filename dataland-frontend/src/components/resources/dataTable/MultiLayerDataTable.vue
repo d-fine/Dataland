@@ -61,7 +61,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import Tooltip from "primevue/tooltip";
-import {convertUnixTimeInMsToDateString, dateStringFormatter} from "@/utils/DataFormatUtils";
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from "@/utils/DataFormatUtils";
 import {
   type CompanyReport,
   type EuTaxonomyDataForFinancials,
@@ -129,7 +129,9 @@ export default defineComponent({
           }
         }
       }
-      const mostRecentSourceToolTip = latestDate ? `Publication date of most recent report:\n ${dateStringFormatter(latestDate)}\n\n` : "";
+      const mostRecentSourceToolTip = latestDate
+        ? `Publication date of most recent report:\n ${dateStringFormatter(latestDate)}\n\n`
+        : "";
       const datasetPublishedToolTip =
         "Dataset published on Dataland on:\n " +
         convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
