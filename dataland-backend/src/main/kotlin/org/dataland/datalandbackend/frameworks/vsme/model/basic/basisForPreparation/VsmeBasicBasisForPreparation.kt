@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.frameworks.vsme.model.basic.basisForPrepara
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.vsme.custom.SmeSubsidiary
+import org.dataland.datalandbackend.frameworks.vsme.custom.VsmeSubsidiary
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo
@@ -16,7 +16,7 @@ data class VsmeBasicBasisForPreparation(
     @field:Valid()
     val reportingBasis: BaseDataPoint<YesNo>? = null,
 
-    val subsidiary: List<SmeSubsidiary?>? = null,
+    val subsidiary: List<VsmeSubsidiary?>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()

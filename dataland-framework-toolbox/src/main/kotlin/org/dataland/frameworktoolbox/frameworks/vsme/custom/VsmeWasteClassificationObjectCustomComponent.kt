@@ -31,7 +31,8 @@ class VsmeWasteClassificationObjectCustomComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeWasteClassificationObject",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom." +
+                            "VsmeWasteClassificationObject",
                         true,
                     ),
                 ),

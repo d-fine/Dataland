@@ -28,7 +28,7 @@ class VsmeSiteAndAreaComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeSiteAndArea",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom.VsmeSiteAndArea",
                         true,
                     ),
 

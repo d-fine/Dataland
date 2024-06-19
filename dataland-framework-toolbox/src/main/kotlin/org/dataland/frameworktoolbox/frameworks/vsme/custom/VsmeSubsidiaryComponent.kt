@@ -28,7 +28,7 @@ class VsmeSubsidiaryComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeSubsidiary",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom.VsmeSubsidiary",
                         true,
                     ),
 

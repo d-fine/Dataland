@@ -39,7 +39,7 @@ open class VsmeSimpleCustomComponentBase(
                 setOf(
                     TypeScriptImport(
                         viewFormattingFunctionName,
-                        "@/components/resources/dataTable/conversion/vsme/SmeDisplayValueGetters",
+                        "@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters",
                     ),
                 ),
             ),
