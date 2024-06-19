@@ -14,7 +14,7 @@
 	"sfdr": {
 		"numberOfProvidedReportingPeriods": 9
 	},
-	"sme": {
+	"vsme": {
 		"numberOfProvidedReportingPeriods": 17
 	},
 	"esg-questionnaire": {
