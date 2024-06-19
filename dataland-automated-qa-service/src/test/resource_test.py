@@ -73,10 +73,7 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual("data-id", data_resource.id)
         self.assertEqual(DataTypeEnum.VSME, data_resource.meta_info.data_type)
         self.assertIsInstance(data_resource.data, VsmeData)
-        self.assertEqual(
-        1,
-        data_resource.data.basic.energy_and_greenhous_gas_emissions.energy_fossil_fuels
-        )
+        self.assertEqual(1, data_resource.data.basic.energy_and_greenhous_gas_emissions.energy_fossil_fuels)
 
     def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()

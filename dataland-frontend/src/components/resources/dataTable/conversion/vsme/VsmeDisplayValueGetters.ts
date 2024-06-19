@@ -54,13 +54,13 @@ export const vsmeModalColumnHeaders = {
     numberOfEmployeesInFullTimeEquivalent: "Number of Employees in Full Time Equivalents",
   },
 };
-interface SmePollutionEmissionDisplayFormat {
+interface VsmePollutionEmissionDisplayFormat {
   pollutionType: string;
   emissionInKilograms: number;
   releaseMedium: ReleaseMedium;
 }
 
-interface SmeWasteClassificationDisplayFormat {
+interface VsmeWasteClassificationDisplayFormat {
   wasteClassification: WasteClassifications;
   typeWaste: string;
   totalAmountTons: number;
@@ -156,7 +156,7 @@ export function formatVsmeWasteClassificationObjectForDisplay(
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    convertedValueForModal = convertSmeWasteClassificationToListForModal(input);
+    convertedValueForModal = convertVsmeWasteClassificationToListForModal(input);
   }
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -181,14 +181,14 @@ export function formatVsmeWasteClassificationObjectForDisplay(
 }
 
 /**
- * Convert an object of type LksgSubcontractingCompanies into a list that can be displayed using the standard
+ * Convert an object of type VsmePollutionEmission into a list that can be displayed using the standard
  * modal DataTable
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
 function convertVsmePollutionEmissionToListForModal(datasetValue: VsmePollutionEmission[]): VsmePollutionEmission[] {
   return datasetValue.map((item) => {
-    const humanizedItem: SmePollutionEmissionDisplayFormat = {
+    const humanizedItem: VsmePollutionEmissionDisplayFormat = {
       pollutionType: humanizeStringOrNumber(item.pollutionType),
       emissionInKilograms: item.emissionInKilograms!,
       releaseMedium: item.releaseMedium!,
@@ -204,11 +204,11 @@ function convertVsmePollutionEmissionToListForModal(datasetValue: VsmePollutionE
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
-function convertSmeWasteClassificationToListForModal(
+function convertVsmeWasteClassificationToListForModal(
   datasetValue: VsmeWasteClassificationObject[],
-): SmeWasteClassificationDisplayFormat[] {
+): VsmeWasteClassificationDisplayFormat[] {
   return datasetValue.map((item) => {
-    const humanizedItem: SmeWasteClassificationDisplayFormat = {
+    const humanizedItem: VsmeWasteClassificationDisplayFormat = {
       wasteClassification: item.wasteClassification,
       typeWaste: humanizeStringOrNumber(item.typeOfWaste),
       totalAmountTons: item.totalAmountTons!,
@@ -230,7 +230,7 @@ function convertSmeWasteClassificationToListForModal(
  * @param fieldLabel Field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatSmeSiteAndAreaForDisplay(
+export function formatVsmeSiteAndAreaForDisplay(
   input: VsmeSiteAndArea[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
@@ -264,7 +264,7 @@ export function formatSmeSiteAndAreaForDisplay(
  * @param fieldLabel Field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatSmeEmployeesPerCountryForDisplay(
+export function formatVsmeEmployeesPerCountryForDisplay(
   input: VsmeEmployeesPerCountry[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
