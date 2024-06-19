@@ -14,7 +14,7 @@ import {
   formatVsmeSiteAndAreaForDisplay,
   formatVsmePollutionEmissionForDisplay,
   formatVsmeSubsidiaryForDisplay,
-} from "@/components/resources/dataTable/conversion/vsme/SmeDisplayValueGetters";
+} from "@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
   {

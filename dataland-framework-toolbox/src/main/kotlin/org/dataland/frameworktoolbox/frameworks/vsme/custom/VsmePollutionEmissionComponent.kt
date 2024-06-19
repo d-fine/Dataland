@@ -18,7 +18,7 @@ class VsmePollutionEmissionComponent(
     viewFormattingFunctionName = "formatVsmePollutionEmissionForDisplay",
     uploadComponentName = "PollutionEmissionFormField",
     guaranteedFixtureExpression = "dataGenerator.randomArray(() => " +
-            "dataGenerator.generateVsmePollutionEmission(), 0, 3)",
+        "dataGenerator.generateVsmePollutionEmission(), 0, 3)",
     randomFixtureExpression = null,
 ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -29,7 +29,7 @@ class VsmePollutionEmissionComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmePollutionEmission",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom.VsmePollutionEmission",
                         true,
                     ),
 
