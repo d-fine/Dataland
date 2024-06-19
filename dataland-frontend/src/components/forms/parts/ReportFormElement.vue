@@ -3,8 +3,8 @@
     <!-- Date of the report -->
     <div class="form-field">
       <UploadFormHeader
-        label="Report Date"
-        description="The date until which the information presented in the report is valid."
+        label="Publication Date"
+        description="The publication date of the report."
       />
       <div class="md:col-6 col-12 p-0">
         <Calendar
