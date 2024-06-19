@@ -31,7 +31,7 @@ export class VsmeGenerator extends Generator {
    */
   generateVsmePollutionEmission(): VsmePollutionEmission {
     return {
-      pollutionType: this.valueOrNull(faker.science.chemicalElement())?.name,
+      pollutionType: faker.science.chemicalElement()?.name,
       emissionInKilograms: this.valueOrNull(generateFloat()),
       releaseMedium: pickOneElement(Object.values(ReleaseMedium)),
     };
