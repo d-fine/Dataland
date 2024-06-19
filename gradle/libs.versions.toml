@@ -123,7 +123,7 @@ spring-security-crypto = "org.springframework.security:spring-security-crypto:_"
 
 spring-security-web = "org.springframework.security:spring-security-web:_"
 
-jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.0.0"
+jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 
 bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
