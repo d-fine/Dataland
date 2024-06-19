@@ -217,7 +217,6 @@ function convertVsmeWasteClassificationToListForModal(
       totalAmountOfWasteInCubicMeters: item.totalAmountOfWasteInCubicMeters!,
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseInCubicMeters!,
       wasteDisposalInCubicMeters: item.wasteDisposalInCubicMeters!,
-      //TODO come back here and see if ! are really necessary
       //TODO check why humanzeStringOrNumber doesnt work for wasteClassification, see riskposition for lksg
     };
     return humanizedItem;
