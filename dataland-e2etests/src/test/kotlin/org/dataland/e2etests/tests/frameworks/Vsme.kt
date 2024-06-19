@@ -206,11 +206,11 @@ class Vsme {
     }
 
     private fun postVsmeDataset(
-        companyAssociatedDataSmeData: CompanyAssociatedDataVsmeData,
+        companyAssociatedDataVsmeData: CompanyAssociatedDataVsmeData,
         documents: List<File> = listOf(),
     ): DataMetaInformation {
-        return customVsmeDataControllerApi.postCompanyAssociatedDataSmeData(
-            companyAssociatedDataSmeData,
+        return customVsmeDataControllerApi.postCompanyAssociatedDataVsmeData(
+            companyAssociatedDataVsmeData,
             documents,
         )
     }

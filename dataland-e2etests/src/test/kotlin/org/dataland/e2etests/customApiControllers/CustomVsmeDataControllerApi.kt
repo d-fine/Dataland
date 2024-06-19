@@ -60,7 +60,7 @@ class CustomVsmeDataControllerApi(private val token: String) {
             .build()
     }
 
-    fun postCompanyAssociatedDataSmeData(
+    fun postCompanyAssociatedDataVsmeData(
         companyAssociatedSmeData: CompanyAssociatedDataVsmeData,
         documents: List<File>,
     ):
