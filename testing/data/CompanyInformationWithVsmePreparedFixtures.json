@@ -293,12 +293,12 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "metrics",
-							"totalAmountTons": 24726203.48,
-							"wasteRecycleOrReuseTons": 79947783.13,
-							"wasteDisposalTons": 80258144.23,
-							"totalAmountCubicMeters": 61.71,
-							"wasteRecycleOrReuseCubicMeters": 81,
-							"wasteDisposalCubicMeters": 32.34
+							"totalAmountInTons": 24726203.48,
+							"wasteRecycleOrReuseInTons": 79947783.13,
+							"wasteDisposalInTons": 80258144.23,
+							"totalAmountInCubicMeters": 61.71,
+							"wasteRecycleOrReuseInCubicMeters": 81,
+							"wasteDisposalInCubicMeters": 32.34
 						}
 					]
 				},
