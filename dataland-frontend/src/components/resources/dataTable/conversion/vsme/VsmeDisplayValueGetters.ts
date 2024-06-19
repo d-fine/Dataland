@@ -63,12 +63,12 @@ interface VsmePollutionEmissionDisplayFormat {
 interface VsmeWasteClassificationDisplayFormat {
   wasteClassification: WasteClassifications;
   typeWaste: string;
-  totalAmountTons: number;
-  wasteRecycleOrReuseTons: number;
-  wasteDisposalTons: number;
-  totalAmountCubicMeters: number;
+  totalAmountInTons: number;
+  wasteRecycleOrReuseInTons: number;
+  wasteDisposalInTons: number;
+  totalAmountInCubicMeters: number;
   wasteRecycleOrReuseInCubicMeters: number;
-  wasteDisposalCubicMeters: number;
+  wasteDisposalInCubicMeters: number;
 }
 
 /**
@@ -211,12 +211,12 @@ function convertVsmeWasteClassificationToListForModal(
     const humanizedItem: VsmeWasteClassificationDisplayFormat = {
       wasteClassification: item.wasteClassification,
       typeWaste: humanizeStringOrNumber(item.typeOfWaste),
-      totalAmountTons: item.totalAmountTons!,
-      wasteRecycleOrReuseTons: item.wasteRecycleOrReuseTons!,
-      wasteDisposalTons: item.wasteDisposalTons!,
-      totalAmountCubicMeters: item.totalAmountCubicMeters!,
-      wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseCubicMeters!,
-      wasteDisposalCubicMeters: item.wasteDisposalCubicMeters!,
+      totalAmountInTons: item.totalAmountInTons!,
+      wasteRecycleOrReuseInTons: item.wasteRecycleOrReuseInTons!,
+      wasteDisposalInTons: item.wasteDisposalInTons!,
+      totalAmountInCubicMeters: item.totalAmountInCubicMeters!,
+      wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseInCubicMeters!,
+      wasteDisposalInCubicMeters: item.wasteDisposalInCubicMeters!,
       //TODO come back here and see if ! are really necessary
       //TODO check why humanzeStringOrNumber doesnt work for wasteClassification, see riskposition for lksg
     };

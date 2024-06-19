@@ -34,19 +34,19 @@ class Vsme {
 
     private val apiAccessor = ApiAccessor()
 
-    val keycloakTokenUploader = apiAccessor.jwtHelper.requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
-    val customVsmeDataControllerApi = CustomVsmeDataControllerApi(keycloakTokenUploader)
+    private val keycloakTokenUploader = apiAccessor.jwtHelper.requestToken(UPLOADER_USER_NAME, UPLOADER_USER_PASSWORD)
+    private val customVsmeDataControllerApi = CustomVsmeDataControllerApi(keycloakTokenUploader)
 
-    val vsmeDataControllerApi = VsmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    private val vsmeDataControllerApi = VsmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
-    val testVsmeData = FrameworkTestDataProvider(VsmeData::class.java).getTData(1).first()
+    private val testVsmeData = FrameworkTestDataProvider(VsmeData::class.java).getTData(1).first()
 
-    lateinit var dummyFileAlpha: File
-    lateinit var hashAlpha: String
-    val fileNameAlpha = "Report-Alpha"
+    private lateinit var dummyFileAlpha: File
+    private lateinit var hashAlpha: String
+    private val fileNameAlpha = "Report-Alpha"
 
-    lateinit var dummyFileBeta: File
-    lateinit var hashBeta: String
+    private lateinit var dummyFileBeta: File
+    private lateinit var hashBeta: String
 
     lateinit var companyId: String
 

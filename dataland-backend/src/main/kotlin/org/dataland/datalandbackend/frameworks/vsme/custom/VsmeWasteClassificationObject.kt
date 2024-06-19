@@ -11,11 +11,11 @@ data class VsmeWasteClassificationObject(
     val wasteClassification: WasteClassifications,
     @field:JsonProperty(required = true)
     val typeOfWaste: String,
-    val totalAmountTons: Number?,
-    val wasteRecycleOrReuseTons: Number?,
-    val wasteDisposalTons: Number?,
-    val totalAmountCubicMeters: Number?,
-    val wasteRecycleOrReuseCubicMeters: Number?,
-    val wasteDisposalCubicMeters: Number?,
+    val totalAmountInTons: Number?,
+    val wasteRecycleOrReuseInTons: Number?,
+    val wasteDisposalInTons: Number?,
+    val totalAmountInCubicMeters: Number?,
+    val wasteRecycleOrReuseInCubicMeters: Number?,
+    val wasteDisposalInCubicMeters: Number?,
     // TODO make sure that field names are generated correctly :totalAmountInTons
 )

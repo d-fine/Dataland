@@ -853,12 +853,12 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 14226327.41,
-							"wasteRecycleOrReuseTons": 76776305.8,
-							"wasteDisposalTons": 66716876.23,
-							"totalAmountCubicMeters": 87.49,
-							"wasteRecycleOrReuseCubicMeters": 18.78,
-							"wasteDisposalCubicMeters": 1.75
+							"totalAmountInTons": 14226327.41,
+							"wasteRecycleOrReuseInTons": 76776305.8,
+							"wasteDisposalInTons": 66716876.23,
+							"totalAmountInCubicMeters": 87.49,
+							"wasteRecycleOrReuseInCubicMeters": 18.78,
+							"wasteDisposalInCubicMeters": 1.75
 						}
 					]
 				},
@@ -1522,32 +1522,32 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "interfaces",
-							"totalAmountTons": 39614297.98,
-							"wasteRecycleOrReuseTons": 81565686.6,
-							"wasteDisposalTons": 52193765.97,
-							"totalAmountCubicMeters": 14.57,
-							"wasteRecycleOrReuseCubicMeters": 44.46,
-							"wasteDisposalCubicMeters": 20.33
+							"totalAmountInTons": 39614297.98,
+							"wasteRecycleOrReuseInTons": 81565686.6,
+							"wasteDisposalInTons": 52193765.97,
+							"totalAmountInCubicMeters": 14.57,
+							"wasteRecycleOrReuseInCubicMeters": 44.46,
+							"wasteDisposalInCubicMeters": 20.33
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 76925351.1,
-							"wasteRecycleOrReuseTons": 71026545.65,
-							"wasteDisposalTons": 82261247,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 13
+							"totalAmountInTons": 76925351.1,
+							"wasteRecycleOrReuseInTons": 71026545.65,
+							"wasteDisposalInTons": 82261247,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 13
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "platforms",
-							"totalAmountTons": 28595043.88,
-							"wasteRecycleOrReuseTons": 55348322.05,
-							"wasteDisposalTons": 73901275.45,
-							"totalAmountCubicMeters": 74.98,
-							"wasteRecycleOrReuseCubicMeters": 55.81,
-							"wasteDisposalCubicMeters": 90.66
+							"totalAmountInTons": 28595043.88,
+							"wasteRecycleOrReuseInTons": 55348322.05,
+							"wasteDisposalInTons": 73901275.45,
+							"totalAmountInCubicMeters": 74.98,
+							"wasteRecycleOrReuseInCubicMeters": 55.81,
+							"wasteDisposalInCubicMeters": 90.66
 						}
 					]
 				},
@@ -2706,12 +2706,12 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "relationships",
-							"totalAmountTons": 53900128.21,
-							"wasteRecycleOrReuseTons": 38194552.83,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 55.53,
-							"wasteRecycleOrReuseCubicMeters": 24.3,
-							"wasteDisposalCubicMeters": 78.29
+							"totalAmountInTons": 53900128.21,
+							"wasteRecycleOrReuseInTons": 38194552.83,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 55.53,
+							"wasteRecycleOrReuseInCubicMeters": 24.3,
+							"wasteDisposalInCubicMeters": 78.29
 						}
 					]
 				},
@@ -3054,32 +3054,32 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "e-commerce",
-							"totalAmountTons": 6279778.22,
-							"wasteRecycleOrReuseTons": 82558071.13,
-							"wasteDisposalTons": 35364565.46,
-							"totalAmountCubicMeters": 90.33,
-							"wasteRecycleOrReuseCubicMeters": 63.59,
-							"wasteDisposalCubicMeters": 31.56
+							"totalAmountInTons": 6279778.22,
+							"wasteRecycleOrReuseInTons": 82558071.13,
+							"wasteDisposalInTons": 35364565.46,
+							"totalAmountInCubicMeters": 90.33,
+							"wasteRecycleOrReuseInCubicMeters": 63.59,
+							"wasteDisposalInCubicMeters": 31.56
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 36384613.18,
-							"wasteRecycleOrReuseTons": 22076996.6,
-							"wasteDisposalTons": 98936856.1,
-							"totalAmountCubicMeters": 55.18,
-							"wasteRecycleOrReuseCubicMeters": 47.52,
-							"wasteDisposalCubicMeters": 55.88
+							"totalAmountInTons": 36384613.18,
+							"wasteRecycleOrReuseInTons": 22076996.6,
+							"wasteDisposalInTons": 98936856.1,
+							"totalAmountInCubicMeters": 55.18,
+							"wasteRecycleOrReuseInCubicMeters": 47.52,
+							"wasteDisposalInCubicMeters": 55.88
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "paradigms",
-							"totalAmountTons": 24609280.51,
-							"wasteRecycleOrReuseTons": 50138537.35,
-							"wasteDisposalTons": 15187927.17,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 24609280.51,
+							"wasteRecycleOrReuseInTons": 50138537.35,
+							"wasteDisposalInTons": 15187927.17,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -3400,32 +3400,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "functionalities",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 25861659.97,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 20.16,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 25861659.97,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 20.16,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "metrics",
-							"totalAmountTons": 21133458.15,
-							"wasteRecycleOrReuseTons": 41053379.35,
-							"wasteDisposalTons": 67523502.72,
-							"totalAmountCubicMeters": 68.91,
-							"wasteRecycleOrReuseCubicMeters": 28.68,
-							"wasteDisposalCubicMeters": 13.29
+							"totalAmountInTons": 21133458.15,
+							"wasteRecycleOrReuseInTons": 41053379.35,
+							"wasteDisposalInTons": 67523502.72,
+							"totalAmountInCubicMeters": 68.91,
+							"wasteRecycleOrReuseInCubicMeters": 28.68,
+							"wasteDisposalInCubicMeters": 13.29
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "partnerships",
-							"totalAmountTons": 78356139.57,
-							"wasteRecycleOrReuseTons": 7177939.28,
-							"wasteDisposalTons": 32568010.22,
-							"totalAmountCubicMeters": 85.81,
-							"wasteRecycleOrReuseCubicMeters": 57.27,
-							"wasteDisposalCubicMeters": 37.14
+							"totalAmountInTons": 78356139.57,
+							"wasteRecycleOrReuseInTons": 7177939.28,
+							"wasteDisposalInTons": 32568010.22,
+							"totalAmountInCubicMeters": 85.81,
+							"wasteRecycleOrReuseInCubicMeters": 57.27,
+							"wasteDisposalInCubicMeters": 37.14
 						}
 					]
 				},
@@ -3852,12 +3852,12 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "content",
-							"totalAmountTons": 17504608.56,
-							"wasteRecycleOrReuseTons": 59803043.21,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 17.14,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 17504608.56,
+							"wasteRecycleOrReuseInTons": 59803043.21,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 17.14,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -4199,22 +4199,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "action-items",
-							"totalAmountTons": 73681235.92,
-							"wasteRecycleOrReuseTons": 54327624.92,
-							"wasteDisposalTons": 47946712.12,
-							"totalAmountCubicMeters": 43.84,
-							"wasteRecycleOrReuseCubicMeters": 79.75,
-							"wasteDisposalCubicMeters": 15.23
+							"totalAmountInTons": 73681235.92,
+							"wasteRecycleOrReuseInTons": 54327624.92,
+							"wasteDisposalInTons": 47946712.12,
+							"totalAmountInCubicMeters": 43.84,
+							"wasteRecycleOrReuseInCubicMeters": 79.75,
+							"wasteDisposalInCubicMeters": 15.23
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "e-business",
-							"totalAmountTons": 35630126.65,
-							"wasteRecycleOrReuseTons": 40295649.32,
-							"wasteDisposalTons": 18284862.37,
-							"totalAmountCubicMeters": 7.04,
-							"wasteRecycleOrReuseCubicMeters": 17.11,
-							"wasteDisposalCubicMeters": 58.92
+							"totalAmountInTons": 35630126.65,
+							"wasteRecycleOrReuseInTons": 40295649.32,
+							"wasteDisposalInTons": 18284862.37,
+							"totalAmountInCubicMeters": 7.04,
+							"wasteRecycleOrReuseInCubicMeters": 17.11,
+							"wasteDisposalInCubicMeters": 58.92
 						}
 					]
 				},
@@ -4841,32 +4841,32 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "systems",
-							"totalAmountTons": 9388691.42,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": 4880483.89,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 52.02,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 9388691.42,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": 4880483.89,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 52.02,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "relationships",
-							"totalAmountTons": 90857232.55,
-							"wasteRecycleOrReuseTons": 94685766.69,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 30.55,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 90857232.55,
+							"wasteRecycleOrReuseInTons": 94685766.69,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 30.55,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "synergies",
-							"totalAmountTons": 9581856.31,
-							"wasteRecycleOrReuseTons": 86878709.22,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 27.33,
-							"wasteRecycleOrReuseCubicMeters": 42.2,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 9581856.31,
+							"wasteRecycleOrReuseInTons": 86878709.22,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 27.33,
+							"wasteRecycleOrReuseInCubicMeters": 42.2,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -5231,22 +5231,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 36288852.2,
-							"wasteDisposalTons": 74079071.66,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 90.13,
-							"wasteDisposalCubicMeters": 59.81
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 36288852.2,
+							"wasteDisposalInTons": 74079071.66,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 90.13,
+							"wasteDisposalInCubicMeters": 59.81
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "blockchains",
-							"totalAmountTons": 98410785.9,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": 4379576.11,
-							"totalAmountCubicMeters": 52.25,
-							"wasteRecycleOrReuseCubicMeters": 21.29,
-							"wasteDisposalCubicMeters": 34.59
+							"totalAmountInTons": 98410785.9,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": 4379576.11,
+							"totalAmountInCubicMeters": 52.25,
+							"wasteRecycleOrReuseInCubicMeters": 21.29,
+							"wasteDisposalInCubicMeters": 34.59
 						}
 					]
 				},
@@ -5504,22 +5504,22 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "lifetime value",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 19423669.76,
-							"wasteDisposalTons": 84182840.43,
-							"totalAmountCubicMeters": 69.68,
-							"wasteRecycleOrReuseCubicMeters": 66.88,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 19423669.76,
+							"wasteDisposalInTons": 84182840.43,
+							"totalAmountInCubicMeters": 69.68,
+							"wasteRecycleOrReuseInCubicMeters": 66.88,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "platforms",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 21830163.24,
-							"wasteDisposalTons": 64864134.07,
-							"totalAmountCubicMeters": 14.5,
-							"wasteRecycleOrReuseCubicMeters": 49.36,
-							"wasteDisposalCubicMeters": 20.45
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 21830163.24,
+							"wasteDisposalInTons": 64864134.07,
+							"totalAmountInCubicMeters": 14.5,
+							"wasteRecycleOrReuseInCubicMeters": 49.36,
+							"wasteDisposalInCubicMeters": 20.45
 						}
 					]
 				},
@@ -5857,22 +5857,22 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 76038210.26,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": 78365958.6,
-							"totalAmountCubicMeters": 93.73,
-							"wasteRecycleOrReuseCubicMeters": 38.03,
-							"wasteDisposalCubicMeters": 50.26
+							"totalAmountInTons": 76038210.26,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": 78365958.6,
+							"totalAmountInCubicMeters": 93.73,
+							"wasteRecycleOrReuseInCubicMeters": 38.03,
+							"wasteDisposalInCubicMeters": 50.26
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "technologies",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 15442236.6,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 22.99,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 12.97
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 15442236.6,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 22.99,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 12.97
 						}
 					]
 				},
@@ -6262,22 +6262,22 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "communities",
-							"totalAmountTons": 72772562.18,
-							"wasteRecycleOrReuseTons": 34309676.71,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 72772562.18,
+							"wasteRecycleOrReuseInTons": 34309676.71,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 83881410.42,
-							"wasteRecycleOrReuseTons": 22562387.23,
-							"wasteDisposalTons": 61238390.14,
-							"totalAmountCubicMeters": 14.73,
-							"wasteRecycleOrReuseCubicMeters": 15.4,
-							"wasteDisposalCubicMeters": 4.83
+							"totalAmountInTons": 83881410.42,
+							"wasteRecycleOrReuseInTons": 22562387.23,
+							"wasteDisposalInTons": 61238390.14,
+							"totalAmountInCubicMeters": 14.73,
+							"wasteRecycleOrReuseInCubicMeters": 15.4,
+							"wasteDisposalInCubicMeters": 4.83
 						}
 					]
 				},
@@ -6628,32 +6628,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "applications",
-							"totalAmountTons": 42154865.08,
-							"wasteRecycleOrReuseTons": 88501272.17,
-							"wasteDisposalTons": 61154939.05,
-							"totalAmountCubicMeters": 83.1,
-							"wasteRecycleOrReuseCubicMeters": 3.33,
-							"wasteDisposalCubicMeters": 30.31
+							"totalAmountInTons": 42154865.08,
+							"wasteRecycleOrReuseInTons": 88501272.17,
+							"wasteDisposalInTons": 61154939.05,
+							"totalAmountInCubicMeters": 83.1,
+							"wasteRecycleOrReuseInCubicMeters": 3.33,
+							"wasteDisposalInCubicMeters": 30.31
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "architectures",
-							"totalAmountTons": 81975562.01,
-							"wasteRecycleOrReuseTons": 76948849.58,
-							"wasteDisposalTons": 71702180.5,
-							"totalAmountCubicMeters": 93.64,
-							"wasteRecycleOrReuseCubicMeters": 51.08,
-							"wasteDisposalCubicMeters": 22.27
+							"totalAmountInTons": 81975562.01,
+							"wasteRecycleOrReuseInTons": 76948849.58,
+							"wasteDisposalInTons": 71702180.5,
+							"totalAmountInCubicMeters": 93.64,
+							"wasteRecycleOrReuseInCubicMeters": 51.08,
+							"wasteDisposalInCubicMeters": 22.27
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "relationships",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 66590084.81,
-							"wasteDisposalTons": 74824339.88,
-							"totalAmountCubicMeters": 41.89,
-							"wasteRecycleOrReuseCubicMeters": 10.67,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 66590084.81,
+							"wasteDisposalInTons": 74824339.88,
+							"totalAmountInCubicMeters": 41.89,
+							"wasteRecycleOrReuseInCubicMeters": 10.67,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -7053,32 +7053,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 82218641.3,
-							"wasteDisposalTons": 45195268.26,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 49.68,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 82218641.3,
+							"wasteDisposalInTons": 45195268.26,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 49.68,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 72461397.39,
-							"wasteDisposalTons": 18798629.63,
-							"totalAmountCubicMeters": 23.07,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 87.32
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 72461397.39,
+							"wasteDisposalInTons": 18798629.63,
+							"totalAmountInCubicMeters": 23.07,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 87.32
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "eyeballs",
-							"totalAmountTons": 34802421.06,
-							"wasteRecycleOrReuseTons": 86765549.13,
-							"wasteDisposalTons": 21563868.97,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 96.4,
-							"wasteDisposalCubicMeters": 93
+							"totalAmountInTons": 34802421.06,
+							"wasteRecycleOrReuseInTons": 86765549.13,
+							"wasteDisposalInTons": 21563868.97,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 96.4,
+							"wasteDisposalInCubicMeters": 93
 						}
 					]
 				},
@@ -7456,32 +7456,32 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "methodologies",
-							"totalAmountTons": 17462532.01,
-							"wasteRecycleOrReuseTons": 86117112.9,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 48.98,
-							"wasteDisposalCubicMeters": 56.26
+							"totalAmountInTons": 17462532.01,
+							"wasteRecycleOrReuseInTons": 86117112.9,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 48.98,
+							"wasteDisposalInCubicMeters": 56.26
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "technologies",
-							"totalAmountTons": 5386865.88,
-							"wasteRecycleOrReuseTons": 55925405.49,
-							"wasteDisposalTons": 98129829.19,
-							"totalAmountCubicMeters": 47.59,
-							"wasteRecycleOrReuseCubicMeters": 66.94,
-							"wasteDisposalCubicMeters": 81.39
+							"totalAmountInTons": 5386865.88,
+							"wasteRecycleOrReuseInTons": 55925405.49,
+							"wasteDisposalInTons": 98129829.19,
+							"totalAmountInCubicMeters": 47.59,
+							"wasteRecycleOrReuseInCubicMeters": 66.94,
+							"wasteDisposalInCubicMeters": 81.39
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "e-commerce",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 75731746.44,
-							"wasteDisposalTons": 18939749.19,
-							"totalAmountCubicMeters": 92.94,
-							"wasteRecycleOrReuseCubicMeters": 61.25,
-							"wasteDisposalCubicMeters": 76.3
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 75731746.44,
+							"wasteDisposalInTons": 18939749.19,
+							"totalAmountInCubicMeters": 92.94,
+							"wasteRecycleOrReuseInCubicMeters": 61.25,
+							"wasteDisposalInCubicMeters": 76.3
 						}
 					]
 				},
@@ -7903,22 +7903,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "partnerships",
-							"totalAmountTons": 47732560.94,
-							"wasteRecycleOrReuseTons": 62822442.15,
-							"wasteDisposalTons": 17415709.6,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 48.65
+							"totalAmountInTons": 47732560.94,
+							"wasteRecycleOrReuseInTons": 62822442.15,
+							"wasteDisposalInTons": 17415709.6,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 48.65
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "blockchains",
-							"totalAmountTons": 22123857.49,
-							"wasteRecycleOrReuseTons": 59919157.7,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 90.13,
-							"wasteRecycleOrReuseCubicMeters": 53.12,
-							"wasteDisposalCubicMeters": 35.23
+							"totalAmountInTons": 22123857.49,
+							"wasteRecycleOrReuseInTons": 59919157.7,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 90.13,
+							"wasteRecycleOrReuseInCubicMeters": 53.12,
+							"wasteDisposalInCubicMeters": 35.23
 						}
 					]
 				},
@@ -8610,32 +8610,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "deliverables",
-							"totalAmountTons": 54094487.45,
-							"wasteRecycleOrReuseTons": 84188723.96,
-							"wasteDisposalTons": 21130430.28,
-							"totalAmountCubicMeters": 81.37,
-							"wasteRecycleOrReuseCubicMeters": 21.06,
-							"wasteDisposalCubicMeters": 46.73
+							"totalAmountInTons": 54094487.45,
+							"wasteRecycleOrReuseInTons": 84188723.96,
+							"wasteDisposalInTons": 21130430.28,
+							"totalAmountInCubicMeters": 81.37,
+							"wasteRecycleOrReuseInCubicMeters": 21.06,
+							"wasteDisposalInCubicMeters": 46.73
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 78453204.74,
-							"wasteDisposalTons": 32082507.64,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 85.89
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 78453204.74,
+							"wasteDisposalInTons": 32082507.64,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 85.89
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "niches",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 38926714.68,
-							"wasteDisposalTons": 37861766.15,
-							"totalAmountCubicMeters": 10.97,
-							"wasteRecycleOrReuseCubicMeters": 98.87,
-							"wasteDisposalCubicMeters": 95.51
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 38926714.68,
+							"wasteDisposalInTons": 37861766.15,
+							"totalAmountInCubicMeters": 10.97,
+							"wasteRecycleOrReuseInCubicMeters": 98.87,
+							"wasteDisposalInCubicMeters": 95.51
 						}
 					]
 				},
@@ -9026,12 +9026,12 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 63964378.02,
-							"wasteDisposalTons": 31214971.21,
-							"totalAmountCubicMeters": 80.94,
-							"wasteRecycleOrReuseCubicMeters": 91.48,
-							"wasteDisposalCubicMeters": 90.69
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 63964378.02,
+							"wasteDisposalInTons": 31214971.21,
+							"totalAmountInCubicMeters": 80.94,
+							"wasteRecycleOrReuseInCubicMeters": 91.48,
+							"wasteDisposalInCubicMeters": 90.69
 						}
 					]
 				},
@@ -9267,12 +9267,12 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 93699293.43,
-							"wasteRecycleOrReuseTons": 45249321.45,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 29.84,
-							"wasteRecycleOrReuseCubicMeters": 95.41,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 93699293.43,
+							"wasteRecycleOrReuseInTons": 45249321.45,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 29.84,
+							"wasteRecycleOrReuseInCubicMeters": 95.41,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -10812,22 +10812,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 53949522.88,
-							"wasteRecycleOrReuseTons": 67270974.84,
-							"wasteDisposalTons": 46242536.98,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 53.32,
-							"wasteDisposalCubicMeters": 31.04
+							"totalAmountInTons": 53949522.88,
+							"wasteRecycleOrReuseInTons": 67270974.84,
+							"wasteDisposalInTons": 46242536.98,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 53.32,
+							"wasteDisposalInCubicMeters": 31.04
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "markets",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 83869376.34,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 80.81,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 5.55
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 83869376.34,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 80.81,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 5.55
 						}
 					]
 				},
@@ -11138,22 +11138,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "blockchains",
-							"totalAmountTons": 13477278.89,
-							"wasteRecycleOrReuseTons": 36117475.87,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 32.3,
-							"wasteRecycleOrReuseCubicMeters": 78.09,
-							"wasteDisposalCubicMeters": 15.62
+							"totalAmountInTons": 13477278.89,
+							"wasteRecycleOrReuseInTons": 36117475.87,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 32.3,
+							"wasteRecycleOrReuseInCubicMeters": 78.09,
+							"wasteDisposalInCubicMeters": 15.62
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 66662094.35,
-							"wasteRecycleOrReuseTons": 31617179.58,
-							"wasteDisposalTons": 72893919.59,
-							"totalAmountCubicMeters": 53.48,
-							"wasteRecycleOrReuseCubicMeters": 63.69,
-							"wasteDisposalCubicMeters": 69.89
+							"totalAmountInTons": 66662094.35,
+							"wasteRecycleOrReuseInTons": 31617179.58,
+							"wasteDisposalInTons": 72893919.59,
+							"totalAmountInCubicMeters": 53.48,
+							"wasteRecycleOrReuseInCubicMeters": 63.69,
+							"wasteDisposalInCubicMeters": 69.89
 						}
 					]
 				},
@@ -11461,12 +11461,12 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "channels",
-							"totalAmountTons": 431437.83,
-							"wasteRecycleOrReuseTons": 45977941.02,
-							"wasteDisposalTons": 39049364.93,
-							"totalAmountCubicMeters": 76.91,
-							"wasteRecycleOrReuseCubicMeters": 0.94,
-							"wasteDisposalCubicMeters": 34.61
+							"totalAmountInTons": 431437.83,
+							"wasteRecycleOrReuseInTons": 45977941.02,
+							"wasteDisposalInTons": 39049364.93,
+							"totalAmountInCubicMeters": 76.91,
+							"wasteRecycleOrReuseInCubicMeters": 0.94,
+							"wasteDisposalInCubicMeters": 34.61
 						}
 					]
 				},
@@ -11884,22 +11884,22 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 48377807.74,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": 65246065.75,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 86.2,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 48377807.74,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": 65246065.75,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 86.2,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "e-business",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 10272077.26,
-							"wasteDisposalTons": 94379700.79,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 72.56,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 10272077.26,
+							"wasteDisposalInTons": 94379700.79,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 72.56,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -12941,22 +12941,22 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 37640133.1,
-							"wasteRecycleOrReuseTons": 17306750.15,
-							"wasteDisposalTons": 23509457.1,
-							"totalAmountCubicMeters": 56.77,
-							"wasteRecycleOrReuseCubicMeters": 2.44,
-							"wasteDisposalCubicMeters": 50.85
+							"totalAmountInTons": 37640133.1,
+							"wasteRecycleOrReuseInTons": 17306750.15,
+							"wasteDisposalInTons": 23509457.1,
+							"totalAmountInCubicMeters": 56.77,
+							"wasteRecycleOrReuseInCubicMeters": 2.44,
+							"wasteDisposalInCubicMeters": 50.85
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 14497421.75,
-							"wasteRecycleOrReuseTons": 10233079.71,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 55.19,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 37.45
+							"totalAmountInTons": 14497421.75,
+							"wasteRecycleOrReuseInTons": 10233079.71,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 55.19,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 37.45
 						}
 					]
 				},
@@ -13352,12 +13352,12 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 64284668.07,
-							"wasteRecycleOrReuseTons": 81720722.82,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 3.42,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 6.07
+							"totalAmountInTons": 64284668.07,
+							"wasteRecycleOrReuseInTons": 81720722.82,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 3.42,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 6.07
 						}
 					]
 				},
@@ -13675,32 +13675,32 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "blockchains",
-							"totalAmountTons": 91439574.64,
-							"wasteRecycleOrReuseTons": 13601865.69,
-							"wasteDisposalTons": 97863135.96,
-							"totalAmountCubicMeters": 47.74,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 28.67
+							"totalAmountInTons": 91439574.64,
+							"wasteRecycleOrReuseInTons": 13601865.69,
+							"wasteDisposalInTons": 97863135.96,
+							"totalAmountInCubicMeters": 47.74,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 28.67
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "blockchains",
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 101634.58,
-							"wasteDisposalTons": 20533690.06,
-							"totalAmountCubicMeters": 88.18,
-							"wasteRecycleOrReuseCubicMeters": 95.27,
-							"wasteDisposalCubicMeters": 69.2
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 101634.58,
+							"wasteDisposalInTons": 20533690.06,
+							"totalAmountInCubicMeters": 88.18,
+							"wasteRecycleOrReuseInCubicMeters": 95.27,
+							"wasteDisposalInCubicMeters": 69.2
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "methodologies",
-							"totalAmountTons": 32860493.75,
-							"wasteRecycleOrReuseTons": 50946835.31,
-							"wasteDisposalTons": 37902864.39,
-							"totalAmountCubicMeters": 87.66,
-							"wasteRecycleOrReuseCubicMeters": 34.15,
-							"wasteDisposalCubicMeters": 21.54
+							"totalAmountInTons": 32860493.75,
+							"wasteRecycleOrReuseInTons": 50946835.31,
+							"wasteDisposalInTons": 37902864.39,
+							"totalAmountInCubicMeters": 87.66,
+							"wasteRecycleOrReuseInCubicMeters": 34.15,
+							"wasteDisposalInCubicMeters": 21.54
 						}
 					]
 				},
@@ -14117,22 +14117,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "initiatives",
-							"totalAmountTons": 11714194.99,
-							"wasteRecycleOrReuseTons": 48172336.23,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 4.71,
-							"wasteRecycleOrReuseCubicMeters": 28.32,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 11714194.99,
+							"wasteRecycleOrReuseInTons": 48172336.23,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 4.71,
+							"wasteRecycleOrReuseInCubicMeters": 28.32,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 56050390.77,
-							"wasteRecycleOrReuseTons": 13018341.87,
-							"wasteDisposalTons": 23933590.92,
-							"totalAmountCubicMeters": 40.2,
-							"wasteRecycleOrReuseCubicMeters": 84.75,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 56050390.77,
+							"wasteRecycleOrReuseInTons": 13018341.87,
+							"wasteDisposalInTons": 23933590.92,
+							"totalAmountInCubicMeters": 40.2,
+							"wasteRecycleOrReuseInCubicMeters": 84.75,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -14472,12 +14472,12 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 92.09,
-							"wasteRecycleOrReuseCubicMeters": 84.16,
-							"wasteDisposalCubicMeters": 83.83
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 92.09,
+							"wasteRecycleOrReuseInCubicMeters": 84.16,
+							"wasteDisposalInCubicMeters": 83.83
 						}
 					]
 				},
@@ -15114,12 +15114,12 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 87829608.33,
-							"wasteDisposalTons": 78272336.26,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 68.05,
-							"wasteDisposalCubicMeters": 23.17
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 87829608.33,
+							"wasteDisposalInTons": 78272336.26,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 68.05,
+							"wasteDisposalInCubicMeters": 23.17
 						}
 					]
 				},
@@ -15436,32 +15436,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 40493507.01,
-							"wasteRecycleOrReuseTons": 76517843.22,
-							"wasteDisposalTons": 20643939.17,
-							"totalAmountCubicMeters": 18.19,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 27.29
+							"totalAmountInTons": 40493507.01,
+							"wasteRecycleOrReuseInTons": 76517843.22,
+							"wasteDisposalInTons": 20643939.17,
+							"totalAmountInCubicMeters": 18.19,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 27.29
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": 22554589.83,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": 66073428.54,
-							"totalAmountCubicMeters": 31.85,
-							"wasteRecycleOrReuseCubicMeters": 30.07,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 22554589.83,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": 66073428.54,
+							"totalAmountInCubicMeters": 31.85,
+							"wasteRecycleOrReuseInCubicMeters": 30.07,
+							"wasteDisposalInCubicMeters": null
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "ROI",
-							"totalAmountTons": 12975115.23,
-							"wasteRecycleOrReuseTons": 23166520.24,
-							"wasteDisposalTons": 34250837.45,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 44.8,
-							"wasteDisposalCubicMeters": 57.5
+							"totalAmountInTons": 12975115.23,
+							"wasteRecycleOrReuseInTons": 23166520.24,
+							"wasteDisposalInTons": 34250837.45,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 44.8,
+							"wasteDisposalInCubicMeters": 57.5
 						}
 					]
 				},
@@ -16939,22 +16939,22 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 44790763.22,
-							"wasteRecycleOrReuseTons": 69710245.87,
-							"wasteDisposalTons": 69499798.61,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 48.12,
-							"wasteDisposalCubicMeters": 56.99
+							"totalAmountInTons": 44790763.22,
+							"wasteRecycleOrReuseInTons": 69710245.87,
+							"wasteDisposalInTons": 69499798.61,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 48.12,
+							"wasteDisposalInCubicMeters": 56.99
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "channels",
-							"totalAmountTons": 36383643.88,
-							"wasteRecycleOrReuseTons": 96134.51,
-							"wasteDisposalTons": 37900657.72,
-							"totalAmountCubicMeters": 82.46,
-							"wasteRecycleOrReuseCubicMeters": 4.47,
-							"wasteDisposalCubicMeters": 83.21
+							"totalAmountInTons": 36383643.88,
+							"wasteRecycleOrReuseInTons": 96134.51,
+							"wasteDisposalInTons": 37900657.72,
+							"totalAmountInCubicMeters": 82.46,
+							"wasteRecycleOrReuseInCubicMeters": 4.47,
+							"wasteDisposalInCubicMeters": 83.21
 						}
 					]
 				},
@@ -17278,32 +17278,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "web services",
-							"totalAmountTons": 10268486.82,
-							"wasteRecycleOrReuseTons": null,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 4.95,
-							"wasteRecycleOrReuseCubicMeters": 20.1,
-							"wasteDisposalCubicMeters": 55.28
+							"totalAmountInTons": 10268486.82,
+							"wasteRecycleOrReuseInTons": null,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 4.95,
+							"wasteRecycleOrReuseInCubicMeters": 20.1,
+							"wasteDisposalInCubicMeters": 55.28
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "users",
-							"totalAmountTons": 24012164.75,
-							"wasteRecycleOrReuseTons": 22690011.53,
-							"wasteDisposalTons": 64530934.33,
-							"totalAmountCubicMeters": 66.86,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 66.17
+							"totalAmountInTons": 24012164.75,
+							"wasteRecycleOrReuseInTons": 22690011.53,
+							"wasteDisposalInTons": 64530934.33,
+							"totalAmountInCubicMeters": 66.86,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 66.17
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "users",
-							"totalAmountTons": 192334.45,
-							"wasteRecycleOrReuseTons": 26341699.2,
-							"wasteDisposalTons": 21675283.74,
-							"totalAmountCubicMeters": null,
-							"wasteRecycleOrReuseCubicMeters": 25.95,
-							"wasteDisposalCubicMeters": null
+							"totalAmountInTons": 192334.45,
+							"wasteRecycleOrReuseInTons": 26341699.2,
+							"wasteDisposalInTons": 21675283.74,
+							"totalAmountInCubicMeters": null,
+							"wasteRecycleOrReuseInCubicMeters": 25.95,
+							"wasteDisposalInCubicMeters": null
 						}
 					]
 				},
@@ -17767,32 +17767,32 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": null,
-							"totalAmountTons": null,
-							"wasteRecycleOrReuseTons": 6145858.71,
-							"wasteDisposalTons": 75258542.06,
-							"totalAmountCubicMeters": 47.19,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 50.67
+							"totalAmountInTons": null,
+							"wasteRecycleOrReuseInTons": 6145858.71,
+							"wasteDisposalInTons": 75258542.06,
+							"totalAmountInCubicMeters": 47.19,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 50.67
 						},
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "mindshare",
-							"totalAmountTons": 78068225.3,
-							"wasteRecycleOrReuseTons": 98007815.78,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 47.75,
-							"wasteRecycleOrReuseCubicMeters": null,
-							"wasteDisposalCubicMeters": 0.64
+							"totalAmountInTons": 78068225.3,
+							"wasteRecycleOrReuseInTons": 98007815.78,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 47.75,
+							"wasteRecycleOrReuseInCubicMeters": null,
+							"wasteDisposalInCubicMeters": 0.64
 						},
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountTons": 30733613.3,
-							"wasteRecycleOrReuseTons": 76205553.86,
-							"wasteDisposalTons": null,
-							"totalAmountCubicMeters": 54.13,
-							"wasteRecycleOrReuseCubicMeters": 9.25,
-							"wasteDisposalCubicMeters": 32.75
+							"totalAmountInTons": 30733613.3,
+							"wasteRecycleOrReuseInTons": 76205553.86,
+							"wasteDisposalInTons": null,
+							"totalAmountInCubicMeters": 54.13,
+							"wasteRecycleOrReuseInCubicMeters": 9.25,
+							"wasteDisposalInCubicMeters": 32.75
 						}
 					]
 				},

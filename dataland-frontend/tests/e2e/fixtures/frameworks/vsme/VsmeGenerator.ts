@@ -45,12 +45,12 @@ export class VsmeGenerator extends Generator {
     return {
       wasteClassification: pickOneElement(Object.values(WasteClassifications)),
       typeOfWaste: this.randomShortString(),
-      totalAmountTons: this.randomFloat(0, 1e8),
-      wasteRecycleOrReuseTons: this.randomFloat(0, 1e8),
-      wasteDisposalTons: this.randomFloat(0, 1e8),
-      totalAmountCubicMeters: this.randomFloat(0, 1e2),
-      wasteRecycleOrReuseCubicMeters: this.randomFloat(0, 1e2),
-      wasteDisposalCubicMeters: this.randomFloat(0, 1e2),
+      totalAmountInTons: this.randomFloat(0, 1e8),
+      wasteRecycleOrReuseInTons: this.randomFloat(0, 1e8),
+      wasteDisposalInTons: this.randomFloat(0, 1e8),
+      totalAmountInCubicMeters: this.randomFloat(0, 1e2),
+      wasteRecycleOrReuseInCubicMeters: this.randomFloat(0, 1e2),
+      wasteDisposalInCubicMeters: this.randomFloat(0, 1e2),
     };
   }
   generateVsmeSiteAndArea(): VsmeSiteAndArea {
