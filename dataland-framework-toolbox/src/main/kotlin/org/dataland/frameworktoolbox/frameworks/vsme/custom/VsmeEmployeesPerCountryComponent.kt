@@ -29,7 +29,7 @@ class VsmeEmployeesPerCountryComponent(
                 "List", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.vsme.custom.SmeEmployeesPerCountry",
+                        "org.dataland.datalandbackend.frameworks.vsme.custom.VsmeEmployeesPerCountry",
                         true,
                     ),
 

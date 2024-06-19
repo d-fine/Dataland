@@ -77,7 +77,7 @@ interface SmeWasteClassificationDisplayFormat {
  * @param fieldLabel field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatSmeSubsidiaryForDisplay(
+export function formatVsmeSubsidiaryForDisplay(
   input: VsmeSubsidiary[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
@@ -111,7 +111,7 @@ export function formatSmeSubsidiaryForDisplay(
  * @param fieldLabel Field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatSmePollutionEmissionForDisplay(
+export function formatVsmePollutionEmissionForDisplay(
   input: VsmePollutionEmission[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
@@ -119,7 +119,7 @@ export function formatSmePollutionEmissionForDisplay(
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
   } else {
-    convertedValueForModal = convertSmePollutionEmissionToListForModal(input);
+    convertedValueForModal = convertVsmePollutionEmissionToListForModal(input);
   }
 
   return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -148,7 +148,7 @@ export function formatSmePollutionEmissionForDisplay(
  * @param fieldLabel Field label for the corresponding object
  * @returns ModalLinkDisplayComponent to the modal (if any data is present).
  */
-export function formatSmeWasteClassificationObjectForDisplay(
+export function formatVsmeWasteClassificationObjectForDisplay(
   input: VsmeWasteClassificationObject[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
@@ -186,7 +186,7 @@ export function formatSmeWasteClassificationObjectForDisplay(
  * @param datasetValue the value of the dataset
  * @returns the converted list
  */
-function convertSmePollutionEmissionToListForModal(datasetValue: VsmePollutionEmission[]): VsmePollutionEmission[] {
+function convertVsmePollutionEmissionToListForModal(datasetValue: VsmePollutionEmission[]): VsmePollutionEmission[] {
   return datasetValue.map((item) => {
     const humanizedItem: SmePollutionEmissionDisplayFormat = {
       pollutionType: humanizeStringOrNumber(item.pollutionType),

@@ -4095,148 +4095,6 @@
           "Water"
         ]
       },
-      "SmeEmployeesPerCountry": {
-        "required": [
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "numberOfEmployeesInHeadCount": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "numberOfEmployeesInFullTimeEquivalent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "SmePollutionEmission": {
-        "type": "object",
-        "properties": {
-          "pollutionType": {
-            "type": "string",
-            "nullable": true
-          },
-          "emissionInKilograms": {
-            "type": "number",
-            "nullable": true
-          },
-          "releaseMedium": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReleaseMedium"
-              }
-            ]
-          }
-        }
-      },
-      "SmeSiteAndArea": {
-        "required": [
-          "areaAddress",
-          "areaInHectare",
-          "biodiversitySensitiveArea",
-          "siteAddress",
-          "siteName",
-          "specificationOfAdjointness"
-        ],
-        "type": "object",
-        "properties": {
-          "siteName": {
-            "type": "string"
-          },
-          "siteAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "siteGeocoordinateLongitudeval": {
-            "type": "number",
-            "nullable": true
-          },
-          "siteGeocoordinateLatitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "areaInHectare": {
-            "type": "number"
-          },
-          "biodiversitySensitiveArea": {
-            "type": "string"
-          },
-          "areaAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "areaGeocoordinateLongitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "areaGeocoordinateLatitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "specificationOfAdjointness": {
-            "$ref": "#/components/schemas/AreaAdjointness"
-          }
-        }
-      },
-      "SmeSubsidiary": {
-        "required": [
-          "addressOfSubsidiary"
-        ],
-        "type": "object",
-        "properties": {
-          "nameOfSubsidiary": {
-            "type": "string",
-            "nullable": true
-          },
-          "addressOfSubsidiary": {
-            "$ref": "#/components/schemas/Address"
-          }
-        }
-      },
-      "SmeWasteClassificationObject": {
-        "required": [
-          "wasteClassification"
-        ],
-        "type": "object",
-        "properties": {
-          "wasteClassification": {
-            "$ref": "#/components/schemas/WasteClassifications"
-          },
-          "typeOfWaste": {
-            "type": "string",
-            "nullable": true
-          },
-          "totalAmountTons": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteRecycleOrReuseTons": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteDisposalTons": {
-            "type": "number",
-            "nullable": true
-          },
-          "totalAmountCubicMeters": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteRecycleOrReuseCubicMeters": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteDisposalCubicMeters": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
       "VsmeBasic": {
         "type": "object",
         "properties": {
@@ -4345,7 +4203,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SmeSubsidiary"
+              "$ref": "#/components/schemas/VsmeSubsidiary"
             }
           },
           "referencedReports": {
@@ -4373,7 +4231,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SmeSiteAndArea"
+              "$ref": "#/components/schemas/VsmeSiteAndArea"
             }
           },
           "totalSealedAreaPreviousYear": {
@@ -4490,7 +4348,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SmePollutionEmission"
+              "$ref": "#/components/schemas/VsmePollutionEmission"
             }
           }
         }
@@ -4542,7 +4400,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SmeWasteClassificationObject"
+              "$ref": "#/components/schemas/VsmeWasteClassificationObject"
             }
           }
         }
@@ -4686,7 +4544,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/SmeEmployeesPerCountry"
+              "$ref": "#/components/schemas/VsmeEmployeesPerCountry"
             }
           }
         }
@@ -4865,6 +4723,148 @@
                 "$ref": "#/components/schemas/VsmeBasic"
               }
             ]
+          }
+        }
+      },
+      "VsmeEmployeesPerCountry": {
+        "required": [
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "numberOfEmployeesInHeadCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "numberOfEmployeesInFullTimeEquivalent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "VsmePollutionEmission": {
+        "type": "object",
+        "properties": {
+          "pollutionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "emissionInKilograms": {
+            "type": "number",
+            "nullable": true
+          },
+          "releaseMedium": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReleaseMedium"
+              }
+            ]
+          }
+        }
+      },
+      "VsmeSiteAndArea": {
+        "required": [
+          "areaAddress",
+          "areaInHectare",
+          "biodiversitySensitiveArea",
+          "siteAddress",
+          "siteName",
+          "specificationOfAdjointness"
+        ],
+        "type": "object",
+        "properties": {
+          "siteName": {
+            "type": "string"
+          },
+          "siteAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "siteGeocoordinateLongitudeval": {
+            "type": "number",
+            "nullable": true
+          },
+          "siteGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "areaInHectare": {
+            "type": "number"
+          },
+          "biodiversitySensitiveArea": {
+            "type": "string"
+          },
+          "areaAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "areaGeocoordinateLongitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "areaGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "specificationOfAdjointness": {
+            "$ref": "#/components/schemas/AreaAdjointness"
+          }
+        }
+      },
+      "VsmeSubsidiary": {
+        "required": [
+          "addressOfSubsidiary"
+        ],
+        "type": "object",
+        "properties": {
+          "nameOfSubsidiary": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressOfSubsidiary": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "VsmeWasteClassificationObject": {
+        "required": [
+          "wasteClassification"
+        ],
+        "type": "object",
+        "properties": {
+          "wasteClassification": {
+            "$ref": "#/components/schemas/WasteClassifications"
+          },
+          "typeOfWaste": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalAmountTons": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteRecycleOrReuseTons": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteDisposalTons": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalAmountCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteRecycleOrReuseCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteDisposalCubicMeters": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -14974,16 +14974,16 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
           "sector": {
@@ -15011,10 +15011,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
