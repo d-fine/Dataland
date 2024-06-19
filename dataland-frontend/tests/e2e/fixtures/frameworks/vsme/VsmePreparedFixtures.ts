@@ -25,7 +25,6 @@ function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<VsmeData
   const smeGeneratorNoUndefined = new VsmeGenerator(0);
   input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
   input.companyInformation.sector = "randomSector";
-  //TODO Rework this function to work with new datamodel
   input.t.basic!.basisForPreparation!.subsidiary = smeGeneratorNoUndefined.randomArray(
     () => smeGeneratorNoUndefined.generateSmeSubsidiary(),
     1,
