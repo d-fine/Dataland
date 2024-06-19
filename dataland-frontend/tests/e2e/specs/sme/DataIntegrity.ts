@@ -112,11 +112,11 @@ describeIf(
       cy.get("ul.p-dropdown-items li").contains(`Hazardous`).click();
       //TODO select of releaseMedium is strange, why first() necessary
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInTons"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseTons"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalTons"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountCubicMeters"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseCubicMeters"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalCubicMeters"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTons"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInTons"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInCubicMeters"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInCubicMeters"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInCubicMeters"]').type("12345");
     }
     /**
      * Fill out the vsme employees per country section
