@@ -151,35 +151,10 @@ describeIf(
       uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
     }
 
-    it("Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
-      cy.visitAndCheckAppMount(
-        "/companies/" + storedTestCompany.companyId + "/frameworks/" + DataTypeEnum.Vsme + "/upload",
-      );
-      //cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-      cy.get("h1").should("contain", storedTestCompany.companyInformation.companyName);
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Vsme}`,
-        times: 1,
-      }).as("postCompanyAssociatedData");
-      //TODO Refactor to make it more readable
-      cy.get('[data-test="reportingPeriod"]').click();
-      cy.get("div.p-datepicker").get("div.p-yearpicker").click();
-      fillOutSubsidiarySection();
-      fillOutPollutionEmissionSection();
-      fillOutSiteAndAreaSection();
-      fillOutWasteClassificationSection();
-      fillOutEmployeesPerCountrySection();
-      uploadDocument();
-
-      fillOutOneDatePointWithAttachedDocument();
-      cy.intercept({
-        url: `**/api/data/${DataTypeEnum.Vsme}`,
-        times: 1,
-      }).as("postCompanyAssociatedData");
-      cy.intercept("**/api/users/**").as("waitOnMyDatasetPage");
-      submitButton.clickButton();
+    /**
+     * Check that data can be viewed and documents downloaded
+     */
+    function verifyDocumentDownloadAndDataIsViewable() {
       cy.wait("@waitOnMyDatasetPage", { timeout: Cypress.env("medium_timeout_in_ms") as number });
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
         (postResponseInterception) => {
@@ -222,6 +197,37 @@ describeIf(
           });
         },
       );
+    }
+
+    it("Create a company and a Vsme dataset via api, then assure that the dataset equals the pre-uploaded one", () => {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.intercept("**/api/companies/" + storedTestCompany.companyId + "/info").as("getCompanyInformation");
+      cy.visitAndCheckAppMount(
+        "/companies/" + storedTestCompany.companyId + "/frameworks/" + DataTypeEnum.Vsme + "/upload",
+      );
+      //cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+      cy.get("h1").should("contain", storedTestCompany.companyInformation.companyName);
+      cy.intercept({
+        url: `**/api/data/${DataTypeEnum.Vsme}`,
+        times: 1,
+      }).as("postCompanyAssociatedData");
+      cy.get('[data-test="reportingPeriod"]').click();
+      cy.get("div.p-datepicker").get("div.p-yearpicker").click();
+      fillOutSubsidiarySection();
+      fillOutPollutionEmissionSection();
+      fillOutSiteAndAreaSection();
+      fillOutWasteClassificationSection();
+      fillOutEmployeesPerCountrySection();
+      uploadDocument();
+
+      fillOutOneDatePointWithAttachedDocument();
+      cy.intercept({
+        url: `**/api/data/${DataTypeEnum.Vsme}`,
+        times: 1,
+      }).as("postCompanyAssociatedData");
+      cy.intercept("**/api/users/**").as("waitOnMyDatasetPage");
+      submitButton.clickButton();
+      verifyDocumentDownloadAndDataIsViewable();
     });
   },
 );
