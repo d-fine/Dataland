@@ -74,6 +74,7 @@ import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDa
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "SiteAndAreaFormElement",
@@ -89,6 +90,7 @@ export default defineComponent({
     FreeTextFormField,
   },
   methods: {},
+  props: BaseFormFieldProps,
   //TODO check name, validation, validationLable as those lead to console warnings
 });
 </script>
