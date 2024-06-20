@@ -33,7 +33,14 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                  />
+                  <FormKit
+                    type="text"
                     validation="required"
+                    name="reportingPeriod"
+                    validation-label="Reporting Period"
+                    v-model="reportingPeriod"
+                    outer-class="hidden-input"
                   />
                 </div>
               </div>
