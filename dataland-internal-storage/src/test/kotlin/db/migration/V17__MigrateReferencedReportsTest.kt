@@ -31,7 +31,12 @@ class V17__MigrateReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V17/originalNonFinancial.json",
             "V17/expectedNonFinancial.json",
-            { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") },
+            { dataTableEntity ->
+                V17__MigrateReferencedReports().migrateReferencedReports(
+                    dataTableEntity,
+                    "eutaxonomy-non-financials",
+                )
+            },
         )
     }
 
@@ -41,7 +46,12 @@ class V17__MigrateReferencedReportsTest {
             "eutaxonomy-financials",
             "V17/originalFinancial.json",
             "V17/expectedFinancial.json",
-            { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") },
+            { dataTableEntity ->
+                V17__MigrateReferencedReports().migrateReferencedReports(
+                    dataTableEntity,
+                    "eutaxonomy-financials",
+                )
+            },
         )
     }
 }

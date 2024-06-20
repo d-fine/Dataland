@@ -30,6 +30,9 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Migrates the referencedReports to the new desired structure
+     */
     fun migrateReferencedReports(dataTableEntity: DataTableEntity, framework: String) {
         val dataset = dataTableEntity.dataJsonObject
         val referencedReports = getReferencedReports(dataset, framework)
@@ -44,28 +47,29 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
      * Gets the referencedReports based on the framework
      */
     private fun getReferencedReports(dataset: JSONObject, framework: String): JSONObject? {
-        return when (framework) {
+        val referencedReports: JSONObject? = when (framework) {
             "eutaxonomy-non-financials" -> {
-                val general = dataset.getOrJavaNull("general") as JSONObject? ?: return null
-                general.getOrJavaNull("referencedReports") as JSONObject?
+                val general = dataset.getOrJavaNull("general") as JSONObject?
+                general?.getOrJavaNull("referencedReports") as JSONObject?
             }
             "eutaxonomy-financials" -> {
                 dataset.getOrJavaNull("referencedReports") as JSONObject?
             }
             "sfdr" -> {
-                val general = dataset.getOrJavaNull("general") as JSONObject? ?: return null
-                val generalGeneral = general.getOrJavaNull("general") as JSONObject? ?: return null
-                generalGeneral.getOrJavaNull("referencedReports") as JSONObject?
+                val general = dataset.getOrJavaNull("general") as JSONObject?
+                val generalGeneral = general?.getOrJavaNull("general") as JSONObject?
+                generalGeneral?.getOrJavaNull("referencedReports") as JSONObject?
             }
             "sme" -> {
-                val general = dataset.getOrJavaNull("general") as JSONObject? ?: return null
-                val basicInformation = general.getOrJavaNull("basicInformation") as JSONObject? ?: return null
-                basicInformation.getOrJavaNull("referencedReports") as JSONObject?
+                val general = dataset.getOrJavaNull("general") as JSONObject?
+                val basicInformation = general?.getOrJavaNull("basicInformation") as JSONObject?
+                basicInformation?.getOrJavaNull("referencedReports") as JSONObject?
             }
             else -> {
                 null
             }
         }
+        return referencedReports
     }
 
     /**
