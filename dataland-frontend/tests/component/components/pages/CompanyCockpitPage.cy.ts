@@ -49,15 +49,13 @@ describe("Component test for the company cockpit", () => {
       body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
-
-    cy.intercept(`**/company-role-assignments/*/*/${companyOwnerId}`, {
-      status: 200,
-    }).as("fetchUserIsCompanyOwnerTrue");
-    if (hasCompanyAtLeastOneOwner) {
-      cy.intercept(`**/company-role-assignments/*`, {
-        body: [companyOwnerId],
-      }).as("fetchHasCompanyCompanyOwnersFalse");
-    }
+    cy.intercept(`**/community/company-role-assignments/*/*/${companyOwnerId}`, {
+      statusCode: 200,
+    });
+    const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
+    cy.intercept("**/community/company-ownership/*", {
+      statusCode: hasCompanyAtLeastOneOwnerStatusCode,
+    });
   }
 
   /**
