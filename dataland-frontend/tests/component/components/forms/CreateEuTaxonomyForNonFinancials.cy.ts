@@ -104,7 +104,9 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("11")').click();
     cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
-    cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"]').check();
+    cy.get('div[data-test="fiscalYearDeviation"]')
+      .find('input[id="fiscalYearDeviationfiscalYearDeviation-option-deviation"]')
+      .check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
     cy.get('div[data-test="scopeOfEntities"]').find('input[value="Yes"]').check();
     cy.get('div[data-test="euTaxonomyActivityLevelReporting"]').find('input[value="Yes"]').check();
