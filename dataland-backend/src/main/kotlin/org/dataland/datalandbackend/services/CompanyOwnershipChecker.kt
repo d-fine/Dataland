@@ -33,7 +33,7 @@ class CompanyOwnershipChecker(
         return try {
             companyRolesControllerApi.hasUserCompanyRole(
                 CompanyRole.CompanyOwner, UUID.fromString(companyId),
-                UUID.fromString(userId)
+                UUID.fromString(userId),
             )
             true
         } catch (clientException: ClientException) {

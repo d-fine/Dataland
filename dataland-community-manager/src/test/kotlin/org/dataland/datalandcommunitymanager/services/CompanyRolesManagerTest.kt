@@ -135,9 +135,9 @@ class CompanyRolesManagerTest {
     fun `check that email generated for users becoming company owner are generated`() {
         val companyId = UUID.randomUUID().toString()
         val storedCompany = StoredCompany(
-            companyId= companyId,
+            companyId = companyId,
             companyInformation = testCompanyInformation,
-            dataRegisteredByDataland = listOf()
+            dataRegisteredByDataland = listOf(),
         )
         `when`(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(storedCompany)
         val id = CompanyRoleAssignmentId(
