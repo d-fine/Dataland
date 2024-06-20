@@ -56,30 +56,24 @@ class FrameworkRegistryImportsUpdater {
         )
         val frontendFrameworkRegistryImportsTemplateNames =
             Pair(
-                "FrontendFrameworkRegistryImports.ts.ftl",
-                "FrontendFrameworkRegistryImports.ts",
+                "FrontendFrameworkRegistryImports.ts.ftl", "FrontendFrameworkRegistryImports.ts",
             )
         val basePrivateFrameworkregistryImportsTemplateNames =
             Pair(
-                "BasePrivateFrameworkRegistryImports.ts.ftl",
-                "BasePrivateFrameworkRegistryImports.ts",
+                "BasePrivateFrameworkRegistryImports.ts.ftl", "BasePrivateFrameworkRegistryImports.ts",
             )
         val basePublicFrameworkregistryImportsTemplateNames =
             Pair(
-                "BasePublicFrameworkRegistryImports.ts.ftl",
-                "BasePublicFrameworkRegistryImports.ts",
+                "BasePublicFrameworkRegistryImports.ts.ftl", "BasePublicFrameworkRegistryImports.ts",
             )
         writeIntoRegistryTsFiles(
-            repository, freeMarkerContextForAllFrameworks,
-            frontendFrameworkRegistryImportsTemplateNames,
+            repository, freeMarkerContextForAllFrameworks, frontendFrameworkRegistryImportsTemplateNames,
         )
         writeIntoRegistryTsFiles(
-            repository, freemarkerContextForAllPrivateFrameworks,
-            basePrivateFrameworkregistryImportsTemplateNames,
+            repository, freemarkerContextForAllPrivateFrameworks, basePrivateFrameworkregistryImportsTemplateNames,
         )
         writeIntoRegistryTsFiles(
-            repository, freemarkerContextForPublicFrameworks,
-            basePublicFrameworkregistryImportsTemplateNames,
+            repository, freemarkerContextForPublicFrameworks, basePublicFrameworkregistryImportsTemplateNames,
         )
     }
 
