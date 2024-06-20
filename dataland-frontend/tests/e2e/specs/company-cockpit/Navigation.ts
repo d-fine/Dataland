@@ -70,7 +70,7 @@ describeIf(
       );
       submitButton.exists();
     });
-    it("From the company cockpit page claim data ownership via the panel and context menu", () => {
+    it("From the company cockpit page claim company ownership via the panel and context menu", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
       cy.get("[data-test='claimOwnershipPanelLink']").click();

@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
-import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
+import org.dataland.datalandbackend.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -25,7 +25,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
-class DataOwnershipSuccessfullyEmailMessageSenderTest {
+class CompanyOwnershipAcceptedEmailMessageSenderTest {
 
     private val objectMapper = jacksonObjectMapper()
     private lateinit var authenticationMock: DatalandJwtAuthentication
@@ -58,8 +58,8 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
         mockCloudEventMessageHandlerAndSetChecks()
 
         val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
-        val dataOwnershipSuccessfullyEmailMessageSender =
-            DataOwnershipSuccessfullyEmailMessageSender(
+        val companyOwnershipAcceptedEmailMessageSender =
+            CompanyOwnershipAcceptedEmailMessageSender(
                 cloudEventMessageHandlerMock,
                 objectMapper,
                 dataRequestQueryManager,
@@ -78,9 +78,9 @@ class DataOwnershipSuccessfullyEmailMessageSenderTest {
         Mockito.`when`(mockResponse.body).thenReturn(mockResponseBody)
         Mockito.`when`(mockResponse.body!!.string()).thenReturn(jsonStringRepresentation)
 
-        dataOwnershipSuccessfullyEmailMessageSender
-            .sendDataOwnershipAcceptanceExternalEmailMessage(
-                newDataOwnerId = userId,
+        companyOwnershipAcceptedEmailMessageSender
+            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
+                newCompanyOwnerId = userId,
                 datalandCompanyId = companyId,
                 companyName = companyName,
                 correlationId = correlationId,

@@ -144,8 +144,8 @@
                 <div class="card__title">Withdraw Request</div>
                 <div class="card__separator" />
                 <div>
-                  Once a data request is withdrawn, it will be removed from your data request list. The data owner will
-                  not be notified anymore.
+                  Once a data request is withdrawn, it will be removed from your data request list. The company owner
+                  will not be notified anymore.
                   <a
                     class="link"
                     style="display: inline-flex; font-weight: bold; color: black"

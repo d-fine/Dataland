@@ -4,12 +4,14 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.datalandbackend.services.messaging.DataOwnershipEmailMessageSender
-import org.dataland.datalandbackend.services.messaging.DataOwnershipSuccessfullyEmailMessageSender
+import org.dataland.datalandbackend.services.messaging.CompanyOwnershipAcceptedEmailMessageSender
+import org.dataland.datalandbackend.services.messaging.CompanyOwnershipRequestedEmailMessageSender
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.entities.CompanyDataOwnersEntity
-import org.dataland.datalandcommunitymanager.repositories.DataOwnerRepository
+import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
+import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -26,11 +28,11 @@ import org.mockito.Mockito.`when`
 import org.springframework.http.HttpStatus
 import java.util.*
 
-class DataOwnerManagerTest {
+class CompanyRolesManagerTest {
 
-    private lateinit var dataOwnerManager: DataOwnerManager
-    private lateinit var mockDataOwnersRepository: DataOwnerRepository
-    private lateinit var dataOwnershipSuccessfullyEmailMessageSender: DataOwnershipSuccessfullyEmailMessageSender
+    private lateinit var companyRolesManager: CompanyRolesManager
+    private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
+    private lateinit var companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
@@ -50,33 +52,32 @@ class DataOwnerManagerTest {
     )
 
     @BeforeEach
-    fun initializeDataOwnersManager() {
-        mockDataOwnersRepository = mock(DataOwnerRepository::class.java)
-        dataOwnershipSuccessfullyEmailMessageSender = mock(DataOwnershipSuccessfullyEmailMessageSender::class.java)
+    fun initializeCompanyRolesManager() {
+        mockCompanyRoleAssignmentRepository = mock(CompanyRoleAssignmentRepository::class.java)
+        companyOwnershipAcceptedEmailMessageSender = mock(CompanyOwnershipAcceptedEmailMessageSender::class.java)
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockCompanyIdValidator = CompanyIdValidator(mockCompanyDataControllerApi)
-        dataOwnerManager = DataOwnerManager(
-            mockCompanyDataControllerApi,
+        companyRolesManager = CompanyRolesManager(
             mockCompanyIdValidator,
-            mockDataOwnersRepository,
-            mock(DataOwnershipEmailMessageSender::class.java),
-            dataOwnershipSuccessfullyEmailMessageSender,
+            mockCompanyRoleAssignmentRepository,
+            mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
+            companyOwnershipAcceptedEmailMessageSender,
         )
 
-        doNothing().`when`(dataOwnershipSuccessfullyEmailMessageSender)
-            .sendDataOwnershipAcceptanceExternalEmailMessage(
+        doNothing().`when`(companyOwnershipAcceptedEmailMessageSender)
+            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
                 anyString(),
                 anyString(), anyString(), anyString(),
             )
     }
 
     @Test
-    fun `check that a data ownership can only be requested for existing companies`() {
+    fun `check that a company ownership can only be requested for existing companies`() {
         `when`(mockCompanyDataControllerApi.getCompanyById("non-existing-company-id")).thenThrow(
             ClientException("Client error", HttpStatus.NOT_FOUND.value()),
         )
         val exception = assertThrows<ResourceNotFoundApiException> {
-            dataOwnerManager.checkCompanyForDataOwnership(
+            companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(
                 "non-existing-company-id",
             )
         }
@@ -84,70 +85,83 @@ class DataOwnerManagerTest {
     }
 
     @Test
-    fun `check that a data ownership can only be requested if the user is not already a data owner`() {
+    fun `check that a company ownership can only be requested if the user is not already a company owner`() {
         val mockStoredCompany = mock(StoredCompany::class.java)
         val existingCompanyId = "indeed-existing-company-id"
         `when`(mockStoredCompany.companyInformation).thenReturn(testCompanyInformation)
+        val id = CompanyRoleAssignmentId(
+            companyRole = CompanyRole.CompanyOwner,
+            companyId = existingCompanyId,
+            userId = testUserId,
+        )
         `when`(mockCompanyDataControllerApi.getCompanyById(existingCompanyId)).thenReturn(mockStoredCompany)
-        `when`(mockDataOwnersRepository.findById(existingCompanyId)).thenReturn(
+        `when`(mockCompanyRoleAssignmentRepository.findById(id)).thenReturn(
             Optional.of(
-                CompanyDataOwnersEntity(
+                CompanyRoleAssignmentEntity(
+                    CompanyRole.CompanyOwner,
                     existingCompanyId,
-                    mutableListOf(testUserId),
+                    testUserId,
                 ),
             ),
         )
         val exception = assertThrows<InvalidInputApiException> {
-            dataOwnerManager.sendDataOwnershipRequestIfNecessary(
+            companyRolesManager.triggerCompanyOwnershipRequest(
                 existingCompanyId,
                 mockAuthentication,
                 null,
                 "",
             )
         }
-        assertTrue(exception.summary.contains("User is already a data owner for company."))
+        assertTrue(exception.summary.contains("User is already a company owner for company."))
     }
 
     @Test
-    fun `check that email for users becoming company data owner is not generated if company does not exist`() {
+    fun `check that email for users becoming company company owner is not generated if company does not exist`() {
         `when`(mockCompanyDataControllerApi.getCompanyById(anyString())).thenThrow(
             ClientException("Client error", HttpStatus.NOT_FOUND.value()),
         )
         val exception = assertThrows<ResourceNotFoundApiException> {
-            dataOwnerManager.addDataOwnerToCompany(
+            companyRolesManager.assignCompanyRoleForCompanyToUser(
+                companyRole = CompanyRole.CompanyOwner,
                 companyId = UUID.randomUUID().toString(),
                 userId = testUserId,
-                companyName = testCompanyName,
             )
         }
-        verifyNoInteractions(dataOwnershipSuccessfullyEmailMessageSender)
+        verifyNoInteractions(companyOwnershipAcceptedEmailMessageSender)
         assertTrue(exception.summary.contains("Company not found"))
     }
 
     @Test
-    fun `check that email generated for users becoming company data owner are generated`() {
+    fun `check that email generated for users becoming company owner are generated`() {
         val companyId = UUID.randomUUID().toString()
-        `when`(mockCompanyIdValidator.checkIfCompanyIdIsValid(companyId)).thenReturn(null)
-        `when`(mockDataOwnersRepository.existsById(companyId)).thenReturn(false)
-        `when`(
-            dataOwnershipSuccessfullyEmailMessageSender.getNumberOfOpenDataRequestsForCompany(
-                companyId,
-            ),
-        ).thenReturn(5)
-        `when`(dataOwnershipSuccessfullyEmailMessageSender.getEmailAddressDataOwner(testUserId))
-            .thenReturn("test@example.com")
-        val mockCompanyDataOwnersEntity = mock(CompanyDataOwnersEntity::class.java)
-        `when`(mockDataOwnersRepository.save(any(CompanyDataOwnersEntity::class.java)))
-            .thenReturn(mockCompanyDataOwnersEntity)
-
-        dataOwnerManager.addDataOwnerToCompany(
+        val storedCompany = StoredCompany(
+            companyId= companyId,
+            companyInformation = testCompanyInformation,
+            dataRegisteredByDataland = listOf()
+        )
+        `when`(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(storedCompany)
+        val id = CompanyRoleAssignmentId(
+            companyRole = CompanyRole.CompanyOwner,
             companyId = companyId,
             userId = testUserId,
-            companyName = testCompanyName,
+        )
+        `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(false)
+        `when`(companyOwnershipAcceptedEmailMessageSender.getNumberOfOpenDataRequestsForCompany(companyId))
+            .thenReturn(5)
+        `when`(companyOwnershipAcceptedEmailMessageSender.getEmailAddressCompanyOwner(testUserId))
+            .thenReturn("test@example.com")
+        val mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
+        `when`(mockCompanyRoleAssignmentRepository.save(any(CompanyRoleAssignmentEntity::class.java)))
+            .thenReturn(mockCompanyRoleAssignmentEntity)
+
+        companyRolesManager.assignCompanyRoleForCompanyToUser(
+            companyRole = CompanyRole.CompanyOwner,
+            companyId = companyId,
+            userId = testUserId,
         )
 
-        Mockito.verify(dataOwnershipSuccessfullyEmailMessageSender, Mockito.times(1))
-            .sendDataOwnershipAcceptanceExternalEmailMessage(
+        Mockito.verify(companyOwnershipAcceptedEmailMessageSender, Mockito.times(1))
+            .sendCompanyOwnershipAcceptanceExternalEmailMessage(
                 anyString(),
                 anyString(),
                 anyString(),

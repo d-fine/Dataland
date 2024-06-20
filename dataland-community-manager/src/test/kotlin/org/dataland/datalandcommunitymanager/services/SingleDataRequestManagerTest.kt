@@ -65,7 +65,7 @@ class SingleDataRequestManagerTest {
             utils = utilsMock,
             maxRequestsForUser,
         )
-        doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValid(anyString())
+        doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValidAndReturnName(anyString())
 
         val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)

@@ -128,7 +128,7 @@ class SingleDataRequestManager(
 
     private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
         val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
-            companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
+            companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
             utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)

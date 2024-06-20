@@ -140,77 +140,23 @@
         ]
       }
     },
-    "/data-ownership-requests/{companyId}": {
+    "/company-role-assignments/{role}/{companyId}/{userId}": {
       "post": {
         "tags": [
-          "data-owner-controller"
+          "company-roles-controller"
         ],
-        "summary": "Request data ownership for a company.",
-        "description": "Request data ownership for one of the existing company on Dataland.",
-        "operationId": "postDataOwnershipRequest",
+        "summary": "Assign company role for the company to the user.",
+        "description": "The company role for the specified company is being assigned to the user.",
+        "operationId": "assignCompanyRole",
         "parameters": [
           {
-            "name": "companyId",
+            "name": "role",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/CompanyRole"
             }
           },
-          {
-            "name": "comment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully requested data ownership."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-owners/{companyId}/{userId}": {
-      "post": {
-        "tags": [
-          "data-owner-controller"
-        ],
-        "summary": "Add a new data owner to a company.",
-        "description": "A new data owner is added to the existing list for the specified company.",
-        "operationId": "postDataOwner",
-        "parameters": [
           {
             "name": "companyId",
             "in": "path",
@@ -232,11 +178,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully added data owner.",
+            "description": "Successfully assigned company role.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
+                  "$ref": "#/components/schemas/CompanyRoleAssignment"
                 }
               }
             }
@@ -273,12 +219,20 @@
       },
       "delete": {
         "tags": [
-          "data-owner-controller"
+          "company-roles-controller"
         ],
-        "summary": "Delete a data owner from a specified company.",
-        "description": "An existing data owner is deleted from the existing list for the specified company.",
-        "operationId": "deleteDataOwner",
+        "summary": "Remove company role for the company from the user.",
+        "description": "The company role for the specified company is being removed from the user.",
+        "operationId": "removeCompanyRole",
         "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CompanyRole"
+            }
+          },
           {
             "name": "companyId",
             "in": "path",
@@ -300,14 +254,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully deleted data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
+            "description": "Successfully removed company role."
           },
           "default": {
             "description": "An error occurred",
@@ -341,12 +288,20 @@
       },
       "head": {
         "tags": [
-          "data-owner-controller"
+          "company-roles-controller"
         ],
-        "summary": "Validation of a user-company combination with regards to data ownership.",
-        "description": "Checks whether a user is data owner of a company.",
-        "operationId": "isUserDataOwnerForCompany",
+        "summary": "Validate company role for company and user.",
+        "description": "Checks whether the company role for the company is assigned to the user.",
+        "operationId": "hasUserCompanyRole",
         "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CompanyRole"
+            }
+          },
           {
             "name": "companyId",
             "in": "path",
@@ -367,11 +322,128 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "The specified user is data owner of the company."
-          },
           "404": {
-            "description": "Either the specified company does not exist on Dataland or the user isn\u0027t data owner of that company."
+            "description": "Either the specified company does not exist on Dataland or the user does not have the company role for it."
+          },
+          "200": {
+            "description": "The specified user has the company role."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/company-ownership/{companyId}": {
+      "post": {
+        "tags": [
+          "company-roles-controller"
+        ],
+        "summary": "Request company ownership for the company.",
+        "description": "Request company ownership for the company on Dataland.",
+        "operationId": "postCompanyOwnershipRequest",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully requested company ownership."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "head": {
+        "tags": [
+          "company-roles-controller"
+        ],
+        "summary": "Validate existence of company ownership for the company.",
+        "description": "Validates if at least one company owner exists for the specified company",
+        "operationId": "hasCompanyAtLeastOneOwner",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The specified company has no company owner(s) yet"
+          },
+          "200": {
+            "description": "The specified company has company owner(s)."
           },
           "default": {
             "description": "An error occurred",
@@ -461,138 +533,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data-owners/{companyId}": {
-      "get": {
-        "tags": [
-          "data-owner-controller"
-        ],
-        "summary": "Retrieve data owner(s) of a company.",
-        "description": "Get a list of data owner(s) for the specified company.",
-        "operationId": "getDataOwners",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Successfully retrieved data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "head": {
-        "tags": [
-          "data-owner-controller"
-        ],
-        "summary": "Validation if data owners exists for the specified company.",
-        "description": "Checks whether company has data owners or not",
-        "operationId": "hasCompanyDataOwner",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The specified company has data owner(s)."
-          },
-          "404": {
-            "description": "The specified company has no data owner(s) yet"
           },
           "default": {
             "description": "An error occurred",
@@ -909,6 +849,91 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/AggregatedDataRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/company-role-assignments/{role}/{companyId}": {
+      "get": {
+        "tags": [
+          "company-roles-controller"
+        ],
+        "summary": "Retrieve company role assignments for company and company role.",
+        "description": "Get company role assignments for the specified company role and company.",
+        "operationId": "getCompanyRoleAssignments",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CompanyRole"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The specified company does not exist on Dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyRoleAssignment"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully retrieved company role assignments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyRoleAssignment"
                   }
                 }
               }
@@ -1324,21 +1349,28 @@
           }
         }
       },
-      "CompanyDataOwners": {
+      "CompanyRole": {
+        "type": "string",
+        "enum": [
+          "CompanyOwner"
+        ]
+      },
+      "CompanyRoleAssignment": {
         "required": [
           "companyId",
-          "dataOwners"
+          "companyRole",
+          "userId"
         ],
         "type": "object",
         "properties": {
+          "companyRole": {
+            "$ref": "#/components/schemas/CompanyRole"
+          },
           "companyId": {
             "type": "string"
           },
-          "dataOwners": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "userId": {
+            "type": "string"
           }
         }
       },

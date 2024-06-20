@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
- * A class that manages generating emails messages when data ownership request is accepted
+ * A class that manages generating email messages when company ownership requests have been accepted
  */
 
 @Component
-class DataOwnershipSuccessfullyEmailMessageSender(
+class CompanyOwnershipAcceptedEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
@@ -30,19 +30,19 @@ class DataOwnershipSuccessfullyEmailMessageSender(
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
     /**
-     * Function that generates the message object for data ownership request acceptance mails
-     * @param newDataOwnerId the id of the user promoted to data owner
-     * @param datalandCompanyId identifier of the company in dataland
-     * @param companyName the name of the company
-     * @param correlationId the correlation ID of the current user process.
+     * Function that generates the message object for company ownership request acceptance mails
+     * @param newCompanyOwnerId of the user that has received company ownership
+     * @param datalandCompanyId of the company that the user has received company ownership for
+     * @param companyName of the company that the user has received company ownership for
+     * @param correlationId of the current user process
      */
-    fun sendDataOwnershipAcceptanceExternalEmailMessage(
-        newDataOwnerId: String,
+    fun sendCompanyOwnershipAcceptanceExternalEmailMessage(
+        newCompanyOwnerId: String,
         datalandCompanyId: String,
         companyName: String,
         correlationId: String,
     ) {
-        val newDataOwnerEmail = this.getEmailAddressDataOwner(newDataOwnerId)
+        val newCompanyOwnerEmail = this.getEmailAddressCompanyOwner(newCompanyOwnerId)
         val properties = mapOf(
             "companyId" to datalandCompanyId,
             "companyName" to companyName,
@@ -50,7 +50,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
         )
         val message = TemplateEmailMessage(
             TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
-            newDataOwnerEmail,
+            newCompanyOwnerEmail,
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -64,7 +64,7 @@ class DataOwnershipSuccessfullyEmailMessageSender(
 
     /**
      * Function that counts the number of data requests that a company has open
-     * @param datalandCompanyId identifier of the company in dataland
+     * @param datalandCompanyId of the company to count the open data requests for
      * @return the number of opened data requests
      */
     fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
@@ -86,13 +86,13 @@ class DataOwnershipSuccessfullyEmailMessageSender(
     )
 
     /**
-     * gets the email address of a new data owner in keycloak given the user id
-     * @param userIdDataOwner the userId of the new data owner
+     * Gets the email address of a new company owner in keycloak given the user id
+     * @param userIdCompanyOwner of the new company owner
      * @returns the email address
      */
-    fun getEmailAddressDataOwner(userIdDataOwner: String): String {
+    fun getEmailAddressCompanyOwner(userIdCompanyOwner: String): String {
         val request = Request.Builder()
-            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userIdDataOwner")
+            .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userIdCompanyOwner")
             .build()
         val response = authenticatedOkHttpClient.newCall(request).execute()
         val parsedResponseBody = objectMapper.readValue(

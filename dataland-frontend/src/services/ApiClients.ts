@@ -4,8 +4,8 @@ import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
 import { ApiKeyControllerApi } from "@clients/apikeymanager";
 import {
-  DataOwnerControllerApi,
-  type DataOwnerControllerApiInterface,
+  CompanyRolesControllerApi,
+  type CompanyRolesControllerApiInterface,
   RequestControllerApi,
   type RequestControllerApiInterface,
 } from "@clients/communitymanager";
@@ -27,7 +27,7 @@ interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
   requestController: RequestControllerApiInterface;
-  dataOwnerController: DataOwnerControllerApiInterface;
+  companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
 }
 
@@ -82,7 +82,7 @@ export class ApiClientProvider {
       apiKeyController: this.getClientFactory("/api-keys")(ApiKeyControllerApi),
       documentController: this.getClientFactory("/documents")(DocumentControllerApi),
       requestController: this.getClientFactory("/community")(RequestControllerApi),
-      dataOwnerController: this.getClientFactory("/community")(DataOwnerControllerApi),
+      companyRolesController: this.getClientFactory("/community")(CompanyRolesControllerApi),
       qaController: this.getClientFactory("/qa")(QaControllerApi),
     };
   }

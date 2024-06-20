@@ -5,7 +5,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 describe("Component test for ClaimOwnershipPanel", () => {
   beforeEach(() => {
     const mockApiResponse = { status: 200 };
-    cy.intercept("**/data-ownership-request?**", mockApiResponse);
+    cy.intercept("**/company-ownership/*", mockApiResponse);
   });
   it("ClaimOwnershipPanel component first page works correctly", () => {
     cy.mountWithPlugins(ClaimOwnershipDialog, {

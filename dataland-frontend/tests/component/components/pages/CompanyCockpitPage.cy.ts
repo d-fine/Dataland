@@ -21,7 +21,7 @@ describe("Component test for the company cockpit", () => {
   let companyInformationForTest: CompanyInformation;
   let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
-  const companyDataOwnerId = "mock-data-owner-id";
+  const companyOwnerId = "mock-company-owner-id";
 
   before(function () {
     cy.fixture("CompanyInformationWithHeimathafenData").then(function (jsonContent) {
@@ -38,9 +38,9 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Mocks the three requests that happen when the company cockpit page is being mounted
-   * @param hasCompanyDataOwner has the company at least one data owner
+   * @param hasCompanyAtLeastOneOwner has the company at least one company owner
    */
-  function mockRequestsOnMounted(hasCompanyDataOwner: boolean = false): void {
+  function mockRequestsOnMounted(hasCompanyAtLeastOneOwner: boolean = false): void {
     cy.intercept(`**/api/companies/*/info`, {
       body: companyInformationForTest,
       times: 1,
@@ -50,13 +50,13 @@ describe("Component test for the company cockpit", () => {
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
 
-    cy.intercept(`**/community/data-owners/*/${companyDataOwnerId}`, {
+    cy.intercept(`**/company-role-assignments/*/*/${companyOwnerId}`, {
       status: 200,
-    }).as("fetchUserIsDataOwnerTrue");
-    if (hasCompanyDataOwner) {
-      cy.intercept(`**/community/data-owners/*`, {
-        body: [companyDataOwnerId],
-      }).as("fetchHasCompanyDataOwnersFalse");
+    }).as("fetchUserIsCompanyOwnerTrue");
+    if (hasCompanyAtLeastOneOwner) {
+      cy.intercept(`**/company-role-assignments/*`, {
+        body: [companyOwnerId],
+      }).as("fetchHasCompanyCompanyOwnersFalse");
     }
   }
 
@@ -121,15 +121,15 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Validates the existence of the banner that shows info about the company
-   * @param hasCompanyDataOwner has the mocked company at least one data owner?
+   * @param hasCompanyCompanyOwner has the mocked company at least one company owner?
    */
-  function validateCompanyInformationBanner(hasCompanyDataOwner?: boolean): void {
+  function validateCompanyInformationBanner(hasCompanyCompanyOwner?: boolean): void {
     cy.contains("h1", companyInformationForTest.companyName);
-    cy.get("[data-test='verifiedDataOwnerBadge']").should(hasCompanyDataOwner ? "exist" : "not.exist");
+    cy.get("[data-test='verifiedCompanyOwnerBadge']").should(hasCompanyCompanyOwner ? "exist" : "not.exist");
   }
 
   /**
-   * Validates the existence of the panel that shows the offer to claim data ownership
+   * Validates the existence of the panel that shows the offer to claim company ownership
    * @param isThisExpected is this panel expected
    */
   function validateClaimOwnershipPanel(isThisExpected: boolean): void {
@@ -137,12 +137,12 @@ describe("Component test for the company cockpit", () => {
   }
   /**
    * Validates the sme framework summary panel
-   * @param isDataOwner is the current user company data owner
+   * @param isCompanyOwner is the current user company company owner
    */
-  function validateSmeFrameworkSummaryPanel(isDataOwner: boolean): void {
+  function validateSmeFrameworkSummaryPanel(isCompanyOwner: boolean): void {
     const frameworkName = "sme";
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-    if (isDataOwner) {
+    if (isCompanyOwner) {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
     } else {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should(
@@ -154,9 +154,9 @@ describe("Component test for the company cockpit", () => {
   /**
    * Validates the framework summary panels by asserting their existence and checking for their contents
    * @param isProvideDataButtonExpected determines if a provide-data-button is expected to be found in the panels
-   * @param isDataOwner is the current user company data owner
+   * @param isCompanyOwner is the current user company owner
    */
-  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, isDataOwner: boolean = false): void {
+  function validateFrameworkSummaryPanels(isProvideDataButtonExpected: boolean, isCompanyOwner: boolean = false): void {
     Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary).forEach(
       ([frameworkName, aggregatedFrameworkDataSummary]: [string, AggregatedFrameworkDataSummary]) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
@@ -166,7 +166,7 @@ describe("Component test for the company cockpit", () => {
           aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods.toString(),
         );
         if (frameworkName == "sme") {
-          validateSmeFrameworkSummaryPanel(isDataOwner);
+          validateSmeFrameworkSummaryPanel(isCompanyOwner);
           return;
         }
         if (isProvideDataButtonExpected) {
@@ -208,102 +208,102 @@ describe("Component test for the company cockpit", () => {
     cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? "exist" : "not.exist");
   }
 
-  it("Check for expected elements from a non-logged-in users perspective for a company without data owner", () => {
-    const hasCompanyDataOwner = false;
+  it("Check for expected elements from a non-logged-in users perspective for a company without company owner", () => {
+    const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
-    mockRequestsOnMounted(hasCompanyDataOwner);
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
-  it("Check for expected data ownership elements from a non-logged-in users perspective for a company with a data owner", () => {
-    const hasCompanyDataOwner = true;
+  it("Check for expected company ownership elements from a non-logged-in users perspective for a company with a company owner", () => {
+    const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
-    mockRequestsOnMounted(hasCompanyDataOwner);
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
       waitForRequestsOnMounted();
-      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
     });
   });
 
-  it("Check for all expected elements from a logged-in users perspective with read-only rights for a company with data owner", () => {
-    const hasCompanyDataOwner = true;
+  it("Check for all expected elements from a logged-in users perspective with read-only rights for a company with company owner", () => {
+    const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = false;
     const isSingleDataRequestButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyDataOwner);
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
   });
 
-  it("Check for all expected elements from a logged-in users perspective with uploader-rights for a company without data owner", () => {
-    const hasCompanyDataOwner = false;
+  it("Check for all expected elements from a logged-in users perspective with uploader-rights for a company without company owner", () => {
+    const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyDataOwner);
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
-  it("Check for all expected elements from a logged-in data owner perspective with uploader-rights for a company with data owner", () => {
-    const hasCompanyDataOwner = true;
+  it("Check for all expected elements from a logged-in company owner perspective with uploader-rights for a company with company owner", () => {
+    const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = true;
     const isSingleDataRequestButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyDataOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyDataOwnerId).then(() => {
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyOwnerId).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
       validateFrameworkSummaryPanels(isProvideDataButtonExpected, true);
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
   });
-  it("Check for some expected elements from a logged-in premium user perspective for a company without data owner", () => {
-    const hasCompanyDataOwner = false;
+  it("Check for some expected elements from a logged-in premium user perspective for a company without company owner", () => {
+    const hasCompanyAtLeastOneOwner = false;
     const isSingleDataRequestButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyDataOwner);
-    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], companyDataOwnerId).then(() => {
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], companyOwnerId).then(() => {
       waitForRequestsOnMounted();
       validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
   });
 
   it("Check the Sme summary panel behaviour if the user is company owner", () => {
-    const hasCompanyDataOwner = true;
+    const hasCompanyAtLeastOneOwner = true;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
-      mockRequestsOnMounted(hasCompanyDataOwner);
-      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyDataOwnerId).then(() => {
+      mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyOwnerId).then(() => {
         waitForRequestsOnMounted();
         validateSmeFrameworkSummaryPanel(true);
       });
     });
   });
   it("Check the Sme summary panel behaviour if the user is not company owner", () => {
-    const hasCompanyDataOwner = true;
+    const hasCompanyAtLeastOneOwner = true;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
-      mockRequestsOnMounted(hasCompanyDataOwner);
+      mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]).then(() => {
         waitForRequestsOnMounted();
         validateSmeFrameworkSummaryPanel(false);
@@ -311,13 +311,13 @@ describe("Component test for the company cockpit", () => {
     });
   });
 
-  it("Check for all expected elements from a mobile users perspective with uploader-rights for a company without data owner", () => {
+  it("Check for all expected elements from a mobile users perspective with uploader-rights for a company without company owner", () => {
     const scrollDurationInMs = 300;
     setMobileDeviceViewport();
-    const hasCompanyDataOwner = false;
+    const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
-    mockRequestsOnMounted(hasCompanyDataOwner);
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
       waitForRequestsOnMounted();
 
@@ -329,7 +329,7 @@ describe("Component test for the company cockpit", () => {
 
       validateBackButtonExistence(true);
       validateSearchBarExistence(false);
-      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });

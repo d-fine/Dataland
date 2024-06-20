@@ -3,10 +3,11 @@ import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from "@e2
 import { getKeycloakToken, login, logout } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM } from "@/utils/Constants";
-import { postDataOwner } from "@e2e/utils/DataOwnerUtils";
+import { assignCompanyRole } from "@e2e/utils/CompanyRolesUtils";
+import { CompanyRole } from "@clients/communitymanager";
 
 describeIf(
-  "As a user, I expect to be able to upload data for one company for which I am data owner",
+  "As a user, I expect to be able to upload data for one company for which I am company owner",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -22,15 +23,15 @@ describeIf(
         cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should("exist");
       });
     }
-    it("Upload a company, set a user as the data owner and then verify that the upload pages are displayed for that user", () => {
+    it("Upload a company, set a user as the company owner and then verify that the upload pages are displayed for that user", () => {
       cy.ensureLoggedIn(admin_name, admin_pw);
       const uniqueCompanyMarker = Date.now().toString();
-      const testCompanyName = "Company-Created-In-Data-Owner-Test-" + uniqueCompanyMarker;
+      const testCompanyName = "Company-Created-In-Company-Owner-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          cy.intercept("**/community/data-owners/**").as("postDataOwner");
-          void postDataOwner(token, reader_userId, storedCompany.companyId);
-          cy.wait("@postDataOwner", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+          cy.intercept("**/company-role-assignments/**").as("postCompanyOwner");
+          void assignCompanyRole(token, CompanyRole.CompanyOwner, storedCompany.companyId, reader_userId);
+          cy.wait("@postCompanyOwner", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           logout();
           login(reader_name, reader_pw);
           cy.visitAndCheckAppMount("/companies/" + storedCompany.companyId);

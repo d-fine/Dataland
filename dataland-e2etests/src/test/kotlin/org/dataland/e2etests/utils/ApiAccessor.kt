@@ -1,6 +1,6 @@
 package org.dataland.e2etests.utils
 
-import org.dataland.communitymanager.openApiClient.api.DataOwnerControllerApi
+import org.dataland.communitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
@@ -44,7 +44,7 @@ class ApiAccessor {
     val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
 
     val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-    val dataOwnerControllerApi = DataOwnerControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    val companyRolesControllerApi = CompanyRolesControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
     private val qaApiAccessor = QaApiAccessor()

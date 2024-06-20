@@ -46,7 +46,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./sme");
   require("./esg-questionnaire");
   require("./heimathafen");
-  require("./data-ownership");
+  require("./company-ownership");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {
