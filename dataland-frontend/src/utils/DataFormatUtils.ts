@@ -35,7 +35,7 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
  * @returns a more user-friendly date string representing the given date
  */
 export function dateStringFormatter(date: string): string {
-  return new Date(date).toLocaleDateString("en-gb", dateFormatOptions);
+  return new Date(date).toLocaleDateString("en-gb", dateFormatOptions).split(",").slice(0, 2).join(",");
 }
 
 /**
