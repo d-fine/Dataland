@@ -17,7 +17,7 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
         "eutaxonomy-financials",
         "sfdr",
         "sme",
-        )
+    )
 
     override fun migrate(context: Context?) {
         frameworksToMigrate.forEach { framework ->
@@ -25,7 +25,7 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
                 framework,
-                { dataTableEntity -> migrateReferencedReports(dataTableEntity, framework) }
+                { dataTableEntity -> migrateReferencedReports(dataTableEntity, framework) },
             )
         }
     }
@@ -33,10 +33,10 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
     fun migrateReferencedReports(dataTableEntity: DataTableEntity, framework: String) {
         val dataset = dataTableEntity.dataJsonObject
         val referencedReports = getReferencedReports(dataset, framework)
-        if (referencedReports !== null ){
+        if (referencedReports !== null) {
             referencedReports.keys().forEach {
-            removeTwoFieldsAndRenameOne(referencedReports, it)
-        }}
+                removeTwoFieldsAndRenameOne(referencedReports, it)
+            } }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
 
@@ -68,14 +68,13 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
         }
     }
 
-
     /**
      * Removes isGroupLevel and Currency fields and rename reportDate field to publicationDate
      */
     private fun removeTwoFieldsAndRenameOne(
         referencedReports: JSONObject,
         reportName: String,
-    ){
+    ) {
         val report = referencedReports.getOrJavaNull(reportName)
         if (report !== null && report is JSONObject) {
             if (report.has("isGroupLevel")) report.remove("isGroupLevel")
