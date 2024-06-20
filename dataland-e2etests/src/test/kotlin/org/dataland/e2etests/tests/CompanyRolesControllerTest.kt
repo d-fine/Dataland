@@ -249,7 +249,7 @@ class CompanyRolesControllerTest {
         }
         assertErrorCodeInCommunityManagerClientException(
             expectedClientExceptionWhenCallingGetCompanyOwnersEndpoint,
-            403
+            403,
         )
     }
 
@@ -278,8 +278,10 @@ class CompanyRolesControllerTest {
         assertDoesNotThrow { apiAccessor.companyRolesControllerApi.hasCompanyAtLeastOneOwner(companyId) }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assertDoesNotThrow { apiAccessor.companyRolesControllerApi
-            .removeCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId) }
+        assertDoesNotThrow {
+            apiAccessor.companyRolesControllerApi
+                .removeCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+        }
 
         removeBearerTokenFromApiClients()
 
