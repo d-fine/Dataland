@@ -11,5 +11,5 @@ import java.nio.file.Path
 fun main() {
     val datalandProject = DatalandRepository(Path.of("./"))
 
-    IntegrationTestFramework().compileFramework(datalandProject)
+    IntegrationTestFramework().compileFramework(datalandProject, listOf())
 }

@@ -207,7 +207,7 @@ abstract class PavedRoadFramework(
     /**
      * Compiles a framework following the template and integrates it into the dataland repository
      */
-    open fun compileFramework(datalandProject: DatalandRepository) {
+    open fun compileFramework(datalandProject: DatalandRepository, allPrivateFrameworks: List<String>) {
         val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
         val diagnostics = context.getBean<DiagnosticManager>()
 
@@ -228,7 +228,7 @@ abstract class PavedRoadFramework(
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
-        FrameworkRegistryImportsUpdater().update(datalandProject)
+        FrameworkRegistryImportsUpdater().update(datalandProject, allPrivateFrameworks)
         diagnostics.finalizeDiagnosticStream()
         logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }

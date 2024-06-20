@@ -15,15 +15,14 @@ class FrameworkRegistryImportsUpdater {
     /**
      * Generate the FrameworkRegistryImports.ts file in the dataland frontend
      */
-    fun update(repository: DatalandRepository) {
+    fun update(repository: DatalandRepository, allPrivateFrameworkIdentifiers: List<String>) {
         val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
-
         val allRegisteredFrameworks = pathToFrameworkDirectory.toFile().listFiles {
                 file ->
             file.isDirectory && file.listFiles()?.any { it.name == "BaseFrameworkDefinition.ts" } ?: false
         }!!
 
-        val freeMarkerContext = mapOf(
+        val freeMarkerContextForAllFrameworks = mapOf(
             "frameworks" to allRegisteredFrameworks
                 .sortedBy { it.name }
                 .map {
@@ -33,16 +32,82 @@ class FrameworkRegistryImportsUpdater {
                     )
                 },
         )
-        writeIntoRegistryTsFiles(repository, freeMarkerContext)
+        val publicFrameworkIdentifier = allRegisteredFrameworks.map { it.name }
+            .subtract(allPrivateFrameworkIdentifiers.toSet()).toList()
+        writeAllTestFiles(
+            repository, allPrivateFrameworkIdentifiers, freeMarkerContextForAllFrameworks,
+            publicFrameworkIdentifier,
+        )
     }
 
-    // todo extend for private registry file
-    private fun writeIntoRegistryTsFiles(repository: DatalandRepository, freeMarkerContext: Any) {
+    private fun writeAllTestFiles(
+        repository: DatalandRepository,
+        allPrivateFrameworks: List<String>,
+        freeMarkerContextForAllFrameworks: Map<String, List<Map<String, String>>>,
+        publicFrameworkNames: List<String>,
+    ) {
+        val freemarkerContextForAllPrivateFrameworks = createFreeMarkerContextFile(
+            allPrivateFrameworks,
+            "privateFrameworks",
+        )
+        val freemarkerContextForPublicFrameworks = createFreeMarkerContextFile(
+            publicFrameworkNames,
+            "publicFrameworks",
+        )
+        val frontendFrameworkRegistryImportsTemplateNames =
+            Pair(
+                "FrontendFrameworkRegistryImports.ts.ftl",
+                "FrontendFrameworkRegistryImports.ts",
+            )
+        val basePrivateFrameworkregistryImportsTemplateNames =
+            Pair(
+                "BasePrivateFrameworkRegistryImports.ts.ftl",
+                "BasePrivateFrameworkRegistryImports.ts",
+            )
+        val basePublicFrameworkregistryImportsTemplateNames =
+            Pair(
+                "BasePublicFrameworkRegistryImports.ts.ftl",
+                "BasePublicFrameworkRegistryImports.ts",
+            )
+        writeIntoRegistryTsFiles(
+            repository, freeMarkerContextForAllFrameworks,
+            frontendFrameworkRegistryImportsTemplateNames,
+        )
+        writeIntoRegistryTsFiles(
+            repository, freemarkerContextForAllPrivateFrameworks,
+            basePrivateFrameworkregistryImportsTemplateNames,
+        )
+        writeIntoRegistryTsFiles(
+            repository, freemarkerContextForPublicFrameworks,
+            basePublicFrameworkregistryImportsTemplateNames,
+        )
+    }
+
+    private fun createFreeMarkerContextFile(frameworkList: List<String>, argumentName: String):
+        Map<String, List<Map<String, String>>> {
+        val freemarkerContextFile = mapOf(
+            argumentName to frameworkList
+                .sorted()
+                .map {
+                    mapOf(
+                        "identifier" to it,
+                        "baseNameInCamelCase" to getNameFromLabel(it),
+                    )
+                },
+        )
+        return freemarkerContextFile
+    }
+
+    private fun writeIntoRegistryTsFiles(
+        repository: DatalandRepository,
+        freeMarkerContext: Any,
+        templateNames: Pair<String, String>,
+    ) {
         val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
         val jobs = listOf(
             Pair(
-                "/specific/frameworkregistryimports/FrontendFrameworkRegistryImports.ts.ftl",
-                pathToFrameworkDirectory / "FrontendFrameworkRegistryImports.ts",
+                "/specific/frameworkregistryimports/" + templateNames.first,
+                pathToFrameworkDirectory / templateNames.second,
             ),
         )
 

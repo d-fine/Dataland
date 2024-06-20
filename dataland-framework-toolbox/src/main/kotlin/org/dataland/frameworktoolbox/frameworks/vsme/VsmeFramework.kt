@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.vsme
 
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.vsme.custom.DependsOnComponentCustomValue
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
@@ -16,7 +16,7 @@ import java.io.File
  * Definition of the VSME framework
  */
 @Component
-class VsmeFramework : InDevelopmentPavedRoadFramework(
+class VsmeFramework : PavedRoadFramework(
     identifier = "vsme",
     label = "VSME",
     explanation = "Voluntary small and medium-sized enterprises questionnaire",
