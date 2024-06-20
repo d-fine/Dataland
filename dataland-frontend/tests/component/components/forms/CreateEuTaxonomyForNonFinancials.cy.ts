@@ -110,7 +110,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[data-test="submitSideBar"] li:last a').click();
     cy.get('div[data-test="scopeOfEntities"]').find('input[id="scopeOfEntities-option-yes"]').check();
     cy.get('div[data-test="euTaxonomyActivityLevelReporting"]')
-      .find('input[id="euTaxonomyActivityLevelReporting"]')
+      .find('input[id="euTaxonomyActivityLevelReporting-option-yes"]')
       .check();
     cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
