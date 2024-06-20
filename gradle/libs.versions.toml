@@ -46,7 +46,7 @@ junit-jupiter = "5.10.2"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.7"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.8"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
