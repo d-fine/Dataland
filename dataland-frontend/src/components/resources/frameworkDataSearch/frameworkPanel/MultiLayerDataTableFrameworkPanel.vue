@@ -32,6 +32,9 @@
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
   </div>
+  <div v-if="status == 'InsufficientRights'">
+    <h1>Sorry! You have insufficient rights to view this ressource.</h1>
+  </div>
   <div v-if="status == 'Error'">
     <h1>We are having issues loading the data.</h1>
   </div>
@@ -59,8 +62,9 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 import { getFrameworkDataApiForIdentifier } from "@/frameworks/FrameworkApiUtils";
 import { type BaseFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { AxiosError } from "axios";
 
-type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
+type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error" | "InsufficientRights";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 
@@ -141,7 +145,11 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
   } catch (err) {
     console.error(err);
     if (updateCounter.value == currentCounter) {
-      status.value = "Error";
+      if (err instanceof AxiosError && err.response?.status == 403) {
+        status.value = "InsufficientRights";
+      } else {
+        status.value = "Error";
+      }
     }
   }
 }
