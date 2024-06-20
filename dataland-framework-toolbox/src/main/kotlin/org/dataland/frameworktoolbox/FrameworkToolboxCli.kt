@@ -1,7 +1,6 @@
 package org.dataland.frameworktoolbox
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.springframework.beans.factory.getBeansOfType
@@ -16,9 +15,7 @@ class FrameworkToolboxCli {
 
     private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
-    private val allInDevelopmentPavedRoadFrameworks = context.getBeansOfType<InDevelopmentPavedRoadFramework>()
-        .values.toList() // todo discuss and remove
-    private val allPrivateFrameworks = (allPavedRoadFrameworks + allInDevelopmentPavedRoadFrameworks).filter {
+    private val allPrivateFrameworks = allPavedRoadFrameworks.filter {
         it.isPrivateFramework
     }.map { it.identifier }
 

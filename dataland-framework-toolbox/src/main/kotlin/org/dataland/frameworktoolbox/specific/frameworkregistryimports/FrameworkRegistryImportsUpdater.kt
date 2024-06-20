@@ -15,7 +15,7 @@ class FrameworkRegistryImportsUpdater {
     /**
      * Generate the FrameworkRegistryImports.ts file in the dataland frontend
      */
-    fun update(repository: DatalandRepository, allPrivateFrameworks: List<String>) {
+    fun update(repository: DatalandRepository, allPrivateFrameworkIdentifiers: List<String>) {
         val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
         val allRegisteredFrameworks = pathToFrameworkDirectory.toFile().listFiles {
                 file ->
@@ -32,10 +32,14 @@ class FrameworkRegistryImportsUpdater {
                     )
                 },
         )
-        val publicFrameworkNames = allRegisteredFrameworks.map { it.name }.subtract(allPrivateFrameworks.toSet())
-            .toList()
-        writeAllTestFiles(repository, allPrivateFrameworks, freeMarkerContextForAllFrameworks, publicFrameworkNames)
+        val publicFrameworkIdentifier = allRegisteredFrameworks.map { it.name }
+            .subtract(allPrivateFrameworkIdentifiers.toSet()).toList()
+        writeAllTestFiles(
+            repository, allPrivateFrameworkIdentifiers, freeMarkerContextForAllFrameworks,
+            publicFrameworkIdentifier,
+        )
     }
+
     private fun writeAllTestFiles(
         repository: DatalandRepository,
         allPrivateFrameworks: List<String>,
