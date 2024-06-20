@@ -33,7 +33,7 @@
     />
   </div>
   <div v-if="status == 'InsufficientRights'">
-    <h1>Sorry! You have insufficient rights to view this ressource.</h1>
+    <h1>Sorry! You have insufficient rights to view this resource.</h1>
   </div>
   <div v-if="status == 'Error'">
     <h1>We are having issues loading the data.</h1>
