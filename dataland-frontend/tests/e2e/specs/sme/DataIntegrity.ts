@@ -111,6 +111,7 @@ describeIf(
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteClassification"]').first().click();
       cy.get("ul.p-dropdown-items li").contains(`Hazardous`).click();
       //TODO select of releaseMedium is strange, why first() necessary
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="typeOfWaste"]').type("Test-Waste");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInTons"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTons"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInTons"]').type("12345");
