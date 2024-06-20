@@ -24,5 +24,4 @@ data class VsmeSiteAndArea(
     val areaGeocoordinateLatitude: BigDecimal?,
     @field:JsonProperty(required = true)
     val specificationOfAdjointness: AreaAdjointness,
-// TODO check when @field:JsonProperty(required = true) is necessary
 )

@@ -19,6 +19,7 @@
     description="Please specify in which medium the pollutant was released"
     :options="releaseMedium"
     validation="required"
+    data-test="relaseMedium"
   />
 </template>
 

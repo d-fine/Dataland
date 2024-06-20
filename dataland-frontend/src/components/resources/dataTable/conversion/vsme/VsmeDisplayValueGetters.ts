@@ -12,7 +12,6 @@ import {
   type VsmeWasteClassificationObject,
   type VsmeSiteAndArea,
   type VsmeEmployeesPerCountry,
-  type WasteClassifications,
 } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
@@ -27,14 +26,14 @@ export const vsmeModalColumnHeaders = {
     releaseMedium: "Release Medium",
   },
   wasteClassification: {
-    classificationOfWaste: "Classification of waste",
+    wasteClassification: "Classification of waste",
     typeOfWaste: "Type of Waste",
-    totalAmountTons: "Total amout in tons",
-    wasteRecycleOrReuseTons: "Waste recycle or reuse tons",
-    wasteDisposalTons: "Waste disposal in tons",
-    totalAmountCubicMeters: "Total amount in cubic meters",
+    totalAmountOfWasteInTons: "Total amout in tons",
+    wasteRecycleOrReuseInTons: "Waste recycle or reuse tons",
+    wasteDisposalInTons: "Waste disposal in tons",
+    totalAmountOfWasteInCubicMeters: "Total amount in cubic meters",
     wasteRecycleOrReuseInCubicMeters: "Waste recycle or reuse in m³",
-    wasteDisposalCubicMeters: "Waste disposal in m³",
+    wasteDisposalInCubicMeters: "Waste disposal in m³",
   },
   siteAndArea: {
     siteName: "Name of the Site",
@@ -61,8 +60,8 @@ interface VsmePollutionEmissionDisplayFormat {
 }
 
 interface VsmeWasteClassificationDisplayFormat {
-  wasteClassification: WasteClassifications;
-  typeWaste: string;
+  wasteClassification: string;
+  typeOfWaste: string;
   totalAmountOfWasteInTons: number | undefined;
   wasteRecycleOrReuseInTons: number | undefined;
   wasteDisposalInTons: number | undefined;
@@ -191,7 +190,7 @@ function convertVsmePollutionEmissionToListForModal(datasetValue: VsmePollutionE
     const humanizedItem: VsmePollutionEmissionDisplayFormat = {
       pollutionType: humanizeStringOrNumber(item.pollutionType),
       emissionInKilograms: item.emissionInKilograms!,
-      releaseMedium: item.releaseMedium!,
+      releaseMedium: item.releaseMedium,
       //TODO come back here and see if ! are really necessary
     };
     return humanizedItem;
@@ -209,15 +208,15 @@ function convertVsmeWasteClassificationToListForModal(
 ): VsmeWasteClassificationDisplayFormat[] {
   return datasetValue.map((item) => {
     const humanizedItem: VsmeWasteClassificationDisplayFormat = {
-      wasteClassification: item.wasteClassification,
-      typeWaste: humanizeStringOrNumber(item.typeOfWaste),
+      wasteClassification: humanizeStringOrNumber(item.wasteClassification),
+      typeOfWaste: humanizeStringOrNumber(item.typeOfWaste),
       totalAmountOfWasteInTons: item.totalAmountOfWasteInTons!,
       wasteRecycleOrReuseInTons: item.wasteRecycleOrReuseInTons!,
       wasteDisposalInTons: item.wasteDisposalInTons!,
       totalAmountOfWasteInCubicMeters: item.totalAmountOfWasteInCubicMeters!,
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseInCubicMeters!,
       wasteDisposalInCubicMeters: item.wasteDisposalInCubicMeters!,
-      //TODO check why humanzeStringOrNumber doesnt work for wasteClassification, see riskposition for lksg
+      //TODO check that it has worked
     };
     return humanizedItem;
   });

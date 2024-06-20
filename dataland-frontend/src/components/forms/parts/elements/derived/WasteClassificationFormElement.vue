@@ -6,6 +6,7 @@
     :options="wasteClassifications"
     placeholder="Select Waste Classification"
     validation="required"
+    data-test="wasteClassification"
   />
   <InputTextFormField
     name="typeOfWaste"
