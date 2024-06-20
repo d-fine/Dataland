@@ -55,7 +55,7 @@ class VsmeFramework : InDevelopmentPavedRoadFramework(
         secondDependencyComponent: NumberBaseComponent,
     ) {
         component.availableIf = DependsOnComponentCustomValue(
-            firstDependencyComponent2, ">=150", // TODO wenn sowieso immer ">=150", warum dann Variable?
+            firstDependencyComponent2,
             secondDependencyComponent,
         )
     }
