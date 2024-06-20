@@ -232,7 +232,7 @@ class PrivateDataManager(
         )
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
         metaDataManager.setNewDatasetActiveAndOldDatasetInactive(dataMetaInfoEntityForDataId!!)
-        metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId!!)
+        metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId!!) // todo check necessity of !!
     }
 
     private fun removeDocumentsAndHashesFromInMemoryStorages(
