@@ -108,13 +108,15 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       .find('input[id="fiscalYearDeviationfiscalYearDeviation-option-deviation"]')
       .check();
     cy.get('div[data-test="submitSideBar"] li:last a').click();
-    cy.get('div[data-test="scopeOfEntities"]').find('input[value="Yes"]').check();
-    cy.get('div[data-test="euTaxonomyActivityLevelReporting"]').find('input[value="Yes"]').check();
+    cy.get('div[data-test="scopeOfEntities"]').find('input[id="scopeOfEntities-option-yes"]').check();
+    cy.get('div[data-test="euTaxonomyActivityLevelReporting"]')
+      .find('input[id="euTaxonomyActivityLevelReporting"]')
+      .check();
     cy.get('input[name="numberOfEmployees"]').clear().type("-13");
     cy.get('em[title="Number Of Employees"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
     cy.get('input[name="numberOfEmployees"]').clear().type("333");
-    cy.get('div[data-test="nfrdMandatory"]').find('input[value="Yes"]').check();
+    cy.get('div[data-test="nfrdMandatory"]').find('input[id="nfrdMandatory-option-yes"]').check();
     selectItemFromDropdownByIndex(cy.get('div[name="value"'), 2);
     cy.get('input[name="provider"]').clear().type("Assurance Provider");
     selectItemFromDropdownByValue(cy.get('div[label="General"] div[name="fileName"]'), reports[0]);
