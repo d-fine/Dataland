@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.springframework.beans.factory.getBeansOfType
@@ -15,6 +16,12 @@ class FrameworkToolboxCli {
 
     private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
+    private val allInDevelopmentPavedRoadFramework = context.getBeansOfType<InDevelopmentPavedRoadFramework>()
+        .values.toList() // todo discuss and remove
+    private val allPrivateFrameworks = (allPavedRoadFrameworks + allInDevelopmentPavedRoadFramework).filter {
+        it.isPrivateFramework
+    }.map { it.identifier }
+
     private val datalandProject = DatalandRepository(Path.of("./"))
 
     /**
@@ -38,7 +45,7 @@ class FrameworkToolboxCli {
     private fun buildAllFrameworks(args: Array<String>) {
         require(args.size == 1) { "Command 'all' does not support more than one argument" }
         allPavedRoadFrameworks.forEach {
-            it.compileFramework(datalandProject)
+            it.compileFramework(datalandProject, allPrivateFrameworks)
         }
     }
 
@@ -48,7 +55,7 @@ class FrameworkToolboxCli {
         requireNotNull(foundFramework) {
             "Could not find framework with identifier ${args[0]}"
         }
-        foundFramework.compileFramework(datalandProject)
+        foundFramework.compileFramework(datalandProject, allPrivateFrameworks)
     }
 
     private fun listAllFrameworks(args: Array<String>) {
