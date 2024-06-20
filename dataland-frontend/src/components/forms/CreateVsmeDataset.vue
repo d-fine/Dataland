@@ -33,13 +33,13 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                    validation="required"
                   />
                   <FormKit
-                    type="text"
                     validation="required"
                     name="reportingPeriod"
                     validation-label="Reporting Period"
-                    v-model="reportingPeriod"
+                    v-model="reportingPeriodYear"
                     outer-class="hidden-input"
                   />
                 </div>
@@ -212,7 +212,7 @@ export default defineComponent({
     };
   },
   computed: {
-    reportingPeriodYear(): number {
+    reportingPeriodYear(): number | undefined {
       if (this.reportingPeriod) {
         return this.reportingPeriod.getFullYear();
       }
