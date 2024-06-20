@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 /**
  * --- Generic API model ---
- * TODO
+ * Contains all company roles that are currently supported in Dataland
  */
 @Schema(
     enumAsRef = true,

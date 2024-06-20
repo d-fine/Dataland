@@ -21,7 +21,6 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -65,7 +64,7 @@ class SingleDataRequestManagerTest {
             utils = utilsMock,
             maxRequestsForUser,
         )
-        doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValidAndReturnName(anyString())
+        `when`(mockCompanyIdValidator.checkIfCompanyIdIsValidAndReturnName(anyString())).thenReturn("some-company-name")
 
         val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)
