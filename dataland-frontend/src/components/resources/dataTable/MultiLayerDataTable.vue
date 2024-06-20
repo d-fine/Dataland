@@ -108,7 +108,7 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
     "Dataset published on Dataland on:\n " + convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
   return mostRecentSourceToolTip + datasetPublishedToolTip;
 }
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const props = defineProps<{
   config: MLDTConfig<T>;
   dataAndMetaInfo: Array<DataAndMetaInformation<T>>;
