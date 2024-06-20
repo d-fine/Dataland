@@ -88,22 +88,16 @@ class CompanyRolesManagerTest {
     fun `check that a company ownership can only be requested if the user is not already a company owner`() {
         val mockStoredCompany = mock(StoredCompany::class.java)
         val existingCompanyId = "indeed-existing-company-id"
+        `when`(mockCompanyDataControllerApi.getCompanyById(existingCompanyId)).thenReturn(mockStoredCompany)
         `when`(mockStoredCompany.companyInformation).thenReturn(testCompanyInformation)
+
         val id = CompanyRoleAssignmentId(
             companyRole = CompanyRole.CompanyOwner,
             companyId = existingCompanyId,
             userId = testUserId,
         )
-        `when`(mockCompanyDataControllerApi.getCompanyById(existingCompanyId)).thenReturn(mockStoredCompany)
-        `when`(mockCompanyRoleAssignmentRepository.findById(id)).thenReturn(
-            Optional.of(
-                CompanyRoleAssignmentEntity(
-                    CompanyRole.CompanyOwner,
-                    existingCompanyId,
-                    testUserId,
-                ),
-            ),
-        )
+        `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(true)
+
         val exception = assertThrows<InvalidInputApiException> {
             companyRolesManager.triggerCompanyOwnershipRequest(
                 existingCompanyId,
