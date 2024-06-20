@@ -12,9 +12,6 @@ import { postDataOwner } from "@e2e/utils/DataOwnerUtils";
 let tokenForAdminUser: string;
 let storedTestCompany: StoredCompany;
 const uploadReports = new UploadReports("referencedReports");
-/*TODO
-- Eröffne backlog item um EDIT Funktionalität wieder einzuführen
- */
 describeIf(
   "As a user, I expect to be able to edit and submit Vsme data via the upload form",
   {
@@ -79,8 +76,7 @@ describeIf(
       cy.get('[data-test="PollutionEmissionSection"]').should("exist");
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="pollutionType"]').type("Test-Waste-Type");
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="emissionInKilograms"]').type("12345");
-      cy.get('[data-test="PollutionEmissionSection"]').find('[name="releaseMedium"]').first().click();
-      //TODO select of releaseMedium is strange, why first() necessary
+      cy.get('[data-test="PollutionEmissionSection"]').find('[data-test="relaseMedium"]').click();
       cy.get("ul.p-dropdown-items li").contains(`Air`).click();
     }
     /**
@@ -99,8 +95,7 @@ describeIf(
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaInHectare"]').type("12345");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLatitude"]').type("12345");
       cy.get('[data-test="SiteAndAreaSection"]').find('[name="areaGeocoordinateLongitude"]').type("12345");
-      //TODO select of releaseMedium is strange, why first() necessary
-      cy.get('[data-test="SiteAndAreaSection"]').find('[name="specificationOfAdjointness"]').first().click();
+      cy.get('[data-test="SiteAndAreaSection"]').find('[data-test="specificationOfAdjointness"]').click();
       cy.get("ul.p-dropdown-items li").contains(`In`).click();
     }
     /**
@@ -108,9 +103,8 @@ describeIf(
      */
     function fillOutWasteClassificationSection() {
       cy.get('[data-test="WasteClassificationSection"]').should("exist");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteClassification"]').first().click();
+      cy.get('[data-test="WasteClassificationSection"]').find('[data-test="wasteClassification"]').click();
       cy.get("ul.p-dropdown-items li").contains(`Hazardous`).click();
-      //TODO select of releaseMedium is strange, why first() necessary
       cy.get('[data-test="WasteClassificationSection"]').find('[name="typeOfWaste"]').type("Test-Waste");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInTons"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTons"]').type("12345");

@@ -63,6 +63,7 @@
     description="Please specify the adjointness of the area"
     :options="adjointness"
     validation="required"
+    data-test="specificationOfAdjointness"
   />
 </template>
 
