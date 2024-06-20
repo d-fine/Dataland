@@ -191,7 +191,6 @@ function convertVsmePollutionEmissionToListForModal(datasetValue: VsmePollutionE
       pollutionType: humanizeStringOrNumber(item.pollutionType),
       emissionInKilograms: item.emissionInKilograms!,
       releaseMedium: item.releaseMedium,
-      //TODO come back here and see if ! are really necessary
     };
     return humanizedItem;
   });
@@ -216,7 +215,6 @@ function convertVsmeWasteClassificationToListForModal(
       totalAmountOfWasteInCubicMeters: item.totalAmountOfWasteInCubicMeters!,
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseInCubicMeters!,
       wasteDisposalInCubicMeters: item.wasteDisposalInCubicMeters!,
-      //TODO check that it has worked
     };
     return humanizedItem;
   });
