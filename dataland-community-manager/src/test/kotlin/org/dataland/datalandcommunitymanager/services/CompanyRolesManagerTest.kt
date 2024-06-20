@@ -31,8 +31,12 @@ import java.util.*
 class CompanyRolesManagerTest {
 
     private lateinit var companyRolesManager: CompanyRolesManager
+
     private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
+    private lateinit var mockCompanyRoleAssignmentEntity: CompanyRoleAssignmentEntity
+
     private lateinit var companyOwnershipAcceptedEmailMessageSender: CompanyOwnershipAcceptedEmailMessageSender
+
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
@@ -45,6 +49,7 @@ class CompanyRolesManagerTest {
         identifiers = emptyMap(),
         countryCode = "dummyCountryCode",
     )
+
     private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
         "username",
         testUserId,
@@ -54,15 +59,28 @@ class CompanyRolesManagerTest {
     @BeforeEach
     fun initializeCompanyRolesManager() {
         mockCompanyRoleAssignmentRepository = mock(CompanyRoleAssignmentRepository::class.java)
+
         companyOwnershipAcceptedEmailMessageSender = mock(CompanyOwnershipAcceptedEmailMessageSender::class.java)
+        `when`(
+            companyOwnershipAcceptedEmailMessageSender
+                .getNumberOfOpenDataRequestsForCompany(any(String::class.java)),
+        ).thenReturn(5)
+        `when`(companyOwnershipAcceptedEmailMessageSender.getEmailAddressCompanyOwner(any(String::class.java)))
+            .thenReturn("test@example.com")
+
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockCompanyIdValidator = CompanyIdValidator(mockCompanyDataControllerApi)
+
         companyRolesManager = CompanyRolesManager(
             mockCompanyIdValidator,
             mockCompanyRoleAssignmentRepository,
             mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
             companyOwnershipAcceptedEmailMessageSender,
         )
+
+        mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
+        `when`(mockCompanyRoleAssignmentRepository.save(any(CompanyRoleAssignmentEntity::class.java)))
+            .thenReturn(mockCompanyRoleAssignmentEntity)
 
         doNothing().`when`(companyOwnershipAcceptedEmailMessageSender)
             .sendCompanyOwnershipAcceptanceExternalEmailMessage(
@@ -134,19 +152,13 @@ class CompanyRolesManagerTest {
             dataRegisteredByDataland = listOf(),
         )
         `when`(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(storedCompany)
+
         val id = CompanyRoleAssignmentId(
             companyRole = CompanyRole.CompanyOwner,
             companyId = companyId,
             userId = testUserId,
         )
         `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(false)
-        `when`(companyOwnershipAcceptedEmailMessageSender.getNumberOfOpenDataRequestsForCompany(companyId))
-            .thenReturn(5)
-        `when`(companyOwnershipAcceptedEmailMessageSender.getEmailAddressCompanyOwner(testUserId))
-            .thenReturn("test@example.com")
-        val mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
-        `when`(mockCompanyRoleAssignmentRepository.save(any(CompanyRoleAssignmentEntity::class.java)))
-            .thenReturn(mockCompanyRoleAssignmentEntity)
 
         companyRolesManager.assignCompanyRoleForCompanyToUser(
             companyRole = CompanyRole.CompanyOwner,
