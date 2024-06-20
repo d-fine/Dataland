@@ -129,11 +129,9 @@ export default defineComponent({
           }
         }
       }
-      const mostRecentSourceToolTip = latestDate
-        ? `Publication date of most recent report:\n ${latestDate}\n\n`
-        : "";
+      const mostRecentSourceToolTip = latestDate ? `Publication date of most recent source:\n ${latestDate}\n\n` : "";
       const datasetPublishedToolTip =
-        "Dataset published on Dataland on:\n " +
+        "Dataset published on Dataland:\n " +
         convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
       return mostRecentSourceToolTip + datasetPublishedToolTip;
     },
