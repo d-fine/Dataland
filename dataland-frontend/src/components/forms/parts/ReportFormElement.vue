@@ -19,9 +19,8 @@
         name="publicationDate"
         :outer-class="{ 'hidden-input': true }"
       />
+      <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
     </div>
-
-    <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
   </FormKit>
 </template>
 
