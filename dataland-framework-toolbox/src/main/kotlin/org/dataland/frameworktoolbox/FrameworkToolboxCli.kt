@@ -16,9 +16,9 @@ class FrameworkToolboxCli {
 
     private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
-    private val allInDevelopmentPavedRoadFramework = context.getBeansOfType<InDevelopmentPavedRoadFramework>()
+    private val allInDevelopmentPavedRoadFrameworks = context.getBeansOfType<InDevelopmentPavedRoadFramework>()
         .values.toList() // todo discuss and remove
-    private val allPrivateFrameworks = (allPavedRoadFrameworks + allInDevelopmentPavedRoadFramework).filter {
+    private val allPrivateFrameworks = (allPavedRoadFrameworks + allInDevelopmentPavedRoadFrameworks).filter {
         it.isPrivateFramework
     }.map { it.identifier }
 
