@@ -14968,7 +14968,7 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           },
@@ -14984,7 +14984,7 @@
           "headquarters": {
             "type": "string"
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           }

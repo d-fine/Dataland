@@ -32,12 +32,20 @@ class FrameworkRegistryImportsUpdater {
                     )
                 },
         )
+        val publicFrameworkNames = allRegisteredFrameworks.map { it.name }.subtract(allPrivateFrameworks.toSet())
+            .toList()
+        writeAllTestFiles(repository, allPrivateFrameworks, freeMarkerContextForAllFrameworks, publicFrameworkNames)
+    }
+    private fun writeAllTestFiles(
+        repository: DatalandRepository,
+        allPrivateFrameworks: List<String>,
+        freeMarkerContextForAllFrameworks: Map<String, List<Map<String, String>>>,
+        publicFrameworkNames: List<String>,
+    ) {
         val freemarkerContextForAllPrivateFrameworks = createFreeMarkerContextFile(
             allPrivateFrameworks,
             "privateFrameworks",
         )
-        val publicFrameworkNames = allRegisteredFrameworks.map { it.name }.subtract(allPrivateFrameworks.toSet())
-            .toList()
         val freemarkerContextForPublicFrameworks = createFreeMarkerContextFile(
             publicFrameworkNames,
             "publicFrameworks",
