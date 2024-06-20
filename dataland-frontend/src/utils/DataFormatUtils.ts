@@ -30,6 +30,15 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
 }
 
 /**
+ * Converts the given date string to a more user-friendly format
+ * @param date the date
+ * @returns a more user-friendly date string representing the given date
+ */
+export function dateStringFormatter(date: string): string {
+  return new Date(date).toLocaleDateString("en-gb", dateFormatOptions);
+}
+
+/**
  * Calculates an expiry date in the future based on the number of valid days from now
  * @param expiryTimeDays the time in days to move into the future
  * @returns the resulting expiry date in the future in the format of "Wed, 25 Jan 2023, 10:38"
