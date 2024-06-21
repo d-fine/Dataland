@@ -29,6 +29,7 @@ import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "PollutionEmissionFormElement",
@@ -37,6 +38,7 @@ export default defineComponent({
       releaseMedium: getDataset(DropdownDatasetIdentifier.ReleaseMedium),
     };
   },
+  props: BaseFormFieldProps,
   components: {
     NumberFormField,
     SingleSelectFormField,
