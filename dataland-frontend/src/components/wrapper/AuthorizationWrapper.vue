@@ -3,12 +3,15 @@
     <p class="font-medium text-xl">Checking for data ownership...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="hasUserRequiredRole || isUserDataOwner">
+  <div v-if="(hasUserRequiredRole && !this.isPrivateFrameworkVariable) || isUserDataOwner">
     <slot></slot>
   </div>
 
   <TheContent
-    v-if="!waitingForDataOwnershipData && !isUserDataOwner && !hasUserRequiredRole"
+    v-if="
+      (!waitingForDataOwnershipData &&!isUserDataOwner && ( !hasUserRequiredRole ||
+      this.isPrivateFrameworkVariable))
+    "
     class="paper-section flex"
   >
     <MiddleCenterDiv class="col-12">
@@ -26,6 +29,7 @@ import { checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
+import { getAllPrivateFrameworkIdentifiers } from "@/frameworks/BasePrivateFrameworkRegistry";
 
 export default defineComponent({
   name: "AuthorizationWrapper",
@@ -35,6 +39,7 @@ export default defineComponent({
       hasUserRequiredRole: null as boolean | null,
       isUserDataOwner: null as boolean | null,
       waitingForDataOwnershipData: true,
+      isPrivateFrameworkVariable: null as boolean,
     };
   },
   props: {
@@ -43,6 +48,7 @@ export default defineComponent({
       required: true,
     },
     allowDataOwnerForCompanyId: String,
+    dataType: String,
   },
   setup() {
     return {
@@ -58,15 +64,33 @@ export default defineComponent({
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
     async checkUserPermissions(): Promise<void> {
-      this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
-      if (!this.hasUserRequiredRole && this.allowDataOwnerForCompanyId) {
+      if (this.isPrivateFramework() && this.allowDataOwnerForCompanyId) {
         this.isUserDataOwner = await isUserDataOwnerForCompany(
           this.allowDataOwnerForCompanyId,
           this.getKeycloakPromise,
         );
         this.waitingForDataOwnershipData = false;
       } else {
-        this.waitingForDataOwnershipData = false;
+        this.hasUserRequiredRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
+        if (!this.hasUserRequiredRole && this.allowDataOwnerForCompanyId) {
+          this.isUserDataOwner = await isUserDataOwnerForCompany(
+            this.allowDataOwnerForCompanyId,
+            this.getKeycloakPromise,
+          );
+          this.waitingForDataOwnershipData = false;
+        } else {
+          this.waitingForDataOwnershipData = false;
+        }
+      }
+    },
+    /**
+     * This method determines if a framework is private or not
+     * @returns boolean if the framework is private or not
+     */
+    isPrivateFramework() {
+      if (this.dataType) {
+        this.isPrivateFrameworkVariable = getAllPrivateFrameworkIdentifiers().includes(this.dataType);
+        return this.isPrivateFrameworkVariable;
       }
     },
   },
