@@ -8,13 +8,13 @@ import java.math.BigDecimal
  * The data-model for the ResourceUseCircularEconomyAndWasteManagement section
  */
 data class VsmeBasicResourceUseCircularEconomyAndWasteManagement(
-    val totalWeightMaterials: BigDecimal? = null,
+    val totalWeightMaterialsInTonnes: BigDecimal? = null,
 
-    val weightRecycledMaterials: BigDecimal? = null,
+    val weightRecycledMaterialsInTonnes: BigDecimal? = null,
 
     val percentageRecycledMaterials: BigDecimal? = null,
 
-    val weightRecycableMaterials: BigDecimal? = null,
+    val weightRecycableMaterialsInTonnes: BigDecimal? = null,
 
     val percentageRecycableMaterials: BigDecimal? = null,
 

@@ -10,27 +10,27 @@ import java.math.BigDecimal
 data class VsmeBasicBiodiversity(
     val sitesAndAreas: List<VsmeSiteAndArea?>? = null,
 
-    val totalSealedAreaPreviousYear: BigDecimal? = null,
+    val totalAealedAreaPreviousYearInHectare: BigDecimal? = null,
 
-    val totalSealedAreaReportingYear: BigDecimal? = null,
+    val totalSealedAreaReportingYearInHectare: BigDecimal? = null,
 
     val percentualChangeSealedArea: BigDecimal? = null,
 
-    val totalNatureOrientedAreaOnSitePreviousYear: BigDecimal? = null,
+    val totalNatureOrientedAreaOnSitePreviousYearInHectare: BigDecimal? = null,
 
-    val totalNatureOrientedAreaOnSiteReportingYear: BigDecimal? = null,
+    val totalNatureOrientedAreaOnSiteReportingYearInHectare: BigDecimal? = null,
 
     val percentualChangeNatureOrientedOnSite: BigDecimal? = null,
 
-    val totalNatureOrientedAreaOffSitePreviousYear: BigDecimal? = null,
+    val totalNatureOrientedAreaOffSitePreviousYearInHectare: BigDecimal? = null,
 
-    val totalNatureOrientedAreaOffSiteReportingYear: BigDecimal? = null,
+    val totalNatureOrientedAreaOffSiteReportingYearInHectare: BigDecimal? = null,
 
     val percentualChangeNatureOrientedOffSite: BigDecimal? = null,
 
-    val totalUseOfLandPreviousYear: BigDecimal? = null,
+    val totalUseOfLandPreviousYearInHectare: BigDecimal? = null,
 
-    val totalUseOfLandReportingYear: BigDecimal? = null,
+    val totalUseOfLandReportingYearInHectare: BigDecimal? = null,
 
     val percentualChangeLandUse: BigDecimal? = null,
 

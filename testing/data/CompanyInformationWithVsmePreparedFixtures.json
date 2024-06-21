@@ -95,8 +95,8 @@
 					]
 				},
 				"energyAndGreenhousGasEmissions": {
-					"energyFossilFuels": 33108.66,
-					"electricityTotal": {
+					"energyFossilFuelsInMWh": 33108.66,
+					"electricityTotalInMWh": {
 						"value": 32706.78,
 						"dataSource": {
 							"page": 836,
@@ -107,9 +107,9 @@
 						"comment": "quantify redundant port",
 						"quality": "Estimated"
 					},
-					"electricityNonRenewable": 55778.96,
-					"electricityRenewable": 76900.79,
-					"totalEmissions": {
+					"electricityNonRenewableInMWh": 55778.96,
+					"electricityRenewableInMWh": 76900.79,
+					"totalEmissionsInTonnesOfCO2Equivalents": {
 						"value": 58203.63,
 						"dataSource": {
 							"page": 18,
@@ -120,7 +120,7 @@
 						"comment": "back up wireless hard drive",
 						"quality": "Incomplete"
 					},
-					"scope1Emissions": {
+					"scope1EmissionsInTonnesOfCO2Equivalents": {
 						"value": 23304.83,
 						"dataSource": {
 							"page": 7,
@@ -131,7 +131,7 @@
 						"comment": "navigate neural firewall",
 						"quality": "Audited"
 					},
-					"scope2Emissions": {
+					"scope2EmissionsInTonnesOfCO2Equivalents": {
 						"value": 34814.69,
 						"dataSource": {
 							"page": 836,
@@ -142,7 +142,7 @@
 						"comment": "reboot open-source alarm",
 						"quality": "Audited"
 					},
-					"scope3Emissions": {
+					"scope3EmissionsInTonnesOfCO2Equivalents": {
 						"value": 82274.62,
 						"dataSource": {
 							"page": 814,
@@ -238,21 +238,21 @@
 							"areaGeocoordinateLatitude": 53704296.82
 						}
 					],
-					"totalSealedAreaPreviousYear": 27694.81,
-					"totalSealedAreaReportingYear": 80778.82,
+					"totalAealedAreaPreviousYearInHectare": 27694.81,
+					"totalSealedAreaReportingYearInHectare": 80778.82,
 					"percentualChangeSealedArea": 9.23,
-					"totalNatureOrientedAreaOnSitePreviousYear": 10035.46,
-					"totalNatureOrientedAreaOnSiteReportingYear": 27585.1,
+					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 10035.46,
+					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 27585.1,
 					"percentualChangeNatureOrientedOnSite": 89.61,
-					"totalNatureOrientedAreaOffSitePreviousYear": 84049.86,
-					"totalNatureOrientedAreaOffSiteReportingYear": 75356.76,
+					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 84049.86,
+					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 75356.76,
 					"percentualChangeNatureOrientedOffSite": 64.14,
-					"totalUseOfLandPreviousYear": 35280.38,
-					"totalUseOfLandReportingYear": 79147.16,
+					"totalUseOfLandPreviousYearInHectare": 35280.38,
+					"totalUseOfLandReportingYearInHectare": 79147.16,
 					"percentualChangeLandUse": 43.45
 				},
 				"water": {
-					"waterWithdrawalAllSites": {
+					"waterWithdrawalAllSitesInCubicMeters": {
 						"value": 91113.05,
 						"dataSource": {
 							"page": 866,
@@ -263,19 +263,19 @@
 						"comment": "compress multi-byte array",
 						"quality": "Audited"
 					},
-					"waterWithdrawalStressSites": 3604.33,
-					"waterDischargeAllSites": 13269.17,
-					"waterDischargeStressSites": 77275.25,
-					"rainwaterAllSites": 32023.43,
-					"rainwaterStressSits": 7602.26,
-					"waterConsumptionAllSites": 34923.68,
-					"waterConsumptionStressSites": 428.61
+					"waterWithdrawalStressSitesInCubicMeters": 3604.33,
+					"waterDischargeAllSitesInCubicMeters": 13269.17,
+					"waterDischargeStressSitesInCubicMeters": 77275.25,
+					"rainwaterAllSitesInCubicMeters": 32023.43,
+					"rainwaterStressSitesInCubicMeters": 7602.26,
+					"waterConsumptionAllSitesInCubicMeters": 34923.68,
+					"waterConsumptionStressSitesInCubicMeters": 428.61
 				},
 				"resourceUseCircularEconomyAndWasteManagement": {
-					"totalWeightMaterials": 54327.95,
-					"weightRecycledMaterials": 30367.8,
+					"totalWeightMaterialsInTonnes": 54327.95,
+					"weightRecycledMaterialsInTonnes": 30367.8,
 					"percentageRecycledMaterials": 13.04,
-					"weightRecycableMaterials": 7101.47,
+					"weightRecycableMaterialsInTonnes": 7101.47,
 					"percentageRecycableMaterials": 70.76,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
@@ -303,19 +303,19 @@
 				},
 				"workforceGeneralCharacteristics": {
 					"measureEmployees": "FullTimeEquivalents",
-					"numberOfEmployeesInFtes": 90892.29,
+					"numberOfEmployeesInFte": 90892.29,
 					"numberOfEmployeesInHeadcount": 99923.24,
-					"numberOfTemporaryContractEmployeesInFtes": 12250.68,
+					"numberOfTemporaryContractEmployeesInFte": 12250.68,
 					"numberOfTemporaryContractEmployeesInHeadcount": 2666.94,
-					"numberOfPermanentContractEmployeesInFtes": 41680.35,
+					"numberOfPermanentContractEmployeesInFte": 41680.35,
 					"numberOfPermanentContractEmployeesInHeadcount": 98796.67,
-					"numberOfMaleEmployeesInFtes": 48417.17,
+					"numberOfMaleEmployeesInFte": 48417.17,
 					"numberOfMaleEmployeesInHeadcount": 59256.87,
-					"numberFemaleEmployeesInFtes": 89221.78,
+					"numberFemaleEmployeesInFte": 89221.78,
 					"numberOfFemaleEmployeesInHeadcount": 46124.92,
-					"numberOfOtherEmployeesInFtes": 73489.22,
-					"numberOfOtherEmployeesHead": 8531.22,
-					"numberOfNotReportedEpmloyeesInFtes": 97899.98,
+					"numberOfOtherEmployeesInFte": 73489.22,
+					"numberOfOtherEmployeesInHeadcount": 8531.22,
+					"numberOfNotReportedEmployeesInFte": 97899.98,
 					"numberOfNotReportedEmployeesInHeadcount": 53222.09,
 					"employeesPerCountry": [
 						{
@@ -334,33 +334,33 @@
 					"totalHours": 87603.53,
 					"numberOfAccidents": 2862,
 					"accidentLevel": 50493.85,
-					"numberOfTotalFatalitiesInFtes": 929,
+					"numberOfTotalFatalitiesInFte": 929,
 					"numberOfTotalFatalitiesInHeadcount": 7859,
-					"numberOfFatalitiesOfAccidentsInFtes": 3024,
+					"numberOfFatalitiesOfAccidentsInFte": 3024,
 					"numberOfFatalitiesOfAccidentsInHeadcount": 225,
-					"numberOfHealthFatalitiesInFtes": 4363,
+					"numberOfHealthFatalitiesInFte": 4363,
 					"numberOfHealthFatalitiesInHeadcount": 5149
 				},
 				"workforceRenumerationCollectiveBargainingAndTraining": {
-					"numberofMinimumWageEmployeesInFtes": 6022.74,
-					"numberofMinimumWageEmployeesInHeadcount": 63968.19,
+					"numberOfMinimumWageEmployeesInFte": 6022.74,
+					"numberOfMinimumWageEmployeesInHeadcount": 63968.19,
 					"percentageOfMinimumWageEmployees": 18.41,
 					"majorityOfMinimumWageEmployees": "No",
-					"entryLevelWage": 17263.16,
-					"minimumWage": 98633.17,
+					"entryLevelWageInEuro": 17263.16,
+					"minimumWageInEuro": 98633.17,
 					"wageRatio": 71518.3,
 					"payGapBasis": "Weekly",
-					"grossPayMale": 68393.95,
-					"grossPayFemale": 49409.94,
+					"grossPayMaleInEuro": 68393.95,
+					"grossPayFemaleInEuro": 49409.94,
 					"totalWorkHoursMale": 35058.63,
 					"totalWorkHoursFemale": 34117.35,
 					"averageWorkHoursMale": 3183.9,
 					"averageWorkHoursFemale": 98963.37,
-					"averageHourlyPayMale": 34727.63,
-					"averageHourlyPayFemale": 45713.75,
+					"averageHourlyPayMaleInEuroPerHour": 34727.63,
+					"averageHourlyPayFemaleInEuroPerHour": 45713.75,
 					"payGap": 99015.93,
-					"numberBargainingAgreementsFullTime": 4244.19,
-					"numberBargainingAgreementsHead": 97917.78,
+					"numberBargainingAgreementsInFte": 4244.19,
+					"numberBargainingAgreementsInHeadcount": 97917.78,
 					"ratioBargainingAgreement": 83.01,
 					"totalTrainingHoursMale": 10011.25,
 					"totalTrainingHoursFemale": 58260.1,
@@ -377,8 +377,8 @@
 							}
 						}
 					],
-					"numberConvictions": 25552.91,
-					"sumFines": 77985.58
+					"numberOfConvictions": 25552.91,
+					"sumOfFinesInEuro": 77985.58
 				}
 			}
 		},

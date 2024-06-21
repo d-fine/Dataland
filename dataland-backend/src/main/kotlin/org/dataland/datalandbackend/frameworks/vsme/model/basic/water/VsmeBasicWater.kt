@@ -10,20 +10,20 @@ import java.math.BigDecimal
  */
 data class VsmeBasicWater(
     @field:Valid()
-    val waterWithdrawalAllSites: ExtendedDataPoint<BigDecimal?>? = null,
+    val waterWithdrawalAllSitesInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val waterWithdrawalStressSites: BigDecimal? = null,
+    val waterWithdrawalStressSitesInCubicMeters: BigDecimal? = null,
 
-    val waterDischargeAllSites: BigDecimal? = null,
+    val waterDischargeAllSitesInCubicMeters: BigDecimal? = null,
 
-    val waterDischargeStressSites: BigDecimal? = null,
+    val waterDischargeStressSitesInCubicMeters: BigDecimal? = null,
 
-    val rainwaterAllSites: BigDecimal? = null,
+    val rainwaterAllSitesInCubicMeters: BigDecimal? = null,
 
-    val rainwaterStressSits: BigDecimal? = null,
+    val rainwaterStressSitesInCubicMeters: BigDecimal? = null,
 
-    val waterConsumptionAllSites: BigDecimal? = null,
+    val waterConsumptionAllSitesInCubicMeters: BigDecimal? = null,
 
-    val waterConsumptionStressSites: BigDecimal? = null,
+    val waterConsumptionStressSitesInCubicMeters: BigDecimal? = null,
 
 )

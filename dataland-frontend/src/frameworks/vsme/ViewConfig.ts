@@ -60,13 +60,13 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Undertaken measures",
+            label: "Undertaken Measures",
             explanation:
               "Please, describe specific practices for transitioning towards a more sustainable economy in case you have them in place.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
-                "Undertaken measures",
+                "Undertaken Measures",
                 dataset.basic?.practicesForTransitioningTowardsAMoreSustainableEconomy?.undertakenMeasures,
                 "Description",
                 "Document",
@@ -88,36 +88,42 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               "Please disclose your total energy consumption in MWh (in the reporting period) for\n- fossil fuels ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.energyFossilFuels, "MWh"),
+              formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.energyFossilFuelsInMWh, "MWh"),
           },
           {
             type: "cell",
-            label: "Electricity total",
+            label: "Electricity Total",
             explanation:
               "- electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotal?.value, "MWh"),
-                "Electricity total",
-                dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotal,
+                formatNumberForDatatable(
+                  dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotalInMWh?.value,
+                  "MWh",
+                ),
+                "Electricity Total",
+                dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotalInMWh,
               ),
           },
           {
             type: "cell",
-            label: "Electricity non-renewable",
-
+            label: "Electricity Non-Renewable",
+            explanation: "Please provide the amount of electricity in MWh generated from non renewable sources.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityNonRenewable, "MWh"),
+              formatNumberForDatatable(
+                dataset.basic?.energyAndGreenhousGasEmissions?.electricityNonRenewableInMWh,
+                "MWh",
+              ),
           },
           {
             type: "cell",
-            label: "Electricity renewable",
-
+            label: "Electricity Renewable",
+            explanation: "Please provide the amount of electricity in MWh generated from renewable sources.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityRenewable, "MWh"),
+              formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.electricityRenewableInMWh, "MWh"),
           },
           {
             type: "cell",
@@ -128,11 +134,11 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissions?.value,
+                  dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissionsInTonnesOfCO2Equivalents?.value,
                   "tCO2eq",
                 ),
                 "Total Emissions",
-                dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissions,
+                dataset.basic?.energyAndGreenhousGasEmissions?.totalEmissionsInTonnesOfCO2Equivalents,
               ),
           },
           {
@@ -143,11 +149,11 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.basic?.energyAndGreenhousGasEmissions?.scope1Emissions?.value,
+                  dataset.basic?.energyAndGreenhousGasEmissions?.scope1EmissionsInTonnesOfCO2Equivalents?.value,
                   "tCO2eq",
                 ),
                 "Scope 1 Emissions",
-                dataset.basic?.energyAndGreenhousGasEmissions?.scope1Emissions,
+                dataset.basic?.energyAndGreenhousGasEmissions?.scope1EmissionsInTonnesOfCO2Equivalents,
               ),
           },
           {
@@ -159,11 +165,11 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.basic?.energyAndGreenhousGasEmissions?.scope2Emissions?.value,
+                  dataset.basic?.energyAndGreenhousGasEmissions?.scope2EmissionsInTonnesOfCO2Equivalents?.value,
                   "tCO2eq",
                 ),
                 "Scope 2 Emissions",
-                dataset.basic?.energyAndGreenhousGasEmissions?.scope2Emissions,
+                dataset.basic?.energyAndGreenhousGasEmissions?.scope2EmissionsInTonnesOfCO2Equivalents,
               ),
           },
           {
@@ -174,11 +180,11 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.basic?.energyAndGreenhousGasEmissions?.scope3Emissions?.value,
+                  dataset.basic?.energyAndGreenhousGasEmissions?.scope3EmissionsInTonnesOfCO2Equivalents?.value,
                   "tCO2eq",
                 ),
                 "Scope 3 Emissions",
-                dataset.basic?.energyAndGreenhousGasEmissions?.scope3Emissions,
+                dataset.basic?.energyAndGreenhousGasEmissions?.scope3EmissionsInTonnesOfCO2Equivalents,
               ),
           },
         ],
@@ -220,108 +226,120 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Total sealed area previous year",
+            label: "Total Aealed Area Previous Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaPreviousYear, ""),
+              formatNumberForDatatable(dataset.basic?.biodiversity?.totalAealedAreaPreviousYearInHectare, "Hectare"),
           },
           {
             type: "cell",
-            label: "Total sealed area reporting year",
+            label: "Total Sealed Area Reporting Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaReportingYear, ""),
+              formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaReportingYearInHectare, "Hectare"),
           },
           {
             type: "cell",
-            label: "percentual change sealed area",
+            label: "Percentual Change Sealed Area",
             explanation:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeSealedArea),
           },
           {
             type: "cell",
-            label: "Total nature-oriented area on-site previous year",
+            label: "Total Nature-Oriented Area On-Site Previous Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSitePreviousYear, ""),
+              formatNumberForDatatable(
+                dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSitePreviousYearInHectare,
+                "Hectare",
+              ),
           },
           {
             type: "cell",
-            label: "Total nature-oriented area on-site reporting year",
+            label: "Total Nature-Oriented Area On-Site Reporting Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSiteReportingYear, ""),
+              formatNumberForDatatable(
+                dataset.basic?.biodiversity?.totalNatureOrientedAreaOnSiteReportingYearInHectare,
+                "Hectare",
+              ),
           },
           {
             type: "cell",
-            label: "percentual change nature-oriented on-site",
+            label: "Percentual Change Nature-Oriented On-Site",
             explanation:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeNatureOrientedOnSite),
           },
           {
             type: "cell",
-            label: "Total nature-oriented area off-site previous year",
+            label: "Total Nature-Oriented Area Off-Site Previous Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePreviousYear, ""),
+              formatNumberForDatatable(
+                dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSitePreviousYearInHectare,
+                "Hectare",
+              ),
           },
           {
             type: "cell",
-            label: "Total nature-oriented area off-site reporting year",
+            label: "Total Nature-Oriented Area Off-Site Reporting Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSiteReportingYear, ""),
+              formatNumberForDatatable(
+                dataset.basic?.biodiversity?.totalNatureOrientedAreaOffSiteReportingYearInHectare,
+                "Hectare",
+              ),
           },
           {
             type: "cell",
-            label: "percentual change nature-oriented off-site",
+            label: "Percentual Change Nature-Oriented Off-Site",
             explanation:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeNatureOrientedOffSite),
           },
           {
             type: "cell",
-            label: "total use of land previous year",
+            label: "Total Use Of Land Previous Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandPreviousYear, ""),
+              formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandPreviousYearInHectare, "Hectare"),
           },
           {
             type: "cell",
-            label: "total use of land reporting year",
+            label: "Total Use Of Land Reporting Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandReportingYear, ""),
+              formatNumberForDatatable(dataset.basic?.biodiversity?.totalUseOfLandReportingYearInHectare, "Hectare"),
           },
           {
             type: "cell",
-            label: "percentual change land use",
+            label: "Percentual Change Land Use",
             explanation:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeLandUse),
@@ -336,73 +354,77 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Water withdrawal all sites",
+            label: "Water Withdrawal All Sites",
             explanation:
               "Please, disclose your total water withdrawal (in m^3), i.e., the amount of water drawn into the boundaries of the organisation (or facility); pay additional attention to sites located in areas of high water-stress.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.basic?.water?.waterWithdrawalAllSites?.value, "Cubic Meters"),
-                "Water withdrawal all sites",
-                dataset.basic?.water?.waterWithdrawalAllSites,
+                formatNumberForDatatable(
+                  dataset.basic?.water?.waterWithdrawalAllSitesInCubicMeters?.value,
+                  "Cubic Meters",
+                ),
+                "Water Withdrawal All Sites",
+                dataset.basic?.water?.waterWithdrawalAllSitesInCubicMeters,
               ),
           },
           {
             type: "cell",
-            label: "Water withdrawal stress sites",
-
+            label: "Water Withdrawal Stress Sites",
+            explanation: "Please disclose your water withdrawal (in m^3) from sites with high water stress.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.waterWithdrawalStressSites, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.waterWithdrawalStressSitesInCubicMeters, "Cubic Meters"),
           },
           {
             type: "cell",
-            label: "Water discharge all sites",
+            label: "Water Discharge All Sites",
             explanation:
               "If applicable, we aim to determine your water consumption (as the difference between water withdrawal and water discharge). Hence, please disclose your respective water discharge from your production processes.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.waterDischargeAllSites, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.waterDischargeAllSitesInCubicMeters, "Cubic Meters"),
           },
           {
             type: "cell",
-            label: "Water discharge stress sites",
-
+            label: "Water Discharge Stress Sites",
+            explanation: "Please disclose your water discharge (in m^3) from sites with high water stress.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.waterDischargeStressSites, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.waterDischargeStressSitesInCubicMeters, "Cubic Meters"),
           },
           {
             type: "cell",
-            label: "Rainwater all sites",
-
+            label: "Rainwater All Sites",
+            explanation: "Please disclose the amount of rainwater (in m^3) for all sites.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.rainwaterAllSites, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.rainwaterAllSitesInCubicMeters, "Cubic Meters"),
           },
           {
             type: "cell",
-            label: "Rainwater stress sits",
-
+            label: "Rainwater Stress Sites",
+            explanation: "Please disclose the amount of rainwater (in m^3) for all sites with high water stress.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.rainwaterStressSits, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.rainwaterStressSitesInCubicMeters, "Cubic Meters"),
           },
           {
             type: "cell",
-            label: "Water consumption all sites",
-
+            label: "Water Consumption All Sites",
+            explanation: "Please disclose the amount of water consumption (in m^3) for all sites.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.waterConsumptionAllSites, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.waterConsumptionAllSitesInCubicMeters, "Cubic Meters"),
           },
           {
             type: "cell",
-            label: "Water consumption stress sites",
-
+            label: "Water Consumption Stress Sites",
+            explanation:
+              "Please disclose the amount of water consumption (in m^3) for all sites with high water stress.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.water?.waterConsumptionStressSites, "Cubic Meters"),
+              formatNumberForDatatable(dataset.basic?.water?.waterConsumptionStressSitesInCubicMeters, "Cubic Meters"),
           },
         ],
       },
@@ -414,31 +436,32 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Total weight materials",
+            label: "Total Weight Materials",
             explanation:
               "In case you operate manufacturing, construction and/or packaging processes, please provide the share of recycled content in your products and packaging (in per cent based on weight, during the reporting period) For this we require the total weight  (in tons, in the reporting year) of both recycled and overall materials used in products and packaging. \n\nMoreover, please provide the share of recycable content in your products and packaging (in per cent based on weight, during the reporting period). For this we require the  total weight  (in tons, in the reporting year) of both recycable materials used in products and packaging. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.totalWeightMaterials,
-                "tons",
+                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.totalWeightMaterialsInTonnes,
+                "Tonnes",
               ),
           },
           {
             type: "cell",
-            label: "Weight recycled materials",
-
+            label: "Weight Recycled Materials",
+            explanation: "Please disclose the weight of recycled materials in tonnes.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycledMaterials,
-                "tons",
+                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycledMaterialsInTonnes,
+                "Tonnes",
               ),
           },
           {
             type: "cell",
-            label: "Percentage recycled materials",
-
+            label: "Percentage Recycled Materials",
+            explanation:
+              "Please disclose percentage of recycled materials in regards to the total weight of maerials. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -447,19 +470,20 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Weight recycable materials",
-
+            label: "Weight Recycable Materials",
+            explanation: "Please disclose the weight of recycable materials in tonnes.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycableMaterials,
-                "tons",
+                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycableMaterialsInTonnes,
+                "Tonnes",
               ),
           },
           {
             type: "cell",
-            label: "Percentage recycable materials",
-
+            label: "Percentage Recycable Materials",
+            explanation:
+              "Please disclose percentage of recycable materials in regards to the total weight of maerials. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -468,7 +492,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Measure waste",
+            label: "Measure Waste",
             explanation:
               "Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.",
             shouldDisplay: (): boolean => true,
@@ -508,7 +532,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Measure employees",
+            label: "Measure Employees",
             explanation:
               "You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.",
             shouldDisplay: (): boolean => true,
@@ -529,20 +553,20 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Number of employees in FTEs",
+            label: "Number Of Employees In FTE",
             explanation:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of employees in Headcount",
+            label: "Number Of Employees In Headcount",
             explanation:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
@@ -550,25 +574,25 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of temporary contract employees in FTEs",
+            label: "Number Of Temporary Contract Employees In FTE",
             explanation:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of temporary contract employees in Headcount",
+            label: "Number Of Temporary Contract Employees In Headcount",
             explanation:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
@@ -576,49 +600,51 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfTemporaryContractEmployeesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of permanent contract employees in FTEs",
-
+            label: "Number Of Permanent Contract Employees In FTE",
+            explanation:
+              "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of permanent contract employees in Headcount",
-
+            label: "Number Of Permanent Contract Employees In Headcount",
+            explanation:
+              "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfPermanentContractEmployeesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of male employees in FTEs",
+            label: "Number Of Male Employees In FTE",
             explanation:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of male employees in Headcount",
+            label: "Number Of Male Employees In Headcount",
             explanation:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
@@ -626,79 +652,85 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfMaleEmployeesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number female employees in FTEs",
-
+            label: "Number Female Employees In FTE",
+            explanation:
+              "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberFemaleEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberFemaleEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of female employees in Headcount",
-
+            label: "Number Of Female Employees In Headcount",
+            explanation:
+              "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfFemaleEmployeesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of other employees in FTEs",
-
+            label: "Number Of Other Employees In FTE",
+            explanation:
+              "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of other employees head ",
-
+            label: "Number Of Other Employees In Headcount ",
+            explanation:
+              "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesHead,
-                "head count",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfOtherEmployeesInHeadcount,
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of not reported epmloyees in FTEs",
-
+            label: "Number Of Not Reported Employees In FTE",
+            explanation:
+              "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEpmloyeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of not reported employees in Headcount",
-
+            label: "Number Of Not Reported Employees In Headcount",
+            explanation:
+              "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.numberOfNotReportedEmployeesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
@@ -723,7 +755,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Total hours",
+            label: "Total Hours",
             explanation: "Please provide the total number of hours worked in a year by all your employees.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -731,7 +763,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Number of accidents",
+            label: "Number Of Accidents",
             explanation: "Please disclose the number of work related accidents in the reporting year.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -739,7 +771,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Accident level",
+            label: "Accident Level",
             explanation:
               "Please provide work-related accidents, namely the number of work related accidents per 100 full-time workers over a yearly timeframe (assuming 2000 work hours per worker per year).",
             shouldDisplay: (): boolean => true,
@@ -748,20 +780,20 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Number of total fatalities in FTEs",
+            label: "Number Of Total Fatalities In FTE",
             explanation:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of total fatalities in Headcount",
+            label: "Number Of Total Fatalities In Headcount",
             explanation:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
             shouldDisplay: (dataset: VsmeData): boolean =>
@@ -769,25 +801,25 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberOfTotalFatalitiesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of fatalities of accidents in FTEs",
+            label: "Number Of Fatalities Of Accidents In FTE",
             explanation:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of fatalities of accidents in Headcount",
+            label: "Number Of Fatalities Of Accidents In Headcount",
             explanation:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
             shouldDisplay: (dataset: VsmeData): boolean =>
@@ -795,31 +827,32 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberOfFatalitiesOfAccidentsInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Number of health fatalities in FTEs",
-
+            label: "Number Of Health Fatalities In FTE",
+            explanation:
+              "Please disclose the number of health fatalities in full time equilivants in the reporting year.",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number of health fatalities in Headcount",
-
+            label: "Number Of Health Fatalities In Headcount",
+            explanation: "Please disclose the number of health fatalities in head count in the reporting year.",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceHealthAndSafety?.numberOfHealthFatalitiesInHeadcount,
-                "head count",
+                "Head Count",
               ),
           },
         ],
@@ -832,20 +865,20 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Numberof  minimum wage employees in FTEs",
+            label: "Number of minimum Wage Employees In FTE",
             explanation:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberofMinimumWageEmployeesInFtes,
-                "full-time equivalents",
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberOfMinimumWageEmployeesInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Numberof  minimum wage employees in Headcount",
+            label: "Number Of Minimum Wage Employees In Headcount",
             explanation:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (dataset: VsmeData): boolean =>
@@ -853,13 +886,13 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining
-                  ?.numberofMinimumWageEmployeesInHeadcount,
-                "head count",
+                  ?.numberOfMinimumWageEmployeesInHeadcount,
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "Percentage of minimum wage employees",
+            label: "Percentage Of Minimum Wage Employees",
             explanation:
               "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
             shouldDisplay: (): boolean => true,
@@ -870,7 +903,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Majority of minimum wage employees",
+            label: "Majority Of Minimum Wage Employees",
             explanation:
               "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
             shouldDisplay: (): boolean => true,
@@ -881,29 +914,29 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Entry level wage",
+            label: "Entry Level Wage",
             explanation: "Please provide the entry level wage you pay.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.entryLevelWage,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.entryLevelWageInEuro,
                 "Euro",
               ),
           },
           {
             type: "cell",
-            label: "Minimum wage",
+            label: "Minimum Wage",
             explanation: "Please provide the minimum wage you pay.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.minimumWage,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.minimumWageInEuro,
                 "Euro",
               ),
           },
           {
             type: "cell",
-            label: "Wage ratio",
+            label: "Wage Ratio",
             explanation: "Please provide the ratio of entry level wage and minimum wage.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -914,12 +947,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Pay gap basis",
+            label: "Pay Gap Basis",
             explanation:
               "Please, in the following provide pay rates and work hours. On which basis do you prefer to report?",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
@@ -939,43 +972,44 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Gross pay male",
+            label: "Gross Pay Male",
             explanation:
-              "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male respectively for female employees. ",
+              "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male employees. ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayMale,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayMaleInEuro,
                 "Euro",
               ),
           },
           {
             type: "cell",
-            label: "Gross pay female",
-
+            label: "Gross Pay Female",
+            explanation:
+              "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for female employees. ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayFemale,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.grossPayFemaleInEuro,
                 "Euro",
               ),
           },
           {
             type: "cell",
-            label: "Total work hours male",
+            label: "Total Work Hours Male",
             explanation:
-              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -986,11 +1020,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Total work hours female",
-
+            label: "Total Work Hours Female",
+            explanation:
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1001,12 +1036,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Average work hours male",
+            label: "Average Work Hours Male",
             explanation:
-              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1017,11 +1052,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Average work hours female",
-
+            label: "Average Work Hours Female",
+            explanation:
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1032,41 +1068,42 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "average hourly pay male",
+            label: "Average Hourly Pay Male",
             explanation: "What is the average hourly pay for male employees?",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMale,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMaleInEuroPerHour,
                 "Euro/h",
               ),
           },
           {
             type: "cell",
-            label: "average hourly pay female",
+            label: "Average Hourly Pay Female",
             explanation: "What is the average hourly pay for female employees?",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayFemale,
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining
+                  ?.averageHourlyPayFemaleInEuroPerHour,
                 "Euro/h",
               ),
           },
           {
             type: "cell",
-            label: "pay gap",
+            label: "Pay Gap",
             explanation: "What is your pay gap? ",
             shouldDisplay: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
@@ -1074,31 +1111,32 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Number bargaining agreements full-time",
+            label: "Number Bargaining Agreements  In FTE",
             explanation: "Please state the number of employees covered by collective bargaining agreements.",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsFullTime,
-                "full-time equivalents",
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsInFte,
+                "Full Time Equivalents",
               ),
           },
           {
             type: "cell",
-            label: "Number bargaining agreements head",
+            label: "Number Bargaining Agreements In Headcount",
             explanation: "Please state the number of employees covered by collective bargaining agreements.",
             shouldDisplay: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.numberBargainingAgreementsHead,
-                "head count",
+                dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining
+                  ?.numberBargainingAgreementsInHeadcount,
+                "Head Count",
               ),
           },
           {
             type: "cell",
-            label: "ratio bargaining agreement",
+            label: "Ratio Bargaining Agreement",
             explanation:
               "Please provide the ratio of employees with a bargaining agreement with respect to all your employees.",
             shouldDisplay: (): boolean => true,
@@ -1109,9 +1147,9 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "total training hours male",
+            label: "Total Training Hours Male",
             explanation:
-              "Please state the total and average numbers of annual training hours per employee, broken down by gender, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+              "Please state the total numbers of annual training hours per male employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -1121,8 +1159,9 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "total training hours female",
-
+            label: "Total Training Hours Female",
+            explanation:
+              "Please state the total numbers of annual training hours per female employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -1132,8 +1171,9 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "average training hours male",
-
+            label: "Average Training Hours Male",
+            explanation:
+              "Please state average numbers of annual training hours per male employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -1143,8 +1183,9 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "average training hours female",
-
+            label: "Average Training Hours Female",
+            explanation:
+              "Please state average numbers of annual training hours per female employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -1162,13 +1203,13 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
         children: [
           {
             type: "cell",
-            label: "Negative effects",
+            label: "Negative Effects",
             explanation:
               "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
-                "Negative effects",
+                "Negative Effects",
                 dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.negativeEffects,
                 "Description",
                 "Document",
@@ -1177,24 +1218,24 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Number convictions",
+            label: "Number Of Convictions",
             explanation:
               "In case of convictions and fines in the reporting period, please disclose the number of convictions and the total amount of fines incurred for the violation of anti-corruption or anti-bribery laws.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.numberConvictions,
+                dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.numberOfConvictions,
                 "",
               ),
           },
           {
             type: "cell",
-            label: "Sum fines",
-
+            label: "Sum Of Fines",
+            explanation: "Please disclose the sum of all fines.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.sumFines,
+                dataset.basic?.workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers?.sumOfFinesInEuro,
                 "Euro",
               ),
           },

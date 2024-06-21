@@ -14,15 +14,15 @@ data class VsmeBasicWorkforceHealthAndSafety(
 
     val accidentLevel: BigDecimal? = null,
 
-    val numberOfTotalFatalitiesInFtes: BigInteger? = null,
+    val numberOfTotalFatalitiesInFte: BigInteger? = null,
 
     val numberOfTotalFatalitiesInHeadcount: BigInteger? = null,
 
-    val numberOfFatalitiesOfAccidentsInFtes: BigInteger? = null,
+    val numberOfFatalitiesOfAccidentsInFte: BigInteger? = null,
 
     val numberOfFatalitiesOfAccidentsInHeadcount: BigInteger? = null,
 
-    val numberOfHealthFatalitiesInFtes: BigInteger? = null,
+    val numberOfHealthFatalitiesInFte: BigInteger? = null,
 
     val numberOfHealthFatalitiesInHeadcount: BigInteger? = null,
 

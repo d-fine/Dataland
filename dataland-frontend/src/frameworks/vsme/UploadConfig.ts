@@ -49,7 +49,7 @@ export const vsmeDataModel = [
         fields: [
           {
             name: "undertakenMeasures",
-            label: "Undertaken measures",
+            label: "Undertaken Measures",
             description:
               "Please, describe specific practices for transitioning towards a more sustainable economy in case you have them in place.",
 
@@ -64,7 +64,7 @@ export const vsmeDataModel = [
         label: "Energy and greenhous gas emissions",
         fields: [
           {
-            name: "energyFossilFuels",
+            name: "energyFossilFuelsInMWh",
             label: "Energy Fossil Fuels",
             description:
               "Please disclose your total energy consumption in MWh (in the reporting period) for\n- fossil fuels ",
@@ -75,8 +75,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "electricityTotal",
-            label: "Electricity total",
+            name: "electricityTotalInMWh",
+            label: "Electricity Total",
             description:
               "- electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
 
@@ -86,8 +86,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "electricityNonRenewable",
-            label: "Electricity non-renewable",
+            name: "electricityNonRenewableInMWh",
+            label: "Electricity Non-Renewable",
+            description: "Please provide the amount of electricity in MWh generated from non renewable sources.",
 
             unit: "MWh",
             component: "NumberFormField",
@@ -95,8 +96,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "electricityRenewable",
-            label: "Electricity renewable",
+            name: "electricityRenewableInMWh",
+            label: "Electricity Renewable",
+            description: "Please provide the amount of electricity in MWh generated from renewable sources.",
 
             unit: "MWh",
             component: "NumberFormField",
@@ -104,7 +106,7 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "totalEmissions",
+            name: "totalEmissionsInTonnesOfCO2Equivalents",
             label: "Total Emissions",
             description:
               "Please disclose your estimated gross greenhouse gas (GHG) emissions in tons of CO2 equivalents (tCO2eq) considering the content of the GHG Protocol Corporate Standard.\n(a) total GHG emissions in tCO2eq",
@@ -115,7 +117,7 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "scope1Emissions",
+            name: "scope1EmissionsInTonnesOfCO2Equivalents",
             label: "Scope 1 Emissions",
             description: "(b) the Scope 1 GHG emissions in tCO2eq (from owned or controlled sources)",
 
@@ -125,7 +127,7 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "scope2Emissions",
+            name: "scope2EmissionsInTonnesOfCO2Equivalents",
             label: "Scope 2 Emissions",
             description:
               "(c) the Scope 2 emissions in tCO2eq (i.e., emissions from the generation of purchased energy)",
@@ -136,7 +138,7 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "scope3Emissions",
+            name: "scope3EmissionsInTonnesOfCO2Equivalents",
             label: "Scope 3 Emissions",
             description: "(d) Scope 3 emissions, in case you can provide them",
 
@@ -178,30 +180,32 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "totalSealedAreaPreviousYear",
-            label: "Total sealed area previous year",
+            name: "totalAealedAreaPreviousYearInHectare",
+            label: "Total Aealed Area Previous Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "totalSealedAreaReportingYear",
-            label: "Total sealed area reporting year",
+            name: "totalSealedAreaReportingYearInHectare",
+            label: "Total Sealed Area Reporting Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "percentualChangeSealedArea",
-            label: "percentual change sealed area",
+            label: "Percentual Change Sealed Area",
             description:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
 
             unit: "%",
             component: "NumberFormField",
@@ -210,30 +214,32 @@ export const vsmeDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "totalNatureOrientedAreaOnSitePreviousYear",
-            label: "Total nature-oriented area on-site previous year",
+            name: "totalNatureOrientedAreaOnSitePreviousYearInHectare",
+            label: "Total Nature-Oriented Area On-Site Previous Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "totalNatureOrientedAreaOnSiteReportingYear",
-            label: "Total nature-oriented area on-site reporting year",
+            name: "totalNatureOrientedAreaOnSiteReportingYearInHectare",
+            label: "Total Nature-Oriented Area On-Site Reporting Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "percentualChangeNatureOrientedOnSite",
-            label: "percentual change nature-oriented on-site",
+            label: "Percentual Change Nature-Oriented On-Site",
             description:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
 
             unit: "%",
             component: "NumberFormField",
@@ -242,30 +248,32 @@ export const vsmeDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "totalNatureOrientedAreaOffSitePreviousYear",
-            label: "Total nature-oriented area off-site previous year",
+            name: "totalNatureOrientedAreaOffSitePreviousYearInHectare",
+            label: "Total Nature-Oriented Area Off-Site Previous Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "totalNatureOrientedAreaOffSiteReportingYear",
-            label: "Total nature-oriented area off-site reporting year",
+            name: "totalNatureOrientedAreaOffSiteReportingYearInHectare",
+            label: "Total Nature-Oriented Area Off-Site Reporting Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "percentualChangeNatureOrientedOffSite",
-            label: "percentual change nature-oriented off-site",
+            label: "Percentual Change Nature-Oriented Off-Site",
             description:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
 
             unit: "%",
             component: "NumberFormField",
@@ -274,30 +282,32 @@ export const vsmeDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "totalUseOfLandPreviousYear",
-            label: "total use of land previous year",
+            name: "totalUseOfLandPreviousYearInHectare",
+            label: "Total Use Of Land Previous Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "totalUseOfLandReportingYear",
-            label: "total use of land reporting year",
+            name: "totalUseOfLandReportingYearInHectare",
+            label: "Total Use Of Land Reporting Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
+            unit: "Hectare",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "percentualChangeLandUse",
-            label: "percentual change land use",
+            label: "Percentual Change Land Use",
             description:
-              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
+              "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.",
 
             unit: "%",
             component: "NumberFormField",
@@ -312,8 +322,8 @@ export const vsmeDataModel = [
         label: "Water",
         fields: [
           {
-            name: "waterWithdrawalAllSites",
-            label: "Water withdrawal all sites",
+            name: "waterWithdrawalAllSitesInCubicMeters",
+            label: "Water Withdrawal All Sites",
             description:
               "Please, disclose your total water withdrawal (in m^3), i.e., the amount of water drawn into the boundaries of the organisation (or facility); pay additional attention to sites located in areas of high water-stress.",
 
@@ -323,8 +333,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterWithdrawalStressSites",
-            label: "Water withdrawal stress sites",
+            name: "waterWithdrawalStressSitesInCubicMeters",
+            label: "Water Withdrawal Stress Sites",
+            description: "Please disclose your water withdrawal (in m^3) from sites with high water stress.",
 
             unit: "Cubic Meters",
             component: "NumberFormField",
@@ -332,8 +343,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterDischargeAllSites",
-            label: "Water discharge all sites",
+            name: "waterDischargeAllSitesInCubicMeters",
+            label: "Water Discharge All Sites",
             description:
               "If applicable, we aim to determine your water consumption (as the difference between water withdrawal and water discharge). Hence, please disclose your respective water discharge from your production processes.",
 
@@ -343,8 +354,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterDischargeStressSites",
-            label: "Water discharge stress sites",
+            name: "waterDischargeStressSitesInCubicMeters",
+            label: "Water Discharge Stress Sites",
+            description: "Please disclose your water discharge (in m^3) from sites with high water stress.",
 
             unit: "Cubic Meters",
             component: "NumberFormField",
@@ -352,8 +364,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "rainwaterAllSites",
-            label: "Rainwater all sites",
+            name: "rainwaterAllSitesInCubicMeters",
+            label: "Rainwater All Sites",
+            description: "Please disclose the amount of rainwater (in m^3) for all sites.",
 
             unit: "Cubic Meters",
             component: "NumberFormField",
@@ -361,8 +374,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "rainwaterStressSits",
-            label: "Rainwater stress sits",
+            name: "rainwaterStressSitesInCubicMeters",
+            label: "Rainwater Stress Sites",
+            description: "Please disclose the amount of rainwater (in m^3) for all sites with high water stress.",
 
             unit: "Cubic Meters",
             component: "NumberFormField",
@@ -370,8 +384,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterConsumptionAllSites",
-            label: "Water consumption all sites",
+            name: "waterConsumptionAllSitesInCubicMeters",
+            label: "Water Consumption All Sites",
+            description: "Please disclose the amount of water consumption (in m^3) for all sites.",
 
             unit: "Cubic Meters",
             component: "NumberFormField",
@@ -379,8 +394,10 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "waterConsumptionStressSites",
-            label: "Water consumption stress sites",
+            name: "waterConsumptionStressSitesInCubicMeters",
+            label: "Water Consumption Stress Sites",
+            description:
+              "Please disclose the amount of water consumption (in m^3) for all sites with high water stress.",
 
             unit: "Cubic Meters",
             component: "NumberFormField",
@@ -394,28 +411,31 @@ export const vsmeDataModel = [
         label: "Resource use, circular economy and waste management",
         fields: [
           {
-            name: "totalWeightMaterials",
-            label: "Total weight materials",
+            name: "totalWeightMaterialsInTonnes",
+            label: "Total Weight Materials",
             description:
               "In case you operate manufacturing, construction and/or packaging processes, please provide the share of recycled content in your products and packaging (in per cent based on weight, during the reporting period) For this we require the total weight  (in tons, in the reporting year) of both recycled and overall materials used in products and packaging. \n\nMoreover, please provide the share of recycable content in your products and packaging (in per cent based on weight, during the reporting period). For this we require the  total weight  (in tons, in the reporting year) of both recycable materials used in products and packaging. ",
 
-            unit: "tons",
+            unit: "Tonnes",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "weightRecycledMaterials",
-            label: "Weight recycled materials",
+            name: "weightRecycledMaterialsInTonnes",
+            label: "Weight Recycled Materials",
+            description: "Please disclose the weight of recycled materials in tonnes.",
 
-            unit: "tons",
+            unit: "Tonnes",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "percentageRecycledMaterials",
-            label: "Percentage recycled materials",
+            label: "Percentage Recycled Materials",
+            description:
+              "Please disclose percentage of recycled materials in regards to the total weight of maerials. ",
 
             unit: "%",
             component: "NumberFormField",
@@ -424,17 +444,20 @@ export const vsmeDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "weightRecycableMaterials",
-            label: "Weight recycable materials",
+            name: "weightRecycableMaterialsInTonnes",
+            label: "Weight Recycable Materials",
+            description: "Please disclose the weight of recycable materials in tonnes.",
 
-            unit: "tons",
+            unit: "Tonnes",
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "percentageRecycableMaterials",
-            label: "Percentage recycable materials",
+            label: "Percentage Recycable Materials",
+            description:
+              "Please disclose percentage of recycable materials in regards to the total weight of maerials. ",
 
             unit: "%",
             component: "NumberFormField",
@@ -444,7 +467,7 @@ export const vsmeDataModel = [
           },
           {
             name: "measureWaste",
-            label: "Measure waste",
+            label: "Measure Waste",
             description:
               "Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.",
             options: [
@@ -478,7 +501,7 @@ export const vsmeDataModel = [
         fields: [
           {
             name: "measureEmployees",
-            label: "Measure employees",
+            label: "Measure Employees",
             description:
               "You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.",
             options: [
@@ -497,12 +520,12 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberOfEmployeesInFtes",
-            label: "Number of employees in FTEs",
+            name: "numberOfEmployeesInFte",
+            label: "Number Of Employees In FTE",
             description:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -510,23 +533,23 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfEmployeesInHeadcount",
-            label: "Number of employees in Headcount",
+            label: "Number Of Employees In Headcount",
             description:
               "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberOfTemporaryContractEmployeesInFtes",
-            label: "Number of temporary contract employees in FTEs",
+            name: "numberOfTemporaryContractEmployeesInFte",
+            label: "Number Of Temporary Contract Employees In FTE",
             description:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -534,21 +557,23 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfTemporaryContractEmployeesInHeadcount",
-            label: "Number of temporary contract employees in Headcount",
+            label: "Number Of Temporary Contract Employees In Headcount",
             description:
               "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberOfPermanentContractEmployeesInFtes",
-            label: "Number of permanent contract employees in FTEs",
+            name: "numberOfPermanentContractEmployeesInFte",
+            label: "Number Of Permanent Contract Employees In FTE",
+            description:
+              "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -556,21 +581,23 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfPermanentContractEmployeesInHeadcount",
-            label: "Number of permanent contract employees in Headcount",
+            label: "Number Of Permanent Contract Employees In Headcount",
+            description:
+              "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberOfMaleEmployeesInFtes",
-            label: "Number of male employees in FTEs",
+            name: "numberOfMaleEmployeesInFte",
+            label: "Number Of Male Employees In FTE",
             description:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -578,21 +605,23 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfMaleEmployeesInHeadcount",
-            label: "Number of male employees in Headcount",
+            label: "Number Of Male Employees In Headcount",
             description:
               "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberFemaleEmployeesInFtes",
-            label: "Number female employees in FTEs",
+            name: "numberFemaleEmployeesInFte",
+            label: "Number Female Employees In FTE",
+            description:
+              "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -600,39 +629,47 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfFemaleEmployeesInHeadcount",
-            label: "Number of female employees in Headcount",
+            label: "Number Of Female Employees In Headcount",
+            description:
+              "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberOfOtherEmployeesInFtes",
-            label: "Number of other employees in FTEs",
+            name: "numberOfOtherEmployeesInFte",
+            label: "Number Of Other Employees In FTE",
+            description:
+              "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberOfOtherEmployeesHead",
-            label: "Number of other employees head ",
+            name: "numberOfOtherEmployeesInHeadcount",
+            label: "Number Of Other Employees In Headcount ",
+            description:
+              "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "HeadCount",
           },
           {
-            name: "numberOfNotReportedEpmloyeesInFtes",
-            label: "Number of not reported epmloyees in FTEs",
+            name: "numberOfNotReportedEmployeesInFte",
+            label: "Number Of Not Reported Employees In FTE",
+            description:
+              "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -640,9 +677,11 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfNotReportedEmployeesInHeadcount",
-            label: "Number of not reported employees in Headcount",
+            label: "Number Of Not Reported Employees In Headcount",
+            description:
+              "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -666,7 +705,7 @@ export const vsmeDataModel = [
         fields: [
           {
             name: "totalHours",
-            label: "Total hours",
+            label: "Total Hours",
             description: "Please provide the total number of hours worked in a year by all your employees.",
 
             unit: "h",
@@ -676,7 +715,7 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfAccidents",
-            label: "Number of accidents",
+            label: "Number Of Accidents",
             description: "Please disclose the number of work related accidents in the reporting year.",
 
             component: "NumberFormField",
@@ -686,7 +725,7 @@ export const vsmeDataModel = [
           },
           {
             name: "accidentLevel",
-            label: "Accident level",
+            label: "Accident Level",
             description:
               "Please provide work-related accidents, namely the number of work related accidents per 100 full-time workers over a yearly timeframe (assuming 2000 work hours per worker per year).",
 
@@ -695,12 +734,12 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberOfTotalFatalitiesInFtes",
-            label: "Number of total fatalities in FTEs",
+            name: "numberOfTotalFatalitiesInFte",
+            label: "Number Of Total Fatalities In FTE",
             description:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -709,11 +748,11 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfTotalFatalitiesInHeadcount",
-            label: "Number of total fatalities in Headcount",
+            label: "Number Of Total Fatalities In Headcount",
             description:
               "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -721,12 +760,12 @@ export const vsmeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberOfFatalitiesOfAccidentsInFtes",
-            label: "Number of fatalities of accidents in FTEs",
+            name: "numberOfFatalitiesOfAccidentsInFte",
+            label: "Number Of Fatalities Of Accidents In FTE",
             description:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -735,11 +774,11 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfFatalitiesOfAccidentsInHeadcount",
-            label: "Number of fatalities of accidents in Headcount",
+            label: "Number Of Fatalities Of Accidents In Headcount",
             description:
               "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -747,10 +786,12 @@ export const vsmeDataModel = [
             validation: "integer",
           },
           {
-            name: "numberOfHealthFatalitiesInFtes",
-            label: "Number of health fatalities in FTEs",
+            name: "numberOfHealthFatalitiesInFte",
+            label: "Number Of Health Fatalities In FTE",
+            description:
+              "Please disclose the number of health fatalities in full time equilivants in the reporting year.",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -759,9 +800,10 @@ export const vsmeDataModel = [
           },
           {
             name: "numberOfHealthFatalitiesInHeadcount",
-            label: "Number of health fatalities in Headcount",
+            label: "Number Of Health Fatalities In Headcount",
+            description: "Please disclose the number of health fatalities in head count in the reporting year.",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -775,24 +817,24 @@ export const vsmeDataModel = [
         label: "Workforce - Renumeration, collective bargaining, and training",
         fields: [
           {
-            name: "numberofMinimumWageEmployeesInFtes",
-            label: "Numberof  minimum wage employees in FTEs",
+            name: "numberOfMinimumWageEmployeesInFte",
+            label: "Number of minimum Wage Employees In FTE",
             description:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberofMinimumWageEmployeesInHeadcount",
-            label: "Numberof  minimum wage employees in Headcount",
+            name: "numberOfMinimumWageEmployeesInHeadcount",
+            label: "Number Of Minimum Wage Employees In Headcount",
             description:
               "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -800,7 +842,7 @@ export const vsmeDataModel = [
           },
           {
             name: "percentageOfMinimumWageEmployees",
-            label: "Percentage of minimum wage employees",
+            label: "Percentage Of Minimum Wage Employees",
             description:
               "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
 
@@ -812,7 +854,7 @@ export const vsmeDataModel = [
           },
           {
             name: "majorityOfMinimumWageEmployees",
-            label: "Majority of minimum wage employees",
+            label: "Majority Of Minimum Wage Employees",
             description:
               "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
 
@@ -821,8 +863,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "entryLevelWage",
-            label: "Entry level wage",
+            name: "entryLevelWageInEuro",
+            label: "Entry Level Wage",
             description: "Please provide the entry level wage you pay.",
 
             unit: "Euro",
@@ -831,8 +873,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "minimumWage",
-            label: "Minimum wage",
+            name: "minimumWageInEuro",
+            label: "Minimum Wage",
             description: "Please provide the minimum wage you pay.",
 
             unit: "Euro",
@@ -842,7 +884,7 @@ export const vsmeDataModel = [
           },
           {
             name: "wageRatio",
-            label: "Wage ratio",
+            label: "Wage Ratio",
             description: "Please provide the ratio of entry level wage and minimum wage.",
 
             component: "NumberFormField",
@@ -851,7 +893,7 @@ export const vsmeDataModel = [
           },
           {
             name: "payGapBasis",
-            label: "Pay gap basis",
+            label: "Pay Gap Basis",
             description:
               "Please, in the following provide pay rates and work hours. On which basis do you prefer to report?",
             options: [
@@ -869,97 +911,103 @@ export const vsmeDataModel = [
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
-            name: "grossPayMale",
-            label: "Gross pay male",
+            name: "grossPayMaleInEuro",
+            label: "Gross Pay Male",
             description:
-              "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male respectively for female employees. ",
+              "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male employees. ",
 
             unit: "Euro",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
-            name: "grossPayFemale",
-            label: "Gross pay female",
+            name: "grossPayFemaleInEuro",
+            label: "Gross Pay Female",
+            description:
+              "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for female employees. ",
 
             unit: "Euro",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
             name: "totalWorkHoursMale",
-            label: "Total work hours male",
+            label: "Total Work Hours Male",
             description:
-              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
 
             unit: "h",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
             name: "totalWorkHoursFemale",
-            label: "Total work hours female",
+            label: "Total Work Hours Female",
+            description:
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
 
             unit: "h",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
             name: "averageWorkHoursMale",
-            label: "Average work hours male",
+            label: "Average Work Hours Male",
             description:
-              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male respectively by female employees. ",
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
 
             unit: "h",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
             name: "averageWorkHoursFemale",
-            label: "Average work hours female",
+            label: "Average Work Hours Female",
+            description:
+              "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
 
             unit: "h",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
-            name: "averageHourlyPayMale",
-            label: "average hourly pay male",
+            name: "averageHourlyPayMaleInEuroPerHour",
+            label: "Average Hourly Pay Male",
             description: "What is the average hourly pay for male employees?",
 
             unit: "Euro/h",
@@ -967,13 +1015,13 @@ export const vsmeDataModel = [
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
-            name: "averageHourlyPayFemale",
-            label: "average hourly pay female",
+            name: "averageHourlyPayFemaleInEuroPerHour",
+            label: "Average Hourly Pay Female",
             description: "What is the average hourly pay for female employees?",
 
             unit: "Euro/h",
@@ -981,40 +1029,40 @@ export const vsmeDataModel = [
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
             name: "payGap",
-            label: "pay gap",
+            label: "Pay Gap",
             description: "What is your pay gap? ",
 
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean => {
               const firstValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInHeadcount ?? 0;
-              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFtes ?? 0;
+              const secondValue = dataset.basic?.workforceGeneralCharacteristics?.numberOfEmployeesInFte ?? 0;
               return firstValue >= 150 || secondValue >= 150;
             },
           },
           {
-            name: "numberBargainingAgreementsFullTime",
-            label: "Number bargaining agreements full-time",
+            name: "numberBargainingAgreementsInFte",
+            label: "Number Bargaining Agreements  In FTE",
             description: "Please state the number of employees covered by collective bargaining agreements.",
 
-            unit: "full-time equivalents",
+            unit: "Full Time Equivalents",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
               dataset.basic?.workforceGeneralCharacteristics?.measureEmployees == "FullTimeEquivalents",
           },
           {
-            name: "numberBargainingAgreementsHead",
-            label: "Number bargaining agreements head",
+            name: "numberBargainingAgreementsInHeadcount",
+            label: "Number Bargaining Agreements In Headcount",
             description: "Please state the number of employees covered by collective bargaining agreements.",
 
-            unit: "head count",
+            unit: "Head Count",
             component: "NumberFormField",
             required: false,
             showIf: (dataset: VsmeData): boolean =>
@@ -1022,7 +1070,7 @@ export const vsmeDataModel = [
           },
           {
             name: "ratioBargainingAgreement",
-            label: "ratio bargaining agreement",
+            label: "Ratio Bargaining Agreement",
             description:
               "Please provide the ratio of employees with a bargaining agreement with respect to all your employees.",
 
@@ -1034,9 +1082,9 @@ export const vsmeDataModel = [
           },
           {
             name: "totalTrainingHoursMale",
-            label: "total training hours male",
+            label: "Total Training Hours Male",
             description:
-              "Please state the total and average numbers of annual training hours per employee, broken down by gender, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
+              "Please state the total numbers of annual training hours per male employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
 
             unit: "h",
             component: "NumberFormField",
@@ -1045,7 +1093,9 @@ export const vsmeDataModel = [
           },
           {
             name: "totalTrainingHoursFemale",
-            label: "total training hours female",
+            label: "Total Training Hours Female",
+            description:
+              "Please state the total numbers of annual training hours per female employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
 
             unit: "h",
             component: "NumberFormField",
@@ -1054,7 +1104,9 @@ export const vsmeDataModel = [
           },
           {
             name: "averageTrainingHoursMale",
-            label: "average training hours male",
+            label: "Average Training Hours Male",
+            description:
+              "Please state average numbers of annual training hours per male employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
 
             unit: "h",
             component: "NumberFormField",
@@ -1063,7 +1115,9 @@ export const vsmeDataModel = [
           },
           {
             name: "averageTrainingHoursFemale",
-            label: "average training hours female",
+            label: "Average Training Hours Female",
+            description:
+              "Please state average numbers of annual training hours per female employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
 
             unit: "h",
             component: "NumberFormField",
@@ -1078,7 +1132,7 @@ export const vsmeDataModel = [
         fields: [
           {
             name: "negativeEffects",
-            label: "Negative effects",
+            label: "Negative Effects",
             description:
               "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
 
@@ -1087,8 +1141,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberConvictions",
-            label: "Number convictions",
+            name: "numberOfConvictions",
+            label: "Number Of Convictions",
             description:
               "In case of convictions and fines in the reporting period, please disclose the number of convictions and the total amount of fines incurred for the violation of anti-corruption or anti-bribery laws.",
 
@@ -1097,8 +1151,9 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "sumFines",
-            label: "Sum fines",
+            name: "sumOfFinesInEuro",
+            label: "Sum Of Fines",
+            description: "Please disclose the sum of all fines.",
 
             unit: "Euro",
             component: "NumberFormField",

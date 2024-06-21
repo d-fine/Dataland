@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.intermediate.components.basecomponents.Numb
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.get
+import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -24,18 +25,22 @@ class VsmeFramework : PavedRoadFramework(
     order = 6,
     isPrivateFramework = true,
 ) {
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
+        return VsmeComponentGenerationUtils()
+    }
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         val fieldsToAddDependency = arrayOf(
-            "grossPayMale", "grossPayFemale", "totalWorkHoursMale",
-            "totalWorkHoursFemale", "averageWorkHoursMale", "averageWorkHoursFemale", "averageHourlyPayMale",
-            "averageHourlyPayFemale", "payGap",
+            "grossPayMaleInEuro", "grossPayFemaleInEuro", "totalWorkHoursMale",
+            "totalWorkHoursFemale", "averageWorkHoursMale", "averageWorkHoursFemale",
+            "averageHourlyPayMaleInEuroPerHour",
+            "averageHourlyPayFemaleInEuroPerHour", "payGap",
         )
 
         framework.root.edit<ComponentGroup>("basic") {
             val numberOfEmployeesInHeadCount = this.get<ComponentGroup>("workforceGeneralCharacteristics")
                 .get<NumberBaseComponent>("numberOfEmployeesInHeadcount")
             val numberEmployeesFullTime = this.get<ComponentGroup>("workforceGeneralCharacteristics")
-                .get<NumberBaseComponent>("numberOfEmployeesInFtes")
+                .get<NumberBaseComponent>("numberOfEmployeesInFte")
             edit<ComponentGroup>("workforceRenumerationCollectiveBargainingAndTraining") {
                 edit<SingleSelectComponent>("payGapBasis") {
                     setDependency(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)

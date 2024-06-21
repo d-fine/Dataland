@@ -10,31 +10,31 @@ import java.math.BigDecimal
 data class VsmeBasicWorkforceGeneralCharacteristics(
     val measureEmployees: VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions? = null,
 
-    val numberOfEmployeesInFtes: BigDecimal? = null,
+    val numberOfEmployeesInFte: BigDecimal? = null,
 
     val numberOfEmployeesInHeadcount: BigDecimal? = null,
 
-    val numberOfTemporaryContractEmployeesInFtes: BigDecimal? = null,
+    val numberOfTemporaryContractEmployeesInFte: BigDecimal? = null,
 
     val numberOfTemporaryContractEmployeesInHeadcount: BigDecimal? = null,
 
-    val numberOfPermanentContractEmployeesInFtes: BigDecimal? = null,
+    val numberOfPermanentContractEmployeesInFte: BigDecimal? = null,
 
     val numberOfPermanentContractEmployeesInHeadcount: BigDecimal? = null,
 
-    val numberOfMaleEmployeesInFtes: BigDecimal? = null,
+    val numberOfMaleEmployeesInFte: BigDecimal? = null,
 
     val numberOfMaleEmployeesInHeadcount: BigDecimal? = null,
 
-    val numberFemaleEmployeesInFtes: BigDecimal? = null,
+    val numberFemaleEmployeesInFte: BigDecimal? = null,
 
     val numberOfFemaleEmployeesInHeadcount: BigDecimal? = null,
 
-    val numberOfOtherEmployeesInFtes: BigDecimal? = null,
+    val numberOfOtherEmployeesInFte: BigDecimal? = null,
 
-    val numberOfOtherEmployeesHead: BigDecimal? = null,
+    val numberOfOtherEmployeesInHeadcount: BigDecimal? = null,
 
-    val numberOfNotReportedEpmloyeesInFtes: BigDecimal? = null,
+    val numberOfNotReportedEmployeesInFte: BigDecimal? = null,
 
     val numberOfNotReportedEmployeesInHeadcount: BigDecimal? = null,
 
