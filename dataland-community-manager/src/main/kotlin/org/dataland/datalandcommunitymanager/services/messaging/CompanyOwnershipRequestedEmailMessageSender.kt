@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.services.messaging
+package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
