@@ -28,7 +28,11 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -75,9 +79,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in sfdrDataModel" :key="category">
+            <li v-for="category in sfdrDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -93,7 +97,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
@@ -149,6 +152,8 @@ import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi
 import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
 
 const referenceableReportsFieldId = "referenceableReports";
+
+class unkown {}
 
 export default defineComponent({
   setup() {
@@ -259,12 +264,15 @@ export default defineComponent({
      * Builds an api to get and upload Sfdr data
      * @returns the api
      */
-    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> {
+    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Sfdr);
       if (frameworkDefinition) {
-        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+        return frameworkDefinition.getPublicFrameworkApiClient(
+          undefined,
+          apiClientProvider.axiosInstance,
+        ) as PublicFrameworkDataApi<SfdrData>;
+      } else return undefined;
     },
 
     /**
@@ -275,7 +283,7 @@ export default defineComponent({
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = this.buildSfdrDataApi();
-      const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await sfdrDataControllerApi!.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
@@ -287,7 +295,9 @@ export default defineComponent({
             },
           )
         : [];
-      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
+      this.companyAssociatedSfdrData = objectDropNull(
+        sfdrResponseData as unknown as ObjectType,
+      ) as unknown as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
     },
@@ -307,14 +317,14 @@ export default defineComponent({
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
 
         const sfdrDataControllerApi = this.buildSfdrDataApi();
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
+        await sfdrDataControllerApi!.postFrameworkData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
