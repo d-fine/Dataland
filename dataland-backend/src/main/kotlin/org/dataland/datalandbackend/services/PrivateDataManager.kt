@@ -272,7 +272,7 @@ class PrivateDataManager(
      * Retrieves a private vsme data object from the private storage
      * @param dataId the dataId of the dataset to be retrieved
      * @param correlationId the correlationId of the request
-     * @return the v dataset
+     * @return the vsme dataset
      */
     fun getPrivateVsmeData(dataId: String, correlationId: String): VsmeData {
         return objectMapper.readValue(
