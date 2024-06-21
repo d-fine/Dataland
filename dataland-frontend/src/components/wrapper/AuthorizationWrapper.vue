@@ -3,15 +3,12 @@
     <p class="font-medium text-xl">Checking for data ownership...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="(hasUserRequiredRole && !this.isPrivateFrameworkVariable) || isUserDataOwner">
+  <div v-if="(hasUserRequiredRole && !isFrameworkPrivate) || isUserDataOwner">
     <slot></slot>
   </div>
 
   <TheContent
-    v-if="
-      (!waitingForDataOwnershipData &&!isUserDataOwner && ( !hasUserRequiredRole ||
-      this.isPrivateFrameworkVariable))
-    "
+    v-if="!waitingForDataOwnershipData && !isUserDataOwner && (!hasUserRequiredRole || isFrameworkPrivate)"
     class="paper-section flex"
   >
     <MiddleCenterDiv class="col-12">
@@ -39,7 +36,7 @@ export default defineComponent({
       hasUserRequiredRole: null as boolean | null,
       isUserDataOwner: null as boolean | null,
       waitingForDataOwnershipData: true,
-      isPrivateFrameworkVariable: null as boolean,
+      isFrameworkPrivate: null as boolean | null,
     };
   },
   props: {
@@ -64,7 +61,7 @@ export default defineComponent({
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
     async checkUserPermissions(): Promise<void> {
-      if (this.isPrivateFramework() && this.allowDataOwnerForCompanyId) {
+      if (this.checkIsFrameworkPrivate() && this.allowDataOwnerForCompanyId) {
         this.isUserDataOwner = await isUserDataOwnerForCompany(
           this.allowDataOwnerForCompanyId,
           this.getKeycloakPromise,
@@ -87,10 +84,10 @@ export default defineComponent({
      * This method determines if a framework is private or not
      * @returns boolean if the framework is private or not
      */
-    isPrivateFramework() {
+    checkIsFrameworkPrivate() {
       if (this.dataType) {
-        this.isPrivateFrameworkVariable = getAllPrivateFrameworkIdentifiers().includes(this.dataType);
-        return this.isPrivateFrameworkVariable;
+        this.isFrameworkPrivate = getAllPrivateFrameworkIdentifiers().includes(this.dataType);
+        return this.isFrameworkPrivate;
       }
     },
   },
