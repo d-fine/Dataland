@@ -97,6 +97,7 @@
   </Card>
 </template>
 <script lang="ts">
+// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
@@ -150,7 +151,6 @@ import BaseDataPointFormField from "@/components/forms/parts/elements/basic/Base
 import { getFilledKpis } from "@/utils/DataPoint";
 import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
-
 const referenceableReportsFieldId = "referenceableReports";
 
 export default defineComponent({

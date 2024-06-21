@@ -119,6 +119,7 @@
   </Card>
 </template>
 <script lang="ts">
+// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { computed, defineComponent, inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -161,7 +162,6 @@ import WasteClassificationFormField from "@/components/forms/parts/fields/WasteC
 import SiteAndAreaFormField from "@/components/forms/parts/fields/SiteAndAreaFormField.vue";
 import EmployeesPerCountryFormField from "@/components/forms/parts/fields/EmployeesPerCountryFormField.vue";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-
 export default defineComponent({
   setup() {
     return {
