@@ -175,7 +175,7 @@ describeIf(
             "data-section-expanded",
             "true",
           );
-          MLDT.getCellValueContainer("Electricity total in MWh").find("a.link").should("include.text", "MWh").click();
+          MLDT.getCellValueContainer("Electricity Total").find("a.link").should("include.text", "MWh").click();
           const expectedPathToDownloadedReport =
             Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}-private.pdf`;
           cy.readFile(expectedPathToDownloadedReport).should("not.exist");
