@@ -222,7 +222,7 @@ export default defineComponent({
       return undefined;
     },
     visibleCategories(): Category[] {
-      return this.vsmeUploadConfig.filter((category) => category.showIf(this.companyAssociatedVsmeData.data));
+      return this.vsmeUploadConfig.filter((category: Category) => category.showIf(this.companyAssociatedVsmeData.data));
     },
     subcategoryVisibilityMap(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.vsmeUploadConfig, this.companyAssociatedVsmeData.data);
