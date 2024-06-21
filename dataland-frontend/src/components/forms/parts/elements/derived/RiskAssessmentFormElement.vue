@@ -31,7 +31,6 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import { convertYesNoUndefinedToBoolean } from "@/utils/YesNoNa";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "RiskAssessmentFormElement",
@@ -46,7 +45,6 @@ export default defineComponent({
     YesNoFormField,
     FreeTextFormField,
   },
-  props: BaseFormFieldProps,
   methods: {
     /**
      * Handles the update of the YesNoValue
