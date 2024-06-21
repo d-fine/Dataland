@@ -470,24 +470,24 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Weight Recycable Materials",
+            label: "Weight Recyclable Materials",
             explanation: "Please disclose the weight of recycable materials in tonnes.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
-                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecycableMaterialsInTonnes,
+                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.weightRecyclableMaterialsInTonnes,
                 "Tonnes",
               ),
           },
           {
             type: "cell",
-            label: "Percentage Recycable Materials",
+            label: "Percentage Recyclable Materials",
             explanation:
               "Please disclose percentage of recycable materials in regards to the total weight of maerials. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
-                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecycableMaterials,
+                dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.percentageRecyclableMaterials,
               ),
           },
           {

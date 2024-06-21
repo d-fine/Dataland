@@ -189,8 +189,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": 11.46,
-					"weightRecycableMaterialsInTonnes": 23665.4,
-					"percentageRecycableMaterials": 50.61,
+					"weightRecyclableMaterialsInTonnes": 23665.4,
+					"percentageRecyclableMaterials": 50.61,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -613,8 +613,8 @@
 					"totalWeightMaterialsInTonnes": 66048.42,
 					"weightRecycledMaterialsInTonnes": 42252.53,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": null
 				},
@@ -1062,8 +1062,8 @@
 					"totalWeightMaterialsInTonnes": 30785.81,
 					"weightRecycledMaterialsInTonnes": 12154.35,
 					"percentageRecycledMaterials": 39.41,
-					"weightRecycableMaterialsInTonnes": 97743.93,
-					"percentageRecycableMaterials": 60.64,
+					"weightRecyclableMaterialsInTonnes": 97743.93,
+					"percentageRecyclableMaterials": 60.64,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -1425,8 +1425,8 @@
 					"totalWeightMaterialsInTonnes": 58544.46,
 					"weightRecycledMaterialsInTonnes": 65810.06,
 					"percentageRecycledMaterials": 52.72,
-					"weightRecycableMaterialsInTonnes": 33976.49,
-					"percentageRecycableMaterials": 83.06,
+					"weightRecyclableMaterialsInTonnes": 33976.49,
+					"percentageRecyclableMaterials": 83.06,
 					"measureWaste": null,
 					"wasteClassification": []
 				},
@@ -1879,8 +1879,8 @@
 					"totalWeightMaterialsInTonnes": 21637.46,
 					"weightRecycledMaterialsInTonnes": 15905.36,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 20690.59,
-					"percentageRecycableMaterials": 12.34,
+					"weightRecyclableMaterialsInTonnes": 20690.59,
+					"percentageRecyclableMaterials": 12.34,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -2200,8 +2200,8 @@
 					"totalWeightMaterialsInTonnes": 59776.53,
 					"weightRecycledMaterialsInTonnes": 51416.99,
 					"percentageRecycledMaterials": 33.58,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 98.09,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 98.09,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -2546,8 +2546,8 @@
 					"totalWeightMaterialsInTonnes": 66110.71,
 					"weightRecycledMaterialsInTonnes": 65856.92,
 					"percentageRecycledMaterials": 1.01,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -2852,8 +2852,8 @@
 					"totalWeightMaterialsInTonnes": 81237.98,
 					"weightRecycledMaterialsInTonnes": 78373.99,
 					"percentageRecycledMaterials": 11.8,
-					"weightRecycableMaterialsInTonnes": 9650.3,
-					"percentageRecycableMaterials": 76.9,
+					"weightRecyclableMaterialsInTonnes": 9650.3,
+					"percentageRecyclableMaterials": 76.9,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -3215,8 +3215,8 @@
 					"totalWeightMaterialsInTonnes": 58669.27,
 					"weightRecycledMaterialsInTonnes": 54879.51,
 					"percentageRecycledMaterials": 6.08,
-					"weightRecycableMaterialsInTonnes": 71180.37,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 71180.37,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -3637,8 +3637,8 @@
 					"totalWeightMaterialsInTonnes": 94097.24,
 					"weightRecycledMaterialsInTonnes": 59957.03,
 					"percentageRecycledMaterials": 68.27,
-					"weightRecycableMaterialsInTonnes": 99007.03,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 99007.03,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": null,
 					"wasteClassification": null
 				},
@@ -3952,8 +3952,8 @@
 					"totalWeightMaterialsInTonnes": 85140.05,
 					"weightRecycledMaterialsInTonnes": 8830.05,
 					"percentageRecycledMaterials": 51.54,
-					"weightRecycableMaterialsInTonnes": 75814.37,
-					"percentageRecycableMaterials": 91.77,
+					"weightRecyclableMaterialsInTonnes": 75814.37,
+					"percentageRecyclableMaterials": 91.77,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -4243,8 +4243,8 @@
 					"totalWeightMaterialsInTonnes": 27090.2,
 					"weightRecycledMaterialsInTonnes": 63309.37,
 					"percentageRecycledMaterials": 96.53,
-					"weightRecycableMaterialsInTonnes": 78329.18,
-					"percentageRecycableMaterials": 2.22,
+					"weightRecyclableMaterialsInTonnes": 78329.18,
+					"percentageRecyclableMaterials": 2.22,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": []
 				},
@@ -4522,8 +4522,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 61.26,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 61.26,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -4892,8 +4892,8 @@
 					"totalWeightMaterialsInTonnes": 47062.07,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": 25.57,
-					"weightRecycableMaterialsInTonnes": 11009.19,
-					"percentageRecycableMaterials": 72.94,
+					"weightRecyclableMaterialsInTonnes": 11009.19,
+					"percentageRecyclableMaterials": 72.94,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -5224,8 +5224,8 @@
 					"totalWeightMaterialsInTonnes": 92424.79,
 					"weightRecycledMaterialsInTonnes": 41826.02,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 65676.44,
-					"percentageRecycableMaterials": 23.75,
+					"weightRecyclableMaterialsInTonnes": 65676.44,
+					"percentageRecyclableMaterials": 23.75,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": []
 				},
@@ -5604,8 +5604,8 @@
 					"totalWeightMaterialsInTonnes": 82332.77,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": 24.64,
-					"weightRecycableMaterialsInTonnes": 79829.76,
-					"percentageRecycableMaterials": 69.59,
+					"weightRecyclableMaterialsInTonnes": 79829.76,
+					"percentageRecyclableMaterials": 69.59,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -5919,8 +5919,8 @@
 					"totalWeightMaterialsInTonnes": 55531.62,
 					"weightRecycledMaterialsInTonnes": 94602.81,
 					"percentageRecycledMaterials": 63.24,
-					"weightRecycableMaterialsInTonnes": 97606.15,
-					"percentageRecycableMaterials": 83.05,
+					"weightRecyclableMaterialsInTonnes": 97606.15,
+					"percentageRecyclableMaterials": 83.05,
 					"measureWaste": "Volume",
 					"wasteClassification": null
 				},
@@ -6340,8 +6340,8 @@
 					"totalWeightMaterialsInTonnes": 1766.38,
 					"weightRecycledMaterialsInTonnes": 77004.71,
 					"percentageRecycledMaterials": 44.03,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 32.57,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 32.57,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -6649,8 +6649,8 @@
 					"totalWeightMaterialsInTonnes": 50474.7,
 					"weightRecycledMaterialsInTonnes": 12962.81,
 					"percentageRecycledMaterials": 19.84,
-					"weightRecycableMaterialsInTonnes": 42767.04,
-					"percentageRecycableMaterials": 51.92,
+					"weightRecyclableMaterialsInTonnes": 42767.04,
+					"percentageRecyclableMaterials": 51.92,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -7043,8 +7043,8 @@
 					"totalWeightMaterialsInTonnes": 63182.33,
 					"weightRecycledMaterialsInTonnes": 10613.76,
 					"percentageRecycledMaterials": 93.25,
-					"weightRecycableMaterialsInTonnes": 76340.94,
-					"percentageRecycableMaterials": 16.38,
+					"weightRecyclableMaterialsInTonnes": 76340.94,
+					"percentageRecyclableMaterials": 16.38,
 					"measureWaste": "Volume",
 					"wasteClassification": null
 				},
@@ -7297,8 +7297,8 @@
 					"totalWeightMaterialsInTonnes": 99532.01,
 					"weightRecycledMaterialsInTonnes": 36160.66,
 					"percentageRecycledMaterials": 61.58,
-					"weightRecycableMaterialsInTonnes": 5871.82,
-					"percentageRecycableMaterials": 12.97,
+					"weightRecyclableMaterialsInTonnes": 5871.82,
+					"percentageRecyclableMaterials": 12.97,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": []
 				},
@@ -7692,8 +7692,8 @@
 					"totalWeightMaterialsInTonnes": 28748.43,
 					"weightRecycledMaterialsInTonnes": 85950.49,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 90199.54,
-					"percentageRecycableMaterials": 67.9,
+					"weightRecyclableMaterialsInTonnes": 90199.54,
+					"percentageRecyclableMaterials": 67.9,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -8064,8 +8064,8 @@
 					"totalWeightMaterialsInTonnes": 21268.75,
 					"weightRecycledMaterialsInTonnes": 27036.22,
 					"percentageRecycledMaterials": 77.76,
-					"weightRecycableMaterialsInTonnes": 4990.91,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 4990.91,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -8417,8 +8417,8 @@
 					"totalWeightMaterialsInTonnes": 63873.84,
 					"weightRecycledMaterialsInTonnes": 98586.23,
 					"percentageRecycledMaterials": 36.08,
-					"weightRecycableMaterialsInTonnes": 89309.63,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 89309.63,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -8812,8 +8812,8 @@
 					"totalWeightMaterialsInTonnes": 50650.42,
 					"weightRecycledMaterialsInTonnes": 63111.89,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 16788.2,
-					"percentageRecycableMaterials": 40.79,
+					"weightRecyclableMaterialsInTonnes": 16788.2,
+					"percentageRecyclableMaterials": 40.79,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -9153,8 +9153,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 52561.57,
 					"percentageRecycledMaterials": 3.44,
-					"weightRecycableMaterialsInTonnes": 25535.11,
-					"percentageRecycableMaterials": 62.32,
+					"weightRecyclableMaterialsInTonnes": 25535.11,
+					"percentageRecyclableMaterials": 62.32,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -9471,8 +9471,8 @@
 					"totalWeightMaterialsInTonnes": 24140.83,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 40458.84,
-					"percentageRecycableMaterials": 12.47,
+					"weightRecyclableMaterialsInTonnes": 40458.84,
+					"percentageRecyclableMaterials": 12.47,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -9791,8 +9791,8 @@
 					"totalWeightMaterialsInTonnes": 45137.16,
 					"weightRecycledMaterialsInTonnes": 81754.83,
 					"percentageRecycledMaterials": 84.7,
-					"weightRecycableMaterialsInTonnes": 89110.52,
-					"percentageRecycableMaterials": 97.65,
+					"weightRecyclableMaterialsInTonnes": 89110.52,
+					"percentageRecyclableMaterials": 97.65,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -10162,8 +10162,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 94319.2,
 					"percentageRecycledMaterials": 79.28,
-					"weightRecycableMaterialsInTonnes": 64391.61,
-					"percentageRecycableMaterials": 36.04,
+					"weightRecyclableMaterialsInTonnes": 64391.61,
+					"percentageRecyclableMaterials": 36.04,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -10492,8 +10492,8 @@
 					"totalWeightMaterialsInTonnes": 84727.88,
 					"weightRecycledMaterialsInTonnes": 35769.03,
 					"percentageRecycledMaterials": 23.43,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 4.45,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 4.45,
 					"measureWaste": "Volume",
 					"wasteClassification": null
 				},
@@ -10788,8 +10788,8 @@
 					"totalWeightMaterialsInTonnes": 26403.09,
 					"weightRecycledMaterialsInTonnes": 11043.42,
 					"percentageRecycledMaterials": 25.44,
-					"weightRecycableMaterialsInTonnes": 74177.46,
-					"percentageRecycableMaterials": 85.15,
+					"weightRecyclableMaterialsInTonnes": 74177.46,
+					"percentageRecyclableMaterials": 85.15,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -11116,8 +11116,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 49059.16,
 					"percentageRecycledMaterials": 56.21,
-					"weightRecycableMaterialsInTonnes": 94217.38,
-					"percentageRecycableMaterials": 61.76,
+					"weightRecyclableMaterialsInTonnes": 94217.38,
+					"percentageRecyclableMaterials": 61.76,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": null
 				},
@@ -11396,8 +11396,8 @@
 					"totalWeightMaterialsInTonnes": 76349.16,
 					"weightRecycledMaterialsInTonnes": 20157.52,
 					"percentageRecycledMaterials": 30.33,
-					"weightRecycableMaterialsInTonnes": 71572.72,
-					"percentageRecycableMaterials": 33.58,
+					"weightRecyclableMaterialsInTonnes": 71572.72,
+					"percentageRecyclableMaterials": 33.58,
 					"measureWaste": null,
 					"wasteClassification": [
 						{
@@ -11686,8 +11686,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 55238.84,
 					"percentageRecycledMaterials": 41.95,
-					"weightRecycableMaterialsInTonnes": 25406.92,
-					"percentageRecycableMaterials": 5.36,
+					"weightRecyclableMaterialsInTonnes": 25406.92,
+					"percentageRecyclableMaterials": 5.36,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": null
 				},
@@ -12052,8 +12052,8 @@
 					"totalWeightMaterialsInTonnes": 40286.33,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 77.12,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 77.12,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -12468,8 +12468,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 62740.38,
 					"percentageRecycledMaterials": 42.73,
-					"weightRecycableMaterialsInTonnes": 93503.47,
-					"percentageRecycableMaterials": 91.47,
+					"weightRecyclableMaterialsInTonnes": 93503.47,
+					"percentageRecyclableMaterials": 91.47,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -12762,8 +12762,8 @@
 					"totalWeightMaterialsInTonnes": 96453.24,
 					"weightRecycledMaterialsInTonnes": 55122.94,
 					"percentageRecycledMaterials": 61.58,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 57.34,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 57.34,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -13163,8 +13163,8 @@
 					"totalWeightMaterialsInTonnes": 95162.08,
 					"weightRecycledMaterialsInTonnes": 12178.42,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 9078.41,
-					"percentageRecycableMaterials": 10.27,
+					"weightRecyclableMaterialsInTonnes": 9078.41,
+					"percentageRecyclableMaterials": 10.27,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -13580,8 +13580,8 @@
 					"totalWeightMaterialsInTonnes": 30600.87,
 					"weightRecycledMaterialsInTonnes": 98765.19,
 					"percentageRecycledMaterials": 89.63,
-					"weightRecycableMaterialsInTonnes": 92141.92,
-					"percentageRecycableMaterials": 10.92,
+					"weightRecyclableMaterialsInTonnes": 92141.92,
+					"percentageRecyclableMaterials": 10.92,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -14014,8 +14014,8 @@
 					"totalWeightMaterialsInTonnes": 98273.08,
 					"weightRecycledMaterialsInTonnes": 60175.84,
 					"percentageRecycledMaterials": 95.28,
-					"weightRecycableMaterialsInTonnes": 26067.65,
-					"percentageRecycableMaterials": 47.93,
+					"weightRecyclableMaterialsInTonnes": 26067.65,
+					"percentageRecyclableMaterials": 47.93,
 					"measureWaste": null,
 					"wasteClassification": [
 						{
@@ -14269,8 +14269,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 34379.91,
 					"percentageRecycledMaterials": 88.39,
-					"weightRecycableMaterialsInTonnes": 49268.91,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 49268.91,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -14620,8 +14620,8 @@
 					"totalWeightMaterialsInTonnes": 97952.72,
 					"weightRecycledMaterialsInTonnes": 30336.7,
 					"percentageRecycledMaterials": 80.96,
-					"weightRecycableMaterialsInTonnes": 62360.26,
-					"percentageRecycableMaterials": 56.13,
+					"weightRecyclableMaterialsInTonnes": 62360.26,
+					"percentageRecyclableMaterials": 56.13,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{
@@ -14948,8 +14948,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 11578.39,
 					"percentageRecycledMaterials": 86.47,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -15382,8 +15382,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 45964.91,
 					"percentageRecycledMaterials": 64.47,
-					"weightRecycableMaterialsInTonnes": 33051.89,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 33051.89,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{
@@ -15747,8 +15747,8 @@
 					"totalWeightMaterialsInTonnes": 59678.83,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": 9.19,
-					"weightRecycableMaterialsInTonnes": 84848.7,
-					"percentageRecycableMaterials": 97.85,
+					"weightRecyclableMaterialsInTonnes": 84848.7,
+					"percentageRecyclableMaterials": 97.85,
 					"measureWaste": null,
 					"wasteClassification": [
 						{
@@ -16066,8 +16066,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": 18150.08,
 					"percentageRecycledMaterials": 26.81,
-					"weightRecycableMaterialsInTonnes": null,
-					"percentageRecycableMaterials": 70.28,
+					"weightRecyclableMaterialsInTonnes": null,
+					"percentageRecyclableMaterials": 70.28,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": null
 				},
@@ -16407,8 +16407,8 @@
 					"totalWeightMaterialsInTonnes": 24826.14,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": 33.44,
-					"weightRecycableMaterialsInTonnes": 2199.68,
-					"percentageRecycableMaterials": 11.99,
+					"weightRecyclableMaterialsInTonnes": 2199.68,
+					"percentageRecyclableMaterials": 11.99,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": []
 				},
@@ -16693,8 +16693,8 @@
 					"totalWeightMaterialsInTonnes": 77250.63,
 					"weightRecycledMaterialsInTonnes": 30985.9,
 					"percentageRecycledMaterials": null,
-					"weightRecycableMaterialsInTonnes": 58911.6,
-					"percentageRecycableMaterials": 8.05,
+					"weightRecyclableMaterialsInTonnes": 58911.6,
+					"percentageRecyclableMaterials": 8.05,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": []
 				},
@@ -17041,8 +17041,8 @@
 					"totalWeightMaterialsInTonnes": null,
 					"weightRecycledMaterialsInTonnes": null,
 					"percentageRecycledMaterials": 64.12,
-					"weightRecycableMaterialsInTonnes": 67706.68,
-					"percentageRecycableMaterials": 40.19,
+					"weightRecyclableMaterialsInTonnes": 67706.68,
+					"percentageRecyclableMaterials": 40.19,
 					"measureWaste": "Volume",
 					"wasteClassification": []
 				},
@@ -17366,8 +17366,8 @@
 					"totalWeightMaterialsInTonnes": 83207.02,
 					"weightRecycledMaterialsInTonnes": 75905.85,
 					"percentageRecycledMaterials": 88.77,
-					"weightRecycableMaterialsInTonnes": 28437.64,
-					"percentageRecycableMaterials": null,
+					"weightRecyclableMaterialsInTonnes": 28437.64,
+					"percentageRecyclableMaterials": null,
 					"measureWaste": "Volume",
 					"wasteClassification": [
 						{

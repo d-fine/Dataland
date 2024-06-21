@@ -444,8 +444,8 @@ export const vsmeDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "weightRecycableMaterialsInTonnes",
-            label: "Weight Recycable Materials",
+            name: "weightRecyclableMaterialsInTonnes",
+            label: "Weight Recyclable Materials",
             description: "Please disclose the weight of recycable materials in tonnes.",
 
             unit: "Tonnes",
@@ -454,8 +454,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "percentageRecycableMaterials",
-            label: "Percentage Recycable Materials",
+            name: "percentageRecyclableMaterials",
+            label: "Percentage Recyclable Materials",
             description:
               "Please disclose percentage of recycable materials in regards to the total weight of maerials. ",
 

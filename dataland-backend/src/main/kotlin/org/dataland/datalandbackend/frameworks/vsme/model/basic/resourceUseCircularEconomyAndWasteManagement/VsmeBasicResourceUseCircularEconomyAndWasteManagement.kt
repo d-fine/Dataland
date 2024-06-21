@@ -14,9 +14,9 @@ data class VsmeBasicResourceUseCircularEconomyAndWasteManagement(
 
     val percentageRecycledMaterials: BigDecimal? = null,
 
-    val weightRecycableMaterialsInTonnes: BigDecimal? = null,
+    val weightRecyclableMaterialsInTonnes: BigDecimal? = null,
 
-    val percentageRecycableMaterials: BigDecimal? = null,
+    val percentageRecyclableMaterials: BigDecimal? = null,
 
     val measureWaste: VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions? = null,
 

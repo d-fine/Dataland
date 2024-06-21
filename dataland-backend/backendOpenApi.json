@@ -4380,11 +4380,11 @@
             "type": "number",
             "nullable": true
           },
-          "weightRecycableMaterialsInTonnes": {
+          "weightRecyclableMaterialsInTonnes": {
             "type": "number",
             "nullable": true
           },
-          "percentageRecycableMaterials": {
+          "percentageRecyclableMaterials": {
             "type": "number",
             "nullable": true
           },
@@ -14972,14 +14972,10 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "countryCode": {
@@ -14987,6 +14983,10 @@
           },
           "headquarters": {
             "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -15009,10 +15009,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

@@ -275,8 +275,8 @@
 					"totalWeightMaterialsInTonnes": 54327.95,
 					"weightRecycledMaterialsInTonnes": 30367.8,
 					"percentageRecycledMaterials": 13.04,
-					"weightRecycableMaterialsInTonnes": 7101.47,
-					"percentageRecycableMaterials": 70.76,
+					"weightRecyclableMaterialsInTonnes": 7101.47,
+					"percentageRecyclableMaterials": 70.76,
 					"measureWaste": "WeightPreferred",
 					"wasteClassification": [
 						{

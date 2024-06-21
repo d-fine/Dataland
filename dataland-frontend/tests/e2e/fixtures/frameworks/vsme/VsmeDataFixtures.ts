@@ -84,8 +84,8 @@ export function generateVsmeData(nullProbability = DEFAULT_PROBABILITY): VsmeDat
         totalWeightMaterialsInTonnes: dataGenerator.randomFloat(),
         weightRecycledMaterialsInTonnes: dataGenerator.randomFloat(),
         percentageRecycledMaterials: dataGenerator.randomPercentageValue(),
-        weightRecycableMaterialsInTonnes: dataGenerator.randomFloat(),
-        percentageRecycableMaterials: dataGenerator.randomPercentageValue(),
+        weightRecyclableMaterialsInTonnes: dataGenerator.randomFloat(),
+        percentageRecyclableMaterials: dataGenerator.randomPercentageValue(),
         measureWaste: dataGenerator.valueOrNull(
           pickOneElement(Object.values(VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions)),
         ),
