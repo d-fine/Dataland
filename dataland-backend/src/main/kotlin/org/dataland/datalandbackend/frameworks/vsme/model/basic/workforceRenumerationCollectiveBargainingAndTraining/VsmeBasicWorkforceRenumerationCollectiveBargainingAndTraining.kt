@@ -8,25 +8,25 @@ import java.math.BigDecimal
  * The data-model for the WorkforceRenumerationCollectiveBargainingAndTraining section
  */
 data class VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining(
-    val numberofMinimumWageEmployeesInFtes: BigDecimal? = null,
+    val numberOfMinimumWageEmployeesInFte: BigDecimal? = null,
 
-    val numberofMinimumWageEmployeesInHeadcount: BigDecimal? = null,
+    val numberOfMinimumWageEmployeesInHeadcount: BigDecimal? = null,
 
     val percentageOfMinimumWageEmployees: BigDecimal? = null,
 
     val majorityOfMinimumWageEmployees: YesNo? = null,
 
-    val entryLevelWage: BigDecimal? = null,
+    val entryLevelWageInEuro: BigDecimal? = null,
 
-    val minimumWage: BigDecimal? = null,
+    val minimumWageInEuro: BigDecimal? = null,
 
     val wageRatio: BigDecimal? = null,
 
     val payGapBasis: VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions? = null,
 
-    val grossPayMale: BigDecimal? = null,
+    val grossPayMaleInEuro: BigDecimal? = null,
 
-    val grossPayFemale: BigDecimal? = null,
+    val grossPayFemaleInEuro: BigDecimal? = null,
 
     val totalWorkHoursMale: BigDecimal? = null,
 
@@ -36,15 +36,15 @@ data class VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining(
 
     val averageWorkHoursFemale: BigDecimal? = null,
 
-    val averageHourlyPayMale: BigDecimal? = null,
+    val averageHourlyPayMaleInEuroPerHour: BigDecimal? = null,
 
-    val averageHourlyPayFemale: BigDecimal? = null,
+    val averageHourlyPayFemaleInEuroPerHour: BigDecimal? = null,
 
     val payGap: BigDecimal? = null,
 
-    val numberBargainingAgreementsFullTime: BigDecimal? = null,
+    val numberBargainingAgreementsInFte: BigDecimal? = null,
 
-    val numberBargainingAgreementsHead: BigDecimal? = null,
+    val numberBargainingAgreementsInHeadcount: BigDecimal? = null,
 
     val ratioBargainingAgreement: BigDecimal? = null,
 

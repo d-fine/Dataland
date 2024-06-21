@@ -9,25 +9,25 @@ import java.math.BigDecimal
  * The data-model for the EnergyAndGreenhousGasEmissions section
  */
 data class VsmeBasicEnergyAndGreenhousGasEmissions(
-    val energyFossilFuels: BigDecimal? = null,
+    val energyFossilFuelsInMWh: BigDecimal? = null,
 
     @field:Valid()
-    val electricityTotal: ExtendedDataPoint<BigDecimal?>? = null,
+    val electricityTotalInMWh: ExtendedDataPoint<BigDecimal?>? = null,
 
-    val electricityNonRenewable: BigDecimal? = null,
+    val electricityNonRenewableInMWh: BigDecimal? = null,
 
-    val electricityRenewable: BigDecimal? = null,
-
-    @field:Valid()
-    val totalEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val electricityRenewableInMWh: BigDecimal? = null,
 
     @field:Valid()
-    val scope1Emissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val totalEmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope2Emissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope3Emissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope2EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
+
+    @field:Valid()
+    val scope3EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
 
 )

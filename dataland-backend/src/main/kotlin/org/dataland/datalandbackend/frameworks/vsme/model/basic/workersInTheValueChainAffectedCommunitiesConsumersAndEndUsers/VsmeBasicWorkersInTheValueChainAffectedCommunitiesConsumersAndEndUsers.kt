@@ -12,8 +12,8 @@ data class VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUser
     @field:Valid()
     val negativeEffects: List<BaseDataPoint<String>>? = null,
 
-    val numberConvictions: BigDecimal? = null,
+    val numberOfConvictions: BigDecimal? = null,
 
-    val sumFines: BigDecimal? = null,
+    val sumOfFinesInEuro: BigDecimal? = null,
 
 )

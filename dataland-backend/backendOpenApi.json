@@ -4234,11 +4234,11 @@
               "$ref": "#/components/schemas/VsmeSiteAndArea"
             }
           },
-          "totalSealedAreaPreviousYear": {
+          "totalAealedAreaPreviousYearInHectare": {
             "type": "number",
             "nullable": true
           },
-          "totalSealedAreaReportingYear": {
+          "totalSealedAreaReportingYearInHectare": {
             "type": "number",
             "nullable": true
           },
@@ -4246,11 +4246,11 @@
             "type": "number",
             "nullable": true
           },
-          "totalNatureOrientedAreaOnSitePreviousYear": {
+          "totalNatureOrientedAreaOnSitePreviousYearInHectare": {
             "type": "number",
             "nullable": true
           },
-          "totalNatureOrientedAreaOnSiteReportingYear": {
+          "totalNatureOrientedAreaOnSiteReportingYearInHectare": {
             "type": "number",
             "nullable": true
           },
@@ -4258,11 +4258,11 @@
             "type": "number",
             "nullable": true
           },
-          "totalNatureOrientedAreaOffSitePreviousYear": {
+          "totalNatureOrientedAreaOffSitePreviousYearInHectare": {
             "type": "number",
             "nullable": true
           },
-          "totalNatureOrientedAreaOffSiteReportingYear": {
+          "totalNatureOrientedAreaOffSiteReportingYearInHectare": {
             "type": "number",
             "nullable": true
           },
@@ -4270,11 +4270,11 @@
             "type": "number",
             "nullable": true
           },
-          "totalUseOfLandPreviousYear": {
+          "totalUseOfLandPreviousYearInHectare": {
             "type": "number",
             "nullable": true
           },
-          "totalUseOfLandReportingYear": {
+          "totalUseOfLandReportingYearInHectare": {
             "type": "number",
             "nullable": true
           },
@@ -4287,11 +4287,11 @@
       "VsmeBasicEnergyAndGreenhousGasEmissions": {
         "type": "object",
         "properties": {
-          "energyFossilFuels": {
+          "energyFossilFuelsInMWh": {
             "type": "number",
             "nullable": true
           },
-          "electricityTotal": {
+          "electricityTotalInMWh": {
             "nullable": true,
             "allOf": [
               {
@@ -4299,15 +4299,15 @@
               }
             ]
           },
-          "electricityNonRenewable": {
+          "electricityNonRenewableInMWh": {
             "type": "number",
             "nullable": true
           },
-          "electricityRenewable": {
+          "electricityRenewableInMWh": {
             "type": "number",
             "nullable": true
           },
-          "totalEmissions": {
+          "totalEmissionsInTonnesOfCO2Equivalents": {
             "nullable": true,
             "allOf": [
               {
@@ -4315,7 +4315,7 @@
               }
             ]
           },
-          "scope1Emissions": {
+          "scope1EmissionsInTonnesOfCO2Equivalents": {
             "nullable": true,
             "allOf": [
               {
@@ -4323,7 +4323,7 @@
               }
             ]
           },
-          "scope2Emissions": {
+          "scope2EmissionsInTonnesOfCO2Equivalents": {
             "nullable": true,
             "allOf": [
               {
@@ -4331,7 +4331,7 @@
               }
             ]
           },
-          "scope3Emissions": {
+          "scope3EmissionsInTonnesOfCO2Equivalents": {
             "nullable": true,
             "allOf": [
               {
@@ -4368,11 +4368,11 @@
       "VsmeBasicResourceUseCircularEconomyAndWasteManagement": {
         "type": "object",
         "properties": {
-          "totalWeightMaterials": {
+          "totalWeightMaterialsInTonnes": {
             "type": "number",
             "nullable": true
           },
-          "weightRecycledMaterials": {
+          "weightRecycledMaterialsInTonnes": {
             "type": "number",
             "nullable": true
           },
@@ -4380,7 +4380,7 @@
             "type": "number",
             "nullable": true
           },
-          "weightRecycableMaterials": {
+          "weightRecycableMaterialsInTonnes": {
             "type": "number",
             "nullable": true
           },
@@ -4415,7 +4415,7 @@
       "VsmeBasicWater": {
         "type": "object",
         "properties": {
-          "waterWithdrawalAllSites": {
+          "waterWithdrawalAllSitesInCubicMeters": {
             "nullable": true,
             "allOf": [
               {
@@ -4423,31 +4423,31 @@
               }
             ]
           },
-          "waterWithdrawalStressSites": {
+          "waterWithdrawalStressSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "waterDischargeAllSites": {
+          "waterDischargeAllSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "waterDischargeStressSites": {
+          "waterDischargeStressSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "rainwaterAllSites": {
+          "rainwaterAllSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "rainwaterStressSits": {
+          "rainwaterStressSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "waterConsumptionAllSites": {
+          "waterConsumptionAllSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           },
-          "waterConsumptionStressSites": {
+          "waterConsumptionStressSitesInCubicMeters": {
             "type": "number",
             "nullable": true
           }
@@ -4463,11 +4463,11 @@
               "$ref": "#/components/schemas/BaseDataPointString"
             }
           },
-          "numberConvictions": {
+          "numberOfConvictions": {
             "type": "number",
             "nullable": true
           },
-          "sumFines": {
+          "sumOfFinesInEuro": {
             "type": "number",
             "nullable": true
           }
@@ -4484,7 +4484,7 @@
               }
             ]
           },
-          "numberOfEmployeesInFtes": {
+          "numberOfEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
@@ -4492,7 +4492,7 @@
             "type": "number",
             "nullable": true
           },
-          "numberOfTemporaryContractEmployeesInFtes": {
+          "numberOfTemporaryContractEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
@@ -4500,7 +4500,7 @@
             "type": "number",
             "nullable": true
           },
-          "numberOfPermanentContractEmployeesInFtes": {
+          "numberOfPermanentContractEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
@@ -4508,7 +4508,7 @@
             "type": "number",
             "nullable": true
           },
-          "numberOfMaleEmployeesInFtes": {
+          "numberOfMaleEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
@@ -4516,7 +4516,7 @@
             "type": "number",
             "nullable": true
           },
-          "numberFemaleEmployeesInFtes": {
+          "numberFemaleEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
@@ -4524,15 +4524,15 @@
             "type": "number",
             "nullable": true
           },
-          "numberOfOtherEmployeesInFtes": {
+          "numberOfOtherEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
-          "numberOfOtherEmployeesHead": {
+          "numberOfOtherEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
-          "numberOfNotReportedEpmloyeesInFtes": {
+          "numberOfNotReportedEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
@@ -4564,7 +4564,7 @@
             "type": "number",
             "nullable": true
           },
-          "numberOfTotalFatalitiesInFtes": {
+          "numberOfTotalFatalitiesInFte": {
             "type": "integer",
             "nullable": true
           },
@@ -4572,7 +4572,7 @@
             "type": "integer",
             "nullable": true
           },
-          "numberOfFatalitiesOfAccidentsInFtes": {
+          "numberOfFatalitiesOfAccidentsInFte": {
             "type": "integer",
             "nullable": true
           },
@@ -4580,7 +4580,7 @@
             "type": "integer",
             "nullable": true
           },
-          "numberOfHealthFatalitiesInFtes": {
+          "numberOfHealthFatalitiesInFte": {
             "type": "integer",
             "nullable": true
           },
@@ -4593,11 +4593,11 @@
       "VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining": {
         "type": "object",
         "properties": {
-          "numberofMinimumWageEmployeesInFtes": {
+          "numberOfMinimumWageEmployeesInFte": {
             "type": "number",
             "nullable": true
           },
-          "numberofMinimumWageEmployeesInHeadcount": {
+          "numberOfMinimumWageEmployeesInHeadcount": {
             "type": "number",
             "nullable": true
           },
@@ -4613,11 +4613,11 @@
               }
             ]
           },
-          "entryLevelWage": {
+          "entryLevelWageInEuro": {
             "type": "number",
             "nullable": true
           },
-          "minimumWage": {
+          "minimumWageInEuro": {
             "type": "number",
             "nullable": true
           },
@@ -4633,11 +4633,11 @@
               }
             ]
           },
-          "grossPayMale": {
+          "grossPayMaleInEuro": {
             "type": "number",
             "nullable": true
           },
-          "grossPayFemale": {
+          "grossPayFemaleInEuro": {
             "type": "number",
             "nullable": true
           },
@@ -4657,11 +4657,11 @@
             "type": "number",
             "nullable": true
           },
-          "averageHourlyPayMale": {
+          "averageHourlyPayMaleInEuroPerHour": {
             "type": "number",
             "nullable": true
           },
-          "averageHourlyPayFemale": {
+          "averageHourlyPayFemaleInEuroPerHour": {
             "type": "number",
             "nullable": true
           },
@@ -4669,11 +4669,11 @@
             "type": "number",
             "nullable": true
           },
-          "numberBargainingAgreementsFullTime": {
+          "numberBargainingAgreementsInFte": {
             "type": "number",
             "nullable": true
           },
-          "numberBargainingAgreementsHead": {
+          "numberBargainingAgreementsInHeadcount": {
             "type": "number",
             "nullable": true
           },
@@ -14968,18 +14968,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14987,6 +14975,18 @@
           "lei": {
             "type": "string",
             "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },
@@ -15009,10 +15009,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
