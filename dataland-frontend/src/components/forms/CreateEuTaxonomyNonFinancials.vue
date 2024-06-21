@@ -44,18 +44,22 @@
                   />
                 </div>
 
-                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
             </div>
 
             <FormKit type="group" name="data" label="data">
               <div
                 v-for="category in eutaxonomyNonFinancialsDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -98,9 +102,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in eutaxonomyNonFinancialsDataModel" :key="category">
+            <li v-for="category in eutaxonomyNonFinancialsDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -278,12 +282,12 @@ export default defineComponent({
      * Builds an api to get and upload EU Taxonomy non-financials data
      * @returns the api
      */
-    buildEuTaxonomyNonFinancialsDataApi(): PublicFrameworkDataApi<EutaxonomyNonFinancialsData> {
+    buildEuTaxonomyNonFinancialsDataApi(): PublicFrameworkDataApi<EutaxonomyNonFinancialsData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+      } else return undefined;
     },
     /**
      * Loads the EutaxonomyNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
@@ -294,7 +298,7 @@ export default defineComponent({
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
 
-      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getFrameworkData(dataId);
       const euTaxonomyNonFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
       if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {
@@ -323,7 +327,7 @@ export default defineComponent({
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
-        await euTaxonomyForNonFinancialsDataControllerApi.postFrameworkData(
+        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
           this.companyAssociatedEutaxonomyNonFinancialsData,
         );
         this.$emit("datasetCreated");
@@ -332,7 +336,7 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
