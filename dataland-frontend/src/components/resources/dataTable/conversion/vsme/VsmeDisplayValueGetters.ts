@@ -28,9 +28,9 @@ export const vsmeModalColumnHeaders = {
   wasteClassification: {
     wasteClassification: "Classification of waste",
     typeOfWaste: "Type of Waste",
-    totalAmountOfWasteInTons: "Total amout in tons",
-    wasteRecycleOrReuseInTons: "Waste recycle or reuse tons",
-    wasteDisposalInTons: "Waste disposal in tons",
+    totalAmountOfWasteInTonnes: "Total amout in tonnes",
+    wasteRecycleOrReuseInTonnes: "Waste recycle or reuse in tonnes",
+    wasteDisposalInTonnes: "Waste disposal in tonnes",
     totalAmountOfWasteInCubicMeters: "Total amount in cubic meters",
     wasteRecycleOrReuseInCubicMeters: "Waste recycle or reuse in m³",
     wasteDisposalInCubicMeters: "Waste disposal in m³",
@@ -62,9 +62,9 @@ interface VsmePollutionEmissionDisplayFormat {
 interface VsmeWasteClassificationDisplayFormat {
   wasteClassification: string;
   typeOfWaste: string;
-  totalAmountOfWasteInTons: number | undefined;
-  wasteRecycleOrReuseInTons: number | undefined;
-  wasteDisposalInTons: number | undefined;
+  totalAmountOfWasteInTonnes: number | undefined;
+  wasteRecycleOrReuseInTonnes: number | undefined;
+  wasteDisposalInTonnes: number | undefined;
   totalAmountOfWasteInCubicMeters: number | undefined;
   wasteRecycleOrReuseInCubicMeters: number | undefined;
   wasteDisposalInCubicMeters: number | undefined;
@@ -209,9 +209,9 @@ function convertVsmeWasteClassificationToListForModal(
     const humanizedItem: VsmeWasteClassificationDisplayFormat = {
       wasteClassification: humanizeStringOrNumber(item.wasteClassification),
       typeOfWaste: humanizeStringOrNumber(item.typeOfWaste),
-      totalAmountOfWasteInTons: item.totalAmountOfWasteInTons!,
-      wasteRecycleOrReuseInTons: item.wasteRecycleOrReuseInTons!,
-      wasteDisposalInTons: item.wasteDisposalInTons!,
+      totalAmountOfWasteInTonnes: item.totalAmountOfWasteInTonnes!,
+      wasteRecycleOrReuseInTonnes: item.wasteRecycleOrReuseInTonnes!,
+      wasteDisposalInTonnes: item.wasteDisposalInTonnes!,
       totalAmountOfWasteInCubicMeters: item.totalAmountOfWasteInCubicMeters!,
       wasteRecycleOrReuseInCubicMeters: item.wasteRecycleOrReuseInCubicMeters!,
       wasteDisposalInCubicMeters: item.wasteDisposalInCubicMeters!,

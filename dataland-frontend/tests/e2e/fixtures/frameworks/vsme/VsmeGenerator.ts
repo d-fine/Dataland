@@ -45,9 +45,9 @@ export class VsmeGenerator extends Generator {
     return {
       wasteClassification: pickOneElement(Object.values(WasteClassifications)),
       typeOfWaste: this.guaranteedShortString(),
-      totalAmountOfWasteInTons: this.randomFloat(0, 1e8),
-      wasteRecycleOrReuseInTons: this.randomFloat(0, 1e8),
-      wasteDisposalInTons: this.randomFloat(0, 1e8),
+      totalAmountOfWasteInTonnes: this.randomFloat(0, 1e8),
+      wasteRecycleOrReuseInTonnes: this.randomFloat(0, 1e8),
+      wasteDisposalInTonnes: this.randomFloat(0, 1e8),
       totalAmountOfWasteInCubicMeters: this.randomFloat(0, 1e2),
       wasteRecycleOrReuseInCubicMeters: this.randomFloat(0, 1e2),
       wasteDisposalInCubicMeters: this.randomFloat(0, 1e2),

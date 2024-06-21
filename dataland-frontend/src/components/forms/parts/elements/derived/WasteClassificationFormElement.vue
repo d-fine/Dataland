@@ -15,26 +15,26 @@
     validation="required"
   />
   <NumberFormField
-    :name="'totalAmountOfWasteInTons'"
+    :name="'totalAmountOfWasteInTonnes'"
     :validation-label="validationLabel"
-    label="Total amount of waste in tons"
-    description="Please specify the total amount of waste in tons"
+    label="Total amount of waste in tonnes"
+    description="Please specify the total amount of waste in tonnes"
     :validation="validation"
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'wasteRecycleOrReuseInTons'"
+    :name="'wasteRecycleOrReuseInTonnes'"
     :validation-label="validationLabel"
-    label="Recycled or reused waste in tons"
-    description="Please specify the recycled or reused waste in tons"
+    label="Recycled or reused waste in tonnes"
+    description="Please specify the recycled or reused waste in tonnes"
     :validation="validation"
     input-class="col-4 pr-0"
   />
   <NumberFormField
-    :name="'wasteDisposalInTons'"
+    :name="'wasteDisposalInTonnes'"
     :validation-label="validationLabel"
-    label="Waste disposal in tons"
-    description="Please specify the waste disposal in tons"
+    label="Waste disposal in tonnes"
+    description="Please specify the waste disposal in tonnes"
     :validation="validation"
     input-class="col-4 pr-0"
   />

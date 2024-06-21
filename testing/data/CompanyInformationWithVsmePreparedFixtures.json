@@ -238,18 +238,18 @@
 							"areaGeocoordinateLatitude": 53704296.82
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 27694.81,
+					"totalSealedAreaPreviousYearInHectare": 27694.81,
 					"totalSealedAreaReportingYearInHectare": 80778.82,
-					"percentualChangeSealedArea": 9.23,
+					"relativeChangeSealedArea": 9.23,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 10035.46,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 27585.1,
-					"percentualChangeNatureOrientedOnSite": 89.61,
+					"relativeChangeNatureOrientedOnSite": 89.61,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 84049.86,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 75356.76,
-					"percentualChangeNatureOrientedOffSite": 64.14,
+					"relativeChangeNatureOrientedOffSite": 64.14,
 					"totalUseOfLandPreviousYearInHectare": 35280.38,
 					"totalUseOfLandReportingYearInHectare": 79147.16,
-					"percentualChangeLandUse": 43.45
+					"relativeChangeLandUse": 43.45
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -282,9 +282,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "solutions",
-							"totalAmountOfWasteInTons": 18329389.88,
-							"wasteRecycleOrReuseInTons": 50670197.98,
-							"wasteDisposalInTons": 88722814.04,
+							"totalAmountOfWasteInTonnes": 18329389.88,
+							"wasteRecycleOrReuseInTonnes": 50670197.98,
+							"wasteDisposalInTonnes": 88722814.04,
 							"totalAmountOfWasteInCubicMeters": 71.89,
 							"wasteRecycleOrReuseInCubicMeters": 66.52,
 							"wasteDisposalInCubicMeters": 89.91
@@ -292,9 +292,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "networks",
-							"totalAmountOfWasteInTons": 98007815.78,
-							"wasteRecycleOrReuseInTons": 33705151.38,
-							"wasteDisposalInTons": 64588534.13,
+							"totalAmountOfWasteInTonnes": 98007815.78,
+							"wasteRecycleOrReuseInTonnes": 33705151.38,
+							"wasteDisposalInTonnes": 64588534.13,
 							"totalAmountOfWasteInCubicMeters": 19.36,
 							"wasteRecycleOrReuseInCubicMeters": 47.75,
 							"wasteDisposalInCubicMeters": 23.96

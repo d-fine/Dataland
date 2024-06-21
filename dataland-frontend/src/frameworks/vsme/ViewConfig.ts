@@ -85,7 +85,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             type: "cell",
             label: "Energy Fossil Fuels",
             explanation:
-              "Please disclose your total energy consumption in MWh (in the reporting period) for\n- fossil fuels ",
+              "Please disclose your total energy consumption in MWh (in the reporting period) for fossil fuels.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.basic?.energyAndGreenhousGasEmissions?.energyFossilFuelsInMWh, "MWh"),
@@ -94,7 +94,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             type: "cell",
             label: "Electricity Total",
             explanation:
-              "- electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
+              "Please disclose your total energy consumption in MWh (in the reporting period) for electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -226,12 +226,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Total Aealed Area Previous Year",
+            label: "Total Sealed Area Previous Year",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.basic?.biodiversity?.totalAealedAreaPreviousYearInHectare, "Hectare"),
+              formatNumberForDatatable(dataset.basic?.biodiversity?.totalSealedAreaPreviousYearInHectare, "Hectare"),
           },
           {
             type: "cell",
@@ -244,12 +244,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Percentual Change Sealed Area",
+            label: "Relative Change Sealed Area",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeSealedArea),
+              formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeSealedArea),
           },
           {
             type: "cell",
@@ -277,12 +277,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Percentual Change Nature-Oriented On-Site",
+            label: "Relative Change Nature-Oriented On-Site",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeNatureOrientedOnSite),
+              formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeNatureOrientedOnSite),
           },
           {
             type: "cell",
@@ -310,12 +310,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Percentual Change Nature-Oriented Off-Site",
+            label: "Relative Change Nature-Oriented Off-Site",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeNatureOrientedOffSite),
+              formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeNatureOrientedOffSite),
           },
           {
             type: "cell",
@@ -337,12 +337,12 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           },
           {
             type: "cell",
-            label: "Percentual Change Land Use",
+            label: "Relative Change Land Use",
             explanation:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.basic?.biodiversity?.percentualChangeLandUse),
+              formatPercentageForDatatable(dataset.basic?.biodiversity?.relativeChangeLandUse),
           },
         ],
       },
@@ -514,7 +514,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
           {
             type: "cell",
             label: "Waste Classification",
-
+            explanation: "Please disclose the waste classification for every type of waste.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatVsmeWasteClassificationObjectForDisplay(

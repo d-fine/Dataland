@@ -4234,7 +4234,7 @@
               "$ref": "#/components/schemas/VsmeSiteAndArea"
             }
           },
-          "totalAealedAreaPreviousYearInHectare": {
+          "totalSealedAreaPreviousYearInHectare": {
             "type": "number",
             "nullable": true
           },
@@ -4242,7 +4242,7 @@
             "type": "number",
             "nullable": true
           },
-          "percentualChangeSealedArea": {
+          "relativeChangeSealedArea": {
             "type": "number",
             "nullable": true
           },
@@ -4254,7 +4254,7 @@
             "type": "number",
             "nullable": true
           },
-          "percentualChangeNatureOrientedOnSite": {
+          "relativeChangeNatureOrientedOnSite": {
             "type": "number",
             "nullable": true
           },
@@ -4266,7 +4266,7 @@
             "type": "number",
             "nullable": true
           },
-          "percentualChangeNatureOrientedOffSite": {
+          "relativeChangeNatureOrientedOffSite": {
             "type": "number",
             "nullable": true
           },
@@ -4278,7 +4278,7 @@
             "type": "number",
             "nullable": true
           },
-          "percentualChangeLandUse": {
+          "relativeChangeLandUse": {
             "type": "number",
             "nullable": true
           }
@@ -4840,15 +4840,15 @@
           "typeOfWaste": {
             "type": "string"
           },
-          "totalAmountOfWasteInTons": {
+          "totalAmountOfWasteInTonnes": {
             "type": "number",
             "nullable": true
           },
-          "wasteRecycleOrReuseInTons": {
+          "wasteRecycleOrReuseInTonnes": {
             "type": "number",
             "nullable": true
           },
-          "wasteDisposalInTons": {
+          "wasteDisposalInTonnes": {
             "type": "number",
             "nullable": true
           },
@@ -14972,20 +14972,20 @@
             "type": "string",
             "nullable": true
           },
+          "companyName": {
+            "type": "string"
+          },
           "lei": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           }
         }

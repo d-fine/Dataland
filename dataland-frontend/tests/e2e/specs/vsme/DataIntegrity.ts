@@ -106,9 +106,9 @@ describeIf(
       cy.get('[data-test="WasteClassificationSection"]').find('[data-test="wasteClassification"]').click();
       cy.get("ul.p-dropdown-items li").contains(`Hazardous`).click();
       cy.get('[data-test="WasteClassificationSection"]').find('[name="typeOfWaste"]').type("Test-Waste");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInTons"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTons"]').type("12345");
-      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInTons"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInTonnes"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteRecycleOrReuseInTonnes"]').type("12345");
+      cy.get('[data-test="WasteClassificationSection"]').find('[name="wasteDisposalInTonnes"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]').find('[name="totalAmountOfWasteInCubicMeters"]').type("12345");
       cy.get('[data-test="WasteClassificationSection"]')
         .find('[name="wasteRecycleOrReuseInCubicMeters"]')
@@ -132,14 +132,14 @@ describeIf(
      * Fill out a datapoint with an attached document
      */
     function fillOutOneDatePointWithAttachedDocument() {
-      cy.get('[data-test="electricityTotal"]')
+      cy.get('[data-test="electricityTotalInMWh"]')
         .find('div[data-test="toggleDataPointWrapper"]')
         .find('div[data-test="dataPointToggleButton"]')
         .click();
-      cy.get('[data-test="electricityTotal"]').find('div[data-test="value"]').find('[name="value"]').type("12345");
-      cy.get('[data-test="electricityTotal"]').find('div[name="quality"]').click();
+      cy.get('[data-test="electricityTotalInMWh"]').find('div[data-test="value"]').find('[name="value"]').type("12345");
+      cy.get('[data-test="electricityTotalInMWh"]').find('div[name="quality"]').click();
       cy.get("ul.p-dropdown-items li").contains(`Audited`).click();
-      cy.get('[data-test="electricityTotal"]').find('div[name="fileName"]').click();
+      cy.get('[data-test="electricityTotalInMWh"]').find('div[name="fileName"]').click();
       cy.get("ul.p-dropdown-items li").contains(`${TEST_PDF_FILE_NAME}-private`).click();
     }
     /**

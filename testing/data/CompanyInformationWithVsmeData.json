@@ -152,18 +152,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 48591.96,
+					"totalSealedAreaPreviousYearInHectare": 48591.96,
 					"totalSealedAreaReportingYearInHectare": 25702.03,
-					"percentualChangeSealedArea": 92.07,
+					"relativeChangeSealedArea": 92.07,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 21231.08,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 95473.25,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 70788.91,
-					"percentualChangeNatureOrientedOffSite": 85.78,
+					"relativeChangeNatureOrientedOffSite": 85.78,
 					"totalUseOfLandPreviousYearInHectare": 84071.16,
 					"totalUseOfLandReportingYearInHectare": 91618.67,
-					"percentualChangeLandUse": 17.62
+					"relativeChangeLandUse": 17.62
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -576,18 +576,18 @@
 							"areaGeocoordinateLatitude": 75772967.22
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 43517.97,
+					"totalSealedAreaPreviousYearInHectare": 43517.97,
 					"totalSealedAreaReportingYearInHectare": 80909.45,
-					"percentualChangeSealedArea": 16.78,
+					"relativeChangeSealedArea": 16.78,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 55509.5,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 68.69,
+					"relativeChangeNatureOrientedOnSite": 68.69,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 66049.62,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 12536.98,
-					"percentualChangeNatureOrientedOffSite": 67.56,
+					"relativeChangeNatureOrientedOffSite": 67.56,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 50736.68,
-					"percentualChangeLandUse": 86.12
+					"relativeChangeLandUse": 86.12
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -1025,18 +1025,18 @@
 							"areaGeocoordinateLatitude": 63636560.53
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 65707.71,
+					"totalSealedAreaPreviousYearInHectare": 65707.71,
 					"totalSealedAreaReportingYearInHectare": 3500.72,
-					"percentualChangeSealedArea": 52.22,
+					"relativeChangeSealedArea": 52.22,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 74328.96,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 45289.95,
-					"percentualChangeNatureOrientedOnSite": 86.91,
+					"relativeChangeNatureOrientedOnSite": 86.91,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 51922.51,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 46759.18,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": 79386.5,
 					"totalUseOfLandReportingYearInHectare": 44248.25,
-					"percentualChangeLandUse": 1.26
+					"relativeChangeLandUse": 1.26
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -1069,9 +1069,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountOfWasteInTons": 23488764.67,
-							"wasteRecycleOrReuseInTons": 54526404.94,
-							"wasteDisposalInTons": 24867664.86,
+							"totalAmountOfWasteInTonnes": 23488764.67,
+							"wasteRecycleOrReuseInTonnes": 54526404.94,
+							"wasteDisposalInTonnes": 24867664.86,
 							"totalAmountOfWasteInCubicMeters": 96.57,
 							"wasteRecycleOrReuseInCubicMeters": 71,
 							"wasteDisposalInCubicMeters": 56.71
@@ -1079,9 +1079,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "e-markets",
-							"totalAmountOfWasteInTons": 13923032.97,
-							"wasteRecycleOrReuseInTons": 49338809.96,
-							"wasteDisposalInTons": 30486979.43,
+							"totalAmountOfWasteInTonnes": 13923032.97,
+							"wasteRecycleOrReuseInTonnes": 49338809.96,
+							"wasteDisposalInTonnes": 30486979.43,
 							"totalAmountOfWasteInCubicMeters": 61.13,
 							"wasteRecycleOrReuseInCubicMeters": 44.98,
 							"wasteDisposalInCubicMeters": 64.8
@@ -1089,9 +1089,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "networks",
-							"totalAmountOfWasteInTons": 60452193.47,
-							"wasteRecycleOrReuseInTons": 49591420.33,
-							"wasteDisposalInTons": 34806825.31,
+							"totalAmountOfWasteInTonnes": 60452193.47,
+							"wasteRecycleOrReuseInTonnes": 49591420.33,
+							"wasteDisposalInTonnes": 34806825.31,
 							"totalAmountOfWasteInCubicMeters": 67.99,
 							"wasteRecycleOrReuseInCubicMeters": 58.01,
 							"wasteDisposalInCubicMeters": 43.59
@@ -1388,18 +1388,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 85066.23,
+					"totalSealedAreaPreviousYearInHectare": 85066.23,
 					"totalSealedAreaReportingYearInHectare": 56624.12,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 79949.29,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 93109.44,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": 28.67,
+					"relativeChangeNatureOrientedOffSite": 28.67,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 7068.21,
-					"percentualChangeLandUse": 23.23
+					"relativeChangeLandUse": 23.23
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -1842,18 +1842,18 @@
 							"areaGeocoordinateLatitude": 94953972.43
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": 62571.36,
-					"percentualChangeSealedArea": 7.47,
+					"relativeChangeSealedArea": 7.47,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 51937.84,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 67846.22,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 60682.01,
-					"percentualChangeNatureOrientedOffSite": 71.82,
+					"relativeChangeNatureOrientedOffSite": 71.82,
 					"totalUseOfLandPreviousYearInHectare": 23885.35,
 					"totalUseOfLandReportingYearInHectare": 96802.86,
-					"percentualChangeLandUse": 76.09
+					"relativeChangeLandUse": 76.09
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -2173,18 +2173,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 8196,
+					"totalSealedAreaPreviousYearInHectare": 8196,
 					"totalSealedAreaReportingYearInHectare": 25986.05,
-					"percentualChangeSealedArea": 77.09,
+					"relativeChangeSealedArea": 77.09,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 31314.75,
-					"percentualChangeNatureOrientedOnSite": 42.99,
+					"relativeChangeNatureOrientedOnSite": 42.99,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 61022.44,
-					"percentualChangeNatureOrientedOffSite": 58.37,
+					"relativeChangeNatureOrientedOffSite": 58.37,
 					"totalUseOfLandPreviousYearInHectare": 30585.69,
 					"totalUseOfLandReportingYearInHectare": 15026.75,
-					"percentualChangeLandUse": 98.16
+					"relativeChangeLandUse": 98.16
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -2207,9 +2207,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "synergies",
-							"totalAmountOfWasteInTons": 20051326.2,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 490659.8,
+							"totalAmountOfWasteInTonnes": 20051326.2,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 490659.8,
 							"totalAmountOfWasteInCubicMeters": 56.85,
 							"wasteRecycleOrReuseInCubicMeters": 60.16,
 							"wasteDisposalInCubicMeters": 74.2
@@ -2509,18 +2509,18 @@
 							"areaGeocoordinateLatitude": 40545747.96
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 84908.81,
+					"totalSealedAreaPreviousYearInHectare": 84908.81,
 					"totalSealedAreaReportingYearInHectare": 9255.58,
-					"percentualChangeSealedArea": 10.4,
+					"relativeChangeSealedArea": 10.4,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 63931.9,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 66657.51,
-					"percentualChangeNatureOrientedOnSite": 89.87,
+					"relativeChangeNatureOrientedOnSite": 89.87,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 68363.21,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": 98127.91,
 					"totalUseOfLandReportingYearInHectare": 3127.5,
-					"percentualChangeLandUse": 44.16
+					"relativeChangeLandUse": 44.16
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -2553,9 +2553,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "lifetime value",
-							"totalAmountOfWasteInTons": 84801534.01,
-							"wasteRecycleOrReuseInTons": 40174302.92,
-							"wasteDisposalInTons": 11336216.19,
+							"totalAmountOfWasteInTonnes": 84801534.01,
+							"wasteRecycleOrReuseInTonnes": 40174302.92,
+							"wasteDisposalInTonnes": 11336216.19,
 							"totalAmountOfWasteInCubicMeters": 69.76,
 							"wasteRecycleOrReuseInCubicMeters": 87.5,
 							"wasteDisposalInCubicMeters": 32.31
@@ -2563,9 +2563,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "networks",
-							"totalAmountOfWasteInTons": 59162409.79,
-							"wasteRecycleOrReuseInTons": 91327233.06,
-							"wasteDisposalInTons": 20550120.62,
+							"totalAmountOfWasteInTonnes": 59162409.79,
+							"wasteRecycleOrReuseInTonnes": 91327233.06,
+							"wasteDisposalInTonnes": 20550120.62,
 							"totalAmountOfWasteInCubicMeters": 96.3,
 							"wasteRecycleOrReuseInCubicMeters": 55.23,
 							"wasteDisposalInCubicMeters": null
@@ -2573,9 +2573,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "portals",
-							"totalAmountOfWasteInTons": 95767421.26,
-							"wasteRecycleOrReuseInTons": 31342293.32,
-							"wasteDisposalInTons": 58131604.81,
+							"totalAmountOfWasteInTonnes": 95767421.26,
+							"wasteRecycleOrReuseInTonnes": 31342293.32,
+							"wasteDisposalInTonnes": 58131604.81,
 							"totalAmountOfWasteInCubicMeters": 70.19,
 							"wasteRecycleOrReuseInCubicMeters": 62.28,
 							"wasteDisposalInCubicMeters": 78.47
@@ -2815,18 +2815,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 91482.57,
+					"totalSealedAreaPreviousYearInHectare": 91482.57,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 44.42,
+					"relativeChangeSealedArea": 44.42,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 7056.25,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 55636.61,
-					"percentualChangeNatureOrientedOnSite": 62.42,
+					"relativeChangeNatureOrientedOnSite": 62.42,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 38123.69,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 22496.46,
-					"percentualChangeNatureOrientedOffSite": 98.55,
+					"relativeChangeNatureOrientedOffSite": 98.55,
 					"totalUseOfLandPreviousYearInHectare": 83704.57,
 					"totalUseOfLandReportingYearInHectare": 11814.6,
-					"percentualChangeLandUse": 88.37
+					"relativeChangeLandUse": 88.37
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -2859,9 +2859,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "methodologies",
-							"totalAmountOfWasteInTons": 38322849.48,
-							"wasteRecycleOrReuseInTons": 45860837.14,
-							"wasteDisposalInTons": 59629539.4,
+							"totalAmountOfWasteInTonnes": 38322849.48,
+							"wasteRecycleOrReuseInTonnes": 45860837.14,
+							"wasteDisposalInTonnes": 59629539.4,
 							"totalAmountOfWasteInCubicMeters": 91.89,
 							"wasteRecycleOrReuseInCubicMeters": 11.01,
 							"wasteDisposalInCubicMeters": 69.31
@@ -3178,18 +3178,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": 55207.71,
+					"totalSealedAreaPreviousYearInHectare": 55207.71,
 					"totalSealedAreaReportingYearInHectare": 67826.53,
-					"percentualChangeSealedArea": 1.82,
+					"relativeChangeSealedArea": 1.82,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 25052.62,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 89.66,
+					"relativeChangeNatureOrientedOnSite": 89.66,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 50923.95,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 98321.12,
-					"percentualChangeNatureOrientedOffSite": 99.04,
+					"relativeChangeNatureOrientedOffSite": 99.04,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 64510.79,
-					"percentualChangeLandUse": 92.37
+					"relativeChangeLandUse": 92.37
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -3600,18 +3600,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 21100.68,
+					"totalSealedAreaPreviousYearInHectare": 21100.68,
 					"totalSealedAreaReportingYearInHectare": 24704.93,
-					"percentualChangeSealedArea": 22.64,
+					"relativeChangeSealedArea": 22.64,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 27129.82,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 64528.23,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 98669.52,
-					"percentualChangeNatureOrientedOffSite": 73.54,
+					"relativeChangeNatureOrientedOffSite": 73.54,
 					"totalUseOfLandPreviousYearInHectare": 8729.54,
 					"totalUseOfLandReportingYearInHectare": 15329.73,
-					"percentualChangeLandUse": 87.74
+					"relativeChangeLandUse": 87.74
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -3915,18 +3915,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 74514.88,
+					"totalSealedAreaPreviousYearInHectare": 74514.88,
 					"totalSealedAreaReportingYearInHectare": 46117.35,
-					"percentualChangeSealedArea": 1.93,
+					"relativeChangeSealedArea": 1.93,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 30694.95,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 48572.21,
-					"percentualChangeNatureOrientedOnSite": 81.65,
+					"relativeChangeNatureOrientedOnSite": 81.65,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 64298.76,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 59329.27,
-					"percentualChangeNatureOrientedOffSite": 19.7,
+					"relativeChangeNatureOrientedOffSite": 19.7,
 					"totalUseOfLandPreviousYearInHectare": 70482,
 					"totalUseOfLandReportingYearInHectare": 94976.91,
-					"percentualChangeLandUse": 56.67
+					"relativeChangeLandUse": 56.67
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -3959,9 +3959,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "niches",
-							"totalAmountOfWasteInTons": 67179087.32,
-							"wasteRecycleOrReuseInTons": 76721684.36,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 67179087.32,
+							"wasteRecycleOrReuseInTonnes": 76721684.36,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": 58.56,
 							"wasteRecycleOrReuseInCubicMeters": 83.54,
 							"wasteDisposalInCubicMeters": 76.6
@@ -3969,9 +3969,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "interfaces",
-							"totalAmountOfWasteInTons": 95464693.22,
-							"wasteRecycleOrReuseInTons": 89931483.15,
-							"wasteDisposalInTons": 86776192.49,
+							"totalAmountOfWasteInTonnes": 95464693.22,
+							"wasteRecycleOrReuseInTonnes": 89931483.15,
+							"wasteDisposalInTonnes": 86776192.49,
 							"totalAmountOfWasteInCubicMeters": 12.98,
 							"wasteRecycleOrReuseInCubicMeters": 62.29,
 							"wasteDisposalInCubicMeters": 20.43
@@ -4211,18 +4211,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": 6418.15,
+					"totalSealedAreaPreviousYearInHectare": 6418.15,
 					"totalSealedAreaReportingYearInHectare": 70271.72,
-					"percentualChangeSealedArea": 89.15,
+					"relativeChangeSealedArea": 89.15,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 11838.25,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 26286.85,
-					"percentualChangeNatureOrientedOnSite": 70.2,
+					"relativeChangeNatureOrientedOnSite": 70.2,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 4189.87,
-					"percentualChangeNatureOrientedOffSite": 78.52,
+					"relativeChangeNatureOrientedOffSite": 78.52,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 99414.81,
-					"percentualChangeLandUse": 36.57
+					"relativeChangeLandUse": 36.57
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -4490,18 +4490,18 @@
 							"areaGeocoordinateLatitude": 11858557.49
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 61244.4,
+					"totalSealedAreaPreviousYearInHectare": 61244.4,
 					"totalSealedAreaReportingYearInHectare": 61007.38,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 93591.79,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 24299.46,
-					"percentualChangeNatureOrientedOnSite": 72.37,
+					"relativeChangeNatureOrientedOnSite": 72.37,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 58527.19,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 75176.33,
-					"percentualChangeNatureOrientedOffSite": 20.09,
+					"relativeChangeNatureOrientedOffSite": 20.09,
 					"totalUseOfLandPreviousYearInHectare": 63309.34,
 					"totalUseOfLandReportingYearInHectare": 23439.85,
-					"percentualChangeLandUse": 71.97
+					"relativeChangeLandUse": 71.97
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -4529,9 +4529,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountOfWasteInTons": null,
-							"wasteRecycleOrReuseInTons": 42001181.28,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": null,
+							"wasteRecycleOrReuseInTonnes": 42001181.28,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": 72.02,
 							"wasteRecycleOrReuseInCubicMeters": 25.44,
 							"wasteDisposalInCubicMeters": null
@@ -4539,9 +4539,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "infrastructures",
-							"totalAmountOfWasteInTons": 88302598.36,
-							"wasteRecycleOrReuseInTons": 21670862.03,
-							"wasteDisposalInTons": 69630076.48,
+							"totalAmountOfWasteInTonnes": 88302598.36,
+							"wasteRecycleOrReuseInTonnes": 21670862.03,
+							"wasteDisposalInTonnes": 69630076.48,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 20.79,
 							"wasteDisposalInCubicMeters": 28.96
@@ -4549,9 +4549,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "architectures",
-							"totalAmountOfWasteInTons": 40410687.68,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 46810179.95,
+							"totalAmountOfWasteInTonnes": 40410687.68,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 46810179.95,
 							"totalAmountOfWasteInCubicMeters": 47.09,
 							"wasteRecycleOrReuseInCubicMeters": 2.14,
 							"wasteDisposalInCubicMeters": null
@@ -4855,18 +4855,18 @@
 							"areaGeocoordinateLatitude": 18426792.65
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 34357.37,
+					"totalSealedAreaPreviousYearInHectare": 34357.37,
 					"totalSealedAreaReportingYearInHectare": 4913.76,
-					"percentualChangeSealedArea": 19.99,
+					"relativeChangeSealedArea": 19.99,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 68446.35,
-					"percentualChangeNatureOrientedOnSite": 53.06,
+					"relativeChangeNatureOrientedOnSite": 53.06,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 71897.29,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": 13.62,
+					"relativeChangeNatureOrientedOffSite": 13.62,
 					"totalUseOfLandPreviousYearInHectare": 64300.19,
 					"totalUseOfLandReportingYearInHectare": 19260.44,
-					"percentualChangeLandUse": 9.71
+					"relativeChangeLandUse": 9.71
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -5187,18 +5187,18 @@
 							"areaGeocoordinateLatitude": 77328367.7
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 55673.85,
+					"totalSealedAreaPreviousYearInHectare": 55673.85,
 					"totalSealedAreaReportingYearInHectare": 76631.39,
-					"percentualChangeSealedArea": 25.67,
+					"relativeChangeSealedArea": 25.67,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 43359.34,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 79.24,
+					"relativeChangeNatureOrientedOnSite": 79.24,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 41043.76,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 11861.54,
-					"percentualChangeNatureOrientedOffSite": 26.46,
+					"relativeChangeNatureOrientedOffSite": 26.46,
 					"totalUseOfLandPreviousYearInHectare": 83500.29,
 					"totalUseOfLandReportingYearInHectare": 93944.35,
-					"percentualChangeLandUse": 14.55
+					"relativeChangeLandUse": 14.55
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -5567,18 +5567,18 @@
 							"areaGeocoordinateLatitude": 57783292.63
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 62.46,
+					"relativeChangeSealedArea": 62.46,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 55841.85,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 98011.99,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 55600.87,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 2877.64,
-					"percentualChangeNatureOrientedOffSite": 81.65,
+					"relativeChangeNatureOrientedOffSite": 81.65,
 					"totalUseOfLandPreviousYearInHectare": 1653.7,
 					"totalUseOfLandReportingYearInHectare": 55248.9,
-					"percentualChangeLandUse": 34.5
+					"relativeChangeLandUse": 34.5
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -5611,9 +5611,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountOfWasteInTons": 44968136.24,
-							"wasteRecycleOrReuseInTons": 60499616.41,
-							"wasteDisposalInTons": 35231834.74,
+							"totalAmountOfWasteInTonnes": 44968136.24,
+							"wasteRecycleOrReuseInTonnes": 60499616.41,
+							"wasteDisposalInTonnes": 35231834.74,
 							"totalAmountOfWasteInCubicMeters": 22.22,
 							"wasteRecycleOrReuseInCubicMeters": 96.76,
 							"wasteDisposalInCubicMeters": 73.95
@@ -5621,9 +5621,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "e-markets",
-							"totalAmountOfWasteInTons": 35203304.02,
-							"wasteRecycleOrReuseInTons": 18086956.04,
-							"wasteDisposalInTons": 26973172.51,
+							"totalAmountOfWasteInTonnes": 35203304.02,
+							"wasteRecycleOrReuseInTonnes": 18086956.04,
+							"wasteDisposalInTonnes": 26973172.51,
 							"totalAmountOfWasteInCubicMeters": 33.32,
 							"wasteRecycleOrReuseInCubicMeters": 76.54,
 							"wasteDisposalInCubicMeters": 91.27
@@ -5631,9 +5631,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "web services",
-							"totalAmountOfWasteInTons": null,
-							"wasteRecycleOrReuseInTons": 87268146.64,
-							"wasteDisposalInTons": 13329818.47,
+							"totalAmountOfWasteInTonnes": null,
+							"wasteRecycleOrReuseInTonnes": 87268146.64,
+							"wasteDisposalInTonnes": 13329818.47,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 31.54,
 							"wasteDisposalInCubicMeters": 92.2
@@ -5892,18 +5892,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 78876.97,
+					"totalSealedAreaPreviousYearInHectare": 78876.97,
 					"totalSealedAreaReportingYearInHectare": 43786.74,
-					"percentualChangeSealedArea": 44.75,
+					"relativeChangeSealedArea": 44.75,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 49312.62,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 33212,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 70816.37,
-					"percentualChangeNatureOrientedOffSite": 47.95,
+					"relativeChangeNatureOrientedOffSite": 47.95,
 					"totalUseOfLandPreviousYearInHectare": 35691.59,
 					"totalUseOfLandReportingYearInHectare": 38141.23,
-					"percentualChangeLandUse": 83.02
+					"relativeChangeLandUse": 83.02
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -6303,18 +6303,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": 77198.39,
-					"percentualChangeSealedArea": 98.15,
+					"relativeChangeSealedArea": 98.15,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 66750.66,
-					"percentualChangeNatureOrientedOnSite": 62.81,
+					"relativeChangeNatureOrientedOnSite": 62.81,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 24216.49,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 53948.58,
-					"percentualChangeNatureOrientedOffSite": 81.81,
+					"relativeChangeNatureOrientedOffSite": 81.81,
 					"totalUseOfLandPreviousYearInHectare": 6833.21,
 					"totalUseOfLandReportingYearInHectare": 12743.96,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -6622,18 +6622,18 @@
 							"areaGeocoordinateLatitude": 33073149.27
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 12050.75,
+					"totalSealedAreaPreviousYearInHectare": 12050.75,
 					"totalSealedAreaReportingYearInHectare": 42274.45,
-					"percentualChangeSealedArea": 79.19,
+					"relativeChangeSealedArea": 79.19,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 3939.97,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 65.11,
+					"relativeChangeNatureOrientedOnSite": 65.11,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 1111.8,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 31705.92,
-					"percentualChangeNatureOrientedOffSite": 98.58,
+					"relativeChangeNatureOrientedOffSite": 98.58,
 					"totalUseOfLandPreviousYearInHectare": 14070.71,
 					"totalUseOfLandReportingYearInHectare": 56504.29,
-					"percentualChangeLandUse": 49.33
+					"relativeChangeLandUse": 49.33
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -6656,9 +6656,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "ROI",
-							"totalAmountOfWasteInTons": 56696978.24,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 96206099.59,
+							"totalAmountOfWasteInTonnes": 56696978.24,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 96206099.59,
 							"totalAmountOfWasteInCubicMeters": 75.87,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 26.63
@@ -6666,9 +6666,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "metrics",
-							"totalAmountOfWasteInTons": 71726875.59,
-							"wasteRecycleOrReuseInTons": 17739521.92,
-							"wasteDisposalInTons": 39532163.41,
+							"totalAmountOfWasteInTonnes": 71726875.59,
+							"wasteRecycleOrReuseInTonnes": 17739521.92,
+							"wasteDisposalInTonnes": 39532163.41,
 							"totalAmountOfWasteInCubicMeters": 28.11,
 							"wasteRecycleOrReuseInCubicMeters": 1.82,
 							"wasteDisposalInCubicMeters": 44.83
@@ -7006,18 +7006,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": 58289.38,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 57324.29,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 18559.36,
-					"percentualChangeNatureOrientedOnSite": 23.15,
+					"relativeChangeNatureOrientedOnSite": 23.15,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 83206.57,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 8243.76,
-					"percentualChangeNatureOrientedOffSite": 41.74,
+					"relativeChangeNatureOrientedOffSite": 41.74,
 					"totalUseOfLandPreviousYearInHectare": 47134.65,
 					"totalUseOfLandReportingYearInHectare": 1397.54,
-					"percentualChangeLandUse": 72.87
+					"relativeChangeLandUse": 72.87
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -7270,18 +7270,18 @@
 							"areaGeocoordinateLatitude": 21085731.64
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 61026.33,
+					"totalSealedAreaPreviousYearInHectare": 61026.33,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 83.32,
+					"relativeChangeSealedArea": 83.32,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 45488.24,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 48497.2,
-					"percentualChangeNatureOrientedOnSite": 27.74,
+					"relativeChangeNatureOrientedOnSite": 27.74,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 3135.68,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 23008.98,
-					"percentualChangeNatureOrientedOffSite": 93.17,
+					"relativeChangeNatureOrientedOffSite": 93.17,
 					"totalUseOfLandPreviousYearInHectare": 19133.07,
 					"totalUseOfLandReportingYearInHectare": 30463.54,
-					"percentualChangeLandUse": 25.46
+					"relativeChangeLandUse": 25.46
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -7655,18 +7655,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 39374.99,
+					"totalSealedAreaPreviousYearInHectare": 39374.99,
 					"totalSealedAreaReportingYearInHectare": 26782.58,
-					"percentualChangeSealedArea": 80.43,
+					"relativeChangeSealedArea": 80.43,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 34456.46,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 14002.39,
-					"percentualChangeNatureOrientedOnSite": 5.84,
+					"relativeChangeNatureOrientedOnSite": 5.84,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 11630.42,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 83991.84,
-					"percentualChangeNatureOrientedOffSite": 95.25,
+					"relativeChangeNatureOrientedOffSite": 95.25,
 					"totalUseOfLandPreviousYearInHectare": 33019.01,
 					"totalUseOfLandReportingYearInHectare": 18577.78,
-					"percentualChangeLandUse": 92.64
+					"relativeChangeLandUse": 92.64
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -7699,9 +7699,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "ROI",
-							"totalAmountOfWasteInTons": 88088591.28,
-							"wasteRecycleOrReuseInTons": 41947023.15,
-							"wasteDisposalInTons": 62645080.31,
+							"totalAmountOfWasteInTonnes": 88088591.28,
+							"wasteRecycleOrReuseInTonnes": 41947023.15,
+							"wasteDisposalInTonnes": 62645080.31,
 							"totalAmountOfWasteInCubicMeters": 98.42,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 88.28
@@ -8037,18 +8037,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": 21183.32,
+					"totalSealedAreaPreviousYearInHectare": 21183.32,
 					"totalSealedAreaReportingYearInHectare": 32019.42,
-					"percentualChangeSealedArea": 94.63,
+					"relativeChangeSealedArea": 94.63,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 44536.27,
-					"percentualChangeNatureOrientedOnSite": 93.67,
+					"relativeChangeNatureOrientedOnSite": 93.67,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 5314.39,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 7798.9,
-					"percentualChangeNatureOrientedOffSite": 23.77,
+					"relativeChangeNatureOrientedOffSite": 23.77,
 					"totalUseOfLandPreviousYearInHectare": 63208.64,
 					"totalUseOfLandReportingYearInHectare": 99558.67,
-					"percentualChangeLandUse": 84.67
+					"relativeChangeLandUse": 84.67
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -8071,9 +8071,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "methodologies",
-							"totalAmountOfWasteInTons": 50417812.35,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 65815053.65,
+							"totalAmountOfWasteInTonnes": 50417812.35,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 65815053.65,
 							"totalAmountOfWasteInCubicMeters": 23.19,
 							"wasteRecycleOrReuseInCubicMeters": 61.87,
 							"wasteDisposalInCubicMeters": 35.78
@@ -8081,9 +8081,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "interfaces",
-							"totalAmountOfWasteInTons": 6091738.3,
-							"wasteRecycleOrReuseInTons": 13934990.25,
-							"wasteDisposalInTons": 28620048.12,
+							"totalAmountOfWasteInTonnes": 6091738.3,
+							"wasteRecycleOrReuseInTonnes": 13934990.25,
+							"wasteDisposalInTonnes": 28620048.12,
 							"totalAmountOfWasteInCubicMeters": 25.47,
 							"wasteRecycleOrReuseInCubicMeters": 97.61,
 							"wasteDisposalInCubicMeters": null
@@ -8385,18 +8385,18 @@
 							"areaGeocoordinateLatitude": 12772491.9
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 12926,
+					"totalSealedAreaPreviousYearInHectare": 12926,
 					"totalSealedAreaReportingYearInHectare": 7726.51,
-					"percentualChangeSealedArea": 19.09,
+					"relativeChangeSealedArea": 19.09,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 24830.94,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 38640.61,
-					"percentualChangeNatureOrientedOnSite": 42.76,
+					"relativeChangeNatureOrientedOnSite": 42.76,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 83616.99,
-					"percentualChangeNatureOrientedOffSite": 79.56,
+					"relativeChangeNatureOrientedOffSite": 79.56,
 					"totalUseOfLandPreviousYearInHectare": 51788.69,
 					"totalUseOfLandReportingYearInHectare": null,
-					"percentualChangeLandUse": 6.69
+					"relativeChangeLandUse": 6.69
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -8424,9 +8424,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "ROI",
-							"totalAmountOfWasteInTons": 90821991.73,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 44842890.46,
+							"totalAmountOfWasteInTonnes": 90821991.73,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 44842890.46,
 							"totalAmountOfWasteInCubicMeters": 8.01,
 							"wasteRecycleOrReuseInCubicMeters": 78.63,
 							"wasteDisposalInCubicMeters": 76.89
@@ -8434,9 +8434,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "e-markets",
-							"totalAmountOfWasteInTons": 8841334.61,
-							"wasteRecycleOrReuseInTons": 68200667.67,
-							"wasteDisposalInTons": 69551382.91,
+							"totalAmountOfWasteInTonnes": 8841334.61,
+							"wasteRecycleOrReuseInTonnes": 68200667.67,
+							"wasteDisposalInTonnes": 69551382.91,
 							"totalAmountOfWasteInCubicMeters": 84.32,
 							"wasteRecycleOrReuseInCubicMeters": 50.91,
 							"wasteDisposalInCubicMeters": 31.77
@@ -8444,9 +8444,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "e-markets",
-							"totalAmountOfWasteInTons": 49685714.65,
-							"wasteRecycleOrReuseInTons": 77210422.45,
-							"wasteDisposalInTons": 6584460.17,
+							"totalAmountOfWasteInTonnes": 49685714.65,
+							"wasteRecycleOrReuseInTonnes": 77210422.45,
+							"wasteDisposalInTonnes": 6584460.17,
 							"totalAmountOfWasteInCubicMeters": 62.66,
 							"wasteRecycleOrReuseInCubicMeters": 0.71,
 							"wasteDisposalInCubicMeters": 73.79
@@ -8775,18 +8775,18 @@
 							"areaGeocoordinateLatitude": 23897077.05
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 9092.76,
+					"totalSealedAreaPreviousYearInHectare": 9092.76,
 					"totalSealedAreaReportingYearInHectare": 27856.23,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 30483.48,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 56.08,
+					"relativeChangeNatureOrientedOnSite": 56.08,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 50308.77,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 10949.04,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 91858.14,
-					"percentualChangeLandUse": 27.36
+					"relativeChangeLandUse": 27.36
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -8819,9 +8819,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "systems",
-							"totalAmountOfWasteInTons": 7227026.22,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 7227026.22,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 30.78,
 							"wasteDisposalInCubicMeters": null
@@ -9116,18 +9116,18 @@
 							"areaGeocoordinateLatitude": 30550568.41
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 54703.23,
+					"totalSealedAreaPreviousYearInHectare": 54703.23,
 					"totalSealedAreaReportingYearInHectare": 4462.42,
-					"percentualChangeSealedArea": 16.6,
+					"relativeChangeSealedArea": 16.6,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 63393.16,
-					"percentualChangeNatureOrientedOnSite": 42.65,
+					"relativeChangeNatureOrientedOnSite": 42.65,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 40253.69,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 35385.45,
-					"percentualChangeNatureOrientedOffSite": 70.4,
+					"relativeChangeNatureOrientedOffSite": 70.4,
 					"totalUseOfLandPreviousYearInHectare": 36422.49,
 					"totalUseOfLandReportingYearInHectare": 27597.99,
-					"percentualChangeLandUse": 20.94
+					"relativeChangeLandUse": 20.94
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -9434,18 +9434,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 90954.41,
+					"totalSealedAreaPreviousYearInHectare": 90954.41,
 					"totalSealedAreaReportingYearInHectare": 55472.35,
-					"percentualChangeSealedArea": 6.8,
+					"relativeChangeSealedArea": 6.8,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 18563.62,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 75850.58,
-					"percentualChangeNatureOrientedOnSite": 48.37,
+					"relativeChangeNatureOrientedOnSite": 48.37,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 70832.23,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 35349.17,
-					"percentualChangeNatureOrientedOffSite": 33.24,
+					"relativeChangeNatureOrientedOffSite": 33.24,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 45622.68,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -9764,18 +9764,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 78622.38,
+					"totalSealedAreaPreviousYearInHectare": 78622.38,
 					"totalSealedAreaReportingYearInHectare": 28470.03,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 43463.65,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 92411.84,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": 50.66,
+					"relativeChangeNatureOrientedOffSite": 50.66,
 					"totalUseOfLandPreviousYearInHectare": 24901.41,
 					"totalUseOfLandReportingYearInHectare": 12718.46,
-					"percentualChangeLandUse": 86.03
+					"relativeChangeLandUse": 86.03
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -9798,9 +9798,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "convergence",
-							"totalAmountOfWasteInTons": 31193013.6,
-							"wasteRecycleOrReuseInTons": 86819711.7,
-							"wasteDisposalInTons": 56539736.22,
+							"totalAmountOfWasteInTonnes": 31193013.6,
+							"wasteRecycleOrReuseInTonnes": 86819711.7,
+							"wasteDisposalInTonnes": 56539736.22,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 15.16
@@ -9808,9 +9808,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "architectures",
-							"totalAmountOfWasteInTons": 77682585.3,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 77682585.3,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": 10.95,
 							"wasteRecycleOrReuseInCubicMeters": 82.51,
 							"wasteDisposalInCubicMeters": 32.37
@@ -9818,9 +9818,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "experiences",
-							"totalAmountOfWasteInTons": 42538219.43,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 8410408.51,
+							"totalAmountOfWasteInTonnes": 42538219.43,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 8410408.51,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 29.3,
 							"wasteDisposalInCubicMeters": 36.25
@@ -10125,18 +10125,18 @@
 							"areaGeocoordinateLatitude": 29435393.03
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 66497.97,
+					"totalSealedAreaPreviousYearInHectare": 66497.97,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 45.96,
+					"relativeChangeSealedArea": 45.96,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 90511.18,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 75268.58,
-					"percentualChangeNatureOrientedOnSite": 54.09,
+					"relativeChangeNatureOrientedOnSite": 54.09,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 87356.96,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 79774.85,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 57726.92,
-					"percentualChangeLandUse": 38.89
+					"relativeChangeLandUse": 38.89
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -10169,9 +10169,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "users",
-							"totalAmountOfWasteInTons": 11706290.95,
-							"wasteRecycleOrReuseInTons": 23559053.82,
-							"wasteDisposalInTons": 91921209.69,
+							"totalAmountOfWasteInTonnes": 11706290.95,
+							"wasteRecycleOrReuseInTonnes": 23559053.82,
+							"wasteDisposalInTonnes": 91921209.69,
 							"totalAmountOfWasteInCubicMeters": 60.08,
 							"wasteRecycleOrReuseInCubicMeters": 78.79,
 							"wasteDisposalInCubicMeters": null
@@ -10179,9 +10179,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "networks",
-							"totalAmountOfWasteInTons": 47069892.8,
-							"wasteRecycleOrReuseInTons": 46097780.14,
-							"wasteDisposalInTons": 77244349.83,
+							"totalAmountOfWasteInTonnes": 47069892.8,
+							"wasteRecycleOrReuseInTonnes": 46097780.14,
+							"wasteDisposalInTonnes": 77244349.83,
 							"totalAmountOfWasteInCubicMeters": 78.7,
 							"wasteRecycleOrReuseInCubicMeters": 68.62,
 							"wasteDisposalInCubicMeters": 91.92
@@ -10189,9 +10189,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "networks",
-							"totalAmountOfWasteInTons": 20673571.8,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 76645789.9,
+							"totalAmountOfWasteInTonnes": 20673571.8,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 76645789.9,
 							"totalAmountOfWasteInCubicMeters": 8.66,
 							"wasteRecycleOrReuseInCubicMeters": 51.12,
 							"wasteDisposalInCubicMeters": 87.96
@@ -10455,18 +10455,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": 82922.32,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 7163.27,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 82356.91,
-					"percentualChangeNatureOrientedOnSite": 51.76,
+					"relativeChangeNatureOrientedOnSite": 51.76,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 96092.18,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 88016.54,
-					"percentualChangeNatureOrientedOffSite": 99.57,
+					"relativeChangeNatureOrientedOffSite": 99.57,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 88603.27,
-					"percentualChangeLandUse": 95.64
+					"relativeChangeLandUse": 95.64
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -10751,18 +10751,18 @@
 							"areaGeocoordinateLatitude": 76286722.3
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 61322.35,
+					"totalSealedAreaPreviousYearInHectare": 61322.35,
 					"totalSealedAreaReportingYearInHectare": 88495.16,
-					"percentualChangeSealedArea": 48.94,
+					"relativeChangeSealedArea": 48.94,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 28951.38,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 64942.43,
-					"percentualChangeNatureOrientedOnSite": 52.02,
+					"relativeChangeNatureOrientedOnSite": 52.02,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 13965.99,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": 73.15,
+					"relativeChangeNatureOrientedOffSite": 73.15,
 					"totalUseOfLandPreviousYearInHectare": 73050.47,
 					"totalUseOfLandReportingYearInHectare": 36339.58,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -10795,9 +10795,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "bandwidth",
-							"totalAmountOfWasteInTons": 87375080.12,
-							"wasteRecycleOrReuseInTons": 38996780.9,
-							"wasteDisposalInTons": 68124409.93,
+							"totalAmountOfWasteInTonnes": 87375080.12,
+							"wasteRecycleOrReuseInTonnes": 38996780.9,
+							"wasteDisposalInTonnes": 68124409.93,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 22.19,
 							"wasteDisposalInCubicMeters": 35.47
@@ -10805,9 +10805,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "methodologies",
-							"totalAmountOfWasteInTons": 26123007.13,
-							"wasteRecycleOrReuseInTons": 81687720.54,
-							"wasteDisposalInTons": 48639205.63,
+							"totalAmountOfWasteInTonnes": 26123007.13,
+							"wasteRecycleOrReuseInTonnes": 81687720.54,
+							"wasteDisposalInTonnes": 48639205.63,
 							"totalAmountOfWasteInCubicMeters": 65.33,
 							"wasteRecycleOrReuseInCubicMeters": 5.03,
 							"wasteDisposalInCubicMeters": 47.49
@@ -11084,18 +11084,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 51765.1,
+					"totalSealedAreaPreviousYearInHectare": 51765.1,
 					"totalSealedAreaReportingYearInHectare": 9732.76,
-					"percentualChangeSealedArea": 39.42,
+					"relativeChangeSealedArea": 39.42,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 13208.75,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 44681.47,
-					"percentualChangeNatureOrientedOnSite": 91.51,
+					"relativeChangeNatureOrientedOnSite": 91.51,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 27066.62,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 45386.34,
-					"percentualChangeNatureOrientedOffSite": 25.91,
+					"relativeChangeNatureOrientedOffSite": 25.91,
 					"totalUseOfLandPreviousYearInHectare": 87881.06,
 					"totalUseOfLandReportingYearInHectare": 63499.42,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -11359,18 +11359,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 57956.94,
+					"totalSealedAreaPreviousYearInHectare": 57956.94,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 79.88,
+					"relativeChangeSealedArea": 79.88,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 65993.85,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 24095,
-					"percentualChangeNatureOrientedOnSite": null,
+					"relativeChangeNatureOrientedOnSite": null,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 22452.09,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 76263.01,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 96986.71,
-					"percentualChangeLandUse": 24.64
+					"relativeChangeLandUse": 24.64
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -11403,9 +11403,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "channels",
-							"totalAmountOfWasteInTons": 40761844.65,
-							"wasteRecycleOrReuseInTons": 84817136.15,
-							"wasteDisposalInTons": 94065885.13,
+							"totalAmountOfWasteInTonnes": 40761844.65,
+							"wasteRecycleOrReuseInTonnes": 84817136.15,
+							"wasteDisposalInTonnes": 94065885.13,
 							"totalAmountOfWasteInCubicMeters": 15.73,
 							"wasteRecycleOrReuseInCubicMeters": 34.93,
 							"wasteDisposalInCubicMeters": 61.17
@@ -11413,9 +11413,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "supply-chains",
-							"totalAmountOfWasteInTons": null,
-							"wasteRecycleOrReuseInTons": 17479807.46,
-							"wasteDisposalInTons": 37144747.49,
+							"totalAmountOfWasteInTonnes": null,
+							"wasteRecycleOrReuseInTonnes": 17479807.46,
+							"wasteDisposalInTonnes": 37144747.49,
 							"totalAmountOfWasteInCubicMeters": 56.93,
 							"wasteRecycleOrReuseInCubicMeters": 83.03,
 							"wasteDisposalInCubicMeters": null
@@ -11423,9 +11423,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "mindshare",
-							"totalAmountOfWasteInTons": 65877987.26,
-							"wasteRecycleOrReuseInTons": 49786454.21,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 65877987.26,
+							"wasteRecycleOrReuseInTonnes": 49786454.21,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 64.69,
 							"wasteDisposalInCubicMeters": 7.49
@@ -11659,18 +11659,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 45.59,
+					"relativeChangeSealedArea": 45.59,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 66048.47,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 48.38,
+					"relativeChangeNatureOrientedOnSite": 48.38,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 65246.07,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": 86198.65,
 					"totalUseOfLandReportingYearInHectare": null,
-					"percentualChangeLandUse": 93.45
+					"relativeChangeLandUse": 93.45
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -12015,18 +12015,18 @@
 							"areaGeocoordinateLatitude": 22459236.27
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 78214.22,
+					"totalSealedAreaPreviousYearInHectare": 78214.22,
 					"totalSealedAreaReportingYearInHectare": 72040.41,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 58888.97,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 39436.78,
-					"percentualChangeNatureOrientedOnSite": 2.68,
+					"relativeChangeNatureOrientedOnSite": 2.68,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 82643.61,
-					"percentualChangeNatureOrientedOffSite": 42.21,
+					"relativeChangeNatureOrientedOffSite": 42.21,
 					"totalUseOfLandPreviousYearInHectare": 93854.69,
 					"totalUseOfLandReportingYearInHectare": 24828.95,
-					"percentualChangeLandUse": 64.75
+					"relativeChangeLandUse": 64.75
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -12059,9 +12059,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "e-business",
-							"totalAmountOfWasteInTons": 30707765.16,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 76155605.61,
+							"totalAmountOfWasteInTonnes": 30707765.16,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 76155605.61,
 							"totalAmountOfWasteInCubicMeters": 39.84,
 							"wasteRecycleOrReuseInCubicMeters": 59.73,
 							"wasteDisposalInCubicMeters": 69.32
@@ -12431,18 +12431,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 83.31,
+					"relativeChangeSealedArea": 83.31,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 23482.55,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 50427.49,
-					"percentualChangeNatureOrientedOnSite": 75.91,
+					"relativeChangeNatureOrientedOnSite": 75.91,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 33161.17,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 35086.26,
-					"percentualChangeNatureOrientedOffSite": 13.13,
+					"relativeChangeNatureOrientedOffSite": 13.13,
 					"totalUseOfLandPreviousYearInHectare": 65618.23,
 					"totalUseOfLandReportingYearInHectare": 45790.33,
-					"percentualChangeLandUse": 29.36
+					"relativeChangeLandUse": 29.36
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -12475,9 +12475,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "markets",
-							"totalAmountOfWasteInTons": 84379921.6,
-							"wasteRecycleOrReuseInTons": 96099322.27,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 84379921.6,
+							"wasteRecycleOrReuseInTonnes": 96099322.27,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 15.36,
 							"wasteDisposalInCubicMeters": 84.39
@@ -12485,9 +12485,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "infrastructures",
-							"totalAmountOfWasteInTons": 2762936.91,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 62702776.94,
+							"totalAmountOfWasteInTonnes": 2762936.91,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 62702776.94,
 							"totalAmountOfWasteInCubicMeters": 93.06,
 							"wasteRecycleOrReuseInCubicMeters": 2.15,
 							"wasteDisposalInCubicMeters": 52.53
@@ -12725,18 +12725,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 85316.65,
+					"totalSealedAreaPreviousYearInHectare": 85316.65,
 					"totalSealedAreaReportingYearInHectare": 9023.46,
-					"percentualChangeSealedArea": 52.59,
+					"relativeChangeSealedArea": 52.59,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 34558.74,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 93569.46,
-					"percentualChangeNatureOrientedOnSite": 71.76,
+					"relativeChangeNatureOrientedOnSite": 71.76,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 88902.72,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 84956.64,
-					"percentualChangeNatureOrientedOffSite": 10.98,
+					"relativeChangeNatureOrientedOffSite": 10.98,
 					"totalUseOfLandPreviousYearInHectare": 95352.69,
 					"totalUseOfLandReportingYearInHectare": 74136.43,
-					"percentualChangeLandUse": 41.95
+					"relativeChangeLandUse": 41.95
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -12769,9 +12769,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "e-business",
-							"totalAmountOfWasteInTons": 34678838.8,
-							"wasteRecycleOrReuseInTons": 79721831.14,
-							"wasteDisposalInTons": 87355192.8,
+							"totalAmountOfWasteInTonnes": 34678838.8,
+							"wasteRecycleOrReuseInTonnes": 79721831.14,
+							"wasteDisposalInTonnes": 87355192.8,
 							"totalAmountOfWasteInCubicMeters": 19.19,
 							"wasteRecycleOrReuseInCubicMeters": 85.8,
 							"wasteDisposalInCubicMeters": null
@@ -12779,9 +12779,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "mindshare",
-							"totalAmountOfWasteInTons": null,
-							"wasteRecycleOrReuseInTons": 79920925.81,
-							"wasteDisposalInTons": 57803660.28,
+							"totalAmountOfWasteInTonnes": null,
+							"wasteRecycleOrReuseInTonnes": 79920925.81,
+							"wasteDisposalInTonnes": 57803660.28,
 							"totalAmountOfWasteInCubicMeters": 28.35,
 							"wasteRecycleOrReuseInCubicMeters": 36.2,
 							"wasteDisposalInCubicMeters": 97.63
@@ -13126,18 +13126,18 @@
 							"areaGeocoordinateLatitude": 47736649.98
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 17372.48,
+					"totalSealedAreaPreviousYearInHectare": 17372.48,
 					"totalSealedAreaReportingYearInHectare": 69271.92,
-					"percentualChangeSealedArea": 63.47,
+					"relativeChangeSealedArea": 63.47,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 57863.25,
-					"percentualChangeNatureOrientedOnSite": 53.13,
+					"relativeChangeNatureOrientedOnSite": 53.13,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 80401.53,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 45916.49,
-					"percentualChangeNatureOrientedOffSite": 10.16,
+					"relativeChangeNatureOrientedOffSite": 10.16,
 					"totalUseOfLandPreviousYearInHectare": 41241.08,
 					"totalUseOfLandReportingYearInHectare": 81756.45,
-					"percentualChangeLandUse": 11.76
+					"relativeChangeLandUse": 11.76
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -13170,9 +13170,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "action-items",
-							"totalAmountOfWasteInTons": 9967604.46,
-							"wasteRecycleOrReuseInTons": 61931853.77,
-							"wasteDisposalInTons": 39486548.51,
+							"totalAmountOfWasteInTonnes": 9967604.46,
+							"wasteRecycleOrReuseInTonnes": 61931853.77,
+							"wasteDisposalInTonnes": 39486548.51,
 							"totalAmountOfWasteInCubicMeters": 82.81,
 							"wasteRecycleOrReuseInCubicMeters": 71.43,
 							"wasteDisposalInCubicMeters": 87.26
@@ -13543,18 +13543,18 @@
 							"areaGeocoordinateLatitude": 19805612.76
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 39.94,
+					"relativeChangeSealedArea": 39.94,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 44016.09,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 11863.92,
-					"percentualChangeNatureOrientedOnSite": 2.73,
+					"relativeChangeNatureOrientedOnSite": 2.73,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 34727.14,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 23864.41,
-					"percentualChangeNatureOrientedOffSite": 58.46,
+					"relativeChangeNatureOrientedOffSite": 58.46,
 					"totalUseOfLandPreviousYearInHectare": 84821.82,
 					"totalUseOfLandReportingYearInHectare": 95917,
-					"percentualChangeLandUse": 28.03
+					"relativeChangeLandUse": 28.03
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -13587,9 +13587,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "infrastructures",
-							"totalAmountOfWasteInTons": 88713542,
-							"wasteRecycleOrReuseInTons": 88573994.33,
-							"wasteDisposalInTons": 62640693.92,
+							"totalAmountOfWasteInTonnes": 88713542,
+							"wasteRecycleOrReuseInTonnes": 88573994.33,
+							"wasteDisposalInTonnes": 62640693.92,
 							"totalAmountOfWasteInCubicMeters": 39.95,
 							"wasteRecycleOrReuseInCubicMeters": 71.1,
 							"wasteDisposalInCubicMeters": 29.21
@@ -13597,9 +13597,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "portals",
-							"totalAmountOfWasteInTons": 20374847.46,
-							"wasteRecycleOrReuseInTons": 60812603.08,
-							"wasteDisposalInTons": 37106056.58,
+							"totalAmountOfWasteInTonnes": 20374847.46,
+							"wasteRecycleOrReuseInTonnes": 60812603.08,
+							"wasteDisposalInTonnes": 37106056.58,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 8.55
@@ -13607,9 +13607,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "niches",
-							"totalAmountOfWasteInTons": 21935064.34,
-							"wasteRecycleOrReuseInTons": 63114022.05,
-							"wasteDisposalInTons": 20742957.5,
+							"totalAmountOfWasteInTonnes": 21935064.34,
+							"wasteRecycleOrReuseInTonnes": 63114022.05,
+							"wasteDisposalInTonnes": 20742957.5,
 							"totalAmountOfWasteInCubicMeters": 47.99,
 							"wasteRecycleOrReuseInCubicMeters": 71.47,
 							"wasteDisposalInCubicMeters": 25.03
@@ -13982,18 +13982,18 @@
 							"areaGeocoordinateLatitude": 13983735.37
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 32679.47,
+					"totalSealedAreaPreviousYearInHectare": 32679.47,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 49.06,
+					"relativeChangeSealedArea": 49.06,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 29839.73,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 79660.44,
-					"percentualChangeNatureOrientedOnSite": 42.48,
+					"relativeChangeNatureOrientedOnSite": 42.48,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": 55.51,
+					"relativeChangeNatureOrientedOffSite": 55.51,
 					"totalUseOfLandPreviousYearInHectare": 51853.24,
 					"totalUseOfLandReportingYearInHectare": 56602.93,
-					"percentualChangeLandUse": 46.46
+					"relativeChangeLandUse": 46.46
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -14021,9 +14021,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "functionalities",
-							"totalAmountOfWasteInTons": null,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 70763858.41,
+							"totalAmountOfWasteInTonnes": null,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 70763858.41,
 							"totalAmountOfWasteInCubicMeters": 80.31,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 1.72
@@ -14242,18 +14242,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": null,
+					"totalSealedAreaPreviousYearInHectare": null,
 					"totalSealedAreaReportingYearInHectare": 32704.13,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 3468.04,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 40113.66,
-					"percentualChangeNatureOrientedOnSite": 80.91,
+					"relativeChangeNatureOrientedOnSite": 80.91,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 44876.71,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 99376.41,
-					"percentualChangeNatureOrientedOffSite": 87.43,
+					"relativeChangeNatureOrientedOffSite": 87.43,
 					"totalUseOfLandPreviousYearInHectare": 113.01,
 					"totalUseOfLandReportingYearInHectare": 90672.52,
-					"percentualChangeLandUse": 17.31
+					"relativeChangeLandUse": 17.31
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -14583,18 +14583,18 @@
 							"areaGeocoordinateLatitude": 37738777.93
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 9712.11,
+					"totalSealedAreaPreviousYearInHectare": 9712.11,
 					"totalSealedAreaReportingYearInHectare": 18258.12,
-					"percentualChangeSealedArea": 76.61,
+					"relativeChangeSealedArea": 76.61,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 32616.53,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 72194.96,
-					"percentualChangeNatureOrientedOnSite": 77.47,
+					"relativeChangeNatureOrientedOnSite": 77.47,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 19858.31,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 34228.64,
-					"percentualChangeNatureOrientedOffSite": 41.93,
+					"relativeChangeNatureOrientedOffSite": 41.93,
 					"totalUseOfLandPreviousYearInHectare": null,
 					"totalUseOfLandReportingYearInHectare": 77309.25,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -14627,9 +14627,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "users",
-							"totalAmountOfWasteInTons": 18311350.39,
-							"wasteRecycleOrReuseInTons": 21475314.95,
-							"wasteDisposalInTons": 8856032.55,
+							"totalAmountOfWasteInTonnes": 18311350.39,
+							"wasteRecycleOrReuseInTonnes": 21475314.95,
+							"wasteDisposalInTonnes": 8856032.55,
 							"totalAmountOfWasteInCubicMeters": 66.03,
 							"wasteRecycleOrReuseInCubicMeters": 71.88,
 							"wasteDisposalInCubicMeters": 50.4
@@ -14637,9 +14637,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "channels",
-							"totalAmountOfWasteInTons": 47193713.28,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 72299931.5,
+							"totalAmountOfWasteInTonnes": 47193713.28,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 72299931.5,
 							"totalAmountOfWasteInCubicMeters": 56.83,
 							"wasteRecycleOrReuseInCubicMeters": 53.04,
 							"wasteDisposalInCubicMeters": null
@@ -14921,18 +14921,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": 7563.48,
+					"totalSealedAreaPreviousYearInHectare": 7563.48,
 					"totalSealedAreaReportingYearInHectare": 13621.3,
-					"percentualChangeSealedArea": 73.77,
+					"relativeChangeSealedArea": 73.77,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 84394.94,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 9790.04,
-					"percentualChangeNatureOrientedOnSite": 99.58,
+					"relativeChangeNatureOrientedOnSite": 99.58,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": 74.07,
+					"relativeChangeNatureOrientedOffSite": 74.07,
 					"totalUseOfLandPreviousYearInHectare": 57447.93,
 					"totalUseOfLandReportingYearInHectare": 58738.14,
-					"percentualChangeLandUse": 32.35
+					"relativeChangeLandUse": 32.35
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -14955,9 +14955,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "e-business",
-							"totalAmountOfWasteInTons": 69776403.02,
-							"wasteRecycleOrReuseInTons": 66906235.14,
-							"wasteDisposalInTons": 81153377.71,
+							"totalAmountOfWasteInTonnes": 69776403.02,
+							"wasteRecycleOrReuseInTonnes": 66906235.14,
+							"wasteDisposalInTonnes": 81153377.71,
 							"totalAmountOfWasteInCubicMeters": 89.88,
 							"wasteRecycleOrReuseInCubicMeters": 57.93,
 							"wasteDisposalInCubicMeters": 13.15
@@ -15345,18 +15345,18 @@
 							"areaGeocoordinateLatitude": 56229501.38
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 72542.37,
+					"totalSealedAreaPreviousYearInHectare": 72542.37,
 					"totalSealedAreaReportingYearInHectare": 72642.6,
-					"percentualChangeSealedArea": 75.27,
+					"relativeChangeSealedArea": 75.27,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 8991.4,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 79831.46,
-					"percentualChangeNatureOrientedOnSite": 37.59,
+					"relativeChangeNatureOrientedOnSite": 37.59,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 55346.16,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 38360.49,
-					"percentualChangeNatureOrientedOffSite": 52.42,
+					"relativeChangeNatureOrientedOffSite": 52.42,
 					"totalUseOfLandPreviousYearInHectare": 73543.13,
 					"totalUseOfLandReportingYearInHectare": 28387.84,
-					"percentualChangeLandUse": 81.58
+					"relativeChangeLandUse": 81.58
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -15389,9 +15389,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "e-business",
-							"totalAmountOfWasteInTons": 43837582.81,
-							"wasteRecycleOrReuseInTons": 73892585,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 43837582.81,
+							"wasteRecycleOrReuseInTonnes": 73892585,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": 86.12,
 							"wasteRecycleOrReuseInCubicMeters": 9,
 							"wasteDisposalInCubicMeters": 4.28
@@ -15399,9 +15399,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "relationships",
-							"totalAmountOfWasteInTons": 2636060.74,
-							"wasteRecycleOrReuseInTons": 68555075.35,
-							"wasteDisposalInTons": 28795255.04,
+							"totalAmountOfWasteInTonnes": 2636060.74,
+							"wasteRecycleOrReuseInTonnes": 68555075.35,
+							"wasteDisposalInTonnes": 28795255.04,
 							"totalAmountOfWasteInCubicMeters": 44.98,
 							"wasteRecycleOrReuseInCubicMeters": 47.76,
 							"wasteDisposalInCubicMeters": 17.54
@@ -15710,18 +15710,18 @@
 							"areaGeocoordinateLatitude": null
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 62251.57,
+					"totalSealedAreaPreviousYearInHectare": 62251.57,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 79.13,
+					"relativeChangeSealedArea": 79.13,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 77618.43,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 2.72,
+					"relativeChangeNatureOrientedOnSite": 2.72,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 18093.86,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 30145.28,
-					"percentualChangeNatureOrientedOffSite": 96.86,
+					"relativeChangeNatureOrientedOffSite": 96.86,
 					"totalUseOfLandPreviousYearInHectare": 53766.35,
 					"totalUseOfLandReportingYearInHectare": 31310.96,
-					"percentualChangeLandUse": 69.51
+					"relativeChangeLandUse": 69.51
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -15754,9 +15754,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "niches",
-							"totalAmountOfWasteInTons": 18435865.17,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 77986623.02,
+							"totalAmountOfWasteInTonnes": 18435865.17,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 77986623.02,
 							"totalAmountOfWasteInCubicMeters": 8.53,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 72.99
@@ -15764,9 +15764,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "content",
-							"totalAmountOfWasteInTons": 40582669.87,
-							"wasteRecycleOrReuseInTons": 3819097.48,
-							"wasteDisposalInTons": 23815403.13,
+							"totalAmountOfWasteInTonnes": 40582669.87,
+							"wasteRecycleOrReuseInTonnes": 3819097.48,
+							"wasteDisposalInTonnes": 23815403.13,
 							"totalAmountOfWasteInCubicMeters": 23.65,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": 32.49
@@ -15774,9 +15774,9 @@
 						{
 							"wasteClassification": "Hazardous",
 							"typeOfWaste": "technologies",
-							"totalAmountOfWasteInTons": 80568009.9,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 80568009.9,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": null,
 							"wasteDisposalInCubicMeters": null
@@ -16029,18 +16029,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 9930.62,
+					"totalSealedAreaPreviousYearInHectare": 9930.62,
 					"totalSealedAreaReportingYearInHectare": 99573.87,
-					"percentualChangeSealedArea": 56.61,
+					"relativeChangeSealedArea": 56.61,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 38812.86,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 94.26,
+					"relativeChangeNatureOrientedOnSite": 94.26,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 26854.4,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 10671.28,
-					"percentualChangeNatureOrientedOffSite": 51.7,
+					"relativeChangeNatureOrientedOffSite": 51.7,
 					"totalUseOfLandPreviousYearInHectare": 691.8,
 					"totalUseOfLandReportingYearInHectare": 56193.2,
-					"percentualChangeLandUse": 17.5
+					"relativeChangeLandUse": 17.5
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -16370,18 +16370,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": [],
-					"totalAealedAreaPreviousYearInHectare": 92243.33,
+					"totalSealedAreaPreviousYearInHectare": 92243.33,
 					"totalSealedAreaReportingYearInHectare": 18433.44,
-					"percentualChangeSealedArea": 24.44,
+					"relativeChangeSealedArea": 24.44,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 24098.26,
-					"percentualChangeNatureOrientedOnSite": 65.7,
+					"relativeChangeNatureOrientedOnSite": 65.7,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 27210.63,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 49620.26,
-					"percentualChangeNatureOrientedOffSite": 95.4,
+					"relativeChangeNatureOrientedOffSite": 95.4,
 					"totalUseOfLandPreviousYearInHectare": 66950.25,
 					"totalUseOfLandReportingYearInHectare": 15619.53,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -16656,18 +16656,18 @@
 							"areaGeocoordinateLatitude": 22906732.65
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 92643.23,
+					"totalSealedAreaPreviousYearInHectare": 92643.23,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 73.13,
+					"relativeChangeSealedArea": 73.13,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 44501.02,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 58359,
-					"percentualChangeNatureOrientedOnSite": 38.44,
+					"relativeChangeNatureOrientedOnSite": 38.44,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOffSite": null,
+					"relativeChangeNatureOrientedOffSite": null,
 					"totalUseOfLandPreviousYearInHectare": 20489.58,
 					"totalUseOfLandReportingYearInHectare": 23656.84,
-					"percentualChangeLandUse": 46.55
+					"relativeChangeLandUse": 46.55
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -17004,18 +17004,18 @@
 							"areaGeocoordinateLatitude": 55142959.28
 						}
 					],
-					"totalAealedAreaPreviousYearInHectare": 43602.54,
+					"totalSealedAreaPreviousYearInHectare": 43602.54,
 					"totalSealedAreaReportingYearInHectare": null,
-					"percentualChangeSealedArea": 33.41,
+					"relativeChangeSealedArea": 33.41,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 53327.87,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": null,
-					"percentualChangeNatureOrientedOnSite": 41.56,
+					"relativeChangeNatureOrientedOnSite": 41.56,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": null,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 40363,
-					"percentualChangeNatureOrientedOffSite": 88.75,
+					"relativeChangeNatureOrientedOffSite": 88.75,
 					"totalUseOfLandPreviousYearInHectare": 47717.76,
 					"totalUseOfLandReportingYearInHectare": 82770.11,
-					"percentualChangeLandUse": null
+					"relativeChangeLandUse": null
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": {
@@ -17339,18 +17339,18 @@
 				},
 				"biodiversity": {
 					"sitesAndAreas": null,
-					"totalAealedAreaPreviousYearInHectare": 17490.34,
+					"totalSealedAreaPreviousYearInHectare": 17490.34,
 					"totalSealedAreaReportingYearInHectare": 16615.46,
-					"percentualChangeSealedArea": null,
+					"relativeChangeSealedArea": null,
 					"totalNatureOrientedAreaOnSitePreviousYearInHectare": 4314.76,
 					"totalNatureOrientedAreaOnSiteReportingYearInHectare": 88577.49,
-					"percentualChangeNatureOrientedOnSite": 66.8,
+					"relativeChangeNatureOrientedOnSite": 66.8,
 					"totalNatureOrientedAreaOffSitePreviousYearInHectare": 10206.22,
 					"totalNatureOrientedAreaOffSiteReportingYearInHectare": 2992.15,
-					"percentualChangeNatureOrientedOffSite": 27.02,
+					"relativeChangeNatureOrientedOffSite": 27.02,
 					"totalUseOfLandPreviousYearInHectare": 88391.2,
 					"totalUseOfLandReportingYearInHectare": 57460.01,
-					"percentualChangeLandUse": 54.74
+					"relativeChangeLandUse": 54.74
 				},
 				"water": {
 					"waterWithdrawalAllSitesInCubicMeters": null,
@@ -17373,9 +17373,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "web services",
-							"totalAmountOfWasteInTons": null,
-							"wasteRecycleOrReuseInTons": null,
-							"wasteDisposalInTons": 32113612.05,
+							"totalAmountOfWasteInTonnes": null,
+							"wasteRecycleOrReuseInTonnes": null,
+							"wasteDisposalInTonnes": 32113612.05,
 							"totalAmountOfWasteInCubicMeters": 23.24,
 							"wasteRecycleOrReuseInCubicMeters": 79.95,
 							"wasteDisposalInCubicMeters": 80.39
@@ -17383,9 +17383,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "initiatives",
-							"totalAmountOfWasteInTons": 60143651.81,
-							"wasteRecycleOrReuseInTons": 24239642.75,
-							"wasteDisposalInTons": 9682389.02,
+							"totalAmountOfWasteInTonnes": 60143651.81,
+							"wasteRecycleOrReuseInTonnes": 24239642.75,
+							"wasteDisposalInTonnes": 9682389.02,
 							"totalAmountOfWasteInCubicMeters": 85.9,
 							"wasteRecycleOrReuseInCubicMeters": 27.73,
 							"wasteDisposalInCubicMeters": 84.04
@@ -17393,9 +17393,9 @@
 						{
 							"wasteClassification": "NonHazardous",
 							"typeOfWaste": "schemas",
-							"totalAmountOfWasteInTons": 18906759.75,
-							"wasteRecycleOrReuseInTons": 36843347.52,
-							"wasteDisposalInTons": null,
+							"totalAmountOfWasteInTonnes": 18906759.75,
+							"wasteRecycleOrReuseInTonnes": 36843347.52,
+							"wasteDisposalInTonnes": null,
 							"totalAmountOfWasteInCubicMeters": null,
 							"wasteRecycleOrReuseInCubicMeters": 89.66,
 							"wasteDisposalInCubicMeters": 55.76

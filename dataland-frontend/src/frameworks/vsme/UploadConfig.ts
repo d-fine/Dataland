@@ -67,7 +67,7 @@ export const vsmeDataModel = [
             name: "energyFossilFuelsInMWh",
             label: "Energy Fossil Fuels",
             description:
-              "Please disclose your total energy consumption in MWh (in the reporting period) for\n- fossil fuels ",
+              "Please disclose your total energy consumption in MWh (in the reporting period) for fossil fuels.",
 
             unit: "MWh",
             component: "NumberFormField",
@@ -78,7 +78,7 @@ export const vsmeDataModel = [
             name: "electricityTotalInMWh",
             label: "Electricity Total",
             description:
-              "- electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
+              "Please disclose your total energy consumption in MWh (in the reporting period) for electricity as reflected in utility billings. If available distinguish between renewable and non\x02renewable sources.",
 
             unit: "MWh",
             component: "BigDecimalExtendedDataPointFormField",
@@ -180,8 +180,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "totalAealedAreaPreviousYearInHectare",
-            label: "Total Aealed Area Previous Year",
+            name: "totalSealedAreaPreviousYearInHectare",
+            label: "Total Sealed Area Previous Year",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
 
@@ -202,8 +202,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "percentualChangeSealedArea",
-            label: "Percentual Change Sealed Area",
+            name: "relativeChangeSealedArea",
+            label: "Relative Change Sealed Area",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
 
@@ -236,8 +236,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "percentualChangeNatureOrientedOnSite",
-            label: "Percentual Change Nature-Oriented On-Site",
+            name: "relativeChangeNatureOrientedOnSite",
+            label: "Relative Change Nature-Oriented On-Site",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
 
@@ -270,8 +270,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "percentualChangeNatureOrientedOffSite",
-            label: "Percentual Change Nature-Oriented Off-Site",
+            name: "relativeChangeNatureOrientedOffSite",
+            label: "Relative Change Nature-Oriented Off-Site",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
 
@@ -304,8 +304,8 @@ export const vsmeDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "percentualChangeLandUse",
-            label: "Percentual Change Land Use",
+            name: "relativeChangeLandUse",
+            label: "Relative Change Land Use",
             description:
               "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.",
 
@@ -488,6 +488,7 @@ export const vsmeDataModel = [
           {
             name: "wasteClassification",
             label: "Waste Classification",
+            description: "Please disclose the waste classification for every type of waste.",
 
             component: "WasteClassificationFormField",
             required: false,
