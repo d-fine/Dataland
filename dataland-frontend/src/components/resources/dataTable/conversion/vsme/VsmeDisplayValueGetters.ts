@@ -80,7 +80,7 @@ export function formatVsmeSubsidiaryForDisplay(
   input: VsmeSubsidiary[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
+  if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   }
 
@@ -115,7 +115,7 @@ export function formatVsmePollutionEmissionForDisplay(
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
-  if (!input) {
+  if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     convertedValueForModal = convertVsmePollutionEmissionToListForModal(input);
@@ -152,7 +152,7 @@ export function formatVsmeWasteClassificationObjectForDisplay(
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
-  if (!input) {
+  if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     convertedValueForModal = convertVsmeWasteClassificationToListForModal(input);
@@ -230,7 +230,7 @@ export function formatVsmeSiteAndAreaForDisplay(
   input: VsmeSiteAndArea[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
+  if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -264,7 +264,7 @@ export function formatVsmeEmployeesPerCountryForDisplay(
   input: VsmeEmployeesPerCountry[] | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input) {
+  if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
