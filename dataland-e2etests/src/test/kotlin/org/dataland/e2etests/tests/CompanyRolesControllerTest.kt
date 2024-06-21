@@ -132,14 +132,16 @@ class CompanyRolesControllerTest {
         apiAccessor.companyRolesControllerApi.hasCompanyAtLeastOneOwner(companyId)
     }
 
+    private fun uploadCompanyAndReturnCompanyId(): UUID {
+        return UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+    }
+
     @Test
     fun `check that company ownership enables a user with only reader rights to upload data`() {
-        val firstCompanyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
-        val secondCompanyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
+        val firstCompanyId = uploadCompanyAndReturnCompanyId()
+        val secondCompanyId = uploadCompanyAndReturnCompanyId()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertAccessDeniedWhenUploadingFrameworkData(firstCompanyId, frameworkSampleData, false)
@@ -174,9 +176,9 @@ class CompanyRolesControllerTest {
 
     @Test
     fun `assure that users without admin rights can always find out if they are a company owner of a company`() {
-        val companyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
+        val companyId = uploadCompanyAndReturnCompanyId()
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -220,13 +222,9 @@ class CompanyRolesControllerTest {
 
     @Test
     fun `check that company ownership endpoints deny access if unauthorized or not sufficient rights`() {
-        val companyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
+        val companyId = uploadCompanyAndReturnCompanyId()
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
-            TechnicalUser.Uploader,
-        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val postCompanyOwnerExceptionBecauseOfMissingRights = assertThrows<ClientException> {
             assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
         }
@@ -253,21 +251,20 @@ class CompanyRolesControllerTest {
 
     @Test
     fun `assure that bypassQa is forbidden for users even if they are a company owner`() {
-        val companyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
+        val companyId = uploadCompanyAndReturnCompanyId()
+
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertAccessDeniedWhenUploadingFrameworkData(companyId, frameworkSampleData, true)
+
         uploadEuTaxoData(companyId, frameworkSampleData)
     }
 
     @Test
     fun `assure that the sheer existence of a company owner can be found out even by unauthorized users`() {
-        val companyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
+        val companyId = uploadCompanyAndReturnCompanyId()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
