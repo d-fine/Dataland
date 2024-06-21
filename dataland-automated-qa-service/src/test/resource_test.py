@@ -52,7 +52,7 @@ def get_vsme_data_mock(
         data=VsmeData.from_dict({
             "basic": {
                 "energyAndGreenhousGasEmissions": {
-                    "energyFossilFuels": 1,
+                    "energyFossilFuelsInMWh": 1,
                 }
             },
         }),
