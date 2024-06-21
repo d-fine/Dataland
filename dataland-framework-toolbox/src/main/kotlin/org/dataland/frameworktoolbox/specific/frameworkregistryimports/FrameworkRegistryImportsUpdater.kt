@@ -47,12 +47,10 @@ class FrameworkRegistryImportsUpdater {
         publicFrameworkNames: List<String>,
     ) {
         val freemarkerContextForAllPrivateFrameworks = createFreeMarkerContextFile(
-            allPrivateFrameworks,
-            "privateFrameworks",
+            allPrivateFrameworks, "privateFrameworks",
         )
         val freemarkerContextForPublicFrameworks = createFreeMarkerContextFile(
-            publicFrameworkNames,
-            "publicFrameworks",
+            publicFrameworkNames, "publicFrameworks",
         )
         val frontendFrameworkRegistryImportsTemplateNames =
             Pair(
