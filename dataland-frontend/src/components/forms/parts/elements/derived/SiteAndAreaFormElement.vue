@@ -91,6 +91,5 @@ export default defineComponent({
   },
   methods: {},
   props: BaseFormFieldProps,
-  //TODO check name, validation, validationLable as those lead to console warnings
 });
 </script>
