@@ -153,8 +153,6 @@ import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFramewo
 
 const referenceableReportsFieldId = "referenceableReports";
 
-class unkown {}
-
 export default defineComponent({
   setup() {
     return {
