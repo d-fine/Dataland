@@ -16,16 +16,6 @@ class V17__MigrateReferencedReportsTest {
     }
 
     @Test
-    fun `check migration script for SME `() {
-        TestUtils().testMigrationOfSingleDataset(
-            "sme",
-            "V17/originalSme.json",
-            "V17/expectedSme.json",
-            { dataTableEntity -> V17__MigrateReferencedReports().migrateReferencedReports(dataTableEntity, "sme") },
-        )
-    }
-
-    @Test
     fun `check migration script for Non Financial `() {
         TestUtils().testMigrationOfSingleDataset(
             "eutaxonomy-non-financials",

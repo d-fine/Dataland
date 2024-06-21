@@ -16,7 +16,6 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
         "eutaxonomy-non-financials",
         "eutaxonomy-financials",
         "sfdr",
-        "sme",
     )
 
     override fun migrate(context: Context?) {
@@ -59,11 +58,6 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
                 val general = dataset.getOrJavaNull("general") as JSONObject?
                 val generalGeneral = general?.getOrJavaNull("general") as JSONObject?
                 generalGeneral?.getOrJavaNull("referencedReports") as JSONObject?
-            }
-            "sme" -> {
-                val general = dataset.getOrJavaNull("general") as JSONObject?
-                val basicInformation = general?.getOrJavaNull("basicInformation") as JSONObject?
-                basicInformation?.getOrJavaNull("referencedReports") as JSONObject?
             }
             else -> {
                 null
