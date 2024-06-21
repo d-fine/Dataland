@@ -17,6 +17,10 @@
     {
       "matchUpdateTypes": ["major"],
       "labels": ["dependencies", "MAJOR"]
+    },
+    {
+      "groupName": "formkit-packages",
+      "matchPackagePatterns": ["^formkit"]
     }
   ]
 }
