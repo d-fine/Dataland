@@ -53,7 +53,11 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibilityMap.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="`${category.name}-${subcategory.name}`" class="anchor title">{{ subcategory.label }}</h4>
@@ -97,9 +101,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in visibleCategories" :key="category">
+            <li v-for="category in visibleCategories" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibilityMap.get(subcategory) ?? true"
                     @click="smoothScroll(`#${category.name}-${subcategory.name}`)"
@@ -115,7 +119,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { computed, defineComponent, inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -212,9 +215,9 @@ export default defineComponent({
     };
   },
   computed: {
-    reportingPeriodYear(): number | undefined {
+    reportingPeriodYear(): string | undefined {
       if (this.reportingPeriod) {
-        return this.reportingPeriod.getFullYear();
+        return this.reportingPeriod.getFullYear().toString();
       }
       return undefined;
     },
@@ -236,12 +239,12 @@ export default defineComponent({
      * Builds an api to upload Vsme data
      * @returns the api
      */
-    buildVsmeDataApi(): PrivateFrameworkDataApi<VsmeData> {
+    buildVsmeDataApi(): PrivateFrameworkDataApi<VsmeData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Vsme);
       if (frameworkDefinition) {
         return frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+      } else return undefined;
     },
 
     /**
@@ -258,7 +261,7 @@ export default defineComponent({
         }
         const files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const vsmeDataControllerApi = this.buildVsmeDataApi();
-        await vsmeDataControllerApi.postFrameworkData(this.companyAssociatedVsmeData, files);
+        await vsmeDataControllerApi!.postFrameworkData(this.companyAssociatedVsmeData, files);
         this.$emit("datasetCreated");
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
@@ -266,7 +269,7 @@ export default defineComponent({
         console.error(error);
         if (error instanceof AxiosError) {
           this.message = "An error occurred: " + error.message;
-        } else if (error.message) {
+        } else if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         }
         this.uploadSucceded = false;
