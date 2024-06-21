@@ -102,7 +102,7 @@
           <div class="api-doc_links">
             <a href="/api/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Datasets</a>
             <a href="/documents/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Documents</a>
-            <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Requests</a>
+            <a href="/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">Community</a>
           </div>
         </div>
       </div>
