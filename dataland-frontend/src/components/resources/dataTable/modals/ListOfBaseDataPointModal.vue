@@ -34,8 +34,8 @@ const tableData = computed(() => {
           :label="data.dataSource?.fileName"
           :download-name="data.dataSource?.fileName"
           :file-reference="data.dataSource?.fileReference"
-          :data-id="data.metaInfo.dataId"
-          :data-type="data.metaInfo.dataType"
+          :data-id="data.metaInfo?.dataId"
+          :data-type="data.metaInfo?.dataType"
           :show-icon="!(data.dataSource == undefined)"
         />
       </template>

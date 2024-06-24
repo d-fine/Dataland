@@ -18,7 +18,7 @@
       <template v-else>No data provided</template>
     </DataPointWrapperDisplayComponent>
   </div>
-  <component v-else :is="content.displayComponentName" :content="content" :meta-Info="metaInfo"/>
+  <component v-else :is="content.displayComponentName" :content="content" />
 </template>
 
 <script lang="ts">
