@@ -14,8 +14,6 @@ export class UploadReports extends UploadDocuments {
       cy.wrap(element).find(`[data-test="publicationDate"] button`).should('have.class', 'p-datepicker-trigger').click();
       cy.get('div.p-datepicker').find('button[aria-label="Previous Month"]').click();
       cy.get('div.p-datepicker').find(`span:contains("12")`).click();
-      selectItemFromDropdownByValue(cy.wrap(element).find('div[name=currency]'), 'EUR', true);
-      cy.wrap(element).find(`input[value="No"]`).click();
     });
   }
 
