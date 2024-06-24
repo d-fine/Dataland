@@ -1,4 +1,4 @@
-FROM python:3.12.3
+FROM python:3.12.4@sha256:f6d04873f0a67146854270e5f6513ed5e0165557c1b10689f1a20e9e65c8fe8e
 
 WORKDIR /usr/src/app
 
