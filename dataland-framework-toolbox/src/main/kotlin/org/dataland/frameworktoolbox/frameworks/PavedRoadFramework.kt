@@ -229,7 +229,7 @@ abstract class PavedRoadFramework(
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject, allPrivateFrameworks)
-        //datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
+        datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
         diagnostics.finalizeDiagnosticStream()
         logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
