@@ -1353,8 +1353,8 @@
         "type": "string",
         "enum": [
           "CompanyOwner",
-          "CompanyUploader",
-          "ExternalCompanyUploader",
+          "CompanyDataUploader",
+          "ExternalCompanyDataUploader",
           "CompanyUserAdmin",
           "CompanyMember"
         ]

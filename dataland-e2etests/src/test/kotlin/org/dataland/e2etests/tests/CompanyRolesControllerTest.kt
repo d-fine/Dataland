@@ -317,7 +317,7 @@ class CompanyRolesControllerTest {
         val companyId = uploadCompanyAndReturnCompanyId()
         val listOfRolesThatCanBeModified = listOf(CompanyRole.CompanyUserAdmin, CompanyRole.CompanyMember)
         val listOfRolesThatCannotBeModified =
-            listOf(CompanyRole.CompanyOwner, CompanyRole.CompanyUploader, CompanyRole.ExternalCompanyUploader)
+            listOf(CompanyRole.CompanyOwner, CompanyRole.CompanyDataUploader, CompanyRole.ExternalCompanyDataUploader)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyUserAdmin, companyId, dataReaderUserId)
         listOfRolesThatCanBeModified.forEach {
@@ -348,7 +348,7 @@ class CompanyRolesControllerTest {
     @Test
     fun `assure that the company roles company member uploader external uploader cannot add or remove company roles`() {
         val listOfCompanyRolesWithoutModificationRights =
-            listOf(CompanyRole.CompanyUploader, CompanyRole.CompanyMember, CompanyRole.ExternalCompanyUploader)
+            listOf(CompanyRole.CompanyDataUploader, CompanyRole.CompanyMember, CompanyRole.ExternalCompanyDataUploader)
         val companyId = uploadCompanyAndReturnCompanyId()
         listOfCompanyRolesWithoutModificationRights.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -361,7 +361,7 @@ class CompanyRolesControllerTest {
     fun `assure that every company role has access to get and head endpoint`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assignCompanyRole(CompanyRole.CompanyUploader, companyId, dataUploaderUserId)
+        assignCompanyRole(CompanyRole.CompanyDataUploader, companyId, dataUploaderUserId)
         enumValues<CompanyRole>().forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             assignCompanyRole(it, companyId, dataReaderUserId)
@@ -372,7 +372,7 @@ class CompanyRolesControllerTest {
             }
 
             assertDoesNotThrow {
-                hasUserCompanyRole(CompanyRole.CompanyUploader, companyId, dataUploaderUserId)
+                hasUserCompanyRole(CompanyRole.CompanyDataUploader, companyId, dataUploaderUserId)
             }
 
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)

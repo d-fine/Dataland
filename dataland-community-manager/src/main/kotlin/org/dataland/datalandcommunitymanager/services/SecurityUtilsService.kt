@@ -19,6 +19,14 @@ class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
 ) {
+    private val roleModificationPermissionsMap = mapOf(
+        CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
+        CompanyRole.CompanyDataUploader to emptyList(),
+        CompanyRole.ExternalCompanyDataUploader to emptyList(),
+        CompanyRole.CompanyUserAdmin to listOf(CompanyRole.CompanyUserAdmin, CompanyRole.CompanyMember),
+        CompanyRole.CompanyMember to emptyList(),
+    )
+
     /**
      * Returns true if and only if the currently authenticated user is asking for him/herself
      */
@@ -108,16 +116,11 @@ class SecurityUtilsService(
         val userId = SecurityContextHolder.getContext().authentication.name ?: return false
         val userCompanyRoles =
             companyRoleAssignmentRepository.findByCompanyIdAndUserId(companyId.toString(), userId)
-        val rolePermissionsMap = mapOf(
-            CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
-            CompanyRole.CompanyUploader to emptyList(),
-            CompanyRole.ExternalCompanyUploader to emptyList(),
-            CompanyRole.CompanyUserAdmin to listOf(CompanyRole.CompanyUserAdmin, CompanyRole.CompanyMember),
-            CompanyRole.CompanyMember to emptyList(),
-        )
         var hasUserPermission = false
         userCompanyRoles.forEach {
-            if (rolePermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true) hasUserPermission = true
+            if (roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true) {
+                hasUserPermission = true
+            }
         }
         return hasUserPermission
     }

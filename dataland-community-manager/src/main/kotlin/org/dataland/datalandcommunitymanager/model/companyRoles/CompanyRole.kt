@@ -9,6 +9,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class CompanyRole { CompanyOwner, CompanyUploader, ExternalCompanyUploader,
+enum class CompanyRole {
+    CompanyOwner,
+    CompanyDataUploader,
+    ExternalCompanyDataUploader,
     CompanyUserAdmin,
-    CompanyMember, }
+    CompanyMember,
+}
