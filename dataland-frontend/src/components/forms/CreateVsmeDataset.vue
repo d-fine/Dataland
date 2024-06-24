@@ -119,7 +119,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { computed, defineComponent, inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
