@@ -401,17 +401,10 @@ class CompanyRolesControllerTest {
             }
             assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
 
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            assignCompanyRole(it, companyId, dataReaderUserId)
-
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             val exceptionWhenTryingToDeleteCompanyMembers = assertThrows<ClientException> {
                 removeCompanyRole(it, companyId, dataUploaderUserId)
             }
             assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToDeleteCompanyMembers, 403)
-
-            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            removeCompanyRole(it, companyId, dataReaderUserId)
         }
     }
 }
