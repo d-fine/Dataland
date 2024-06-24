@@ -3,7 +3,7 @@ import {
   CompanyRolesControllerApi,
   type CompanyRoleAssignment,
   type CompanyRole,
-} from "@clients/communitymanager";
+} from '@clients/communitymanager';
 
 /**
  * Method that assigns a company role for a specified company to a user
@@ -17,12 +17,12 @@ export async function assignCompanyRole(
   token: string,
   companyRole: CompanyRole,
   companyId: string,
-  userId: string,
+  userId: string
 ): Promise<CompanyRoleAssignment> {
   const apiResponse = await new CompanyRolesControllerApi(new Configuration({ accessToken: token })).assignCompanyRole(
     companyRole,
     companyId,
-    userId,
+    userId
   );
   return apiResponse.data;
 }
