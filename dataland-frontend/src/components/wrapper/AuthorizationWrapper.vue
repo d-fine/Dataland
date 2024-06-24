@@ -20,16 +20,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import type Keycloak from "keycloak-js";
-import { checkIfUserHasRole } from "@/utils/KeycloakUtils";
-import TheContent from "@/components/generics/TheContent.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
-import { hasUserCompanyRoleForCompany } from "@/utils/CompanyRolesUtils";
-import { CompanyRole } from "@clients/communitymanager";
+import { defineComponent, inject } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import TheContent from '@/components/generics/TheContent.vue';
+import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "AuthorizationWrapper",
+  name: 'AuthorizationWrapper',
   components: { TheContent, MiddleCenterDiv },
   data() {
     return {
@@ -47,7 +47,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   mounted: function () {
@@ -64,7 +64,7 @@ export default defineComponent({
         this.isUserCompanyOwner = await hasUserCompanyRoleForCompany(
           CompanyRole.CompanyOwner,
           this.allowCompanyOwnerForCompanyId,
-          this.getKeycloakPromise,
+          this.getKeycloakPromise
         );
         this.waitingForCompanyOwnershipData = false;
       } else {

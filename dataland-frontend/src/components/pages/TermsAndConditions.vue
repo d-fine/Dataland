@@ -1159,12 +1159,12 @@
 </template>
 
 <script lang="ts">
-import LegalPage from "@/components/generics/LegalPage.vue";
-import { computed, defineComponent } from "vue";
-import InputSwitch from "primevue/inputswitch";
+import LegalPage from '@/components/generics/LegalPage.vue';
+import { computed, defineComponent } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
 
 export default defineComponent({
-  name: "TermsAndConditions",
+  name: 'TermsAndConditions',
   components: { LegalPage, InputSwitch },
   data() {
     return {
@@ -1188,7 +1188,7 @@ h1 {
 
 div:not(:first-of-type) h2::before {
   counter-increment: section;
-  content: counter(section) ". ";
+  content: counter(section) '. ';
 }
 
 h2 {
@@ -1197,13 +1197,13 @@ h2 {
 
 div:not(:first-of-type) h2 ~ p:not(:only-of-type)::before {
   counter-increment: subsection;
-  content: counter(section) "." counter(subsection) ". ";
+  content: counter(section) '.' counter(subsection) '. ';
   font-weight: bold;
 }
 
 h3::before {
   counter-increment: subsection;
-  content: counter(section) "." counter(subsection) ". ";
+  content: counter(section) '.' counter(subsection) '. ';
 }
 
 h3 {
@@ -1226,6 +1226,6 @@ p::before {
 
 h3 ~ p:not(:only-of-type)::before {
   counter-increment: subsubsection;
-  content: counter(section) "." counter(subsection) "." counter(subsubsection) ". ";
+  content: counter(section) '.' counter(subsection) '.' counter(subsubsection) '. ';
 }
 </style>

@@ -56,18 +56,18 @@
 </style>
 
 <script lang="ts" generic="T">
-import { defineComponent } from "vue";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
-import Tooltip from "primevue/tooltip";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import { defineComponent } from 'vue';
+import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import Tooltip from 'primevue/tooltip';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import {
   type CompanyReport,
   type EuTaxonomyDataForFinancials,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
-} from "@clients/backend";
+} from '@clients/backend';
 
 export default defineComponent({
   components: {
@@ -107,13 +107,13 @@ export default defineComponent({
       let latestDate = null;
       let referencedReports;
       switch (singleDataAndMetaInfo.metaInfo.dataType) {
-        case "sfdr":
+        case 'sfdr':
           referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
           break;
-        case "eutaxonomy-financials":
+        case 'eutaxonomy-financials':
           referencedReports = (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports;
           break;
-        case "eutaxonomy-non-financials":
+        case 'eutaxonomy-non-financials':
           referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
           break;
         default:
@@ -129,9 +129,9 @@ export default defineComponent({
           }
         }
       }
-      const mostRecentSourceToolTip = latestDate ? `Publication date of most recent source:\n ${latestDate}\n\n` : "";
+      const mostRecentSourceToolTip = latestDate ? `Publication date of most recent source:\n ${latestDate}\n\n` : '';
       const datasetPublishedToolTip =
-        "Dataset published on Dataland:\n " +
+        'Dataset published on Dataland:\n ' +
         convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
       return mostRecentSourceToolTip + datasetPublishedToolTip;
     },

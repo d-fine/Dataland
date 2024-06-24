@@ -1,9 +1,9 @@
-import type Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { type AxiosError } from "axios";
-import { waitForAndReturnResolvedKeycloakPromise } from "@/utils/KeycloakUtils";
-import { isCompanyIdValid } from "@/utils/ValidationsUtils";
-import { type CompanyRole } from "@clients/communitymanager";
+import type Keycloak from 'keycloak-js';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { type AxiosError } from 'axios';
+import { waitForAndReturnResolvedKeycloakPromise } from '@/utils/KeycloakUtils';
+import { isCompanyIdValid } from '@/utils/ValidationsUtils';
+import { type CompanyRole } from '@clients/communitymanager';
 
 /**
  * Check if current user has a certain company role for a company
@@ -15,7 +15,7 @@ import { type CompanyRole } from "@clients/communitymanager";
 export async function hasUserCompanyRoleForCompany(
   companyRole: CompanyRole,
   companyId: string,
-  keycloakPromiseGetter?: () => Promise<Keycloak>,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
   if (keycloakPromiseGetter && isCompanyIdValid(companyId)) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
@@ -25,7 +25,7 @@ export async function hasUserCompanyRoleForCompany(
         await new ApiClientProvider(keycloakPromiseGetter()).apiClients.companyRolesController.hasUserCompanyRole(
           companyRole,
           companyId,
-          userId,
+          userId
         );
         return true;
       } catch (error) {
@@ -45,12 +45,12 @@ export async function hasUserCompanyRoleForCompany(
  */
 export async function hasCompanyAtLeastOneCompanyOwner(
   companyId: string,
-  keyCloakPromiseGetter?: () => Promise<Keycloak>,
+  keyCloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<boolean> {
   if (keyCloakPromiseGetter && isCompanyIdValid(companyId)) {
     try {
       await new ApiClientProvider(keyCloakPromiseGetter()).apiClients.companyRolesController.hasCompanyAtLeastOneOwner(
-        companyId,
+        companyId
       );
       return true;
     } catch (error) {

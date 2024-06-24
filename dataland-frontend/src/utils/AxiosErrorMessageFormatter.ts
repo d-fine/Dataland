@@ -1,4 +1,4 @@
-import { AxiosError, type AxiosResponse } from "axios";
+import { AxiosError, type AxiosResponse } from 'axios';
 
 /**
  * Takes an AxiosError and attempts to return a formatted error message derived from the error values.
@@ -11,7 +11,7 @@ export function formatAxiosErrorMessage(error: AxiosError | Error): string {
   const err = error as AxiosError;
   const response = err.response as AxiosResponse<{ errors: { summary: string; message: string }[] }>;
   let errSummary = JSON.stringify(err);
-  let errMessage = "";
+  let errMessage = '';
 
   if (response.data.errors[0]) {
     errSummary = response.data.errors[0].summary;

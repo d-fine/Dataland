@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import StringBadgeListFormField from "@/components/forms/parts/fields/StringBadgeListFormField.vue";
+import { defineComponent } from 'vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import StringBadgeListFormField from '@/components/forms/parts/fields/StringBadgeListFormField.vue';
 
 export default defineComponent({
-  name: "ProductFormElement",
+  name: 'ProductFormElement',
   components: {
     InputTextFormField,
     FreeTextFormField,

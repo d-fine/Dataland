@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import PrimeButton from "primevue/button";
-import { defineComponent } from "vue";
+import PrimeButton from 'primevue/button';
+import { defineComponent } from 'vue';
 export default defineComponent({
-  name: "BulkDataRequestButton",
+  name: 'BulkDataRequestButton',
   components: { PrimeButton },
 });
 </script>

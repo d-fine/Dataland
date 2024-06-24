@@ -65,17 +65,17 @@
 </style>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import InputText from "primevue/inputtext";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
+import { defineComponent } from 'vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { type DatasetTableInfo } from '@/components/resources/datasetOverview/DatasetTableInfo';
+import InputText from 'primevue/inputtext';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
 
 export default defineComponent({
-  name: "DatasetOverviewTable",
+  name: 'DatasetOverviewTable',
   mounted() {
     this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
   },
@@ -87,12 +87,12 @@ export default defineComponent({
   },
   data() {
     return {
-      searchBarInput: "",
+      searchBarInput: '',
       displayedDatasetTableInfos: [] as DatasetTableInfo[],
       humanizeString: humanizeStringOrNumber,
       convertDate: convertUnixTimeInMsToDateString,
       loading: false,
-      latestSearchString: "" as string,
+      latestSearchString: '' as string,
     };
   },
   props: {

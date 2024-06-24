@@ -3,15 +3,15 @@ import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { type Field } from "@/utils/GenericFrameworkTypes";
-import { type P2pDriveMix } from "@clients/backend";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type DriveMixType } from "@/api-models/DriveMixType";
-import { p2pModalColumnHeaders } from "@/components/resources/frameworkDataSearch/p2p/P2pModalColumnHeaders";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import { type Field } from '@/utils/GenericFrameworkTypes';
+import { type P2pDriveMix } from '@clients/backend';
+import { formatPercentageNumberAsString } from '@/utils/Formatter';
+import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { type DriveMixType } from '@/api-models/DriveMixType';
+import { p2pModalColumnHeaders } from '@/components/resources/frameworkDataSearch/p2p/P2pModalColumnHeaders';
 
 export type P2pDriveMixPerFleetType = { [key in DriveMixType]?: P2pDriveMix };
 
@@ -28,7 +28,7 @@ interface P2pDriveMixDisplayFormat {
  * @returns the converted list
  */
 function convertP2pDriveMixTypeToListForModal(
-  driveMixPerFleetSegment: P2pDriveMixPerFleetType,
+  driveMixPerFleetSegment: P2pDriveMixPerFleetType
 ): P2pDriveMixDisplayFormat[] {
   const listForModal: P2pDriveMixDisplayFormat[] = [];
   for (const [driveMixType, p2pDriveMix] of Object.entries(driveMixPerFleetSegment)) {
@@ -37,9 +37,9 @@ function convertP2pDriveMixTypeToListForModal(
       driveMixPerFleetSegmentInPercent:
         p2pDriveMix.driveMixPerFleetSegmentInPercent != null
           ? formatPercentageNumberAsString(p2pDriveMix.driveMixPerFleetSegmentInPercent)
-          : "",
+          : '',
       totalAmountOfVehicles:
-        p2pDriveMix.totalAmountOfVehicles != null ? p2pDriveMix.totalAmountOfVehicles.toString() : "",
+        p2pDriveMix.totalAmountOfVehicles != null ? p2pDriveMix.totalAmountOfVehicles.toString() : '',
     });
   }
   return listForModal;
@@ -54,7 +54,7 @@ function convertP2pDriveMixTypeToListForModal(
  */
 export function p2pDriveMixValueGetterFactory(
   path: string,
-  field: Field,
+  field: Field
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
@@ -78,7 +78,7 @@ export function p2pDriveMixValueGetterFactory(
           },
           data: {
             listOfRowContents: convertedDriveMixPerFleetSegmentForModal,
-            kpiKeyOfTable: "driveMixPerFleetSegment",
+            kpiKeyOfTable: 'driveMixPerFleetSegment',
             columnHeaders: p2pModalColumnHeaders,
           },
         },

@@ -1,14 +1,14 @@
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 
 export type MLDTConfig<FrameworkDataType> = Array<
   MLDTCellConfig<FrameworkDataType> | MLDTSectionConfig<FrameworkDataType>
 >;
 
-export type BadgeColor = "yellow" | "green" | "red" | "blue" | "purple" | "gray" | "brown" | "orange";
+export type BadgeColor = 'yellow' | 'green' | 'red' | 'blue' | 'purple' | 'gray' | 'brown' | 'orange';
 
 export interface MLDTCellConfig<FrameworkDataType> {
-  type: "cell";
+  type: 'cell';
   label: string;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
@@ -18,7 +18,7 @@ export interface MLDTCellConfig<FrameworkDataType> {
 }
 
 export interface MLDTSectionConfig<FrameworkDataType> {
-  type: "section";
+  type: 'section';
   label: string;
   expandOnPageLoad: boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
@@ -36,9 +36,9 @@ export interface MLDTSectionConfig<FrameworkDataType> {
  */
 export function isCellOrSectionVisible<FrameworkDataType>(
   cellOrSectionConfig: MLDTSectionConfig<FrameworkDataType> | MLDTCellConfig<FrameworkDataType>,
-  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>,
+  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>
 ): boolean {
-  if (cellOrSectionConfig.type == "cell") {
+  if (cellOrSectionConfig.type == 'cell') {
     return isCellRowVisible(cellOrSectionConfig, dataAndMetaInformation);
   } else {
     return isCellSectionVisible(cellOrSectionConfig, dataAndMetaInformation);
@@ -53,10 +53,10 @@ export function isCellOrSectionVisible<FrameworkDataType>(
  */
 function isCellRowVisible<FrameworkDataType>(
   cellConfig: MLDTCellConfig<FrameworkDataType>,
-  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>,
+  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>
 ): boolean {
   return dataAndMetaInformation.some((singleDataAndMetaInformation) =>
-    cellConfig.shouldDisplay(singleDataAndMetaInformation.data),
+    cellConfig.shouldDisplay(singleDataAndMetaInformation.data)
   );
 }
 
@@ -68,10 +68,10 @@ function isCellRowVisible<FrameworkDataType>(
  */
 function isCellSectionVisible<FrameworkDataType>(
   sectionConfig: MLDTSectionConfig<FrameworkDataType>,
-  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>,
+  dataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataType>>
 ): boolean {
   const shouldShowSection = dataAndMetaInformation.some((singleDataAndMetaInformation) =>
-    sectionConfig.shouldDisplay(singleDataAndMetaInformation.data),
+    sectionConfig.shouldDisplay(singleDataAndMetaInformation.data)
   );
 
   if (!shouldShowSection) {
@@ -79,7 +79,7 @@ function isCellSectionVisible<FrameworkDataType>(
   }
 
   const anyChildrenVisible = sectionConfig.children.some((child) =>
-    isCellOrSectionVisible(child, dataAndMetaInformation),
+    isCellOrSectionVisible(child, dataAndMetaInformation)
   );
 
   return shouldShowSection && anyChildrenVisible;

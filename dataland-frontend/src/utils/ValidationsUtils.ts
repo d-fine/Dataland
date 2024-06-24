@@ -1,5 +1,5 @@
-import { type FormKitNode } from "@formkit/core";
-import { findAllValuesForKey, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type FormKitNode } from '@formkit/core';
+import { findAllValuesForKey, type ObjectType } from '@/utils/UpdateObjectUtils';
 
 /**
  * Checks which inputs are not filled correctly
@@ -9,9 +9,9 @@ export function checkCustomInputs(node: FormKitNode): void {
   const invalidElements: HTMLElement[] = [];
   node.walk((child: FormKitNode) => {
     // Check if this child has errors
-    if ((child.ledger.value("blocking") || child.ledger.value("errors")) && child.type !== "group") {
+    if ((child.ledger.value('blocking') || child.ledger.value('errors')) && child.type !== 'group') {
       // We found an input with validation errors
-      if (typeof child.props.id === "string") {
+      if (typeof child.props.id === 'string') {
         const invalidElement = document.getElementById(child.props.id);
         if (invalidElement) {
           invalidElements.push(invalidElement);
@@ -19,7 +19,7 @@ export function checkCustomInputs(node: FormKitNode): void {
       }
     }
   }, true);
-  invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 /**
@@ -30,9 +30,9 @@ export function checkCustomInputs(node: FormKitNode): void {
  */
 export function checkIfAllUploadedReportsAreReferencedInDataModel(
   dataModel: ObjectType,
-  uploadedReports: string[],
+  uploadedReports: string[]
 ): void {
-  const referencedReports = findAllValuesForKey(dataModel, "fileName");
+  const referencedReports = findAllValuesForKey(dataModel, 'fileName');
   const unusedReports: string[] = [];
   uploadedReports.forEach((report) => {
     if (!referencedReports.some((refReport) => refReport === report)) {
@@ -40,12 +40,12 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
     }
   });
   if (unusedReports.length >= 1) {
-    const uploadReportComponent = document.getElementById("uploadReports");
+    const uploadReportComponent = document.getElementById('uploadReports');
     if (uploadReportComponent) {
-      uploadReportComponent.scrollIntoView({ behavior: "smooth", block: "center" });
+      uploadReportComponent.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     throw new Error(
-      `Not all uploaded reports are used as a data source. Please remove the following reports, or use them as a data source: ${unusedReports.toString()}`,
+      `Not all uploaded reports are used as a data source. Please remove the following reports, or use them as a data source: ${unusedReports.toString()}`
     );
   }
 }
@@ -56,7 +56,7 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
  * @returns true if the validation string contains required else false
  */
 export function isInputRequired(validation?: string): boolean {
-  return validation?.includes("required") ?? false;
+  return validation?.includes('required') ?? false;
 }
 
 /**

@@ -1,46 +1,46 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { YesNoNa } from "@clients/backend";
-import type { BaseDataPointYesNoNa } from "@clients/backend";
-import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { YesNoNa } from '@clients/backend';
+import type { BaseDataPointYesNoNa } from '@clients/backend';
+import { yesNoDataPointValueGetterFactory } from '@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory';
+import { NO_DATA_PROVIDED } from '@/utils/Constants';
 
-describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
-  describe("Tests when the data provides a simple data source", () => {
+describe('Unit test for the YesNoDataPointValueGetterFactory', () => {
+  describe('Tests when the data provides a simple data source', () => {
     const baseFieldCertificate: Field = {
-      name: "environmentalManagementSystemNationalCertification",
-      label: "Environmental Management System National Certification",
-      description: "Is the environmental management system nationally recognized and certified?",
-      unit: "",
-      component: "YesNoNaFormField",
+      name: 'environmentalManagementSystemNationalCertification',
+      label: 'Environmental Management System National Certification',
+      description: 'Is the environmental management system nationally recognized and certified?',
+      unit: '',
+      component: 'YesNoNaFormField',
       required: false,
       showIf: (): boolean => true,
     };
 
     const baseFieldNoCertificate: Field = {
-      name: "normal-field",
-      label: "Just a normal field",
-      description: "No certificate here",
-      unit: "",
-      component: "YesNoNaFormField",
+      name: 'normal-field',
+      label: 'Just a normal field',
+      description: 'No certificate here',
+      unit: '',
+      component: 'YesNoNaFormField',
       required: false,
       showIf: (): boolean => true,
     };
 
-    it("An empty string should be displayed if the data point is undefined", () => {
+    it('An empty string should be displayed if the data point is undefined', () => {
       const dataset = { data: undefined };
-      const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
+      const value = yesNoDataPointValueGetterFactory('data', baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(MLDTDisplayObjectForEmptyString);
     });
 
     it("An empty string should be displayed if the data point's value is undefined", () => {
       const datapoint = {};
       const dataset = { data: datapoint };
-      const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
+      const value = yesNoDataPointValueGetterFactory('data', baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
         displayValue: NO_DATA_PROVIDED,
@@ -52,10 +52,10 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
         value: YesNoNa.Na,
       };
       const dataset = { data: datapoint };
-      const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
+      const value = yesNoDataPointValueGetterFactory('data', baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: "N/A",
+        displayValue: 'N/A',
       });
     });
 
@@ -64,19 +64,19 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
         const datapoint: BaseDataPointYesNoNa = {
           value: YesNoNa.Yes,
           dataSource: {
-            fileName: "Hello",
-            fileReference: "TestReference",
+            fileName: 'Hello',
+            fileReference: 'TestReference',
           },
         };
         const dataset = { data: datapoint };
-        const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
+        const value = yesNoDataPointValueGetterFactory('data', baseFieldCertificate)(dataset);
         expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
           displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
           displayValue: {
-            label: "Certified",
+            label: 'Certified',
             dataSource: {
-              fileReference: "TestReference",
-              fileName: "Hello",
+              fileReference: 'TestReference',
+              fileName: 'Hello',
             },
           },
         });
@@ -86,10 +86,10 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
           value: YesNoNa.No,
         };
         const dataset = { data: datapoint };
-        const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
+        const value = yesNoDataPointValueGetterFactory('data', baseFieldCertificate)(dataset);
         expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
           displayComponentName: MLDTDisplayComponentName.StringDisplayComponent as string,
-          displayValue: "Uncertified",
+          displayValue: 'Uncertified',
         });
       });
     });
@@ -100,22 +100,22 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
           value: YesNoNa.Yes,
         };
         const dataset = { data: datapoint };
-        const value = yesNoDataPointValueGetterFactory("data", baseFieldNoCertificate)(dataset);
+        const value = yesNoDataPointValueGetterFactory('data', baseFieldNoCertificate)(dataset);
         expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
           displayComponentName: MLDTDisplayComponentName.StringDisplayComponent as string,
-          displayValue: "Yes",
+          displayValue: 'Yes',
         });
       });
     });
   });
 
-  describe("Tests when the field provides a datasource property set", () => {
+  describe('Tests when the field provides a datasource property set', () => {
     const field: Field = {
-      name: "environmentalManagementSystemNationalCertification",
-      label: "Environmental Management System National Certification",
-      description: "Is the environmental management system nationally recognized and certified?",
-      unit: "",
-      component: "YesNoNaFormField",
+      name: 'environmentalManagementSystemNationalCertification',
+      label: 'Environmental Management System National Certification',
+      description: 'Is the environmental management system nationally recognized and certified?',
+      unit: '',
+      component: 'YesNoNaFormField',
       required: false,
       showIf: (): boolean => true,
     };
@@ -124,16 +124,16 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.Yes,
         dataSource: {
-          fileName: "Hello",
-          fileReference: "TestReference",
+          fileName: 'Hello',
+          fileReference: 'TestReference',
         },
       };
       const dataset = { data: datapoint };
-      const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
+      const value = yesNoDataPointValueGetterFactory('data', field)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
-          label: "Certified",
+          label: 'Certified',
           dataSource: datapoint.dataSource,
         },
       });
@@ -143,16 +143,16 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       const datapoint: BaseDataPointYesNoNa = {
         value: YesNoNa.No,
         dataSource: {
-          fileName: "Hello",
-          fileReference: "TestReference",
+          fileName: 'Hello',
+          fileReference: 'TestReference',
         },
       };
       const dataset = { data: datapoint };
-      const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
+      const value = yesNoDataPointValueGetterFactory('data', field)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
-          label: "Uncertified",
+          label: 'Uncertified',
           dataSource: datapoint.dataSource,
         },
       });
@@ -162,16 +162,16 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       const datapoint = {
         value: YesNoNa.Na,
         dataSource: {
-          fileName: "Hello",
-          fileReference: "TestReference",
+          fileName: 'Hello',
+          fileReference: 'TestReference',
         },
       };
       const dataset = { data: datapoint };
-      const value = yesNoDataPointValueGetterFactory("data", field)(dataset);
+      const value = yesNoDataPointValueGetterFactory('data', field)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
-          label: "N/A",
+          label: 'N/A',
           dataSource: datapoint.dataSource,
         },
       });

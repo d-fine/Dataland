@@ -4,9 +4,9 @@ import {
   type DataTypeEnum,
   type BasicCompanyInformation,
   MetaDataControllerApi,
-} from "@clients/backend";
-import { type RouteHandler } from "cypress/types/net-stubbing";
-import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
+} from '@clients/backend';
+import { type RouteHandler } from 'cypress/types/net-stubbing';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 
 export interface UploadIds {
   companyId: string;
@@ -21,11 +21,11 @@ export interface UploadIds {
  */
 export async function searchBasicCompanyInformationForDataType(
   token: string,
-  dataType: DataTypeEnum,
+  dataType: DataTypeEnum
 ): Promise<BasicCompanyInformation[]> {
   const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
-    new Set([dataType]),
+    new Set([dataType])
   );
   return response.data;
 }
@@ -39,7 +39,7 @@ export async function searchBasicCompanyInformationForDataType(
  */
 export async function countCompaniesAndDataSetsForDataType(
   token: string,
-  dataType: DataTypeEnum,
+  dataType: DataTypeEnum
 ): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
   const basicCompanyInformations = await searchBasicCompanyInformationForDataType(token, dataType);
   let numberOfDataSetsForDataType = 0;
@@ -61,19 +61,19 @@ export async function countCompaniesAndDataSetsForDataType(
  */
 export function interceptAllAndCheckFor500Errors(): void {
   const handler: RouteHandler = (incomingRequest) => {
-    const is500ResponseAllowed = incomingRequest.headers["DATALAND-ALLOW-5XX"] === "true";
-    delete incomingRequest.headers["DATALAND-ALLOW-5XX"];
+    const is500ResponseAllowed = incomingRequest.headers['DATALAND-ALLOW-5XX'] === 'true';
+    delete incomingRequest.headers['DATALAND-ALLOW-5XX'];
     incomingRequest.continue((response) => {
       if (response.statusCode >= 500 && !is500ResponseAllowed) {
         assert(
           false,
-          `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`,
+          `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`
         );
       }
     });
   };
-  cy.intercept("/api/**", handler);
-  cy.intercept("/api-keys/**", handler);
+  cy.intercept('/api/**', handler);
+  cy.intercept('/api-keys/**', handler);
 }
 
 /**
@@ -81,22 +81,22 @@ export function interceptAllAndCheckFor500Errors(): void {
  */
 export function interceptAllDataPostsAndBypassQaIfPossible(): void {
   const handler: RouteHandler = (incomingRequest) => {
-    const isQaRequired = incomingRequest.headers["REQUIRE-QA"] === "true";
-    delete incomingRequest.headers["REQUIRE-QA"];
+    const isQaRequired = incomingRequest.headers['REQUIRE-QA'] === 'true';
+    delete incomingRequest.headers['REQUIRE-QA'];
     if (isQaRequired) {
-      incomingRequest.query["bypassQa"] = "false";
+      incomingRequest.query['bypassQa'] = 'false';
       return;
     }
-    const authorizationHeader = (incomingRequest.headers["authorization"] ??
-      incomingRequest.headers["Authorization"]) as string;
+    const authorizationHeader = (incomingRequest.headers['authorization'] ??
+      incomingRequest.headers['Authorization']) as string;
     if (authorizationHeader === undefined) {
       return;
     }
-    const base64EncodedAuthorizationPayload = authorizationHeader.split(".")[1];
+    const base64EncodedAuthorizationPayload = authorizationHeader.split('.')[1];
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
     if (authorization.realm_access.roles.includes(KEYCLOAK_ROLE_REVIEWER)) {
-      incomingRequest.query["bypassQa"] = "true";
+      incomingRequest.query['bypassQa'] = 'true';
     }
   };
-  cy.intercept("/api/data/*", handler);
+  cy.intercept('/api/data/*', handler);
 }

@@ -71,36 +71,36 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject, type PropType } from "vue";
+import { ApiClientProvider } from '@/services/ApiClients';
+import { defineComponent, inject, type PropType } from 'vue';
 import {
   type CompanyIdAndName,
   type CompanyInformation,
   type DataMetaInformation,
   type DataTypeEnum,
   IdentifierType,
-} from "@clients/backend";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
-import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { getErrorMessage } from "@/utils/ErrorMessageUtils";
-import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
-import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from "@/utils/CompanyRolesUtils";
-import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
-import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
-import { CompanyRole } from "@clients/communitymanager";
+} from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import ContextMenuButton from '@/components/general/ContextMenuButton.vue';
+import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
+import { getErrorMessage } from '@/utils/ErrorMessageUtils';
+import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
+import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "CompanyInformation",
+  name: 'CompanyInformation',
   components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton, ReviewRequestButtons },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      authenticated: inject<boolean>('authenticated'),
     };
   },
-  emits: ["fetchedCompanyInformation"],
+  emits: ['fetchedCompanyInformation'],
   data() {
     return {
       companyInformation: null as CompanyInformation | null,
@@ -119,17 +119,17 @@ export default defineComponent({
       if (this.companyInformation?.sector) {
         return this.companyInformation?.sector;
       } else {
-        return "—";
+        return '—';
       }
     },
     displayLei() {
-      return this.companyInformation?.identifiers?.[IdentifierType.Lei]?.[0] ?? "—";
+      return this.companyInformation?.identifiers?.[IdentifierType.Lei]?.[0] ?? '—';
     },
     contextMenuItems() {
       const listOfItems = [];
       if (!this.isUserCompanyOwner && this.authenticated) {
         listOfItems.push({
-          label: "Claim Company Dataset Ownership",
+          label: 'Claim Company Dataset Ownership',
           command: () => {
             this.dialogIsOpen = true;
           },
@@ -169,7 +169,7 @@ export default defineComponent({
         this.hasCompanyOwner = await hasCompanyAtLeastOneCompanyOwner(newCompanyId as string, this.getKeycloakPromise);
         this.claimIsSubmitted = false;
       } catch (error) {
-        console.error("Error fetching data for new company:", error);
+        console.error('Error fetching data for new company:', error);
       }
     },
   },
@@ -205,7 +205,7 @@ export default defineComponent({
         const companyIdAndNames = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
           parentCompanyLei,
           assertDefined(this.getKeycloakPromise)(),
-          1,
+          1
         );
         if (companyIdAndNames.length > 0) {
           this.parentCompany = companyIdAndNames[0];
@@ -236,11 +236,11 @@ export default defineComponent({
             this.hasParentCompany = false;
           }
           this.waitingForData = false;
-          this.$emit("fetchedCompanyInformation", this.companyInformation);
+          this.$emit('fetchedCompanyInformation', this.companyInformation);
         }
       } catch (error) {
         console.error(error);
-        if (getErrorMessage(error).includes("404")) {
+        if (getErrorMessage(error).includes('404')) {
           this.companyIdDoesNotExist = true;
         }
         this.waitingForData = false;
@@ -256,7 +256,7 @@ export default defineComponent({
       return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
         (result) => {
           this.isUserCompanyOwner = result;
-        },
+        }
       );
     },
     /**

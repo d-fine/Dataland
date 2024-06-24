@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h4>{{ title + " Datasets:" }}</h4>
+      <h4>{{ title + ' Datasets:' }}</h4>
       <div v-if="isWaitingForData" class="inline-loading text-center">
         <p class="font-medium text-xl">Loading...</p>
         <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
@@ -48,24 +48,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, inject } from "vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import PrimeButton from "primevue/button";
-import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
+import { defineComponent, type PropType, inject } from 'vue';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import PrimeButton from 'primevue/button';
+import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 import {
   ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM,
   ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
   PRIVATE_FRAMEWORKS,
-} from "@/utils/Constants";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { getDatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
-import { hasUserCompanyRoleForCompany } from "@/utils/CompanyRolesUtils";
-import type Keycloak from "keycloak-js";
-import { CompanyRole } from "@clients/communitymanager";
+} from '@/utils/Constants';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { getDatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
+import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import type Keycloak from 'keycloak-js';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
-  name: "MetaInfoPerCompanyAndFramework",
+  name: 'MetaInfoPerCompanyAndFramework',
   components: { PrimeButton, DatasetStatusBadge },
 
   props: {
@@ -88,7 +88,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   data() {
@@ -115,9 +115,9 @@ export default defineComponent({
     dynamicButtonTitle(): string {
       if (this.listOfFrameworkData.length === 0) {
         if (this.isPrivateFramework && !this.isCompanyOwner) {
-          return "Become company owner to create a dataset";
+          return 'Become company owner to create a dataset';
         } else {
-          return "Be the first to create this dataset";
+          return 'Be the first to create this dataset';
         }
       } else {
         return `Create another dataset for ${this.title}`;
@@ -141,7 +141,7 @@ export default defineComponent({
       return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
         (isCompanyOwner) => {
           this.isCompanyOwner = isCompanyOwner;
-        },
+        }
       );
     },
 

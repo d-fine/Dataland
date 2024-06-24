@@ -6,7 +6,7 @@
     <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <a @click="openReportDataTableModal(report, name as string)" class="link" :data-test="`report-link-${name}`">
-          <span>{{ name ? name : "Unnamed_File" }}</span>
+          <span>{{ name ? name : 'Unnamed_File' }}</span>
         </a>
       </span>
     </div>
@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import PreviousReportsModal from "@/components/resources/frameworkDataSearch/PreviousReportsModal.vue";
-import type { CompanyReport } from "@clients/backend";
-import { openReportDataTableModal } from "@/utils/ReferencedReportsUtil";
+import { defineComponent } from 'vue';
+import PreviousReportsModal from '@/components/resources/frameworkDataSearch/PreviousReportsModal.vue';
+import type { CompanyReport } from '@clients/backend';
+import { openReportDataTableModal } from '@/utils/ReferencedReportsUtil';
 
 export default defineComponent({
-  name: "ShowMultipleReportsBanner",
+  name: 'ShowMultipleReportsBanner',
   data() {
     return {
       indexOfNewestReportingPeriod: -1 as number,
@@ -63,7 +63,7 @@ export default defineComponent({
       };
       this.$dialog.open(PreviousReportsModal, {
         props: {
-          header: "Previous years reports",
+          header: 'Previous years reports',
           modal: true,
           dismissableMask: true,
         },
