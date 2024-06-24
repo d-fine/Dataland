@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.services.messaging
+package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -11,23 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * A class that manages generating emails messages for  data ownership request if an ownership does not already exist
+ * A class that manages generating email messages for company ownership requests
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
-class DataOwnershipEmailMessageSender(
+class CompanyOwnershipRequestedEmailMessageSender(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     /**
-     * Function that generates the message object for data ownership request mails
-     * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
-     * @param datalandCompanyId identifier of the company in dataland
-     * @param comment the personal message from the user process
-     * @param correlationId the correlation ID of the current user process
+     * Function that generates the message object for company ownership request mails
+     * @param userAuthentication of the user who wants to become a company owner
+     * @param datalandCompanyId of the company that the user wants to become a company owner for
+     * @param comment from the user in association with the request
+     * @param correlationId of the current user process
      */
-    fun sendDataOwnershipInternalEmailMessage(
+    fun sendCompanyOwnershipInternalEmailMessage(
         userAuthentication: DatalandJwtAuthentication,
         datalandCompanyId: String,
         companyName: String,
@@ -44,9 +44,9 @@ class DataOwnershipEmailMessageSender(
             "Comment" to comment,
         )
         val message = InternalEmailMessage(
-            "Dataland Data Ownership Request",
-            "A data ownership request has been submitted",
-            "Data Ownership Request",
+            "Dataland Company Ownership Request",
+            "A company ownership request has been submitted",
+            "Company Ownership Request",
             properties,
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

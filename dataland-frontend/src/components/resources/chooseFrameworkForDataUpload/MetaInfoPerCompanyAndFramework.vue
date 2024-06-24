@@ -28,7 +28,7 @@
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
         <PrimeButton
-          v-if="!isPrivateFramework || isDataOwner"
+          v-if="!isPrivateFramework || isCompanyOwner"
           class="uppercase p-button p-button-sm d-letters mt-3"
           :disabled="!isFrontendUploadFormExisting"
           label="Create Dataset"
@@ -60,8 +60,9 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getDatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
-import { isUserDataOwnerForCompany } from '@/utils/DataOwnerUtils';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import type Keycloak from 'keycloak-js';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
   name: 'MetaInfoPerCompanyAndFramework',
@@ -96,7 +97,7 @@ export default defineComponent({
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
       isPrivateFramework: null as null | boolean,
-      isDataOwner: false as boolean,
+      isCompanyOwner: false as boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
       getDatasetStatus,
     };
@@ -108,13 +109,13 @@ export default defineComponent({
     this.isPrivateFramework = PRIVATE_FRAMEWORKS.includes(this.dataType as DataTypeEnum);
   },
   created() {
-    void this.setDataOwnerRights();
+    void this.setCompanyOwnerRights();
   },
   computed: {
     dynamicButtonTitle(): string {
       if (this.listOfFrameworkData.length === 0) {
-        if (this.isPrivateFramework && !this.isDataOwner) {
-          return 'Become data owner to create a dataset';
+        if (this.isPrivateFramework && !this.isCompanyOwner) {
+          return 'Become company owner to create a dataset';
         } else {
           return 'Be the first to create this dataset';
         }
@@ -133,13 +134,15 @@ export default defineComponent({
       return `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfo.dataId}`;
     },
     /**
-     * The methods determines the appropriate rights for dataowners and non dataowners
-     * @returns the boolean if user has dataowner rights or not
+     * Determines the appropriate rights for company owners and non company owners
+     * @returns the boolean if user has company owner rights or not
      */
-    async setDataOwnerRights(): Promise<void> {
-      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((isDataOwner) => {
-        this.isDataOwner = isDataOwner;
-      });
+    async setCompanyOwnerRights(): Promise<void> {
+      return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
+        (isCompanyOwner) => {
+          this.isCompanyOwner = isCompanyOwner;
+        }
+      );
     },
 
     /**
