@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts">
-import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
-import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import FormListFormField from '@/components/forms/parts/fields/FormListFormField.vue';
+import { defineComponent } from 'vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 export default defineComponent({
-  name: "PollutionEmissionFormField",
+  name: 'PollutionEmissionFormField',
   components: {
     FormListFormField,
   },

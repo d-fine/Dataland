@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { vsmeViewConfiguration } from "@/frameworks/vsme/ViewConfig";
-import { BaseVsmeFrameworkDefinition } from "@/frameworks/vsme/BaseFrameworkDefinition";
-import { type VsmeData } from "@clients/backend";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { vsmeViewConfiguration } from '@/frameworks/vsme/ViewConfig';
+import { BaseVsmeFrameworkDefinition } from '@/frameworks/vsme/BaseFrameworkDefinition';
+import { type VsmeData } from '@clients/backend';
 
 export class FrontendVsmeFrameworkDefinition
   extends BaseVsmeFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendVsmeFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<VsmeData> {
     return {
-      type: "MultiLayerDataTable",
+      type: 'MultiLayerDataTable',
       configuration: vsmeViewConfiguration,
     };
   }

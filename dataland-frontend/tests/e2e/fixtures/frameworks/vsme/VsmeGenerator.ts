@@ -1,4 +1,4 @@
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
+import { Generator } from '@e2e/utils/FakeFixtureUtils';
 import {
   ReleaseMedium,
   WasteClassifications,
@@ -8,11 +8,11 @@ import {
   type VsmeSiteAndArea,
   type VsmeEmployeesPerCountry,
   AreaAdjointness,
-} from "@clients/backend";
-import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
-import { faker } from "@faker-js/faker";
-import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+} from '@clients/backend';
+import { generateAddress } from '@e2e/fixtures/common/AddressFixtures';
+import { faker } from '@faker-js/faker';
+import { generateFloat } from '@e2e/fixtures/common/NumberFixtures';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 export class VsmeGenerator extends Generator {
   /**

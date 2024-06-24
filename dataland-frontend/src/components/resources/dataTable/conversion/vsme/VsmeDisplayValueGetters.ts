@@ -3,8 +3,8 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
 import {
   type VsmeSubsidiary,
   type VsmePollutionEmission,
@@ -12,45 +12,45 @@ import {
   type VsmeWasteClassificationObject,
   type VsmeSiteAndArea,
   type VsmeEmployeesPerCountry,
-} from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+} from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export const vsmeModalColumnHeaders = {
   listOfSubsidiary: {
-    nameOfSubsidiary: "Name",
-    addressOfSubsidiary: "Address",
+    nameOfSubsidiary: 'Name',
+    addressOfSubsidiary: 'Address',
   },
   pollutionEmission: {
-    pollutionType: "Type of Pollution",
-    emissionInKilograms: "Amount of Emission in kg",
-    releaseMedium: "Release Medium",
+    pollutionType: 'Type of Pollution',
+    emissionInKilograms: 'Amount of Emission in kg',
+    releaseMedium: 'Release Medium',
   },
   wasteClassification: {
-    wasteClassification: "Classification of waste",
-    typeOfWaste: "Type of Waste",
-    totalAmountOfWasteInTonnes: "Total amout in tonnes",
-    wasteRecycleOrReuseInTonnes: "Waste recycle or reuse in tonnes",
-    wasteDisposalInTonnes: "Waste disposal in tonnes",
-    totalAmountOfWasteInCubicMeters: "Total amount in cubic meters",
-    wasteRecycleOrReuseInCubicMeters: "Waste recycle or reuse in m³",
-    wasteDisposalInCubicMeters: "Waste disposal in m³",
+    wasteClassification: 'Classification of waste',
+    typeOfWaste: 'Type of Waste',
+    totalAmountOfWasteInTonnes: 'Total amout in tonnes',
+    wasteRecycleOrReuseInTonnes: 'Waste recycle or reuse in tonnes',
+    wasteDisposalInTonnes: 'Waste disposal in tonnes',
+    totalAmountOfWasteInCubicMeters: 'Total amount in cubic meters',
+    wasteRecycleOrReuseInCubicMeters: 'Waste recycle or reuse in m³',
+    wasteDisposalInCubicMeters: 'Waste disposal in m³',
   },
   siteAndArea: {
-    siteName: "Name of the Site",
-    siteAddress: "Address of the Site",
-    siteGeocoordinateLongitudeval: "Longitudeval Geocoordinates of the Site",
-    siteGeocoordinateLatitude: "Latitude Geocoordinates of the Site",
-    areaInHectare: "Area Size in Hectare",
-    biodiversitySensitiveArea: "Specify the Biodiversity-senstive Area",
-    areaAddress: "Address of the Area",
-    areaGeocoordinateLongitude: "Longitudeval Geocoordinates of the Area",
-    areaGeocoordinateLatitude: "Latitude Geocoordinates of the Area",
-    specificationOfAdjointness: "Adjointness of the Area to the Site",
+    siteName: 'Name of the Site',
+    siteAddress: 'Address of the Site',
+    siteGeocoordinateLongitudeval: 'Longitudeval Geocoordinates of the Site',
+    siteGeocoordinateLatitude: 'Latitude Geocoordinates of the Site',
+    areaInHectare: 'Area Size in Hectare',
+    biodiversitySensitiveArea: 'Specify the Biodiversity-senstive Area',
+    areaAddress: 'Address of the Area',
+    areaGeocoordinateLongitude: 'Longitudeval Geocoordinates of the Area',
+    areaGeocoordinateLatitude: 'Latitude Geocoordinates of the Area',
+    specificationOfAdjointness: 'Adjointness of the Area to the Site',
   },
   employeesPerCountry: {
-    country: "Country",
-    numberOfEmployeesInHeadCount: "Number of Employees in Head Count",
-    numberOfEmployeesInFullTimeEquivalent: "Number of Employees in Full Time Equivalents",
+    country: 'Country',
+    numberOfEmployeesInHeadCount: 'Number of Employees in Head Count',
+    numberOfEmployeesInFullTimeEquivalent: 'Number of Employees in Full Time Equivalents',
   },
 };
 interface VsmePollutionEmissionDisplayFormat {
@@ -78,7 +78,7 @@ interface VsmeWasteClassificationDisplayFormat {
  */
 export function formatVsmeSubsidiaryForDisplay(
   input: VsmeSubsidiary[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
@@ -97,7 +97,7 @@ export function formatVsmeSubsidiaryForDisplay(
         },
         data: {
           listOfRowContents: input,
-          kpiKeyOfTable: "listOfSubsidiary",
+          kpiKeyOfTable: 'listOfSubsidiary',
           columnHeaders: vsmeModalColumnHeaders,
         },
       },
@@ -112,7 +112,7 @@ export function formatVsmeSubsidiaryForDisplay(
  */
 export function formatVsmePollutionEmissionForDisplay(
   input: VsmePollutionEmission[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
   if (!input || input.length == 0) {
@@ -134,7 +134,7 @@ export function formatVsmePollutionEmissionForDisplay(
         },
         data: {
           listOfRowContents: convertedValueForModal,
-          kpiKeyOfTable: "pollutionEmission",
+          kpiKeyOfTable: 'pollutionEmission',
           columnHeaders: vsmeModalColumnHeaders,
         },
       },
@@ -149,7 +149,7 @@ export function formatVsmePollutionEmissionForDisplay(
  */
 export function formatVsmeWasteClassificationObjectForDisplay(
   input: VsmeWasteClassificationObject[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
   if (!input || input.length == 0) {
@@ -171,7 +171,7 @@ export function formatVsmeWasteClassificationObjectForDisplay(
         },
         data: {
           listOfRowContents: convertedValueForModal,
-          kpiKeyOfTable: "wasteClassification",
+          kpiKeyOfTable: 'wasteClassification',
           columnHeaders: vsmeModalColumnHeaders,
         },
       },
@@ -203,7 +203,7 @@ function convertVsmePollutionEmissionToListForModal(datasetValue: VsmePollutionE
  * @returns the converted list
  */
 function convertVsmeWasteClassificationToListForModal(
-  datasetValue: VsmeWasteClassificationObject[],
+  datasetValue: VsmeWasteClassificationObject[]
 ): VsmeWasteClassificationDisplayFormat[] {
   return datasetValue.map((item) => {
     const humanizedItem: VsmeWasteClassificationDisplayFormat = {
@@ -228,7 +228,7 @@ function convertVsmeWasteClassificationToListForModal(
  */
 export function formatVsmeSiteAndAreaForDisplay(
   input: VsmeSiteAndArea[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
@@ -246,7 +246,7 @@ export function formatVsmeSiteAndAreaForDisplay(
           },
           data: {
             listOfRowContents: input,
-            kpiKeyOfTable: "siteAndArea",
+            kpiKeyOfTable: 'siteAndArea',
             columnHeaders: vsmeModalColumnHeaders,
           },
         },
@@ -262,7 +262,7 @@ export function formatVsmeSiteAndAreaForDisplay(
  */
 export function formatVsmeEmployeesPerCountryForDisplay(
   input: VsmeEmployeesPerCountry[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input || input.length == 0) {
     return MLDTDisplayObjectForEmptyString;
@@ -280,7 +280,7 @@ export function formatVsmeEmployeesPerCountryForDisplay(
           },
           data: {
             listOfRowContents: input,
-            kpiKeyOfTable: "employeesPerCountry",
+            kpiKeyOfTable: 'employeesPerCountry',
             columnHeaders: vsmeModalColumnHeaders,
           },
         },

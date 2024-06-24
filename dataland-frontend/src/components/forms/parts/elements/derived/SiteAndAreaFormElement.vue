@@ -68,16 +68,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { defineComponent } from 'vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "SiteAndAreaFormElement",
+  name: 'SiteAndAreaFormElement',
   data() {
     return {
       adjointness: getDataset(DropdownDatasetIdentifier.Adjointness),

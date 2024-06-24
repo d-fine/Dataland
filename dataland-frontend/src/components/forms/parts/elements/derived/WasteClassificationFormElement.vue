@@ -65,15 +65,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { defineComponent } from 'vue';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "WasteClassificationFormElement",
+  name: 'WasteClassificationFormElement',
   data() {
     return {
       wasteClassifications: getDataset(DropdownDatasetIdentifier.WasteClassifications),

@@ -170,7 +170,7 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
   });
 }
 /**
- * Uploads a single sme dataset for a company
+ * Uploads a single vsme dataset for a company
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -186,8 +186,7 @@ export async function uploadVsmeFrameworkData(
   documents: File[]
 ): Promise<DataMetaInformation> {
   await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  const smeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
-  //todo rename constant
+  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
   const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
     { companyId, reportingPeriod, data },
     documents
