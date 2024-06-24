@@ -19,6 +19,8 @@
                 :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
                 :file-reference="dataPointDisplay.dataSource.fileReference"
                 show-icon
+                :data-type="metaInfo.dataType"
+                :data-id="metaInfo.dataId"
               />
             </td>
           </tr>
@@ -38,6 +40,7 @@
 import { defineComponent } from "vue";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { type DataPointDisplay } from "@/utils/DataPoint";
+import {DataMetaInformation} from "@clients/backend";
 
 export default defineComponent({
   components: { DocumentLink },
@@ -47,6 +50,10 @@ export default defineComponent({
       type: Object as () => DataPointDisplay,
       require: true,
     },
+      metaInfo: {
+          type: Object as () => DataMetaInformation,
+          required: true,
+      },
   },
   computed: {
     isDataCorrect() {
