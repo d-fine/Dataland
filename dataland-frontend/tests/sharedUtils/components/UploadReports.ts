@@ -1,7 +1,9 @@
-import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from '@sharedUtils/components/UploadDocuments';
+import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+
 export class UploadReports extends UploadDocuments {
   private uploadReportsSelector: string;
-  constructor(name: string = "UploadReports") {
+  constructor(name: string = 'UploadReports') {
     super(name);
     this.uploadReportsSelector = `div[data-test="upload-reports-${name}"]`;
   }
@@ -9,27 +11,26 @@ export class UploadReports extends UploadDocuments {
   fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload: number = 1): void {
     this.validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload);
     cy.get(`${this.uploadReportsSelector} [data-test="report-to-upload-form"]`).each((element) => {
-      cy.wrap(element)
-        .find(`[data-test="publicationDate"] button`)
-        .should("have.class", "p-datepicker-trigger")
-        .click();
-      cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-      cy.get("div.p-datepicker").find(`span:contains("12")`).click();
+      cy.wrap(element).find(`[data-test="publicationDate"] button`).should('have.class', 'p-datepicker-trigger').click();
+      cy.get('div.p-datepicker').find('button[aria-label="Previous Month"]').click();
+      cy.get('div.p-datepicker').find(`span:contains("12")`).click();
+      selectItemFromDropdownByValue(cy.wrap(element).find('div[name=currency]'), 'EUR', true);
+      cy.wrap(element).find(`input[value="No"]`).click();
     });
   }
 
   validateReportToUploadHasContainerInTheFileSelector(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should("exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should('exist');
   }
 
   validateReportIsNotInFileSelector(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should("not.exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should('not.exist');
   }
 
   validateNumberOfReportsSelectedForUpload(expectedNumberOfReportsToUpload: number): void {
     cy.get(`${this.uploadReportsSelector} [data-test="report-to-upload-form"]`).should(
-      "have.length",
-      expectedNumberOfReportsToUpload,
+      'have.length',
+      expectedNumberOfReportsToUpload
     );
   }
 
@@ -39,22 +40,22 @@ export class UploadReports extends UploadDocuments {
 
   removeReportFromSelectionForUpload(reportName: string): void {
     cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"] button`).click();
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should("not.exist");
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should("not.exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should('not.exist');
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should('not.exist');
   }
 
   validateReportIsNotAlreadyUploadedOrSelectedForUpload(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should("not.exist");
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should("not.exist");
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}FileUploadContainer"]`).should('not.exist');
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should('not.exist');
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer"]`).should('not.exist');
   }
 
   validateReportIsListedAsAlreadyUploaded(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer`).should("exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer`).should('exist');
   }
 
   validateReportToUploadHasContainerWithInfoForm(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should("exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should('exist');
   }
 
   validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportName: string): void {
@@ -63,7 +64,7 @@ export class UploadReports extends UploadDocuments {
   }
 
   validateReportHasNoContainerWithInfoForm(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should("not.exist");
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}ToUploadContainer"]`).should('not.exist');
   }
 
   validateReportIsNotInFileSelectorAndHasNoInfoForm(reportName: string): void {
