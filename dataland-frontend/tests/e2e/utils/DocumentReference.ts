@@ -1,17 +1,17 @@
-import { readFileSync } from "fs";
-import { createHash } from "crypto";
-import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
+import { readFileSync } from 'fs';
+import { createHash } from 'crypto';
+import { type ReferencedDocuments } from '@e2e/fixtures/FixtureUtils';
 
-const possibleDocuments = ["Certification", "Policy"];
+const possibleDocuments = ['Certification', 'Policy'];
 
 /**
  * Generates hash to fixture pdf that is used for all fake fixture references
  * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
  */
 export function getReferencedDocumentId(): string {
-  const testDocumentPath = "../testing/data/documents/StandardWordExport.pdf";
+  const testDocumentPath = '../testing/data/documents/StandardWordExport.pdf';
   const fileContent: Buffer = readFileSync(testDocumentPath);
-  return createHash("sha256").update(fileContent).digest("hex");
+  return createHash('sha256').update(fileContent).digest('hex');
 }
 
 /**

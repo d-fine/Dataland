@@ -3,7 +3,7 @@ package org.dataland.frameworktoolbox.specific.frameworkregistryimports
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
-import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
+import org.dataland.frameworktoolbox.utils.typescript.EsLintPrettierRunner
 import java.io.FileWriter
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -54,6 +54,6 @@ class FrameworkRegistryImportsUpdater {
             template.process(freeMarkerContext, writer)
             writer.close()
         }
-        EsLintRunner(repository, generatedTsFiles).run()
+        EsLintPrettierRunner(repository, generatedTsFiles).run()
     }
 }

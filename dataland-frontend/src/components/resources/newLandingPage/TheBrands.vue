@@ -15,13 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type { Section } from "@/types/ContentTypes";
+import { computed } from 'vue';
+import type { Section } from '@/types/ContentTypes';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const brandsSection = computed(() => {
-  return sections?.find((section) => section.title === "Brands") ?? null;
+  return sections?.find((section) => section.title === 'Brands') ?? null;
 });
 </script>
 

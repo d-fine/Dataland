@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { sfdrViewConfiguration } from "@/frameworks/sfdr/ViewConfig";
-import { BaseSfdrFrameworkDefinition } from "@/frameworks/sfdr/BaseFrameworkDefinition";
-import { type SfdrData } from "@clients/backend";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { sfdrViewConfiguration } from '@/frameworks/sfdr/ViewConfig';
+import { BaseSfdrFrameworkDefinition } from '@/frameworks/sfdr/BaseFrameworkDefinition';
+import { type SfdrData } from '@clients/backend';
 
 export class FrontendSfdrFrameworkDefinition
   extends BaseSfdrFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendSfdrFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<SfdrData> {
     return {
-      type: "MultiLayerDataTable",
+      type: 'MultiLayerDataTable',
       configuration: sfdrViewConfiguration,
     };
   }

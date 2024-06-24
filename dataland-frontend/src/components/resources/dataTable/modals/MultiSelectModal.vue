@@ -1,15 +1,15 @@
 <script lang="ts">
-import { defineComponent } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
+import { defineComponent } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 interface DialogRefData {
   label: string;
   values: Array<string>;
 }
 export default defineComponent({
-  name: "MultiSelectModal",
-  inject: ["dialogRef"],
+  name: 'MultiSelectModal',
+  inject: ['dialogRef'],
   components: { DataTable, Column },
   computed: {
     dialogRefData(): DialogRefData {

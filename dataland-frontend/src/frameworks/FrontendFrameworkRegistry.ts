@@ -1,5 +1,5 @@
-import { FrontendFrameworkDefinitions } from "@/frameworks/FrontendFrameworkRegistryImports";
-import { type FrontendFrameworkDefinition } from "@/frameworks/BaseFrameworkDefinition";
+import { FrontendFrameworkDefinitions } from '@/frameworks/FrontendFrameworkRegistryImports';
+import { type FrontendFrameworkDefinition } from '@/frameworks/BaseFrameworkDefinition';
 
 /**
  * Retrieve the framework definition for the provided framework identifier if it exists

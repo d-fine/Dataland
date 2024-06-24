@@ -1,12 +1,12 @@
-import { MS_PER_DAY } from "@/utils/Constants";
+import { MS_PER_DAY } from '@/utils/Constants';
 
 export const dateFormatOptions = {
-  weekday: "short",
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
+  weekday: 'short',
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
 } as Intl.DateTimeFormatOptions;
 
 /**
@@ -26,7 +26,7 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
  * @returns a date string representing the given unix time
  */
 export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
-  return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
+  return new Date(unixTimeInMs).toLocaleDateString('en-gb', dateFormatOptions);
 }
 
 /**

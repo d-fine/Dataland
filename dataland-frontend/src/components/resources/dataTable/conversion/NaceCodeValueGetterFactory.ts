@@ -1,13 +1,13 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import MultiSelectModal from '@/components/resources/dataTable/modals/MultiSelectModal.vue';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import { convertSingleNaceCode } from '@/utils/NaceCodeConverter';
 
 /**
  * Returns a value factory that returns the value of the NACE code form field.
@@ -18,7 +18,7 @@ import { convertSingleNaceCode } from "@/utils/NaceCodeConverter";
  */
 export function naceCodeValueGetterFactory(
   path: string,
-  field: Field,
+  field: Field
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
@@ -36,7 +36,7 @@ export function naceCodeValueGetterFactory(
  */
 export function formatNaceCodesForDatatable(
   naceCodes: string[] | null | undefined,
-  modalLabel: string,
+  modalLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!naceCodes || naceCodes.length == 0) {
     return MLDTDisplayObjectForEmptyString;
@@ -44,7 +44,7 @@ export function formatNaceCodesForDatatable(
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
-        label: `Show ${naceCodes.length} NACE code${naceCodes.length > 1 ? "s" : ""}`,
+        label: `Show ${naceCodes.length} NACE code${naceCodes.length > 1 ? 's' : ''}`,
         modalComponent: MultiSelectModal,
         modalOptions: {
           props: {

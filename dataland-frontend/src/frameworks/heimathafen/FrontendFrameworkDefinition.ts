@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { heimathafenViewConfiguration } from "@/frameworks/heimathafen/ViewConfig";
-import { BaseHeimathafenFrameworkDefinition } from "@/frameworks/heimathafen/BaseFrameworkDefinition";
-import { type HeimathafenData } from "@clients/backend";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { heimathafenViewConfiguration } from '@/frameworks/heimathafen/ViewConfig';
+import { BaseHeimathafenFrameworkDefinition } from '@/frameworks/heimathafen/BaseFrameworkDefinition';
+import { type HeimathafenData } from '@clients/backend';
 
 export class FrontendHeimathafenFrameworkDefinition
   extends BaseHeimathafenFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendHeimathafenFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<HeimathafenData> {
     return {
-      type: "MultiLayerDataTable",
+      type: 'MultiLayerDataTable',
       configuration: heimathafenViewConfiguration,
     };
   }

@@ -22,12 +22,12 @@
 
 <script lang="ts">
 // @ts-nocheck
-import PrimeButton from "primevue/button";
-import PrimeMenu from "primevue/menu";
-import { defineComponent } from "vue";
+import PrimeButton from 'primevue/button';
+import PrimeMenu from 'primevue/menu';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "ContextMenuButton",
+  name: 'ContextMenuButton',
   methods: {
     /**
      * toggles the menu when event (clicking the button) happens

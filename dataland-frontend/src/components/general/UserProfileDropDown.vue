@@ -32,18 +32,18 @@
 </template>
 
 <script lang="ts">
-import PrimeMenu from "primevue/menu";
-import { defineComponent, inject, ref } from "vue";
-import type { Ref } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
-import { KEYCLOAK_ROLE_REVIEWER, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
+import PrimeMenu from 'primevue/menu';
+import { defineComponent, inject, ref } from 'vue';
+import type { Ref } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import defaultProfilePicture from '@/assets/images/elements/default_user_icon.svg';
+import { KEYCLOAK_ROLE_REVIEWER, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 
 export default defineComponent({
-  name: "UserProfileDropDown",
+  name: 'UserProfileDropDown',
   components: { PrimeMenu },
-  emits: ["profilePictureLoadingError", "profilePictureObtained"],
+  emits: ['profilePictureLoadingError', 'profilePictureObtained'],
   setup() {
     const menu: Ref<PrimeMenu | undefined> = ref();
 
@@ -65,7 +65,7 @@ export default defineComponent({
       assertDefined(menu.value).hide();
     }
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
       menu,
       toggleDropdownMenu,
       hideDropdownMenu,
@@ -75,34 +75,34 @@ export default defineComponent({
     return {
       dropdownMenuItems: [
         {
-          label: "USER SETTINGS",
-          icon: "settings",
-          id: "profile-picture-dropdown-settings-button",
+          label: 'USER SETTINGS',
+          icon: 'settings',
+          id: 'profile-picture-dropdown-settings-button',
           clickAction: this.goToUserSettings,
         },
         {
-          label: "API KEY",
-          icon: "key",
-          id: "profile-api-generate-key-button",
+          label: 'API KEY',
+          icon: 'key',
+          id: 'profile-api-generate-key-button',
           clickAction: this.goToApiKeysPage,
         },
         {
-          label: "DATA REQUEST",
-          icon: "mail",
-          id: "profile-picture-dropdown-data-request-button",
+          label: 'DATA REQUEST',
+          icon: 'mail',
+          id: 'profile-picture-dropdown-data-request-button',
           clickAction: this.goToDataRequest,
         },
         {
-          label: "QUALITY ASSURANCE",
-          icon: "add_moderator",
-          id: "profile-picture-dropdown-qa-services-anchor",
+          label: 'QUALITY ASSURANCE',
+          icon: 'add_moderator',
+          id: 'profile-picture-dropdown-qa-services-anchor',
           clickAction: this.goToQualityAssurance,
           role: KEYCLOAK_ROLE_REVIEWER,
         },
         {
-          label: "LOG OUT",
-          icon: "logout",
-          id: "profile-picture-dropdown-logout-anchor",
+          label: 'LOG OUT',
+          icon: 'logout',
+          id: 'profile-picture-dropdown-logout-anchor',
           clickAction: this.logoutViaDropdown,
         },
       ],
@@ -111,10 +111,10 @@ export default defineComponent({
     };
   },
   mounted() {
-    window.addEventListener("scroll", this.hideDropdownMenu);
+    window.addEventListener('scroll', this.hideDropdownMenu);
   },
   unmounted() {
-    window.removeEventListener("scroll", this.hideDropdownMenu);
+    window.removeEventListener('scroll', this.hideDropdownMenu);
   },
   methods: {
     /**
@@ -123,7 +123,7 @@ export default defineComponent({
     logoutViaDropdown() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
-          logoutAndRedirectToUri(keycloak, "");
+          logoutAndRedirectToUri(keycloak, '');
         })
         .catch((error) => console.log(error));
     },
@@ -141,19 +141,19 @@ export default defineComponent({
      * Redirects the user to the data-request/invite screen
      */
     async goToDataRequest() {
-      await this.$router.push("/bulkdatarequest");
+      await this.$router.push('/bulkdatarequest');
     },
     /**
      * Redirects the user to the api-key management interface
      */
     async goToApiKeysPage() {
-      await this.$router.push("/api-key");
+      await this.$router.push('/api-key');
     },
     /**
      * Redirects the user to the QA Services page
      */
     async goToQualityAssurance() {
-      await this.$router.push("/qualityassurance");
+      await this.$router.push('/qualityassurance');
     },
     /**
      * Called when the profile picture could not load. Propagates the event and sets the profile picture
@@ -161,7 +161,7 @@ export default defineComponent({
      */
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
-        this.$emit("profilePictureLoadingError");
+        this.$emit('profilePictureLoadingError');
         this.profilePictureSource = defaultProfilePicture;
       }
     },
@@ -174,7 +174,7 @@ export default defineComponent({
 
           if (keycloak.idTokenParsed?.picture) {
             const profilePictureUrl = keycloak.idTokenParsed.picture as string;
-            this.$emit("profilePictureObtained", profilePictureUrl);
+            this.$emit('profilePictureObtained', profilePictureUrl);
             this.profilePictureSource = profilePictureUrl;
           }
         }

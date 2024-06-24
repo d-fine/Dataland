@@ -1,27 +1,27 @@
 // @ts-nocheck
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import ViewMultipleDatasetsDisplayBase from "@/components/generics/ViewMultipleDatasetsDisplayBase.vue";
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
 import {
   type DataAndMetaInformationLksgData,
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
   QaStatus,
-} from "@clients/backend";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+} from '@clients/backend';
+import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 
-describe("Component test for the view multiple dataset display base component", () => {
+describe('Component test for the view multiple dataset display base component', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
 
   before(function () {
-    cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+    cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
       preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
     });
   });
 
-  it("Checks, if the toggle of hidden fields works for empty and conditional fields", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
+  it('Checks, if the toggle of hidden fields works for empty and conditional fields', () => {
+    const preparedFixture = getPreparedFixture('lksg-with-nulls-and-no-child-labor-under-18', preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksg(preparedFixture.t);
     const companyInformationObject = preparedFixture.companyInformation;
     cy.intercept(`/api/companies/mock-company-id/info`, companyInformationObject);
@@ -42,20 +42,20 @@ describe("Component test for the view multiple dataset display base component", 
         viewInPreviewMode: false,
       },
     });
-    checkToggleEmptyFieldsSwitch("Number of Employees");
+    checkToggleEmptyFieldsSwitch('Number of Employees');
     cy.get('tr[data-section-label="Social"]');
     cy.get('tr[data-section-label="Child labor"]');
-    cy.get('td[data-cell-label="Employee(s) Under 15"]').should("not.exist");
+    cy.get('td[data-cell-label="Employee(s) Under 15"]').should('not.exist');
   });
 
-  it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
+  it('Check whether Edit Data button has dropdown with 2 different Reporting Periods', () => {
+    const preparedFixture = getPreparedFixture('lksg-with-nulls-and-no-child-labor-under-18', preparedFixtures);
     const mockedData2024 = constructCompanyApiResponseForLksg(preparedFixture.t);
-    mockedData2024.metaInfo.dataId = "id-2024";
-    mockedData2024.metaInfo.reportingPeriod = "2024";
+    mockedData2024.metaInfo.dataId = 'id-2024';
+    mockedData2024.metaInfo.reportingPeriod = '2024';
     const mockedData2023 = constructCompanyApiResponseForLksg(preparedFixture.t);
-    mockedData2023.metaInfo.dataId = "id-2023";
-    mockedData2023.metaInfo.reportingPeriod = "2023";
+    mockedData2023.metaInfo.dataId = 'id-2023';
+    mockedData2023.metaInfo.reportingPeriod = '2023';
     cy.intercept(`/api/companies/*/info`, preparedFixture.companyInformation);
     cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedData2024, mockedData2023]);
     cy.intercept(`/api/metadata?companyId=mock-company-id`, {
@@ -72,20 +72,20 @@ describe("Component test for the view multiple dataset display base component", 
         viewInPreviewMode: false,
       },
     }).then((mounted) => {
-      cy.get('[data-test="editDatasetButton"').find(".material-icons-outlined").should("exist").click();
+      cy.get('[data-test="editDatasetButton"').find('.material-icons-outlined').should('exist').click();
       cy.get('[data-test="select-reporting-period-dialog"')
-        .should("exist")
+        .should('exist')
         .get('[data-test="reporting-periods"')
         .last()
-        .should("contain", "2024")
-        .should("contain", "2023")
+        .should('contain', '2024')
+        .should('contain', '2023')
         .click();
 
       cy.wrap(mounted.component)
-        .its("$route.fullPath")
+        .its('$route.fullPath')
         .should(
-          "eq",
-          `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`,
+          'eq',
+          `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`
         );
     });
   });
@@ -109,9 +109,9 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
     qaStatus: QaStatus.Accepted,
     currentlyActive: true,
     dataType: DataTypeEnum.Lksg,
-    companyId: "mock-company-id",
+    companyId: 'mock-company-id',
     uploadTime: 0,
-    uploaderUserId: "mock-uploader-id",
+    uploaderUserId: 'mock-uploader-id',
   };
   return { metaInfo: metaData, data: lksgData };
 }
@@ -122,12 +122,12 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
  */
 export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
   cy.wait(100);
-  cy.get("span").contains(toggledFieldName).should("not.exist");
-  cy.get('span[data-test="hideEmptyDataToggleCaption"]').should("exist");
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("have.class", "p-inputswitch-checked").click();
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("not.have.class", "p-inputswitch-checked");
-  cy.get("span").contains(toggledFieldName).should("exist");
+  cy.get('span').contains(toggledFieldName).should('not.exist');
+  cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-inputswitch-checked').click();
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('not.have.class', 'p-inputswitch-checked');
+  cy.get('span').contains(toggledFieldName).should('exist');
   cy.get('div[data-test="hideEmptyDataToggleButton"]').click();
-  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("have.class", "p-inputswitch-checked");
-  cy.get("span").contains(toggledFieldName).should("not.exist");
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-inputswitch-checked');
+  cy.get('span').contains(toggledFieldName).should('not.exist');
 }

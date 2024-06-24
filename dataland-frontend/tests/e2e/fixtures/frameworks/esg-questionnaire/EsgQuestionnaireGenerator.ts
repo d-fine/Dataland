@@ -1,4 +1,4 @@
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator } from '@e2e/utils/FakeFixtureUtils';
 interface YearlyTimeseriesData<InnerObj> {
   currentYear: number;
   yearlyData: { [key: string]: InnerObj };
@@ -17,14 +17,14 @@ export class EsgQuestionnaireGenerator extends Generator {
   randomDecimalYearlyTimeseriesData<T extends string>(
     keys: T[],
     nYearsIntoPast: number,
-    nYearsIntoFuture: number,
+    nYearsIntoFuture: number
   ): YearlyTimeseriesData<MappedOptionalDecimal<T>> | null {
     return this.valueOrNull(this.guaranteedDecimalYearlyTimeseriesData(keys, nYearsIntoPast, nYearsIntoFuture));
   }
   guaranteedDecimalYearlyTimeseriesData<T extends string>(
     keys: T[],
     nYearsIntoPast: number,
-    nYearsIntoFuture: number,
+    nYearsIntoFuture: number
   ): YearlyTimeseriesData<MappedOptionalDecimal<T>> {
     const baseYear = parseInt(this.dataDate.substring(0, 4));
     const yearlyData: { [key: string]: MappedOptionalDecimal<T> } = {};

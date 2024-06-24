@@ -1,10 +1,10 @@
-import { type YesNoNoEvidenceFound } from "@clients/backend";
-import { HumanizedYesNoNoEvidenceFound } from "@/utils/YesNoNa";
+import { type YesNoNoEvidenceFound } from '@clients/backend';
+import { HumanizedYesNoNoEvidenceFound } from '@/utils/YesNoNa';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 
 /**
  * Formats the provided Yes/No/NoEvidenceFound value for the data-table
@@ -12,9 +12,9 @@ import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTa
  * @returns the value formatted for display
  */
 export function formatYesNoNoEvidenceFoundValueForDatatable(
-  value: YesNoNoEvidenceFound | undefined | null,
+  value: YesNoNoEvidenceFound | undefined | null
 ): AvailableMLDTDisplayObjectTypes {
-  const displayValue = value ? HumanizedYesNoNoEvidenceFound[value] : "";
+  const displayValue = value ? HumanizedYesNoNoEvidenceFound[value] : '';
   return {
     displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
     displayValue: displayValue,
@@ -27,12 +27,12 @@ export function formatYesNoNoEvidenceFoundValueForDatatable(
  * @returns the created getter
  */
 export function yesNoNoEvidenceFoundValueGetterFactory(
-  path: string,
+  path: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     return formatYesNoNoEvidenceFoundValueForDatatable(
-      getFieldValueFromFrameworkDataset(path, dataset) as YesNoNoEvidenceFound | null | undefined,
+      getFieldValueFromFrameworkDataset(path, dataset) as YesNoNoEvidenceFound | null | undefined
     );
   };
 }

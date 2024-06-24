@@ -1,4 +1,4 @@
-import { DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum } from '@clients/backend';
 
 // - Available frameworks settings
 
@@ -13,9 +13,9 @@ export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
 // - Keycloak and session management related settings
 
 export const KEYCLOAK_INIT_OPTIONS = {
-  realm: "datalandsecurity",
-  url: "/keycloak",
-  clientId: "dataland-public",
+  realm: 'datalandsecurity',
+  url: '/keycloak',
+  clientId: 'dataland-public',
 };
 
 export const TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS = 5000;
@@ -33,5 +33,5 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-export const NO_DATA_PROVIDED = "No data provided";
-export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
+export const NO_DATA_PROVIDED = 'No data provided';
+export const ONLY_AUXILIARY_DATA_PROVIDED = 'Only auxiliary data provided';

@@ -1,4 +1,4 @@
-import { type Category, type FrameworkData, type Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type Category, type FrameworkData, type Subcategory } from '@/utils/GenericFrameworkTypes';
 
 /**
  * Creates a map of all subcategories of a framework and associates a boolean with it to decide if the
@@ -9,14 +9,14 @@ import { type Category, type FrameworkData, type Subcategory } from "@/utils/Gen
  */
 export function createSubcategoryVisibilityMap(
   dataModel: Category[],
-  formDataset: FrameworkData,
+  formDataset: FrameworkData
 ): Map<Subcategory, boolean> {
   const map = new Map<Subcategory, boolean>();
   for (const category of dataModel) {
     for (const subcategory of category.subcategories) {
       map.set(
         subcategory,
-        subcategory.fields.some((field) => field.showIf(formDataset)),
+        subcategory.fields.some((field) => field.showIf(formDataset))
       );
     }
   }

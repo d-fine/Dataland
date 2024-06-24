@@ -1,5 +1,5 @@
-import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
-import { UploadReports } from "@sharedUtils/components/UploadReports";
+import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
+import { UploadReports } from '@sharedUtils/components/UploadReports';
 
 /**
  * Adds reports to the dataset via the Sfdr upload form for the given dataset
@@ -7,8 +7,8 @@ import { UploadReports } from "@sharedUtils/components/UploadReports";
  * @param filename the file to be uploaded
  */
 export function selectSingleReportAndFillWithData(
-  uploadReportsName: string = "referencedReports",
-  filename: string = TEST_PDF_FILE_NAME,
+  uploadReportsName: string = 'referencedReports',
+  filename: string = TEST_PDF_FILE_NAME
 ): void {
   const uploadReports = new UploadReports(uploadReportsName);
   uploadReports.selectFile(filename);

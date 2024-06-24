@@ -9,7 +9,7 @@ import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
-import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
+import org.dataland.frameworktoolbox.utils.typescript.EsLintPrettierRunner
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import java.io.FileWriter
 import java.nio.file.Path
@@ -76,6 +76,6 @@ class FrameworkUploadConfigBuilder(
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
 
-        EsLintRunner(into, listOf(uploadConfigTsPath)).run()
+        EsLintPrettierRunner(into, listOf(uploadConfigTsPath)).run()
     }
 }

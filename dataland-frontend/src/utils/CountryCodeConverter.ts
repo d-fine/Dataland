@@ -1,5 +1,5 @@
-import countries from "i18n-iso-countries";
-import countriesEn from "i18n-iso-countries/langs/en.json";
+import countries from 'i18n-iso-countries';
+import countriesEn from 'i18n-iso-countries/langs/en.json';
 countries.registerLocale(countriesEn);
 
 /**
@@ -8,7 +8,7 @@ countries.registerLocale(countriesEn);
  * @returns the english name of the country identified by countryCode
  */
 export function getCountryNameFromCountryCode(countryCode: string): string | undefined {
-  return countries.getName(countryCode, "en");
+  return countries.getName(countryCode, 'en');
 }
 
 /**
@@ -16,7 +16,7 @@ export function getCountryNameFromCountryCode(countryCode: string): string | und
  * @returns the countryCodes
  */
 export function getAllCountryCodes(): Array<string> {
-  return Object.keys(countries.getNames("en")).sort((a, b) => a.localeCompare(b));
+  return Object.keys(countries.getNames('en')).sort((a, b) => a.localeCompare(b));
 }
 
 /**
@@ -24,5 +24,5 @@ export function getAllCountryCodes(): Array<string> {
  * @returns the english names of the countries and the countryCodes
  */
 export function getAllCountryNamesWithCodes(): { [alpha2CountryCode: string]: string } {
-  return countries.getNames("en");
+  return countries.getNames('en');
 }
