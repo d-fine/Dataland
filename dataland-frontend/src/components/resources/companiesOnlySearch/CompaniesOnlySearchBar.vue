@@ -34,22 +34,22 @@
 </template>
 
 <script lang="ts">
-import AutoComplete, { type AutoCompleteCompleteEvent } from "primevue/autocomplete";
-import { type CompanyIdAndName } from "@clients/backend";
-import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
-import { defineComponent, inject, ref } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ApiClientProvider } from "@/services/ApiClients";
+import AutoComplete, { type AutoCompleteCompleteEvent } from 'primevue/autocomplete';
+import { type CompanyIdAndName } from '@clients/backend';
+import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue';
+import { defineComponent, inject, ref } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { ApiClientProvider } from '@/services/ApiClients';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
       autocomplete: ref<HTMLFormElement>(),
     };
   },
-  name: "CompaniesOnlySearchBar",
+  name: 'CompaniesOnlySearchBar',
   components: { AutoComplete, SearchResultHighlighter },
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
@@ -61,8 +61,8 @@ export default defineComponent({
 
   data: function () {
     return {
-      searchBarInput: "",
-      latestValidSearchString: "",
+      searchBarInput: '',
+      latestValidSearchString: '',
       autocompleteArray: [] as Array<CompanyIdAndName>,
       resultLimit: 100,
     };
@@ -70,15 +70,15 @@ export default defineComponent({
   props: {
     wrapperClass: {
       type: String,
-      default: "p-fluid p-input-icon-left p-input-icon-right p-input-icon-align",
+      default: 'p-fluid p-input-icon-left p-input-icon-right p-input-icon-align',
     },
     inputClass: {
       type: String,
-      default: "h-3rem d-framework-searchbar-input",
+      default: 'h-3rem d-framework-searchbar-input',
     },
     iconClass: {
       type: String,
-      default: "pi pi-search d-framework-searchbar-input-icon search-icon",
+      default: 'pi pi-search d-framework-searchbar-input-icon search-icon',
     },
   },
 
@@ -87,14 +87,14 @@ export default defineComponent({
       this.saveCurrentSearchStringIfValid(newValue);
     },
   },
-  emits: ["focus", "blur", "selectCompany"],
+  emits: ['focus', 'blur', 'selectCompany'],
   methods: {
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
      * @param currentSearchString input to be checked (can be of type string or object)
      */
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
-      if (currentSearchString && typeof currentSearchString === "string") {
+      if (currentSearchString && typeof currentSearchString === 'string') {
         this.latestValidSearchString = currentSearchString;
       }
     },
@@ -108,7 +108,7 @@ export default defineComponent({
           .companyDataController;
         const response = await companyDataControllerApi.getCompaniesBySearchString(
           autoCompleteCompleteEvent.query,
-          this.resultLimit,
+          this.resultLimit
         );
         this.autocompleteArray = response.data;
       } catch (error) {

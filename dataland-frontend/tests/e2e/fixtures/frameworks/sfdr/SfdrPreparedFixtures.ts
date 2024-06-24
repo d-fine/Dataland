@@ -1,7 +1,7 @@
-import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { type SfdrData, YesNo } from "@clients/backend";
-import { generateSfdrData, generateSfdrFixtures } from "./SfdrDataFixtures";
-import { type FixtureData } from "@sharedUtils/Fixtures";
+import { generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
+import { type SfdrData, YesNo } from '@clients/backend';
+import { generateSfdrData, generateSfdrFixtures } from './SfdrDataFixtures';
+import { type FixtureData } from '@sharedUtils/Fixtures';
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
 
@@ -18,7 +18,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
-    manipulatorFunctions.length,
+    manipulatorFunctions.length
   );
   const preparedFixtures = [];
   for (let i = 0; i < manipulatorFunctions.length; i++) {
@@ -27,8 +27,8 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
 
   preparedFixtures.push(
     manipulateFixtureForSfdrDatasetWithLotsOfNulls(
-      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0],
-    ),
+      generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0]
+    )
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1, 0)[0]));
@@ -48,7 +48,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForInvalidCurrencyInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-currency-input";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-currency-input';
   input.t.social!.socialAndEmployeeMatters!.averageGrossHourlyEarningsFemaleEmployees!.value = -100;
   return input;
 }
@@ -60,7 +60,7 @@ function manipulateFixtureForInvalidCurrencyInput(input: FixtureData<SfdrData>):
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-big-decimal-input";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-negative-big-decimal-input';
   input.t.social!.socialAndEmployeeMatters!.workdaysLostInDays!.value = -1;
   return input;
 }
@@ -72,7 +72,7 @@ function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-long-input";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-negative-long-input';
   input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
 }
@@ -84,7 +84,7 @@ function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrDa
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-percentage-input";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-percentage-input';
   input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
   return input;
 }
@@ -96,7 +96,7 @@ function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-two-invalid-inputs";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-two-invalid-inputs';
   input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
   input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
@@ -109,8 +109,8 @@ function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): Fix
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForEmptyStringDocumentReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-empty-string-document-reference";
-  input.t.social!.socialAndEmployeeMatters!.maleBoardMembers!.dataSource!.fileReference = "";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-empty-string-document-reference';
+  input.t.social!.socialAndEmployeeMatters!.maleBoardMembers!.dataSource!.fileReference = '';
   return input;
 }
 
@@ -120,7 +120,7 @@ function manipulateFixtureForEmptyStringDocumentReference(input: FixtureData<Sfd
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-no-null-fields";
+  input.companyInformation.companyName = 'Sfdr-dataset-with-no-null-fields';
   input.t.environmental!.biodiversity!.protectedAreasExposure!.value = YesNo.No;
   input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure!.value = YesNo.Yes;
   input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure!.value = YesNo.Yes;
@@ -133,8 +133,8 @@ function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): Fixture
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "companyWithOneFilledSfdrSubcategory";
-  input.t.general.general.fiscalYearEnd = "2020-01-03";
+  input.companyInformation.companyName = 'companyWithOneFilledSfdrSubcategory';
+  input.t.general.general.fiscalYearEnd = '2020-01-03';
   input.t.environmental!.energyPerformance = null;
   input.t.environmental!.waste = null;
   input.t.environmental!.water = null;
@@ -150,8 +150,8 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "two-sfdr-data-sets-in-different-years";
-  input.t.general.general.fiscalYearEnd = "2020-01-03";
+  input.companyInformation.companyName = 'two-sfdr-data-sets-in-different-years';
+  input.t.general.general.fiscalYearEnd = '2020-01-03';
   return input;
 }
 
@@ -161,7 +161,7 @@ function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<
  * @returns the manipulated input
  */
 function manipulateFixtureForSfdrDatasetWithLotsOfNulls(fixture: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  fixture.companyInformation.companyName = "sfdr-a-lot-of-nulls";
+  fixture.companyInformation.companyName = 'sfdr-a-lot-of-nulls';
   return fixture;
 }
 
@@ -174,9 +174,9 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
   return {
     general: {
       general: {
-        dataDate: "2022-08-27",
-        fiscalYearDeviation: "Deviation",
-        fiscalYearEnd: "2023-01-01",
+        dataDate: '2022-08-27',
+        fiscalYearDeviation: 'Deviation',
+        fiscalYearEnd: '2023-01-01',
         referencedReports: null!,
       },
     },
@@ -193,8 +193,8 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
  * @returns the dataset
  */
 function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  const brokenFileReference = "123";
-  input.companyInformation.companyName = "TestForBrokenFileReference";
+  const brokenFileReference = '123';
+  input.companyInformation.companyName = 'TestForBrokenFileReference';
   input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsMarketBasedInTonnes!.dataSource!.fileReference =
     brokenFileReference;
   return input;

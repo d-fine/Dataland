@@ -32,14 +32,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import { badgeClass } from "@/utils/RequestUtils";
-import { type StoredDataRequestStatusObject } from "@clients/communitymanager";
-import ChevronDownIcon from "primevue/icons/chevrondown";
-import ChevronUpIcon from "primevue/icons/chevronup";
+import { defineComponent } from 'vue';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { badgeClass } from '@/utils/RequestUtils';
+import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
+import ChevronDownIcon from 'primevue/icons/chevrondown';
+import ChevronUpIcon from 'primevue/icons/chevronup';
 export default defineComponent({
-  name: "StatusHistory",
+  name: 'StatusHistory',
   components: { ChevronUpIcon, ChevronDownIcon },
   props: {
     statusHistory: {

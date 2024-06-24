@@ -12,19 +12,19 @@
 </template>
 
 <script lang="ts">
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page, Section } from "@/types/ContentTypes";
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page, Section } from '@/types/ContentTypes';
 
 export default {
-  name: "NoContentFound",
+  name: 'NoContentFound',
   components: { TheHeader, TheContent, TheFooter },
 
   data(): { footerContent: Section[] | undefined } {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       footerContent,

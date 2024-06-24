@@ -26,14 +26,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import type { CompanyReport } from "@clients/backend";
+import { defineComponent } from 'vue';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import type { CompanyReport } from '@clients/backend';
 
 export default defineComponent({
   components: { DocumentLink },
-  inject: ["dialogRef"],
-  name: "ReportDataTable",
+  inject: ['dialogRef'],
+  name: 'ReportDataTable',
   data() {
     return {
       companyReport: undefined as CompanyReport | undefined,

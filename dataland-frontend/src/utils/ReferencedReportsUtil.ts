@@ -1,5 +1,5 @@
-import ReportDataTable from "@/components/general/ReportDataTable.vue";
-import type { CompanyReport } from "@clients/backend";
+import ReportDataTable from '@/components/general/ReportDataTable.vue';
+import type { CompanyReport } from '@clients/backend';
 
 /**
  * Opens a modal to display the details of the selected report.
@@ -29,7 +29,7 @@ function constructModalOptions(report: CompanyReport, reportName: string): Modal
 
   return {
     props: {
-      header: "Report Details",
+      header: 'Report Details',
       modal: true,
       dismissableMask: true,
     },

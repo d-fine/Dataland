@@ -31,23 +31,23 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import DataPointDataTableInModal from "@/components/general/DataPointDataTableInModal.vue";
+import { defineComponent } from 'vue';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import DataPointDataTableInModal from '@/components/general/DataPointDataTableInModal.vue';
 
 export default defineComponent({
-  inject: ["dialogRef"],
-  name: "DetailsCompanyDataTable",
+  inject: ['dialogRef'],
+  name: 'DetailsCompanyDataTable',
   components: { DataPointDataTableInModal, DataTable, Column },
   data() {
     return {
       listOfRowContents: [] as Array<object | string>,
-      kpiKeyOfTable: "" as string,
+      kpiKeyOfTable: '' as string,
       keysOfValuesForColumnDisplay: [] as string[],
-      keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing", "sectors"] as string[],
+      keysWithValuesToBeHumanized: ['isInHouseProductionOrIsContractProcessing', 'sectors'] as string[],
       humanizeString: humanizeStringOrNumber,
       columnHeaders: {},
     };
@@ -61,7 +61,7 @@ export default defineComponent({
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     this.columnHeaders = dialogRefData.columnHeaders;
-    if (typeof dialogRefData.listOfRowContents[0] === "string") {
+    if (typeof dialogRefData.listOfRowContents[0] === 'string') {
       this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {

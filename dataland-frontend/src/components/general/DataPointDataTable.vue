@@ -36,11 +36,11 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataPointDisplay } from "@/utils/DataPoint";
-import { ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
+import { defineComponent } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { type DataPointDisplay } from '@/utils/DataPoint';
+import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 
 export default defineComponent({
   methods: {
@@ -53,8 +53,8 @@ export default defineComponent({
     },
   },
   components: { DocumentLink },
-  inject: ["dialogRef"],
-  name: "DataPointDataTable",
+  inject: ['dialogRef'],
+  name: 'DataPointDataTable',
   data() {
     return {
       dataPointDisplay: undefined as DataPointDisplay | undefined,

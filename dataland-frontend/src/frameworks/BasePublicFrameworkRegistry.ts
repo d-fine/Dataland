@@ -1,5 +1,5 @@
-import { type BasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkDefinition";
-import { PublicFrameworkDefinitions } from "@/frameworks/BasePublicFrameworkRegistryImports";
+import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
+import { PublicFrameworkDefinitions } from '@/frameworks/BasePublicFrameworkRegistryImports';
 
 /**
  * Gets the base framework definition for a specific public framework identified by its identifier string
@@ -9,7 +9,7 @@ import { PublicFrameworkDefinitions } from "@/frameworks/BasePublicFrameworkRegi
  * @returns the base framework definition
  */
 export function getBasePublicFrameworkDefinition(
-  identifier: string,
+  identifier: string
 ): BasePublicFrameworkDefinition<object> | undefined {
   for (const key in PublicFrameworkDefinitions) {
     const frameworkDefinition = PublicFrameworkDefinitions[key];

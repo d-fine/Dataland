@@ -12,16 +12,16 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { defineComponent } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 export default defineComponent({
-  inject: ["dialogRef"],
-  name: "InvalidFileSelectionDialog",
+  inject: ['dialogRef'],
+  name: 'InvalidFileSelectionDialog',
   data() {
     return {
-      duplicateNamesJoinedString: "",
-      fileNamesWithCharacterViolationsJoinedString: "",
+      duplicateNamesJoinedString: '',
+      fileNamesWithCharacterViolationsJoinedString: '',
     };
   },
 

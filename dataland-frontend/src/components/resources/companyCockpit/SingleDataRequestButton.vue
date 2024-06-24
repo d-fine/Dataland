@@ -5,13 +5,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import PrimeButton from "primevue/button";
-import { type DataTypeEnum } from "@clients/backend";
-import { type RouteLocationNormalizedLoaded } from "vue-router";
+import { defineComponent } from 'vue';
+import PrimeButton from 'primevue/button';
+import { type DataTypeEnum } from '@clients/backend';
+import { type RouteLocationNormalizedLoaded } from 'vue-router';
 
 export default defineComponent({
-  name: "SingleDataRequestButton",
+  name: 'SingleDataRequestButton',
   components: { PrimeButton },
   props: {
     companyId: {
@@ -28,7 +28,7 @@ export default defineComponent({
       const thisCompanyId = this.companyId;
       const currentRoute: RouteLocationNormalizedLoaded = this.$router.currentRoute.value;
       const dataType = currentRoute.params.dataType;
-      const preSelectedFramework = dataType ? (dataType as DataTypeEnum) : "";
+      const preSelectedFramework = dataType ? (dataType as DataTypeEnum) : '';
       return this.$router.push({
         path: `/singledatarequest/${thisCompanyId}`,
         query: {

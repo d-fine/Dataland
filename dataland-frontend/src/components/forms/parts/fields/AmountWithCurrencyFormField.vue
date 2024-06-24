@@ -28,16 +28,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { defineComponent } from 'vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
-  name: "AmountWithCurrencyFormField",
+  name: 'AmountWithCurrencyFormField',
   computed: {
     DropdownDatasetIdentifier() {
       return DropdownDatasetIdentifier;
@@ -51,7 +51,7 @@ export default defineComponent({
     },
     classes: {
       type: String,
-      default: "form-field",
+      default: 'form-field',
     },
   },
   methods: {

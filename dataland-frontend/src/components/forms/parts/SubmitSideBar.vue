@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "SubmitSideBar",
+  name: 'SubmitSideBar',
   data: () => ({ elementPosition: 0, scrollListener: (): null => null }),
   mounted() {
     const submitSideBar = this.$refs.submitSideBar as HTMLElement;
@@ -18,18 +18,18 @@ export default defineComponent({
         this.elementPosition = submitSideBar.getBoundingClientRect().top;
       }
       if (window.scrollY > this.elementPosition) {
-        submitSideBar.style.position = "fixed";
-        submitSideBar.style.top = "60px";
+        submitSideBar.style.position = 'fixed';
+        submitSideBar.style.top = '60px';
       } else {
-        submitSideBar.style.position = "relative";
-        submitSideBar.style.top = "0px";
+        submitSideBar.style.position = 'relative';
+        submitSideBar.style.top = '0px';
       }
       return null;
     };
-    window.addEventListener("scroll", this.scrollListener);
+    window.addEventListener('scroll', this.scrollListener);
   },
   unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
+    window.removeEventListener('scroll', this.scrollListener);
   },
 });
 </script>

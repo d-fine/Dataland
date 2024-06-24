@@ -1,6 +1,6 @@
-import { type CompanyInformation, IdentifierType, type BasicCompanyInformation } from "@clients/backend";
-import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
-import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
+import { type CompanyInformation, IdentifierType, type BasicCompanyInformation } from '@clients/backend';
+import { generateCompanyInformation } from '@e2e/fixtures/CompanyFixtures';
+import { DataMetaInformationGenerator } from '@e2e/fixtures/data_meta_information/DataMetaInformationFixtures';
 
 /**
  * Generates a single search result for the framework data search

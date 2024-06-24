@@ -1,17 +1,17 @@
 // @ts-nocheck
-import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
-import { type DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import { DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
+import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
+import { type DatasetTableInfo, DatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
+import { DataTypeEnum } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 
-describe("Component test for DatasetOverviewTable", () => {
-  const nameOfCompanyAlpha = "Imaginary-Corporate";
+describe('Component test for DatasetOverviewTable', () => {
+  const nameOfCompanyAlpha = 'Imaginary-Corporate';
   const dataTypeOfDatasetForAlpha = DataTypeEnum.Lksg;
   const datasetTableInfoMockForAlpha = createDatasetTableInfoMock(nameOfCompanyAlpha, dataTypeOfDatasetForAlpha);
 
-  const nameOfCompanyBeta = "Dream-Insurance";
+  const nameOfCompanyBeta = 'Dream-Insurance';
   const dataTypeOfDatasetForBeta = DataTypeEnum.EutaxonomyFinancials;
   const datasetTableInfoMockForBeta = createDatasetTableInfoMock(nameOfCompanyBeta, dataTypeOfDatasetForBeta);
 
@@ -23,11 +23,11 @@ describe("Component test for DatasetOverviewTable", () => {
    */
   function createDatasetTableInfoMock(companyName: string, dataType: DataTypeEnum): DatasetTableInfo {
     return {
-      dataId: companyName + "-Mock-Data-Id",
-      companyId: companyName + "-Mock-Company-Id",
+      dataId: companyName + '-Mock-Data-Id',
+      companyId: companyName + '-Mock-Company-Id',
       dataType: dataType,
       companyName: companyName,
-      dataReportingPeriod: "2023",
+      dataReportingPeriod: '2023',
       status: DatasetStatus.QaApproved,
       uploadTimeInMs: 1672527600000, // 1.1.2023 00:00:00:0000
     };
@@ -39,7 +39,7 @@ describe("Component test for DatasetOverviewTable", () => {
    */
   function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {
     const keycloakMock = minimalKeycloakMock({
-      userId: "Mock-User-Id",
+      userId: 'Mock-User-Id',
       roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
     });
     cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
@@ -51,70 +51,70 @@ describe("Component test for DatasetOverviewTable", () => {
     });
   }
 
-  it("Check if the table rows look as expected", () => {
+  it('Check if the table rows look as expected', () => {
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha]);
     const expectedRowContents = [
       nameOfCompanyAlpha,
       humanizeStringOrNumber(dataTypeOfDatasetForAlpha),
-      "2023",
-      "APPROVED",
+      '2023',
+      'APPROVED',
     ];
-    cy.get("tbody td").should((elements) => {
+    cy.get('tbody td').should((elements) => {
       expect(elements.length).to.equal(6);
     });
-    cy.get("tbody td").each((element, index) => {
+    cy.get('tbody td').each((element, index) => {
       if (index < expectedRowContents.length) {
         expect(element.text()).to.equal(expectedRowContents[index]);
       } else if (index == 4) {
         expect(Date.parse(element.text()).toString()).not.to.equal(NaN.toString());
       } else if (index == 5) {
-        expect(element.text()).to.contain("VIEW");
+        expect(element.text()).to.contain('VIEW');
       }
     });
-    cy.get("tbody td a").should(
-      "have.attr",
-      "href",
-      `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`,
+    cy.get('tbody td a').should(
+      'have.attr',
+      'href',
+      `/companies/${nameOfCompanyAlpha}-Mock-Company-Id/frameworks/${dataTypeOfDatasetForAlpha}/${nameOfCompanyAlpha}-Mock-Data-Id`
     );
   });
 
-  it("Validates the layout of the table header", () => {
+  it('Validates the layout of the table header', () => {
     prepareSimpleDatasetOverviewTable([]);
-    const expectedHeaders = ["COMPANY", "DATA FRAMEWORK", "SUBMISSION DATE", "REPORTING PERIOD", "STATUS"];
+    const expectedHeaders = ['COMPANY', 'DATA FRAMEWORK', 'SUBMISSION DATE', 'REPORTING PERIOD', 'STATUS'];
     expectedHeaders.forEach((value) => {
-      cy.get(`table th:contains(${value})`).should("exist");
+      cy.get(`table th:contains(${value})`).should('exist');
     });
-    cy.get("th").each((element) => {
+    cy.get('th').each((element) => {
       if (!expectedHeaders.includes(element.text())) {
-        expect(element.html()).to.contain("<input");
+        expect(element.html()).to.contain('<input');
       }
     });
   });
 
-  it("Check if search filter works as expected", () => {
-    const someSearchStringThatMatchesNoCompany = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX123123123";
+  it('Check if search filter works as expected', () => {
+    const someSearchStringThatMatchesNoCompany = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX123123123';
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha, datasetTableInfoMockForBeta]);
-    cy.get("td").contains(nameOfCompanyAlpha).should("exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("exist");
-    cy.get("input").type(nameOfCompanyAlpha.substring(3, 9));
-    cy.get("td").contains(nameOfCompanyAlpha).should("exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("not.exist");
-    cy.get("input").clear(); // empty input field
-    cy.get("td").contains(nameOfCompanyAlpha).should("exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("exist");
-    cy.get("input").type(nameOfCompanyBeta.substring(2, 9));
-    cy.get("td").contains(nameOfCompanyAlpha).should("not.exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("exist");
-    cy.get("input").type(someSearchStringThatMatchesNoCompany);
-    cy.get("td").contains(nameOfCompanyAlpha).should("not.exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("not.exist");
-    cy.get("input").clear();
-    cy.get("input").type(nameOfCompanyAlpha.toLowerCase());
-    cy.get("td").contains(nameOfCompanyAlpha).should("exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("not.exist");
-    cy.get("input").clear();
-    cy.get("input").type(nameOfCompanyBeta.toUpperCase());
-    cy.get("td").contains(nameOfCompanyAlpha).should("not.exist");
-    cy.get("td").contains(nameOfCompanyBeta).should("exist");
+    cy.get('td').contains(nameOfCompanyAlpha).should('exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('exist');
+    cy.get('input').type(nameOfCompanyAlpha.substring(3, 9));
+    cy.get('td').contains(nameOfCompanyAlpha).should('exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('not.exist');
+    cy.get('input').clear(); // empty input field
+    cy.get('td').contains(nameOfCompanyAlpha).should('exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('exist');
+    cy.get('input').type(nameOfCompanyBeta.substring(2, 9));
+    cy.get('td').contains(nameOfCompanyAlpha).should('not.exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('exist');
+    cy.get('input').type(someSearchStringThatMatchesNoCompany);
+    cy.get('td').contains(nameOfCompanyAlpha).should('not.exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('not.exist');
+    cy.get('input').clear();
+    cy.get('input').type(nameOfCompanyAlpha.toLowerCase());
+    cy.get('td').contains(nameOfCompanyAlpha).should('exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('not.exist');
+    cy.get('input').clear();
+    cy.get('input').type(nameOfCompanyBeta.toUpperCase());
+    cy.get('td').contains(nameOfCompanyAlpha).should('not.exist');
+    cy.get('td').contains(nameOfCompanyBeta).should('exist');
   });
 });
