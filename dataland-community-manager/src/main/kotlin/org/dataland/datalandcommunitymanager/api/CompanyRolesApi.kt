@@ -45,7 +45,10 @@ interface CompanyRolesApi {
         value = ["/company-role-assignments/{role}/{companyId}/{userId}"],
 
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN')" +
+            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
+    )
     fun assignCompanyRole(
         @PathVariable("role") companyRole: CompanyRole,
         @PathVariable("companyId") companyId: UUID,
@@ -74,7 +77,7 @@ interface CompanyRolesApi {
         value = ["/company-role-assignments/{role}/{companyId}"],
 
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)")
     fun getCompanyRoleAssignments(
         @PathVariable("role") companyRole: CompanyRole,
         @PathVariable("companyId") companyId: UUID,
@@ -101,7 +104,10 @@ interface CompanyRolesApi {
         value = ["/company-role-assignments/{role}/{companyId}/{userId}"],
 
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN')" +
+            "or @SecurityUtilsService.hasUserPermissionToModifyTheCompanyRole(#companyId, #companyRole)",
+    )
     fun removeCompanyRole(
         @PathVariable("role") companyRole: CompanyRole,
         @PathVariable("companyId") companyId: UUID,
@@ -132,7 +138,10 @@ interface CompanyRolesApi {
         method = [RequestMethod.HEAD],
         value = ["/company-role-assignments/{role}/{companyId}/{userId}"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserRequestingForOwnId(#userId)")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserRequestingForOwnId(#userId) " +
+            "or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)",
+    )
     fun hasUserCompanyRole(
         @PathVariable("role") companyRole: CompanyRole,
         @PathVariable("companyId") companyId: UUID,

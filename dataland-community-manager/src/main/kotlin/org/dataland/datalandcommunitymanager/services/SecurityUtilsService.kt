@@ -1,6 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -15,6 +17,7 @@ import java.util.UUID
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
+    @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
 ) {
     /**
      * Returns true if and only if the currently authenticated user is asking for him/herself
@@ -78,5 +81,43 @@ class SecurityUtilsService(
             currentRequestStatus == RequestStatus.Open ||
                 (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
             )
+    }
+
+    /**
+     * Returns true if the user is member of the company
+     * @param companyId dataland companyId
+     */
+    @Transactional
+    fun isUserMemberOfTheCompany(
+        companyId: UUID,
+    ): Boolean {
+        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
+        return companyRoleAssignmentRepository.findByCompanyIdAndUserId(companyId.toString(), userId).isNotEmpty()
+    }
+
+    /**
+     * Returns true if the user is member of the company
+     * @param companyId dataland companyId
+     */
+    @Transactional
+    fun hasUserPermissionToModifyTheCompanyRole(
+        companyId: UUID,
+        companyRoleToModify: CompanyRole,
+    ): Boolean {
+        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
+        val userCompanyRoles =
+            companyRoleAssignmentRepository.findByCompanyIdAndUserId(companyId.toString(), userId)
+        val rolePermissionsMap = mapOf(
+            CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
+            CompanyRole.CompanyUploader to emptyList(),
+            CompanyRole.ExternalCompanyUploader to emptyList(),
+            CompanyRole.CompanyUserAdmin to listOf(CompanyRole.CompanyUserAdmin, CompanyRole.CompanyMember),
+            CompanyRole.CompanyMember to emptyList(),
+        )
+        var hasUserPermission = false
+        userCompanyRoles.forEach {
+            if (rolePermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true) hasUserPermission = true
+        }
+        return hasUserPermission
     }
 }
