@@ -186,8 +186,7 @@ export async function uploadVsmeFrameworkData(
   documents: File[]
 ): Promise<DataMetaInformation> {
   await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  const smeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
-  //todo rename constant
+  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
   const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
     { companyId, reportingPeriod, data },
     documents
