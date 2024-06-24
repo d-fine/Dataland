@@ -96,7 +96,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
@@ -128,7 +127,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
+import { objectDropNull } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
@@ -268,10 +267,10 @@ export default defineComponent({
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const lksgDataControllerApi = this.buildLksgDataApi();
-      const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await lksgDataControllerApi!.getFrameworkData(dataId);
       const lksgResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
-      this.companyAssociatedLksgData = objectDropNull(lksgResponseData as ObjectType) as CompanyAssociatedDataLksgData;
+      this.companyAssociatedLksgData = objectDropNull(lksgResponseData);
       this.waitingForData = false;
     },
     /**
