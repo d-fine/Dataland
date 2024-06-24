@@ -1,5 +1,4 @@
 import { UploadDocuments } from '@sharedUtils/components/UploadDocuments';
-import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 export class UploadReports extends UploadDocuments {
   private uploadReportsSelector: string;
