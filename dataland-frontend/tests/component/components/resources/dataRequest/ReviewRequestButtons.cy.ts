@@ -97,7 +97,7 @@ describe('Component tests for the data request review buttons', function (): voi
    */
   function interceptUserRequestsOnMounted(): void {
     const requestFor2022 = mockedRequests.find(
-      (it) => it.reportingPeriod == '2022' && it.datalandCompanyId == 'Mock-Company-Id',
+      (it) => it.reportingPeriod == '2022' && it.datalandCompanyId == 'Mock-Company-Id'
     );
     assert(requestFor2022 !== undefined);
 

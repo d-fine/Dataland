@@ -103,7 +103,7 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
   }
   const mostRecentSourceToolTip = latestDate
     ? `Publication date of most recent report:\n ${dateStringFormatter(latestDate)}\n\n`
-    : "";
+    : '';
   const datasetPublishedToolTip =
     'Publication date of the dataset on Dataland:\n ' +
     convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
