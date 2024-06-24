@@ -4,6 +4,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type CompanyInformation, type SmeData, type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type StoredDataRequest } from '@clients/communitymanager';
+let smeFixtureForTest: FixtureData<SmeData>;
 describe('Component tests for the company info sheet', function (): void {
   let companyInformationForTest: CompanyInformation;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
