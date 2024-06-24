@@ -195,7 +195,7 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
 function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   const brokenFileReference = '123';
   input.companyInformation.companyName = 'TestForBrokenFileReference';
-  input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsMarketBasedInTonnes!.dataSource!.fileReference =
+  input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsInTonnes!.dataSource!.fileReference =
     brokenFileReference;
   return input;
 }
