@@ -14021,13 +14021,13 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
           "countryCode": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "companyName": {
