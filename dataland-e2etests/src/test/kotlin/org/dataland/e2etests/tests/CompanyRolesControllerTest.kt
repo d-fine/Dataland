@@ -313,7 +313,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that a company user admin without admin rights can only add and remove members and admins`() {
+    fun `assure that a company member admin without admin rights can only add and remove members and member admins`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         val listOfRolesThatCanBeModified = listOf(CompanyRole.MemberAdmin, CompanyRole.Member)
         val listOfRolesThatCannotBeModified =
@@ -346,7 +346,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that users that have no company role member or uploader role cannot add or remove company roles`() {
+    fun `assure that a user that have member or uploader role or no role at all cannot add or remove company roles`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId)
