@@ -1,21 +1,21 @@
-import { type Field, type FrameworkData } from "@/utils/GenericFrameworkTypes";
-import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
-import { currencyDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
-import { numberDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberDataPointValueGetterFactory";
-import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
-import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
-import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
-import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
-import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
-import { vsmeModalColumnHeaders } from "@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters";
-import { yesNoNoEvidenceFoundValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory";
+import { type Field, type FrameworkData } from '@/utils/GenericFrameworkTypes';
+import { type MLDTCellConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { plainStringValueGetterFactory } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
+import { yesNoValueGetterFactory } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { yesNoDataPointValueGetterFactory } from '@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory';
+import { currencyDataPointValueGetterFactory } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
+import { numberDataPointValueGetterFactory } from '@/components/resources/dataTable/conversion/NumberDataPointValueGetterFactory';
+import { singleSelectValueGetterFactory } from '@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory';
+import { naceCodeValueGetterFactory } from '@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory';
+import { numberValueGetterFactory } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
+import { percentageValueGetterFactory } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
+import { multiSelectValueGetterFactory } from '@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory';
+import { getModalGetterFactory } from '@/components/resources/dataTable/conversion/GenericModalValueGetterFactory';
+import { lksgModalColumnHeaders } from '@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders';
+import { p2pDriveMixValueGetterFactory } from '@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory';
+import { vsmeModalColumnHeaders } from '@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters';
+import { yesNoNoEvidenceFoundValueGetterFactory } from '@/components/resources/dataTable/conversion/YesNoNoEvidenceFoundValueGetterFactory';
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -32,8 +32,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   NumberFormField: numberValueGetterFactory,
   PercentageFormField: percentageValueGetterFactory,
   MultiSelectFormField: multiSelectValueGetterFactory,
-  ProductionSitesFormField: getModalGetterFactory("listOfProductionSites", lksgModalColumnHeaders),
-  MostImportantProductsFormField: getModalGetterFactory("mostImportantProducts", lksgModalColumnHeaders),
+  ProductionSitesFormField: getModalGetterFactory('listOfProductionSites', lksgModalColumnHeaders),
+  MostImportantProductsFormField: getModalGetterFactory('mostImportantProducts', lksgModalColumnHeaders),
   DriveMixFormField: p2pDriveMixValueGetterFactory,
   YesNoFormField: yesNoValueGetterFactory,
   YesNoBaseDataPointFormField: yesNoDataPointValueGetterFactory,
@@ -44,8 +44,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
-  SubsidiaryFormField: getModalGetterFactory("listOfSubsidiary", vsmeModalColumnHeaders),
-  PollutionEmissionFormField: getModalGetterFactory("pollutionEmission", vsmeModalColumnHeaders),
+  SubsidiaryFormField: getModalGetterFactory('listOfSubsidiary', vsmeModalColumnHeaders),
+  PollutionEmissionFormField: getModalGetterFactory('pollutionEmission', vsmeModalColumnHeaders),
 };
 
 /**
@@ -60,13 +60,13 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
     const valueGetterFactory = formFieldValueGetterFactoryMap[field.component];
     const valueGetter = valueGetterFactory(path, field);
     return {
-      type: "cell",
+      type: 'cell',
       label: field.label,
       explanation: field.description,
       shouldDisplay: (dataset: FrameworkData) => field.showIf(dataset),
       valueGetter: valueGetter,
     };
-  } else if (field.component == "UploadReports") {
+  } else if (field.component == 'UploadReports') {
     return undefined;
   } else {
     console.log(`!WARNING! - Could not translate component of type ${field.component}`);

@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import SlideShow from "@/components/general/SlideShow.vue";
+import SlideShow from '@/components/general/SlideShow.vue';
 </script>
 
 <style lang="scss">
@@ -117,11 +117,11 @@ import SlideShow from "@/components/general/SlideShow.vue";
     &--left,
     &--right {
       &::before {
-        content: "";
+        content: '';
         display: block;
         width: 24px;
         height: 24px;
-        background-image: url("/static/icons/Arrow--right.svg");
+        background-image: url('/static/icons/Arrow--right.svg');
         background-size: contain;
         background-repeat: no-repeat;
       }

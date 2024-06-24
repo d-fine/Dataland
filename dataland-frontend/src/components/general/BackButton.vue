@@ -8,18 +8,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "BackButton",
+  name: 'BackButton',
   props: {
     label: {
       type: String,
-      default: "BACK",
+      default: 'BACK',
     },
     dataTestMarker: {
       type: String,
-      default: "back-button",
+      default: 'back-button',
     },
   },
   methods: {

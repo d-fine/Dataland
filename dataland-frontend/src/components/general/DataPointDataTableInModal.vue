@@ -5,7 +5,7 @@
         <tbody class="p-datatable-body">
           <tr>
             <th class="headers-bg">Value</th>
-            <td class="nowrap">{{ dataPointDisplay.value ?? "" }}</td>
+            <td class="nowrap">{{ dataPointDisplay.value ?? '' }}</td>
           </tr>
           <tr v-if="dataPointDisplay.quality">
             <th class="headers-bg">Quality</th>
@@ -35,13 +35,13 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataPointDisplay } from "@/utils/DataPoint";
+import { defineComponent } from 'vue';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { type DataPointDisplay } from '@/utils/DataPoint';
 
 export default defineComponent({
   components: { DocumentLink },
-  name: "DataPointDataTableInModal",
+  name: 'DataPointDataTableInModal',
   props: {
     dataPointDisplay: {
       type: Object as () => DataPointDisplay,
@@ -51,13 +51,13 @@ export default defineComponent({
   computed: {
     isDataCorrect() {
       return (
-        (!!this.dataPointDisplay?.value && this.dataPointDisplay?.value !== "No data provided") ||
-        (!!this.dataPointDisplay?.comment && this.dataPointDisplay?.comment !== "")
+        (!!this.dataPointDisplay?.value && this.dataPointDisplay?.value !== 'No data provided') ||
+        (!!this.dataPointDisplay?.comment && this.dataPointDisplay?.comment !== '')
       );
     },
     dataSourceLabel() {
       return this.dataPointDisplay?.dataSource?.page
-        ? `${this.dataPointDisplay?.dataSource.fileName ?? ""}, page ${
+        ? `${this.dataPointDisplay?.dataSource.fileName ?? ''}, page ${
             this.dataPointDisplay?.dataSource?.page as number
           }`
         : this.dataPointDisplay?.dataSource?.fileName;

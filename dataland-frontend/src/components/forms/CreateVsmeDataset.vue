@@ -110,7 +110,7 @@
                   <a
                     v-if="subcategoryVisibilityMap.get(subcategory) ?? true"
                     @click="smoothScroll(`#${category.name}-${subcategory.name}`)"
-                    >{{ category.label + ": " + subcategory.label }}</a
+                    >{{ category.label + ': ' + subcategory.label }}</a
                   >
                 </li>
               </ul>
@@ -122,56 +122,56 @@
   </Card>
 </template>
 <script lang="ts">
-import { FormKit } from "@formkit/vue";
-import { computed, defineComponent, inject } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import Calendar from "primevue/calendar";
-import type Keycloak from "keycloak-js";
-import PrimeButton from "primevue/button";
-import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
-import { AxiosError } from "axios";
-import { type CompanyAssociatedDataVsmeData, DataTypeEnum, type VsmeData } from "@clients/backend";
-import { vsmeDataModel } from "@/frameworks/vsme/UploadConfig";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import { type DocumentToUpload, getFileName } from "@/utils/FileUploadUtils";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
-import { type PrivateFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import PollutionEmissionFormField from "@/components/forms/parts/fields/PollutionEmissionFormField.vue";
-import SubsidiaryFormField from "@/components/forms/parts/fields/SubsidiaryFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import WasteClassificationFormField from "@/components/forms/parts/fields/WasteClassificationFormField.vue";
-import SiteAndAreaFormField from "@/components/forms/parts/fields/SiteAndAreaFormField.vue";
-import EmployeesPerCountryFormField from "@/components/forms/parts/fields/EmployeesPerCountryFormField.vue";
-import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-const referenceableReportsFieldId = "referenceableReports";
+import { FormKit } from '@formkit/vue';
+import { computed, defineComponent, inject } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import Calendar from 'primevue/calendar';
+import type Keycloak from 'keycloak-js';
+import PrimeButton from 'primevue/button';
+import { type Category, type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { AxiosError } from 'axios';
+import { type CompanyAssociatedDataVsmeData, DataTypeEnum, type VsmeData } from '@clients/backend';
+import { vsmeDataModel } from '@/frameworks/vsme/UploadConfig';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import { type DocumentToUpload, getFileName } from '@/utils/FileUploadUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
+import { type PrivateFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import PollutionEmissionFormField from '@/components/forms/parts/fields/PollutionEmissionFormField.vue';
+import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';
+import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
+import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
+import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
+const referenceableReportsFieldId = 'referenceableReports';
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateVsmeDataset",
+  name: 'CreateVsmeDataset',
   components: {
     FormKit,
     UploadFormHeader,
@@ -200,13 +200,13 @@ export default defineComponent({
     EmployeesPerCountryFormField,
     ListOfBaseDataPointsFormField,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createVsmeForm",
+      formId: 'createVsmeForm',
       companyAssociatedVsmeData: {} as CompanyAssociatedDataVsmeData,
       vsmeUploadConfig: vsmeDataModel,
-      message: "",
+      message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postVsmeDataProcessed: false,
@@ -262,20 +262,20 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedVsmeData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesOfAllCompanyReportsForTheDataset
           );
         }
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
         const files: File[] = documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const vsmeDataControllerApi = this.buildVsmeDataApi();
         await vsmeDataControllerApi!.postFrameworkData(this.companyAssociatedVsmeData, files);
-        this.$emit("datasetCreated");
-        this.message = "Upload successfully executed.";
+        this.$emit('datasetCreated');
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+          this.message = 'An error occurred: ' + error.message;
         } else if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         }

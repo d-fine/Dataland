@@ -1,5 +1,5 @@
-import { FiscalYearDeviation } from "@clients/backend";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { FiscalYearDeviation } from '@clients/backend';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 /**
  * Generates a random fiscal year deviation value

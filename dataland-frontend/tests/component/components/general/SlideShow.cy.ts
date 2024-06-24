@@ -1,29 +1,29 @@
-import TestSlideShow from "./TestSlideShow.vue";
+import TestSlideShow from './TestSlideShow.vue';
 
 const SLIDE_DELTA = 440;
 
-describe("Component test for the SlideShow component", () => {
-  it("Check if the buttons are working", () => {
+describe('Component test for the SlideShow component', () => {
+  it('Check if the buttons are working', () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
-      cy.get(leftButtonSelector).should("have.class", "disabled");
+      cy.get(leftButtonSelector).should('have.class', 'disabled');
       cy.get(rightButtonSelector).click();
       assertSlidesPosition(1);
       cy.get(rightButtonSelector).click();
       assertSlidesPosition(2);
-      cy.get(rightButtonSelector).should("have.class", "disabled");
+      cy.get(rightButtonSelector).should('have.class', 'disabled');
       assertSlidesPosition(2);
       cy.get(leftButtonSelector).click();
       assertSlidesPosition(1);
       cy.get(leftButtonSelector).click();
       assertSlidesPosition(0);
-      cy.get(leftButtonSelector).should("have.class", "disabled");
+      cy.get(leftButtonSelector).should('have.class', 'disabled');
       assertSlidesPosition(0);
       cy.get(rightButtonSelector).click();
       assertSlidesPosition(1);
     });
   });
 
-  it("Check if dragging is working", () => {
+  it('Check if dragging is working', () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       assertSlidesPosition();
       dragSlideTo(1, leftOffset);
@@ -37,7 +37,7 @@ describe("Component test for the SlideShow component", () => {
     });
   });
 
-  it("Check if dragging is disabled on large screens", () => {
+  it('Check if dragging is disabled on large screens', () => {
     cy.mountWithPlugins(TestSlideShow, {}).then(() => {
       cy.viewport(1900, 800);
       assertSlidesPosition();
@@ -57,10 +57,10 @@ const topOffset = 10;
  * @param centerSlide the index of the slide that is expected to be in the center
  */
 function assertSlidesPosition(centerSlide?: number): void {
-  const slidesSelector = ".test__slides";
+  const slidesSelector = '.test__slides';
   const expectedTransformValue =
-    centerSlide == undefined ? "none" : `matrix(1, 0, 0, 1, ${-SLIDE_DELTA * centerSlide}, 0)`;
-  cy.get(slidesSelector).should("have.css", "transform", expectedTransformValue);
+    centerSlide == undefined ? 'none' : `matrix(1, 0, 0, 1, ${-SLIDE_DELTA * centerSlide}, 0)`;
+  cy.get(slidesSelector).should('have.css', 'transform', expectedTransformValue);
 }
 
 /**
@@ -69,13 +69,13 @@ function assertSlidesPosition(centerSlide?: number): void {
  * @param targetX the targets position x value in viewport coordinates
  */
 function dragSlideTo(slideIndex: number, targetX: number): void {
-  cy.get(".test__slide")
+  cy.get('.test__slide')
     .eq(slideIndex)
-    .trigger("pointerdown", leftOffset, topOffset, { button: 0 })
-    .trigger("pointermove", {
-      eventConstructor: "MouseEvent",
+    .trigger('pointerdown', leftOffset, topOffset, { button: 0 })
+    .trigger('pointermove', {
+      eventConstructor: 'MouseEvent',
       clientX: targetX,
       clientY: topOffset,
     })
-    .trigger("pointerup", { button: 0 });
+    .trigger('pointerup', { button: 0 });
 }

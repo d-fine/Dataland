@@ -1,5 +1,5 @@
 .p-menu {
-  padding: .25rem 0;
+  padding: 0.25rem 0;
   background: var(--surface-900);
   color: $menu-text-color;
   border: 1px solid #dee2e6;
@@ -11,7 +11,10 @@
   .p-menuitem-link {
     padding: 1rem;
     border-radius: 0;
-    transition: background-color .2s, border-color .2s, box-shadow .2s;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s;
     user-select: none;
 
     &:not(.p-disabled):hover {
@@ -25,7 +28,7 @@
 }
 
 .p-menu-white {
-  padding: .25rem 0;
+  padding: 0.25rem 0;
   background: $bg-text-primary;
   color: $main-text-color;
   border: 1px solid #dee2e6;
@@ -37,7 +40,10 @@
   .p-menuitem-link {
     padding: 1rem;
     border-radius: 0;
-    transition: background-color .2s, border-color .2s, box-shadow .2s;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s;
     user-select: none;
 
     &:not(.p-disabled):hover {
@@ -60,7 +66,7 @@
 
     li {
       list-style: none;
-      margin: .5rem 0;
+      margin: 0.5rem 0;
 
       a {
         color: $jumpLinks-color;

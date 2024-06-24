@@ -1,4 +1,4 @@
-import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import {
   type EuTaxonomyDataForFinancials,
   type EsgQuestionnaireData,
@@ -7,7 +7,7 @@ import {
   type SfdrData,
   type VsmeData,
   type EutaxonomyNonFinancialsData,
-} from "@clients/backend";
+} from '@clients/backend';
 
 export interface Category {
   name: string;

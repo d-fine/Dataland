@@ -23,15 +23,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { convertYesNoUndefinedToBoolean } from "@/utils/YesNoNa";
+import { defineComponent } from 'vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import { convertYesNoUndefinedToBoolean } from '@/utils/YesNoNa';
 
 export default defineComponent({
-  name: "GeneralViolationsAssessmentFormElement",
+  name: 'GeneralViolationsAssessmentFormElement',
   data() {
     return {
       riskOptions: getDataset(DropdownDatasetIdentifier.RiskPositions),

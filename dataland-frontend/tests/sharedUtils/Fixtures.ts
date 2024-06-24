@@ -1,4 +1,4 @@
-import { type CompanyInformation } from "@clients/backend";
+import { type CompanyInformation } from '@clients/backend';
 
 export interface FixtureData<T> {
   companyInformation: CompanyInformation;
@@ -16,7 +16,7 @@ export function getPreparedFixture<T>(name: string, preparedFixtures: FixtureDat
   const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
   if (!preparedFixture) {
     throw new ReferenceError(
-      "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures.",
+      'Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures.'
     );
   } else {
     return preparedFixture;

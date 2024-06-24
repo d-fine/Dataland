@@ -2,7 +2,7 @@
   <Card class="col-12 page-wrapper-card p-3">
     <template #title
       ><span data-test="pageWrapperTitle">
-        {{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
+        {{ editMode ? 'Edit' : 'Create' }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
       ></template
     >
     <template #content>
@@ -121,69 +121,69 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import { defineComponent, inject, computed } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import Tooltip from "primevue/tooltip";
-import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import Calendar from "primevue/calendar";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { eutaxonomyNonFinancialsDataModel } from "@/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig";
+import { FormKit } from '@formkit/vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import { defineComponent, inject, computed } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import Tooltip from 'primevue/tooltip';
+import PrimeButton from 'primevue/button';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import Calendar from 'primevue/calendar';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { eutaxonomyNonFinancialsDataModel } from '@/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig';
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   type CompanyReport,
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
-} from "@clients/backend";
-import { useRoute } from "vue-router";
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import FinancialShareFormField from "@/components/forms/parts/kpiSelection/FinancialShareFormField.vue";
-import AlignedActivitiesFormField from "@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue";
-import NonAlignedActivitiesFormField from "@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue";
-import AssuranceFormField from "@/components/forms/parts/kpiSelection/AssuranceFormField.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import InputSwitch from "primevue/inputswitch";
-import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import { type Subcategory } from "@/utils/GenericFrameworkTypes";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import { getFilledKpis } from "@/utils/DataPoint";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
+} from '@clients/backend';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationsUtils';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
+import FinancialShareFormField from '@/components/forms/parts/kpiSelection/FinancialShareFormField.vue';
+import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/AlignedActivitiesFormField.vue';
+import NonAlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue';
+import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import InputSwitch from 'primevue/inputswitch';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import { type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateEuTaxonomyNonFinancials",
+  name: 'CreateEuTaxonomyNonFinancials',
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -222,16 +222,16 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createEuTaxonomyNonFinancialsForm",
+      formId: 'createEuTaxonomyNonFinancialsForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
       eutaxonomyNonFinancialsDataModel,
       route: useRoute(),
-      message: "",
+      message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postEutaxonomyNonFinancialsDataProcessed: false,
@@ -255,7 +255,7 @@ export default defineComponent({
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
         this.eutaxonomyNonFinancialsDataModel,
-        this.companyAssociatedEutaxonomyNonFinancialsData.data,
+        this.companyAssociatedEutaxonomyNonFinancialsData.data
       );
     },
   },
@@ -267,7 +267,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string" && dataId !== "") {
+    if (dataId && typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
       void this.loadEutaxonomyNonFinancialsData(dataId);
     } else {
@@ -306,7 +306,7 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(
-        euTaxonomyNonFinancialsResponseData as ObjectType,
+        euTaxonomyNonFinancialsResponseData as ObjectType
       ) as CompanyAssociatedDataEutaxonomyNonFinancialsData;
       this.waitingForData = false;
     },
@@ -320,7 +320,7 @@ export default defineComponent({
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEutaxonomyNonFinancialsData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
           );
 
           await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
@@ -328,11 +328,11 @@ export default defineComponent({
 
         const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
         await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEutaxonomyNonFinancialsData,
+          this.companyAssociatedEutaxonomyNonFinancialsData
         );
-        this.$emit("datasetCreated");
+        this.$emit('datasetCreated');
         this.dataDate = undefined;
-        this.message = "Upload successfully executed.";
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
@@ -340,7 +340,7 @@ export default defineComponent({
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {

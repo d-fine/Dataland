@@ -1,15 +1,15 @@
-import { ALL_FRAMEWORKS_ORDERED, PRIVATE_FRAMEWORKS } from "@/utils/Constants";
-import { DataTypeEnum } from "@clients/backend";
-import { getAllPublicFrameworkIdentifiers } from "@/frameworks/BasePublicFrameworkRegistry";
-import { getAllPrivateFrameworkIdentifiers } from "@/frameworks/BasePrivateFrameworkRegistry";
+import { ALL_FRAMEWORKS_ORDERED, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { DataTypeEnum } from '@clients/backend';
+import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFrameworkRegistry';
+import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
-describe("Unit test for the data type sorting in the Constants", () => {
-  it("Check if esg questionnaire and heimathafen are put at the end of a list of data type enums", () => {
+describe('Unit test for the data type sorting in the Constants', () => {
+  it('Check if esg questionnaire and heimathafen are put at the end of a list of data type enums', () => {
     expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 2]).to.equal(DataTypeEnum.EsgQuestionnaire);
     expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 1]).to.equal(DataTypeEnum.Heimathafen);
   });
 
-  it("Check if the frameworks in the Constants are in sync with the framework registries", () => {
+  it('Check if the frameworks in the Constants are in sync with the framework registries', () => {
     /**
      * Removes frameworks without toolbox support from the list of framework identifiers, that is passed to it.
      * @param frameworkIdentifiers as input to filter
@@ -21,7 +21,7 @@ describe("Unit test for the data type sorting in the Constants", () => {
         DataTypeEnum.EutaxonomyFinancials.toString(),
       ];
       return frameworkIdentifiers.filter(
-        (frameworkIdentifier) => !nonToolboxSupportedFrameworkIdentifiers.includes(frameworkIdentifier),
+        (frameworkIdentifier) => !nonToolboxSupportedFrameworkIdentifiers.includes(frameworkIdentifier)
       );
     }
 

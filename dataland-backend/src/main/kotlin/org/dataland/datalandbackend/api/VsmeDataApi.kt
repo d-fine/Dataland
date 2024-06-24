@@ -46,7 +46,7 @@ interface VsmeDataApi {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompany(#companyAssociatedVsmeData.companyId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyAssociatedVsmeData.companyId))",
     )
     fun postVsmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedVsmeData") companyAssociatedVsmeData: CompanyAssociatedData<VsmeData>,
@@ -73,7 +73,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompanyOfDataId(#dataId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompanyOfDataId(#dataId))",
     )
     fun getCompanyAssociatedVsmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<VsmeData>>
@@ -105,7 +105,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompanyOfDataId(#dataId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompanyOfDataId(#dataId))",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,
@@ -137,7 +137,7 @@ interface VsmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompany(#companyId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId))",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,

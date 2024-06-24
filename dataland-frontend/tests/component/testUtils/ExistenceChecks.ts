@@ -5,9 +5,9 @@
  */
 export function checkImage(alternativeText: string, fileName: string): void {
   cy.get(`img[alt="${alternativeText}"]`)
-    .should("be.visible")
-    .should("have.attr", "src")
-    .should("match", new RegExp(`.*/${fileName}$`));
+    .should('be.visible')
+    .should('have.attr', 'src')
+    .should('match', new RegExp(`.*/${fileName}$`));
 }
 
 /**
@@ -17,7 +17,7 @@ export function checkImage(alternativeText: string, fileName: string): void {
  * @returns the chainable on the button element
  */
 export function checkButton(name: string, buttonText: string): Cypress.Chainable {
-  return cy.get(`button[name="${name}"]`).should("be.visible").should("contain.text", buttonText);
+  return cy.get(`button[name="${name}"]`).should('be.visible').should('contain.text', buttonText);
 }
 
 /**
@@ -26,7 +26,7 @@ export function checkButton(name: string, buttonText: string): Cypress.Chainable
  * @returns the chainable on the link element
  */
 export function checkAnchorByContent(anchorText: string): Cypress.Chainable {
-  return cy.get(`a:contains('${anchorText}')`).should("be.visible");
+  return cy.get(`a:contains('${anchorText}')`).should('be.visible');
 }
 
 /**
@@ -36,5 +36,5 @@ export function checkAnchorByContent(anchorText: string): Cypress.Chainable {
  * @returns the chainable on the link element
  */
 export function checkAnchorByTarget(href: string, anchorText: string): Cypress.Chainable {
-  return cy.get(`a[href="${href}"]`).should("be.visible").should("contain.text", anchorText);
+  return cy.get(`a[href="${href}"]`).should('be.visible').should('contain.text', anchorText);
 }

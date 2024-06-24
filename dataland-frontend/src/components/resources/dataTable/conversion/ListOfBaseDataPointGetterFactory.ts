@@ -3,9 +3,9 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import ListOfBaseDataPointModal from "@/components/resources/dataTable/modals/ListOfBaseDataPointModal.vue";
-import { type BaseDataPointString } from "@clients/backend";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import ListOfBaseDataPointModal from '@/components/resources/dataTable/modals/ListOfBaseDataPointModal.vue';
+import { type BaseDataPointString } from '@clients/backend';
 
 /**
  * Convert a list of string-wrapping base datapoints into a display object.
@@ -19,7 +19,7 @@ export function formatListOfBaseDataPoint(
   fieldLabel: string,
   baseDataPoints: BaseDataPointString[] | null | undefined,
   descriptionColumnHeader: string,
-  documentColumnHeader: string,
+  documentColumnHeader: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!baseDataPoints || baseDataPoints.length === 0) {
     return MLDTDisplayObjectForEmptyString;
@@ -27,7 +27,7 @@ export function formatListOfBaseDataPoint(
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
-        label: `Show ${baseDataPoints.length} value${baseDataPoints.length > 1 ? "s" : ""}`,
+        label: `Show ${baseDataPoints.length} value${baseDataPoints.length > 1 ? 's' : ''}`,
         modalComponent: ListOfBaseDataPointModal,
         modalOptions: {
           props: {

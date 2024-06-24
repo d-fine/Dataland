@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, inject, type Ref } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import { type BaseDataPoint } from "@/utils/DataPoint";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataMetaInformation } from "@clients/backend";
+import { computed, inject, type Ref } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { type BaseDataPoint } from '@/utils/DataPoint';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { type DataMetaInformation } from '@clients/backend';
 
 interface ListOfBaseDataPointDialogData {
   label: string;
@@ -15,7 +15,7 @@ interface ListOfBaseDataPointDialogData {
   metaInfo: DataMetaInformation;
 }
 
-const dialogRef = inject<Ref<DynamicDialogInstance>>("dialogRef");
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const dialogData = computed(() => {
   return dialogRef?.value?.data as ListOfBaseDataPointDialogData;
 });

@@ -97,67 +97,67 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
-import { FormKit } from "@formkit/vue";
-import { ApiClientProvider } from "@/services/ApiClients";
-import Card from "primevue/card";
-import { defineComponent, inject, computed } from "vue";
-import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import Calendar from "primevue/calendar";
-import SuccessMessage from "@/components/messages/SuccessMessage.vue";
-import FailMessage from "@/components/messages/FailMessage.vue";
-import { lksgDataModel } from "@/frameworks/lksg/UploadConfig";
-import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from "@clients/backend";
-import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
-import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import LksgSubcontractingCompaniesFormField from "@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue";
-import { objectDropNull } from "@/utils/UpdateObjectUtils";
-import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { type Subcategory } from "@/utils/GenericFrameworkTypes";
-import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
-import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
-import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
-import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
-import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
-import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import { getFilledKpis } from "@/utils/DataPoint";
-import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import AmountWithCurrencyFormField from "@/components/forms/parts/fields/AmountWithCurrencyFormField.vue";
-import BigDecimalBaseDataPointFormField from "@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue";
-import RiskAssessmentsFormField from "@/components/forms/parts/fields/RiskAssessmentsFormField.vue";
-import GeneralViolationsAssessmentsFormField from "@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue";
-import GrievanceMechanismAssessmentsFormField from "@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue";
-import { getBasePublicFrameworkDefinition } from "@/frameworks/BasePublicFrameworkRegistry";
-import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { FormKit } from '@formkit/vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import Card from 'primevue/card';
+import { defineComponent, inject, computed } from 'vue';
+import type Keycloak from 'keycloak-js';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import PrimeButton from 'primevue/button';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import Calendar from 'primevue/calendar';
+import SuccessMessage from '@/components/messages/SuccessMessage.vue';
+import FailMessage from '@/components/messages/FailMessage.vue';
+import { lksgDataModel } from '@/frameworks/lksg/UploadConfig';
+import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from '@clients/backend';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs } from '@/utils/ValidationsUtils';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
+import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
+import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
+import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
+import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+import AddressFormField from '@/components/forms/parts/fields/AddressFormField.vue';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
+import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
+import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
+import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
+import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
+import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
+import LksgSubcontractingCompaniesFormField from '@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue';
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
+import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
+import { type Subcategory } from '@/utils/GenericFrameworkTypes';
+import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
+import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
+import CurrencyDataPointFormField from '@/components/forms/parts/fields/CurrencyDataPointFormField.vue';
+import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
+import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
+import { getFilledKpis } from '@/utils/DataPoint';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
+import AmountWithCurrencyFormField from '@/components/forms/parts/fields/AmountWithCurrencyFormField.vue';
+import BigDecimalBaseDataPointFormField from '@/components/forms/parts/fields/BigDecimalBaseDataPointFormField.vue';
+import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssessmentsFormField.vue';
+import GeneralViolationsAssessmentsFormField from '@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue';
+import GrievanceMechanismAssessmentsFormField from '@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 
 export default defineComponent({
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  name: "CreateLksgDataset",
+  name: 'CreateLksgDataset',
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -196,16 +196,16 @@ export default defineComponent({
     BigDecimalBaseDataPointFormField,
     LksgSubcontractingCompaniesFormField,
   },
-  emits: ["datasetCreated"],
+  emits: ['datasetCreated'],
   data() {
     return {
-      formId: "createLkSGForm",
+      formId: 'createLkSGForm',
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
       lksgDataModel,
       route: useRoute(),
-      message: "",
+      message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postLkSGDataProcessed: false,
@@ -220,9 +220,9 @@ export default defineComponent({
       get(): string {
         const currentDate = this.companyAssociatedLksgData.data?.general?.masterData?.dataDate;
         if (currentDate === undefined) {
-          return "";
+          return '';
         } else {
-          return currentDate.split("-")[0];
+          return currentDate.split('-')[0];
         }
       },
       set() {
@@ -241,7 +241,7 @@ export default defineComponent({
   },
   created() {
     const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === "string") {
+    if (dataId && typeof dataId === 'string') {
       void this.loadLKSGData(dataId);
     } else {
       this.waitingForData = false;
@@ -285,9 +285,9 @@ export default defineComponent({
         }
         const lksgDataControllerApi = this.buildLksgDataApi();
         await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData);
-        this.$emit("datasetCreated");
+        this.$emit('datasetCreated');
         this.dataDate = undefined;
-        this.message = "Upload successfully executed.";
+        this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
@@ -295,7 +295,7 @@ export default defineComponent({
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            'An unexpected error occurred. Please try again or contact the support team if the issue persists.';
         }
         this.uploadSucceded = false;
       } finally {

@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   type MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type DataMetaInformation } from "@clients/backend";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type DataMetaInformation } from '@clients/backend';
 export default defineComponent({
-  name: "ModalLinkDisplayComponent",
+  name: 'ModalLinkDisplayComponent',
   computed: {
     modalOptions() {
       let updatedModalOptions = this.content.displayValue.modalOptions;

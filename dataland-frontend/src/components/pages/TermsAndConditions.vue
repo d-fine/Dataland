@@ -25,18 +25,18 @@
         <p>
           The (natural and legal) persons registered on the Dataland platform (hereinafter: "Dataland participants") can
           transfer Company Data to Dataland as so-called Data Collectors. Companies can do the same with the Company
-          Data that concerns them (so-called "Data Owners"). The Company Data on the Dataland platform can be downloaded
-          and used by Data Users.
+          Data that concerns them (so-called "Company Owners"). The Company Data on the Dataland platform can be
+          downloaded and used by Data Users.
         </p>
         <p>
           The aim of Dataland is to create a knowledge platform that is open to everyone and to make Company Data
           available to all Data Users. Dataland checks the entered Company Data with automated tests. In addition,
           random checks are carried out on individual data. Otherwise, the content of the Company Data transmitted by
-          the Data Collectors or Data Owners to the Dataland platform and made available there is not checked.
+          the Data Collectors or Company Owners to the Dataland platform and made available there is not checked.
         </p>
         <p>
           The following terms and conditions govern the general registration as a Dataland Participant as well as the
-          registration and participation in Dataland as a Data User, Data Collector and Data Owner.
+          registration and participation in Dataland as a Data User, Data Collector and Company Owner.
         </p>
       </div>
       <div>
@@ -44,12 +44,12 @@
         <p>In order to participate in Dataland, it is first necessary to register as a Dataland Participant.</p>
         <p>
           In addition to registration as a Dataland Participant (but not without it), registrations as a Data Collector,
-          Data Owner and Data User may be made.
+          Company Owner and Data User may be made.
         </p>
         <p>The prerequisite for registration of the (natural or legal) person is their full legal capacity.</p>
         <p>
           A (natural or legal) person may only register as one Dataland Participant and, based on this registration, may
-          only register as one Data Collector, Data Owner and/or Data User.
+          only register as one Data Collector, Company Owner and/or Data User.
         </p>
         <p>
           Registration with Dataland initially takes place in such a way that the mandatory fields marked with an "*"
@@ -65,7 +65,7 @@
           After the mandatory fields have been completed and the corresponding application for registration has been
           sent by clicking on the "Request registration" field, Dataland will review the application for registration.
           After review and a positive decision on the application for registration, the applicant will be confirmed as a
-          Dataland Participant or, in the case of corresponding applications, as a Data Collector, Data Owner or Data
+          Dataland Participant or, in the case of corresponding applications, as a Data Collector, Company Owner or Data
           User.
         </p>
         <p>Dataland is under no obligation to accept and confirm a registration.</p>
@@ -90,8 +90,8 @@
             Data may not be copied or downloaded.
           </p>
           <p>
-            As a Dataland Participant, it has the option of registering as a Data User, Data Owner or Data Collector in
-            accordance with the provisions of § 1.
+            As a Dataland Participant, it has the option of registering as a Data User, Company Owner or Data Collector
+            in accordance with the provisions of § 1.
           </p>
         </div>
         <div>
@@ -281,7 +281,7 @@
           </p>
           <p>
             The Data Collector is aware that Dataland is entitled to make the Company Data available to the Data Users
-            and Data Owners free of charge during the ramp-up phase of Dataland until spring 2024 and that this has a
+            and Company Owners free of charge during the ramp-up phase of Dataland until spring 2024 and that this has a
             direct effect on the Data Collector's entitlement to remuneration pursuant to section 4.4.
           </p>
         </div>
@@ -385,43 +385,43 @@
         </div>
       </div>
       <div>
-        <h2>The following additional conditions apply to Data Owners:</h2>
+        <h2>The following additional conditions apply to Company Owners:</h2>
         <p>
-          Data Owners may also register as such on Dataland. As Data Owners, they have the right to use the Dataland
-          Platform in the same way as a Data Collector or a Data User.
+          Company Owners may also register as such on Dataland. As Company Owners, they have the right to use the
+          Dataland Platform in the same way as a Data Collector or a Data User.
         </p>
         <p>
-          Insofar as the Data Owner acts in accordance with a Data User, the provisions of § 3 shall apply, including
+          Insofar as the Company Owner acts in accordance with a Data User, the provisions of § 3 shall apply, including
           the remuneration rules therein.
         </p>
         <p>
-          Insofar as the Data Owner acts as a Data Collector, the provisions of § 4 shall apply, including the
+          Insofar as the Company Owner acts as a Data Collector, the provisions of § 4 shall apply, including the
           remuneration rules therein.
         </p>
         <div>
           <h3>Remuneration and payments</h3>
           <p>
-            Registration as a Data Owner and the associated use of the Dataland platform as a Data Owner are free of
-            charge, regardless of whether it is for private or commercial use.
+            Registration as a Company Owner and the associated use of the Dataland platform as a Company Owner are free
+            of charge, regardless of whether it is for private or commercial use.
           </p>
           <p>
-            Irrespective of the remuneration to which a Data Owner is entitled due to an activity as a Data Collector
+            Irrespective of the remuneration to which a Company Owner is entitled due to an activity as a Data Collector
             pursuant to § 5.3 in conjunction with § 4, he/she may receive (additional) remuneration in accordance with
             the following principles:
           </p>
           <p>
-            The starting point for the possible additional remuneration of the Data Owner is the data points that relate
-            to the respective Data Owner during a calendar year.
+            The starting point for the possible additional remuneration of the Company Owner is the data points that
+            relate to the respective Company Owner during a calendar year.
           </p>
           <p>
-            Based on this principle, a possible additional remuneration of the Data Owner after the end of the calendar
-            year is derived as follows for this calendar year:
+            Based on this principle, a possible additional remuneration of the Company Owner after the end of the
+            calendar year is derived as follows for this calendar year:
           </p>
           <ul>
             <li>
               After the end of each calendar year, Dataland may determine a share of the (net) income generated in
               accordance with § 3.2 (not taking into account the remuneration paid by means of Dataland Tokens), which
-              shall be available as a total amount for the separate remuneration of the Data Owners.
+              shall be available as a total amount for the separate remuneration of the Company Owners.
             </li>
             <li>
               Furthermore, Dataland determines the distribution amount available for the respective day based on the
@@ -429,9 +429,9 @@
             </li>
             <li>
               Finally, Dataland determines how many data points according to § 4.1.2 existed in total on each individual
-              day and how many data points are to be allocated to each individual data owner. In the case of data points
-              for which there are versions of differing timeliness, only the most recent version of the data point is
-              taken into account. A data owner is entitled to the percentage share determined for it
+              day and how many data points are to be allocated to each individual company owner. In the case of data
+              points for which there are versions of differing timeliness, only the most recent version of the data
+              point is taken into account. A company owner is entitled to the percentage share determined for it
             </li>
             <li>
               Remuneration claims below the technical minimum amount will not be paid out. The currently applicable
@@ -439,18 +439,18 @@
             </li>
           </ul>
           <p>
-            All calculation bases on which the calculation of the Data Owner's remuneration claim is based in accordance
-            with the above paragraph shall be made available to the Data Owner so that the Data Owner can understand and
-            verify the calculation of its remuneration claim.
+            All calculation bases on which the calculation of the Company Owner's remuneration claim is based in
+            accordance with the above paragraph shall be made available to the Company Owner so that the Company Owner
+            can understand and verify the calculation of its remuneration claim.
           </p>
           <p>
-            Dataland shall pay the remuneration to the Data Owner within three months after the end of a calendar year
-            for the Data Owner's services subject to remuneration during that calendar year.
+            Dataland shall pay the remuneration to the Company Owner within three months after the end of a calendar
+            year for the Company Owner's services subject to remuneration during that calendar year.
           </p>
         </div>
         <div>
-          <h3>Term of registration as a data owner</h3>
-          <p>Registration as a data owner is for an indefinite term.</p>
+          <h3>Term of registration as a company owner</h3>
+          <p>Registration as a company owner is for an indefinite term.</p>
           <p>
             The registration can be cancelled by either party with one month's notice to the end of a calendar month.
           </p>
@@ -484,9 +484,9 @@
         <div>
           <h3>Dataland intends to offer and transfer the Dataland Tokens to Dataland Participants as follows:</h3>
           <p>
-            Dataland intends to offer Data Owners the purchase of Dataland Tokens. In doing so, Dataland does not act at
-            its own discretion with regard to the number of Dataland Tokens offered in each case, nor with regard to
-            their pricing, and in particular without any obligation to treat Data Owners equally.
+            Dataland intends to offer Company Owners the purchase of Dataland Tokens. In doing so, Dataland does not act
+            at its own discretion with regard to the number of Dataland Tokens offered in each case, nor with regard to
+            their pricing, and in particular without any obligation to treat Company Owners equally.
           </p>
           <p>
             Dataland intends to offer Data Collectors the fulfilment of their remuneration claims with Dataland Tokens.
@@ -1012,7 +1012,7 @@
               Schließlich bestimmt Dataland, wie viele Datenpunkte gem. § 4.1.2 an jedem einzelnen Tag insgesamt
               bestanden haben und wie viele Datenpunkte jedem einzelnen Daten-Owner zuzuordnen sind. Bei Datenpunkten,
               bei denen es Fassungen von unterschiedlicher Aktualität gibt, wird nur die neuste Fassung des Datenpunkts
-              in Ansatz gebracht. Einem Data-Owner steht der auf ihn entfallende prozentual ermittelte Anteil zu
+              in Ansatz gebracht. Einem Company-Owner steht der auf ihn entfallende prozentual ermittelte Anteil zu
             </li>
             <li>
               Vergütungsansprüche unterhalb der technischen Mindestsumme werden nicht ausgezahlt. Die aktuell geltende
@@ -1022,12 +1022,13 @@
           </ul>
           <p>
             Sämtliche Berechnungsgrundlagen, die nach vorstehendem Absatz der Errechnung des Vergütungsanspruchs des
-            Data-Owner zugrunde liegen, werden dem Data-Owner zugänglich gemacht, so dass dieser die Berechnung seines
-            Vergütungsanspruchs nachvollziehen und verifizieren kann.
+            Company-Owner zugrunde liegen, werden dem Company-Owner zugänglich gemacht, so dass dieser die Berechnung
+            seines Vergütungsanspruchs nachvollziehen und verifizieren kann.
           </p>
           <p>
-            Die Auszahlung der Vergütung an den Data-Owner erfolgt seitens Dataland binnen drei Monaten nach Ende eines
-            Kalenderjahres für die vergütungspflichtigen Leistungen des Daten-Owners während dieses Kalenderjahres.
+            Die Auszahlung der Vergütung an den Company-Owner erfolgt seitens Dataland binnen drei Monaten nach Ende
+            eines Kalenderjahres für die vergütungspflichtigen Leistungen des Daten-Owners während dieses
+            Kalenderjahres.
           </p>
         </div>
         <div>
@@ -1074,9 +1075,10 @@
             übertragen:
           </h3>
           <p>
-            Dataland beabsichtigt Data-Ownern den Ankauf von Dataland-Token anzubieten. Hierbei handelt Dataland weder
-            im Hinblick auf die Anzahl der jeweils angebotenen Dataland-Token noch im Hinblick auf deren Bepreisung in
-            freiem Ermessen und insbesondere ohne die Verpflichtung, die Data-Owner gleich behandeln zu müssen.
+            Dataland beabsichtigt Company-Ownern den Ankauf von Dataland-Token anzubieten. Hierbei handelt Dataland
+            weder im Hinblick auf die Anzahl der jeweils angebotenen Dataland-Token noch im Hinblick auf deren
+            Bepreisung in freiem Ermessen und insbesondere ohne die Verpflichtung, die Company-Owner gleich behandeln zu
+            müssen.
           </p>
           <p>
             Dataland beabsichtigt Daten-Sammlern die Erfüllung ihrer Vergütungsansprüche mit Dataland-Token anzubieten.
@@ -1157,12 +1159,12 @@
 </template>
 
 <script lang="ts">
-import LegalPage from "@/components/generics/LegalPage.vue";
-import { computed, defineComponent } from "vue";
-import InputSwitch from "primevue/inputswitch";
+import LegalPage from '@/components/generics/LegalPage.vue';
+import { computed, defineComponent } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
 
 export default defineComponent({
-  name: "TermsAndConditions",
+  name: 'TermsAndConditions',
   components: { LegalPage, InputSwitch },
   data() {
     return {
@@ -1186,7 +1188,7 @@ h1 {
 
 div:not(:first-of-type) h2::before {
   counter-increment: section;
-  content: counter(section) ". ";
+  content: counter(section) '. ';
 }
 
 h2 {
@@ -1195,13 +1197,13 @@ h2 {
 
 div:not(:first-of-type) h2 ~ p:not(:only-of-type)::before {
   counter-increment: subsection;
-  content: counter(section) "." counter(subsection) ". ";
+  content: counter(section) '.' counter(subsection) '. ';
   font-weight: bold;
 }
 
 h3::before {
   counter-increment: subsection;
-  content: counter(section) "." counter(subsection) ". ";
+  content: counter(section) '.' counter(subsection) '. ';
 }
 
 h3 {
@@ -1224,6 +1226,6 @@ p::before {
 
 h3 ~ p:not(:only-of-type)::before {
   counter-increment: subsubsection;
-  content: counter(section) "." counter(subsection) "." counter(subsubsection) ". ";
+  content: counter(section) '.' counter(subsection) '.' counter(subsubsection) '. ';
 }
 </style>
