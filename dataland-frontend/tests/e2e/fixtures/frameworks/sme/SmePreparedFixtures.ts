@@ -1,9 +1,9 @@
-import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type SmeData } from "@clients/backend";
-import { generateSmeFixtures } from "@e2e/fixtures/frameworks/sme/SmeDataFixtures";
-import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
-import { faker } from "@faker-js/faker";
+import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type SmeData } from '@clients/backend';
+import { generateSmeFixtures } from '@e2e/fixtures/frameworks/sme/SmeDataFixtures';
+import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
+import { pickOneElement } from '@e2e/fixtures/FixtureUtils';
+import { faker } from '@faker-js/faker';
 
 /**
  * Generates one SME prepared fixture dataset by generating a random SME dataset and afterwards manipulating some fields
@@ -24,9 +24,9 @@ export function generateSmePreparedFixtures(): Array<FixtureData<SmeData>> {
  * @returns the manipulated fixture data
  */
 function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<SmeData>): FixtureData<SmeData> {
-  input.companyInformation.companyName = "Sme-dataset-with-no-null-fields";
+  input.companyInformation.companyName = 'Sme-dataset-with-no-null-fields';
   input.companyInformation.identifiers = { Lei: [pickOneElement([faker.string.alphanumeric(20)])] };
-  input.companyInformation.sector = "Energy";
+  input.companyInformation.sector = 'Energy';
   input.t.general.basicInformation.sectors = generateNaceCodes(2);
   input.t.insurances?.naturalHazards?.naturalHazardsCovered?.sort();
   return input;

@@ -56,17 +56,17 @@
 </style>
 
 <script setup lang="ts" generic="T">
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
-import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
-import Tooltip from "primevue/tooltip";
-import { convertUnixTimeInMsToDateString, dateStringFormatter } from "@/utils/DataFormatUtils";
+import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import Tooltip from 'primevue/tooltip';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import {
   type CompanyReport,
   type EuTaxonomyDataForFinancials,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
-} from "@clients/backend";
+} from '@clients/backend';
 
 const vTooltip = Tooltip;
 
@@ -79,13 +79,13 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
   let latestDate = null;
   let referencedReports;
   switch (singleDataAndMetaInfo.metaInfo.dataType) {
-    case "sfdr":
+    case 'sfdr':
       referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
       break;
-    case "eutaxonomy-financials":
+    case 'eutaxonomy-financials':
       referencedReports = (singleDataAndMetaInfo.data as EuTaxonomyDataForFinancials).referencedReports;
       break;
-    case "eutaxonomy-non-financials":
+    case 'eutaxonomy-non-financials':
       referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
       break;
     default:
@@ -105,7 +105,7 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
     ? `Publication date of most recent report:\n ${dateStringFormatter(latestDate)}\n\n`
     : "";
   const datasetPublishedToolTip =
-    "Publication date of the dataset on Dataland:\n " +
+    'Publication date of the dataset on Dataland:\n ' +
     convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
   return mostRecentSourceToolTip + datasetPublishedToolTip;
 }

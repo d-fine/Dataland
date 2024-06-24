@@ -26,13 +26,13 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import Calendar from "primevue/calendar";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
+import { defineComponent } from 'vue';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import Calendar from 'primevue/calendar';
+import { getHyphenatedDate } from '@/utils/DataFormatUtils';
 export default defineComponent({
-  name: "ReportFormElement",
+  name: 'ReportFormElement',
   components: { FormKit, UploadFormHeader, Calendar },
   data() {
     return {
