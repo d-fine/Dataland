@@ -96,8 +96,9 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns true if the user is member of the company
+     * Returns true if the user has the rights to add/remove the companyRole
      * @param companyId dataland companyId
+     * @param companyRoleToModify the companyRole to add/remove
      */
     @Transactional
     fun hasUserPermissionToModifyTheCompanyRole(
