@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
@@ -62,9 +63,10 @@ class Sme {
     }
 
     @BeforeAll
-    fun postCompanyAndSetDataOwnership() {
+    fun postCompanyAndSetCompanyOwnership() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.companyDataControllerApi.postDataOwner(
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
             UUID.fromString(companyId),
             UUID.fromString(UPLOADER_USER_ID),
         )
@@ -99,7 +101,7 @@ class Sme {
     }
 
     @Test
-    fun `post SME data with documents and check if data and documents can be retrieved by the data owner`() {
+    fun `post SME data with documents and check if data and documents can be retrieved by the company owner`() {
         val smeData = setPowerConsumptionFileReference(testSmeData, hashAlpha)
         val companyAssociatedDataSmeData = CompanyAssociatedDataSmeData(companyId, "2023", smeData)
         val dataMetaInfoInResponse = postSmeDataset(companyAssociatedDataSmeData, listOf(dummyFileAlpha, dummyFileBeta))

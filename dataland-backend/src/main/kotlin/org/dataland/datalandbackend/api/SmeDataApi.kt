@@ -46,7 +46,7 @@ interface SmeDataApi {
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompany(#companyAssociatedSmeData.companyId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyAssociatedSmeData.companyId))",
     )
     fun postSmeJsonAndDocuments(
         @RequestPart(value = "companyAssociatedSmeData") companyAssociatedSmeData: CompanyAssociatedData<SmeData>,
@@ -73,7 +73,7 @@ interface SmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompanyOfDataId(#dataId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompanyOfDataId(#dataId))",
     )
     fun getCompanyAssociatedSmeData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<SmeData>>
@@ -105,7 +105,7 @@ interface SmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompanyOfDataId(#dataId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompanyOfDataId(#dataId))",
     )
     fun getPrivateDocument(
         @RequestParam("dataId") dataId: String,
@@ -137,7 +137,7 @@ interface SmeDataApi {
     )
     @PreAuthorize(
         "(hasRole('ROLE_USER') " +
-            "and @DataOwnersManager.isCurrentUserDataOwnerForCompany(#companyId))",
+            "and @CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId))",
     )
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,

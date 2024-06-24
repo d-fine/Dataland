@@ -10,11 +10,11 @@
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
           <div
             class="p-badge badge-light-green outline rounded"
-            data-test="verifiedDataOwnerBadge"
-            v-if="hasCompanyDataOwner"
+            data-test="verifiedCompanyOwnerBadge"
+            v-if="hasCompanyOwner"
           >
             <span class="material-icons-outlined fs-sm">verified</span>
-            Verified Data Owner
+            Verified Company Owner
           </div>
         </div>
         <div class="right-elements">
@@ -86,9 +86,10 @@ import ContextMenuButton from '@/components/general/ContextMenuButton.vue';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
-import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from '@/utils/DataOwnerUtils';
+import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
   name: 'CompanyInformation',
@@ -105,8 +106,8 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
-      isUserDataOwner: false,
-      hasCompanyDataOwner: false,
+      isUserCompanyOwner: false,
+      hasCompanyOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
       hasParentCompany: undefined as boolean | undefined,
@@ -126,7 +127,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.authenticated) {
+      if (!this.isUserCompanyOwner && this.authenticated) {
         listOfItems.push({
           label: 'Claim Company Dataset Ownership',
           command: () => {
@@ -157,15 +158,15 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.setDataOwnershipStatus();
-    void this.updateHasCompanyDataOwner();
+    void this.setCompanyOwnershipStatus();
+    void this.updateHasCompanyOwner();
   },
   watch: {
     async companyId(newCompanyId) {
       try {
-        void this.setDataOwnershipStatus();
+        void this.setCompanyOwnershipStatus();
         void this.getCompanyInformation();
-        this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(newCompanyId as string, this.getKeycloakPromise);
+        this.hasCompanyOwner = await hasCompanyAtLeastOneCompanyOwner(newCompanyId as string, this.getKeycloakPromise);
         this.claimIsSubmitted = false;
       } catch (error) {
         console.error('Error fetching data for new company:', error);
@@ -184,10 +185,10 @@ export default defineComponent({
       }
     },
     /**
-     * Updates the hasCompanyDataOwner in an async way
+     * Updates the hasCompanyOwner in an async way
      */
-    async updateHasCompanyDataOwner() {
-      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
+    async updateHasCompanyOwner() {
+      this.hasCompanyOwner = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
     },
     /**
      * Handles the close button click event of the dialog
@@ -248,13 +249,15 @@ export default defineComponent({
     },
 
     /**
-     * Set the data-ownership status of current user
+     * Set the company-ownership status of current user
      * @returns a void promise so that the setter-function can be awaited
      */
-    async setDataOwnershipStatus(): Promise<void> {
-      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
-        this.isUserDataOwner = result;
-      });
+    async setCompanyOwnershipStatus(): Promise<void> {
+      return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
+        (result) => {
+          this.isUserCompanyOwner = result;
+        }
+      );
     },
     /**
      * Handles the emitted claim event
