@@ -28,6 +28,7 @@ class CompanyRolesControllerTest {
     val jwtHelper = JwtAuthenticationHelper()
 
     private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+    private val dataUploaderUserId = UUID.fromString("c5ef10b1-de23-4a01-9005-e62ea226ee83")
     private val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1)[0]
 
@@ -175,14 +176,19 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that users without admin rights can always find out if they are a company owner of a company`() {
+    fun `assure that users without admin rights can always find out their role of a company`() {
         val companyId = uploadCompanyAndReturnCompanyId()
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+        enumValues<CompanyRole>().forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            assignCompanyRole(it, companyId, dataReaderUserId)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertDoesNotThrow { hasUserCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId) }
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            assertDoesNotThrow { hasUserCompanyRole(it, companyId, dataReaderUserId) }
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            removeCompanyRole(it, companyId, dataReaderUserId)
+        }
     }
 
     @Test
@@ -281,5 +287,82 @@ class CompanyRolesControllerTest {
             apiAccessor.companyRolesControllerApi.hasCompanyAtLeastOneOwner(companyId)
         }
         assertErrorCodeInCommunityManagerClientException(headExceptionForNonExistingCompanyOwners, 404)
+    }
+
+    @Test
+    fun `assure that a company owner without admin rights can add and remove every company roles`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+
+        enumValues<CompanyRole>().forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            assignCompanyRole(it, companyId, dataUploaderUserId)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+            assertDoesNotThrow { hasUserCompanyRole(it, companyId, dataUploaderUserId) }
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            removeCompanyRole(it, companyId, dataUploaderUserId)
+
+            val exceptionWhenCheckingIfUserIsCompanyOwner = assertThrows<ClientException> {
+                hasUserCompanyRole(it, companyId, dataUploaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
+        }
+    }
+
+    @Test
+    fun `assure that a company user admin without admin rights can only add and remove members and admins`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+        val listOfRolesThatCanBeModified = listOf(CompanyRole.CompanyUserAdmin, CompanyRole.CompanyMember)
+        val listOfRolesThatCannotBeModified =
+            listOf(CompanyRole.CompanyOwner, CompanyRole.CompanyUploader, CompanyRole.ExternalCompanyUploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assignCompanyRole(CompanyRole.CompanyUserAdmin, companyId, dataReaderUserId)
+        listOfRolesThatCanBeModified.forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            assignCompanyRole(it, companyId, dataUploaderUserId)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+            assertDoesNotThrow { hasUserCompanyRole(it, companyId, dataUploaderUserId) }
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            removeCompanyRole(it, companyId, dataUploaderUserId)
+
+            val exceptionWhenCheckingIfUserIsCompanyOwner = assertThrows<ClientException> {
+                hasUserCompanyRole(it, companyId, dataUploaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
+        }
+
+        listOfRolesThatCannotBeModified.forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            val exceptionWhenTryingToAddCompanyMembers = assertThrows<ClientException> {
+                assignCompanyRole(it, companyId, dataUploaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
+        }
+    }
+
+    @Test
+    fun `assure that the company roles company member uploader external uploader cannot add or remove company roles`() {
+        val listOfCompanyRolesWithoutModificationRights =
+            listOf(CompanyRole.CompanyUploader, CompanyRole.CompanyMember, CompanyRole.ExternalCompanyUploader)
+        val companyId = uploadCompanyAndReturnCompanyId()
+        listOfCompanyRolesWithoutModificationRights.forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            assignCompanyRole(it, companyId, dataReaderUserId)
+            tryToAddCompanyMembersAndAssertThatItsForbidden(companyId)
+        }
+    }
+    private fun tryToAddCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
+        enumValues<CompanyRole>().forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            val exceptionWhenTryingToAddCompanyMembers = assertThrows<ClientException> {
+                assignCompanyRole(it, companyId, dataUploaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
+        }
     }
 }

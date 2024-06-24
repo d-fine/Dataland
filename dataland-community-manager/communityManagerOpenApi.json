@@ -1352,7 +1352,11 @@
       "CompanyRole": {
         "type": "string",
         "enum": [
-          "CompanyOwner"
+          "CompanyOwner",
+          "CompanyUploader",
+          "ExternalCompanyUploader",
+          "CompanyUserAdmin",
+          "CompanyMember"
         ]
       },
       "CompanyRoleAssignment": {
