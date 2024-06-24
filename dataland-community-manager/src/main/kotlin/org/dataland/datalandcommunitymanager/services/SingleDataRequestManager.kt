@@ -1,15 +1,13 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -17,7 +15,6 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -31,7 +28,7 @@ import java.util.*
 class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val companyApi: CompanyDataControllerApi,
+    @Autowired private val companyIdValidator: CompanyIdValidator,
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
     @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser:
@@ -131,7 +128,7 @@ class SingleDataRequestManager(
 
     private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
         val datalandCompanyId = if (companyIdRegex.matches(companyIdentifier)) {
-            checkIfCompanyIsValid(companyIdentifier)
+            companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyIdentifier)
             companyIdentifier
         } else {
             utils.getDatalandCompanyIdForIdentifierValue(companyIdentifier)
@@ -182,19 +179,6 @@ class SingleDataRequestManager(
                 contactMessage = singleDataRequest.message,
                 correlationId = correlationId,
             )
-        }
-    }
-
-    private fun checkIfCompanyIsValid(companyId: String) {
-        try {
-            companyApi.getCompanyById(companyId)
-        } catch (e: ClientException) {
-            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "Dataland-backend does not know the company ID $companyId",
-                )
-            }
         }
     }
 

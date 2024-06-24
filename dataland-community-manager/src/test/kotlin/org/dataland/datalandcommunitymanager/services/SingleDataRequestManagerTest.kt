@@ -1,13 +1,12 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
+import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyBoolean
-import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
@@ -38,6 +36,7 @@ class SingleDataRequestManagerTest {
     private lateinit var singleDataRequestEmailMessageSenderMock: SingleDataRequestEmailMessageSender
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var utilsMock: DataRequestProcessingUtils
+    private lateinit var mockCompanyIdValidator: CompanyIdValidator
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val maxRequestsForUser = 10
@@ -55,24 +54,18 @@ class SingleDataRequestManagerTest {
     fun setupSingleDataRequestManager() {
         singleDataRequestEmailMessageSenderMock = mock(SingleDataRequestEmailMessageSender::class.java)
         utilsMock = createDataRequestProcessingUtilsMock()
-        val mockCompanyApi = mock(CompanyDataControllerApi::class.java)
+        mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
         dataRequestRepositoryMock = createDataRequestRepositoryMock()
         singleDataRequestManagerMock = SingleDataRequestManager(
             dataRequestLogger = mock(DataRequestLogger::class.java),
             dataRequestRepository = dataRequestRepositoryMock,
-            companyApi = mockCompanyApi,
+            companyIdValidator = mockCompanyIdValidator,
             singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
             utils = utilsMock,
             maxRequestsForUser,
         )
-        `when`(mockCompanyApi.getCompaniesBySearchString(anyString(), anyInt())).thenReturn(
-            listOf(
-                CompanyIdAndName(
-                    companyName = "Dummmy",
-                    companyId = companyIdRegexSafeCompanyId,
-                ),
-            ),
-        )
+        `when`(mockCompanyIdValidator.checkIfCompanyIdIsValidAndReturnName(anyString())).thenReturn("some-company-name")
+
         val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)
     }

@@ -11,7 +11,7 @@
   >
     <template #header>
       <h2 v-if="!claimIsSubmitted" class="m-0">Claim dataset ownership for your company.</h2>
-      <h2 v-else class="m-0">Thank you for claiming data ownership for {{ companyName }}.</h2>
+      <h2 v-else class="m-0">Thank you for claiming company ownership for {{ companyName }}.</h2>
     </template>
 
     <div v-if="!claimIsSubmitted">
@@ -94,13 +94,13 @@ export default defineComponent({
   emits: ['claimSubmitted', 'closeDialog'],
   methods: {
     /**
-     * Makes the API request in order to post the request for data ownership
+     * Makes the API request in order to post the request for company ownership
      */
     async submitInput(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
+      const companyRolesControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+        .companyRolesController;
       try {
-        const axiosResponse = await companyDataControllerApi.postDataOwnershipRequest(
+        const axiosResponse = await companyRolesControllerApi.postCompanyOwnershipRequest(
           this.companyId,
           this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined
         );

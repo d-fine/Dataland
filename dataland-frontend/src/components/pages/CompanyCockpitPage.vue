@@ -39,9 +39,10 @@ import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
-import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from '@/utils/DataOwnerUtils';
+import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationsUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -56,7 +57,7 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
     isClaimPanelVisible() {
-      return !this.isAnyDataOwnerExisting && isCompanyIdValid(this.companyId);
+      return !this.isAnyCompanyOwnerExisting && isCompanyIdValid(this.companyId);
     },
   },
   watch: {
@@ -106,9 +107,9 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserDataOwner: false,
+      isUserCompanyOwner: false,
       isUserUploader: false,
-      isAnyDataOwnerExisting: false,
+      isAnyCompanyOwnerExisting: false,
       footerContent,
     };
   },
@@ -136,7 +137,7 @@ export default defineComponent({
       if (!this.authenticated) {
         return false;
       }
-      return this.isUserDataOwner || this.isFrameworkPublic(framework);
+      return this.isUserCompanyOwner || this.isFrameworkPublic(framework);
     },
 
     /**
@@ -145,7 +146,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserDataOwner || (this.isFrameworkPublic(framework) && this.isUserUploader);
+      return this.isUserCompanyOwner || (this.isFrameworkPublic(framework) && this.isUserUploader);
     },
 
     /**
@@ -161,8 +162,12 @@ export default defineComponent({
      * Set user access rights and ownership info
      */
     async setUserRights() {
-      this.isAnyDataOwnerExisting = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
-      this.isUserDataOwner = await isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise);
+      this.isAnyCompanyOwnerExisting = await hasCompanyAtLeastOneCompanyOwner(this.companyId, this.getKeycloakPromise);
+      this.isUserCompanyOwner = await hasUserCompanyRoleForCompany(
+        CompanyRole.CompanyOwner,
+        this.companyId,
+        this.getKeycloakPromise
+      );
       this.isUserUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
   },

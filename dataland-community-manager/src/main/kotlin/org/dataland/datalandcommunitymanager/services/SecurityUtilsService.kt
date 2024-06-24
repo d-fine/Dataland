@@ -17,6 +17,14 @@ class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
 ) {
     /**
+     * Returns true if and only if the currently authenticated user is asking for him/herself
+     */
+    fun isUserRequestingForOwnId(userIdRequester: String): Boolean {
+        val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
+        return userIdAuthenticated == userIdRequester
+    }
+
+    /**
      * Returns true if and only if the currently authenticated user is asking for his/her own request
      */
     @Transactional

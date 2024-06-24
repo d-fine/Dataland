@@ -118,8 +118,9 @@ import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import InputSwitch from 'primevue/inputswitch';
-import { isUserDataOwnerForCompany } from '@/utils/DataOwnerUtils';
+import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
+import { CompanyRole } from '@clients/communitymanager';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -371,9 +372,11 @@ export default defineComponent({
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
-            return isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise).then((hasUserUploaderRights) => {
-              this.hasUserUploaderRights = hasUserUploaderRights;
-            });
+            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyID, this.getKeycloakPromise).then(
+              (hasUserUploaderRights) => {
+                this.hasUserUploaderRights = hasUserUploaderRights;
+              }
+            );
           }
         });
     },

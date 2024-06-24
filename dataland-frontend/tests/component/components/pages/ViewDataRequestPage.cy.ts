@@ -187,7 +187,7 @@ describe('Component tests for the view data request page', function (): void {
         .within(() => {
           cy.contains(
             'Once a data request is withdrawn, it will be removed from your data request list.' +
-              ' The data owner will not be notified anymore.'
+              ' The company owner will not be notified anymore.'
           ).should('exist');
           cy.contains('Withdraw Request').should('exist');
           cy.contains('Withdraw request.').should('exist').click();

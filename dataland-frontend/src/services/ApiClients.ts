@@ -3,7 +3,12 @@ import { DocumentControllerApi } from '@clients/documentmanager';
 import { QaControllerApi } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
-import { RequestControllerApi, type RequestControllerApiInterface } from '@clients/communitymanager';
+import {
+  CompanyRolesControllerApi,
+  type CompanyRolesControllerApiInterface,
+  RequestControllerApi,
+  type RequestControllerApiInterface,
+} from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
 import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
@@ -22,6 +27,7 @@ interface ApiClients {
   apiKeyController: ApiKeyControllerApi;
   documentController: DocumentControllerApi;
   requestController: RequestControllerApiInterface;
+  companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
 }
 
@@ -76,6 +82,7 @@ export class ApiClientProvider {
       apiKeyController: this.getClientFactory('/api-keys')(ApiKeyControllerApi),
       documentController: this.getClientFactory('/documents')(DocumentControllerApi),
       requestController: this.getClientFactory('/community')(RequestControllerApi),
+      companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
     };
   }
