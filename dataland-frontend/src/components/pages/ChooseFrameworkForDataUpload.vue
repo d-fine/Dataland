@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :allow-data-owner-for-company-id="companyID">
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :allow-company-owner-for-company-id="companyID">
       <TheContent>
         <MarginWrapper class="mb-2">
           <BackButton id="backButton" label="BACK" />
