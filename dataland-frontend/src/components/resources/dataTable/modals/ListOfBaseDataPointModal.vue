@@ -7,7 +7,7 @@ import { type BaseDataPoint } from "@/utils/DataPoint";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { type DataMetaInformation } from "@clients/backend";
 
-interface EsgQuestionnaireListOfBaseDataPointDialogData {
+interface ListOfBaseDataPointDialogData {
   label: string;
   input: Array<BaseDataPoint<string>>;
   descriptionColumnHeader: string;
@@ -17,7 +17,7 @@ interface EsgQuestionnaireListOfBaseDataPointDialogData {
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>("dialogRef");
 const dialogData = computed(() => {
-  return dialogRef?.value?.data as EsgQuestionnaireListOfBaseDataPointDialogData;
+  return dialogRef?.value?.data as ListOfBaseDataPointDialogData;
 });
 
 const tableData = computed(() => {
