@@ -3,7 +3,7 @@ import { type HeimathafenData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
-import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
+import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";

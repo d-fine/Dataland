@@ -3,7 +3,7 @@ import { type VsmeData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
+import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
