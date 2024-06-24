@@ -61,7 +61,7 @@
           </div>
           <ReportFormElement
             :name="storedReport.fileName"
-            :report-date="storedReport.publicationDate"
+            :publication-date="storedReport.publicationDate"
             :fileReference="storedReport.fileReference"
           />
         </div>
