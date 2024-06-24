@@ -82,7 +82,10 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :ref="field.name"
-                          @reportsUpdated="updateReportsSelection"
+                          @reportsUpdated="updateDocumentsList"
+                          @field-specific-documents-updated="
+                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                         />
                       </FormKit>
                     </div>
@@ -147,7 +150,7 @@ import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import { type DocumentToUpload } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName } from "@/utils/FileUploadUtils";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { getBasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkRegistry";
@@ -161,7 +164,7 @@ import WasteClassificationFormField from "@/components/forms/parts/fields/WasteC
 import SiteAndAreaFormField from "@/components/forms/parts/fields/SiteAndAreaFormField.vue";
 import EmployeesPerCountryFormField from "@/components/forms/parts/fields/EmployeesPerCountryFormField.vue";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
-
+const referenceableReportsFieldId = "referenceableReports";
 export default defineComponent({
   setup() {
     return {
@@ -210,8 +213,8 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      documentsToUpload: [] as DocumentToUpload[],
       reportingPeriod: undefined as undefined | Date,
+      fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
     };
   },
   computed: {
@@ -226,6 +229,9 @@ export default defineComponent({
     },
     subcategoryVisibilityMap(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.vsmeUploadConfig, this.companyAssociatedVsmeData.data);
+    },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
   },
   props: {
@@ -253,13 +259,14 @@ export default defineComponent({
     async postVsmeData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documentsToUpload.length > 0) {
+        if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedVsmeData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+            this.namesOfAllCompanyReportsForTheDataset,
           );
         }
-        const files: File[] = this.documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
+        const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
+        const files: File[] = documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
         const vsmeDataControllerApi = this.buildVsmeDataApi();
         await vsmeDataControllerApi!.postFrameworkData(this.companyAssociatedVsmeData, files);
         this.$emit("datasetCreated");
@@ -277,16 +284,31 @@ export default defineComponent({
         this.postVsmeDataProcessed = true;
       }
     },
+
     /**
-     * Sets the object containing the names of all stored and to-be-uploaded reports as keys, and their respective
-     * fileReferences as values, and then sets the selection of reports that are to be uploaded.
-     * @param reportsNamesAndReferences contains the names of all stored and to-be-uploaded reports as keys,
-     * and their respective fileReferences as values
-     * @param reportsToUpload contains the actual selection of reports that are to be uploaded
+     * updates the list of documents that were uploaded
+     * @param reportsNamesAndReferences reports names and references
+     * @param reportsToUpload reports to upload
      */
-    updateReportsSelection(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.documentsToUpload = [...reportsToUpload];
+      if (reportsToUpload.length) {
+        this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
+      } else {
+        this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
+      }
+    },
+    /**
+     * Updates the referenced document for a specific field
+     * @param fieldId an identifier for the field
+     * @param referencedDocument the document that is referenced
+     */
+    updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
+      if (referencedDocument) {
+        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
+      } else {
+        this.fieldSpecificDocuments.delete(fieldId);
+      }
     },
   },
   provide() {
