@@ -15,4 +15,11 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
      * @returns a list of the matching company role assignments
      */
     fun findByCompanyIdAndCompanyRole(companyId: String, companyRole: CompanyRole): List<CompanyRoleAssignmentEntity>
+
+    /** Queries for company role assignments with the provided params
+     * @param userId to check for
+     * @param companyRole to check for
+     * @returns a list of the matching company role assignments
+     */
+    fun findByUserIdAndCompanyRole(userId: String, companyRole: CompanyRole): List<CompanyRoleAssignmentEntity>
 }

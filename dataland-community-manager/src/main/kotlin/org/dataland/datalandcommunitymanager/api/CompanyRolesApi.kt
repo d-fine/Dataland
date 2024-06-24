@@ -140,6 +140,32 @@ interface CompanyRolesApi {
     )
 
     /**
+     * A method to check if a user is company owner of any company
+     * @param userId of the user
+     */
+    @Operation(
+        summary = "Validate company ownership for user.",
+        description = "Checks whether the user is a company owner.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "The specified user is a company owner."),
+            ApiResponse(
+                responseCode = "404",
+                description = "The user is not a company owner.",
+            ),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/company-ownership/owner/{userId}"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserRequestingForOwnId(#userId)")
+    fun hasUserCompanyOwnerRole(
+        @PathVariable("userId") userId: UUID,
+    )
+
+    /**
      * A method to request company ownership for a specified company for the current user
      * @param companyId the ID of the company for which company ownership is requested
      */
