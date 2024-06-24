@@ -349,7 +349,7 @@ class CompanyRolesControllerTest {
     fun `assure that users that have no company role member or uploader role cannot add or remove company roles`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId)
+        tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId)
 
         val listOfCompanyRolesWithoutModificationRights =
             listOf(CompanyRole.DataUploader, CompanyRole.Member)
@@ -357,6 +357,7 @@ class CompanyRolesControllerTest {
         listOfCompanyRolesWithoutModificationRights.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             assignCompanyRole(it, companyId, dataReaderUserId)
+            tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId)
         }
     }
 
@@ -391,17 +392,26 @@ class CompanyRolesControllerTest {
         }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
     }
-    private fun tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
+
+    private fun tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
         enumValues<CompanyRole>().forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             val exceptionWhenTryingToAddCompanyMembers = assertThrows<ClientException> {
                 assignCompanyRole(it, companyId, dataUploaderUserId)
             }
             assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            assignCompanyRole(it, companyId, dataReaderUserId)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             val exceptionWhenTryingToDeleteCompanyMembers = assertThrows<ClientException> {
                 removeCompanyRole(it, companyId, dataUploaderUserId)
             }
             assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToDeleteCompanyMembers, 403)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            removeCompanyRole(it, companyId, dataReaderUserId)
         }
     }
 }
