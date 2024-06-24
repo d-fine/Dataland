@@ -350,15 +350,16 @@ class CompanyRolesControllerTest {
         val listOfCompanyRolesWithoutModificationRights =
             listOf(CompanyRole.CompanyDataUploader, CompanyRole.CompanyMember, CompanyRole.ExternalCompanyDataUploader)
         val companyId = uploadCompanyAndReturnCompanyId()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId)
         listOfCompanyRolesWithoutModificationRights.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             assignCompanyRole(it, companyId, dataReaderUserId)
-            tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId)
         }
     }
 
     @Test
-    fun `assure that every company role has access to get and head endpoint`() {
+    fun `assure that every company role has access to get and head endpoint but not a keycloak reader`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyDataUploader, companyId, dataUploaderUserId)
@@ -378,6 +379,15 @@ class CompanyRolesControllerTest {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             removeCompanyRole(it, companyId, dataReaderUserId)
         }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val exceptionWhenTryingToGetCompanyRoles = assertThrows<ClientException> {
+            getCompanyRoleAssignments(CompanyRole.CompanyMember, companyId)
+        }
+        assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToGetCompanyRoles, 403)
+        val exceptionWhenTryingToCheckCompanyRoles = assertThrows<ClientException> {
+            hasUserCompanyRole(CompanyRole.CompanyDataUploader, companyId, dataUploaderUserId)
+        }
+        assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
     }
     private fun tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
         enumValues<CompanyRole>().forEach {
