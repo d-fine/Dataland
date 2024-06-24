@@ -17,7 +17,7 @@
             :filter="currentCombinedFilter"
             :chunk-size="rowsPerPage"
             :current-page="currentPage"
-            :searchBarId="searchBarId"
+            :search-bar-id="searchBarId"
             :emit-search-results-array="true"
             @search-confirmed="handleSearchConfirmed"
             @companies-received="handleCompanyQuery"

@@ -9,17 +9,17 @@
       <div class="md:col-6 col-12 p-0">
         <Calendar
           data-test="reportDate"
-          inputId="icon"
-          :modelValue="reportDateAsDate"
-          :showIcon="true"
-          dateFormat="D, M dd, yy"
+          input-id="icon"
+          :model-value="reportDateAsDate"
+          :show-icon="true"
+          date-format="D, M dd, yy"
           @update:modelValue="reportingDateChanged($event)"
         />
       </div>
-      <FormKit type="text" :modelValue="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
+      <FormKit type="text" :model-value="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
     </div>
 
-    <FormKit type="text" :modelValue="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
+    <FormKit type="text" :model-value="fileReference" name="fileReference" :outer-class="{ 'hidden-input': true }" />
 
     <!-- Currency used in the report -->
     <SingleSelectFormField

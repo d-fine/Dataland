@@ -36,11 +36,11 @@
         </thead>
         <tbody class="p-datatable-tbody">
           <MultiLayerDataTableBody
-            :dataAndMetaInfo="dataAndMetaInfo"
-            :inReviewMode="inReviewMode"
+            :data-and-meta-info="dataAndMetaInfo"
+            :in-review-mode="inReviewMode"
             :config="config"
-            :isTopLevel="true"
-            :isVisible="true"
+            :is-top-level="true"
+            :is-visible="true"
           />
         </tbody>
       </table>

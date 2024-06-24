@@ -6,17 +6,17 @@
       class="table-cursor mt-1"
       :paginator="true"
       :rows="100"
-      :alwaysShowPaginator="false"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      :rowHover="true"
+      :always-show-paginator="false"
+      paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+      current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
+      :row-hover="true"
       @row-click="rerouteRowClick"
-      sortField="uploadTimeInMs"
-      :sortOrder="-1"
+      sort-field="uploadTimeInMs"
+      :sort-order="-1"
       data-test="datasets-table"
     >
       <Column field="companyName" header="COMPANY" :sortable="true" class="w-3 data-test-company-name"></Column>
-      <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType" class="w-3">
+      <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sort-field="dataType" class="w-3">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}
         </template>
@@ -27,7 +27,7 @@
           <DatasetStatusBadge :dataset-status="data.status" />
         </template>
       </Column>
-      <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
+      <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sort-field="uploadTimeInMs" class="w-2">
         <template #body="{ data }">
           <span>{{ convertDate(data.uploadTimeInMs) }}</span>
         </template>

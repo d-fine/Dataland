@@ -137,13 +137,13 @@
                         data-test="selectFrameworkSelect"
                         placeholder="Select framework"
                         :options="availableFrameworks"
-                        optionValue="value"
-                        optionLabel="label"
+                        option-value="value"
+                        option-label="label"
                         v-model:selectedItemsBindInternal="selectedFrameworks"
-                        innerClass="long"
+                        inner-class="long"
                       />
                       <FormKit
-                        :modelValue="selectedFrameworks"
+                        :model-value="selectedFrameworks"
                         type="text"
                         name="listOfFrameworkNames"
                         validation="required"

@@ -3,7 +3,7 @@
   <div data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
       data-test="dataPointToggleButton"
-      inputId="dataPointIsAvailableSwitch"
+      input-id="dataPointIsAvailableSwitch"
       @click="dataPointAvailableToggle"
       v-model="dataPointIsAvailable"
     />
@@ -115,7 +115,7 @@
       </div>
       <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
         <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
-        <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+        <FormKit type="hidden" name="fileReference" :model-value="fileReferenceAccordingToName" />
         <FormKit type="hidden" name="page" v-model="currentPageValue" />
       </FormKit>
     </div>

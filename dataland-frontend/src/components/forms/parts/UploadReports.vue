@@ -29,7 +29,7 @@
             </div>
             <ReportFormElement
               :name="documentToUpload.fileNameWithoutSuffix"
-              :fileReference="documentToUpload.fileReference"
+              :file-reference="documentToUpload.fileReference"
             />
           </div>
         </div>
@@ -62,7 +62,7 @@
           <ReportFormElement
             :name="storedReport.fileName"
             :report-date="storedReport.reportDate"
-            :fileReference="storedReport.fileReference"
+            :file-reference="storedReport.fileReference"
           />
         </div>
       </div>

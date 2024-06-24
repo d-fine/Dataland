@@ -4,7 +4,7 @@
       <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
         <InputSwitch
           data-test="dataPointToggleButton"
-          inputId="dataPointIsAvailableSwitch"
+          input-id="dataPointIsAvailableSwitch"
           @click="dataPointAvailableToggle"
           v-model="dataPointIsAvailable"
         />
@@ -88,7 +88,7 @@
 
             <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
               <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
-              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+              <FormKit type="hidden" name="fileReference" :model-value="fileReferenceAccordingToName" />
               <FormKit type="hidden" name="page" v-model="pageForFileReference" />
             </FormKit>
           </div>

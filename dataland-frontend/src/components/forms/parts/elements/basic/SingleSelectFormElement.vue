@@ -6,7 +6,7 @@
       @update:model-value="handleInputChange($event)"
       :placeholder="placeholder"
       :name="name"
-      :showClear="!required"
+      :show-clear="!required"
       option-label="label"
       option-value="value"
       :class="'bottom-line ' + inputClass + ' ' + (!selectedOption ? ' no-selection' : '')"

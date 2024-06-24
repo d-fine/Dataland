@@ -3,17 +3,17 @@
     <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" v-if="inReviewMode" />
     <MultiLayerDataTableCell
       :content="content.displayValue.innerContents"
-      :metaInfo="metaInfo"
-      :inReviewMode="inReviewMode"
+      :meta-info="metaInfo"
+      :in-review-mode="inReviewMode"
     />
   </div>
   <div v-if="content.displayComponentName == MLDTDisplayComponents.DataPointWrapperDisplayComponent">
-    <DataPointWrapperDisplayComponent :content="content" :metaInfo="metaInfo">
+    <DataPointWrapperDisplayComponent :content="content" :meta-info="metaInfo">
       <MultiLayerDataTableCell
         :content="content.displayValue.innerContents"
         :meta-info="metaInfo"
         v-if="!hasBlankInnerContents"
-        :inReviewMode="inReviewMode"
+        :in-review-mode="inReviewMode"
       />
       <template v-else>No data provided</template>
     </DataPointWrapperDisplayComponent>

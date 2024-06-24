@@ -7,22 +7,27 @@
     </div>
     <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
-      <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
+      <ButtonComponent
+        label="Sign Up"
+        aria-label="Sign up to account"
+        name="signup_dataland_button"
+        @click="register"
+      />
     </div>
   </template>
   <template v-else>
     <div class="header__authsection">
       <ButtonComponent
         label="Log in"
-        buttonType="login-button"
-        ariaLabel="Login to account"
+        button-type="login-button"
+        aria-label="Login to account"
         name="login_dataland_button"
         @click="login"
       />
       <ButtonComponent
         label="Sign Up"
-        buttonType="registration-button"
-        ariaLabel="Sign up to account"
+        button-type="registration-button"
+        aria-label="Sign up to account"
         name="signup_dataland_button"
         @click="register"
       />

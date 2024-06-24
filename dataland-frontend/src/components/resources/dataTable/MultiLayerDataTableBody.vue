@@ -35,7 +35,7 @@
           <MultiLayerDataTableCell
             :content="cellOrSectionConfig.valueGetter(sinlgeDataAndMetaInfo.data)"
             :meta-info="sinlgeDataAndMetaInfo.metaInfo"
-            :inReviewMode="inReviewMode"
+            :in-review-mode="inReviewMode"
           />
         </td>
       </tr>
@@ -70,10 +70,10 @@
         </tr>
         <MultiLayerDataTableBody
           :config="cellOrSectionConfig.children"
-          :dataAndMetaInfo="dataAndMetaInfo"
-          :isTopLevel="false"
-          :isVisible="isVisible && expandedSections.has(idx)"
-          :inReviewMode="inReviewMode"
+          :data-and-meta-info="dataAndMetaInfo"
+          :is-top-level="false"
+          :is-visible="isVisible && expandedSections.has(idx)"
+          :in-review-mode="inReviewMode"
         />
       </template>
     </template>

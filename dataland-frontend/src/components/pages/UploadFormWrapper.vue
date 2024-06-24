@@ -5,11 +5,11 @@
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :allow-data-owner-for-company-id="companyID">
         <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
-          <CompanyInformation :companyId="companyID" />
+          <CompanyInformation :company-id="companyID" />
         </MarginWrapper>
         <component
           :is="frameworkToUploadComponent"
-          :companyID="companyID"
+          :company-i-d="companyID"
           @datasetCreated="redirectToMyDatasets($router)"
         />
       </AuthorizationWrapper>

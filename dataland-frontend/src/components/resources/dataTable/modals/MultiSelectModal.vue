@@ -25,6 +25,6 @@ export default defineComponent({
 
 <template>
   <DataTable :value="listOfRowContents">
-    <Column field="value" header="Values" headerStyle="width: 15vw;"> </Column>
+    <Column field="value" header="Values" header-style="width: 15vw;"> </Column>
   </DataTable>
 </template>

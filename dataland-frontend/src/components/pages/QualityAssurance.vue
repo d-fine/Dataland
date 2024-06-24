@@ -15,7 +15,7 @@
                 :value="displayDataOfPage"
                 class="table-cursor"
                 id="qa-data-result"
-                :rowHover="true"
+                :row-hover="true"
                 data-test="qa-review-section"
                 @row-click="goToQaViewPage($event)"
                 paginator

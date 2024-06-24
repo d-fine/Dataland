@@ -1,6 +1,6 @@
 <template>
   <PrimeDialog
-    :dismissableMask="true"
+    :dismissable-mask="true"
     :modal="true"
     v-if="showUpdateRequestDialog"
     v-model:visible="showUpdateRequestDialog"
@@ -51,7 +51,7 @@
   <PrimeDialog
     v-if="dialogIsVisible"
     id="successModal"
-    :dismissableMask="true"
+    :dismissable-mask="true"
     :modal="true"
     v-model:visible="dialogIsVisible"
     :closable="false"
@@ -111,7 +111,7 @@
     </PrimeButton>
     <OverlayPanel ref="reportingPeriodsOverlayPanel">
       <SelectReportingPeriodDialog
-        :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+        :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
         :answered-data-requests="answeredDataRequestsForViewPage"
         :action-on-click="actionOnClick"
         @selected-reporting-period="handleReportingPeriodSelection"

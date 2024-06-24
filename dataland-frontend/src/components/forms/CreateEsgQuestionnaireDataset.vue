@@ -51,8 +51,8 @@
                             :required="field.required"
                             :validation="field.validation"
                             :validation-label="field.validationLabel"
-                            :validationMessages="getValidationMessageForFirstQuestion(field)"
-                            :reportingPeriod="yearOfDataDate"
+                            :validation-messages="getValidationMessageForFirstQuestion(field)"
+                            :reporting-period="yearOfDataDate"
                             :data-test="field.name"
                             :unit="field.unit"
                             @field-specific-documents-updated="
@@ -70,10 +70,10 @@
           </FormKit>
         </div>
         <SubmitSideBar>
-          <SubmitButton :formId="formId" />
+          <SubmitButton :form-id="formId" />
           <div v-if="postEsgQuestionnaireDataProcessed">
-            <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
-            <FailMessage v-else :message="message" :messageId="messageCounter" />
+            <SuccessMessage v-if="uploadSucceded" :message-id="messageCounter" />
+            <FailMessage v-else :message="message" :message-id="messageCounter" />
           </div>
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>

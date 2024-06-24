@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
-      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isActive" />
+      <InputSwitch data-test="dataPointToggleButton" input-id="dataPointIsAvailableSwitch" v-model="isActive" />
       <h5 data-test="dataPointToggleTitle" class="m-2">
         {{ label }}
       </h5>
@@ -14,7 +14,7 @@
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
-            :shouldDisableCheckboxes="true"
+            :should-disable-checkboxes="true"
           />
         </div>
 
@@ -35,9 +35,9 @@
             description="Name the sourcing countries per procurement category (own operations)"
             name="suppliersPerCountryCode"
             :options="allCountries"
-            optionLabel="label"
+            option-label="label"
             v-model:selectedItemsBindInternal="selectedCountries"
-            inputClass="long"
+            input-class="long"
           />
         </div>
         <div class="form-field border-none">

@@ -8,8 +8,8 @@
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
-      inputClass="long"
-      :emptyMessage="emptyMessage"
+      input-class="long"
+      :empty-message="emptyMessage"
     />
   </div>
 </template>

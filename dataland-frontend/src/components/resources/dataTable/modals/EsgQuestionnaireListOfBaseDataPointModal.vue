@@ -25,8 +25,8 @@ const tableData = computed(() => {
 
 <template>
   <DataTable :value="tableData">
-    <Column field="value" :header="dialogData.descriptionColumnHeader" headerStyle="width: 15vw;"> </Column>
-    <Column :header="dialogData.documentColumnHeader" headerStyle="width: 15vw;">
+    <Column field="value" :header="dialogData.descriptionColumnHeader" header-style="width: 15vw;"> </Column>
+    <Column :header="dialogData.documentColumnHeader" header-style="width: 15vw;">
       <template #body="{ data }">
         <DocumentLink
           :show-icon="!(data.dataSource == undefined)"

@@ -1,7 +1,7 @@
 <template>
   <PrimeDialog
     id="revokeModal"
-    :dismissableMask="true"
+    :dismissable-mask="true"
     :modal="true"
     header="Header"
     footer="Footer"
@@ -29,7 +29,7 @@
         </div>
 
         <div data-test="userRoles" class="pr-1">
-          <UserRolesBadges :userRoles="userRoles" />
+          <UserRolesBadges :user-roles="userRoles" />
         </div>
       </div>
       <div class="col-12 text-right">

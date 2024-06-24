@@ -2,11 +2,11 @@
   <AuthenticationWrapper :disable-authentication-wrapper="viewInPreviewMode">
     <ViewMultipleDatasetsDisplayBase
       v-if="multiViewFrameworks.includes(dataType)"
-      :dataType="dataType"
-      :companyId="companyId"
-      :dataId="dataId"
-      :reportingPeriod="reportingPeriod"
-      :viewInPreviewMode="viewInPreviewMode"
+      :data-type="dataType"
+      :company-id="companyId"
+      :data-id="dataId"
+      :reporting-period="reportingPeriod"
+      :view-in-preview-mode="viewInPreviewMode"
     />
   </AuthenticationWrapper>
 </template>

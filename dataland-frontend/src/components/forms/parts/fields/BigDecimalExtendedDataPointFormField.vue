@@ -7,7 +7,7 @@
     :required="required"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
-    :isDataPointToggleable="isDataPointToggleable"
+    :is-data-point-toggleable="isDataPointToggleable"
   >
     <div class="mb-2">
       <NumberFormField

@@ -10,13 +10,13 @@
       :first="previousRecords"
       :total-records="totalRecords"
       :rows="rowsPerPage"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-      :alwaysShowPaginator="false"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+      :always-show-paginator="false"
+      current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
       @row-click="goToCompanyCockpit"
       class="table-cursor"
       id="search-result-framework-data"
-      :rowHover="true"
+      :row-hover="true"
     >
       <Column field="companyName" header="COMPANY" :sortable="false" class="d-bg-white w-3 d-datatable-column-left">
       </Column>

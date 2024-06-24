@@ -9,8 +9,8 @@
     <FileUpload
       name="fileUpload"
       ref="fileUpload"
-      :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
-      :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
+      :max-file-size="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
+      :invalid-file-size-message="`{0}: Invalid file size, file size should be smaller than ${
         DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR
       } MB.`"
       :auto="false"

@@ -14,7 +14,7 @@
     </div>
     <ButtonComponent
       :label="aboutIntroSection.title"
-      buttonType="button-component quotes__button"
+      button-type="button-component quotes__button"
       :aria-label="aboutIntroSection.title"
       @click="register"
     />

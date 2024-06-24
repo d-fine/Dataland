@@ -5,9 +5,9 @@
     :placeholder="placeholder"
     :show-toggle-all="false"
     :class="inputClass"
-    :optionValue="optionValue"
-    :optionLabel="optionLabel"
-    :maxSelectedLabels="3"
+    :option-value="optionValue"
+    :option-label="optionLabel"
+    :max-selected-labels="3"
   />
 </template>
 

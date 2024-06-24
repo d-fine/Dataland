@@ -5,8 +5,8 @@
       :field="col.field"
       :key="col.field"
       :header="col.header"
-      :headerClass="cellClass(col)"
-      :bodyClass="cellClass(col)"
+      :header-class="cellClass(col)"
+      :body-class="cellClass(col)"
     >
       <template #body="{ data }">
         <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>

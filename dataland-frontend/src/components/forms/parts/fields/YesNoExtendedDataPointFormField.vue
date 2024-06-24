@@ -8,7 +8,7 @@
       :input-class="inputClass"
       :options="HumanizedYesNo"
       :check-value-validity="hasDataPointProperValue"
-      :isDataPointToggleable="isDataPointToggleable"
+      :is-data-point-toggleable="isDataPointToggleable"
     />
   </div>
 </template>

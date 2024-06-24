@@ -5,9 +5,9 @@
       placeholder="Countries"
       :description="description"
       :options="allCountries"
-      optionLabel="label"
+      option-label="label"
       v-model:selectedItemsBindInternal="selectedCountries"
-      inputClass="long"
+      input-class="long"
     />
     <FormKit type="group" :name="name" v-model="industriesPerCountry">
       <div v-for="(element, index) in selectedCountries" :key="element.label">
@@ -25,7 +25,7 @@
             :label="`Subcontracting Companies Industries in ${getCountryNameFromCountryCode(element.value)}`"
             :description="`In which industries do the subcontracting companies in ${getCountryNameFromCountryCode(element.value)} operate?`"
             :name="element.value"
-            :shouldDisableCheckboxes="true"
+            :should-disable-checkboxes="true"
           />
         </div>
       </div>

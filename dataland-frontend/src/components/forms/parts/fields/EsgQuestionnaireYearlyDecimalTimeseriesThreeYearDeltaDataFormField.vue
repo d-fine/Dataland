@@ -4,14 +4,14 @@
     :description="description"
     :label="label"
     :validation="validation"
-    :validationLabel="validationLabel"
+    :validation-label="validationLabel"
     :required="required"
-    :inputClass="inputClass"
+    :input-class="inputClass"
     :options="options"
-    :reportingPeriod="reportingPeriod"
-    :nYearsIntoFuture="3"
-    :nYearsIntoPast="3"
-    :showCurrentYear="true"
+    :reporting-period="reportingPeriod"
+    :n-years-into-future="3"
+    :n-years-into-past="3"
+    :show-current-year="true"
   />
 </template>
 

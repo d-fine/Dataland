@@ -9,8 +9,8 @@
       :placeholder="placeholder"
       :options="options"
       :inner-class="inputClass"
-      :optionLabel="optionLabel"
-      :optionValue="optionValue"
+      :option-label="optionLabel"
+      :option-value="optionValue"
     />
   </div>
 </template>

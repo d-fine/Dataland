@@ -36,15 +36,15 @@
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
-                    inputId="icon"
-                    :showIcon="true"
+                    input-id="icon"
+                    :show-icon="true"
                     view="year"
-                    dateFormat="yy"
+                    date-format="yy"
                     validation="required"
                   />
                 </div>
 
-                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
+                <FormKit type="hidden" :model-value="reportingPeriodYear" name="reportingPeriod" />
               </div>
             </div>
 
@@ -90,10 +90,10 @@
           </FormKit>
         </div>
         <SubmitSideBar>
-          <SubmitButton :formId="formId" />
+          <SubmitButton :form-id="formId" />
           <div v-if="postEutaxonomyNonFinancialsDataProcessed">
-            <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
-            <FailMessage v-else data-test="failedUploadMessage" :message="message" :messageId="messageCounter" />
+            <SuccessMessage v-if="uploadSucceded" :message-id="messageCounter" />
+            <FailMessage v-else data-test="failedUploadMessage" :message="message" :message-id="messageCounter" />
           </div>
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>

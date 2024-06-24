@@ -46,7 +46,7 @@
               <DataTable
                 :value="displayedData"
                 style="cursor: pointer"
-                :rowHover="true"
+                :row-hover="true"
                 :loading="waitingForData"
                 data-test="requested-Datasets-table"
                 paginator

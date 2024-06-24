@@ -137,7 +137,7 @@
                   <PrimeDialog
                     v-model:visible="maxRequestReachedModalIsVisible"
                     id="successModal"
-                    :dismissableMask="false"
+                    :dismissable-mask="false"
                     :modal="true"
                     :closable="false"
                     style="border-radius: 0.75rem; text-align: center; max-width: 400px"

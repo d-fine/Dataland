@@ -20,8 +20,8 @@
       :reports="sortedReports"
     />
     <MultiLayerDataTable
-      :dataAndMetaInfo="sortedDataAndMetaInfo"
-      :inReviewMode="inReviewMode"
+      :data-and-meta-info="sortedDataAndMetaInfo"
+      :in-review-mode="inReviewMode"
       :config="
         editMultiLayerDataTableConfigForHighlightingHiddenFields(
           displayConfiguration,
@@ -29,7 +29,7 @@
           hideEmptyFields ?? false
         )
       "
-      :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
+      :aria-label="`Datasets of the ${frameworkDisplayName} framework`"
     />
   </div>
   <div v-if="status == 'Error'">

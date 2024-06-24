@@ -24,11 +24,11 @@
         />
         <div class="md:col-6 col-12 p-0">
           <Calendar
-            inputId="fiscalYearEndAsDate"
-            :modelValue="fiscalYearEndAsDate"
+            input-id="fiscalYearEndAsDate"
+            :model-value="fiscalYearEndAsDate"
             data-test="fiscalYearEnd"
-            :showIcon="true"
-            dateFormat="D, M dd, yy"
+            :show-icon="true"
+            date-format="D, M dd, yy"
             @update:modelValue="updateFiscalYearEndHandler($event)"
           />
         </div>
@@ -36,7 +36,7 @@
         <FormKit
           type="text"
           validation-label="Fiscal year"
-          :modelValue="fiscalYearEnd"
+          :model-value="fiscalYearEnd"
           name="fiscalYearEnd"
           :outer-class="{ 'hidden-input': true }"
         />

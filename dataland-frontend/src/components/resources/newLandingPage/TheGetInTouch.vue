@@ -18,8 +18,8 @@
         <p class="getintouch__text-text">{{ getInTouchSection.cards[1].text }}</p>
         <ButtonComponent
           label="Get In Touch"
-          buttonType="button-component getintouch__text-button"
-          ariaLabel="Get In Touch"
+          button-type="button-component getintouch__text-button"
+          aria-label="Get In Touch"
           @click="() => openEmailClient(getInTouchSection?.cards?.[3])"
         />
       </div>

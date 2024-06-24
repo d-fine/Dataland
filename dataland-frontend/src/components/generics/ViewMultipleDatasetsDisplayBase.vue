@@ -1,10 +1,10 @@
 <template>
   <ViewFrameworkBase
-    :companyID="companyId"
-    :dataType="dataType"
-    :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+    :company-i-d="companyId"
+    :data-type="dataType"
+    :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    :viewInPreviewMode="viewInPreviewMode"
+    :view-in-preview-mode="viewInPreviewMode"
   >
     <template v-slot:content="slotProps">
       <div v-if="isListOfDataIdsToDisplayFound">
@@ -23,29 +23,29 @@
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
-              :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
-              :companyId="companyId"
+              :framework-identifier="DataTypeEnum.EutaxonomyFinancials"
+              :company-id="companyId"
               :display-configuration="configForEuTaxonomyFinancialsMLDT"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
+              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+              :in-review-mode="slotProps.inReviewMode"
               data-test="MultiLayerDataTableFrameworkPanelFinancials"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
-              :frameworkIdentifier="DataTypeEnum.P2p"
-              :companyId="companyId"
+              :framework-identifier="DataTypeEnum.P2p"
+              :company-id="companyId"
               :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
+              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+              :in-review-mode="slotProps.inReviewMode"
               data-test="MultiLayerDataTableFrameworkPanelP2P"
             />
             <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
-              :frameworkIdentifier="dataType"
-              :companyId="companyId"
+              :framework-identifier="dataType"
+              :company-id="companyId"
               :display-configuration="frameworkViewConfiguration!!.configuration"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
+              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+              :in-review-mode="slotProps.inReviewMode"
               data-test="MultiLayerDataTableFrameworkPanelOthers"
             />
           </div>

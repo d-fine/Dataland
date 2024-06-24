@@ -20,7 +20,7 @@
     >
       <template #option="slotProps">
         <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-        <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+        <SearchResultHighlighter :text="slotProps.option.companyName" :search-string="latestValidSearchString" />
       </template>
       <template #footer>
         <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= resultLimit">

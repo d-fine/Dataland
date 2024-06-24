@@ -9,16 +9,16 @@
             style="z-index: 20; color: #958d7c"
           />
           <AutoComplete
-            :inputId="searchBarId"
+            :input-id="searchBarId"
             ref="autocomplete"
             v-model="searchBarInput"
             :suggestions="autocompleteArrayDisplayed"
-            optionLabel="companyName"
-            :autoOptionFocus="false"
+            option-label="companyName"
+            :auto-option-focus="false"
             :min-length="3"
             placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
-            inputClass="h-3rem d-framework-searchbar-input"
-            panelClass="d-framework-searchbar-panel"
+            input-class="h-3rem d-framework-searchbar-input"
+            panel-class="d-framework-searchbar-panel"
             style="z-index: 10"
             @complete="searchCompanyName"
             @keydown="noteThatAKeyWasPressed"
@@ -30,7 +30,7 @@
           >
             <template #option="slotProps">
               <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-              <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+              <SearchResultHighlighter :text="slotProps.option.companyName" :search-string="latestValidSearchString" />
             </template>
 
             <template #footer>

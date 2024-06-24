@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :landingPage="landingPage" />
+  <TheHeader :landing-page="landingPage" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
     <TheQuotes :sections="landingPage?.sections" />
@@ -9,7 +9,7 @@
     <TheJoinCampaign :sections="landingPage?.sections" />
     <TheGetInTouch :sections="landingPage?.sections" />
   </main>
-  <TheFooter :sections="landingPage?.sections" :isLightVersion="false" />
+  <TheFooter :sections="landingPage?.sections" :is-light-version="false" />
 </template>
 
 <script setup lang="ts">

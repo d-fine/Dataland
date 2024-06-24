@@ -10,7 +10,7 @@
 
       <PrimeDialog
         id="successModal"
-        :dismissableMask="true"
+        :dismissable-mask="true"
         :modal="true"
         v-model:visible="successModalIsVisible"
         :closable="false"
@@ -34,7 +34,7 @@
         </div>
       </PrimeDialog>
       <PrimeDialog
-        :dismissableMask="true"
+        :dismissable-mask="true"
         :modal="true"
         v-if="showNewMessageDialog"
         v-model:visible="showNewMessageDialog"

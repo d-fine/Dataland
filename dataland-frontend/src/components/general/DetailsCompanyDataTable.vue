@@ -7,7 +7,7 @@
       :header="
         columnHeaders![kpiKeyOfTable] ? columnHeaders![kpiKeyOfTable][keyOfColumn] : humanizeString(kpiKeyOfTable)
       "
-      headerStyle="width: 15vw;"
+      header-style="width: 15vw;"
     >
       <template #body="{ data }">
         <template v-if="data[keyOfColumn]">
@@ -15,7 +15,7 @@
             <li :key="el" v-for="el in data[keyOfColumn]">{{ el }}</li>
           </ul>
           <div v-else-if="data[keyOfColumn].quality">
-            <DataPointDataTableInModal :dataPointDisplay="data[keyOfColumn]" />
+            <DataPointDataTableInModal :data-point-display="data[keyOfColumn]" />
           </div>
           <div v-else-if="typeof data[keyOfColumn] === 'object'">
             <p :key="key" v-for="[key, value] in Object.entries(data[keyOfColumn])" style="margin: 0; padding: 0">

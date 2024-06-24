@@ -33,7 +33,7 @@
           <div class="flex align-items-center">
             <Checkbox
               v-if="!(shouldDisableCheckboxes && slotProps.node.children.length > 0)"
-              :modelValue="selectedTreeNodes.has(slotProps.node.key)"
+              :model-value="selectedTreeNodes.has(slotProps.node.key)"
               @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
               :binary="true"
               data-test="NaceCodeSelectorCheckbox"

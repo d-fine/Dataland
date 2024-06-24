@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
+  <TheHeader :show-user-profile-dropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
     <CompanyInfoSheet
       :company-id="companyID"
@@ -21,12 +21,12 @@
               id="chooseFrameworkDropdown"
               v-model="chosenDataTypeInDropdown"
               :options="dataTypesInDropdown"
-              optionLabel="label"
-              optionValue="value"
+              option-label="label"
+              option-value="value"
               :placeholder="humanizeStringOrNumber(dataType)"
               aria-label="Choose framework"
               class="fill-dropdown always-fill"
-              dropdownIcon="pi pi-angle-down"
+              dropdown-icon="pi pi-angle-down"
               @change="handleChangeFrameworkEvent"
               data-test="chooseFrameworkDropdown"
             />
@@ -35,7 +35,7 @@
               <InputSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
-                inputId="hideEmptyDataToggleButton"
+                input-id="hideEmptyDataToggleButton"
                 v-model="hideEmptyFields"
               />
               <span data-test="hideEmptyDataToggleCaption" class="ml-2 font-semibold" style="font-size: 14px">
@@ -79,7 +79,7 @@
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SelectReportingPeriodDialog
-              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
               :action-on-click="ReportingPeriodTableActions.EditDataset"
               @selected-reporting-period="handleReportingPeriodSelection"
             />
@@ -87,7 +87,7 @@
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
-        <slot name="content" :inReviewMode="isReviewableByCurrentUser"></slot>
+        <slot name="content" :in-review-mode="isReviewableByCurrentUser"></slot>
       </MarginWrapper>
     </div>
     <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>

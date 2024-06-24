@@ -15,7 +15,7 @@
     />
   </div>
   <UploadFormSubcategoryHeader
-    propClass="header-separator"
+    prop-class="header-separator"
     label="DNSH"
     description="Is no significant harm done to the criterion by this activity."
   />

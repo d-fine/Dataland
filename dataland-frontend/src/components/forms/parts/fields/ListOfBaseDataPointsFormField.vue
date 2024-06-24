@@ -3,7 +3,7 @@
     <div class="px-2 py-3 next-to-each-other vertical-middle">
       <InputSwitch
         data-test="dataPointToggleButton"
-        inputId="dataPointIsAvailableSwitch"
+        input-id="dataPointIsAvailableSwitch"
         @click="dataPointAvailableToggle"
         v-model="dataPointIsAvailable"
       />

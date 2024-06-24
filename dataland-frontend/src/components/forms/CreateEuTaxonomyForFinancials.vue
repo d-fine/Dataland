@@ -25,7 +25,7 @@
               name="companyId"
               label="Company ID"
               placeholder="Company ID"
-              :modelValue="companyID"
+              :model-value="companyID"
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
@@ -42,28 +42,28 @@
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
-                    inputId="icon"
-                    :showIcon="true"
+                    input-id="icon"
+                    :show-icon="true"
                     view="year"
-                    dateFormat="yy"
+                    date-format="yy"
                     validation="required"
                   />
                 </div>
 
-                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
+                <FormKit type="hidden" :model-value="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   name="UploadReports"
                   ref="UploadReports"
-                  :isMountedForEuTaxoFinancialsUploadPage="true"
-                  :referencedReportsForPrefill="templateDataset?.referencedReports ?? undefined"
+                  :is-mounted-for-eu-taxo-financials-upload-page="true"
+                  :referenced-reports-for-prefill="templateDataset?.referencedReports ?? undefined"
                   @reportsUpdated="updateReportsSelection"
                 />
 
                 <EuTaxonomyBasicInformation
-                  :fiscalYearEndAsDate="fiscalYearEndAsDate"
-                  :fiscalYearEnd="fiscalYearEnd"
+                  :fiscal-year-end-as-date="fiscalYearEndAsDate"
+                  :fiscal-year-end="fiscalYearEnd"
                   @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
                 />
 
@@ -149,7 +149,7 @@
                         </FormKit>
                         <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
                           <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
-                          <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+                          <FormKit type="hidden" name="fileReference" :model-value="fileReferenceAccordingToName" />
                           <FormKit type="hidden" name="page" v-model="reportPageNumber" />
                         </FormKit>
                       </div>
@@ -179,7 +179,7 @@
                         :options="financialServiceOptionsInDropdown"
                         data-test="MultiSelectfinancialServicesTypes"
                         name="MultiSelectfinancialServicesTypes"
-                        optionLabel="label"
+                        option-label="label"
                         validation-label="Services Types"
                         validation="required"
                         placeholder="Select..."
@@ -197,9 +197,9 @@
                         :label="selectedFinancialServiceOptions.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                       <FormKit
-                        :modelValue="confirmedSelectedFinancialServiceTypes"
+                        :model-value="confirmedSelectedFinancialServiceTypes"
                         type="text"
-                        validationLabel="Choosing a Financials Services Type and adding KPIs for it "
+                        validation-label="Choosing a Financials Services Type and adding KPIs for it "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -244,9 +244,9 @@
                               <div class="form-field">
                                 <DataPointFormWithToggle
                                   :name="kpiType ?? ''"
-                                  :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                                  :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                  :reportsNameAndReferences="namesAndReferencesOfAllCompanyReportsForTheDataset"
+                                  :kpi-info-mappings="euTaxonomyKpiInfoMappings"
+                                  :kpi-name-mappings="euTaxonomyKpiNameMappings"
+                                  :reports-name-and-references="namesAndReferencesOfAllCompanyReportsForTheDataset"
                                 />
                               </div>
                             </FormKit>
@@ -268,9 +268,9 @@
                               <div class="form-field">
                                 <DataPointFormWithToggle
                                   :name="kpiTypeEligibility ?? ''"
-                                  :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                                  :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                  :reportsNameAndReferences="namesAndReferencesOfAllCompanyReportsForTheDataset"
+                                  :kpi-info-mappings="euTaxonomyKpiInfoMappings"
+                                  :kpi-name-mappings="euTaxonomyKpiNameMappings"
+                                  :reports-name-and-references="namesAndReferencesOfAllCompanyReportsForTheDataset"
                                 />
                               </div>
                             </FormKit>
@@ -285,16 +285,16 @@
           </FormKit>
         </div>
         <SubmitSideBar>
-          <SubmitButton :formId="formId" />
+          <SubmitButton :form-id="formId" />
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessMessage
               v-if="postEuTaxonomyDataForFinancialsResponse?.status === 200"
               msg="EU Taxonomy Data"
-              :messageId="messageCount"
+              :message-id="messageCount"
             />
-            <FailMessage v-else :message="message" :messageId="messageCount" />
+            <FailMessage v-else :message="message" :message-id="messageCount" />
           </template>
-          <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
+          <JumpLinksSection :on-this-page-links="onThisPageLinks" />
         </SubmitSideBar>
       </div>
     </template>

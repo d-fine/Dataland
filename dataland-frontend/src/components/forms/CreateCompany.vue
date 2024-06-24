@@ -200,8 +200,8 @@
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
-          <SuccessMessage v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
-          <FailMessage v-else :message="message" :messageId="messageCounter" />
+          <SuccessMessage v-if="uploadSucceded" :message="message" :message-id="messageCounter" />
+          <FailMessage v-else :message="message" :message-id="messageCounter" />
         </template>
       </div>
     </template>

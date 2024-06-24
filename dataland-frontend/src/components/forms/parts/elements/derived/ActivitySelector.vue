@@ -25,8 +25,8 @@
         <template #child="slotProps">
           <span class="next-to-each-other -ml-5">
             <RadioButton
-              :modelValue="selectedActivities"
-              :inputId="slotProps.node.reference"
+              :model-value="selectedActivities"
+              :input-id="slotProps.node.reference"
               name="selectedActivities"
               :value="slotProps.node"
               @update:modelValue="newActivitieSelected($event)"
@@ -41,9 +41,9 @@
   <div class="my-4">
     <MultiSelectFormField
       ref="multiSelectFormFieldRef"
-      dataTest="selectNaceCodes"
+      data-test="selectNaceCodes"
       name="naceCodes"
-      :emptyMessage="`No NACE code available for ${selectedActivities.name} Activity`"
+      :empty-message="`No NACE code available for ${selectedActivities.name} Activity`"
       :validation="naceCodesForActivities.length ? 'required' : ''"
       validation-label="NACE codes for Activity"
       description="The NACE codes associated with this activity"
@@ -52,7 +52,7 @@
         selectedActivityValue ? 'Chose NACE codes for Activity' : 'Please select an activity before selecting NACE code'
       "
       :options="naceCodesForActivities"
-      inputClass="long"
+      input-class="long"
     />
   </div>
 </template>

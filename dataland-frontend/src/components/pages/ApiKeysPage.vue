@@ -33,7 +33,7 @@
           v-if="pageState === 'create' && !waitingForData"
         >
           <CreateApiKeyCard
-            :userRoles="userRolesAccordingToKeycloak"
+            :user-roles="userRolesAccordingToKeycloak"
             @cancelCreate="setActivePageState('view')"
             @generateApiKey="generateApiKey"
           />
@@ -59,7 +59,7 @@
                     <PrimeTextarea
                       ref="newKeyHolderRef"
                       @focus="($event.target as HTMLTextAreaElement).select()"
-                      :autoResize="true"
+                      :auto-resize="true"
                       cols="5"
                       v-model="newKey"
                       id="newKeyHolder"
@@ -81,8 +81,8 @@
             </MessageComponent>
 
             <ApiKeyCard
-              :userRoles="userRolesAccordingToApiKey"
-              :expiryDateInMilliseconds="expiryDate"
+              :user-roles="userRolesAccordingToApiKey"
+              :expiry-date-in-milliseconds="expiryDate"
               @revokeKey="revokeApiKey"
             />
             <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">
@@ -110,7 +110,7 @@
 
     <PrimeDialog
       id="regenerateApiKeyModal"
-      :dismissableMask="true"
+      :dismissable-mask="true"
       :modal="true"
       header="Header"
       footer="Footer"

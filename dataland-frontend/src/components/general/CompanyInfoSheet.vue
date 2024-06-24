@@ -20,7 +20,7 @@
       </div>
     </template>
     <CompanyInformationBanner
-      :companyId="companyId"
+      :company-id="companyId"
       :show-single-data-request-button="showSingleDataRequestButton"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
       :framework="framework"

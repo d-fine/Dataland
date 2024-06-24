@@ -1,7 +1,7 @@
 <template>
   <TabView
     v-if="initialTabIndex != undefined"
-    :activeIndex="initialTabIndex"
+    :active-index="initialTabIndex"
     @tab-change="handleTabChange"
     class="col-12"
   >

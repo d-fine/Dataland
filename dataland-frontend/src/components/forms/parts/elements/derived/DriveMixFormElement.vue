@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
-      <InputSwitch data-test="dataPointToggleButton" inputId="dataPointIsAvailableSwitch" v-model="isItActive" />
+      <InputSwitch data-test="dataPointToggleButton" input-id="dataPointIsAvailableSwitch" v-model="isItActive" />
       <h5 data-test="dataPointToggleTitle" class="m-2">
         {{ label }}
       </h5>

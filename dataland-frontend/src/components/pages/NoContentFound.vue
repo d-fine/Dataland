@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :showUserProfileDropdown="false" />
+  <TheHeader :show-user-profile-dropdown="false" />
   <TheContent>
     <h2>Sorry an error occurred!</h2>
     <p>Whoops! Something went wrong!</p>

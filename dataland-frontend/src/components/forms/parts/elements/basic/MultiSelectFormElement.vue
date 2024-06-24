@@ -7,7 +7,7 @@
     option-value="value"
     :show-toggle-all="false"
     :class="inputClass"
-    :emptyMessage="emptyMessage"
+    :empty-message="emptyMessage"
   />
   <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods

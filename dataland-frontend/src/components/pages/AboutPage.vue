@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :landingPage="landingPage" />
+  <TheHeader :landing-page="landingPage" />
   <main role="main">
     <TheAboutIntro :sections="aboutPage?.sections" />
     <TheAboutPrinciples :sections="aboutPage?.sections" />

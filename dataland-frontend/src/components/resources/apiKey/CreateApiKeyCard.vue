@@ -6,7 +6,7 @@
           <div class="text-900 font-medium text-xl text-left pl-1">API Key info</div>
         </div>
         <div data-test="userRoles" class="pr-1">
-          <UserRolesBadges :userRoles="userRoles" />
+          <UserRolesBadges :user-roles="userRoles" />
         </div>
       </div>
       <div
@@ -25,8 +25,8 @@
             id="expiryTime"
             v-model="expiryTimeDropdown"
             :options="days"
-            optionLabel="label"
-            optionValue="value"
+            option-label="label"
+            option-value="value"
             placeholder="Select expiry"
             class="w-full custom-dropdown"
             @change="setExpiryTimeDays($event)"
@@ -36,12 +36,12 @@
         <div v-if="expiryTimeDropdown === 'custom'" class="col-7 text-right">
           <Calendar
             data-test="expiryDatePicker"
-            inputId="icon"
+            input-id="icon"
             v-model="customDateInMilliseconds"
-            :showIcon="true"
-            dateFormat="D, M dd, yy"
-            :minDate="minDate"
-            :maxDate="maxDate"
+            :show-icon="true"
+            date-format="D, M dd, yy"
+            :min-date="minDate"
+            :max-date="maxDate"
           />
         </div>
 

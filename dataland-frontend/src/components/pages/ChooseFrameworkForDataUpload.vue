@@ -5,7 +5,7 @@
       <TheContent>
         <MarginWrapper class="mb-2">
           <BackButton id="backButton" label="BACK" />
-          <CompanyInformation :companyId="companyID" />
+          <CompanyInformation :company-id="companyID" />
         </MarginWrapper>
         <Card class="col-12 text-left page-wrapper-card">
           <template #title> New Dataset - Framework </template>
@@ -22,17 +22,17 @@
 
                     <MetaInfoPerCompanyAndFramework
                       :data-type="DataTypeEnum.EutaxonomyNonFinancials"
-                      :companyId="companyID"
-                      :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyNonFinancials)"
+                      :company-id="companyID"
+                      :is-waiting-for-data="waitingForData"
+                      :list-of-framework-data="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyNonFinancials)"
                       class="bottom-border-section-dots"
                     />
 
                     <MetaInfoPerCompanyAndFramework
                       :data-type="DataTypeEnum.EutaxonomyFinancials"
-                      :companyId="companyID"
-                      :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
+                      :company-id="companyID"
+                      :is-waiting-for-data="waitingForData"
+                      :list-of-framework-data="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
                     />
                   </div>
                 </div>
@@ -61,9 +61,9 @@
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
                     :data-type="dataType"
-                    :companyId="companyID"
-                    :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="getFrameworkMetaInfos(dataType)"
+                    :company-id="companyID"
+                    :is-waiting-for-data="waitingForData"
+                    :list-of-framework-data="getFrameworkMetaInfos(dataType)"
                   />
                 </div>
               </div>

@@ -8,7 +8,7 @@
             <td>
               <DocumentLink
                 :download-name="companyReport.fileName ? companyReport.fileName : 'Unnamed_File'"
-                :fileReference="companyReport.fileReference"
+                :file-reference="companyReport.fileReference"
                 data-type=""
                 font-style="font-semibold"
                 show-icon

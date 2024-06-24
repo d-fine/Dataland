@@ -31,8 +31,8 @@
                     unit="GWh"
                     name="highImpactClimateSectorEnergyConsumptionInGWh"
                     validation-label="Energy Consumption"
-                    inputClass="col-8"
-                    :isDataPointToggleable="false"
+                    input-class="col-8"
+                    :is-data-point-toggleable="false"
                   />
                 </div>
                 <div>
@@ -43,8 +43,8 @@
                     unit="GWh / €M revenue"
                     name="highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue"
                     validation-label="Relative Energy Consumption"
-                    inputClass="col-8"
-                    :isDataPointToggleable="false"
+                    input-class="col-8"
+                    :is-data-point-toggleable="false"
                   />
                 </div>
               </FormKit>

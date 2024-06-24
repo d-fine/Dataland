@@ -54,6 +54,13 @@ module.exports = {
         },
       },
     ],
+    'vue/attribute-hyphenation': [
+      'error',
+      'always',
+      {
+        ignore: [],
+      },
+    ],
     'no-restricted-imports': [
       'error',
       {

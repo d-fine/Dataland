@@ -5,7 +5,7 @@
         <Column
           header=""
           :frozen="true"
-          alignFrozen="left"
+          align-frozen="left"
           :colspan="2"
           class="frozen-row-header border-right"
           style="background-color: #fff"
@@ -24,10 +24,10 @@
           data-test="headerActivity"
           header="Activity"
           :frozen="true"
-          alignFrozen="left"
+          align-frozen="left"
           class="frozen-row-header"
         />
-        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right" />
+        <Column header="NACE Code(s)" :frozen="true" align-frozen="left" class="frozen-row-header border-right" />
         <Column
           v-for="col of mainColumnDefinitions"
           :key="col.field"
@@ -44,8 +44,8 @@
       :header="col.header"
       :frozen="col.frozen"
       :class="columnCss(col.field)"
-      bodyClass="headers-bg"
-      headerClass="horizontal-headers-size"
+      body-class="headers-bg"
+      header-class="horizontal-headers-size"
     >
       <template #body="{ data }">
         <template v-if="col.field === 'activity'">{{ activityApiNameToHumanizedName(data.activity) }}</template>
@@ -61,8 +61,8 @@
       :field="col.field"
       :key="col.field"
       :header="col.header"
-      bodyClass="col-value"
-      headerClass="horizontal-headers-size"
+      body-class="col-value"
+      header-class="horizontal-headers-size"
       :class="groupColumnCssClasses(col)"
     >
       <template #body="{ data }">
