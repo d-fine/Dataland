@@ -1,16 +1,16 @@
-import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
-import currencyCodeData from "currency-codes/data";
-import { RiskPositionType } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { getAllCountryNamesWithCodes } from '@/utils/CountryCodeConverter';
+import currencyCodeData from 'currency-codes/data';
+import { RiskPositionType } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export interface DropdownOption {
   label: string;
   value: string;
 }
 export enum DropdownDatasetIdentifier {
-  CountryCodesIso2 = "ISO 2 Codes",
-  CurrencyCodes = "ISO 4217 Codes",
-  RiskPositions = "Risk Positions",
+  CountryCodesIso2 = 'ISO 2 Codes',
+  CurrencyCodes = 'ISO 4217 Codes',
+  RiskPositions = 'Risk Positions',
 }
 
 export type DropdownDataset = Array<DropdownOption>;
@@ -90,9 +90,9 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
 }
 
 export enum ReportingPeriodTableActions {
-  EditDataset = "editDataset",
-  ResolveRequest = "resolveRequest",
-  ReopenRequest = "reOpenRequest",
+  EditDataset = 'editDataset',
+  ResolveRequest = 'resolveRequest',
+  ReopenRequest = 'reOpenRequest',
 }
 export interface ReportingPeriodTableEntry {
   reportingPeriod: string;

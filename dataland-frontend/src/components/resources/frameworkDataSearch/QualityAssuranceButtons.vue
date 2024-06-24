@@ -20,14 +20,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import PrimeButton from "primevue/button";
-import { QaStatus } from "@clients/qaservice";
-import QaDatasetModal from "@/components/general/QaDatasetModal.vue";
-import { type DataMetaInformation } from "@clients/backend";
+import { defineComponent } from 'vue';
+import PrimeButton from 'primevue/button';
+import { QaStatus } from '@clients/qaservice';
+import QaDatasetModal from '@/components/general/QaDatasetModal.vue';
+import { type DataMetaInformation } from '@clients/backend';
 
 export default defineComponent({
-  name: "QualityAssuranceButtons",
+  name: 'QualityAssuranceButtons',
   components: { PrimeButton },
   data() {
     return {
@@ -64,7 +64,7 @@ export default defineComponent({
           message,
         },
         onClose: () => {
-          void this.$router.push("/qualityassurance");
+          void this.$router.push('/qualityassurance');
         },
       });
     },

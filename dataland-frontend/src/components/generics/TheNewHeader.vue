@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
-import { useRoute } from "vue-router";
-import { computed } from "vue";
-import type { Page } from "@/types/ContentTypes";
+import AuthSection from '@/components/resources/newLandingPage/AuthSection.vue';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+import type { Page } from '@/types/ContentTypes';
 
 const route = useRoute();
 
@@ -29,8 +29,8 @@ const { landingPage } = defineProps<{
   landingPage?: Page;
 }>();
 
-const isActiveHome = computed(() => route.path === "/");
-const isActiveAbout = computed(() => route.path === "/about");
+const isActiveHome = computed(() => route.path === '/');
+const isActiveAbout = computed(() => route.path === '/about');
 </script>
 
 <style lang="scss" scoped>

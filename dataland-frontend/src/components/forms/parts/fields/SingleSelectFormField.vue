@@ -22,18 +22,18 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent, type PropType } from "vue";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
-import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent, type PropType } from 'vue';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
+import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "SingleSelectFormField",
+  name: 'SingleSelectFormField',
   components: { SingleSelectFormElement, UploadFormHeader },
   props: {
     ...DropdownOptionFormFieldProps,
-    inputClass: { type: String, default: "long" },
-    containerClass: { type: String, default: "form-field" },
+    inputClass: { type: String, default: 'long' },
+    containerClass: { type: String, default: 'form-field' },
     ignore: { type: Boolean, default: false },
     deselectRemovedOptionsOnShrinkage: {
       type: Boolean,
@@ -49,7 +49,7 @@ export default defineComponent({
     dataTest: String,
     validationMessages: Object,
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       selectedOption: null as null | string,
@@ -67,7 +67,7 @@ export default defineComponent({
      */
     handleInputChange(newInput: string) {
       this.selectedOption = newInput;
-      this.$emit("update:modelValue", this.selectedOption);
+      this.$emit('update:modelValue', this.selectedOption);
     },
   },
 });

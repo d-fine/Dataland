@@ -25,14 +25,14 @@
 
 <script lang="ts">
 // @ts-nocheck
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent, ref } from "vue";
-import { FormKit, FormKitMessages } from "@formkit/vue";
-import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent, ref } from 'vue';
+import { FormKit, FormKitMessages } from '@formkit/vue';
+import NaceCodeSelector from '@/components/forms/parts/elements/derived/NaceCodeSelector.vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "NaceCodeFormField",
+  name: 'NaceCodeFormField',
   components: { NaceCodeSelector, FormKit, FormKitMessages, UploadFormHeader },
   setup() {
     return {
@@ -50,7 +50,7 @@ export default defineComponent({
         return this.selectedNaceCodesBind ?? this.innerSelectedNaceCodes;
       },
       set(newValue: []) {
-        this.$emit("update:selectedNaceCodesBind", newValue);
+        this.$emit('update:selectedNaceCodesBind', newValue);
         this.innerSelectedNaceCodes = newValue;
       },
     },

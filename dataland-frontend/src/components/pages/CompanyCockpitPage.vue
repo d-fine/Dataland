@@ -25,29 +25,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import type Keycloak from "keycloak-js";
-import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
-import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from "@/utils/Constants";
-import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { isCompanyIdValid } from "@/utils/ValidationsUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defineComponent, inject } from 'vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from '@clients/backend';
+import { ApiClientProvider } from '@/services/ApiClients';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import type Keycloak from 'keycloak-js';
+import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from '@/utils/DataOwnerUtils';
+import { isCompanyIdValid } from '@/utils/ValidationsUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
-  name: "CompanyCockpitPage",
+  name: 'CompanyCockpitPage',
   inject: {
     injectedUseMobileView: {
-      from: "useMobileView",
+      from: 'useMobileView',
       default: false,
     },
   },
@@ -66,7 +66,7 @@ export default defineComponent({
           await this.getAggregatedFrameworkDataSummary();
           await this.setUserRights();
         } catch (error) {
-          console.error("Error fetching data for new company:", error);
+          console.error('Error fetching data for new company:', error);
         }
       }
     },
@@ -84,8 +84,8 @@ export default defineComponent({
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      authenticated: inject<boolean>('authenticated'),
     };
   },
   created() {
@@ -99,7 +99,7 @@ export default defineComponent({
   },
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       aggregatedFrameworkDataSummary: undefined as

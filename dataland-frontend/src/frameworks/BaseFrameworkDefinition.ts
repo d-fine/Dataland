@@ -1,8 +1,8 @@
-import { type DataTypeEnum } from "@clients/backend";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type DataTypeEnum } from '@clients/backend';
+import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 
 interface MLDTConfigViewConfiguration<FrameworkDataType> {
-  type: "MultiLayerDataTable";
+  type: 'MultiLayerDataTable';
   configuration: MLDTConfig<FrameworkDataType>;
 }
 

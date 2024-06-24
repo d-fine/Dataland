@@ -3,11 +3,11 @@ import {
   type DataMetaInformationForMyDatasets,
   QaStatus,
   type DataMetaInformation,
-} from "@clients/backend";
-import type Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { getUserId } from "@/utils/KeycloakUtils";
+} from '@clients/backend';
+import type Keycloak from 'keycloak-js';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { getUserId } from '@/utils/KeycloakUtils';
 
 export enum DatasetStatus {
   QaPending,
@@ -24,7 +24,7 @@ export class DatasetTableInfo {
     readonly companyId: string,
     readonly dataId: string,
     readonly dataReportingPeriod: string,
-    readonly status: DatasetStatus,
+    readonly status: DatasetStatus
   ) {}
 }
 
@@ -35,7 +35,7 @@ export class DatasetTableInfo {
  */
 export function getDatasetStatus(dataMetaInfo: DataMetaInformationForMyDatasets | DataMetaInformation): DatasetStatus {
   let qaStatus: QaStatus;
-  if ("qualityStatus" in dataMetaInfo) {
+  if ('qualityStatus' in dataMetaInfo) {
     qaStatus = dataMetaInfo.qualityStatus;
   } else {
     qaStatus = dataMetaInfo.qaStatus;
@@ -71,7 +71,7 @@ export async function getMyDatasetTableInfos(getKeycloakPromise: () => Promise<K
         company.companyId,
         company.dataId,
         company.reportingPeriod,
-        getDatasetStatus(company),
-      ),
+        getDatasetStatus(company)
+      )
   );
 }

@@ -8,15 +8,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   type MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 
 export default defineComponent({
-  name: "DocumentLinkDisplayComponent",
+  name: 'DocumentLinkDisplayComponent',
   components: { DocumentLink },
   props: {
     content: {

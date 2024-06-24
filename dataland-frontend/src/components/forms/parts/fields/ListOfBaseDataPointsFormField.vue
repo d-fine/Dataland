@@ -31,20 +31,20 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import type { DocumentToUpload } from "@/utils/FileUploadUtils";
+import { defineComponent } from 'vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import type { DocumentToUpload } from '@/utils/FileUploadUtils';
 
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import FormListFormField from "@/components/forms/parts/fields/FormListFormField.vue";
-import InputSwitch from "primevue/inputswitch";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import FormListFormField from '@/components/forms/parts/fields/FormListFormField.vue';
+import InputSwitch from 'primevue/inputswitch';
 
 export default defineComponent({
-  name: "ListOfBaseDataPointsFormField",
+  name: 'ListOfBaseDataPointsFormField',
   components: { FormListFormField, UploadFormHeader, InputSwitch },
   inject: {
     injectlistOfFilledKpis: {
-      from: "listOfFilledKpis",
+      from: 'listOfFilledKpis',
       default: [] as Array<string>,
     },
   },
@@ -52,7 +52,7 @@ export default defineComponent({
   props: {
     ...BaseFormFieldProps,
   },
-  emits: ["reportsUpdated"],
+  emits: ['reportsUpdated'],
   data() {
     return {
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
@@ -69,7 +69,7 @@ export default defineComponent({
      * @param referencedDocument the new referenced document
      */
     fieldSpecificDocumentsUpdated(referencedDocument: DocumentToUpload | undefined) {
-      this.$emit("fieldSpecificDocumentsUpdated", referencedDocument);
+      this.$emit('fieldSpecificDocumentsUpdated', referencedDocument);
     },
     /**
      * Toggle dataPointIsAvailable variable value

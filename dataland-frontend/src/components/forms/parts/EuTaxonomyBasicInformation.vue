@@ -93,21 +93,21 @@
 
 <script lang="ts">
 // @ts-nocheck
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
-import { FormKit } from "@formkit/vue";
-import Calendar from "primevue/calendar";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import { FormKit } from '@formkit/vue';
+import Calendar from 'primevue/calendar';
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
+} from '@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel';
+import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 
 export default defineComponent({
-  name: "EuTaxonomyBasicInformation",
+  name: 'EuTaxonomyBasicInformation',
   components: { RadioButtonsFormField, UploadFormHeader, Calendar, FormKit, YesNoFormField },
-  emits: ["updateFiscalYearEndHandler"],
+  emits: ['updateFiscalYearEndHandler'],
   data: () => ({
     euTaxonomyKpiInfoMappings,
     euTaxonomyKpiNameMappings,
@@ -126,7 +126,7 @@ export default defineComponent({
      * @param event new date value
      */
     updateFiscalYearEndHandler(event: Date) {
-      this.$emit("updateFiscalYearEndHandler", event);
+      this.$emit('updateFiscalYearEndHandler', event);
     },
   },
 });

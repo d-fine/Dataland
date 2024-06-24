@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { esgQuestionnaireViewConfiguration } from "@/frameworks/esg-questionnaire/ViewConfig";
-import { BaseEsgQuestionnaireFrameworkDefinition } from "@/frameworks/esg-questionnaire/BaseFrameworkDefinition";
-import { type EsgQuestionnaireData } from "@clients/backend";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { esgQuestionnaireViewConfiguration } from '@/frameworks/esg-questionnaire/ViewConfig';
+import { BaseEsgQuestionnaireFrameworkDefinition } from '@/frameworks/esg-questionnaire/BaseFrameworkDefinition';
+import { type EsgQuestionnaireData } from '@clients/backend';
 
 export class FrontendEsgQuestionnaireFrameworkDefinition
   extends BaseEsgQuestionnaireFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendEsgQuestionnaireFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<EsgQuestionnaireData> {
     return {
-      type: "MultiLayerDataTable",
+      type: 'MultiLayerDataTable',
       configuration: esgQuestionnaireViewConfiguration,
     };
   }

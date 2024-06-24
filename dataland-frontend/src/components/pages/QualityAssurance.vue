@@ -69,26 +69,26 @@
 </template>
 
 <script lang="ts">
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import TheContent from "@/components/generics/TheContent.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { defineComponent, inject } from "vue";
-import { type CompanyInformation, type DataMetaInformation } from "@clients/backend";
-import { type ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
-import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
-import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
-import Column from "primevue/column";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import TheContent from '@/components/generics/TheContent.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import { defineComponent, inject } from 'vue';
+import { type CompanyInformation, type DataMetaInformation } from '@clients/backend';
+import { type ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
+import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
+import Column from 'primevue/column';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 
 export default defineComponent({
-  name: "QualityAssurance",
+  name: 'QualityAssurance',
   components: {
     DatasetsTabMenu,
     AuthorizationWrapper,
@@ -102,12 +102,12 @@ export default defineComponent({
   setup() {
     return {
       datasetsPerPage: 10,
-      apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
+      apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
     };
   },
   data() {
     const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
       dataIdList: [] as Array<string>,
@@ -139,7 +139,7 @@ export default defineComponent({
         const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
           firstDatasetOnPageIndex,
-          firstDatasetOnPageIndex + this.datasetsPerPage,
+          firstDatasetOnPageIndex + this.datasetsPerPage
         );
         for (const dataId of dataIdsOnPage) {
           dataOfPage.push(await this.addDatasetAssociatedInformationToDisplayList(dataId));
@@ -157,11 +157,11 @@ export default defineComponent({
      */
     async addDatasetAssociatedInformationToDisplayList(dataId: string): Promise<QaDataObject> {
       const metaDataResponse = await assertDefined(
-        this.apiClientProvider,
+        this.apiClientProvider
       ).backendClients.metaDataController.getDataMetaInfo(dataId);
       this.metaInformation = metaDataResponse.data;
       const companyResponse = await assertDefined(
-        this.apiClientProvider,
+        this.apiClientProvider
       ).backendClients.companyDataController.getCompanyById(this.metaInformation.companyId);
       this.companyInformation = companyResponse.data.companyInformation;
       return {

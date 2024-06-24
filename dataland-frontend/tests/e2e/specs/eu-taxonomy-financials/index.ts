@@ -1,7 +1,7 @@
 /**
  * As a user, I want the EU Taxonomy company page for financials to exist and behave like I expect
  */
-describe("EU Taxonomy for financials upload page tests", () => {
-  require("./FileUploadAndLinking");
-  require("./DataIntegrity");
+describe('EU Taxonomy for financials upload page tests', () => {
+  require('./FileUploadAndLinking');
+  require('./DataIntegrity');
 });

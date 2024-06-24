@@ -9,16 +9,16 @@
 </template>
 
 <script lang="ts">
-import Message from "primevue/message";
+import Message from 'primevue/message';
 
 export default {
-  name: "FailMessage",
+  name: 'FailMessage',
   components: { Message },
   props: {
     message: String,
     messageId: Number,
     closable: { type: Boolean, default: true },
-    summary: { type: String, default: "" },
+    summary: { type: String, default: '' },
   },
 };
 </script>

@@ -4,7 +4,7 @@ import {
   type EuTaxonomyDataForFinancialsControllerApi,
   type P2pDataControllerApi,
   type PathwaysToParisData,
-} from "@clients/backend";
+} from '@clients/backend';
 
 /**
  * Check if a framework is a legacy framework
@@ -23,12 +23,12 @@ export const legacyFrameworks: { [key in keyof FrameworkDataTypes]: true } = {
 export type FrameworkDataTypes = {
   [DataTypeEnum.P2p]: {
     data: PathwaysToParisData;
-    apiSuffix: "P2pData";
+    apiSuffix: 'P2pData';
     api: P2pDataControllerApi;
   };
   [DataTypeEnum.EutaxonomyFinancials]: {
     data: EuTaxonomyDataForFinancials;
-    apiSuffix: "EuTaxonomyDataForFinancials";
+    apiSuffix: 'EuTaxonomyDataForFinancials';
     api: EuTaxonomyDataForFinancialsControllerApi;
   };
 };

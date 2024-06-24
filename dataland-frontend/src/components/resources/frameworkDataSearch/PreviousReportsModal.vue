@@ -14,7 +14,7 @@
             class="link"
             :data-test="`report-link-${nameInner}`"
           >
-            <span>{{ nameInner ? nameInner : "Unnamed_File" }}</span>
+            <span>{{ nameInner ? nameInner : 'Unnamed_File' }}</span>
           </a>
         </div>
       </div>
@@ -23,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import type { CompanyReport } from "@clients/backend";
-import { openReportDataTableModal } from "@/utils/ReferencedReportsUtil";
+import { defineComponent } from 'vue';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type { CompanyReport } from '@clients/backend';
+import { openReportDataTableModal } from '@/utils/ReferencedReportsUtil';
 
 export default defineComponent({
-  inject: ["dialogRef"],
-  name: "PreviousReportsModal",
+  inject: ['dialogRef'],
+  name: 'PreviousReportsModal',
   data() {
     return {
       reportingPeriods: [] as Array<string>,

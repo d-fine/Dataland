@@ -1,8 +1,8 @@
-import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import { type SfdrHighImpactClimateSectorEnergyConsumption } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/sfdr-high-impact-climate-sector-energy-consumption";
-import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
-import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
-import { generateFloat } from "@e2e/fixtures/common/NumberFixtures";
+import { Generator } from '@e2e/utils/FakeFixtureUtils';
+import { type SfdrHighImpactClimateSectorEnergyConsumption } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/sfdr-high-impact-climate-sector-energy-consumption';
+import { pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
+import { HighImpactClimateSector } from '@/api-models/HighImpactClimateSector';
+import { generateFloat } from '@e2e/fixtures/common/NumberFixtures';
 
 export class SfdrGenerator extends Generator {
   /**
@@ -21,8 +21,8 @@ export class SfdrGenerator extends Generator {
             highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue:
               this.randomExtendedDataPoint(generateFloat()),
           } as SfdrHighImpactClimateSectorEnergyConsumption,
-        ]),
-      ),
+        ])
+      )
     );
   }
 }

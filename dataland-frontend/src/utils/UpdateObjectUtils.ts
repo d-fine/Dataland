@@ -7,7 +7,7 @@ export type ObjectType = { [key: string]: string | object };
  */
 export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectType): void {
   for (const key in objectWithNewData) {
-    if (typeof objectWithNewData[key] === "object" && objectWithNewData[key] !== null) {
+    if (typeof objectWithNewData[key] === 'object' && objectWithNewData[key] !== null) {
       if (baseObject[key]) {
         updateObject(baseObject[key] as unknown as ObjectType, objectWithNewData[key] as unknown as ObjectType);
       } else {
@@ -32,7 +32,7 @@ export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<s
   return Object.entries(obj).reduce((acc: Array<string>, [key, value]) => {
     if (key === keyToFind) {
       return acc.concat(value as string);
-    } else if (typeof value === "object" && value != null) {
+    } else if (typeof value === 'object' && value != null) {
       return acc.concat(findAllValuesForKey(value as ObjectType, keyToFind));
     } else {
       return acc;
@@ -50,7 +50,7 @@ export function objectDropNull(obj: ObjectType): ObjectType {
   return JSON.parse(
     JSON.stringify(obj, (key, value: string | number) => {
       return value ?? undefined;
-    }),
+    })
   ) as ObjectType;
 }
 
