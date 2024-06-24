@@ -1353,10 +1353,9 @@
         "type": "string",
         "enum": [
           "CompanyOwner",
-          "CompanyDataUploader",
-          "ExternalCompanyDataUploader",
-          "CompanyUserAdmin",
-          "CompanyMember"
+          "DataUploader",
+          "MemberAdmin",
+          "Member"
         ]
       },
       "CompanyRoleAssignment": {

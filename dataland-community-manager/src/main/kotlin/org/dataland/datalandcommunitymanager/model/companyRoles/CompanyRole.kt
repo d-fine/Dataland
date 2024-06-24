@@ -11,8 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 enum class CompanyRole {
     CompanyOwner,
-    CompanyDataUploader,
-    ExternalCompanyDataUploader,
-    CompanyUserAdmin,
-    CompanyMember,
+    DataUploader,
+    MemberAdmin,
+    Member,
 }

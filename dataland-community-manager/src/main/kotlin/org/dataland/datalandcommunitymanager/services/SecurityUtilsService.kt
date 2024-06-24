@@ -21,10 +21,9 @@ class SecurityUtilsService(
 ) {
     private val roleModificationPermissionsMap = mapOf(
         CompanyRole.CompanyOwner to enumValues<CompanyRole>().toList(),
-        CompanyRole.CompanyDataUploader to emptyList(),
-        CompanyRole.ExternalCompanyDataUploader to emptyList(),
-        CompanyRole.CompanyUserAdmin to listOf(CompanyRole.CompanyUserAdmin, CompanyRole.CompanyMember),
-        CompanyRole.CompanyMember to emptyList(),
+        CompanyRole.DataUploader to emptyList(),
+        CompanyRole.MemberAdmin to listOf(CompanyRole.MemberAdmin, CompanyRole.Member),
+        CompanyRole.Member to emptyList(),
     )
 
     /**
