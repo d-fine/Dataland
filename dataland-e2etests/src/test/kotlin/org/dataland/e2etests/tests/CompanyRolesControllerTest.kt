@@ -353,16 +353,43 @@ class CompanyRolesControllerTest {
         listOfCompanyRolesWithoutModificationRights.forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             assignCompanyRole(it, companyId, dataReaderUserId)
-            tryToAddCompanyMembersAndAssertThatItsForbidden(companyId)
+            tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId)
         }
     }
-    private fun tryToAddCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
+
+    @Test
+    fun `assure that every company role has access to get and head endpoint`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assignCompanyRole(CompanyRole.CompanyUploader, companyId, dataUploaderUserId)
+        enumValues<CompanyRole>().forEach {
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            assignCompanyRole(it, companyId, dataReaderUserId)
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+            assertDoesNotThrow {
+                getCompanyRoleAssignments(CompanyRole.CompanyMember, companyId)
+            }
+
+            assertDoesNotThrow {
+                hasUserCompanyRole(CompanyRole.CompanyUploader, companyId, dataUploaderUserId)
+            }
+
+            jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+            removeCompanyRole(it, companyId, dataReaderUserId)
+        }
+    }
+    private fun tryToAddAndDeleteCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
         enumValues<CompanyRole>().forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             val exceptionWhenTryingToAddCompanyMembers = assertThrows<ClientException> {
                 assignCompanyRole(it, companyId, dataUploaderUserId)
             }
             assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
+            val exceptionWhenTryingToDeleteCompanyMembers = assertThrows<ClientException> {
+                removeCompanyRole(it, companyId, dataUploaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToDeleteCompanyMembers, 403)
         }
     }
 }
