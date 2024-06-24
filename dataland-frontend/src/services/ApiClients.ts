@@ -3,7 +3,12 @@ import { DocumentControllerApi } from '@clients/documentmanager';
 import { QaControllerApi } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
-import { RequestControllerApi, type RequestControllerApiInterface } from '@clients/communitymanager';
+import {
+  CompanyRolesControllerApi,
+  type CompanyRolesControllerApiInterface,
+  RequestControllerApi,
+  type RequestControllerApiInterface,
+} from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
 import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
