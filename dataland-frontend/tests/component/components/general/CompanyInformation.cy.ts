@@ -12,10 +12,9 @@ describe('Component tests for the company info sheet', function (): void {
   const dummyParentCompanyName = 'dummyParent Company';
   let mockedStoredDataRequests: StoredDataRequest[];
   before(function () {
-    //todo check
-    cy.fixture('CompanyInformationWithSmeData').then(function (jsonContent) {
-      const smePreparedFixtures = jsonContent as Array<FixtureData<SmeData>>;
-      companyInformationForTest = smePreparedFixtures[0].companyInformation;
+    cy.fixture('CompanyInformationWithVsmeData').then(function (jsonContent) {
+      const vsmePreparedFixtures = jsonContent as Array<FixtureData<SmeData>>;
+      companyInformationForTest = vsmePreparedFixtures[0].companyInformation;
       companyInformationForTest.parentCompanyLei = dummyParentCompanyLei;
     });
     cy.fixture('DataRequestsMock').then(function (jsonContent) {
