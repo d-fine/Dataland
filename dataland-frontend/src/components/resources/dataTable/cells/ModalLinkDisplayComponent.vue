@@ -17,7 +17,7 @@ export default defineComponent({
   computed: {
     modalOptions() {
       let updatedModalOptions = this.content.displayValue.modalOptions;
-      updatedModalOptions.data.metaInfo = this.metaInfo;
+      updatedModalOptions!.data.metaInfo = this.metaInfo;
       return updatedModalOptions;
     },
   },
