@@ -4,7 +4,7 @@ import {
   pickOneElement,
   pickSubsetOfElements,
 } from '@e2e/fixtures/FixtureUtils';
-import { generateYesNo, generateYesNoNa } from '@e2e/fixtures/common/YesNoFixtures';
+import { generateYesNo, generateYesNoNa, generateYesNoNoEvidenceFound } from '@e2e/fixtures/common/YesNoFixtures';
 import {
   type AmountWithCurrency,
   type CurrencyDataPoint,
@@ -12,6 +12,7 @@ import {
   QualityOptions,
   type YesNo,
   type YesNoNa,
+  type YesNoNoEvidenceFound,
 } from '@clients/backend';
 import { generateCurrencyValue, generateFloat, generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
 import { generateReferencedDocuments, getReferencedDocumentId } from '@e2e/utils/DocumentReference';
@@ -63,6 +64,13 @@ export class Generator {
 
   guaranteedYesNoNa(): YesNoNa {
     return generateYesNoNa();
+  }
+  randomYesNoNoEvidenceFound(): YesNoNoEvidenceFound | null {
+    return this.valueOrNull(this.guaranteedYesNoNoEvidenceFound());
+  }
+
+  guaranteedYesNoNoEvidenceFound(): YesNoNoEvidenceFound {
+    return generateYesNoNoEvidenceFound();
   }
 
   randomPercentageValue(): number | null {
@@ -186,17 +194,13 @@ export class Generator {
    * @returns the generated datapoint
    */
   generateExtendedDataPoint<T>(value: T | null): ExtendedDataPoint<T> {
-    const qualityBucket =
-      value === null
-        ? QualityOptions.Na
-        : pickOneElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
+    const qualityBucket = this.valueOrNull(pickOneElement(Object.values(QualityOptions)));
 
     let dataSource: ExtendedDocumentReference | null = this.valueOrNull(generateDataSource(this.reports));
     const comment: string | null = this.valueOrNull(faker.git.commitMessage());
     if (qualityBucket === QualityOptions.Audited || qualityBucket === QualityOptions.Reported) {
       dataSource = generateDataSource(this.reports);
     }
-
     return {
       value: value,
       dataSource: dataSource,

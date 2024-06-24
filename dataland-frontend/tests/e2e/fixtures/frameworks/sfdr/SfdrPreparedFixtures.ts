@@ -177,7 +177,6 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
         dataDate: '2022-08-27',
         fiscalYearDeviation: 'Deviation',
         fiscalYearEnd: '2023-01-01',
-        scopeOfEntities: null!,
         referencedReports: null!,
       },
     },
@@ -196,7 +195,7 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
 function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   const brokenFileReference = '123';
   input.companyInformation.companyName = 'TestForBrokenFileReference';
-  input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsLocationBasedInTonnes!.dataSource!.fileReference =
+  input.t.environmental!.greenhouseGasEmissions!.scope2GhgEmissionsMarketBasedInTonnes!.dataSource!.fileReference =
     brokenFileReference;
   return input;
 }

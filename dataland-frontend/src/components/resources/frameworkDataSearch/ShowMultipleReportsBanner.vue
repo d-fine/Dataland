@@ -3,14 +3,11 @@
     <h4 class="m-0" data-test="frameworkNewDataTableTitle">
       Data extracted from the company report. Company Reports ({{ reportingPeriods[indexOfNewestReportingPeriod] }}):
     </h4>
-    <div class="flex">
+    <div id="reportList" style="display: flex">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
-        <DocumentLink
-          data-test="documentLinkTest"
-          :download-name="`${name}`"
-          :fileReference="report.fileReference"
-          font-style="font-semibold"
-        />
+        <a @click="openReportDataTableModal(report, name as string)" class="link" :data-test="`report-link-${name}`">
+          <span>{{ name ? name : 'Unnamed_File' }}</span>
+        </a>
       </span>
     </div>
     <span
@@ -18,20 +15,20 @@
       class="link font-semibold underline mr-0 ml-auto"
       @click="openModalAndDisplayPreviousReportsInTable(reportingPeriods)"
       data-test="previousReportsLinkToModal"
-      >Previous years reports
+    >
+      Previous years reports
     </span>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import PreviousReportsModal from '@/components/resources/frameworkDataSearch/PreviousReportsModal.vue';
 import type { CompanyReport } from '@clients/backend';
+import { openReportDataTableModal } from '@/utils/ReferencedReportsUtil';
 
 export default defineComponent({
   name: 'ShowMultipleReportsBanner',
-  components: { DocumentLink },
   data() {
     return {
       indexOfNewestReportingPeriod: -1 as number,
@@ -46,7 +43,16 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Opens a modal to display a table containing previous referenced reports
+     * Opens a modal to display a table containing detailed information about the report.
+     * @param report the report
+     * @param reportName the name of the report
+     */
+    openReportDataTableModal(report: CompanyReport, reportName: string) {
+      openReportDataTableModal(this, report, reportName);
+    },
+
+    /**
+     * Opens a modal to display a table containing previous referenced reports.
      * @param reportingPeriods States the origin year of the report.
      */
     openModalAndDisplayPreviousReportsInTable(reportingPeriods: Array<string>) {
@@ -67,8 +73,8 @@ export default defineComponent({
 
     /**
      * Returns the index of the with the newest reporting period in the array containing all reporting periods.
-     * @param reportingPeriods array containing all reporting periods.
-     * @returns index of the newest reporting period
+     * @param reportingPeriods Array containing all reporting periods.
+     * @returns Index of the newest reporting period.
      */
     calculateIndexOfNewestReportingPeriod(reportingPeriods: Array<string>): number {
       let indexOfHighestReportingPeriod = 0;
@@ -84,9 +90,9 @@ export default defineComponent({
 
     /**
      * Checks whether a report of the previous year exists.
-     * @param reports array of all reports
-     * @param indexOfNewestReport index of newest report in the reports array
-     * @returns returns a boolean wheter a report has been found
+     * @param reports Array of all reports.
+     * @param indexOfNewestReport Index of newest report in the reports array.
+     * @returns Returns a boolean whether a report has been found.
      */
     doPreviousReportsExist(reports: Array<{ [p: string]: CompanyReport }>, indexOfNewestReport: number): boolean {
       if (!reports) {

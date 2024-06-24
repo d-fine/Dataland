@@ -24,7 +24,7 @@ describe('Component tests for toggle data point', () => {
       cy.get('[data-test="value"]').should('not.exist');
       cy.get('[data-test="qualityValue"]').should('not.be.visible');
       cy.wrap(mounted.component).its('currentValue').should('eq', '');
-      cy.wrap(mounted.component).its('currentQualityValue').should('eq', 'NA');
+      cy.wrap(mounted.component).its('currentQualityValue').should('eq', null);
       cy.get('[data-test="dataPointToggleButton"]').click();
       cy.get('[data-test="value"]').should('be.visible');
       cy.get('[data-test="qualityValue"]').should('be.visible');

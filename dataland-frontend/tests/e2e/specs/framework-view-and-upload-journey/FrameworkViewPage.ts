@@ -89,6 +89,7 @@ describeIf(
       cy.wait('@fetchFilters');
       const companySelector = 'span:contains(VIEW)';
       cy.get(companySelector).first().click();
+      cy.wait(100);
     }
 
     /**
@@ -224,7 +225,7 @@ describeIf(
         if (index == 0) {
           expect(element.text()).to.equal('KPIs');
         } else {
-          expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
+          expect(element.text()).to.include(expectedColumnHeaders[index - 1]);
         }
       });
     }
