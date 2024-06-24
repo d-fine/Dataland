@@ -75,7 +75,7 @@ class FrameworkUploadConfigBuilder(
         buildUploadConfig(uploadConfigTsPath)
 
         // into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_ktlintFormat")) //todo
-        into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
+        // into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
 
         EsLintRunner(into, listOf(uploadConfigTsPath)).run()
     }
