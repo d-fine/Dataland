@@ -52,11 +52,7 @@ import { defineComponent, type PropType, inject } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
-import {
-  ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM,
-  ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-  PRIVATE_FRAMEWORKS,
-} from '@/utils/Constants';
+import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getDatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
@@ -104,8 +100,8 @@ export default defineComponent({
   },
 
   mounted() {
-    this.isFrontendViewPageExisting = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(this.dataType as DataTypeEnum);
-    this.isFrontendUploadFormExisting = ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
+    this.isFrontendViewPageExisting = FRAMEWORKS_WITH_VIEW_PAGE.includes(this.dataType as DataTypeEnum);
+    this.isFrontendUploadFormExisting = FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
     this.isPrivateFramework = PRIVATE_FRAMEWORKS.includes(this.dataType as DataTypeEnum);
   },
   created() {

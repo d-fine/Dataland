@@ -15,6 +15,7 @@ class FrameworkToolboxCli {
 
     private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
+
     private val datalandProject = DatalandRepository(Path.of("./"))
 
     /**

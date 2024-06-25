@@ -216,24 +216,24 @@
         ]
       }
     },
-    "/data/sme": {
+    "/data/vsme": {
       "post": {
         "tags": [
-          "sme-data-controller"
+          "vsme-data-controller"
         ],
-        "operationId": "postSmeJsonAndDocuments",
+        "operationId": "postVsmeJsonAndDocuments",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "companyAssociatedSmeData",
+                  "companyAssociatedVsmeData",
                   "documents"
                 ],
                 "type": "object",
                 "properties": {
-                  "companyAssociatedSmeData": {
-                    "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  "companyAssociatedVsmeData": {
+                    "$ref": "#/components/schemas/CompanyAssociatedDataVsmeData"
                   },
                   "documents": {
                     "type": "array",
@@ -1498,12 +1498,12 @@
         }
       }
     },
-    "/data/sme/{dataId}": {
+    "/data/vsme/{dataId}": {
       "get": {
         "tags": [
-          "sme-data-controller"
+          "vsme-data-controller"
         ],
-        "operationId": "getCompanyAssociatedSmeData",
+        "operationId": "getCompanyAssociatedVsmeData",
         "parameters": [
           {
             "name": "dataId",
@@ -1520,7 +1520,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSmeData"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataVsmeData"
                 }
               }
             }
@@ -1556,10 +1556,10 @@
         ]
       }
     },
-    "/data/sme/documents": {
+    "/data/vsme/documents": {
       "get": {
         "tags": [
-          "sme-data-controller"
+          "vsme-data-controller"
         ],
         "operationId": "getPrivateDocument",
         "parameters": [
@@ -1637,10 +1637,10 @@
         ]
       }
     },
-    "/data/sme/companies/{companyId}": {
+    "/data/vsme/companies/{companyId}": {
       "get": {
         "tags": [
-          "sme-data-controller"
+          "vsme-data-controller"
         ],
         "operationId": "getFrameworkDatasetsForCompany",
         "parameters": [
@@ -1672,13 +1672,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved sme datasets with meta info.",
+            "description": "Successfully retrieved vsme datasets with meta info.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationVsmeData"
                   }
                 }
               }
@@ -3482,7 +3482,94 @@
           }
         }
       },
-      "CompanyAssociatedDataSmeData": {
+      "Address": {
+        "required": [
+          "city",
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "streetAndHouseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "AreaAdjointness": {
+        "type": "string",
+        "enum": [
+          "In",
+          "Near"
+        ]
+      },
+      "BaseDataPointString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyAssociatedDataVsmeData": {
         "required": [
           "companyId",
           "data",
@@ -3497,7 +3584,7 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/SmeData"
+            "$ref": "#/components/schemas/VsmeData"
           }
         }
       },
@@ -3575,17 +3662,6 @@
           }
         }
       },
-      "NaturalHazardsCoveredOptions": {
-        "type": "string",
-        "enum": [
-          "Hail",
-          "Wind",
-          "Flooding",
-          "EarthQuake",
-          "Avalanche",
-          "Snow"
-        ]
-      },
       "QualityOptions": {
         "type": "string",
         "enum": [
@@ -3595,77 +3671,124 @@
           "Incomplete"
         ]
       },
-      "SmeData": {
-        "required": [
-          "general"
-        ],
+      "ReleaseMedium": {
+        "type": "string",
+        "enum": [
+          "Air",
+          "Soil",
+          "Water"
+        ]
+      },
+      "VsmeBasic": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SmeGeneral"
-          },
-          "power": {
+          "basisForPreparation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmePower"
+                "$ref": "#/components/schemas/VsmeBasicBasisForPreparation"
               }
             ]
           },
-          "insurances": {
+          "practicesForTransitioningTowardsAMoreSustainableEconomy": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmeInsurances"
+                "$ref": "#/components/schemas/VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy"
+              }
+            ]
+          },
+          "energyAndGreenhousGasEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicEnergyAndGreenhousGasEmissions"
+              }
+            ]
+          },
+          "pollutionOfAirWaterSoil": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicPollutionOfAirWaterSoil"
+              }
+            ]
+          },
+          "biodiversity": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicBiodiversity"
+              }
+            ]
+          },
+          "water": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicWater"
+              }
+            ]
+          },
+          "resourceUseCircularEconomyAndWasteManagement": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicResourceUseCircularEconomyAndWasteManagement"
+              }
+            ]
+          },
+          "workforceGeneralCharacteristics": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicWorkforceGeneralCharacteristics"
+              }
+            ]
+          },
+          "workforceHealthAndSafety": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicWorkforceHealthAndSafety"
+              }
+            ]
+          },
+          "workforceRenumerationCollectiveBargainingAndTraining": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining"
+              }
+            ]
+          },
+          "workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers"
               }
             ]
           }
         }
       },
-      "SmeGeneral": {
-        "required": [
-          "basicInformation"
-        ],
+      "VsmeBasicBasisForPreparation": {
         "type": "object",
         "properties": {
-          "basicInformation": {
-            "$ref": "#/components/schemas/SmeGeneralBasicInformation"
-          },
-          "financialInformation": {
+          "reportingBasis": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmeGeneralFinancialInformation"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
-          }
-        }
-      },
-      "SmeGeneralBasicInformation": {
-        "required": [
-          "fiscalYearStart",
-          "numberOfEmployees",
-          "reportingDate",
-          "sectors"
-        ],
-        "type": "object",
-        "properties": {
-          "reportingDate": {
-            "type": "string",
-            "format": "date"
           },
-          "sectors": {
+          "subsidiary": {
             "type": "array",
+            "nullable": true,
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/VsmeSubsidiary"
             }
-          },
-          "numberOfEmployees": {
-            "type": "integer"
-          },
-          "fiscalYearStart": {
-            "type": "string",
-            "format": "date"
           },
           "referencedReports": {
             "type": "object",
@@ -3677,85 +3800,74 @@
           }
         }
       },
-      "SmeGeneralFinancialInformation": {
+      "VsmeBasicBiodiversity": {
         "type": "object",
         "properties": {
-          "revenueInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "operatingCostInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "capitalAssetsInEur": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "SmeInsurances": {
-        "type": "object",
-        "properties": {
-          "naturalHazards": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmeInsurancesNaturalHazards"
-              }
-            ]
-          }
-        }
-      },
-      "SmeInsurancesNaturalHazards": {
-        "type": "object",
-        "properties": {
-          "insuranceAgainstNaturalHazards": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "amountCoveredByInsuranceAgainstNaturalHazardsInEur": {
-            "type": "number",
-            "nullable": true
-          },
-          "naturalHazardsCovered": {
+          "sitesAndAreas": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/NaturalHazardsCoveredOptions"
+              "$ref": "#/components/schemas/VsmeSiteAndArea"
             }
-          }
-        }
-      },
-      "SmePower": {
-        "type": "object",
-        "properties": {
-          "investments": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerInvestments"
-              }
-            ]
           },
-          "consumption": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumption"
-              }
-            ]
+          "totalSealedAreaPreviousYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalSealedAreaReportingYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "relativeChangeSealedArea": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOnSitePreviousYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOnSiteReportingYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "relativeChangeNatureOrientedOnSite": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOffSitePreviousYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalNatureOrientedAreaOffSiteReportingYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "relativeChangeNatureOrientedOffSite": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalUseOfLandPreviousYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalUseOfLandReportingYearInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "relativeChangeLandUse": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
-      "SmePowerConsumption": {
+      "VsmeBasicEnergyAndGreenhousGasEmissions": {
         "type": "object",
         "properties": {
-          "powerConsumptionInMwh": {
+          "energyFossilFuelsInMWh": {
+            "type": "number",
+            "nullable": true
+          },
+          "electricityTotalInMWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3763,7 +3875,313 @@
               }
             ]
           },
-          "powerFromRenewableSources": {
+          "electricityNonRenewableInMWh": {
+            "type": "number",
+            "nullable": true
+          },
+          "electricityRenewableInMWh": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalEmissionsInTonnesOfCO2Equivalents": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope1EmissionsInTonnesOfCO2Equivalents": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2EmissionsInTonnesOfCO2Equivalents": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3EmissionsInTonnesOfCO2Equivalents": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "VsmeBasicPollutionOfAirWaterSoil": {
+        "type": "object",
+        "properties": {
+          "pollutionEmission": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VsmePollutionEmission"
+            }
+          }
+        }
+      },
+      "VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy": {
+        "type": "object",
+        "properties": {
+          "undertakenMeasures": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "VsmeBasicResourceUseCircularEconomyAndWasteManagement": {
+        "type": "object",
+        "properties": {
+          "totalWeightMaterialsInTonnes": {
+            "type": "number",
+            "nullable": true
+          },
+          "weightRecycledMaterialsInTonnes": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentageRecycledMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "weightRecyclableMaterialsInTonnes": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentageRecyclableMaterials": {
+            "type": "number",
+            "nullable": true
+          },
+          "measureWaste": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions"
+              }
+            ]
+          },
+          "wasteClassification": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VsmeWasteClassificationObject"
+            }
+          }
+        }
+      },
+      "VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions": {
+        "type": "string",
+        "enum": [
+          "WeightPreferred",
+          "Volume"
+        ]
+      },
+      "VsmeBasicWater": {
+        "type": "object",
+        "properties": {
+          "waterWithdrawalAllSitesInCubicMeters": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "waterWithdrawalStressSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterDischargeAllSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterDischargeStressSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "rainwaterAllSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "rainwaterStressSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterConsumptionAllSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "waterConsumptionStressSitesInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
+        "type": "object",
+        "properties": {
+          "negativeEffects": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "numberOfConvictions": {
+            "type": "number",
+            "nullable": true
+          },
+          "sumOfFinesInEuro": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "VsmeBasicWorkforceGeneralCharacteristics": {
+        "type": "object",
+        "properties": {
+          "measureEmployees": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions"
+              }
+            ]
+          },
+          "numberOfEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfTemporaryContractEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfTemporaryContractEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfPermanentContractEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfPermanentContractEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfMaleEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfMaleEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberFemaleEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfFemaleEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfOtherEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfOtherEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfNotReportedEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfNotReportedEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "employeesPerCountry": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VsmeEmployeesPerCountry"
+            }
+          }
+        }
+      },
+      "VsmeBasicWorkforceHealthAndSafety": {
+        "type": "object",
+        "properties": {
+          "totalHours": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfAccidents": {
+            "type": "integer",
+            "nullable": true
+          },
+          "accidentLevel": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfTotalFatalitiesInFte": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberOfTotalFatalitiesInHeadcount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberOfFatalitiesOfAccidentsInFte": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberOfFatalitiesOfAccidentsInHeadcount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberOfHealthFatalitiesInFte": {
+            "type": "integer",
+            "nullable": true
+          },
+          "numberOfHealthFatalitiesInHeadcount": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining": {
+        "type": "object",
+        "properties": {
+          "numberOfMinimumWageEmployeesInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberOfMinimumWageEmployeesInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "percentageOfMinimumWageEmployees": {
+            "type": "number",
+            "nullable": true
+          },
+          "majorityOfMinimumWageEmployees": {
             "nullable": true,
             "allOf": [
               {
@@ -3771,69 +4189,264 @@
               }
             ]
           },
-          "energyConsumptionHeatingAndHotWaterInMwh": {
+          "entryLevelWageInEuro": {
             "type": "number",
             "nullable": true
           },
-          "primaryEnergySourceForHeatingAndHotWater": {
+          "minimumWageInEuro": {
+            "type": "number",
+            "nullable": true
+          },
+          "wageRatio": {
+            "type": "number",
+            "nullable": true
+          },
+          "payGapBasis": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions"
+                "$ref": "#/components/schemas/VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions"
               }
             ]
           },
-          "energyConsumptionCoveredByOwnRenewablePowerGeneration": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions"
-              }
-            ]
+          "grossPayMaleInEuro": {
+            "type": "number",
+            "nullable": true
+          },
+          "grossPayFemaleInEuro": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalWorkHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalWorkHoursFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageWorkHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageWorkHoursFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageHourlyPayMaleInEuroPerHour": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageHourlyPayFemaleInEuroPerHour": {
+            "type": "number",
+            "nullable": true
+          },
+          "payGap": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberBargainingAgreementsInFte": {
+            "type": "number",
+            "nullable": true
+          },
+          "numberBargainingAgreementsInHeadcount": {
+            "type": "number",
+            "nullable": true
+          },
+          "ratioBargainingAgreement": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalTrainingHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalTrainingHoursFemale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageTrainingHoursMale": {
+            "type": "number",
+            "nullable": true
+          },
+          "averageTrainingHoursFemale": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
-      "SmePowerConsumptionEnergyConsumptionCoveredByOwnRenewablePowerGenerationOptions": {
+      "VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions": {
         "type": "string",
         "enum": [
-          "LessThan25Percent",
-          "Between25And50Percent",
-          "Between50And75Percent",
-          "Over75Percent"
+          "FullTimeEquivalents",
+          "HeadCount"
         ]
       },
-      "SmePowerConsumptionPrimaryEnergySourceForHeatingAndHotWaterOptions": {
+      "VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions": {
         "type": "string",
         "enum": [
-          "Oil",
-          "Gas",
-          "Electric",
-          "DistrictHeating"
+          "Annual",
+          "Weekly"
         ]
       },
-      "SmePowerInvestments": {
+      "VsmeData": {
         "type": "object",
         "properties": {
-          "investmentsInEnhancingEnergyEfficiency": {
+          "basic": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions"
+                "$ref": "#/components/schemas/VsmeBasic"
               }
             ]
           }
         }
       },
-      "SmePowerInvestmentsInvestmentsInEnhancingEnergyEfficiencyOptions": {
+      "VsmeEmployeesPerCountry": {
+        "required": [
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "numberOfEmployeesInHeadCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "numberOfEmployeesInFullTimeEquivalent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "VsmePollutionEmission": {
+        "required": [
+          "pollutionType",
+          "releaseMedium"
+        ],
+        "type": "object",
+        "properties": {
+          "pollutionType": {
+            "type": "string"
+          },
+          "emissionInKilograms": {
+            "type": "number",
+            "nullable": true
+          },
+          "releaseMedium": {
+            "$ref": "#/components/schemas/ReleaseMedium"
+          }
+        }
+      },
+      "VsmeSiteAndArea": {
+        "required": [
+          "areaAddress",
+          "siteAddress",
+          "siteName",
+          "specificationOfAdjointness"
+        ],
+        "type": "object",
+        "properties": {
+          "siteName": {
+            "type": "string"
+          },
+          "siteAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "siteGeocoordinateLongitudeval": {
+            "type": "number",
+            "nullable": true
+          },
+          "siteGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "areaInHectare": {
+            "type": "number",
+            "nullable": true
+          },
+          "biodiversitySensitiveArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "areaAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "areaGeocoordinateLongitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "areaGeocoordinateLatitude": {
+            "type": "number",
+            "nullable": true
+          },
+          "specificationOfAdjointness": {
+            "$ref": "#/components/schemas/AreaAdjointness"
+          }
+        }
+      },
+      "VsmeSubsidiary": {
+        "required": [
+          "addressOfSubsidiary",
+          "nameOfSubsidiary"
+        ],
+        "type": "object",
+        "properties": {
+          "nameOfSubsidiary": {
+            "type": "string"
+          },
+          "addressOfSubsidiary": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "VsmeWasteClassificationObject": {
+        "required": [
+          "typeOfWaste",
+          "wasteClassification"
+        ],
+        "type": "object",
+        "properties": {
+          "wasteClassification": {
+            "$ref": "#/components/schemas/WasteClassifications"
+          },
+          "typeOfWaste": {
+            "type": "string"
+          },
+          "totalAmountOfWasteInTonnes": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteRecycleOrReuseInTonnes": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteDisposalInTonnes": {
+            "type": "number",
+            "nullable": true
+          },
+          "totalAmountOfWasteInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteRecycleOrReuseInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          },
+          "wasteDisposalInCubicMeters": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "WasteClassifications": {
         "type": "string",
         "enum": [
-          "LessThan1Percent",
-          "Between1And5Percent",
-          "Between5And10Percent",
-          "Between10And15Percent",
-          "Between15And20Percent",
-          "Between20And25Percent",
-          "Over25Percent"
+          "NonHazardous",
+          "Hazardous"
         ]
       },
       "YesNo": {
@@ -5419,42 +6032,6 @@
           "NoEvidenceFound"
         ]
       },
-      "BaseDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
-      },
       "CompanyAssociatedDataPathwaysToParisData": {
         "required": [
           "companyId",
@@ -6456,33 +7033,6 @@
                 "$ref": "#/components/schemas/P2pCement"
               }
             ]
-          }
-        }
-      },
-      "Address": {
-        "required": [
-          "city",
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "streetAndHouseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "postalCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "type": "string"
           }
         }
       },
@@ -8788,23 +9338,6 @@
           "No",
           "NA"
         ]
-      },
-      "BaseDataPointString": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
       },
       "CompanyAssociatedDataHeimathafenData": {
         "required": [
@@ -13840,7 +14373,7 @@
           }
         }
       },
-      "DataAndMetaInformationSmeData": {
+      "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
           "metaInfo"
@@ -13851,7 +14384,7 @@
             "$ref": "#/components/schemas/DataMetaInformation"
           },
           "data": {
-            "$ref": "#/components/schemas/SmeData"
+            "$ref": "#/components/schemas/VsmeData"
           }
         }
       },
@@ -13969,21 +14502,21 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -14010,10 +14543,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -14073,7 +14606,7 @@
           "lksg",
           "p2p",
           "sfdr",
-          "sme",
+          "vsme",
           "esg-questionnaire",
           "heimathafen"
         ]
