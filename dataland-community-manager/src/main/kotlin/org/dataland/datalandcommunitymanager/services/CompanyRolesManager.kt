@@ -107,7 +107,9 @@ class CompanyRolesManager(
         companyId: String,
     ): List<CompanyRoleAssignmentEntity> {
         companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
-        return companyRoleAssignmentRepository.findByCompanyIdAndCompanyRole(companyId, companyRole)
+        return companyRoleAssignmentRepository.findByCompanyIdAndCompanyRoleAndUserId(
+            companyId = companyId, companyRole = companyRole, userId = null,
+        )
     }
 
     private fun throwExceptionDueToRoleNotAssignedToUser(companyRole: CompanyRole, companyId: String, userId: String) {
