@@ -53,17 +53,17 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
-import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { type BaseDataPoint } from "@/utils/DataPoint";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
-import { isValidFileName } from "@/utils/DataSource";
+import { defineComponent } from 'vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import UploadDocumentsForm from '@/components/forms/parts/elements/basic/UploadDocumentsForm.vue';
+import { type DocumentToUpload } from '@/utils/FileUploadUtils';
+import { type BaseDataPoint } from '@/utils/DataPoint';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
+import { isValidFileName } from '@/utils/DataSource';
 
 export default defineComponent({
-  name: "BaseDataPointFormField",
+  name: 'BaseDataPointFormField',
   components: { UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   props: {
@@ -75,7 +75,7 @@ export default defineComponent({
   },
   inject: {
     injectlistOfFilledKpis: {
-      from: "listOfFilledKpis",
+      from: 'listOfFilledKpis',
       default: [] as Array<string>,
     },
   },
@@ -84,8 +84,8 @@ export default defineComponent({
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       baseDataPoint: {} as BaseDataPoint<unknown>,
       referencedDocument: undefined as DocumentToUpload | undefined,
-      documentName: "",
-      documentReference: "",
+      documentName: '',
+      documentReference: '',
       fileNamesForPrefill: [] as string[],
       isMounted: false,
       isValidFileName: isValidFileName,
@@ -98,7 +98,7 @@ export default defineComponent({
       return this.dataPointIsAvailable;
     },
   },
-  emits: ["fieldSpecificDocumentsUpdated"],
+  emits: ['fieldSpecificDocumentsUpdated'],
   mounted() {
     setTimeout(() => {
       this.isMounted = true;
@@ -122,7 +122,7 @@ export default defineComponent({
      * @param newCheckboxValue value after changing value that must be reflected in checkboxes
      */
     setCheckboxValue(newCheckboxValue: string) {
-      if (newCheckboxValue && newCheckboxValue !== "") {
+      if (newCheckboxValue && newCheckboxValue !== '') {
         this.checkboxValue = [newCheckboxValue];
       }
     },
@@ -133,9 +133,9 @@ export default defineComponent({
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
-      this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
-      this.documentReference = this.referencedDocument?.fileReference ?? "";
-      this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
+      this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? '';
+      this.documentReference = this.referencedDocument?.fileReference ?? '';
+      this.$emit('fieldSpecificDocumentsUpdated', this.referencedDocument);
     },
 
     /**
@@ -143,7 +143,7 @@ export default defineComponent({
      * of the given dataset (in the case of editing a dataset)
      */
     updateFileUploadFiles() {
-      if (this.documentName !== "" && this.referencedDocument === undefined) {
+      if (this.documentName !== '' && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
       }
     },

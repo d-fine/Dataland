@@ -1,12 +1,12 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
 
 type ColumnHeaderType = Record<string, Record<string, string>>;
 
@@ -18,7 +18,7 @@ type ColumnHeaderType = Record<string, Record<string, string>>;
  */
 export function getModalGetterFactory(
   kpiKeyOfTable: string,
-  columnHeaders: ColumnHeaderType,
+  columnHeaders: ColumnHeaderType
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (path: string, field: Field) => (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (path, field) => {
@@ -27,7 +27,7 @@ export function getModalGetterFactory(
         kpiKeyOfTable,
         columnHeaders,
         field,
-        getFieldValueFromFrameworkDataset(path, dataset) as Array<object>,
+        getFieldValueFromFrameworkDataset(path, dataset) as Array<object>
       );
     };
   };
@@ -45,7 +45,7 @@ function getDisplayValueForModal(
   kpiKeyOfTable: string,
   columnHeaders: ColumnHeaderType,
   field: Field,
-  fieldValue?: Array<object>,
+  fieldValue?: Array<object>
 ): AvailableMLDTDisplayObjectTypes {
   if (!fieldValue || fieldValue.length == 0) {
     return MLDTDisplayObjectForEmptyString;

@@ -3,57 +3,57 @@ import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { type LksgProduct } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { convertNace, convertSingleNaceCode } from "@/utils/NaceCodeConverter";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DetailsCompanyDataTable from '@/components/general/DetailsCompanyDataTable.vue';
+import { type LksgProduct } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { convertNace, convertSingleNaceCode } from '@/utils/NaceCodeConverter';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
+import { formatPercentageNumberAsString } from '@/utils/Formatter';
 import {
   type LksgGrievanceAssessmentMechanism,
   type LksgProductionSite,
   type LksgRiskOrViolationAssessment,
   type LksgProcurementCategory,
-} from "@clients/backend";
-import { type ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
+} from '@clients/backend';
+import { type ProcurementCategoryType } from '@/api-models/ProcurementCategoryType';
 
 export const lksgModalColumnHeaders = {
   listOfProductionSites: {
-    nameOfProductionSite: "Name",
-    addressOfProductionSite: "Address",
-    listOfGoodsOrServices: "List of Goods or Services",
+    nameOfProductionSite: 'Name',
+    addressOfProductionSite: 'Address',
+    listOfGoodsOrServices: 'List of Goods or Services',
   },
   mostImportantProducts: {
-    name: "Product Name",
-    productionSteps: "Production Steps",
-    relatedCorporateSupplyChain: "Related Corporate Supply Chain",
+    name: 'Product Name',
+    productionSteps: 'Production Steps',
+    relatedCorporateSupplyChain: 'Related Corporate Supply Chain',
   },
   procurementCategories: {
-    procurementCategory: "Procurement Category",
-    procuredProductTypesAndServicesNaceCodes: "Procured Products/Services",
-    suppliersAndCountries: "Number of Direct Suppliers and Countries",
-    totalProcurementInPercent: "Order Volume",
+    procurementCategory: 'Procurement Category',
+    procuredProductTypesAndServicesNaceCodes: 'Procured Products/Services',
+    suppliersAndCountries: 'Number of Direct Suppliers and Countries',
+    totalProcurementInPercent: 'Order Volume',
   },
   subcontractingCompanies: {
-    country: "Country",
-    naceCodes: "Industries",
+    country: 'Country',
+    naceCodes: 'Industries',
   },
   riskPositions: {
-    riskPosition: "Risk Position",
-    measuresTaken: "Were Measures Defined to Counteract the Risk",
-    listedMeasures: "Which Measures",
+    riskPosition: 'Risk Position',
+    measuresTaken: 'Were Measures Defined to Counteract the Risk',
+    listedMeasures: 'Which Measures',
   },
   generalViolations: {
-    riskPosition: "Risk Position of the Violation",
-    measuresTaken: "Were Counteracting Measures Taken",
-    listedMeasures: "Which Measures Have Been Taken",
+    riskPosition: 'Risk Position of the Violation',
+    measuresTaken: 'Were Counteracting Measures Taken',
+    listedMeasures: 'Which Measures Have Been Taken',
   },
   grievanceMechanisms: {
-    riskPositions: "Risk Positions in the Complaint",
-    specifiedComplaint: "Complaint Specification",
-    measuresTaken: "Were Measures Taken to Address the Complaint",
-    listedMeasures: "Which Measures Have Been Taken",
+    riskPositions: 'Risk Positions in the Complaint',
+    specifiedComplaint: 'Complaint Specification',
+    measuresTaken: 'Were Measures Taken to Address the Complaint',
+    listedMeasures: 'Which Measures Have Been Taken',
   },
 };
 
@@ -96,7 +96,7 @@ interface LksgSubcontractingCompaniesDisplayFormat {
  * @returns the converted list
  */
 function convertLksgProcumentTypeToListForModal(
-  datasetValue: LksgProcurementType,
+  datasetValue: LksgProcurementType
 ): LksgProcurementCategoryDisplayFormat[] {
   const listForModal: LksgProcurementCategoryDisplayFormat[] = [];
   for (const [procurementCategoryType, lksgProcurementCategory] of Object.entries(datasetValue)) {
@@ -108,12 +108,12 @@ function convertLksgProcumentTypeToListForModal(
         lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes ?? []
       ).map(convertSingleNaceCode),
       suppliersAndCountries: generateReadableCombinationOfNumberOfSuppliersAndCountries(
-        lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {},
+        lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {}
       ),
       totalProcurementInPercent:
         lksgProcurementCategory.shareOfTotalProcurementInPercent != null
           ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
-          : "",
+          : '',
     });
   }
   return listForModal;
@@ -146,7 +146,7 @@ function convertLksgSubcontractingCompaniesToListForModal(datasetValue: {
  */
 export function formatLksgMostImportantProductsForDisplay(
   input: LksgProduct[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
@@ -165,7 +165,7 @@ export function formatLksgMostImportantProductsForDisplay(
         },
         data: {
           listOfRowContents: input,
-          kpiKeyOfTable: "mostImportantProducts",
+          kpiKeyOfTable: 'mostImportantProducts',
           columnHeaders: lksgModalColumnHeaders,
         },
       },
@@ -181,7 +181,7 @@ export function formatLksgMostImportantProductsForDisplay(
  */
 export function formatLksgProcurementCategoriesForDisplay(
   input: LksgProcurementType | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
   if (!input) {
@@ -202,7 +202,7 @@ export function formatLksgProcurementCategoriesForDisplay(
         },
         data: {
           listOfRowContents: convertedValueForModal,
-          kpiKeyOfTable: "procurementCategories",
+          kpiKeyOfTable: 'procurementCategories',
           columnHeaders: lksgModalColumnHeaders,
         },
       },
@@ -218,7 +218,7 @@ export function formatLksgProcurementCategoriesForDisplay(
  */
 export function formatLksgSubcontractingCompaniesForDisplay(
   input: { [key: string]: Array<string> } | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   let convertedValueForModal = null;
   if (!input) {
@@ -240,7 +240,7 @@ export function formatLksgSubcontractingCompaniesForDisplay(
         },
         data: {
           listOfRowContents: convertedValueForModal,
-          kpiKeyOfTable: "subcontractingCompanies",
+          kpiKeyOfTable: 'subcontractingCompanies',
           columnHeaders: lksgModalColumnHeaders,
         },
       },
@@ -255,7 +255,7 @@ export function formatLksgSubcontractingCompaniesForDisplay(
  */
 export function formatLksgProductionSitesForDisplay(
   input: LksgProductionSite[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
@@ -274,7 +274,7 @@ export function formatLksgProductionSitesForDisplay(
         },
         data: {
           listOfRowContents: input,
-          kpiKeyOfTable: "listOfProductionSites",
+          kpiKeyOfTable: 'listOfProductionSites',
           columnHeaders: lksgModalColumnHeaders,
         },
       },
@@ -293,7 +293,7 @@ interface LksgRiskOrViolationAssessmentDisplayFormat {
  * @returns the converted object
  */
 function convertLksgRiskOrViolationPositionForDisplay(
-  input: LksgRiskOrViolationAssessment[],
+  input: LksgRiskOrViolationAssessment[]
 ): LksgRiskOrViolationAssessmentDisplayFormat[] {
   return input.map((item) => {
     const humanizedItem: LksgRiskOrViolationAssessmentDisplayFormat = {
@@ -313,7 +313,7 @@ function convertLksgRiskOrViolationPositionForDisplay(
  */
 export function formatLksgRisksOrViolationsForDisplay(
   input: LksgRiskOrViolationAssessment[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
@@ -333,7 +333,7 @@ export function formatLksgRisksOrViolationsForDisplay(
           },
           data: {
             listOfRowContents: convertedValueForModal,
-            kpiKeyOfTable: "riskPositions",
+            kpiKeyOfTable: 'riskPositions',
             columnHeaders: lksgModalColumnHeaders,
           },
         },
@@ -354,7 +354,7 @@ interface LksgGrievanceMechanismsDisplayFormat {
  * @returns the converted object
  */
 function convertLksGrievanceMechanismsForDisplay(
-  input: LksgGrievanceAssessmentMechanism[],
+  input: LksgGrievanceAssessmentMechanism[]
 ): LksgGrievanceMechanismsDisplayFormat[] {
   return input.map((item) => {
     const humanizedItem: LksgGrievanceMechanismsDisplayFormat = {
@@ -375,7 +375,7 @@ function convertLksGrievanceMechanismsForDisplay(
  */
 export function formatLksgGrievanceMechanismsForDisplay(
   input: LksgGrievanceAssessmentMechanism[] | null | undefined,
-  fieldLabel: string,
+  fieldLabel: string
 ): AvailableMLDTDisplayObjectTypes {
   if (!input) {
     return MLDTDisplayObjectForEmptyString;
@@ -395,7 +395,7 @@ export function formatLksgGrievanceMechanismsForDisplay(
           },
           data: {
             listOfRowContents: humanizedInput,
-            kpiKeyOfTable: "grievanceMechanisms",
+            kpiKeyOfTable: 'grievanceMechanisms',
             columnHeaders: lksgModalColumnHeaders,
           },
         },

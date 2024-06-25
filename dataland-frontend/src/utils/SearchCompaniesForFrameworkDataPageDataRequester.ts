@@ -3,9 +3,9 @@
  * specific schema which is needed on the search page
  */
 
-import { ApiClientProvider } from "@/services/ApiClients";
-import { type BasicCompanyInformation, type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
-import type Keycloak from "keycloak-js";
+import { ApiClientProvider } from '@/services/ApiClients';
+import { type BasicCompanyInformation, type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
 
 export interface FrameworkDataSearchFilterInterface {
   companyNameFilter: string;
@@ -37,7 +37,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   sectorFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>,
   chunkSize?: number,
-  chunkIndex?: number,
+  chunkIndex?: number
 ): Promise<Array<BasicCompanyInformation>> {
   try {
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
@@ -48,7 +48,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
         countryCodeFilter,
         sectorFilter,
         chunkSize,
-        chunkIndex,
+        chunkIndex
       )
     ).data;
   } catch (error) {
@@ -67,7 +67,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
   searchString: string,
   keycloakPromise: Promise<Keycloak>,
-  chunkSize?: number,
+  chunkSize?: number
 ): Promise<Array<CompanyIdAndName>> {
   try {
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
@@ -97,7 +97,7 @@ export async function getNumberOfCompaniesForFrameworkDataSearchPage(
   frameworkFilter: Set<DataTypeEnum>,
   countryCodeFilter: Set<string>,
   sectorFilter: Set<string>,
-  keycloakPromise: Promise<Keycloak>,
+  keycloakPromise: Promise<Keycloak>
 ): Promise<number> {
   try {
     if (searchString.length + frameworkFilter.size + countryCodeFilter.size + sectorFilter.size == 0) {
@@ -108,7 +108,7 @@ export async function getNumberOfCompaniesForFrameworkDataSearchPage(
       searchString,
       frameworkFilter,
       countryCodeFilter,
-      sectorFilter,
+      sectorFilter
     );
     return response.data;
   } catch (error) {

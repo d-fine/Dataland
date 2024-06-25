@@ -1,17 +1,17 @@
 <script setup generic="KeyList extends string" lang="ts">
-import { computed, inject, type Ref } from "vue";
-import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { computed, inject, type Ref } from 'vue';
+import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import {
   type EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration,
   type MappedOptionalDecimal,
   type YearlyTimeseriesData,
-} from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesData";
+} from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesData';
 
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import ColumnGroup from "primevue/columngroup";
-import Row from "primevue/row";
-import { formatNumberToReadableFormat } from "@/utils/Formatter";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup';
+import Row from 'primevue/row';
+import { formatNumberToReadableFormat } from '@/utils/Formatter';
 
 interface EsgQuestionnaireYearlyDecimalTimeseriesDialogData<T extends string> {
   label: string;
@@ -32,7 +32,7 @@ interface YearsForDisplay {
   numberOfPrognosisYears: number;
 }
 
-const dialogRef = inject<Ref<DynamicDialogInstance>>("dialogRef");
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const dialogData = computed<EsgQuestionnaireYearlyDecimalTimeseriesDialogData<KeyList> | undefined>(() => {
   return dialogRef?.value?.data as EsgQuestionnaireYearlyDecimalTimeseriesDialogData<KeyList>;
 });
@@ -64,7 +64,7 @@ const tableData = computed<EsgQuestionnaireDecimalTimeseriesRow<KeyList>[]>(() =
       if (rowValueForYear) {
         row[year] = `${formatNumberToReadableFormat(rowValueForYear)} ${row.unitSuffix}`.trim();
       } else {
-        row[year] = "";
+        row[year] = '';
       }
     }
   }
@@ -115,16 +115,16 @@ const yearsForDisplay = computed<YearsForDisplay | undefined>(() => {
  */
 function getClassForTableRow(year: number): string[] {
   if (year == yearsForDisplay?.value?.reportingYear) {
-    return ["reporting-year-table-cell"];
+    return ['reporting-year-table-cell'];
   } else if (year == yearsForDisplay?.value?.allYearsSorted[0]) {
-    return ["first-column-border"];
+    return ['first-column-border'];
   }
   return [];
 }
 </script>
 
 <style scoped lang="scss">
-@import "src/assets/scss/variables.scss";
+@import 'src/assets/scss/variables.scss';
 .badge-light-gray {
   color: $aquamarine-dark;
   background: $paper-white;

@@ -31,13 +31,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from "vue";
-import type { Section } from "@/types/ContentTypes";
-import SlideShow from "@/components/general/SlideShow.vue";
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import type { Section } from '@/types/ContentTypes';
+import SlideShow from '@/components/general/SlideShow.vue';
 
 const { sections } = defineProps<{ sections?: Section[] }>();
-const aboutPrinciplesSection = computed(() => sections?.find((s) => s.title === "Our principles"));
-const sectionTitle = computed(() => aboutPrinciplesSection.value?.text.join(" ") ?? "");
+const aboutPrinciplesSection = computed(() => sections?.find((s) => s.title === 'Our principles'));
+const sectionTitle = computed(() => aboutPrinciplesSection.value?.text.join(' ') ?? '');
 const slides = computed(() => aboutPrinciplesSection.value?.cards ?? []);
 
 const slideWidth = ref(440);
@@ -48,12 +48,12 @@ const updateSlideWidth = (): void => {
 updateSlideWidth();
 
 onMounted(() => {
-  window.addEventListener("resize", updateSlideWidth);
+  window.addEventListener('resize', updateSlideWidth);
   updateSlideWidth();
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", updateSlideWidth);
+  window.removeEventListener('resize', updateSlideWidth);
 });
 </script>
 
@@ -204,11 +204,11 @@ onUnmounted(() => {
     &--left,
     &--right {
       &::before {
-        content: "";
+        content: '';
         display: block;
         width: 24px;
         height: 24px;
-        background-image: url("/static/icons/Arrow--right.svg");
+        background-image: url('/static/icons/Arrow--right.svg');
         background-size: contain;
         background-repeat: no-repeat;
       }

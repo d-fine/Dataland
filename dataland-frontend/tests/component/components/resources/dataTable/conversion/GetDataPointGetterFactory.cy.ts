@@ -1,12 +1,12 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
-import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from '@clients/backend';
+import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
+import { getDataPointGetterFactory } from '@/components/resources/dataTable/conversion/DataPoints';
+import { NO_DATA_PROVIDED } from '@/utils/Constants';
 
 /**
  * Some formatting function for testing
@@ -21,61 +21,61 @@ function defaultFormatter(dataPoint?: ExtendedDataPoint<string>): string | undef
 }
 
 const dummyBaseDocumentReference: BaseDocumentReference = {
-  fileReference: "reference",
-  fileName: "name",
+  fileReference: 'reference',
+  fileName: 'name',
 };
 
 const dummyExtendedDocumentReference: ExtendedDocumentReference = {
-  fileReference: "reference",
-  fileName: "name",
+  fileReference: 'reference',
+  fileName: 'name',
   page: 8,
 };
 
 const dummyField: Field = {
-  name: "Field Name",
-  description: "Field Description",
+  name: 'Field Name',
+  description: 'Field Description',
   showIf: () => true,
-  label: "Field Label",
-  component: "YesNoBaseDataPointFormField",
+  label: 'Field Label',
+  component: 'YesNoBaseDataPointFormField',
 };
 
-describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
-  describe("Tests when the data provides a simple data source", () => {
-    it("A formatted string should be displayed if only the value is provided", () => {
+describe('Unit test for the YesNoDataPointValueGetterFactory', () => {
+  describe('Tests when the data provides a simple data source', () => {
+    it('A formatted string should be displayed if only the value is provided', () => {
       const dataset = {
         data: <BaseDataPoint<string>>{
-          value: "Data",
+          value: 'Data',
         },
       };
-      const value = getDataPointGetterFactory<string>("data", dummyField, defaultFormatter)(dataset);
+      const value = getDataPointGetterFactory<string>('data', dummyField, defaultFormatter)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: "Data Formatted",
+        displayValue: 'Data Formatted',
       });
     });
-    it("A formatted string and the data source should be displayed if a complete base data point is provided", () => {
+    it('A formatted string and the data source should be displayed if a complete base data point is provided', () => {
       const dataset = {
         data: <BaseDataPoint<string>>{
-          value: "Data",
+          value: 'Data',
           dataSource: dummyBaseDocumentReference,
         },
       };
-      const value = getDataPointGetterFactory<string>("data", dummyField, defaultFormatter)(dataset);
+      const value = getDataPointGetterFactory<string>('data', dummyField, defaultFormatter)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DocumentLinkDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
         displayValue: {
-          label: "Data Formatted",
+          label: 'Data Formatted',
           dataSource: dummyBaseDocumentReference,
         },
       });
     });
   });
-  describe("Tests when the data is an extended data point", () => {
-    it("A placeholder string should be displayed if no data point value is provided", () => {
+  describe('Tests when the data is an extended data point', () => {
+    it('A placeholder string should be displayed if no data point value is provided', () => {
       assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(undefined, NO_DATA_PROVIDED);
     });
-    it("Data point display information should contain the datapoints meta information", () => {
-      assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject("Data", "Data Formatted");
+    it('Data point display information should contain the datapoints meta information', () => {
+      assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject('Data', 'Data Formatted');
     });
   });
 });
@@ -88,7 +88,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
  */
 function assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(
   dataPointValue: string | undefined,
-  expectedformattedValue: string,
+  expectedformattedValue: string
 ): void {
   const dataset = {
     data: <ExtendedDataPoint<string>>{
@@ -97,7 +97,7 @@ function assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(
       quality: QualityOptions.Audited,
     },
   };
-  const value = getDataPointGetterFactory<string>("data", dummyField, defaultFormatter)(dataset);
+  const value = getDataPointGetterFactory<string>('data', dummyField, defaultFormatter)(dataset);
   expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>>{
     displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
     displayValue: {

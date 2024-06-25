@@ -11,19 +11,19 @@ span {
 </style>
 
 <script lang="ts">
-import { splitStringBySearchMatch, type StringSplitSearchMatch } from "@/utils/StringHighlighter";
-import { defineComponent } from "vue";
+import { splitStringBySearchMatch, type StringSplitSearchMatch } from '@/utils/StringHighlighter';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "SearchResultHighlighter",
+  name: 'SearchResultHighlighter',
   props: {
     text: {
       type: String,
-      default: "",
+      default: '',
     },
     searchString: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   computed: {

@@ -2,10 +2,10 @@
 import {
   type FrontendFrameworkDefinition,
   type FrameworkViewConfiguration,
-} from "@/frameworks/BaseFrameworkDefinition";
-import { lksgViewConfiguration } from "@/frameworks/lksg/ViewConfig";
-import { BaseLksgFrameworkDefinition } from "@/frameworks/lksg/BaseFrameworkDefinition";
-import { type LksgData } from "@clients/backend";
+} from '@/frameworks/BaseFrameworkDefinition';
+import { lksgViewConfiguration } from '@/frameworks/lksg/ViewConfig';
+import { BaseLksgFrameworkDefinition } from '@/frameworks/lksg/BaseFrameworkDefinition';
+import { type LksgData } from '@clients/backend';
 
 export class FrontendLksgFrameworkDefinition
   extends BaseLksgFrameworkDefinition
@@ -13,7 +13,7 @@ export class FrontendLksgFrameworkDefinition
 {
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<LksgData> {
     return {
-      type: "MultiLayerDataTable",
+      type: 'MultiLayerDataTable',
       configuration: lksgViewConfiguration,
     };
   }

@@ -56,25 +56,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from "vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
-import BackButton from "@/components/general/BackButton.vue";
-import Card from "primevue/card";
-import CreateCompany from "@/components/forms/CreateCompany.vue";
-import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
-import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { type CompanyIdAndName } from "@clients/backend";
-import type Keycloak from "keycloak-js";
+import { defineComponent, inject, ref } from 'vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import BackButton from '@/components/general/BackButton.vue';
+import Card from 'primevue/card';
+import CreateCompany from '@/components/forms/CreateCompany.vue';
+import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from '@/utils/Constants';
+import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import contentData from '@/assets/content.json';
+import type { Content, Page } from '@/types/ContentTypes';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { type CompanyIdAndName } from '@clients/backend';
+import type Keycloak from 'keycloak-js';
 
 export default defineComponent({
-  name: "ChooseCompany",
+  name: 'ChooseCompany',
   components: {
     TheFooter,
     AuthorizationWrapper,
@@ -95,14 +95,14 @@ export default defineComponent({
   computed: {
     footerContent() {
       const content: Content = contentData;
-      const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+      const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
       return footerPage?.sections;
     },
   },
   setup() {
     return {
       option2Container: ref<Element>(),
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   mounted() {
@@ -118,7 +118,7 @@ export default defineComponent({
      */
     autoScrollToCreateACompanyForm() {
       if (this.option2Container) {
-        this.option2Container.scrollIntoView({ behavior: "smooth" });
+        this.option2Container.scrollIntoView({ behavior: 'smooth' });
       }
     },
     /**

@@ -35,17 +35,17 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import { FormKit } from "@formkit/vue";
-import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
-import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
-import PrimeButton from "primevue/button";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { defineComponent } from 'vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
+import { FormKit } from '@formkit/vue';
+import MultiSelectFormFieldBindData from '@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue';
+import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+import PrimeButton from 'primevue/button';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets';
+import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 
 export default defineComponent({
-  name: "LksgSubcontractingCompaniesFormField",
+  name: 'LksgSubcontractingCompaniesFormField',
   components: {
     FormKit,
     MultiSelectFormFieldBindData,
@@ -68,7 +68,7 @@ export default defineComponent({
       }
       if (Object.keys(this.industriesPerCountry).length > this.selectedCountries.length) {
         this.selectedCountries = Object.keys(this.industriesPerCountry).map((countryCode) =>
-          this.allCountries.find((country) => country.value == countryCode),
+          this.allCountries.find((country) => country.value == countryCode)
         );
       }
     },

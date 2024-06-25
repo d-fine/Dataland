@@ -1,5 +1,5 @@
-import { type BasePrivateFrameworkDefinition } from "@/frameworks/BasePrivateFrameworkDefinition";
-import { PrivateFrameworkDefinitions } from "@/frameworks/BasePrivateFrameworkRegistryImports";
+import { type BasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkDefinition';
+import { PrivateFrameworkDefinitions } from '@/frameworks/BasePrivateFrameworkRegistryImports';
 
 /**
  * Gets the base framework definition for a specific private framework identified by its identifier string
@@ -9,7 +9,7 @@ import { PrivateFrameworkDefinitions } from "@/frameworks/BasePrivateFrameworkRe
  * @returns the base framework definition
  */
 export function getBasePrivateFrameworkDefinition(
-  identifier: string,
+  identifier: string
 ): BasePrivateFrameworkDefinition<object> | undefined {
   for (const key in PrivateFrameworkDefinitions) {
     const frameworkDefinition = PrivateFrameworkDefinitions[key];

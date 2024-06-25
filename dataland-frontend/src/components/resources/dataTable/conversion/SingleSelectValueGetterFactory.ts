@@ -2,9 +2,9 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayObjectForEmptyString,
   MLDTDisplayComponentName,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { type Field } from "@/utils/GenericFrameworkTypes";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import { type Field } from '@/utils/GenericFrameworkTypes';
 
 /**
  * Returns a value factory that returns the value of the field as a string using the display mapping in the options field
@@ -15,7 +15,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
  */
 export function singleSelectValueGetterFactory(
   path: string,
-  field: Field,
+  field: Field
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {

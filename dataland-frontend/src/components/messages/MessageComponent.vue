@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "MessageComponent",
+  name: 'MessageComponent',
   props: {
     severity: {
       type: String,
@@ -34,7 +34,7 @@ export default defineComponent({
   },
   computed: {
     containerClass() {
-      return " p-message-" + this.severity;
+      return ' p-message-' + this.severity;
     },
   },
 });

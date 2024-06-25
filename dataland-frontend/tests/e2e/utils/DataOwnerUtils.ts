@@ -1,4 +1,4 @@
-import { CompanyDataControllerApi, Configuration, type CompanyDataOwners } from "@clients/backend";
+import { CompanyDataControllerApi, Configuration, type CompanyDataOwners } from '@clients/backend';
 
 /**
  * Method that sets a user as a data owner of the specified company
@@ -10,7 +10,7 @@ import { CompanyDataControllerApi, Configuration, type CompanyDataOwners } from 
 export async function postDataOwner(token: string, userId: string, companyId: string): Promise<CompanyDataOwners> {
   const apiResponse = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postDataOwner(
     companyId,
-    userId,
+    userId
   );
   return apiResponse.data;
 }

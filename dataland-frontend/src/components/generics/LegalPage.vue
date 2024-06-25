@@ -11,23 +11,23 @@
 </template>
 
 <script lang="ts">
-import TheFooter from "@/components/generics/TheNewFooter.vue";
-import TheHeader from "@/components/generics/TheNewHeader.vue";
-import contentData from "@/assets/content.json";
-import type { Content } from "@/types/ContentTypes";
-import { defineComponent } from "vue";
+import TheFooter from '@/components/generics/TheNewFooter.vue';
+import TheHeader from '@/components/generics/TheNewHeader.vue';
+import contentData from '@/assets/content.json';
+import type { Content } from '@/types/ContentTypes';
+import { defineComponent } from 'vue';
 
 const content: Content = contentData;
 
 export default defineComponent({
-  name: "LegalPage",
+  name: 'LegalPage',
   components: {
     TheHeader,
     TheFooter,
   },
   data() {
     return {
-      landingPage: content.pages.find((page) => page.url === "/"),
+      landingPage: content.pages.find((page) => page.url === '/'),
     };
   },
 });

@@ -1,10 +1,10 @@
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
-import { DataTypeEnum } from "@clients/backend";
-import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
-import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
-import { generateStoredDataRequestMessage } from "@e2e/fixtures/custom_mocks/StoredDataRequestMessageFaker";
-import { faker } from "@faker-js/faker";
-import { generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
+import { DataTypeEnum } from '@clients/backend';
+import { generateInt } from '@e2e/fixtures/common/NumberFixtures';
+import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures';
+import { generateStoredDataRequestMessage } from '@e2e/fixtures/custom_mocks/StoredDataRequestMessageFaker';
+import { faker } from '@faker-js/faker';
+import { generateArray, pickOneElement } from '@e2e/fixtures/FixtureUtils';
 
 const DEFAULT_TIME_OFFSET = 500;
 
@@ -19,37 +19,37 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Open,
-      "2021",
+      '2021',
       DataTypeEnum.Lksg,
-      "Mock-Company-Id",
-    ),
+      'Mock-Company-Id'
+    )
   );
   storedDataRequests.push(
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
-      "2022",
+      '2022',
       DataTypeEnum.Lksg,
-      "Mock-Company-Id",
-    ),
+      'Mock-Company-Id'
+    )
   );
   storedDataRequests.push(
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
-      "2024",
+      '2024',
       DataTypeEnum.Lksg,
-      "Mock-Company-Id",
-    ),
+      'Mock-Company-Id'
+    )
   );
   storedDataRequests.push(
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
-      "1996",
+      '1996',
       DataTypeEnum.EutaxonomyNonFinancials,
-      "550e8400-e29b-11d4-a716-446655440000",
-    ),
+      '550e8400-e29b-11d4-a716-446655440000'
+    )
   );
   return storedDataRequests;
 }
@@ -102,7 +102,7 @@ export function manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
   requestStatus?: RequestStatus,
   reportingPeriod?: string,
   dataType?: DataTypeEnum,
-  companyId?: string,
+  companyId?: string
 ): StoredDataRequest {
   input.requestStatus = requestStatus ?? input.requestStatus;
   input.reportingPeriod = reportingPeriod ?? input.reportingPeriod;
