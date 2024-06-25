@@ -116,7 +116,7 @@ sonar {
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/sme/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
@@ -145,7 +145,7 @@ sonar {
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/sme/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +
                 // -> no need to cover these two ViewConfigs because there are no custom fields
 
                 // backend

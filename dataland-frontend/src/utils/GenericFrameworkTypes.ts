@@ -5,7 +5,7 @@ import {
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
-  type SmeData,
+  type VsmeData,
   type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
 
@@ -49,6 +49,6 @@ export type FrameworkData =
   | EutaxonomyNonFinancialsData
   | LksgData
   | SfdrData
-  | SmeData
+  | VsmeData
   | EsgQuestionnaireData
   | PathwaysToParisData;

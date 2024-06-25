@@ -2,8 +2,8 @@ import {
   Configuration,
   type DataMetaInformation,
   type CompanyInformation,
-  type SmeData,
-  SmeDataControllerApi,
+  type VsmeData,
+  VsmeDataControllerApi,
 } from '@clients/backend';
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
 import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
@@ -170,7 +170,7 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
   });
 }
 /**
- * Uploads a single sme dataset for a company
+ * Uploads a single vsme dataset for a company
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -178,16 +178,18 @@ export async function uploadCompanyAndFrameworkDataForLegacyFrameworks<K extends
  * @param documents the documents to upload
  * @returns a promise on the created data meta information
  */
-export async function uploadSmeFrameworkData(
+export async function uploadVsmeFrameworkData(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: SmeData,
+  data: VsmeData,
   documents: File[]
 ): Promise<DataMetaInformation> {
   await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  const smeDataControllerApi = new SmeDataControllerApi(new Configuration({ accessToken: token }));
-
-  const response = await smeDataControllerApi.postSmeJsonAndDocuments({ companyId, reportingPeriod, data }, documents);
+  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
+  const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
+    { companyId, reportingPeriod, data },
+    documents
+  );
   return response.data;
 }

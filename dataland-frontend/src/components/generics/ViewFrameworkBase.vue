@@ -107,7 +107,7 @@ import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
 import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_EDIT_FUNCTIONALITY, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
@@ -197,7 +197,7 @@ export default defineComponent({
     isEditableByCurrentUser() {
       return (
         this.hasUserUploaderRights &&
-        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType) &&
+        FRAMEWORKS_WITH_EDIT_FUNCTIONALITY.includes(this.dataType) &&
         (!this.singleDataMetaInfoToDisplay ||
           this.singleDataMetaInfoToDisplay.currentlyActive ||
           this.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
@@ -300,7 +300,7 @@ export default defineComponent({
       ];
       const listOfDistinctAvailableAndViewableFrameworksForCompany: string[] = [];
       setOfAvailableFrameworksForCompany.forEach((dataType) => {
-        if (ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
+        if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
           listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
       });
