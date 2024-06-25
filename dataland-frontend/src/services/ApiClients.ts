@@ -4,10 +4,10 @@ import { QaControllerApi } from '@clients/qaservice';
 import type Keycloak from 'keycloak-js';
 import { ApiKeyControllerApi } from '@clients/apikeymanager';
 import {
-  RequestControllerApi,
-  type RequestControllerApiInterface,
   CompanyRolesControllerApi,
   type CompanyRolesControllerApiInterface,
+  RequestControllerApi,
+  type RequestControllerApiInterface,
 } from '@clients/communitymanager';
 import axios, { type AxiosInstance } from 'axios';
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from '@/utils/SessionTimeoutUtils';
