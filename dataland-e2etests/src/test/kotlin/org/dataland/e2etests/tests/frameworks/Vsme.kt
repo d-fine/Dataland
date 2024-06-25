@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsm
 import org.dataland.datalandbackend.openApiClient.model.CompanyReport
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
-import org.dataland.datalandbackend.openApiClient.model.YesNoNa
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.UPLOADER_USER_ID
