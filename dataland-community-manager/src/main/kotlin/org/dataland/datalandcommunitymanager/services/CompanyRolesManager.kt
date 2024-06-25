@@ -107,8 +107,8 @@ class CompanyRolesManager(
         companyId: String,
     ): List<CompanyRoleAssignmentEntity> {
         companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
-        return companyRoleAssignmentRepository.findByCompanyIdAndCompanyRoleAndUserId(
-            companyId = companyId, companyRole = companyRole, userId = null,
+        return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+            companyId = companyId, userId = null, companyRole = companyRole,
         )
     }
 

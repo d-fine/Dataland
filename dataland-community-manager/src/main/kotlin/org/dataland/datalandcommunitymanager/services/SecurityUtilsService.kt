@@ -99,8 +99,8 @@ class SecurityUtilsService(
         companyId: UUID,
     ): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name ?: return false
-        return companyRoleAssignmentRepository.findByCompanyIdAndCompanyRoleAndUserId(
-            companyId = companyId.toString(), companyRole = null, userId = userId,
+        return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+            companyId = companyId.toString(), userId = userId, companyRole = null,
         ).isNotEmpty()
     }
 
@@ -116,8 +116,8 @@ class SecurityUtilsService(
     ): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name ?: return false
         val userCompanyRoles =
-            companyRoleAssignmentRepository.findByCompanyIdAndCompanyRoleAndUserId(
-                companyId = companyId.toString(), companyRole = null, userId = userId,
+            companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = companyId.toString(), userId = userId, companyRole = null,
             )
         var hasUserPermission = false
         userCompanyRoles.forEach {
