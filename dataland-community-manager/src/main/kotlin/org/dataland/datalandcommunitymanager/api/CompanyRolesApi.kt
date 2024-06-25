@@ -158,7 +158,7 @@ interface CompanyRolesApi {
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/company-ownership/owner/{userId}"],
+        value = ["/company-ownership/owners/{userId}"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserRequestingForOwnId(#userId)")
     fun hasUserCompanyOwnerRole(
@@ -179,7 +179,7 @@ interface CompanyRolesApi {
         ],
     )
     @PostMapping(
-        value = ["/company-ownership/{companyId}"],
+        value = ["/company-ownership/companies/{companyId}"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyOwnershipRequest(
@@ -206,7 +206,7 @@ interface CompanyRolesApi {
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/company-ownership/{companyId}"],
+        value = ["/company-ownership/companies/{companyId}"],
     )
     fun hasCompanyAtLeastOneOwner(
         @PathVariable("companyId") companyId: UUID,

@@ -74,7 +74,7 @@ class CompanyRolesController(
 
     override fun hasUserCompanyOwnerRole(userId: UUID) {
         logger.info(
-            "Received a request to check if user with Id $userId is a owner of any company",
+            "Received a request to check if user with Id $userId is an owner of any company",
         )
         companyRolesManager.getCompanyRoleAssignmentsForRoleAndUser(
             CompanyRole.CompanyOwner,
