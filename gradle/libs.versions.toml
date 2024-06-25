@@ -8,7 +8,7 @@ io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1
 
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.0.2" }
 
-org-springframework-boot = { id = "org.springframework.boot", version = "3.2.5" }
+org-springframework-boot = { id = "org.springframework.boot", version = "3.3.0" }
 
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.0" }
 
@@ -20,7 +20,7 @@ org-sonarqube = { id = "org.sonarqube", version = "5.0.0.4638" }
 
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.8.0" }
 
-com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.4.1" }
+com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.4.2" }
 
 org-openapi-generator = { id = "org.openapi.generator", version = "7.5.0" }
 
@@ -35,6 +35,8 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.2
 [versions]
 
 kotlin = "1.9.23"
+##  ⬆ = "1.9.24"
+##  ⬆ = "2.0.0"
 
 okhttp3 = "4.12.0"
 
@@ -46,7 +48,7 @@ junit-jupiter = "5.10.2"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.7"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.8"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
@@ -123,7 +125,7 @@ spring-security-crypto = "org.springframework.security:spring-security-crypto:_"
 
 spring-security-web = "org.springframework.security:spring-security-web:_"
 
-jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.0.0"
+jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 
 bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
@@ -165,7 +167,7 @@ cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:3.0.0"
 
 cloudevents-core = "io.cloudevents:cloudevents-core:3.0.0"
 
-spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.1"
+spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.1.2"
 
 spring-amqp = "org.springframework.amqp:spring-amqp:_"
 
@@ -175,7 +177,7 @@ springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
 freemarker = "org.freemarker:freemarker:_"
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.13.0"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.14.0"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.7"
 
