@@ -119,12 +119,8 @@ class SecurityUtilsService(
             companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
                 companyId = companyId.toString(), userId = userId, companyRole = null,
             )
-        var hasUserPermission = false
-        userCompanyRoles.forEach {
-            if (roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true) {
-                hasUserPermission = true
-            }
+        return userCompanyRoles.any {
+            roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
         }
-        return hasUserPermission
     }
 }
