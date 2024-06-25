@@ -93,7 +93,7 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    override fun compileFramework(datalandProject: DatalandRepository, allPrivateFrameworks: List<String>) {
+    override fun compileFramework(datalandProject: DatalandRepository) {
         val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
         val diagnostics = context.getBean<DiagnosticManager>()
 
@@ -113,7 +113,7 @@ abstract class InDevelopmentPavedRoadFramework(
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
-        FrameworkRegistryImportsUpdater().update(datalandProject, allPrivateFrameworks)
+        FrameworkRegistryImportsUpdater().update(datalandProject)
         datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
         logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }

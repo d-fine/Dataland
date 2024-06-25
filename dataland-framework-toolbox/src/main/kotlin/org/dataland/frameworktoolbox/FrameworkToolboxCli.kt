@@ -15,9 +15,6 @@ class FrameworkToolboxCli {
 
     private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
-    private val allPrivateFrameworks = allPavedRoadFrameworks.filter {
-        it.isPrivateFramework
-    }.map { it.identifier }
 
     private val datalandProject = DatalandRepository(Path.of("./"))
 
@@ -42,7 +39,7 @@ class FrameworkToolboxCli {
     private fun buildAllFrameworks(args: Array<String>) {
         require(args.size == 1) { "Command 'all' does not support more than one argument" }
         allPavedRoadFrameworks.forEach {
-            it.compileFramework(datalandProject, allPrivateFrameworks)
+            it.compileFramework(datalandProject)
         }
     }
 
@@ -52,7 +49,7 @@ class FrameworkToolboxCli {
         requireNotNull(foundFramework) {
             "Could not find framework with identifier ${args[0]}"
         }
-        foundFramework.compileFramework(datalandProject, allPrivateFrameworks)
+        foundFramework.compileFramework(datalandProject)
     }
 
     private fun listAllFrameworks(args: Array<String>) {
