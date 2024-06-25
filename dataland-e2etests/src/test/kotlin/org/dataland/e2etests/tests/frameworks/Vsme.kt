@@ -67,7 +67,8 @@ class Vsme {
     @BeforeAll
     fun postCompanyAndSetDataOwnership() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.companyDataControllerApi.postDataOwner(
+        apiAccessor.companyDataControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
             UUID.fromString(companyId),
             UUID.fromString(UPLOADER_USER_ID),
         )
