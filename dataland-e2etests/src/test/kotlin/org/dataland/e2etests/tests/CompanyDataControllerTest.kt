@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
@@ -12,11 +13,13 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
 import java.util.*
@@ -30,6 +33,7 @@ class CompanyDataControllerTest {
         .getCompanyInformationWithRandomIdentifiers(1).first()
     private val checkOtherCompanyTrue = "Other Company true"
     private val checkOtherCompanyFalse = "Other Company false"
+    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
 
     @BeforeAll
     fun postTestDocuments() {
@@ -401,5 +405,54 @@ class CompanyDataControllerTest {
             apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
             "Dataland does not contain the posted company.",
         )
+    }
+
+    @Test
+    fun `check that dataUploader can patch contactDetails if company does not have companyOwner`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId = uploadModifiedBaseCompany(name="CompanyWithoutOwner", alternativeNames = null)
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                CompanyInformationPatch(companyContactDetails=listOf("Test"))
+            )
+        }
+
+    }
+
+    @Test
+    fun `check that dataUploader cannot patch contactDetails if company does have companyOwner`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId = uploadModifiedBaseCompany(name="CompanyWithOwner", alternativeNames = null)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), dataReaderUserId)
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val clientException = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(companyId, CompanyInformationPatch(companyContactDetails=listOf("Test")))
+        }
+    }
+
+    @Test
+    fun `check that companyOwner and dataAdmin can patch contactDetails`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId = uploadModifiedBaseCompany(name="CompanyWithoutOwner", alternativeNames = null)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), dataReaderUserId)
+
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                CompanyInformationPatch(companyContactDetails=listOf("Test"))
+            )
+        }
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                CompanyInformationPatch(companyContactDetails=listOf("Test"))
+            )
+        }
     }
 }
