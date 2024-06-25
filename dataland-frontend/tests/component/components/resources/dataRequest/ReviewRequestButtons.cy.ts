@@ -96,7 +96,9 @@ describe('Component tests for the data request review buttons', function (): voi
    * Mocks the community-manager answer for the request of the users data requests
    */
   function interceptUserRequestsOnMounted(): void {
-    const requestFor2022 = mockedRequests.find((it) => it.reportingPeriod == '2022');
+    const requestFor2022 = mockedRequests.find(
+      (it) => it.reportingPeriod == '2022' && it.datalandCompanyId == 'Mock-Company-Id'
+    );
     assert(requestFor2022 !== undefined);
 
     cy.intercept(`**/community/requests/${requestFor2022!.dataRequestId}`, {
