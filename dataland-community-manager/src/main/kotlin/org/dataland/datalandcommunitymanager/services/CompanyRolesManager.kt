@@ -98,7 +98,8 @@ class CompanyRolesManager(
     /**
      * Returns company role assignments for the specified companyRole and company
      * @param companyRole to filter for
-     * @param companyId for which the company role assignments are valid
+     * @param companyId to filter for
+     * @param userId to filter for
      * @returns the company role assignment entities
      */
     @Transactional
