@@ -8,32 +8,24 @@
       <slot></slot>
       <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
     </a>
-    <DocumentLink
-      v-else-if="dataPointProperties.dataSource"
-      :dataId="metaInfo.dataId"
-      :dataType="metaInfo.dataType"
-      :label="dataPointProperties.value ?? undefined"
-      :download-name="dataPointProperties.dataSource.fileName ?? dataPointProperties.dataSource.fileReference"
-      :file-reference="dataPointProperties.dataSource.fileReference"
-      show-icon
-    />
+    <div v-else-if="dataPointProperties.value">
+      <slot>{{ dataPointProperties.value }}</slot>
+    </div>
     <div v-else><slot></slot></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { type DataMetaInformation, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import DataPointDataTable from '@/components/general/DataPointDataTable.vue';
+import { type DataMetaInformation, type ExtendedDocumentReference } from '@clients/backend';
 
 export default defineComponent({
-  name: "DataPointWrapperDisplayComponent",
-  components: { DocumentLink },
+  name: 'DataPointWrapperDisplayComponent',
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointWrapperDisplayComponent>,
@@ -82,9 +74,7 @@ export default defineComponent({
       const dataSource = this.dataPointProperties.dataSource as ExtendedDocumentReference | undefined | null;
       const comment = this.dataPointProperties.comment;
       const quality = this.dataPointProperties.quality;
-      return (
-        comment != undefined || (quality != undefined && quality != QualityOptions.Na) || dataSource?.page != undefined
-      );
+      return comment != undefined || quality != undefined || dataSource != undefined;
     },
   },
 });

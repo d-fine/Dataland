@@ -12,21 +12,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import MultiSelect from "primevue/multiselect";
-import { MultiSelectFormProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { defineComponent, type PropType } from 'vue';
+import MultiSelect from 'primevue/multiselect';
+import { MultiSelectFormProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "MultiSelectFormElementBindData",
+  name: 'MultiSelectFormElementBindData',
   components: { MultiSelect },
-  emits: ["update:selectedItemsBind"],
+  emits: ['update:selectedItemsBind'],
   computed: {
     selections: {
       get(): Array<string> {
         return this.selectedItemsBind;
       },
       set(newValue: Array<string>) {
-        this.$emit("update:selectedItemsBind", newValue);
+        this.$emit('update:selectedItemsBind', newValue);
       },
     },
   },

@@ -18,14 +18,14 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent, inject } from "vue";
-import TabView from "primevue/tabview";
-import TabPanel from "primevue/tabpanel";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
-import type Keycloak from "keycloak-js";
+import { defineComponent, inject } from 'vue';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
+import type Keycloak from 'keycloak-js';
 
 export default defineComponent({
-  name: "DatasetsTabMenu",
+  name: 'DatasetsTabMenu',
   components: {
     TabView,
     TabPanel,
@@ -39,30 +39,30 @@ export default defineComponent({
   data: () => ({
     tabs: [
       {
-        label: "COMPANIES",
-        route: "/companies",
+        label: 'COMPANIES',
+        route: '/companies',
         isVisible: true,
       },
       {
-        label: "MY DATASETS",
-        route: "/datasets",
+        label: 'MY DATASETS',
+        route: '/datasets',
         isVisible: true,
       },
       {
-        label: "QA",
-        route: "/qualityassurance",
+        label: 'QA',
+        route: '/qualityassurance',
         isVisible: true,
       },
       {
-        label: "MY DATA REQUESTS",
-        route: "/requests",
+        label: 'MY DATA REQUESTS',
+        route: '/requests',
         isVisible: true,
       },
     ] as Tab[],
   }),
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
   created() {

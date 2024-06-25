@@ -2,124 +2,82 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "West Korey",
-			"headquartersPostalCode": "91575",
-			"sector": "lifetime value",
+			"headquarters": "Chula Vista",
+			"headquartersPostalCode": "45206",
+			"sector": "Energy",
 			"identifiers": {
 				"Lei": [
-					"CZgxycKSMys5zmyoQG34"
-				],
-				"Isin": [
-					"DNgRQ1c4ekMr"
-				],
-				"PermId": [],
-				"Ticker": [
-					"TdeV72P"
-				],
-				"Duns": [
-					"vbSk8rrkF"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"y4yWlyQMldFQllT"
+					"cLl6YCVqgRlz7csI0ueU"
 				]
 			},
-			"countryCode": "PH",
+			"countryCode": "AU",
 			"companyAlternativeNames": [
-				"Berge Group",
-				"Feeney Inc",
-				"Prohaska Group",
-				"Sporer - Reichel"
+				"Dicki, Weimann and Carter",
+				"Sauer LLC",
+				"Schneider Group",
+				"Schulist - Littel"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://fumbling-secretion.info/",
+			"companyLegalForm": null,
+			"website": "https://jumbo-substitution.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-10-29",
+					"reportingDate": "2024-09-12",
 					"sectors": [
-						"49.39",
-						"85.10",
-						"86"
+						"01.5",
+						"06.1"
 					],
-					"numberOfEmployees": 1754,
-					"fiscalYearStart": "2024-10-15",
+					"numberOfEmployees": 1634,
+					"fiscalYearStart": "2024-06-06",
 					"referencedReports": {
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-01-29",
-							"currency": "PEN"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-02-19",
-							"currency": "SBD"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-09-20",
-							"currency": "AOA"
-						},
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-06",
-							"currency": "HUF"
+							"publicationDate": "2023-11-05"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 68985.05,
-					"operatingCostInEur": 13441.8,
-					"capitalAssetsInEur": 80362.61
+					"revenueInEur": 48747.46,
+					"operatingCostInEur": 2839.3,
+					"capitalAssetsInEur": 35638.83
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between10And15Percent"
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 78809.71,
+						"value": 75457.08,
 						"dataSource": {
-							"page": 45,
-							"fileName": "SustainabilityReport",
+							"page": 727,
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "systems"
 						},
-						"comment": "parse online port",
+						"comment": "synthesize digital microchip",
 						"quality": "Estimated"
 					},
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMwh": 92040.88,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMwh": 75261.5,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 43996.44,
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 93780.29,
 					"naturalHazardsCovered": [
-						"Avalanche",
 						"EarthQuake",
-						"Flooding",
-						"Hail",
-						"Snow",
-						"Wind"
+						"Snow"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]

@@ -1,14 +1,14 @@
-import { type PrivateFrameworkDataApi, type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { type ApiClientProvider } from "@/services/ApiClients";
+import { type PrivateFrameworkDataApi, type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { type ApiClientProvider } from '@/services/ApiClients';
 import {
   getAllPrivateFrameworkIdentifiers,
   getBasePrivateFrameworkDefinition,
-} from "@/frameworks/BasePrivateFrameworkRegistry";
+} from '@/frameworks/BasePrivateFrameworkRegistry';
 import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
-} from "@/frameworks/BasePublicFrameworkRegistry";
-import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
+} from '@/frameworks/BasePublicFrameworkRegistry';
+import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 
 /**
  * Gets a framework data API for the framework specified by the identifier.
@@ -18,7 +18,7 @@ import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
  */
 export function getFrameworkDataApiForIdentifier(
   identifier: string,
-  apiClientProvider: ApiClientProvider,
+  apiClientProvider: ApiClientProvider
 ): PrivateFrameworkDataApi<object> | PublicFrameworkDataApi<object> | undefined {
   const privateFrameworkIdentifiers = getAllPrivateFrameworkIdentifiers();
   const publicFrameworkIdentifiers = getAllPublicFrameworkIdentifiers();

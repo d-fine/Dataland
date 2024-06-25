@@ -1,14 +1,14 @@
-import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
+import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
   MLDTDisplayObjectForEmptyString,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
-import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
-import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
+import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
+import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
+import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
+import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 /**
  * Checks if a given data point has a valid reference set
  * @param dataPoint the datapoint whose reference to check
@@ -33,7 +33,7 @@ export function getDataPointGetterFactory<
 >(
   path: string,
   field: Field,
-  formatter: (dataPoint?: D) => string | undefined,
+  formatter: (dataPoint?: D) => string | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
@@ -43,14 +43,14 @@ export function getDataPointGetterFactory<
     }
     const formattedValue = formatter(dataPoint);
     let displayValue: string;
-    if (formattedValue == undefined || formattedValue == "") {
+    if (formattedValue == undefined || formattedValue == '') {
       displayValue = NO_DATA_PROVIDED;
     } else {
       displayValue = formattedValue;
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
-      (dataPointAsExtendedDataPoint.quality != QualityOptions.Na && dataPointAsExtendedDataPoint.quality != null) ||
+      dataPointAsExtendedDataPoint.quality != null ||
       dataPointAsExtendedDataPoint.comment?.length ||
       dataPointAsExtendedDataPoint.dataSource?.page != null
     ) {
@@ -82,7 +82,7 @@ export function getDataPointGetterFactory<
 }
 
 interface DatapointProperties {
-  quality?: string;
+  quality?: string | null;
   dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
   comment?: string | null;
 }
@@ -97,21 +97,21 @@ interface DatapointProperties {
 export function wrapDisplayValueWithDatapointInformation(
   inputValue: AvailableMLDTDisplayObjectTypes,
   fieldLabel: string,
-  datapointProperties: DatapointProperties | undefined | null,
+  datapointProperties: DatapointProperties | undefined | null
 ): AvailableMLDTDisplayObjectTypes {
   if (doesAnyDataPointPropertyExist(datapointProperties)) {
     return {
       displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
       displayValue: {
         innerContents:
-          inputValue.displayValue == "" ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
-        quality: datapointProperties?.quality,
+          inputValue.displayValue == '' ? formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED) : inputValue,
+        quality: datapointProperties?.quality ?? undefined,
         comment: datapointProperties?.comment ?? undefined,
         dataSource: datapointProperties?.dataSource ?? undefined,
         fieldLabel: fieldLabel,
       },
     };
-  } else if (inputValue.displayValue == "") {
+  } else if (inputValue.displayValue == '') {
     return MLDTDisplayObjectForEmptyString;
   } else {
     return {
@@ -131,7 +131,7 @@ export function wrapDisplayValueWithDatapointInformation(
  */
 function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties | null | undefined): boolean {
   return <boolean>(
-    ((dataPointProperties?.quality != QualityOptions.Na && dataPointProperties?.quality != null) ||
+    (dataPointProperties?.quality != null ||
       dataPointProperties?.comment?.length ||
       (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0))
   );

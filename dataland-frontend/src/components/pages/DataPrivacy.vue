@@ -536,10 +536,10 @@
 </template>
 
 <script lang="ts">
-import LegalPage from "@/components/generics/LegalPage.vue";
+import LegalPage from '@/components/generics/LegalPage.vue';
 
 export default {
-  name: "DataPrivacy",
+  name: 'DataPrivacy',
   components: { LegalPage },
 };
 </script>

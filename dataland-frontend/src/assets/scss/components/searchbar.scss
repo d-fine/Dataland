@@ -22,7 +22,7 @@
       color: $brown-lighter;
 
       &::after {
-        content: "(Not available)";
+        content: '(Not available)';
         margin-left: 0.2rem;
         font-weight: $light-bold-weight;
         color: $input-text-color;
@@ -38,7 +38,7 @@
   // this important is to overwrite styles injected to panel directly
   max-height: 50vh !important;
   .p-autocomplete-items {
-    background:$input-text-bg;
+    background: $input-text-bg;
     padding: 0;
     .p-autocomplete-item {
       height: 3.5rem;

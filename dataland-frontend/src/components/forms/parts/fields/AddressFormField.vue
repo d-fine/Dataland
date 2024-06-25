@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import AddressFormElement from "@/components/forms/parts/elements/derived/AddressFormElement.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import AddressFormElement from '@/components/forms/parts/elements/derived/AddressFormElement.vue';
+import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "AddressFormField",
+  name: 'AddressFormField',
   components: { AddressFormElement, UploadFormHeader },
   props: BaseFormFieldProps,
 });

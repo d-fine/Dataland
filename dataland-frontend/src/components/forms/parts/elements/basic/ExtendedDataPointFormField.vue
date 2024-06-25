@@ -98,13 +98,11 @@
             <UploadFormHeader
               :label="`${label} Quality`"
               description="The level of confidence associated to the value."
-              :is-required="isDataQualityRequired"
             />
             <SingleSelectFormElement
               name="quality"
               v-model="qualityValue"
               :disabled="!isDataQualityRequired"
-              :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
               :options="computeQualityOption"
@@ -126,30 +124,30 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent, nextTick } from "vue";
-import InputSwitch from "primevue/inputswitch";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import { QualityOptions } from "@clients/backend";
-import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
-import { type ObjectType } from "@/utils/UpdateObjectUtils";
-import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
-import { type ExtendedDataPoint } from "@/utils/DataPoint";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { defineComponent, nextTick } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import { QualityOptions } from '@clients/backend';
+import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
+import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
+import { disabledOnMoreThanOne } from '@/utils/FormKitPlugins';
+import { type ExtendedDataPoint } from '@/utils/DataPoint';
+import { isValidFileName, noReportLabel } from '@/utils/DataSource';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
-  name: "ExtendedDataPointFormField",
+  name: 'ExtendedDataPointFormField',
   components: { SingleSelectFormElement, UploadFormHeader, FormKit, InputSwitch },
   inject: {
     injectReportsNameAndReferences: {
-      from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
+      from: 'namesAndReferencesOfAllCompanyReportsForTheDataset',
       default: {} as ObjectType,
     },
     injectlistOfFilledKpis: {
-      from: "listOfFilledKpis",
+      from: 'listOfFilledKpis',
       default: [] as Array<string>,
     },
   },
@@ -161,8 +159,8 @@ export default defineComponent({
         label: qualityOption,
         value: qualityOption,
       })),
-      qualityValue: "NA",
-      commentValue: "",
+      qualityValue: null as null | string,
+      commentValue: '',
       currentReportValue: null as string | null,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
@@ -187,11 +185,7 @@ export default defineComponent({
       return this.isDataValueProvided;
     },
     computeQualityOption(): object {
-      if (!this.isDataValueProvided) {
-        return this.qualityOptions;
-      } else {
-        return this.qualityOptions.filter((qualityOption) => qualityOption.value !== QualityOptions.Na);
-      }
+      return this.qualityOptions;
     },
     reportsName(): string[] {
       return getFileName(this.injectReportsNameAndReferences);
@@ -219,7 +213,7 @@ export default defineComponent({
     },
     dataTest: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   watch: {
@@ -243,7 +237,7 @@ export default defineComponent({
      * @param newCheckboxValue value after changing value that must be reflected in checkboxes
      */
     setCheckboxValue(newCheckboxValue: string) {
-      if (newCheckboxValue && newCheckboxValue !== "") {
+      if (newCheckboxValue && newCheckboxValue !== '') {
         this.checkboxValue = [newCheckboxValue];
       }
     },
@@ -253,9 +247,7 @@ export default defineComponent({
      */
     handleBlurValue(isDataValueProvided: boolean) {
       if (!isDataValueProvided && !this.isYesNoVariant) {
-        this.qualityValue = QualityOptions.Na;
-      } else if (this.qualityValue === QualityOptions.Na) {
-        this.qualityValue = "";
+        this.qualityValue = null;
       }
     },
     /**

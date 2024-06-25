@@ -947,402 +947,6 @@
         ]
       }
     },
-    "/companies/{companyId}/data-ownership-requests": {
-      "post": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Request data ownership for a company.",
-        "description": "Request data ownership for one of the existing company on Dataland.",
-        "operationId": "postDataOwnershipRequest",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "comment",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully requested data ownership."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/{companyId}/data-owners/{userId}": {
-      "post": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Add a new data owner to a company.",
-        "description": "A new data owner is added to the existing list for the specified company.",
-        "operationId": "postDataOwner",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully added data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Delete a data owner from a specified company.",
-        "description": "An existing data owner is deleted from the existing list for the specified company.",
-        "operationId": "deleteDataOwner",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully deleted data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "head": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Validation of a user-company combination with regards to data ownership.",
-        "description": "Checks whether a user is data owner of a company.",
-        "operationId": "isUserDataOwnerForCompany",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The specified user is data owner of the company."
-          },
-          "404": {
-            "description": "Either the specified company does not exist on Dataland or the user isn\u0027t data owner of that company."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/{companyId}/data-owners": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve data owner(s) of a company.",
-        "description": "Get a list of data owner(s) for the specified company.",
-        "operationId": "getDataOwners",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Successfully retrieved data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "head": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Validation if data owners exists for the specified company.",
-        "description": "Checks whether company has data owners or not",
-        "operationId": "hasCompanyDataOwner",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The specified company has data owner(s)."
-          },
-          "404": {
-            "description": "The specified company has no data owner(s) yet"
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies/identifiers/{identifierType}/{identifier}": {
       "get": {
         "tags": [
@@ -3910,38 +3514,15 @@
             "type": "string",
             "nullable": true
           },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
+          "publicationDate": {
             "type": "string",
             "format": "date",
             "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
           }
         },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
-          }
-        }
+        "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
       },
       "ExtendedDataPointBigDecimal": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -3949,7 +3530,12 @@
             "nullable": true
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -4006,8 +3592,7 @@
           "Audited",
           "Reported",
           "Estimated",
-          "Incomplete",
-          "NA"
+          "Incomplete"
         ]
       },
       "SmeData": {
@@ -4088,15 +3673,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -4266,50 +3843,6 @@
           "No"
         ]
       },
-      "YesNoNa": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No",
-          "NA"
-        ]
-      },
-      "BaseDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "type": "string"
-          }
-        }
-      },
       "CompanyAssociatedDataSfdrData": {
         "required": [
           "companyId",
@@ -4330,9 +3863,6 @@
         }
       },
       "CurrencyDataPoint": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -4340,7 +3870,12 @@
             "nullable": true
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -4361,9 +3896,6 @@
         }
       },
       "ExtendedDataPointBigInteger": {
-        "required": [
-          "quality"
-        ],
         "type": "object",
         "properties": {
           "value": {
@@ -4371,7 +3903,12 @@
             "nullable": true
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -4387,22 +3924,24 @@
           }
         }
       },
-      "ExtendedDataPointYesNo": {
-        "required": [
-          "quality"
-        ],
+      "ExtendedDataPointYesNoNoEvidenceFound": {
         "type": "object",
         "properties": {
           "value": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/YesNoNoEvidenceFound"
               }
             ]
           },
           "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
           },
           "comment": {
             "type": "string",
@@ -4505,7 +4044,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -4513,7 +4052,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -4521,7 +4060,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -4529,7 +4068,63 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "manufactureOfAgrochemicalPesticidesProducts": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "landDegradationDesertificationSoilSealingExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "sustainableAgriculturePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "sustainableOceansAndSeasPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "threatenedSpeciesExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "biodiversityProtectionPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
+              }
+            ]
+          },
+          "deforestationPolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -4566,7 +4161,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -4989,6 +4584,22 @@
               }
             ]
           },
+          "scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5025,7 +4636,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -5042,67 +4653,11 @@
               }
             ]
           },
-          "manufactureOfAgrochemicalPesticidesProducts": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
-              }
-            ]
-          },
-          "landDegradationDesertificationSoilSealingExposure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
-              }
-            ]
-          },
-          "sustainableAgriculturePolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "sustainableOceansAndSeasPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
           "nonRecycledWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "threatenedSpeciesExposure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
-              }
-            ]
-          },
-          "biodiversityProtectionPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "deforestationPolicy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           }
@@ -5147,7 +4702,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5155,7 +4710,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -5197,23 +4752,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
-          },
-          "scopeOfEntities": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -5536,7 +5075,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           }
@@ -5549,7 +5088,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5557,7 +5096,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5565,7 +5104,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5573,7 +5112,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5581,7 +5120,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5602,7 +5141,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5610,7 +5149,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5618,7 +5157,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5626,7 +5165,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5634,7 +5173,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5642,7 +5181,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5650,7 +5189,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5658,7 +5197,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5666,7 +5205,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5674,7 +5213,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5682,7 +5221,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5690,7 +5229,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5698,7 +5237,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5706,7 +5245,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5714,7 +5253,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5722,7 +5261,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5730,7 +5269,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5786,7 +5325,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5794,7 +5333,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5818,7 +5357,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5826,7 +5365,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5834,7 +5373,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/ExtendedDataPointYesNoNoEvidenceFound"
               }
             ]
           },
@@ -5869,6 +5408,50 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
+          }
+        }
+      },
+      "YesNoNoEvidenceFound": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NoEvidenceFound"
+        ]
+      },
+      "BaseDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "type": "string"
           }
         }
       },
@@ -9198,6 +8781,14 @@
           "NoneOfTheAbove"
         ]
       },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
+      },
       "BaseDataPointString": {
         "type": "object",
         "properties": {
@@ -11698,15 +11289,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -12363,15 +11946,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -14144,24 +13719,6 @@
           }
         }
       },
-      "CompanyDataOwners": {
-        "required": [
-          "companyId",
-          "dataOwners"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "dataOwners": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -14412,10 +13969,6 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "headquarters": {
             "type": "string"
           },
@@ -14427,6 +13980,10 @@
           },
           "companyName": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",

@@ -1,7 +1,7 @@
-import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
-import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
-import type Keycloak from "keycloak-js";
-import { useSharedSessionStateStore } from "@/stores/Stores";
+import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from '@/utils/Constants';
+import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
+import type Keycloak from 'keycloak-js';
+import { useSharedSessionStateStore } from '@/stores/Stores';
 
 export enum SessionDialogMode {
   SessionWarning,
@@ -20,7 +20,7 @@ const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_
  */
 export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
   keycloak: Keycloak,
-  forceStoringValues = false,
+  forceStoringValues = false
 ): Promise<void> {
   const hasTokenBeenUpdated = await keycloak.updateToken(60);
 
@@ -45,13 +45,13 @@ export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
  */
 export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
-  onSurpassingExpiredSessionTimestampCallback: () => void,
+  onSurpassingExpiredSessionTimestampCallback: () => void
 ): number {
   const functionIdOfSetInterval = window.setInterval(() => {
     const currentTimestampInMs = new Date().getTime();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
-      logoutAndRedirectToUri(keycloak, "");
+      logoutAndRedirectToUri(keycloak, '');
     } else if (currentTimestampInMs >= sessionWarningTimestamp) {
       clearInterval(functionIdOfSetInterval);
       onSurpassingExpiredSessionTimestampCallback();
@@ -74,8 +74,8 @@ export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
     );
   } else {
     throw Error(
-      "No expiry timestamp for the current refresh token could be found in the store. " +
-        "This is not acceptable for running Dataland.",
+      'No expiry timestamp for the current refresh token could be found in the store. ' +
+        'This is not acceptable for running Dataland.'
     );
   }
 }

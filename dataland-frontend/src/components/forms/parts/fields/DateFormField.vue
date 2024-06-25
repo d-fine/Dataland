@@ -13,13 +13,13 @@
 
 <script lang="ts">
 // @ts-nocheck
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { defineComponent } from "vue";
-import DateFormElement from "@/components/forms/parts/elements/basic/DateFormElement.vue";
-import { DateFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { defineComponent } from 'vue';
+import DateFormElement from '@/components/forms/parts/elements/basic/DateFormElement.vue';
+import { DateFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
 export default defineComponent({
-  name: "DateFormField",
+  name: 'DateFormField',
   components: { UploadFormHeader, DateFormElement },
   props: DateFormFieldProps,
 });

@@ -8,7 +8,7 @@
       v-model="dataPointIsAvailable"
     />
     <h5 data-test="dataPointToggleTitle" class="ml-2">
-      {{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}
+      {{ dataPointIsAvailable ? 'Data point is available' : 'Data point is not available' }}
     </h5>
   </div>
   <div v-show="dataPointIsAvailable">
@@ -122,18 +122,13 @@
 
     <!-- Data quality -->
     <div class="form-field">
-      <UploadFormHeader
-        label="Data quality"
-        description="The level of confidence associated to the value."
-        :is-required="true"
-      />
+      <UploadFormHeader label="Data quality" description="The level of confidence associated to the value." />
       <div class="md:col-6 col-12 p-0">
         <SingleSelectFormElement
           :disabled="!dataPointIsAvailable"
           data-test="qualityValue"
           v-model="currentQualityValue"
           name="quality"
-          validation="required"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="qualityOptions"
@@ -152,20 +147,20 @@
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent } from "vue";
-import InputSwitch from "primevue/inputswitch";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { FormKit } from "@formkit/vue";
-import { QualityOptions } from "@clients/backend";
-import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
-import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
-import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { defineComponent } from 'vue';
+import InputSwitch from 'primevue/inputswitch';
+import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
+import { FormKit } from '@formkit/vue';
+import { QualityOptions } from '@clients/backend';
+import DataPointHeader from '@/components/forms/parts/kpiSelection/DataPointHeader.vue';
+import { getFileName, getFileReferenceByFileName } from '@/utils/FileUploadUtils';
+import { isValidFileName, noReportLabel } from '@/utils/DataSource';
+import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 
 export default defineComponent({
-  name: "DataPointFormWithToggle",
+  name: 'DataPointFormWithToggle',
   components: { SingleSelectFormElement, DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
-  emits: ["dataPointAvailableToggle"],
+  emits: ['dataPointAvailableToggle'],
   data: () => ({
     isMounted: false,
     dataPointIsAvailable: true,
@@ -173,16 +168,16 @@ export default defineComponent({
       label: qualityOption,
       value: qualityOption,
     })),
-    currentAmountValue: "",
-    currentValue: "",
-    currentReportValue: "",
-    currentPageValue: "",
-    currentQualityValue: "",
-    amountValueBeforeDataPointWasDisabled: "",
-    valueBeforeDataPointWasDisabled: "",
-    reportValueBeforeDataPointWasDisabled: "",
-    pageValueBeforeDataPointWasDisabled: "",
-    qualityValueBeforeDataPointWasDisabled: "",
+    currentAmountValue: '',
+    currentValue: '',
+    currentReportValue: '',
+    currentPageValue: '',
+    currentQualityValue: null as string | null,
+    amountValueBeforeDataPointWasDisabled: '',
+    valueBeforeDataPointWasDisabled: '',
+    reportValueBeforeDataPointWasDisabled: '',
+    pageValueBeforeDataPointWasDisabled: '',
+    qualityValueBeforeDataPointWasDisabled: null as string | null,
     noReportLabel: noReportLabel,
     isValidFileName: isValidFileName,
   }),
@@ -194,11 +189,11 @@ export default defineComponent({
         this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
         this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
-        this.currentAmountValue = "";
-        this.currentValue = "";
-        this.currentReportValue = "";
-        this.currentPageValue = "";
-        this.currentQualityValue = "NA";
+        this.currentAmountValue = '';
+        this.currentValue = '';
+        this.currentReportValue = '';
+        this.currentPageValue = '';
+        this.currentQualityValue = null;
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
         this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
@@ -233,8 +228,8 @@ export default defineComponent({
       default: null,
     },
     valueType: {
-      type: String as () => "percent" | "number",
-      default: "percent",
+      type: String as () => 'percent' | 'number',
+      default: 'percent',
     },
     reportsNameAndReferences: {
       type: Object,

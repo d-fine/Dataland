@@ -13,16 +13,16 @@
 </style>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import {
   type MLDTDisplayComponentName,
   type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+} from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 
 const CUTOFF_CHARACTER_COUNT = 200;
 
 export default defineComponent({
-  name: "FreeTextDisplayComponent",
+  name: 'FreeTextDisplayComponent',
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.FreeTextDisplayComponent>,
@@ -41,7 +41,7 @@ export default defineComponent({
       return this.content.displayValue.slice(0, CUTOFF_CHARACTER_COUNT);
     },
     toggleText(): string {
-      return this.expanded ? "Show less" : "Show more";
+      return this.expanded ? 'Show less' : 'Show more';
     },
   },
 });

@@ -1,62 +1,62 @@
 // @ts-nocheck
-import ReviewRequestButtonsComponent from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
-import { checkEmailFieldsAndCheckBox } from "@ct/testUtils/EmailDetails";
-import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-describe("Component tests for the data request review buttons", function (): void {
-  const mockCompanyId: string = "Mock-Company-Id";
-  const parentComponentOfEmailDetails = "updateRequestModal";
-  const triggerComponentForEmailDetails = "updateRequestButton";
+import ReviewRequestButtonsComponent from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
+import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
+import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+describe('Component tests for the data request review buttons', function (): void {
+  const mockCompanyId: string = 'Mock-Company-Id';
+  const parentComponentOfEmailDetails = 'updateRequestModal';
+  const triggerComponentForEmailDetails = 'updateRequestButton';
   const messageHistory = [
     {
-      contacts: ["Franz69@example.com"],
-      message: "navigate online bandwidth",
+      contacts: ['Franz69@example.com'],
+      message: 'navigate online bandwidth',
       creationTimestamp: 2710,
     },
   ];
   let mockedRequests: StoredDataRequest[];
   before(() => {
-    cy.fixture("DataRequestsMock").then((jsonContent) => {
+    cy.fixture('DataRequestsMock').then((jsonContent) => {
       mockedRequests = jsonContent as Array<StoredDataRequest>;
     });
   });
 
-  it("Check review functionality", function () {
+  it('Check review functionality', function () {
     interceptUserRequestsOnMounted();
     interceptPatchRequestsOnMounted();
 
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
-      ["2022", {} as DataMetaInformation],
+      ['2022', {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-    checkForReviewButtonsPopUpModal("successText");
+    checkForReviewButtonsPopUpModal('successText');
   });
 
-  it("Check review functionality with error message", function () {
+  it('Check review functionality with error message', function () {
     interceptUserRequestsOnMounted();
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
-      ["2022", {} as DataMetaInformation],
+      ['2022', {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-    checkForReviewButtonsPopUpModal("noSuccessText");
+    checkForReviewButtonsPopUpModal('noSuccessText');
   });
 
-  it("Check review functionality with multiple reporting periods", function () {
+  it('Check review functionality with multiple reporting periods', function () {
     interceptUserRequestsOnMounted();
     interceptPatchRequestsOnMounted();
 
     const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
-      ["2020", {} as DataMetaInformation],
-      ["2021", {} as DataMetaInformation],
-      ["2022", {} as DataMetaInformation],
+      ['2020', {} as DataMetaInformation],
+      ['2021', {} as DataMetaInformation],
+      ['2022', {} as DataMetaInformation],
     ]);
     mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
 
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod("resolveRequestButton", "reOpenRequestButton");
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod('resolveRequestButton', 'reOpenRequestButton');
 
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod("reOpenRequestButton", "resolveRequestButton");
+    checkForReviewButtonsAndClickOnDropDownReportingPeriod('reOpenRequestButton', 'resolveRequestButton');
   });
   /**
    * Checks for pop up modal
@@ -64,14 +64,14 @@ describe("Component tests for the data request review buttons", function (): voi
    */
   function checkForReviewButtonsPopUpModal(expectedPopUp: string): void {
     const popUpdataTestId = `[data-test="${expectedPopUp}"]`;
-    cy.get('[data-test="resolveRequestButton"]').should("exist").click();
-    cy.get(popUpdataTestId).should("exist");
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    cy.get('[data-test="resolveRequestButton"]').should('exist').click();
+    cy.get(popUpdataTestId).should('exist');
+    cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
 
-    cy.get('[data-test="reOpenRequestButton"]').should("exist").click();
+    cy.get('[data-test="reOpenRequestButton"]').should('exist').click();
     checkTheUpdateRequestModal();
-    cy.get(popUpdataTestId).should("exist");
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    cy.get(popUpdataTestId).should('exist');
+    cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
   }
   /**
    * Checks dropdown functionality of request review button
@@ -80,23 +80,25 @@ describe("Component tests for the data request review buttons", function (): voi
    */
   function checkForReviewButtonsAndClickOnDropDownReportingPeriod(
     buttonToClick: string,
-    buttonNotToClick: string,
+    buttonNotToClick: string
   ): void {
-    cy.get(`[data-test="${buttonNotToClick}"]`).should("exist");
-    cy.get(`[data-test="${buttonToClick}"]`).should("exist").click();
+    cy.get(`[data-test="${buttonNotToClick}"]`).should('exist');
+    cy.get(`[data-test="${buttonToClick}"]`).should('exist').click();
 
-    cy.get('[data-test="reporting-periods"] a').contains("2024").should("not.exist");
-    cy.get('[data-test="reporting-periods"] a').contains("2020").should("not.have.class", "link");
-    cy.get('[data-test="reporting-periods"] a').contains("2021").should("not.have.class", "link");
-    cy.get('[data-test="reporting-periods"] a').contains("2022").should("have.class", "link").click();
-    if (buttonToClick == "reOpenRequestButton") checkTheUpdateRequestModal();
-    cy.get('button[aria-label="CLOSE"]').should("be.visible").click();
+    cy.get('[data-test="reporting-periods"] a').contains('2024').should('not.exist');
+    cy.get('[data-test="reporting-periods"] a').contains('2020').should('not.have.class', 'link');
+    cy.get('[data-test="reporting-periods"] a').contains('2021').should('not.have.class', 'link');
+    cy.get('[data-test="reporting-periods"] a').contains('2022').should('have.class', 'link').click();
+    if (buttonToClick == 'reOpenRequestButton') checkTheUpdateRequestModal();
+    cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
   }
   /**
    * Mocks the community-manager answer for the request of the users data requests
    */
   function interceptUserRequestsOnMounted(): void {
-    const requestFor2022 = mockedRequests.find((it) => it.reportingPeriod == "2022");
+    const requestFor2022 = mockedRequests.find(
+      (it) => it.reportingPeriod == '2022' && it.datalandCompanyId == 'Mock-Company-Id'
+    );
     assert(requestFor2022 !== undefined);
 
     cy.intercept(`**/community/requests/${requestFor2022!.dataRequestId}`, {
@@ -104,10 +106,10 @@ describe("Component tests for the data request review buttons", function (): voi
         messageHistory: messageHistory,
       },
       status: 200,
-    }).as("fetchSingleDataRequests");
+    }).as('fetchSingleDataRequests');
     cy.intercept(`**/community/requests/user`, {
       body: mockedRequests,
-    }).as("fetchUserRequests");
+    }).as('fetchUserRequests');
   }
   /**
    * Mocks the answer for patching the request status
@@ -118,13 +120,13 @@ describe("Component tests for the data request review buttons", function (): voi
         requestStatus: RequestStatus.Resolved,
       } as StoredDataRequest,
       status: 200,
-    }).as("closeUserRequest");
+    }).as('closeUserRequest');
     cy.intercept(`**/requestStatus?requestStatus=Open**`, {
       body: {
         requestStatus: RequestStatus.Open,
       } as StoredDataRequest,
       status: 200,
-    }).as("reOpenUserRequest");
+    }).as('reOpenUserRequest');
   }
   /**
    * Mount review request button component with given props
@@ -135,7 +137,7 @@ describe("Component tests for the data request review buttons", function (): voi
   function mountReviewRequestButtonsWithProps(
     companyId: string,
     framework: DataTypeEnum,
-    map: Map<string, DataMetaInformation>,
+    map: Map<string, DataMetaInformation>
   ): void {
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
@@ -153,20 +155,20 @@ describe("Component tests for the data request review buttons", function (): voi
    */
   function checkTheUpdateRequestModal(): void {
     cy.get('[data-test="updateRequestTabMenu"]')
-      .should("exist")
+      .should('exist')
       .within(() => {
-        cy.contains("button", "UPDATE REQUEST").should("exist");
-        cy.contains("button", "VIEW HISTORY").should("exist").click({ force: true });
+        cy.contains('button', 'UPDATE REQUEST').should('exist');
+        cy.contains('button', 'VIEW HISTORY').should('exist').click({ force: true });
       });
     cy.get('[data-test="viewHistoryModal"]')
-      .should("exist")
-      .should("be.visible")
+      .should('exist')
+      .should('be.visible')
       .within(() => {
         checkMessageHistory();
       });
     cy.get('[data-test="updateRequestTabMenu"]')
-      .contains("button", "UPDATE REQUEST")
-      .should("exist")
+      .contains('button', 'UPDATE REQUEST')
+      .should('exist')
       .click({ force: true });
     checkEmailFieldsAndCheckBox(parentComponentOfEmailDetails, triggerComponentForEmailDetails);
   }
@@ -176,10 +178,10 @@ describe("Component tests for the data request review buttons", function (): voi
   function checkMessageHistory(): void {
     messageHistory.forEach((message) => {
       message.contacts.forEach((contact) => {
-        cy.contains(contact).should("exist");
+        cy.contains(contact).should('exist');
       });
-      cy.contains(message.message).should("exist");
-      cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should("exist");
+      cy.contains(message.message).should('exist');
+      cy.contains(convertUnixTimeInMsToDateString(message.creationTimestamp)).should('exist');
     });
   }
 });
