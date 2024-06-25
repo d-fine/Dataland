@@ -15,12 +15,16 @@ class FrameworkRegistryImportsUpdater {
     /**
      * Generate the FrameworkRegistryImports.ts file in the dataland frontend
      */
-    fun update(repository: DatalandRepository, allPrivateFrameworkIdentifiers: List<String>) {
+    fun update(repository: DatalandRepository) {
         val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
         val allRegisteredFrameworks = pathToFrameworkDirectory.toFile().listFiles {
                 file ->
             file.isDirectory && file.listFiles()?.any { it.name == "BaseFrameworkDefinition.ts" } ?: false
         }!!
+        val allRegisteredPrivateFrameworks = allRegisteredFrameworks.filter {
+            (it.toPath() / "BaseFrameworkDefinition.ts").toFile().readText()
+                .contains("implements BasePrivateFrameworkDefinition")
+        }.map { it.name }
 
         val freeMarkerContextForAllFrameworks = mapOf(
             "frameworks" to allRegisteredFrameworks
@@ -33,21 +37,21 @@ class FrameworkRegistryImportsUpdater {
                 },
         )
         val publicFrameworkIdentifier = allRegisteredFrameworks.map { it.name }
-            .subtract(allPrivateFrameworkIdentifiers.toSet()).toList()
+            .subtract(allRegisteredPrivateFrameworks.toSet()).toList()
         writeAllTestFiles(
-            repository, allPrivateFrameworkIdentifiers, freeMarkerContextForAllFrameworks,
+            repository, allRegisteredPrivateFrameworks, freeMarkerContextForAllFrameworks,
             publicFrameworkIdentifier,
         )
     }
 
     private fun writeAllTestFiles(
         repository: DatalandRepository,
-        allPrivateFrameworks: List<String>,
+        privateFrameworkNames: List<String>,
         freeMarkerContextForAllFrameworks: Map<String, List<Map<String, String>>>,
         publicFrameworkNames: List<String>,
     ) {
         val freemarkerContextForAllPrivateFrameworks = createFreeMarkerContextFile(
-            allPrivateFrameworks, "privateFrameworks",
+            privateFrameworkNames, "privateFrameworks",
         )
         val freemarkerContextForPublicFrameworks = createFreeMarkerContextFile(
             publicFrameworkNames, "publicFrameworks",
