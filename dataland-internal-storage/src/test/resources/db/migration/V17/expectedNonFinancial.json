@@ -1,0 +1,17 @@
+{
+  "general": {
+    "fiscalYearEnd": "2024-05-08",
+    "assurance": {
+      "value": "None",
+      "provider": null,
+      "dataSource": null
+    },
+    "referencedReports": {
+      "SustainabilityReport": {
+        "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "fileName": "SustainabilityReport",
+        "publicationDate": null
+      }
+    }
+  }
+}

@@ -10,9 +10,10 @@ import { uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { postDataOwner } from '@e2e/utils/DataOwnerUtils';
+import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
 import { admin_userId } from '@e2e/utils/Cypress';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
+import { CompanyRole } from '@clients/communitymanager';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
   config: Configuration
@@ -184,7 +185,7 @@ export async function uploadSmeFrameworkData(
   data: SmeData,
   documents: File[]
 ): Promise<DataMetaInformation> {
-  await postDataOwner(token, admin_userId, companyId);
+  await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
   const smeDataControllerApi = new SmeDataControllerApi(new Configuration({ accessToken: token }));
 
   const response = await smeDataControllerApi.postSmeJsonAndDocuments({ companyId, reportingPeriod, data }, documents);
