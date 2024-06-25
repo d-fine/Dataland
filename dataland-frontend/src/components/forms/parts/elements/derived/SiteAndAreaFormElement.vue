@@ -21,11 +21,6 @@
     description="Please specify the latitude geocoordinate of the site"
     input-class="col-4 pr-0"
   />
-  <FreeTextFormField
-    name="biodiversitySensitiveArea"
-    label="Biodiversity Sensitive Areae"
-    description="Please specify the biodiversity sensitive area"
-  />
   <NumberFormField
     :name="'areaInHectare'"
     validation-label="area in hectare"
@@ -34,7 +29,11 @@
     input-class="col-4 pr-0"
     validation="min:0"
   />
-
+  <FreeTextFormField
+    name="biodiversitySensitiveArea"
+    label="Biodiversity Sensitive Areae"
+    description="Please specify the biodiversity sensitive area"
+  />
   <AddressFormField
     data-test="AddressFormFieldArea"
     name="areaAddress"

@@ -498,8 +498,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                WeightPreferred: 'weight (preferred)',
-                Volume: 'volume',
+                WeightPreferred: 'Weight (preferred)',
+                Volume: 'Volume',
               };
               return formatStringForDatatable(
                 dataset.basic?.resourceUseCircularEconomyAndWasteManagement?.measureWaste
@@ -538,8 +538,8 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                FullTimeEquivalents: 'full-time equivalents',
-                HeadCount: 'head count',
+                FullTimeEquivalents: 'Full-Time Equivalents',
+                HeadCount: 'Head Count',
               };
               return formatStringForDatatable(
                 dataset.basic?.workforceGeneralCharacteristics?.measureEmployees

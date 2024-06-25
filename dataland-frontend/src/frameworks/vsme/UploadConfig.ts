@@ -472,11 +472,11 @@ export const vsmeDataModel = [
               'Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.',
             options: [
               {
-                label: 'weight (preferred)',
+                label: 'Weight (preferred)',
                 value: 'WeightPreferred',
               },
               {
-                label: 'volume',
+                label: 'Volume',
                 value: 'Volume',
               },
             ],
@@ -507,11 +507,11 @@ export const vsmeDataModel = [
               'You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.',
             options: [
               {
-                label: 'full-time equivalents',
+                label: 'Full-Time Equivalents',
                 value: 'FullTimeEquivalents',
               },
               {
-                label: 'head count',
+                label: 'Head Count',
                 value: 'HeadCount',
               },
             ],
