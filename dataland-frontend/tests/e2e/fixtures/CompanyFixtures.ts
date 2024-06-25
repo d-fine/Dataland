@@ -52,9 +52,9 @@ export function generateCompanyInformation(): CompanyInformation {
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
     companyContactDetails: pickSubsetOfElements(
-        [generateCompanyContactDetails(), generateCompanyContactDetails()],
-        0,
-        2
+      [generateCompanyContactDetails(), generateCompanyContactDetails()],
+      0,
+      2
     ),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
