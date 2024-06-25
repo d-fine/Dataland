@@ -2,115 +2,78 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "South Delia",
-			"headquartersPostalCode": "66676-6513",
-			"sector": "paradigms",
+			"headquarters": "Chula Vista",
+			"headquartersPostalCode": "45206",
+			"sector": "Energy",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"TLA83kClR6cy"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"5w1kDMlOo"
-				],
-				"VatNumber": [
-					"1MxJnzNGl"
-				],
-				"CompanyRegistrationNumber": []
+				"Lei": [
+					"cLl6YCVqgRlz7csI0ueU"
+				]
 			},
-			"countryCode": "VI",
+			"countryCode": "AU",
 			"companyAlternativeNames": [
-				"Dickens LLC",
-				"Hansen - Parisian",
-				"Hilpert and Sons",
-				"Wolff, Runte and O'Kon"
+				"Dicki, Weimann and Carter",
+				"Sauer LLC",
+				"Schneider Group",
+				"Schulist - Littel"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://reflecting-conformation.org",
+			"companyLegalForm": null,
+			"website": "https://jumbo-substitution.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-21",
+					"reportingDate": "2024-09-12",
 					"sectors": [
-						"13.95",
-						"27.3",
-						"65",
-						"68.3",
-						"90.0"
+						"01.5",
+						"06.1"
 					],
-					"numberOfEmployees": 9534,
-					"fiscalYearStart": "2024-12-22",
+					"numberOfEmployees": 1634,
+					"fiscalYearStart": "2024-06-06",
 					"referencedReports": {
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-11-04",
-							"currency": "UGX"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"isGroupLevel": "No",
-							"reportDate": "2023-06-09",
-							"currency": "STN"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-02-27",
-							"currency": "DZD"
-						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
-							"isGroupLevel": "Yes",
-							"reportDate": "2023-05-04",
-							"currency": "MOP"
+							"publicationDate": "2023-11-05"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 96470.02,
-					"operatingCostInEur": 16011.74,
-					"capitalAssetsInEur": 41606.92
+					"revenueInEur": 48747.46,
+					"operatingCostInEur": 2839.3,
+					"capitalAssetsInEur": 35638.83
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "Between5And10Percent"
+					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 59503.6,
+						"value": 75457.08,
 						"dataSource": {
-							"page": 311,
-							"fileName": "SustainabilityReport",
+							"page": 727,
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "systems"
 						},
-						"comment": "reboot solid state application",
+						"comment": "synthesize digital microchip",
 						"quality": "Estimated"
 					},
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 64268.99,
+					"energyConsumptionHeatingAndHotWaterInMwh": 75261.5,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 88740.57,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 93780.29,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow",
-						"Wind"
+						"EarthQuake",
+						"Snow"
 					]
 				}
 			}
