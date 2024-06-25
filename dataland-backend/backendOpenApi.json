@@ -3601,33 +3601,13 @@
             "type": "string",
             "nullable": true
           },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
+          "publicationDate": {
             "type": "string",
             "format": "date",
             "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
           }
         },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
-          }
-        }
+        "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
       },
       "ExtendedDataPointBigDecimal": {
         "type": "object",
@@ -3816,15 +3796,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -4482,14 +4454,6 @@
         "enum": [
           "Yes",
           "No"
-        ]
-      },
-      "YesNoNa": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No",
-          "NA"
         ]
       },
       "CompanyAssociatedDataSfdrData": {
@@ -5401,15 +5365,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -9375,6 +9331,14 @@
           "NoneOfTheAbove"
         ]
       },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
+      },
       "CompanyAssociatedDataHeimathafenData": {
         "required": [
           "companyId",
@@ -11858,15 +11822,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -12523,15 +12479,7 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
           }
         }
       },
@@ -14554,6 +14502,18 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -14561,18 +14521,6 @@
           "lei": {
             "type": "string",
             "nullable": true
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },
@@ -14595,10 +14543,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
