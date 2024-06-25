@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.api.VsmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
@@ -67,7 +68,7 @@ class Vsme {
     @BeforeAll
     fun postCompanyAndSetDataOwnership() {
         companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.companyDataControllerApi.assignCompanyRole(
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
             UUID.fromString(companyId),
             UUID.fromString(UPLOADER_USER_ID),
