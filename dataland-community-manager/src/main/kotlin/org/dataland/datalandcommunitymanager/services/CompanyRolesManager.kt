@@ -102,13 +102,16 @@ class CompanyRolesManager(
      * @returns the company role assignment entities
      */
     @Transactional
-    fun getCompanyRoleAssignmentsForRoleAndCompany(
-        companyRole: CompanyRole,
-        companyId: String,
+    fun getCompanyRoleAssignmentsByParameters(
+        companyRole: CompanyRole?,
+        companyId: String?,
+        userId: String?,
     ): List<CompanyRoleAssignmentEntity> {
-        companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        if (companyId != null) {
+            companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
+        }
         return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
-            companyId = companyId, userId = null, companyRole = companyRole,
+            companyId = companyId, userId = userId, companyRole = companyRole,
         )
     }
 
@@ -162,7 +165,7 @@ class CompanyRolesManager(
     @Transactional(readOnly = true)
     fun validateIfCompanyHasAtLeastOneCompanyOwner(companyId: String) {
         companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
-        val companyRoleAssignments = getCompanyRoleAssignmentsForRoleAndCompany(CompanyRole.CompanyOwner, companyId)
+        val companyRoleAssignments = getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, companyId, null)
         if (companyRoleAssignments.isEmpty()) {
             throw ResourceNotFoundApiException(
                 "Company has no company owner.",

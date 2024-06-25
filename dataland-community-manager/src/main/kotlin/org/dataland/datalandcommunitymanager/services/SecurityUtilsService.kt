@@ -96,9 +96,10 @@ class SecurityUtilsService(
      */
     @Transactional
     fun isUserMemberOfTheCompany(
-        companyId: UUID,
+        companyId: UUID?,
     ): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
+        val userId = SecurityContextHolder.getContext().authentication.name
+        if (companyId == null || userId == null) return false
         return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
             companyId = companyId.toString(), userId = userId, companyRole = null,
         ).isNotEmpty()

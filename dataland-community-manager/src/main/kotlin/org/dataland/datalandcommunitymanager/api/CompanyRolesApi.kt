@@ -74,13 +74,13 @@ interface CompanyRolesApi {
     )
     @GetMapping(
         produces = ["application/json"],
-        value = ["/company-role-assignments/{role}/{companyId}"],
-
+        value = ["/company-role-assignments/"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)")
     fun getCompanyRoleAssignments(
-        @PathVariable("role") companyRole: CompanyRole,
-        @PathVariable("companyId") companyId: UUID,
+        @RequestParam("role") companyRole: CompanyRole? = null,
+        @RequestParam("companyId") companyId: UUID? = null,
+        @RequestParam("userId") userId: UUID? = null,
     ):
         ResponseEntity<List<CompanyRoleAssignment>>
 
