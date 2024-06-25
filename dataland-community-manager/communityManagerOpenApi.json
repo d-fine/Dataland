@@ -885,7 +885,7 @@
         ]
       }
     },
-    "/company-role-assignments/": {
+    "/company-role-assignments": {
       "get": {
         "tags": [
           "company-roles-controller"
@@ -897,7 +897,7 @@
           {
             "name": "role",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
             }
@@ -905,7 +905,7 @@
           {
             "name": "companyId",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"

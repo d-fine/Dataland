@@ -74,7 +74,7 @@ interface CompanyRolesApi {
     )
     @GetMapping(
         produces = ["application/json"],
-        value = ["/company-role-assignments/"],
+        value = ["/company-role-assignments"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN') or @SecurityUtilsService.isUserMemberOfTheCompany(#companyId)")
     fun getCompanyRoleAssignments(
