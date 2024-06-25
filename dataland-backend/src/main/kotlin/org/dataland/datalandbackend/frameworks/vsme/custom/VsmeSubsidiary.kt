@@ -13,5 +13,4 @@ data class VsmeSubsidiary(
 
     @field:JsonProperty(required = true)
     val addressOfSubsidiary: Address,
-// TODO can and should we use the productionSite interface here, from the structure it is the same
 )
