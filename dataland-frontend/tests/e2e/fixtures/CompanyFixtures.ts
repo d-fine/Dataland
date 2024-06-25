@@ -42,6 +42,8 @@ export function generateCompanyInformation(): CompanyInformation {
     sector: valueOrNull(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
+    // ToDo: see if we should add a specific email address for testing
+    companyContactDetails: "abc@email.com",
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),

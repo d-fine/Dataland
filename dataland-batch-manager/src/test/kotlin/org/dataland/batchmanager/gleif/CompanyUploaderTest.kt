@@ -70,7 +70,7 @@ class CompanyUploaderTest {
             "Isin" to listOf("1111", "1112", "1113"),
         )
         val compPatch = CompanyInformationPatch(
-            companyName = null, companyAlternativeNames = null, companyLegalForm = null,
+            companyName = null, companyContactDetails = null, companyAlternativeNames = null, companyLegalForm = null,
             headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
             website = null, isTeaserCompany = null,
         )
