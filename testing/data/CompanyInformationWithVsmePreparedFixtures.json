@@ -1,7 +1,7 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "Sme-dataset-with-no-null-fields",
+			"companyName": "Vsme-dataset-with-no-null-fields",
 			"headquarters": "Fort Mac",
 			"headquartersPostalCode": "78947",
 			"sector": "randomSector",

@@ -23,7 +23,7 @@ export function generateVsmePreparedFixtures(): Array<FixtureData<VsmeData>> {
  */
 function manipulateFixtureToIdentifyItAsNoNullFields(input: FixtureData<VsmeData>): FixtureData<VsmeData> {
   const smeGeneratorNoUndefined = new VsmeGenerator(0);
-  input.companyInformation.companyName = 'Sme-dataset-with-no-null-fields';
+  input.companyInformation.companyName = 'Vsme-dataset-with-no-null-fields';
   input.companyInformation.sector = 'randomSector';
   input.t.basic!.basisForPreparation!.subsidiary = smeGeneratorNoUndefined.randomArray(
     () => smeGeneratorNoUndefined.generateVsmeSubsidiary(),
