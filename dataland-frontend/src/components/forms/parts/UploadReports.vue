@@ -61,7 +61,7 @@
           </div>
           <ReportFormElement
             :name="storedReport.fileName"
-            :report-date="storedReport.reportDate"
+            :publication-date="storedReport.publicationDate"
             :fileReference="storedReport.fileReference"
           />
         </div>
@@ -245,9 +245,7 @@ export default defineComponent({
           this.alreadyStoredReports.push({
             fileName: key,
             fileReference: referencedReport.fileReference,
-            currency: referencedReport.currency,
-            reportDate: referencedReport.reportDate,
-            isGroupLevel: referencedReport.isGroupLevel,
+            publicationDate: referencedReport.publicationDate,
           });
         }
         this.emitReportsUpdatedEvent();
