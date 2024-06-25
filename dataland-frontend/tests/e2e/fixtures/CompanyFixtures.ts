@@ -31,6 +31,15 @@ function getRandomIdentifiers(): { [p: string]: string[] } {
 }
 
 /**
+ * Generates a random company contact email address
+ * @returns a random company contact email address
+ */
+function generateCompanyContactDetails(): string {
+  const randomFourDigitNumber = faker.number.int({ min: 1, max: 999 });
+  return `dummy${randomFourDigitNumber}@email.com`;
+}
+
+/**
  * Generates a company fixture with random information
  * @returns information about a randomly generated company
  */
@@ -42,8 +51,11 @@ export function generateCompanyInformation(): CompanyInformation {
     sector: valueOrNull(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
-    // ToDo: see if we should add a specific email address for testing
-    companyContactDetails: "abc@email.com",
+    companyContactDetails: pickSubsetOfElements(
+        [generateCompanyContactDetails(), generateCompanyContactDetails()],
+        0,
+        2
+    ),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),

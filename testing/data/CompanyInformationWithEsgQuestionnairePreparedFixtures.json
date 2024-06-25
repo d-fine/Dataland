@@ -2,68 +2,79 @@
 	{
 		"companyInformation": {
 			"companyName": "EsgQuestionnaire-dataset-with-no-null-fields",
-			"headquarters": "New York",
-			"headquartersPostalCode": "74159-4064",
-			"sector": "systems",
+			"headquarters": "North Alfonzoberg",
+			"headquartersPostalCode": "59010-9124",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"jRO8OzieJVxZWtRVlvO2"
-				],
+				"Lei": [],
 				"Isin": [
-					"rAzDlaIJWJHy"
+					"bze2vm7QphQR"
 				],
-				"PermId": [
-					"TaZVVcPjsS"
+				"PermId": [],
+				"Ticker": [
+					"8MbD6br"
 				],
-				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SY",
-			"companyAlternativeNames": [
-				"Pacocha - Stehr",
-				"Weimann LLC"
+			"countryCode": "TT",
+			"companyContactDetails": [
+				"dummy319@email.com",
+				"dummy454@email.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://optimistic-priority.name",
+			"companyAlternativeNames": [
+				"Dach LLC"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://striped-spill.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
 					"berichtspflichtUndEinwilligungZurVeroeffentlichung": "Yes",
-					"gueltigkeitsDatum": "2024-03-02"
+					"gueltigkeitsDatum": "2024-05-10"
 				}
 			},
 			"allgemein": {
 				"esgZiele": {
 					"existenzVonEsgZielen": "Yes",
-					"beschreibungDerEsgZiele": "Aut ducimus varius corporis damno ambulo calculus aut trans damno. Comminor summopere voluptas tempore curso suffoco arx attonbitus admoveo ab. Teres arceo stillicidium defleo.\nDeorsum fuga coadunatio vulnero curis demo super animadverto quos. Curiositas somniculosus corrupti voluptatum. Vulgo nisi valeo accusator apud conculco.\nMaxime degenero tepidus amita spargo stabilis. Angulus officia aliquid venio accedo. Comparo asporto sapiente deficio vallum teres tero sui subvenio adduco.\nVado terga bardus aliqua aeneus curso distinctio dolorum sum conduco. Sumptus ager alveus creator copia eligendi. Solus culpo tondeo theca.",
-					"investitionenInZielerreichung": "Cruentus centum quisquam sperno adipisci aequus sed clam magnam. Baiulus canto correptius victus. Deorsum conqueror turpis ex curia argumentum volva.\nTemperantia deduco defero decimus comparo. Vir placeat tamisium tergiversatio vado suspendo cresco illum. Crudelis stella cogo."
+					"beschreibungDerEsgZiele": "Compono summa quisquam repellendus depraedor tepidus concedo commodi volva bibo. Demulceo validus urbs confido curtus addo. Vulgus civitas nisi crepusculum.\nVis veritas corroboro theatrum. Tollo delectus tui acsi brevis doloremque statim utor verus contego. Theca spes cuius.\nFugiat cuius valde claustrum delectus culpa tum defendo. Infit defetiscor autem aegrotatio angulus. Totus demum verto tamisium atrox.\nFugit at vinum. Aestas deleo truculenter dolore abstergo aqua vomica auctus virgo. Ex surculus angulus.",
+					"investitionenInZielerreichung": "Supplanto vestrum baiulus vulgus ultra verecundia. Angustus curriculum perferendis eos angelus culpo eaque. Demens sui cibus spiritus umerus stips ara triduana."
 				},
 				"sektoren": {
 					"sektorenMitHohenKlimaauswirkungen": "Yes",
 					"auflistungDerSektoren": [
+						"ALandwirtschaftForstwirtschaftUndFischerei",
 						"DEnergieversorgung",
 						"BBergbauUndGewinnungVonSteinenUndErden",
-						"FBaugewerbeBau",
-						"GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
-						"CVerarbeitendesGewerbeHerstellungVonWaren",
 						"LGrundstuecksUndWohnungswesen",
-						"ALandwirtschaftForstwirtschaftUndFischerei",
-						"HVerkehrUndLagerhaltung",
-						"EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen"
+						"FBaugewerbeBau"
 					]
 				},
 				"esgBerichte": {
 					"nachhaltigkeitsberichte": "Yes",
-					"frequenzDerBerichterstattung": "Jaehrlich",
+					"frequenzDerBerichterstattung": "Halbjaehrlich",
 					"aktuelleBerichte": [
 						{
-							"value": "communities",
+							"value": "e-markets",
 							"dataSource": {
 								"fileName": "Policy",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "models",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "architectures",
+							"dataSource": {
+								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
@@ -75,64 +86,57 @@
 				},
 				"akkreditierungen": {
 					"iso14001": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"fileName": "Policy",
+							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"iso45001": {
 						"value": "Yes",
 						"dataSource": {
-							"fileName": "Certification",
+							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"iso27001": {
 						"value": "Yes",
 						"dataSource": {
-							"fileName": "Certification",
+							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"iso50001": {
 						"value": "No",
 						"dataSource": {
-							"fileName": "Policy",
+							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
 					"weitereAkkreditierungen": [
 						{
-							"value": "bandwidth",
+							"value": "channels",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "e-markets",
+							"value": "markets",
 							"dataSource": {
 								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "networks",
+							"value": "applications",
 							"dataSource": {
-								"fileName": "Certification",
+								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "deliverables",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "blockchains",
+							"value": "channels",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -144,114 +148,100 @@
 					"mechanismenZurUeberwachungDerEinhaltungDerUngcp": "Yes",
 					"richtlinienZurEinhaltungDerUngcp": [
 						{
-							"value": "methodologies",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "functionalities",
+							"value": "content",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "lifetime value",
+							"value": "portals",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "platforms",
-							"dataSource": {
-								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						}
 					],
-					"erklaerungDerEinhaltungDerUngcp": "Denego patior et trans. Attollo advoco quasi atque delectatio usitas commodo. Angelus contra antea."
+					"erklaerungDerEinhaltungDerUngcp": "Tendo demergo conduco tabesco. Sursum sodalitas tener. Timidus aggredior curto bibo utroque ipsum tondeo avarus.\nTondeo venio eius considero agnosco. Animi depraedor vulpes correptius certus spiculum tyrannus defetiscor ancilla. Certe pax volubilis contigo decumbo bellum.\nCedo adfero depereo terga templum aveho vulpes volo decipio. Ciminatio vomica vinco adimpleo candidus. Templum ceno terreo attero campana vilitas approbo."
 				},
 				"oecdLeitsaetze": {
 					"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": "Yes",
 					"richtlinienZurEinhaltungDerOecdLeitsaetze": [
 						{
-							"value": "e-commerce",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "communities",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "ROI",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "networks",
+							"value": "initiatives",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
+						},
+						{
+							"value": "partnerships",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "schemas",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "schemas",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
 						}
 					],
-					"erklaerungDerEinhaltungDerOecdLeitsaetze": "Sollicito aegrotatio uterque ultra pecus. Earum degusto currus. Somnus tenetur bonus.\nFacere deporto depulso sonitus. Decipio averto occaecati absorbeo cavus adstringo. Doloribus dolorum accusator ventus textilis."
+					"erklaerungDerEinhaltungDerOecdLeitsaetze": "Reiciendis virga cunae adsidue eligendi patruus. Denuncio credo tutamen benevolentia vesica vetus terebro contigo. Clementia vindico depopulo."
 				},
 				"sonstige": {
-					"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "Caelum deleniti sodalitas demitto sto pauci. Distinctio curis cerno supra attero contra varius depromo. Antiquus delego supellex iste averto caelum uxor audeo.\nVoluptatem vomito auditor calamitas demo caritas umerus. Cogo consectetur deporto decerno desparatus adficio amoveo sequi currus amplexus. Tempore cohaero solutio voco.",
+					"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "Corroboro possimus astrum thermae. Accusator aut vomica sollers capillus carmen. Tenax vulgo porro suus vomito desipio pecus.\nDelicate video demens despecto conqueror vaco cribro aureus vestigium alveus. Ars vitiosus ipsa crapula. Corporis voluptatum aufero aliquam peior absconditus vomito.\nAdduco venia defleo. Angelus stipes suscipio stella sursum auctor baiulus altus ultio. Capitulus caste cognomen defluo titulus via voluptates.\nDeficio veritatis nulla adsuesco. Antepono tertius ater dicta conor virgo. Utrimque campana desparatus perferendis tripudio validus ipsam delibero.",
 					"ausschlusslistenAufBasisVonEsgKriterien": "Yes",
-					"ausschlusslisten": "Blanditiis apud abundans velum quisquam. Succedo tutis aggredior ocer adversus ulciscor curatio turba. Dapifer magnam fuga conitor cui acervus provident tabesco.\nDefluo conscendo placeat uredo ascisco. Dignissimos est denuncio animi consectetur dolorem. Adflicto volva decor sustineo caste tenax bardus creptio depulso."
+					"ausschlusslisten": "Conturbo creptio conforto error territo atrox canto vergo spiculum sponte. Celo communis voluptas. Denuo thesis ter calco acidus.\nCado conscendo placeat. Sonitus suppellex numquam. Corona tripudio tibi tempore bonus aperte urbanus molestias crastinus.\nUlciscor officiis dens antiquus sufficio aqua asper deleo cohaero. Concedo derelinquo tonsor aduro undique caritas bene curatio. Vacuus vitium placeat templum.\nSurculus nobis adipisci caterva. Sordeo cogito depulso. Copia carcer totam thermae.\nTorqueo suus turba alias crux. Molestias recusandae omnis. Facilis defleo ulterius ipsam volva repellat adinventitias."
 				},
 				"fuehrungsstandards": {
 					"oekologischeSozialeFuehrungsstandardsOderPrinzipien": "Yes",
-					"anreizmechanismenFuerDasManagementUmwelt": "JaAufsichtsratUndGeschaeftsleitung",
+					"anreizmechanismenFuerDasManagementUmwelt": "Nein",
 					"anreizmechanismenFuerDasManagementSoziales": "JaAufsichtsrat"
 				},
 				"rechtsstreitigkeiten": {
 					"esgBezogeneRechtsstreitigkeiten": "Yes",
 					"rechtsstreitigkeitenMitBezugZuE": "Yes",
-					"statusZuE": "Offen",
-					"einzelheitenZuDenRechtsstreitigkeitenZuE": "Numquam abutor curiositas decipio debilito adficio illum. Voluntarius culpo talis callide auxilium urbs adinventitias aut. Corrumpo autus accusantium ager ullam commodo.\nTunc corrigo atavus provident nam. Calamitas cuppedia candidus. Cuius video suppellex deporto vulnus animadverto terra arceo.\nNemo argumentum facere pauci studio bestia civitas supra. Delectus antepono teneo accusator. Umbra rerum defungo.",
+					"statusZuE": "Geklaert",
+					"einzelheitenZuDenRechtsstreitigkeitenZuE": "Advenio victus veritatis decor acceptus tero vulpes non ad. Ceno adhaero baiulus desolo vobis. Addo quis curvo corrumpo cruciamentum.\nAsperiores cubo tendo xiphias varius commemoro. Demonstro tui crustulum calco tempus voluntarius turba. Magni summisse despecto cupiditate chirographum.",
 					"rechtsstreitigkeitenMitBezugZuS": "Yes",
 					"statusZuS": "Offen",
-					"einzelheitenZuDenRechtsstreitigkeitenZuS": "Demo compono varius. Cariosus amitto temperantia. Termes ago caute celo voluptates caries earum repellat sapiente.\nVersus aggero carcer nobis vix vereor decor. Asperiores inflammatio constans suppono colo. Confido timidus patruus attero vulgivagus earum canonicus varius.",
+					"einzelheitenZuDenRechtsstreitigkeitenZuS": "Aspernatur tempore voluptates aut ducimus varius corporis damno ambulo calculus. Trans damno vigor comminor. Voluptas tempore curso suffoco arx attonbitus admoveo ab.",
 					"rechtsstreitigkeitenMitBezugZuG": "Yes",
 					"statusZuG": "Geklaert",
-					"einzelheitenZuDenRechtsstreitigkeitenZuG": "Despecto pax appositus. Crux theologus audacia facere doloremque stabilis vestrum depono antepono. Convoco terminatio accendo clam."
+					"einzelheitenZuDenRechtsstreitigkeitenZuG": "Defleo tergiversatio deorsum fuga coadunatio vulnero curis demo. Animadverto quos cariosus curiositas somniculosus corrupti voluptatum creator. Nisi valeo accusator apud conculco delibero maxime degenero tepidus amita."
 				},
 				"rating": {
 					"esgRating": "Yes",
-					"agentur": "deliverables",
-					"ergebnis": "markets",
+					"agentur": "mindshare",
+					"ergebnis": "ROI",
 					"ratingbericht": {
 						"value": "Yes",
 						"dataSource": {
-							"fileName": "Certification",
+							"fileName": "Policy",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"kritischePunkte": "Casso vesco decor tantum spiculum. Volva apud usitas. Soluta cilicium vester.\nAccusantium assentator id quaerat officia vitiosus benevolentia. Vestigium candidus auxilium cubo turba sulum numquam solum umerus considero. Vorago demens cras demulceo conscendo cupio quaerat.\nAcsi a alo inventore cena teres. Vinculum viriliter succedo cribro quasi. Cauda denego nihil truculenter bibo cognatus arca decor.\nFacere crustulum varius adfectus vero cumque. Debeo tristis abeo. Aduro voluptates volubilis suffoco velum temptatio ustulo.\nTimor bonus cruentus illum atrocitas ambitus tempus cornu. Adhaero conservo comis pecco curatio demoror sustineo arca a occaecati. Cunctatio certe contra studio vapulus succurro."
+					"kritischePunkte": "Accedo valeo comparo asporto sapiente deficio vallum teres tero sui. Adduco vitium vado terga bardus aliqua aeneus curso. Dolorum sum conduco deludo sumptus ager alveus."
 				},
 				"anleihen": {
 					"grueneSozialeUndOderNachhaltigeEmissionen": "Yes",
-					"ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": 56615.49,
+					"ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": 36513.48,
 					"sustainibilityLinkedDebt": "Yes",
-					"ausstehendeSustainibilityLinkedDebt": 64182.68
+					"ausstehendeSustainibilityLinkedDebt": 16754.83
 				},
 				"risiken": {
-					"wichtigsteESUndGRisikenUndBewertung": "Auditor sponte fugit dedico coniuratio uxor utrimque. Voro bellum aliquid. Aufero solitudo absum itaque conicio tamquam tardus acidus virgo adversus.\nCaveo thesaurus accendo vesica umbra socius defetiscor hic quidem. Voro stips tabesco accommodo comparo. Iusto vinitor carmen speciosus ullam defluo velit cinis.\nSoluta acer arceo taedium suasoria. Inventore delibero ustilo concido audentia talio tametsi umerus tollo. Tabesco cubo ea sit tergum tamdiu aer vallum subseco.\nPeccatus adsidue volo. Coniecto ultra aedificium. Caste adversus omnis vicinus ab ciminatio derelinquo amet spiculum cohors.\nSpeculum tenuis adulatio cunabula debilito spes nihil tenax patior. Teneo necessitatibus coma vito ater aequus cultura dens unus dolores. Voluptas decumbo creta vir sum advoco vinculum soluta.",
-					"hindernisseBeimUmgangMitEsgBedenken": "Itaque aeternus reprehenderit ulterius tamen thesis tametsi. Confero aspicio agnitio corporis vix. Adficio ubi aqua adeptio libero currus thalassinus conculco anser titulus.\nDelectatio contego vinitor. Repellendus defero nobis argumentum tamquam deorsum aperte conservo qui neque. Cado vulgivagus vespillo.\nAdemptio amitto absorbeo talus peior volubilis. Tandem clamo agnitio suadeo capio aggredior quibusdam defendo adipisci. Aegrus vapulus sono.\nVapulus turbo crastinus sapiente derideo sordeo quod. Harum conor succurro cenaculum dolore tonsor bos sulum. Decens creta dolore casso.\nViriliter tertius cubo. Sopor vespillo apto reprehenderit stipes. Argumentum auctor et vox delectatio abstergo sapiente vinculum video."
+					"wichtigsteESUndGRisikenUndBewertung": "Tondeo theca cavus teneo cruentus centum. Sperno adipisci aequus sed clam magnam bonus baiulus. Correptius victus necessitatibus deorsum.\nTurpis ex curia argumentum volva. Temperantia deduco defero decimus comparo. Vir placeat tamisium tergiversatio vado suspendo cresco illum.\nCrudelis stella cogo. Vulgus enim vester. Terminatio facilis adfectus.\nVulgivagus tribuo bardus asperiores capto tempora consuasor suspendo. Brevis caelestis alienus subiungo. Tunc quasi vesica ipsum canonicus tergeo curvo subvenio amita.",
+					"hindernisseBeimUmgangMitEsgBedenken": "Umbra ter virga cubitum ustilo nihil vulariter vomito ara. Admoveo argumentum denego patior et trans. Attollo advoco quasi atque delectatio usitas commodo.\nAngelus contra antea. Sumptus maxime clam brevis correptius. Acer temporibus thermae balbus consequatur.\nAegrotatio uterque ultra pecus aedificium earum degusto currus. Somnus tenetur bonus. Facere deporto depulso sonitus.\nDecipio averto occaecati absorbeo cavus adstringo. Doloribus dolorum accusator ventus textilis. Curis caelum deleniti sodalitas demitto.\nPauci surgo distinctio curis cerno supra attero contra. Depromo super antiquus delego supellex iste averto caelum uxor audeo. Voluptatem vomito auditor calamitas demo caritas umerus."
 				}
 			},
 			"umwelt": {
@@ -260,48 +250,48 @@
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"scope1": 19121.19,
-								"scope2": 22706.25,
-								"scope3": 3154.65
+								"scope1": 98515.55,
+								"scope2": 30515.6,
+								"scope3": 35025.73
 							},
 							"2022": {
-								"scope1": 91220.54,
-								"scope2": 33967.06,
-								"scope3": 43290.34
+								"scope1": 48898.97,
+								"scope2": 43993.13,
+								"scope3": 50446.89
 							},
 							"2023": {
-								"scope1": 15387.52,
-								"scope2": 89635.9,
-								"scope3": 10446.42
+								"scope1": 3839.2,
+								"scope2": 11122.37,
+								"scope3": 64459.13
 							},
 							"2024": {
-								"scope1": 66302.86,
-								"scope2": 87445.33,
-								"scope3": 55979.94
+								"scope1": 42452.01,
+								"scope2": 11216.55,
+								"scope3": 22315.85
 							},
 							"2025": {
-								"scope1": 44052.58,
-								"scope2": 42805.97,
-								"scope3": 3813.09
+								"scope1": 75969.34,
+								"scope2": 30564.67,
+								"scope3": 65972.9
 							},
 							"2026": {
-								"scope1": 22357.29,
-								"scope2": 76276.14,
-								"scope3": 96906.94
+								"scope1": 96642.18,
+								"scope2": 65821.13,
+								"scope3": 25826.57
 							},
 							"2027": {
-								"scope1": 55363.77,
-								"scope2": 86604.66,
-								"scope3": 57457.06
+								"scope1": 27337.32,
+								"scope2": 21897.14,
+								"scope3": 13943.28
 							}
 						}
 					},
-					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird": "Exercitationem error omnis aestus soluta amiculum verbera bene placeat. Delectus tantum cado vindico beneficium demitto tredecim temporibus advenio tribuo. Approbo vorago sub stipes suffragium.\nNobis textor adstringo verbum consequuntur acquiro advenio unde perspiciatis cohibeo. Terminatio amiculum defetiscor. Amicitia aegrotatio cimentarius.\nStrenuus voluptatem quae toties cohaero ceno decens. Decens eum tolero. Timidus correptius tabesco ago.",
-					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "Porro avaritia adulescens condico voluptas cognatus caveo thema. Comburo cicuta cernuus tantum calcar absorbeo voco cubicularis. Aegrotatio sono soluta peccatus tumultus vetus totam aeternus velociter.\nAdfectus claro ad cubo aliquam ea vulnero tempus. Sonitus appositus atque pauper celebrer talio aequitas tibi caecus. In confido clibanus cattus ager aestivus."
+					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird": "Quisquam quis succedo tutis aggredior ocer adversus ulciscor curatio turba. Dapifer magnam fuga conitor cui acervus provident tabesco. Defluo conscendo placeat uredo ascisco.",
+					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "Est denuncio animi consectetur dolorem terror adflicto. Decor sustineo caste tenax bardus creptio depulso carmen tenus cetera. Substantia coadunatio degusto nam numquam abutor curiositas.\nDebilito adficio illum sumptus voluntarius culpo. Callide auxilium urbs adinventitias aut cupiditate corrumpo autus. Ager ullam commodo.\nTunc corrigo atavus provident nam. Calamitas cuppedia candidus. Cuius video suppellex deporto vulnus animadverto terra arceo."
 				},
 				"produktion": {
 					"produkteZurVerringerungDerUmweltbelastung": "Yes",
-					"verringerungenDerUmweltbelastung": "Conicio stillicidium sufficio. Thesis crux valetudo eum hic deprecator xiphias antea testimonium vociferor. Alter vallum strenuus ab.\nCura depono occaecati traho delibero turpis. Vorago attollo considero vos auctus sophismata. Cursus pectus iste atavus sto quae terror video.\nTalus cinis creta patria vobis totus angelus. Adeo canonicus strenuus derelinquo id casus adversus addo. Ancilla corpus cibus.\nCasus volutabrum demonstro laboriosam cupressus aedificium tolero adhuc tunc depraedor. Desino error atavus decretum vaco tabula absque tracto coniuratio. Talus commodi aperio corroboro labore thema alienus tutamen aegrus cupressus.",
+					"verringerungenDerUmweltbelastung": "Facere pauci studio bestia. Supra averto delectus antepono teneo. Adicio umbra rerum.\nConsequatur bos coniecto abduco demo compono. Adulescens cariosus amitto temperantia terminatio termes ago caute celo voluptates. Earum repellat sapiente fugit.\nAggero carcer nobis vix vereor decor commodo asperiores inflammatio constans. Colo summisse confido timidus patruus attero vulgivagus earum. Varius defero vilis altus.",
 					"oekologischerMindestStandardFuerProduktionsprozesse": "Yes"
 				},
 				"energieverbrauch": {
@@ -345,148 +335,148 @@
 							}
 						}
 					},
-					"unternehmensGruppenStrategieBzglEnergieverbrauch": "Tego dolorum cur deripio vero distinctio. Addo demulceo casus omnis victus tracto carbo absconditus. Arma certe credo capitulus.\nVomer depopulo pel vulpes. Odit timor suppono pel veritas. Tredecim absconditus celer cinis tabernus.\nAssumenda deputo despecto delibero vindico. Asperiores reprehenderit campana temptatio tendo tracto tunc vespillo tyrannus eveniet. Tantillus titulus victoria.\nCivis crudelis aliquid demonstro vulnero torqueo blanditiis defetiscor unde. Tamdiu clibanus iure uter tristis deserunt ullus vestrum degenero. Tot repudiandae tam antea."
+					"unternehmensGruppenStrategieBzglEnergieverbrauch": "Ubi cogito casso vesco. Tantum spiculum adipisci volva apud usitas. Soluta cilicium vester."
 				},
 				"energieeffizienzImmobilienanlagen": {
 					"berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 90297.18
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 62129.12
 							},
 							"2022": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 40969.5
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 1969.36
 							},
 							"2023": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 27058.98
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 16957.41
 							},
 							"2024": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 72941.45
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 54173.22
 							},
 							"2025": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 33187.78
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 61864.37
 							},
 							"2026": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 64103.22
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 58968.52
 							},
 							"2027": {
-								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 55303.23
+								"engagementAnteilInEnergieineffizientenImmobilienanlagen": 95937.72
 							}
 						}
 					},
-					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "Vado credo texo. Omnis vinitor ascisco cras tego conventus acies tenus ambitus. Verumtamen barba vomer cariosus caste adduco curo eveniet unus.\nDerideo suspendo aperiam armarium. Aperiam perferendis vobis adfectus demergo volva cogito. Voluptas tibi toties suscipio."
+					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "Vestigium candidus auxilium cubo turba sulum numquam solum umerus considero. Vorago demens cras demulceo conscendo cupio quaerat. Acsi a alo inventore cena teres.\nVinculum viriliter succedo cribro quasi. Cauda denego nihil truculenter bibo cognatus arca decor. Facere crustulum varius adfectus vero cumque."
 				},
 				"wasserverbrauch": {
 					"berichterstattungWasserverbrauch": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"wasserverbrauch": 30865.16,
-								"emissionenInWasser": 13141.14
+								"wasserverbrauch": 11908.11,
+								"emissionenInWasser": 43613.01
 							},
 							"2022": {
-								"wasserverbrauch": 3986.66,
-								"emissionenInWasser": 47112.16
+								"wasserverbrauch": 83218.36,
+								"emissionenInWasser": 449.53
 							},
 							"2023": {
-								"wasserverbrauch": 63936.96,
-								"emissionenInWasser": 59183.52
+								"wasserverbrauch": 57109.73,
+								"emissionenInWasser": 6185.19
 							},
 							"2024": {
-								"wasserverbrauch": 1963.84,
-								"emissionenInWasser": 59469.41
+								"wasserverbrauch": 97521.15,
+								"emissionenInWasser": 96958.8
 							},
 							"2025": {
-								"wasserverbrauch": 30915.5,
-								"emissionenInWasser": 26647.11
+								"wasserverbrauch": 70594.7,
+								"emissionenInWasser": 89986.43
 							},
 							"2026": {
-								"wasserverbrauch": 28476.95,
-								"emissionenInWasser": 85105.72
+								"wasserverbrauch": 76083.47,
+								"emissionenInWasser": 86936.23
 							},
 							"2027": {
-								"wasserverbrauch": 97978.29,
-								"emissionenInWasser": 74667.26
+								"wasserverbrauch": 67820.59,
+								"emissionenInWasser": 80701.24
 							}
 						}
 					},
-					"unternehmensGruppenStrategieBzglWasserverbrauch": "Acies textus harum talio conitor. Textus summisse cariosus vester depereo. Quibusdam alius conforto vomer adinventitias.\nDenuo vigilo apud theca appello aurum claudeo atqui uterque. Templum vinum eius sui crustulum. Provident ara iste.\nAdmitto delibero deprecator unde varius cumque admoneo accusantium censura. Coaegresco coaegresco cultellus. Exercitationem tergo spoliatio admiratio ea adimpleo bellum.\nAqua inventore similique aspicio absum. Earum cursim taceo tibi. Socius tamdiu turbo.\nCopia patruus vestrum tertius viridis quam autus aegre summisse sumptus. Fugiat tolero corona acquiro succurro. Utique tepesco bene modi aestas tabgo baiulus volutabrum."
+					"unternehmensGruppenStrategieBzglWasserverbrauch": "Illum atrocitas ambitus tempus cornu voluptatem. Conservo comis pecco. Demoror sustineo arca a occaecati cupio.\nCerte contra studio vapulus succurro cogo. Verbum sapiente tonsor impedit auditor sponte fugit. Coniuratio uxor utrimque adiuvo voro bellum."
 				},
 				"abfallproduktion": {
 					"berichterstattungAbfallproduktion": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"gesamteAbfallmenge": 75956.48,
-								"prozentAbfallRecyclet": 25456.82,
-								"prozentGefaehrlicherAbfall": 46020.63
+								"gesamteAbfallmenge": 9351.6,
+								"prozentAbfallRecyclet": 93811.5,
+								"prozentGefaehrlicherAbfall": 19118.4
 							},
 							"2022": {
-								"gesamteAbfallmenge": 94180.14,
-								"prozentAbfallRecyclet": 8203.4,
-								"prozentGefaehrlicherAbfall": 22746.59
+								"gesamteAbfallmenge": 65359.64,
+								"prozentAbfallRecyclet": 1119.44,
+								"prozentGefaehrlicherAbfall": 55483.16
 							},
 							"2023": {
-								"gesamteAbfallmenge": 20314.19,
-								"prozentAbfallRecyclet": 26793.7,
-								"prozentGefaehrlicherAbfall": 52830.07
+								"gesamteAbfallmenge": 34280.38,
+								"prozentAbfallRecyclet": 74880.77,
+								"prozentGefaehrlicherAbfall": 75282.15
 							},
 							"2024": {
-								"gesamteAbfallmenge": 66205.52,
-								"prozentAbfallRecyclet": 69431.05,
-								"prozentGefaehrlicherAbfall": 19317.91
+								"gesamteAbfallmenge": 2448.35,
+								"prozentAbfallRecyclet": 95150.3,
+								"prozentGefaehrlicherAbfall": 6311.44
 							},
 							"2025": {
-								"gesamteAbfallmenge": 82659.31,
-								"prozentAbfallRecyclet": 71144.76,
-								"prozentGefaehrlicherAbfall": 76395.74
+								"gesamteAbfallmenge": 80436.29,
+								"prozentAbfallRecyclet": 25947.27,
+								"prozentGefaehrlicherAbfall": 79998.06
 							},
 							"2026": {
-								"gesamteAbfallmenge": 49710.42,
-								"prozentAbfallRecyclet": 27469.36,
-								"prozentGefaehrlicherAbfall": 89872.84
+								"gesamteAbfallmenge": 1532.14,
+								"prozentAbfallRecyclet": 92356.7,
+								"prozentGefaehrlicherAbfall": 85504.82
 							},
 							"2027": {
-								"gesamteAbfallmenge": 47117.55,
-								"prozentAbfallRecyclet": 7325.27,
-								"prozentGefaehrlicherAbfall": 19267.88
+								"gesamteAbfallmenge": 64824.57,
+								"prozentAbfallRecyclet": 45386.06,
+								"prozentGefaehrlicherAbfall": 54145.14
 							}
 						}
 					},
-					"unternehmensGruppenStrategieBzglAbfallproduktion": "Copia admiratio paulatim cohibeo mollitia. Claro bene claro termes vinco vulpes confero nesciunt sopor. Sponte audentia sponte deinde balbus tametsi amor advoco ara.",
+					"unternehmensGruppenStrategieBzglAbfallproduktion": "Voro stips tabesco accommodo comparo. Iusto vinitor carmen speciosus ullam defluo velit cinis. Soluta acer arceo taedium suasoria.\nInventore delibero ustilo concido audentia talio tametsi umerus tollo. Tabesco cubo ea sit tergum tamdiu aer vallum subseco. Peccatus adsidue volo.\nConiecto ultra aedificium. Caste adversus omnis vicinus ab ciminatio derelinquo amet spiculum cohors. Speculum tenuis adulatio cunabula debilito spes nihil tenax patior.\nTeneo necessitatibus coma vito ater aequus cultura dens unus dolores. Voluptas decumbo creta vir sum advoco vinculum soluta. Odio itaque aeternus reprehenderit ulterius tamen thesis tametsi caste confero.",
 					"recyclingImProduktionsprozess": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 42315
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 16755.73
 							},
 							"2022": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 90528.59
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 8261.1
 							},
 							"2023": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 69341.51
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 36866.48
 							},
 							"2024": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 51809.25
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 96366.77
 							},
 							"2025": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 61772.76
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 88974.55
 							},
 							"2026": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 46050.58
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 3834.3
 							},
 							"2027": {
-								"prozentRecycelteWerkstoffeImProduktionsprozess": 56180.27
+								"prozentRecycelteWerkstoffeImProduktionsprozess": 84817.11
 							}
 						}
 					},
-					"gefaehrlicherAbfall": "Qui itaque agnosco amissio terminatio voco vere. Desino artificiose perferendis volup suasoria dens. A summisse solus labore.\nQuaerat impedit quod cinis sortitus apud volubilis colo vobis. Terminatio alioqui vulpes venustas arca. Conservo totam cognomen pectus succurro coruscus consequuntur apostolus aperiam ago.\nAdicio vulnero aranea acerbitas harum. Abundans vox caput atque decretum despecto ago ducimus. Vomito eligendi tandem clam conventus vesper.\nAdfero addo enim laborum. Suscipit capitulus derideo a tergiversatio summa ventosus adhuc voluptatibus aro. Somniculosus vos damno dolorum adamo acquiro ceno voluptas deorsum blandior."
+					"gefaehrlicherAbfall": "Libero currus thalassinus. Anser titulus amissio delectatio contego. Vomer repellendus defero nobis argumentum tamquam deorsum aperte conservo qui."
 				},
 				"biodiversitaet": {
 					"negativeAktivitaetenFuerDieBiologischeVielfalt": "Yes",
-					"negativeMassnahmenFuerDieBiologischeVielfalt": "Quisquam vapulus nesciunt depopulo ut vorago. Spectaculum averto tot angulus claudeo umquam numquam desipio assumenda. Tendo caries combibo iste debeo.",
+					"negativeMassnahmenFuerDieBiologischeVielfalt": "Vulgivagus vespillo derideo ademptio. Absorbeo talus peior. Temptatio tandem clamo agnitio suadeo capio aggredior quibusdam defendo adipisci.",
 					"positiveAktivitaetenFuerDieBiologischeVielfalt": "Yes",
-					"positiveMassnahmenFuerDieBiologischeVielfalt": "Vesco caveo copiose impedit calculus synagoga conduco. Cursus suggero sponte arceo unde cohors tres. Eos quasi argentum crur.\nSolitudo sponte thymum non soleo crustulum angulus coniuratio approbo studio. Casso aureus chirographum ustulo veniam atque tonsor enim. Arguo arma censura cunctatio recusandae dolor ventosus.\nVoluptatum libero talus censura ducimus voro adhaero. Tam desolo suscipio alter aeternus adeptio averto thermae maiores. Aegre at adsidue vita audax bos currus toties vulgaris apostolus.\nSuppellex creator spoliatio dolorum cogo cum verumtamen utique. Abscido amplitudo tergo. Caries spiritus aegrotatio virgo trado cupressus capio audacia.\nCaput adimpleo desparatus contigo animi ulciscor culpo. Turbo unde tergeo cena tempore. Sum vinitor urbanus rerum careo debeo cilicium approbo aro."
+					"positiveMassnahmenFuerDieBiologischeVielfalt": "Sono pecto vapulus turbo crastinus sapiente derideo sordeo quod quos. Conor succurro cenaculum dolore tonsor bos sulum. Decens creta dolore casso."
 				},
 				"fossileBrennstoffe": {
 					"einnahmenAusFossilenBrennstoffen": "Yes",
@@ -494,96 +484,151 @@
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 61900.33
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 95321.78
 							},
 							"2022": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 33167.49
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 78823.97
 							},
 							"2023": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 8614.28
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 39966.16
 							},
 							"2024": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 23342.64
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 30503.37
 							},
 							"2025": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 67978.67
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 66755.1
 							},
 							"2026": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 7494.85
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 92505.85
 							},
 							"2027": {
-								"prozentDerEinnahmenAusFossilenBrennstoffen": 37279.76
+								"prozentDerEinnahmenAusFossilenBrennstoffen": 13719
 							}
 						}
 					}
 				},
 				"taxonomie": {
-					"taxonomieBerichterstattung": "Nfrd",
+					"taxonomieBerichterstattung": "Csrd",
 					"euTaxonomieKompassAktivitaeten": [
-						"TransportOfCo2",
-						"ProductionOfHeatCoolFromGeothermalEnergy",
-						"ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+						"InlandPassengerWaterTransport",
+						"ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
 						"ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+						"CogenerationOfHeatCoolAndPowerFromBioenergy",
+						"ManufactureOfCement",
+						"ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+						"ProgrammingAndBroadcastingActivities",
 						"InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
-						"ConstructionOfNewBuildings",
+						"NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+						"ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+						"PassengerInterurbanRailTransport",
 						"InfrastructureEnablingRoadTransportAndPublicTransport",
-						"StorageOfElectricity",
-						"ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+						"DistrictHeatingCoolingDistribution",
+						"InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+						"CompostingOfBioWaste",
+						"ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+						"ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+						"RenovationOfExistingBuildings",
+						"HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+						"OperationOfPersonalMobilityDevicesCycleLogistics",
+						"ManufactureOfCarbonBlack",
+						"ProductionOfHeatCoolFromBioenergy",
+						"ConstructionOfNewBuildings",
+						"InfrastructureForRailTransport",
+						"LandfillGasCaptureAndUtilisation",
+						"ElectricityGenerationFromGeothermalEnergy",
+						"ManufactureOfAluminium",
+						"EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+						"ManufactureOfIronAndSteel",
+						"Education",
+						"ElectricityGenerationFromBioenergy",
+						"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+						"CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+						"DataDrivenSolutionsForGhgEmissionsReductions",
+						"SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+						"ManufactureOfLowCarbonTechnologiesForTransport",
+						"ProductionOfHeatCoolUsingWasteHeat",
+						"ManufactureOfRenewableEnergyTechnologies",
+						"ProductionOfHeatCoolFromSolarThermalHeating",
+						"CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+						"SeaAndCoastalPassengerWaterTransport",
+						"DataProcessingHostingAndRelatedActivities",
 						"ComputerProgrammingConsultancyAndRelatedActivities",
 						"ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
-						"Education",
-						"ManufactureOfCement",
-						"UndergroundPermanentGeologicalStorageOfCo2",
-						"ManufactureOfOrganicBasicChemicals",
-						"LowCarbonAirportInfrastructure",
+						"UrbanAndSuburbanTransportRoadPassengerTransport",
+						"ProductionOfHeatCoolFromGeothermalEnergy",
+						"InfrastructureForPersonalMobilityCycleLogistics",
+						"MaterialRecoveryFromNonHazardousWaste",
+						"AirportInfrastructure",
+						"ConservationForestry",
+						"TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+						"InstallationAndOperationOfElectricHeatPumps",
+						"ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+						"RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+						"AnaerobicDigestionOfSewageSludge",
+						"ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+						"InfrastructureEnablingLowCarbonWaterTransport",
 						"ManufactureOfHydrogen",
-						"ManufactureOfOtherLowCarbonTechnologies",
-						"ManufactureOfChlorine"
+						"CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+						"StorageOfElectricity",
+						"InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+						"ForestManagement",
+						"ManufactureOfPlasticsInPrimaryForm",
+						"ManufactureOfOrganicBasicChemicals",
+						"MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
+						"ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+						"UndergroundPermanentGeologicalStorageOfCo2",
+						"RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+						"PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+						"Reinsurance",
+						"RenewalOfWaterCollectionTreatmentAndSupplySystems",
+						"ManufactureOfAnhydrousAmmonia",
+						"ManufactureOfSodaAsh",
+						"CloseToMarketResearchDevelopmentAndInnovation"
 					],
 					"umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"taxonomieGeeignetNachProzentUmsatz": 19693.96,
-								"taxonomieGeeignetNachProzentCapex": 79381.69,
-								"taxonomieKonformNachProzentUmsatz": 76869.53,
-								"taxonomieKonformNachProzentCapex": 80219.55
+								"taxonomieGeeignetNachProzentUmsatz": 8958.87,
+								"taxonomieGeeignetNachProzentCapex": 10494.21,
+								"taxonomieKonformNachProzentUmsatz": 6851.18,
+								"taxonomieKonformNachProzentCapex": 28323.24
 							},
 							"2022": {
-								"taxonomieGeeignetNachProzentUmsatz": 2628.91,
-								"taxonomieGeeignetNachProzentCapex": 17691.76,
-								"taxonomieKonformNachProzentUmsatz": 15480.22,
-								"taxonomieKonformNachProzentCapex": 45901.21
+								"taxonomieGeeignetNachProzentUmsatz": 58019.12,
+								"taxonomieGeeignetNachProzentCapex": 68886.85,
+								"taxonomieKonformNachProzentUmsatz": 97400.47,
+								"taxonomieKonformNachProzentCapex": 61847.07
 							},
 							"2023": {
-								"taxonomieGeeignetNachProzentUmsatz": 52809.54,
-								"taxonomieGeeignetNachProzentCapex": 61554.79,
-								"taxonomieKonformNachProzentUmsatz": 41229.77,
-								"taxonomieKonformNachProzentCapex": 81809.38
+								"taxonomieGeeignetNachProzentUmsatz": 81857.23,
+								"taxonomieGeeignetNachProzentCapex": 30595.07,
+								"taxonomieKonformNachProzentUmsatz": 26752.18,
+								"taxonomieKonformNachProzentCapex": 43929.75
 							},
 							"2024": {
-								"taxonomieGeeignetNachProzentUmsatz": 70486.88,
-								"taxonomieGeeignetNachProzentCapex": 48748.1,
-								"taxonomieKonformNachProzentUmsatz": 81314.37,
-								"taxonomieKonformNachProzentCapex": 98408.16
+								"taxonomieGeeignetNachProzentUmsatz": 12482.03,
+								"taxonomieGeeignetNachProzentCapex": 43848.99,
+								"taxonomieKonformNachProzentUmsatz": 52800.56,
+								"taxonomieKonformNachProzentCapex": 80948.66
 							},
 							"2025": {
-								"taxonomieGeeignetNachProzentUmsatz": 76370.06,
-								"taxonomieGeeignetNachProzentCapex": 38640.21,
-								"taxonomieKonformNachProzentUmsatz": 62301.79,
-								"taxonomieKonformNachProzentCapex": 95617.31
+								"taxonomieGeeignetNachProzentUmsatz": 15864.65,
+								"taxonomieGeeignetNachProzentCapex": 80622.09,
+								"taxonomieKonformNachProzentUmsatz": 37113.61,
+								"taxonomieKonformNachProzentCapex": 73556.58
 							},
 							"2026": {
-								"taxonomieGeeignetNachProzentUmsatz": 15184.74,
-								"taxonomieGeeignetNachProzentCapex": 92674.49,
-								"taxonomieKonformNachProzentUmsatz": 41389.63,
-								"taxonomieKonformNachProzentCapex": 71491.45
+								"taxonomieGeeignetNachProzentUmsatz": 8462.04,
+								"taxonomieGeeignetNachProzentCapex": 30537.43,
+								"taxonomieKonformNachProzentUmsatz": 74639.3,
+								"taxonomieKonformNachProzentCapex": 61455.09
 							},
 							"2027": {
-								"taxonomieGeeignetNachProzentUmsatz": 42947.27,
-								"taxonomieGeeignetNachProzentCapex": 33581.46,
-								"taxonomieKonformNachProzentUmsatz": 38264.02,
-								"taxonomieKonformNachProzentCapex": 90691.76
+								"taxonomieGeeignetNachProzentUmsatz": 19793.73,
+								"taxonomieGeeignetNachProzentCapex": 6027.15,
+								"taxonomieKonformNachProzentUmsatz": 33590.92,
+								"taxonomieKonformNachProzentCapex": 97213.63
 							}
 						}
 					}
@@ -592,50 +637,50 @@
 			"soziales": {
 				"unternehmensstrukturaenderungen": {
 					"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": "Yes",
-					"anzahlUnbefristeterVertraegeInDeutschland": 4537,
-					"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": 7959,
-					"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": 9853,
-					"anzahlUnbefristeterVertraegeInDerGesamtgruppe": 2213,
-					"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": 859,
-					"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": 1703,
+					"anzahlUnbefristeterVertraegeInDeutschland": 2598,
+					"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": 7969,
+					"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": 6741,
+					"anzahlUnbefristeterVertraegeInDerGesamtgruppe": 3148,
+					"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": 2805,
+					"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": 2722,
 					"auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"anzahlDerBefristetenVertraege": 52503.97,
-								"fluktuation": 54079.46
+								"anzahlDerBefristetenVertraege": 75275.03,
+								"fluktuation": 22763.09
 							},
 							"2022": {
-								"anzahlDerBefristetenVertraege": 53331.51,
-								"fluktuation": 79730.2
+								"anzahlDerBefristetenVertraege": 847.77,
+								"fluktuation": 96612.06
 							},
 							"2023": {
-								"anzahlDerBefristetenVertraege": 81060.87,
-								"fluktuation": 83680.32
+								"anzahlDerBefristetenVertraege": 39827.05,
+								"fluktuation": 81841.05
 							},
 							"2024": {
-								"anzahlDerBefristetenVertraege": 59622.9,
-								"fluktuation": 72125.31
+								"anzahlDerBefristetenVertraege": 6850.79,
+								"fluktuation": 66509.7
 							}
 						}
 					}
 				},
 				"sicherheitUndWeiterbildung": {
-					"sicherheitsmassnahmenFuerMitarbeiter": "Eos nam voluptas cruentus repudiandae apparatus adiuvo animus capto sunt. Tandem arceo vir vivo coaegresco conservo timidus universe. Strues timor vespillo templum vis cruciamentum.\nCentum virga reiciendis tempus abstergo color aro virtus infit dolore. Ab abutor sequi cilicium comparo amitto tener vitiosus. Canis sui pax toties ait non vorax summisse.\nTardus atavus molestias ustulo nobis tergeo vespillo aggero ancilla. Strues voluptas accedo compono tamisium animadverto. Occaecati cena sustineo admoneo sto altus adopto capio communis sursum.\nCapio tandem cursim aeneus cibus solvo et cito. Caste absum coerceo contigo ante pariatur volutabrum. In vulgivagus utique tamen stella.\nAspicio amplitudo decens texo acies acervus. Cito voluptatum ara cunctatio artificiose illo patior correptius. Deduco argentum carcer iusto quos tabula tandem tamquam.",
+					"sicherheitsmassnahmenFuerMitarbeiter": "Tumultus vetus totam aeternus velociter stips adfectus. Ad cubo aliquam ea vulnero. Triumphus sonitus appositus atque pauper celebrer talio aequitas tibi.\nCrastinus in confido clibanus. Ager aestivus iusto perspiciatis adsuesco. Stillicidium sufficio velit thesis crux.\nEum hic deprecator xiphias antea testimonium vociferor assentator alter vallum. Ab currus cura depono occaecati traho delibero turpis. Vorago attollo considero vos auctus sophismata.\nCursus pectus iste atavus sto quae terror video. Talus cinis creta patria vobis totus angelus. Adeo canonicus strenuus derelinquo id casus adversus addo.",
 					"unfallrate": {
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 69814.48
+								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 5525.89
 							},
 							"2022": {
-								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 23538.75
+								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 11550.46
 							},
 							"2023": {
-								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 59159.1
+								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 37001.76
 							},
 							"2024": {
-								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 97053.79
+								"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 27936.75
 							}
 						}
 					},
@@ -643,16 +688,16 @@
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"budgetProMitarbeiter": 77679.11
+								"budgetProMitarbeiter": 92598.22
 							},
 							"2022": {
-								"budgetProMitarbeiter": 90389.32
+								"budgetProMitarbeiter": 25297.62
 							},
 							"2023": {
-								"budgetProMitarbeiter": 530.06
+								"budgetProMitarbeiter": 97860.48
 							},
 							"2024": {
-								"budgetProMitarbeiter": 30079.45
+								"budgetProMitarbeiter": 47569.58
 							}
 						}
 					}
@@ -662,94 +707,96 @@
 						"currentYear": 2024,
 						"yearlyData": {
 							"2021": {
-								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 3839.56,
-								"einkommensungleichheitsverhaeltnis": 37778.71,
-								"ceoEinkommensungleichheitsverhaeltnis": 83829.01
+								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 55865.94,
+								"einkommensungleichheitsverhaeltnis": 41586.5,
+								"ceoEinkommensungleichheitsverhaeltnis": 6528.68
 							},
 							"2022": {
-								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 8685.62,
-								"einkommensungleichheitsverhaeltnis": 14931.92,
-								"ceoEinkommensungleichheitsverhaeltnis": 76798.25
+								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 80917.41,
+								"einkommensungleichheitsverhaeltnis": 4135.72,
+								"ceoEinkommensungleichheitsverhaeltnis": 84020.13
 							},
 							"2023": {
-								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 6872.68,
-								"einkommensungleichheitsverhaeltnis": 45016.56,
-								"ceoEinkommensungleichheitsverhaeltnis": 3031.41
+								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 49044.8,
+								"einkommensungleichheitsverhaeltnis": 84772.07,
+								"ceoEinkommensungleichheitsverhaeltnis": 50079.38
 							},
 							"2024": {
-								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 91924.34,
-								"einkommensungleichheitsverhaeltnis": 56501.6,
-								"ceoEinkommensungleichheitsverhaeltnis": 70871.14
+								"unbereinigtesGeschlechtsspezifischesLohngefaelle": 52404.83,
+								"einkommensungleichheitsverhaeltnis": 17385.31,
+								"ceoEinkommensungleichheitsverhaeltnis": 44512.21
 							}
 						}
 					},
-					"massnahmenZurVerbesserungDerEinkommensungleichheit": "Subvenio ater absens crastinus casus tyrannus aurum. Sponte earum terminatio volva alioqui. Strenuus ustilo synagoga."
+					"massnahmenZurVerbesserungDerEinkommensungleichheit": "Absque tracto coniuratio volutabrum talus commodi aperio corroboro. Thema alienus tutamen aegrus cupressus accusator modi. Claudeo depereo autus.\nEsse pauper vaco aiunt ubi arceo modi. In aer tolero auctus apostolus cinis terebro suppono demulceo. Dolorum cur deripio vero distinctio stultus addo demulceo casus.\nVictus tracto carbo absconditus aurum arma certe. Capitulus bibo vomer depopulo pel vulpes. Odit timor suppono pel veritas.\nTredecim absconditus celer cinis tabernus. Assumenda deputo despecto delibero vindico. Asperiores reprehenderit campana temptatio tendo tracto tunc vespillo tyrannus eveniet.\nTantillus titulus victoria. Civis crudelis aliquid demonstro vulnero torqueo blanditiis defetiscor unde. Tamdiu clibanus iure uter tristis deserunt ullus vestrum degenero."
 				},
 				"geschlechterdiversitaet": {
-					"mitarbeiterAufTopManagementEbene": 3685,
-					"frauenAufTopManagementEbene": 9679,
-					"mitgliederGeschaeftsfuehrung": 9129,
-					"frauenInDerGeschaeftsfuehrung": 3988,
-					"definitionTopManagement": "Bibo demo ad temptatio urbanus. Patria umbra tremo teres velum condico torqueo cruentus. Suspendo contigo deduco vilitas accendo avaritia subvenio dedico bellicus.\nTestimonium quos casus solvo. Demonstro artificiose ante. Vicissitudo adulescens taedium tendo carcer sponte thesaurus.",
-					"einhaltungRechtlicherVorgaben": "Fugiat adnuo cito desipio abbas angustus verus. Titulus angelus uxor. Ustulo amicitia balbus velit demens coma amplitudo comitatus tutamen.\nInventore tribuo triumphus earum accusantium vere. Ducimus aliqua cognomen cogo. Reiciendis alius carbo celebrer tollo."
+					"mitarbeiterAufTopManagementEbene": 1912,
+					"frauenAufTopManagementEbene": 8156,
+					"mitgliederGeschaeftsfuehrung": 6394,
+					"frauenInDerGeschaeftsfuehrung": 7441,
+					"definitionTopManagement": "Cunae cerno suspendo conatus saepe ipsum clamo adeptio vado credo. Tantum omnis vinitor ascisco cras tego conventus acies tenus. Terga verumtamen barba.",
+					"einhaltungRechtlicherVorgaben": "Caste adduco curo eveniet. Attero derideo suspendo aperiam armarium nulla aperiam perferendis vobis. Demergo volva cogito.\nVoluptas tibi toties suscipio. Apostolus adflicto deludo repudiandae omnis. Pariatur colligo cenaculum.\nUllus volva tamen vorago cauda. Textus harum talio. Cimentarius textus summisse cariosus vester.\nConduco quibusdam alius conforto vomer adinventitias. Denuo vigilo apud theca appello aurum claudeo atqui uterque. Templum vinum eius sui crustulum.\nProvident ara iste. Admitto delibero deprecator unde varius cumque admoneo accusantium censura. Coaegresco coaegresco cultellus."
 				},
 				"audit": {
 					"auditsZurEinhaltungVonArbeitsstandards": "Yes",
-					"artDesAudits": "InterneAnhoerung",
-					"auditErgebnisse": "Vivo patior terror cras ter porro. Absens certe bis trepide astrum contabesco aperiam tantum. Vinum demoror basium degero veniam debeo tertius.\nTutamen celer assumenda crustulum candidus urbanus cursim caelestis aequitas cras. Attonbitus tempora depereo. Aliquid est crastinus absque sequi."
+					"artDesAudits": "PruefungDurchDritte",
+					"auditErgebnisse": "Admiratio ea adimpleo bellum cilicium aqua inventore similique. Absum apparatus earum cursim. Tibi adstringo socius tamdiu turbo vinco copia patruus.\nTertius viridis quam autus aegre summisse sumptus commodi fugiat tolero. Acquiro succurro surculus utique tepesco. Modi aestas tabgo baiulus.\nTempore caterva degero vilis aggredior calcar balbus ceno eum somniculosus. Aurum trepide sum tendo derideo cervus velociter deludo. Aurum aspicio caste.\nAdmiratio paulatim cohibeo mollitia termes. Bene claro termes vinco vulpes. Nesciunt sopor una sponte audentia."
 				}
 			},
 			"unternehmensfuehrungGovernance": {
 				"aufsichtsrat": {
-					"anzahlDerMitgliederImAufsichtsrat": 8525,
-					"anzahlUnabhaengigerMitgliederImAufsichtsrat": 3110,
-					"anzahlVonFrauenImAufsichtsrat": 289
+					"anzahlDerMitgliederImAufsichtsrat": 6798,
+					"anzahlUnabhaengigerMitgliederImAufsichtsrat": 4624,
+					"anzahlVonFrauenImAufsichtsrat": 2023
 				},
 				"verguetungsausschuss": {
-					"anzahlDerMitgliederImVerguetungsausschuss": 8035,
-					"anzahlUnabhaengigerMitgliederImVerguetungsausschuss": 3188,
-					"anzahlVonFrauenImVerguetungsausschuss": 759
+					"anzahlDerMitgliederImVerguetungsausschuss": 7477,
+					"anzahlUnabhaengigerMitgliederImVerguetungsausschuss": 1103,
+					"anzahlVonFrauenImVerguetungsausschuss": 647
 				},
 				"nominierungsausschuss": {
-					"anzahlDerMitgliederImNominierungsausschuss": 3078,
-					"anzahlUnabhaengigerMitgliederImNominierungsausschuss": 5118,
-					"anzahlVonFrauenImVerguetungsausschuss": 7667
+					"anzahlDerMitgliederImNominierungsausschuss": 1415,
+					"anzahlUnabhaengigerMitgliederImNominierungsausschuss": 4231,
+					"anzahlVonFrauenImVerguetungsausschuss": 9053
 				},
 				"pruefungsausschuss": {
-					"anzahlDerMitgliederImPruefungsausschuss": 5087,
-					"anzahlUnabhaengigerMitgliederImPruefungsausschuss": 2987,
-					"anzahlVonFrauenImPruefungsausschuss": 4684
+					"anzahlDerMitgliederImPruefungsausschuss": 6934,
+					"anzahlUnabhaengigerMitgliederImPruefungsausschuss": 5181,
+					"anzahlVonFrauenImPruefungsausschuss": 6177
 				},
 				"nachhaltigkeitsausschuss": {
-					"anzahlDerMitgliederImNachhaltigkeitsausschuss": 8815,
-					"anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": 9497,
-					"anzahlVonFrauenImNachhaltigkeitsausschuss": 1409
+					"anzahlDerMitgliederImNachhaltigkeitsausschuss": 4605,
+					"anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": 5618,
+					"anzahlVonFrauenImNachhaltigkeitsausschuss": 6697
 				},
 				"sonstige": {
-					"wirtschaftspruefer": "schemas",
+					"wirtschaftspruefer": "architectures",
 					"trennungVonCeoOderVorsitzenden": "Yes",
-					"amtszeitBisZurTrennung": 2167
+					"amtszeitBisZurTrennung": 5549
 				},
 				"stakeholder": {
 					"einbeziehungVonStakeholdern": "Yes",
-					"prozessDerEinbeziehungVonStakeholdern": "Vorax trepide comburo argentum ustilo conduco canto vix asper sublime. Odio audeo cura compono cursim ipsa temporibus. Antea subnecto viridis crustulum acer succurro ipsum sunt.\nTibi sub sed aperte vita adficio aveho. Adfero canto aggredior theca vetus tergiversatio texo. Patrocinor vorax ut viscus abutor delibero harum tabgo.\nTextilis uxor tener vetus. Tendo baiulus comitatus ad sto cetera absconditus. Carpo accusamus deduco sublime amicitia veniam undique patior solutio.\nVomito quia vesco. Crudelis tot beneficium antea careo terror subvenio creta antepono. Viridis collum appositus pectus commemoro nisi.\nIncidunt cultellus adiuvo tempora thermae arbustum cavus vereor aurum curis. Tripudio accusantium incidunt alveus ratione temptatio fugiat officiis usque. Brevis vitium utor umerus.",
-					"mechanismenZurAusrichtungAufStakeholder": "Curto doloremque tergiversatio defetiscor fugit minus aliqua substantia damnatio. Auctus alioqui distinctio infit cruentus spiritus aequitas. Cauda explicabo tredecim aspernatur.\nAlo conitor antepono. Tibi conculco urbanus. Curiositas timor via contigo soleo aurum paens utilis theca.\nVitae cetera triumphus sublime sophismata testimonium vitium tergeo deporto. Curto caelestis bibo claro enim pecto creta ventosus uxor utilis. Officiis desidero tremo ex aiunt derelinquo uredo absconditus eveniet quaerat."
+					"prozessDerEinbeziehungVonStakeholdern": "Voco vere delinquo desino artificiose perferendis volup suasoria dens. A summisse solus labore. Quaerat impedit quod cinis sortitus apud volubilis colo vobis.",
+					"mechanismenZurAusrichtungAufStakeholder": "Alioqui vulpes venustas arca vomer conservo totam cognomen pectus. Coruscus consequuntur apostolus aperiam ago consectetur adicio vulnero. Acerbitas harum tabula abundans.\nCaput atque decretum despecto ago ducimus demitto vomito eligendi tandem. Conventus vesper antepono adfero addo. Laborum verus suscipit capitulus derideo a tergiversatio."
 				},
 				"unternehmensrichtlinien": {
 					"veroeffentlichteUnternehmensrichtlinien": [
+						"Zwangsarbeit",
+						"Interessenkonflikte",
+						"FaireBehandlungVonKunden",
+						"DiversitaetAndInklusion",
 						"GesundheitUndSicherheit",
 						"Verhaltenskodex",
-						"FaireBehandlungVonKunden",
-						"Interessenkonflikte",
+						"VerantwortungsvollesMarketing",
 						"AntiKorruption",
-						"Datenschutz",
-						"DiversitaetAndInklusion"
+						"Whistleblowing"
 					],
-					"weitereVeroeffentlicheUnternehmensrichtlinien": "Averto votum infit. Demo titulus tametsi recusandae blanditiis sub tricesimus vociferor angulus. Conventus conqueror tertius calcar quaerat ago acies.\nCommodi vereor constans. Cubicularis turbo thorax demum addo degero sequi. Admitto crastinus depromo aiunt catena tertius conservo brevis crepusculum aequitas.\nTergum numquam tristis taceo acceptus conservo teres subvenio turba confero. Patria aut subvenio tersus depulso usque. Aspicio vox appello speculum iure.\nBis spiritus bibo vitium coruscus eius vulticulus animus appositus. Aro surgo qui acsi. Commemoro cultura adficio vaco vulnero vita ulterius itaque vulpes."
+					"weitereVeroeffentlicheUnternehmensrichtlinien": "Ceno voluptas deorsum. Nisi accusamus curatio quisquam. Nesciunt depopulo ut vorago tenax spectaculum averto tot angulus claudeo."
 				},
 				"lieferantenauswahl": {
 					"esgKriterienUndUeberwachungDerLieferanten": "Yes",
-					"auswahlkriterien": "Celebrer statua iusto tendo clamo vir desolo thesaurus ubi. Vox vero turba ait baiulus tersus tendo vulariter. Vesica quis appello."
+					"auswahlkriterien": "Assumenda colo tendo caries combibo iste debeo. Verto nemo vesco caveo copiose. Calculus synagoga conduco pecco cursus suggero sponte.\nUnde cohors tres apostolus. Quasi argentum crur vigilo solitudo sponte thymum. Soleo crustulum angulus coniuratio approbo studio suus.\nAureus chirographum ustulo veniam atque. Enim desipio arguo arma censura cunctatio recusandae dolor ventosus. Voluptatum libero talus censura ducimus voro adhaero."
 				}
 			}
 		},

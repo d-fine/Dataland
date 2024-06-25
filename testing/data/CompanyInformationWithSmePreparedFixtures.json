@@ -2,82 +2,101 @@
 	{
 		"companyInformation": {
 			"companyName": "Sme-dataset-with-no-null-fields",
-			"headquarters": "Chula Vista",
-			"headquartersPostalCode": "45206",
+			"headquarters": "Bartlett",
+			"headquartersPostalCode": "34655",
 			"sector": "Energy",
 			"identifiers": {
 				"Lei": [
-					"cLl6YCVqgRlz7csI0ueU"
+					"WwGyXZFYVJLl2gImLjfa"
 				]
 			},
-			"countryCode": "AU",
-			"companyAlternativeNames": [
-				"Dicki, Weimann and Carter",
-				"Sauer LLC",
-				"Schneider Group",
-				"Schulist - Littel"
+			"countryCode": "MK",
+			"companyContactDetails": [
+				"dummy929@email.com"
 			],
-			"companyLegalForm": null,
-			"website": "https://jumbo-substitution.com/",
+			"companyAlternativeNames": [
+				"Dare, Schiller and Sporer",
+				"Farrell Group",
+				"Parker - Cassin",
+				"Rosenbaum, Hane and Parker"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://back-swim.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
-					"reportingDate": "2024-09-12",
+					"reportingDate": "2024-10-02",
 					"sectors": [
-						"01.5",
-						"06.1"
+						"12.0",
+						"42.91",
+						"58.12",
+						"73.2"
 					],
-					"numberOfEmployees": 1634,
-					"fiscalYearStart": "2024-06-06",
+					"numberOfEmployees": 6277,
+					"fiscalYearStart": "2024-08-29",
 					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-11-11"
+						},
+						"IntegratedReport": {
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-04-20"
+						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
-							"publicationDate": "2023-11-05"
+							"publicationDate": "2023-03-27"
 						}
 					}
 				},
 				"financialInformation": {
-					"revenueInEur": 48747.46,
-					"operatingCostInEur": 2839.3,
-					"capitalAssetsInEur": 35638.83
+					"revenueInEur": 49591.97,
+					"operatingCostInEur": 10263.2,
+					"capitalAssetsInEur": 93589.72
 				}
 			},
 			"power": {
 				"investments": {
-					"investmentsInEnhancingEnergyEfficiency": "LessThan1Percent"
+					"investmentsInEnhancingEnergyEfficiency": "Between1And5Percent"
 				},
 				"consumption": {
 					"powerConsumptionInMwh": {
-						"value": 75457.08,
+						"value": 30033.44,
 						"dataSource": {
-							"page": 727,
+							"page": 1174,
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "niches"
 						},
-						"comment": "synthesize digital microchip",
-						"quality": "Estimated"
+						"comment": "back up neural system",
+						"quality": "Audited"
 					},
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMwh": 75261.5,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMwh": 46447.62,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25Percent"
+					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75Percent"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 93780.29,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazardsInEur": 73809.17,
 					"naturalHazardsCovered": [
+						"Avalanche",
 						"EarthQuake",
-						"Snow"
+						"Flooding",
+						"Hail",
+						"Snow",
+						"Wind"
 					]
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]
