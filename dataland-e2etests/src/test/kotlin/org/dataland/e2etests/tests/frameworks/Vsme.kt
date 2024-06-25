@@ -192,9 +192,7 @@ class Vsme {
                 it.fileName to CompanyReport(
                     fileReference = it.fileReference,
                     fileName = it.fileName,
-                    isGroupLevel = YesNoNa.Yes,
-                    reportDate = LocalDate.now(),
-                    currency = "EUR",
+                    publicationDate = LocalDate.now(),
                 ),
             )
         }
