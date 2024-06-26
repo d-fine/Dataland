@@ -56,4 +56,25 @@ class CompanyOwnershipChecker(
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
         return isCurrentUserCompanyOwnerForCompany(companyId)
     }
+
+    /**
+     * Method to check whether a given company has at least one company owner
+     * @param companyId the ID of the company
+     * @return a Boolean indicating whether the company has at least one company owner
+     */
+    @Transactional(readOnly = true)
+    fun companyExistsAndHasNoOwner(companyId: String): Boolean {
+        return try {
+            val assignments = companyRolesControllerApi.getCompanyRoleAssignments(
+                CompanyRole.CompanyOwner, UUID.fromString(companyId)
+            )
+            assignments.isEmpty()
+        } catch (clientException: ClientException) {
+            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                false
+            } else {
+                throw clientException
+            }
+        }
+    }
 }
