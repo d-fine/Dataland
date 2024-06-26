@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :landingPage="landingPage" />
+  <TheNewHeader :landingPage="landingPage" />
   <main role="main">
     <TheIntro :sections="landingPage?.sections" />
     <TheQuotes :sections="landingPage?.sections" />
@@ -19,7 +19,7 @@ import { useDialog } from 'primevue/usedialog';
 import SessionDialog from '@/components/general/SessionDialog.vue';
 import { SessionDialogMode } from '@/utils/SessionTimeoutUtils';
 
-import TheHeader from '@/components/generics/TheNewHeader.vue';
+import TheNewHeader from '@/components/generics/TheNewHeader.vue';
 import TheIntro from '@/components/resources/newLandingPage/TheIntro.vue';
 import TheQuotes from '@/components/resources/newLandingPage/TheQuotes.vue';
 import TheBrands from '@/components/resources/newLandingPage/TheBrands.vue';
