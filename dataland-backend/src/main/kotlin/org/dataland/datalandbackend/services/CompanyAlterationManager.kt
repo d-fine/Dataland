@@ -11,13 +11,13 @@ import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -154,9 +154,8 @@ class CompanyAlterationManager(
      */
     @Transactional
     fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
-        val authentication: Authentication = SecurityContextHolder.getContext().authentication
-        val authorities = authentication.authorities.map { it.authority }
-        if (authorities.contains("ROLE_UPLOADER")) {
+        val datalandAuthentication = DatalandAuthentication.fromContextOrNull()
+        if (datalandAuthentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) == false) {
             val unauthorizedFields = getUnauthorizedFieldsForUploader(patch)
             if (unauthorizedFields.isNotEmpty()) {
                 throw AccessDeniedException(logMessageBuilder.generateInvalidAlterationExceptionMessage(unauthorizedFields))

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OrderBy
@@ -31,10 +32,9 @@ data class StoredCompanyEntity(
     @Column(name = "company_alternative_names")
     @OrderBy("asc")
     var companyAlternativeNames: List<String>?,
-
-    @ElementCollection
+// ToDO: try not using eager
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "company_contact_details")
-    @OrderBy("asc")
     var companyContactDetails: List<String>?,
 
     @Column(name = "company_legal_form")
