@@ -13,7 +13,6 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
-import org.dataland.e2etests.utils.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -410,40 +409,39 @@ class CompanyDataControllerTest {
     @Test
     fun `check that dataUploader can patch contactDetails if company does not have companyOwner`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany(name="CompanyWithoutOwner", alternativeNames = null)
+        val companyId = uploadModifiedBaseCompany(name = "CompanyWithoutOwner", alternativeNames = null)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         assertDoesNotThrow {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                CompanyInformationPatch(companyContactDetails=listOf("Test"))
+                CompanyInformationPatch(companyContactDetails = listOf("Test")),
             )
         }
-
     }
 
     @Test
     fun `check that dataUploader cannot patch contactDetails if company does have companyOwner`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany(name="CompanyWithOwner", alternativeNames = null)
+        val companyId = uploadModifiedBaseCompany(name = "CompanyWithOwner", alternativeNames = null)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), dataReaderUserId)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val clientException = assertThrows<ClientException> {
-            apiAccessor.companyDataControllerApi.patchCompanyById(companyId, CompanyInformationPatch(companyContactDetails=listOf("Test")))
+            apiAccessor.companyDataControllerApi.patchCompanyById(companyId, CompanyInformationPatch(companyContactDetails = listOf("Test")))
         }
     }
 
     @Test
     fun `check that companyOwner and dataAdmin can patch contactDetails`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany(name="CompanyWithoutOwner", alternativeNames = null)
+        val companyId = uploadModifiedBaseCompany(name = "CompanyWithoutOwner", alternativeNames = null)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), dataReaderUserId)
 
         assertDoesNotThrow {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                CompanyInformationPatch(companyContactDetails=listOf("Test"))
+                CompanyInformationPatch(companyContactDetails = listOf("Test")),
             )
         }
 
@@ -451,7 +449,7 @@ class CompanyDataControllerTest {
         assertDoesNotThrow {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                CompanyInformationPatch(companyContactDetails=listOf("Test"))
+                CompanyInformationPatch(companyContactDetails = listOf("Test")),
             )
         }
     }

@@ -66,7 +66,7 @@ class CompanyOwnershipChecker(
     fun companyExistsAndHasNoOwner(companyId: String): Boolean {
         return try {
             val assignments = companyRolesControllerApi.getCompanyRoleAssignments(
-                CompanyRole.CompanyOwner, UUID.fromString(companyId)
+                CompanyRole.CompanyOwner, UUID.fromString(companyId),
             )
             assignments.isEmpty()
         } catch (clientException: ClientException) {
