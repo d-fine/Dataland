@@ -176,7 +176,7 @@ import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { badgeClass } from '@/utils/RequestUtils';
@@ -274,7 +274,7 @@ export default defineComponent({
      * @returns array of frameworkSelectableItem
      */
     retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
-      return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      return FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
         const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {

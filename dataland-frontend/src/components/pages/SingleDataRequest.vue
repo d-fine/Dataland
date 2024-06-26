@@ -229,7 +229,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import PrimeDialog from 'primevue/dialog';
 import { openEmailClient } from '@/utils/Email';
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
@@ -502,7 +502,7 @@ export default defineComponent({
      * Populates the availableFrameworks property in the format expected by the dropdown filter
      */
     retrieveFrameworkOptions() {
-      this.frameworkOptions = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+      this.frameworkOptions = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         return {
           value: dataTypeEnum,
           label: humanizeStringOrNumber(dataTypeEnum),

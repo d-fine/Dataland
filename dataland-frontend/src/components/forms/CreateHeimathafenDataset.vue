@@ -24,11 +24,11 @@
               <FormKit
                 type="group"
                 v-for="category in heimathafenDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div class="" v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="uploadFormSection grid">
                       <div class="col-3 p-3 topicLabel">

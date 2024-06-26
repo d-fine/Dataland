@@ -22,11 +22,11 @@ abstract class InDevelopmentPavedRoadFramework(
     frameworkTemplateCsvFile: File,
     order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
-    privateFrameworkBoolean: Boolean = false,
+    isPrivateFramework: Boolean = false,
 ) :
     PavedRoadFramework(
         identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures,
-        privateFrameworkBoolean,
+        isPrivateFramework,
     ) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
@@ -114,6 +114,7 @@ abstract class InDevelopmentPavedRoadFramework(
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
+        datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
         logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }

@@ -2,7 +2,11 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section">
-      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :allow-company-owner-for-company-id="companyID">
+      <AuthorizationWrapper
+        :required-role="KEYCLOAK_ROLE_UPLOADER"
+        :allow-company-owner-for-company-id="companyID"
+        :data-type="frameworkType"
+      >
         <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
@@ -42,7 +46,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import CreateHeimathafenDataset from '@/components/forms/CreateHeimathafenDataset.vue';
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
-import CreateSmeDataset from '@/components/forms/CreateSmeDataset.vue';
+import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 
 export default defineComponent({
   name: 'UploadFormWrapper',
@@ -93,8 +97,8 @@ export default defineComponent({
           return CreateHeimathafenDataset;
         case `${DataTypeEnum.EsgQuestionnaire}`:
           return CreateEsgQuestionnaireDataset;
-        case `${DataTypeEnum.Sme}`:
-          return CreateSmeDataset;
+        case `${DataTypeEnum.Vsme}`:
+          return CreateVsmeDataset;
         default:
           return null;
       }

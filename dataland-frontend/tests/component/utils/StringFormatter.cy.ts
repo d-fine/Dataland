@@ -28,7 +28,7 @@ describe('Unit test for StringFormatter', () => {
     expect(humanizeStringOrNumber(DataTypeEnum.Heimathafen)).to.equal(
       PublicFrameworkDefinitions[DataTypeEnum.Heimathafen].label
     );
-    expect(humanizeStringOrNumber(DataTypeEnum.Sme)).to.equal(PrivateFrameworkDefinitions[DataTypeEnum.Sme].label);
+    expect(humanizeStringOrNumber(DataTypeEnum.Vsme)).to.equal(PrivateFrameworkDefinitions[DataTypeEnum.Vsme].label);
   });
 
   it('Check that kebab case is converted correctly to camel case', () => {
