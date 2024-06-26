@@ -14,6 +14,7 @@ while getopts ':lh' opt; do
       echo "Usage: $(basename $0) [-l] [-h]"
       echo "  -l: Run in local frontend mode. Do not launch a frontend docker container. Instead, redirect frontend traffic to localhost."
       echo "      This significantly speeds up frontend development. Nevertheless, at some point, the frontend may freeze requiring a full restart of the docker engine."
+      echo "      Note: You have to run the frontend locally on your machine (npm run dev) to make this work."
       echo "  -h: Display this help message."
       exit 0
       ;;
