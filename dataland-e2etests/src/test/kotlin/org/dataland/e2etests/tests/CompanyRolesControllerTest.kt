@@ -348,8 +348,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that a user with no role or only member or uploader company role can not modify role assignments`()
-    {
+    fun `assure that a user with no role or only member or uploader company role can not modify role assignments`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId)

@@ -96,7 +96,7 @@ class CompanyRolesManager(
     }
 
     /**
-     * Returns company role assignments for the specified companyRole and company
+     * Returns a list of company role assignment entities for the specified companyRole, companyId and userId
      * @param companyRole to filter for
      * @param companyId to filter for
      * @param userId to filter for
