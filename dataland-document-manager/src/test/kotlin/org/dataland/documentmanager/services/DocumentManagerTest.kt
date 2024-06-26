@@ -40,11 +40,13 @@ class DocumentManagerTest(
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
+    lateinit var mockUserRolesChecker: UserRolesChecker
 
     val testDocument = "sample.pdf"
 
     @BeforeEach
     fun mockStorageApi() {
+        mockUserRolesChecker = mock(UserRolesChecker::class.java)
         mockSecurityContext = mock(SecurityContext::class.java)
         mockStorageApi = mock(StreamingStorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
