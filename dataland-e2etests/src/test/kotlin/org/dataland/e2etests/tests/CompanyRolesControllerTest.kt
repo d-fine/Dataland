@@ -292,7 +292,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that a company owner without admin rights can add and remove every company roles`() {
+    fun `assure that a company owner without keycloak admin role can add and remove every company roles`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
