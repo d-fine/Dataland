@@ -132,6 +132,10 @@ class CompanyRolesControllerTest {
         apiAccessor.companyRolesControllerApi.hasCompanyAtLeastOneOwner(companyId)
     }
 
+    private fun hasUserCompanyOwnerRole(userId: UUID) {
+        apiAccessor.companyRolesControllerApi.hasUserCompanyOwnerRole(userId)
+    }
+
     private fun uploadCompanyAndReturnCompanyId(): UUID {
         return UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
@@ -281,5 +285,43 @@ class CompanyRolesControllerTest {
             apiAccessor.companyRolesControllerApi.hasCompanyAtLeastOneOwner(companyId)
         }
         assertErrorCodeInCommunityManagerClientException(headExceptionForNonExistingCompanyOwners, 404)
+    }
+
+    @Test
+    fun `assure that admins and each user for the own account can check if they are a company owner of any company`() {
+        val companyId = uploadCompanyAndReturnCompanyId()
+
+        fun callEndpointAndAssertCode(responseCode: Int) {
+            val expectedClientExceptionWhenCallingHasUserCompanyOwnerRoleEndpoint = assertThrows<ClientException> {
+                hasUserCompanyOwnerRole(dataReaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(
+                expectedClientExceptionWhenCallingHasUserCompanyOwnerRoleEndpoint,
+                responseCode,
+            )
+        }
+        fun callEndpointAndAsserNoThrow() {
+            assertDoesNotThrow { hasUserCompanyOwnerRole(dataReaderUserId) }
+        }
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+        callEndpointAndAsserNoThrow()
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        callEndpointAndAsserNoThrow()
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        callEndpointAndAssertCode(403)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        removeCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
+        callEndpointAndAssertCode(404)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        callEndpointAndAssertCode(404)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        callEndpointAndAssertCode(403)
     }
 }
