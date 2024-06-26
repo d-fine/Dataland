@@ -292,7 +292,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that a company owner without keycloak admin role can add and remove every company roles`() {
+    fun `assure that a company owner without keycloak admin role can modify assignments for all company roles`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
@@ -315,7 +315,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that company member admin without keycloak admin role can only change member and member admin roles`() {
+    fun `assure that company member admin without keycloak admin role can only modify member and member admin roles`() {
         val companyId = uploadCompanyAndReturnCompanyId()
         val rolesThatCanBeModified = listOf(CompanyRole.MemberAdmin, CompanyRole.Member)
         val rolesThatCannotBeModified =
@@ -364,33 +364,38 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that every company role has access to get and head endpoint but not a user without any company role`() {
-        val companyId = uploadCompanyAndReturnCompanyId()
+    fun `assure that company role assignees can access get and head endpoint but users without company role cant`() {
+        val companyIdAlpha = uploadCompanyAndReturnCompanyId()
+        val companyIdBeta = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assignCompanyRole(CompanyRole.DataUploader, companyId, dataUploaderUserId)
+        assignCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId)
         enumValues<CompanyRole>().forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            assignCompanyRole(it, companyId, dataReaderUserId)
-
+            assignCompanyRole(it, companyIdAlpha, dataReaderUserId)
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-            assertDoesNotThrow {
-                getCompanyRoleAssignments(CompanyRole.Member, companyId)
-            }
 
-            assertDoesNotThrow {
-                hasUserCompanyRole(CompanyRole.DataUploader, companyId, dataUploaderUserId)
+            assertDoesNotThrow { getCompanyRoleAssignments(CompanyRole.Member, companyIdAlpha) }
+            val exceptionWhenGettingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
+                getCompanyRoleAssignments(CompanyRole.Member, companyIdBeta)
             }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenGettingCompanyRolesForAnotherCompany, 403)
+
+            assertDoesNotThrow { hasUserCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId) }
+            val exceptionWhenCheckingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
+                hasUserCompanyRole(CompanyRole.DataUploader, companyIdBeta, dataUploaderUserId)
+            }
+            assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingCompanyRolesForAnotherCompany, 403)
 
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-            removeCompanyRole(it, companyId, dataReaderUserId)
+            removeCompanyRole(it, companyIdAlpha, dataReaderUserId)
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val exceptionWhenTryingToGetCompanyRoles = assertThrows<ClientException> {
-            getCompanyRoleAssignments(CompanyRole.Member, companyId)
+            getCompanyRoleAssignments(CompanyRole.Member, companyIdAlpha)
         }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToGetCompanyRoles, 403)
         val exceptionWhenTryingToCheckCompanyRoles = assertThrows<ClientException> {
-            hasUserCompanyRole(CompanyRole.DataUploader, companyId, dataUploaderUserId)
+            hasUserCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId)
         }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
     }
