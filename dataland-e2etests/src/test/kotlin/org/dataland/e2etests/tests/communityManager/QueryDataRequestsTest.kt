@@ -60,10 +60,10 @@ class QueryDataRequestsTest {
 
     @Test
     fun `query data requests with data type filter and assert that the expected results are being retrieved`() {
-        val smeDataRequests = requestControllerApi.getDataRequests(
-            dataType = RequestControllerApi.DataTypeGetDataRequests.sme,
+        val vsmeDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.vsme,
         ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(0, smeDataRequests.size)
+        assertEquals(0, vsmeDataRequests.size)
 
         val p2pDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.p2p,

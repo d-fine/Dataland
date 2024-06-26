@@ -2,7 +2,7 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { admin_name, admin_pw, reader_name, reader_pw, reader_userId } from '@e2e/utils/Cypress';
 import { getKeycloakToken, login, logout } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_UPLOAD_FORM } from '@/utils/Constants';
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
 
@@ -17,7 +17,7 @@ describeIf(
      */
     function checkFrameworks(): void {
       // eslint-disable-next-line prettier/prettier
-      ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
+      FRAMEWORKS_WITH_UPLOAD_FORM.forEach((frameworkName) => {
         const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
         cy.get(frameworkSummaryPanelSelector).should('exist');
         cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should('exist');

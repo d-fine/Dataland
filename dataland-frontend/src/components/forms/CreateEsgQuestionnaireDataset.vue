@@ -28,7 +28,7 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div class="" v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="uploadFormSection grid">
                       <div class="col-3 p-3 topicLabel">
@@ -78,9 +78,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in esgQuestionnaireDataModel" :key="category">
+            <li v-for="category in esgQuestionnaireDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -228,7 +228,7 @@ export default defineComponent({
         if (currentDate === undefined) {
           return '';
         } else {
-          const currentDateSegments = currentDate.split('-');
+          const currentDateSegments = currentDate!.split('-');
           return currentDateSegments[0] ?? new Date().getFullYear();
         }
       },
@@ -262,12 +262,15 @@ export default defineComponent({
      * Builds an api to get and upload esg questionnaire data
      * @returns the api
      */
-    buildEsgQuestionnaireDataApi(): PublicFrameworkDataApi<EsgQuestionnaireData> {
+    buildEsgQuestionnaireDataApi(): PublicFrameworkDataApi<EsgQuestionnaireData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
       if (frameworkDefinition) {
-        return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+        return frameworkDefinition.getPublicFrameworkApiClient(
+          undefined,
+          apiClientProvider.axiosInstance
+        ) as PublicFrameworkDataApi<EsgQuestionnaireData>;
+      } else return undefined;
     },
 
     /**
@@ -305,7 +308,7 @@ export default defineComponent({
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
