@@ -145,7 +145,7 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Assign company role for the company to the user.",
+        "summary": "Assign company role for the company to the user. Endpoint accessible for all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
         "description": "The company role for the specified company is being assigned to the user.",
         "operationId": "assignCompanyRole",
         "parameters": [
@@ -221,7 +221,7 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Remove company role for the company from the user.",
+        "summary": "Remove company role for the company from the user. Endpoint accessible for all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be removed.",
         "description": "The company role for the specified company is being removed from the user.",
         "operationId": "removeCompanyRole",
         "parameters": [
@@ -290,7 +290,7 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Validate company role for company and user.",
+        "summary": "Validate company role for company and user. Endpoint accessible for all Dataland-Admins, for all users that check for their own userID, and all Company-Role-Assignees of the company.",
         "description": "Checks whether the company role for the company is assigned to the user.",
         "operationId": "hasUserCompanyRole",
         "parameters": [
@@ -364,7 +364,7 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Request company ownership for the company.",
+        "summary": "Request company ownership for the company. Endpoint accessible for all Dataland users.",
         "description": "Request company ownership for the company on Dataland.",
         "operationId": "postCompanyOwnershipRequest",
         "parameters": [
@@ -424,7 +424,7 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Validate existence of company ownership for the company.",
+        "summary": "Validate existence of company ownership for the company. Endpoint accessible for all Dataland users.",
         "description": "Validates if at least one company owner exists for the specified company",
         "operationId": "hasCompanyAtLeastOneOwner",
         "parameters": [
@@ -890,7 +890,7 @@
         "tags": [
           "company-roles-controller"
         ],
-        "summary": "Retrieve company role assignments for company and company role.",
+        "summary": "Retrieve company role assignments for company and company role. Endpoint accessible for all Dataland-Admins and all Company-Role-Assignees of the company.",
         "description": "Get company role assignments for the specified company role and company.",
         "operationId": "getCompanyRoleAssignments",
         "parameters": [
