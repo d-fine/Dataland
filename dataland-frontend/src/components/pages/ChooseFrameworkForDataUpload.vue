@@ -96,7 +96,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
-import { ARRAY_OF_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
+import { FRONTEND_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
 
 export default defineComponent({
   name: 'ChooseFramework',
@@ -127,7 +127,7 @@ export default defineComponent({
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
     return {
-      allFrameworksExceptEuTaxonomy: ARRAY_OF_SUPPORTED_FRAMEWORKS.filter(
+      allFrameworksExceptEuTaxonomy: FRONTEND_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
           [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
             frameworkName

@@ -16,10 +16,9 @@ from dataland_backend_api_documentation_client.api.meta_data_controller.get_data
 from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_financials import (
     CompanyAssociatedDataEuTaxonomyDataForFinancials,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_non_financials_data \
-    import (
+from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_non_financials_data import (
     CompanyAssociatedDataEutaxonomyNonFinancialsData,
-    )
+)
 from dataland_backend_api_documentation_client.models.company_associated_data_lksg_data import (
     CompanyAssociatedDataLksgData,
 )
@@ -29,8 +28,8 @@ from dataland_backend_api_documentation_client.models.company_associated_data_sf
 from dataland_backend_api_documentation_client.models.company_associated_data_pathways_to_paris_data import (
     CompanyAssociatedDataPathwaysToParisData,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
-    CompanyAssociatedDataSmeData,
+from dataland_backend_api_documentation_client.models.company_associated_data_vsme_data import (
+    CompanyAssociatedDataVsmeData,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_esg_questionnaire_data import (
     CompanyAssociatedDataEsgQuestionnaireData,
@@ -68,7 +67,7 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.LKSG: CompanyAssociatedDataLksgData,
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
         DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
-        DataTypeEnum.SME: CompanyAssociatedDataSmeData,
+        DataTypeEnum.VSME: CompanyAssociatedDataVsmeData,
         DataTypeEnum.ESG_QUESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
         DataTypeEnum.HEIMATHAFEN: CompanyAssociatedDataHeimathafenData,
     }
