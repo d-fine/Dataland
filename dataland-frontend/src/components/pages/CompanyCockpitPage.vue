@@ -7,7 +7,7 @@
         <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
 
         <FrameworkSummaryPanel
-          v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
+          v-for="framework of FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
           :is-user-allowed-to-view="isUserAllowedToViewForFramework(framework)"
           :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
@@ -36,7 +36,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
@@ -106,7 +106,7 @@ export default defineComponent({
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
-      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
+      FRAMEWORKS_WITH_VIEW_PAGE,
       isUserCompanyOwner: false,
       isUserUploader: false,
       isAnyCompanyOwnerExisting: false,

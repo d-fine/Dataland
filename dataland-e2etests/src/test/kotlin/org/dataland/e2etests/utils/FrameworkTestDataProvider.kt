@@ -14,7 +14,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.SmeData
+import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -47,8 +47,8 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             File("./build/resources/test/CompanyInformationWithLksgData.json"),
         SfdrData::class.java to
             File("./build/resources/test/CompanyInformationWithSfdrData.json"),
-        SmeData::class.java to
-            File("./build/resources/test/CompanyInformationWithSmeData.json"),
+        VsmeData::class.java to
+            File("./build/resources/test/CompanyInformationWithVsmeData.json"),
         PathwaysToParisData::class.java to
             File("./build/resources/test/CompanyInformationWithP2pData.json"),
     )

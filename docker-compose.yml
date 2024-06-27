@@ -208,7 +208,7 @@ services:
     # don't work anymore after a certain amount of requests
     # https://github.com/docker/for-win/issues/8861
     restart: always
-    profiles: [ "development" ]
+    profiles: [ "developmentContainerFrontend" ]
     image: node:20.11.1
     networks:
       internal:

@@ -4,7 +4,7 @@ import eutaxonomyNonFinancialsFrontendFrameworkDefinition from '@/frameworks/eut
 import heimathafenFrontendFrameworkDefinition from '@/frameworks/heimathafen/FrontendFrameworkDefinition';
 import lksgFrontendFrameworkDefinition from '@/frameworks/lksg/FrontendFrameworkDefinition';
 import sfdrFrontendFrameworkDefinition from '@/frameworks/sfdr/FrontendFrameworkDefinition';
-import smeFrontendFrameworkDefinition from '@/frameworks/sme/FrontendFrameworkDefinition';
+import vsmeFrontendFrameworkDefinition from '@/frameworks/vsme/FrontendFrameworkDefinition';
 import { type FrontendFrameworkDefinition } from '@/frameworks/BaseFrameworkDefinition';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,5 +14,5 @@ export const FrontendFrameworkDefinitions: Record<string, FrontendFrameworkDefin
   heimathafen: heimathafenFrontendFrameworkDefinition,
   lksg: lksgFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
-  sme: smeFrontendFrameworkDefinition,
+  vsme: vsmeFrontendFrameworkDefinition,
 };

@@ -39,7 +39,7 @@
 import { computed, inject } from 'vue';
 import { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -77,14 +77,14 @@ const injectedUseMobileView = inject<{ value: boolean }>('useMobileView');
 const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
 const showProvideDataButton = computed(() => {
-  return props.isUserAllowedToUpload && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
+  return props.isUserAllowedToUpload && FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
 
 const authenticated = inject<{ value: boolean }>('authenticated');
 const hasAccessibleViewPage = computed(() => {
   return (
     authenticated?.value &&
-    ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
+    FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
     props.numberOfProvidedReportingPeriods
   );
 });

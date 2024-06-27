@@ -28,7 +28,11 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -74,9 +78,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in lksgDataModel" :key="category">
+            <li v-for="category in lksgDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -124,7 +128,7 @@ import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.v
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
 import LksgSubcontractingCompaniesFormField from '@/components/forms/parts/fields/LksgSubcontractingCompaniesFormField.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
@@ -248,12 +252,12 @@ export default defineComponent({
      * Builds an api to get and upload Lksg data
      * @returns the api
      */
-    buildLksgDataApi(): PublicFrameworkDataApi<LksgData> {
+    buildLksgDataApi(): PublicFrameworkDataApi<LksgData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Lksg);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+      } else return undefined;
     },
 
     /**
@@ -264,10 +268,10 @@ export default defineComponent({
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const lksgDataControllerApi = this.buildLksgDataApi();
-      const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await lksgDataControllerApi!.getFrameworkData(dataId);
       const lksgResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
-      this.companyAssociatedLksgData = objectDropNull(lksgResponseData as ObjectType) as CompanyAssociatedDataLksgData;
+      this.companyAssociatedLksgData = objectDropNull(lksgResponseData);
       this.waitingForData = false;
     },
     /**
@@ -280,14 +284,14 @@ export default defineComponent({
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const lksgDataControllerApi = this.buildLksgDataApi();
-        await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
+        await lksgDataControllerApi!.postFrameworkData(this.companyAssociatedLksgData);
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
