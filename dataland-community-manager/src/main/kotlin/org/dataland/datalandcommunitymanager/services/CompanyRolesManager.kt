@@ -116,26 +116,6 @@ class CompanyRolesManager(
         )
     }
 
-    /**
-     * Returns company role assignments for the specified companyRole and userId
-     * @param companyRole to filter for
-     * @param userId for which the company role assignments are valid
-     * @returns the company role assignment entities
-     */
-    @Transactional(readOnly = true)
-    fun getCompanyRoleAssignmentsForRoleAndUser(
-        companyRole: CompanyRole,
-        userId: String,
-    ) {
-        val companyOwnerAssignments = companyRoleAssignmentRepository.findByUserIdAndCompanyRole(userId, companyRole)
-        if (companyOwnerAssignments.isEmpty()) {
-            throw ResourceNotFoundApiException(
-                "User is not a $companyRole.",
-                "User with Id $userId is not a $companyRole.",
-            )
-        }
-    }
-
     private fun throwExceptionDueToRoleNotAssignedToUser(companyRole: CompanyRole, companyId: String, userId: String) {
         throw ResourceNotFoundApiException(
             exceptionSummaryTextWhenRoleNotAssigned,
