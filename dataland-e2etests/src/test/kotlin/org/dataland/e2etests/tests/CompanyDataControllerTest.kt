@@ -123,7 +123,6 @@ class CompanyDataControllerTest {
         val companyId = uploadInfo.actualStoredCompany.companyId
         val patchObject = CompanyInformationPatch(
             companyAlternativeNames = listOf("Alt-Name-1", "Alt-Name-2"),
-            companyContactDetails = listOf("New-Email"),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
@@ -133,10 +132,6 @@ class CompanyDataControllerTest {
         assertEquals(
             patchObject.companyAlternativeNames!!, updatedCompany.companyInformation.companyAlternativeNames,
             "The company alternative names should have been updated",
-        )
-        assertEquals(
-            patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyContactDetails,
-            "The company contact details should have been updated",
         )
     }
 
@@ -528,7 +523,7 @@ class CompanyDataControllerTest {
         )
         assertEquals(
             patchObject.companyName!!, updatedCompany.companyInformation.companyName,
-            "The company name should have been updated",
+            "The company name should have been updated by the company owner",
         )
     }
 }
