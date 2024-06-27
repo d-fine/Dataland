@@ -375,16 +375,9 @@ class CompanyRolesControllerTest {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
             assertDoesNotThrow { getCompanyRoleAssignments(CompanyRole.Member, companyIdAlpha) }
-            val exceptionWhenGettingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
-                getCompanyRoleAssignments(CompanyRole.Member, companyIdBeta)
-            }
-            assertErrorCodeInCommunityManagerClientException(exceptionWhenGettingCompanyRolesForAnotherCompany, 403)
-
             assertDoesNotThrow { hasUserCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId) }
-            val exceptionWhenCheckingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
-                hasUserCompanyRole(CompanyRole.DataUploader, companyIdBeta, dataUploaderUserId)
-            }
-            assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingCompanyRolesForAnotherCompany, 403)
+
+            tryToUseGetAndHeadEndpointAndAsserThatItsForbidden(companyIdBeta)
 
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             removeCompanyRole(it, companyIdAlpha, dataReaderUserId)
@@ -399,7 +392,16 @@ class CompanyRolesControllerTest {
         }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
     }
-
+    private fun tryToUseGetAndHeadEndpointAndAsserThatItsForbidden(companyId: UUID) {
+        val exceptionWhenGettingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
+            getCompanyRoleAssignments(CompanyRole.Member, companyId)
+        }
+        assertErrorCodeInCommunityManagerClientException(exceptionWhenGettingCompanyRolesForAnotherCompany, 403)
+        val exceptionWhenCheckingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
+            hasUserCompanyRole(CompanyRole.DataUploader, companyId, dataUploaderUserId)
+        }
+        assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingCompanyRolesForAnotherCompany, 403)
+    }
     private fun tryToAssignAndRemoveCompanyMembersAndAssertThatItsForbidden(companyId: UUID) {
         enumValues<CompanyRole>().forEach {
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
