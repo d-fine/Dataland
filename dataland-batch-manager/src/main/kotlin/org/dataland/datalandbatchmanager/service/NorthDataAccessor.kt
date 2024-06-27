@@ -1,0 +1,42 @@
+package org.dataland.datalandbatchmanager.service
+
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
+import java.io.File
+import java.net.URI
+
+/**
+ * The class to download the zipped GLEIF golden copy CSV files
+ */
+@Component
+class NorthDataAccessor(
+    @Value("\${northdata.download.baseurl}") private val gleifBaseUrl: String,
+    @Autowired private val externalFileDownload: ExternalFileDownload,
+) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    /**
+     * Downloads the golden copy delta file of last month
+     * @param targetFile the local target file to be written
+     */
+    fun getLastMonthGoldenCopyDelta(targetFile: File) {
+        downloadFileFromNorthdata("lei2/latest.csv?delta=LastMonth", targetFile, "Golden Copy Delta File")
+    }
+
+    /**
+     * Downloads the complete golden copy file
+     * @param targetFile the local target file to be written
+     */
+    fun getFullGoldenCopy(targetFile: File) {
+        downloadFileFromNorthdata("lei2/latest.csv", targetFile, "quarterly dataset of german sme from Northdata")
+    }
+
+    private fun downloadFileFromNorthdata(urlSuffx: String, targetFile: File, fileDescription: String) {
+        logger.info("Starting download of $fileDescription.")
+        val downloadUrl = URI("$gleifBaseUrl/$urlSuffx").toURL()
+        externalFileDownload.downloadFile(downloadUrl, targetFile)
+        logger.info("Download of $fileDescription completed.")
+    }
+}
