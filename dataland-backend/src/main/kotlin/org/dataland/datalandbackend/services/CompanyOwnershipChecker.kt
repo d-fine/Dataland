@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -19,6 +21,7 @@ import java.util.*
 class CompanyOwnershipChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
+    @Autowired val logMessageBuilder: LogMessageBuilder,
 ) {
 
     /**
@@ -76,5 +79,28 @@ class CompanyOwnershipChecker(
                 throw clientException
             }
         }
+    }
+
+    // This function can be made more generic if additional field-specific checks are needed in the future
+    @Transactional(readOnly = true)
+    fun onlyPatchesAuthorizedFieldsForUploader(patch: CompanyInformationPatch): Boolean {
+        val unauthorizedFields = mutableListOf<String>()
+
+        if (patch.companyName != null) unauthorizedFields.add("companyName")
+        if (patch.companyAlternativeNames != null) unauthorizedFields.add("companyAlternativeNames")
+        if (patch.companyLegalForm != null) unauthorizedFields.add("companyLegalForm")
+        if (patch.headquarters != null) unauthorizedFields.add("headquarters")
+        if (patch.headquartersPostalCode != null) unauthorizedFields.add("headquartersPostalCode")
+        if (patch.sector != null) unauthorizedFields.add("sector")
+        if (patch.identifiers != null) unauthorizedFields.add("identifiers")
+        if (patch.countryCode != null) unauthorizedFields.add("countryCode")
+        if (patch.isTeaserCompany != null) unauthorizedFields.add("isTeaserCompany")
+        if (patch.website != null) unauthorizedFields.add("website")
+        if (patch.parentCompanyLei != null) unauthorizedFields.add("parentCompanyLei")
+
+        if (unauthorizedFields.isNotEmpty()) {
+            throw AccessDeniedException(logMessageBuilder.generateInvalidAlterationExceptionMessage(unauthorizedFields))
+        }
+        return true
     }
 }

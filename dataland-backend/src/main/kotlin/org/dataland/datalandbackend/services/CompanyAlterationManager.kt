@@ -11,13 +11,10 @@ import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -128,24 +125,6 @@ class CompanyAlterationManager(
         createAndAssociateIdentifiers(companyEntity, mapOf(identifierType to newIdentifiers))
     }
 
-    private fun getUnauthorizedFieldsForUploader(patch: CompanyInformationPatch): List<String> {
-        val unauthorizedFields = mutableListOf<String>()
-
-        if (patch.companyName != null) unauthorizedFields.add("companyName")
-        if (patch.companyAlternativeNames != null) unauthorizedFields.add("companyAlternativeNames")
-        if (patch.companyLegalForm != null) unauthorizedFields.add("companyLegalForm")
-        if (patch.headquarters != null) unauthorizedFields.add("headquarters")
-        if (patch.headquartersPostalCode != null) unauthorizedFields.add("headquartersPostalCode")
-        if (patch.sector != null) unauthorizedFields.add("sector")
-        if (patch.identifiers != null) unauthorizedFields.add("identifiers")
-        if (patch.countryCode != null) unauthorizedFields.add("countryCode")
-        if (patch.isTeaserCompany != null) unauthorizedFields.add("isTeaserCompany")
-        if (patch.website != null) unauthorizedFields.add("website")
-        if (patch.parentCompanyLei != null) unauthorizedFields.add("parentCompanyLei")
-
-        return unauthorizedFields
-    }
-
     /**
      * Method to patch the information of a company.
      * @param companyId the id of the company to patch
@@ -154,13 +133,6 @@ class CompanyAlterationManager(
      */
     @Transactional
     fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
-        val datalandAuthentication = DatalandAuthentication.fromContextOrNull()
-        if (datalandAuthentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) == false) {
-            val unauthorizedFields = getUnauthorizedFieldsForUploader(patch)
-            if (unauthorizedFields.isNotEmpty()) {
-                throw AccessDeniedException(logMessageBuilder.generateInvalidAlterationExceptionMessage(unauthorizedFields))
-            }
-        }
         val companyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
         patch.companyName?.let { companyEntity.companyName = it }

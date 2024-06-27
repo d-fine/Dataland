@@ -269,7 +269,14 @@ interface CompanyApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_UPLOADER') and @CompanyOwnershipChecker.companyExistsAndHasNoOwner(#companyId))")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+            "(hasRole('ROLE_USER') and " +
+            "@CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId)) or " +
+            "(hasRole('ROLE_UPLOADER') and " +
+            "@CompanyOwnershipChecker.companyExistsAndHasNoOwner(#companyId) and " +
+            "@CompanyOwnershipChecker.onlyPatchesAuthorizedFieldsForUploader(#companyInformationPatch))",
+    )
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,
         @Valid @RequestBody
