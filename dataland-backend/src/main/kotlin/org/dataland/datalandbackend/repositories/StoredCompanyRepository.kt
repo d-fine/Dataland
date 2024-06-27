@@ -156,7 +156,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-                "LEFT JOIN FETCH company.companyContactDetails WHERE company IN :companies",
+            "LEFT JOIN FETCH company.companyContactDetails WHERE company IN :companies",
     )
     fun fetchCompanyContactDetails(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 

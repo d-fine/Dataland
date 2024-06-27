@@ -424,11 +424,18 @@ class CompanyDataControllerTest {
     fun `check that dataUploader cannot patch contactDetails if company does have companyOwner`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyId = uploadModifiedBaseCompany(name = "CompanyWithOwner", alternativeNames = null)
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), dataReaderUserId)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            dataReaderUserId
+        )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val clientException = assertThrows<ClientException> {
-            apiAccessor.companyDataControllerApi.patchCompanyById(companyId, CompanyInformationPatch(companyContactDetails = listOf("Test")))
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                CompanyInformationPatch(companyContactDetails = listOf("Test"))
+            )
         }
     }
 
@@ -436,7 +443,11 @@ class CompanyDataControllerTest {
     fun `check that companyOwner and dataAdmin can patch contactDetails`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyId = uploadModifiedBaseCompany(name = "CompanyWithoutOwner", alternativeNames = null)
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(CompanyRole.CompanyOwner, UUID.fromString(companyId), dataReaderUserId)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            dataReaderUserId
+        )
 
         assertDoesNotThrow {
             apiAccessor.companyDataControllerApi.patchCompanyById(

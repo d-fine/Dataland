@@ -24,7 +24,8 @@ class LogMessageBuilder {
      */
     fun generateInvalidAlterationExceptionMessage(unauthorizedFields: List<String>): String {
         val fields = unauthorizedFields.joinToString(", ")
-        return "Invalid alteration attempt. You do not have the required permission to change the following fields: $fields"
+        return "Invalid alteration attempt. You do not have the required permission " +
+                "to change the following fields: $fields"
     }
 
     /**
