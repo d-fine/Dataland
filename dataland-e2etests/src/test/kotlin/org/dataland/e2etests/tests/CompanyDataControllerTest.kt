@@ -470,7 +470,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `check that the dataUploader is shown an InvalidAlterationExceptionMessage if the patch contains unallowed fields`() {
+    fun `check that the dataUploader cannot patch unallowed fields`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val originalCompany = uploadInfo.actualStoredCompany
         val companyId = originalCompany.companyId
@@ -481,7 +481,6 @@ class CompanyDataControllerTest {
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
-        // ToDO: Somehow access the logger message to check generateInvalidAlterationExceptionMessage works
         assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
