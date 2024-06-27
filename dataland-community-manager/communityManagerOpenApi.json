@@ -359,7 +359,7 @@
         ]
       }
     },
-    "/company-ownership/companies/{companyId}": {
+    "/company-ownership/{companyId}": {
       "post": {
         "tags": [
           "company-roles-controller"
@@ -533,63 +533,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/company-ownership/owners/{userId}": {
-      "head": {
-        "tags": [
-          "company-roles-controller"
-        ],
-        "summary": "Validate company ownership for user.",
-        "description": "Checks whether the user is a company owner.",
-        "operationId": "hasUserCompanyOwnerRole",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "The user is not a company owner."
-          },
-          "200": {
-            "description": "The specified user is a company owner."
           },
           "default": {
             "description": "An error occurred",

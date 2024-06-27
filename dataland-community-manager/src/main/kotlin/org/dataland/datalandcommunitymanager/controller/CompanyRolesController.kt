@@ -74,16 +74,6 @@ class CompanyRolesController(
         )
     }
 
-    override fun hasUserCompanyOwnerRole(userId: UUID) {
-        logger.info(
-            "Received a request to check if user with Id $userId is an owner of any company",
-        )
-        companyRolesManager.getCompanyRoleAssignmentsForRoleAndUser(
-            CompanyRole.CompanyOwner,
-            userId.toString(),
-        )
-    }
-
     override fun postCompanyOwnershipRequest(companyId: UUID, comment: String?) {
         val userAuthentication = DatalandAuthentication.fromContext()
         val correlationId = UUID.randomUUID().toString()
