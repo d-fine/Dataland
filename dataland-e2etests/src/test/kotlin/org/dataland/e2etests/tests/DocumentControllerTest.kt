@@ -95,23 +95,8 @@ class DocumentControllerTest {
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
     }
 
-    private fun ensureUserIsNotOwnerOfAnyCompany(userId: UUID) {
-        val companiesOwnedByUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
-            CompanyRole.CompanyOwner,
-            null,
-            userId,
-        )
-        companiesOwnedByUser.forEach {
-            apiAccessor.companyRolesControllerApi.removeCompanyRole(
-                CompanyRole.CompanyOwner,
-                UUID.fromString(it.companyId),
-                userId,
-            )
-        }
-    }
-
     @Test
-    fun `test that users with CompanyOwner role can upload documents`() {
+    fun `test that non admin users can upload documents only when they are CompanyOwner and not otherwise`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyIdString = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val testCompanyId = UUID.fromString(testCompanyIdString)
@@ -140,6 +125,21 @@ class DocumentControllerTest {
             uploadDocument(pdfDocument, TechnicalUser.Reader)
         }
         assertEquals("Client error : 403 ", clientException.message)
+    }
+
+    private fun ensureUserIsNotOwnerOfAnyCompany(userId: UUID) {
+        val companiesOwnedByUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
+            CompanyRole.CompanyOwner,
+            null,
+            userId,
+        )
+        companiesOwnedByUser.forEach {
+            apiAccessor.companyRolesControllerApi.removeCompanyRole(
+                CompanyRole.CompanyOwner,
+                UUID.fromString(it.companyId),
+                userId,
+            )
+        }
     }
 
     /**
