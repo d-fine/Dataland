@@ -1,10 +1,9 @@
 package org.dataland.documentmanager.services
 
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -26,15 +25,11 @@ class UserRolesChecker(
     @Transactional(readOnly = true)
     fun isCurrentUserCompanyOwner(): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
-        return try {
-            companyRolesControllerApi.hasUserCompanyOwnerRole(UUID.fromString(userId))
-            true
-        } catch (clientException: ClientException) {
-            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                false
-            } else {
-                throw clientException
-            }
-        }
+        val companyOwnerRoles = companyRolesControllerApi.getCompanyRoleAssignments(
+            CompanyRole.CompanyOwner,
+            null,
+            UUID.fromString(userId),
+        )
+        return companyOwnerRoles.isNotEmpty()
     }
 }
