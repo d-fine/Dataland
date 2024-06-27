@@ -288,7 +288,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that admins and each user for the own account can check if they are a company owner of any company`() {
+    fun `check access rights and behaviour of hasUserCompanyOwnerRole endpoint`() {
         val companyId = uploadCompanyAndReturnCompanyId()
 
         fun callEndpointAndAssertCode(responseCode: Int) {

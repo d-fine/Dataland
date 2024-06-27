@@ -233,6 +233,7 @@ jobs:
         env:
           DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
+          DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
