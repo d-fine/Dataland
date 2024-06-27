@@ -3,13 +3,9 @@ import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 export const singleDataRequestPage = {
   chooseReportingPeriod(reportingPeriod: string = '2023'): void {
-    cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
-      .should('exist')
-      .get('[data-test="toggle-chip"')
-      .contains(reportingPeriod)
-      .click()
-      .parent()
-      .should('have.class', 'toggled');
+    cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]').should('exist');
+    cy.get('[data-test="toggle-chip"]').contains(reportingPeriod).click();
+    cy.get('[data-test="toggle-chip"]').contains(reportingPeriod).parent().should('have.class', 'toggled');
     cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'").should('not.exist');
   },
   chooseFrameworkLksg(): void {

@@ -8,11 +8,8 @@ describe('As a user I want to be able to login and I want the login page to beha
   });
 
   it('Checks that the back button on the login page works as expected', () => {
-    cy.visit('/companies')
-      .get('#back_button')
-      .should('exist')
-      .click()
-      .url()
-      .should('eq', getBaseUrl() + '/');
+    cy.visit('/companies');
+    cy.get('#back_button').should('exist').click();
+    cy.url().should('eq', getBaseUrl() + '/');
   });
 });
