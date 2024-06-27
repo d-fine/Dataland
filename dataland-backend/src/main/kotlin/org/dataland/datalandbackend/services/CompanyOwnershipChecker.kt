@@ -82,6 +82,11 @@ class CompanyOwnershipChecker(
     }
 
     // This function can be made more generic if additional field-specific checks are needed in the future
+    /**
+     * Method to check whether the patch contains only fields that are allowed to be altered by the uploader
+     * @param patch the fields to be patched
+     * @return a Boolean indicating whether the patch complies with the access requirements
+     */
     @Transactional(readOnly = true)
     fun onlyPatchesAuthorizedFieldsForUploader(patch: CompanyInformationPatch): Boolean {
         val unauthorizedFields = mutableListOf<String>()

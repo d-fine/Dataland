@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
 import java.util.*
@@ -407,61 +406,121 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `check that dataUploader can patch contactDetails if company does not have companyOwner`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany(name = "CompanyWithoutOwner", alternativeNames = null)
-
+    fun `check that the dataUploader can patch contactDetails if the company does not have companyOwner`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = listOf("New-Email-1", "New-Email-2"),
+        )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        assertDoesNotThrow {
-            apiAccessor.companyDataControllerApi.patchCompanyById(
-                companyId,
-                CompanyInformationPatch(companyContactDetails = listOf("Test")),
-            )
-        }
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        assertEquals(
+            patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyContactDetails,
+            "The company contact details should have been updated",
+        )
     }
 
     @Test
-    fun `check that dataUploader cannot patch contactDetails if company does have companyOwner`() {
+    fun `check that the dataUploader cannot patch contactDetails if the company has a companyOwner`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val ownerId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany(name = "CompanyWithOwner", alternativeNames = null)
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
             UUID.fromString(companyId),
-            dataReaderUserId
+            ownerId,
         )
 
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = listOf("New-Email-1"),
+        )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val clientException = assertThrows<ClientException> {
+
+        val exception = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                CompanyInformationPatch(companyContactDetails = listOf("Test"))
+                patchObject,
             )
         }
+
+        assertTrue(exception.statusCode == 403, "The exception should indicate unauthorized access (HTTP 403)")
+
+        val companyAfterAttempt = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
+        assertEquals(
+            originalCompany.companyInformation.companyContactDetails,
+            companyAfterAttempt.companyInformation.companyContactDetails,
+            "The company contact details should not have been updated",
+        )
     }
 
     @Test
-    fun `check that companyOwner and dataAdmin can patch contactDetails`() {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val companyId = uploadModifiedBaseCompany(name = "CompanyWithoutOwner", alternativeNames = null)
-        apiAccessor.companyRolesControllerApi.assignCompanyRole(
-            CompanyRole.CompanyOwner,
-            UUID.fromString(companyId),
-            dataReaderUserId
-        )
+    fun `check that the dataUploader is shown an InvalidAlterationExceptionMessage if the patch contains non-allowed fields`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
 
-        assertDoesNotThrow {
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = listOf("New_Email"),
+            companyName = "New-Name",
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        // ToDO: Somehow access the logger message to check generateInvalidAlterationExceptionMessage works
+        assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                CompanyInformationPatch(companyContactDetails = listOf("Test")),
+                patchObject,
             )
         }
 
+        val companyAfterAttempt = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
+        assertEquals(
+            originalCompany.companyInformation.companyContactDetails,
+            companyAfterAttempt.companyInformation.companyContactDetails,
+            "The company contact details should not have been updated",
+        )
+        assertEquals(
+            originalCompany.companyInformation.companyName,
+            companyAfterAttempt.companyInformation.companyName,
+            "The company name should not have been updated",
+        )
+    }
+
+    @Test
+    fun `check that the a company owner can patch any field of their own company`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            dataReaderUserId,
+        )
+
+        val patchObject = CompanyInformationPatch(
+            companyName = "New-Name",
+            companyContactDetails = listOf("New-Email-1"),
+        )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertDoesNotThrow {
-            apiAccessor.companyDataControllerApi.patchCompanyById(
-                companyId,
-                CompanyInformationPatch(companyContactDetails = listOf("Test")),
-            )
-        }
+        val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+        assertEquals(
+            patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyContactDetails,
+            "The company contact details should have been updated",
+        )
+        assertEquals(
+            patchObject.companyName!!, updatedCompany.companyInformation.companyName,
+            "The company name should have been updated",
+        )
     }
 }
