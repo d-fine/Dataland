@@ -38,13 +38,15 @@ class CompanyRolesController(
         )
     }
     override fun getCompanyRoleAssignments(
-        companyRole: CompanyRole,
-        companyId: UUID,
+        companyRole: CompanyRole?,
+        companyId: UUID?,
+        userId: UUID?,
     ): ResponseEntity<List<CompanyRoleAssignment>> {
         logger.info(
             "Received a request to get company role assignments for company role $companyRole for company $companyId",
         )
-        val entities = companyRolesManager.getCompanyRoleAssignmentsForRoleAndCompany(companyRole, companyId.toString())
+        val entities = companyRolesManager
+            .getCompanyRoleAssignmentsByParameters(companyRole, companyId?.toString(), userId?.toString())
         return ResponseEntity.ok(
             entities.map { it.toApiModel() },
         )
