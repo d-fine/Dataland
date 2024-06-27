@@ -7,8 +7,7 @@ COPY dataland-inbound-proxy/templates/*.template /etc/nginx/templates/
 COPY dataland-inbound-proxy/dhparam.pem /certs/dhparam.pem
 COPY dataland-inbound-proxy/docker-entrypoint.d/* /docker-entrypoint.d/
 COPY dataland-inbound-proxy/scripts /scripts
-COPY dataland-inbound-proxy/custom_errors.html /var/www/html/custom_errors.html
-COPY dataland-inbound-proxy/api_errors.json /var/www/html/json_errors.json
+COPY dataland-inbound-proxy/error_documents /var/www/html/error_documents
 COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-inbound-proxy/robots-prod.txt /var/www/html/robots-prod.txt
 COPY dataland-frontend/src/assets/images /var/www/images
