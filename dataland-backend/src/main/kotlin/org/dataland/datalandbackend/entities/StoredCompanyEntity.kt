@@ -32,9 +32,10 @@ data class StoredCompanyEntity(
     @Column(name = "company_alternative_names")
     @OrderBy("asc")
     var companyAlternativeNames: List<String>?,
-// ToDO: try not using eager
-    @ElementCollection(fetch = FetchType.EAGER)
+
+    @ElementCollection
     @Column(name = "company_contact_details")
+    @OrderBy("asc")
     var companyContactDetails: List<String>?,
 
     @Column(name = "company_legal_form")
