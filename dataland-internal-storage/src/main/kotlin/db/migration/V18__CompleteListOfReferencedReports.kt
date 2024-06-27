@@ -109,8 +109,8 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
             val dataPointFileName = dataPointsFileReferences[fileReference]
             if (referencedReport != null) {
 
-                if (referencedReport.has("fileName")) {
-                    continue // koennten auch schauen ob fileName nicht "" ist ??
+                if (!referencedReport.optString("fileName").isNullOrEmpty()) {
+                    continue
                 }
 
                 if (dataPointFileName != null) {
