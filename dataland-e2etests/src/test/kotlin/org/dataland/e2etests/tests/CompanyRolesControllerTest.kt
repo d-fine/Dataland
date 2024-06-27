@@ -377,7 +377,7 @@ class CompanyRolesControllerTest {
             assertDoesNotThrow { getCompanyRoleAssignments(CompanyRole.Member, companyIdAlpha) }
             assertDoesNotThrow { hasUserCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId) }
 
-            tryToUseGetAndHeadEndpointAndAsserThatItsForbidden(companyIdBeta)
+            tryToUseCompanyRoleGetAndHeadEndpointAndAsserThatItsForbidden(companyIdBeta)
 
             jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             removeCompanyRole(it, companyIdAlpha, dataReaderUserId)
@@ -392,7 +392,7 @@ class CompanyRolesControllerTest {
         }
         assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
     }
-    private fun tryToUseGetAndHeadEndpointAndAsserThatItsForbidden(companyId: UUID) {
+    private fun tryToUseCompanyRoleGetAndHeadEndpointAndAsserThatItsForbidden(companyId: UUID) {
         val exceptionWhenGettingCompanyRolesForAnotherCompany = assertThrows<ClientException> {
             getCompanyRoleAssignments(CompanyRole.Member, companyId)
         }
