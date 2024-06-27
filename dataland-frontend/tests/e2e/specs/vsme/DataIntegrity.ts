@@ -46,7 +46,7 @@ describeIf(
      * @param inputSection the section to which the AddressFormField belongs to
      * @param inputAdressFormField the actual name of the data-test marker of the respective AddressFormField
      */
-    function fillOutAdressFormField(inputSection: string, inputAdressFormField: string) {
+    function fillOutAdressFormField(inputSection: string, inputAdressFormField: string): void {
       cy.get(`[data-test=${inputSection}]`)
         .find(`[data-test=${inputAdressFormField}]`)
         .find('[name="streetAndHouseNumber"]')
@@ -69,7 +69,7 @@ describeIf(
     /**
      * Fill out the vsme subsidiary section
      */
-    function fillOutSubsidiarySection() {
+    function fillOutSubsidiarySection(): void {
       cy.get('[data-test="addNewSubsidiaryButton"]').click();
       cy.get('[data-test="subsidiarySection"]').should('exist');
       cy.get('[data-test="subsidiarySection"]').get('[name="nameOfSubsidiary"]').type('Test-Subsidiary');
@@ -78,7 +78,7 @@ describeIf(
     /**
      * Fill out the vsme pollution emission section
      */
-    function fillOutPollutionEmissionSection() {
+    function fillOutPollutionEmissionSection(): void {
       cy.get('[data-test="PollutionEmissionSection"]').should('exist');
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="pollutionType"]').type('Test-Waste-Type');
       cy.get('[data-test="PollutionEmissionSection"]').get('[name="emissionInKilograms"]').type('12345');
@@ -88,7 +88,7 @@ describeIf(
     /**
      * Fill out the vsme site and area section
      */
-    function fillOutSiteAndAreaSection() {
+    function fillOutSiteAndAreaSection(): void {
       cy.get('[data-test="SiteAndAreaSection"]').should('exist');
       cy.get('[data-test="SiteAndAreaSection"]').get('[name="siteName"]').type('Test-Site-Name');
       fillOutAdressFormField('SiteAndAreaSection', 'AddressFormFieldSite');
@@ -107,7 +107,7 @@ describeIf(
     /**
      * Fill out the vsme waste classification section
      */
-    function fillOutWasteClassificationSection() {
+    function fillOutWasteClassificationSection(): void {
       cy.get('[data-test="WasteClassificationSection"]').should('exist');
       cy.get('[data-test="WasteClassificationSection"]').find('[data-test="wasteClassification"]').click();
       cy.get('ul.p-dropdown-items li').contains(`Hazardous`).click();
@@ -124,7 +124,7 @@ describeIf(
     /**
      * Fill out the vsme employees per country section
      */
-    function fillOutEmployeesPerCountrySection() {
+    function fillOutEmployeesPerCountrySection(): void {
       cy.get('[data-test="addNewEmployeesPerCountryButton"]').click();
       cy.get('[data-test="employeesPerCountrySection"]').should('exist');
       cy.get('[data-test="employeesPerCountrySection"]').find('[data-test="country"]').click();
@@ -137,7 +137,7 @@ describeIf(
     /**
      * Fill out a datapoint with an attached document
      */
-    function fillOutOneDatePointWithAttachedDocument() {
+    function fillOutOneDatePointWithAttachedDocument(): void {
       cy.get('[data-test="electricityTotalInMWh"]')
         .find('div[data-test="toggleDataPointWrapper"]')
         .find('div[data-test="dataPointToggleButton"]')
@@ -151,7 +151,7 @@ describeIf(
     /**
      * Upload a document and verify that it worked
      */
-    function uploadDocument() {
+    function uploadDocument(): void {
       uploadReports.selectFile(`${TEST_PDF_FILE_NAME}-private`);
       uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}-private`);
       uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}-private`);
@@ -160,7 +160,7 @@ describeIf(
     /**
      * Check that data can be viewed and documents downloaded
      */
-    function verifyDocumentDownloadAndDataIsViewable() {
+    function verifyDocumentDownloadAndDataIsViewable(): void {
       cy.wait('@waitOnMyDatasetPage', { timeout: Cypress.env('medium_timeout_in_ms') as number });
       cy.wait('@postCompanyAssociatedData', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(
         (postResponseInterception) => {
@@ -187,6 +187,7 @@ describeIf(
           cy.readFile(expectedPathToDownloadedReport).should('not.exist');
           cy.intercept('**/api/data/' + DataTypeEnum.Vsme + '/documents*').as('documentDownload');
           cy.get('[data-test="Report-Download-some-document-private"]').click();
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
           cy.wait(500);
           cy.wait('@documentDownload');
           cy.readFile(`../${TEST_PRIVATE_PDF_FILE_PATH}`, 'binary', {
