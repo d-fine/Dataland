@@ -89,6 +89,7 @@ describeIf(
       cy.wait('@fetchFilters');
       const companySelector = 'span:contains(VIEW)';
       cy.get(companySelector).first().click();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(100);
     }
 
@@ -147,14 +148,13 @@ describeIf(
       cy.get(dropdownItemsSelector).should('exist');
       cy.get(`${dropdownItemsSelector}:contains("No available options")`).should('not.exist');
       cy.get(dropdownItemsSelector).should('exist');
-      cy.get(dropdownItemsSelector)
-        .each((item) => {
-          expect(expectedDropdownOptions.has(item.text())).to.equal(true);
-          optionsCounter++;
-        })
-        .then(() => {
-          expect(expectedDropdownOptions.size).to.equal(optionsCounter);
-        });
+      cy.get(dropdownItemsSelector).each((item) => {
+        expect(expectedDropdownOptions.has(item.text())).to.equal(true);
+        optionsCounter++;
+      });
+      cy.then(() => {
+        expect(expectedDropdownOptions.size).to.equal(optionsCounter);
+      });
       cy.get(frameworkDropdownSelector).click({ force: true });
     }
 
@@ -261,6 +261,7 @@ describeIf(
             });
           })
           .then(() => {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
               return uploadFrameworkDataForPublicToolboxFramework(
                 LksgBaseFrameworkDefinition,
@@ -272,6 +273,7 @@ describeIf(
             });
           })
           .then(() => {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
               return uploadFrameworkDataForPublicToolboxFramework(
                 LksgBaseFrameworkDefinition,

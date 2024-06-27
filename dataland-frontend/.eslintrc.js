@@ -14,6 +14,7 @@ module.exports = {
   overrides: [
     {
       files: ['tests/sharedUtils/**/*', 'tests/e2e/**/*'],
+      extends: ['plugin:cypress/recommended'],
     },
   ],
   parserOptions: {
@@ -25,6 +26,13 @@ module.exports = {
       {
         prefer: 'type-imports',
         fixStyle: 'inline-type-imports',
+      },
+    ],
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/explicit-function-return-type': [
+      'error',
+      {
+        allowTypedFunctionExpressions: true,
       },
     ],
     'jsdoc/require-jsdoc': [

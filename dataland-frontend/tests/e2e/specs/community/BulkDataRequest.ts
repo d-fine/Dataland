@@ -35,11 +35,8 @@ describeIf(
       chooseReportingPeriod();
       chooseFrameworks();
 
-      cy.get("textarea[name='listOfCompanyIdentifiers']")
-        .type(`${permIdOfExistingCompany}, 12345incorrectNumber`)
-        .get("button[type='submit']")
-        .should('exist')
-        .click();
+      cy.get("textarea[name='listOfCompanyIdentifiers']").type(`${permIdOfExistingCompany}, 12345incorrectNumber`);
+      cy.get("button[type='submit']").should('exist').click();
 
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfIdentifiersProperlyDisplayed(interception);
@@ -56,11 +53,8 @@ describeIf(
       chooseReportingPeriod();
       chooseFrameworks();
 
-      cy.get("textarea[name='listOfCompanyIdentifiers']")
-        .type(permIdOfExistingCompany)
-        .get("button[type='submit']")
-        .should('exist')
-        .click();
+      cy.get("textarea[name='listOfCompanyIdentifiers']").type(permIdOfExistingCompany);
+      cy.get("button[type='submit']").should('exist').click();
 
       cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
         checkIfIdentifiersProperlyDisplayed(interception);
@@ -81,11 +75,8 @@ describeIf(
       checksBasicValidation();
       chooseFrameworks();
 
-      cy.get("textarea[name='listOfCompanyIdentifiers']")
-        .type('12345incorrectNumber')
-        .get("button[type='submit']")
-        .should('exist')
-        .click();
+      cy.get("textarea[name='listOfCompanyIdentifiers']").type('12345incorrectNumber');
+      cy.get("button[type='submit']").should('exist').click();
 
       cy.get('[data-test="selectedIdentifiersUnsuccessfulSubmit"]')
         .should('exist')
@@ -99,13 +90,9 @@ describeIf(
      * Choose reporting periods
      */
     function chooseReportingPeriod(): void {
-      cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]')
-        .should('exist')
-        .get('[data-test="toggle-chip"')
-        .should('have.length', 5)
-        .first()
-        .click()
-        .should('have.class', 'toggled');
+      cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]').should('exist');
+      cy.get('[data-test="toggle-chip"').should('have.length', 5).first().click();
+      cy.get('[data-test="toggle-chip"').should('have.length', 5).first().should('have.class', 'toggled');
 
       cy.get("div[data-test='reportingPeriodsDiv'] p[data-test='reportingPeriodErrorMessage'").should('not.exist');
     }
@@ -115,15 +102,12 @@ describeIf(
      */
     function chooseFrameworks(): void {
       const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;
-      cy.get('[data-test="selectFrameworkSelect"] .p-multiselect')
-        .should('exist')
-        .click()
-        .get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item')
+      cy.get('[data-test="selectFrameworkSelect"] .p-multiselect').should('exist').click();
+      cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item')
         .should('have.length', numberOfFrameworks)
         .eq(3)
-        .click()
-        .get("div[data-test='addedFrameworks'] span")
-        .should('have.length', 1);
+        .click();
+      cy.get("div[data-test='addedFrameworks'] span").should('have.length', 1);
     }
 
     /**
