@@ -22,18 +22,16 @@ import kotlin.time.measureTime
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
- * @param gleifApiAccessor downloads the golden copy files from GLEIF
+ * @param northDataAccessor downloads the golden copy files from GLEIF
  * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
  */
 @Suppress("LongParameterList")
 @Component
-class GleifGoldenCopyIngestor(
-    @Autowired private val gleifApiAccessor: GleifApiAccessor,
+class NorthdataDataIngestor(
+    @Autowired private val northDataAccessor: NorthDataAccessor,
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
-    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
-    @Autowired private val relationshipExtractor: RelationshipExtractor,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
@@ -51,40 +49,30 @@ class GleifGoldenCopyIngestor(
     private val logger = LoggerFactory.getLogger(javaClass)
 
 
-    /**
-     * Starting point for GLEIF delta file handling
-     */
-    fun prepareGleifDeltaFile() {
-        logger.info("Starting Gleif company update cycle for latest delta file.")
-        val tempFile = File.createTempFile("gleif_update_delta", ".zip")
-        processGleifFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
-    }
-
     @Synchronized
-    fun processGleifFile(zipFile: File, downloadFile: (file: File) -> Unit) {
+    private fun processNorthdataFile(zipFile: File, downloadFile: (file: File) -> Unit) {
         val duration = measureTime {
             try {
                 downloadFile(zipFile)
-                uploadCompanies(zipFile)
+                //TODO function that maps Northdata data to the GLEIF data
             } finally {
                 if (!zipFile.delete()) {
                     logger.error("Unable to delete temporary file $zipFile")
                 }
             }
         }
-        logger.info("Finished processing of GLEIF file $zipFile in ${formatExecutionTime(duration)}.")
+        logger.info("Finished processing of Northdata file $zipFile in ${formatExecutionTime(duration)}.")
     }
 
     @Synchronized
-    fun processRelationshipFile(updateAllCompanies: Boolean = false) {
+    private fun processRelationshipFile(updateAllCompanies: Boolean = false) {
         logger.info("Starting parent mapping update cycle for latest file.")
         val newRelationshipFile = File.createTempFile("gleif_relationship_golden_copy", ".zip")
         val duration = measureTime {
-            gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
+            northDataAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
             val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
-            relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
-            if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
+            //if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
         }
         logger.info("Finished processing of GLEIF RR file $newRelationshipFile in ${formatExecutionTime(duration)}.")
     }
@@ -93,11 +81,11 @@ class GleifGoldenCopyIngestor(
      * Starting point for ISIN mapping file handling
      */
     @Synchronized
-    fun processIsinMappingFile() {
+    private fun processIsinMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
         val duration = measureTime {
-            gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
+            northDataAccessor.getFullIsinMappingFile(newMappingFile)
             val deltaMapping: Map<String, Set<String>> =
                 if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
                     isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
@@ -115,7 +103,7 @@ class GleifGoldenCopyIngestor(
         logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")
     }
 
-    fun waitForBackend() {
+    private fun waitForBackend() {
         val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
         while (Instant.now().toEpochMilli() <= timeoutTime) {
             try {

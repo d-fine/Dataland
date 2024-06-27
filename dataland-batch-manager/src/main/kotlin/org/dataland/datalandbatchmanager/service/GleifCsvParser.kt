@@ -47,7 +47,7 @@ class GleifCsvParser {
     }
 
     /**
-     * Transforms the streamed CSV content of the RR file  into an iterable of GleifRelationshipInformation objects
+     * Transforms the streamed CSV content of the RR file into an iterable of GleifRelationshipInformation objects
      * @param bufferedReader the input stream read from the GLEIF RR csv file
      * @return An iterable of the corresponding GleifRelationshipInformation objects
      */

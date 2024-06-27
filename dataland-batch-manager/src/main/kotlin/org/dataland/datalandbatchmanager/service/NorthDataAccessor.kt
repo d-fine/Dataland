@@ -18,14 +18,6 @@ class NorthDataAccessor(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Downloads the golden copy delta file of last month
-     * @param targetFile the local target file to be written
-     */
-    fun getLastMonthGoldenCopyDelta(targetFile: File) {
-        downloadFileFromNorthdata("lei2/latest.csv?delta=LastMonth", targetFile, "Golden Copy Delta File")
-    }
-
-    /**
      * Downloads the complete golden copy file
      * @param targetFile the local target file to be written
      */
