@@ -11,6 +11,7 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import org.slf4j.LoggerFactory
 
 /**
  * Service to execute company-ownership-checks to decide whether a user can access a resource or not
@@ -23,7 +24,7 @@ class CompanyOwnershipChecker(
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
     @Autowired val logMessageBuilder: LogMessageBuilder,
 ) {
-
+    private val logger = LoggerFactory.getLogger(javaClass)
     /**
      * Method to check whether the currently authenticated user is company owner of a specified company and therefore
      * has uploader rights for this company
@@ -103,6 +104,7 @@ class CompanyOwnershipChecker(
         if (patch.website != null) unauthorizedFields.add("website")
         if (patch.parentCompanyLei != null) unauthorizedFields.add("parentCompanyLei")
 
+        logger.info("The onlyPatchesAuthorizedFieldsForUploader in CompanyOwnershipChecker is reached")
         if (unauthorizedFields.isNotEmpty()) {
             throw AccessDeniedException(logMessageBuilder.generateInvalidAlterationExceptionMessage(unauthorizedFields))
         }
