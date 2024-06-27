@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import org.slf4j.LoggerFactory
 import java.lang.Thread.sleep
 import java.util.*
 
@@ -33,8 +32,6 @@ class CompanyDataControllerTest {
     private val checkOtherCompanyTrue = "Other Company true"
     private val checkOtherCompanyFalse = "Other Company false"
     private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     @BeforeAll
     fun postTestDocuments() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
@@ -411,17 +408,14 @@ class CompanyDataControllerTest {
     fun `check that the dataUploader can patch contactDetails if the company does not have companyOwner`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
-        logger.info(uploadInfo.actualStoredCompany.companyInformation.toString())
         val patchObject = CompanyInformationPatch(
             companyContactDetails = listOf("New-Email-1", "New-Email-2"),
-            //companyName = "aaaaaaaaaa",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
             companyId,
             patchObject,
         )
-        logger.info(updatedCompany.companyInformation.toString())
         assertEquals(
             patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyContactDetails,
             "The company contact details should have been updated",
