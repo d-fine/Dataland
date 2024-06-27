@@ -40,18 +40,37 @@ export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<s
   }, []);
 }
 
+type PickNullable<T> = {
+  [P in keyof T as null extends T[P] ? P : never]: T[P];
+};
+
+type PickNotNullable<T> = {
+  [P in keyof T as null extends T[P] ? never : P]: T[P];
+};
+
+// Adapted from: https://stackoverflow.com/a/72634592
+type OptionalNullable<T> = T extends Array<unknown> | Set<unknown>
+  ? T
+  : T extends object
+    ? {
+        [K in keyof PickNullable<T>]?: OptionalNullable<Exclude<T[K], null>>;
+      } & {
+        [K in keyof PickNotNullable<T>]: OptionalNullable<T[K]>;
+      }
+    : T;
+
 /**
  * Drops all nulls from arbitrarily nested object by stringifying it and parsing it back to object
  * It does not work in the case of the value being of type Array<null>!
  * @param obj the object that needs the nulls dropped
  * @returns the object without all keys with undefined or null value
  */
-export function objectDropNull(obj: ObjectType): ObjectType {
+export function objectDropNull<T>(obj: T): OptionalNullable<T> {
   return JSON.parse(
     JSON.stringify(obj, (key, value: string | number) => {
       return value ?? undefined;
     })
-  ) as ObjectType;
+  ) as OptionalNullable<T>;
 }
 
 /**

@@ -6,7 +6,7 @@ import { IdentifierType } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 
 describeIf(
   'As a user I want to be able to conduct a bulk request request',
@@ -101,7 +101,7 @@ describeIf(
      * Chose frameworks
      */
     function chooseFrameworks(): void {
-      const numberOfFrameworks = Object.keys(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE).length;
+      const numberOfFrameworks = Object.keys(FRAMEWORKS_WITH_VIEW_PAGE).length;
       cy.get('[data-test="selectFrameworkSelect"] .p-multiselect').should('exist').click();
       cy.get('.p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item')
         .should('have.length', numberOfFrameworks)

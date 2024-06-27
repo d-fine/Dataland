@@ -134,11 +134,11 @@ describe('Component test for the company cockpit', () => {
     cy.get("[data-test='claimOwnershipPanelLink']").should(isThisExpected ? 'exist' : 'not.exist');
   }
   /**
-   * Validates the sme framework summary panel
-   * @param isCompanyOwner is the current user company company owner
+   * Validates the vsme framework summary panel
+   * @param isCompanyOwner is the current user company data owner
    */
-  function validateSmeFrameworkSummaryPanel(isCompanyOwner: boolean): void {
-    const frameworkName = 'sme';
+  function validateVsmeFrameworkSummaryPanel(isCompanyOwner: boolean): void {
+    const frameworkName = 'vsme';
     const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
     if (isCompanyOwner) {
       cy.get(`${frameworkSummaryPanelSelector} a[data-test="${frameworkName}-provide-data-button"]`).should('exist');
@@ -163,8 +163,8 @@ describe('Component test for the company cockpit', () => {
           'contain',
           aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods.toString()
         );
-        if (frameworkName == 'sme') {
-          validateSmeFrameworkSummaryPanel(isCompanyOwner);
+        if (frameworkName == 'vsme') {
+          validateVsmeFrameworkSummaryPanel(isCompanyOwner);
           return;
         }
         if (isProvideDataButtonExpected) {
@@ -288,23 +288,23 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  it('Check the Sme summary panel behaviour if the user is company owner', () => {
+  it('Check the Vsme summary panel behaviour if the user is company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
       mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole], companyOwnerId).then(() => {
         waitForRequestsOnMounted();
-        validateSmeFrameworkSummaryPanel(true);
+        validateVsmeFrameworkSummaryPanel(true);
       });
     });
   });
-  it('Check the Sme summary panel behaviour if the user is not company owner', () => {
+  it('Check the Vsme summary panel behaviour if the user is not company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     KEYCLOAK_ROLES.forEach((keycloakRole: string) => {
       mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]).then(() => {
         waitForRequestsOnMounted();
-        validateSmeFrameworkSummaryPanel(false);
+        validateVsmeFrameworkSummaryPanel(false);
       });
     });
   });
