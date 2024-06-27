@@ -5,13 +5,13 @@ import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesContr
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import org.slf4j.LoggerFactory
 
 /**
  * Service to execute company-ownership-checks to decide whether a user can access a resource or not
@@ -25,6 +25,7 @@ class CompanyOwnershipChecker(
     @Autowired val logMessageBuilder: LogMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Method to check whether the currently authenticated user is company owner of a specified company and therefore
      * has uploader rights for this company
