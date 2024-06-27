@@ -364,7 +364,7 @@ class CompanyRolesControllerTest {
     }
 
     @Test
-    fun `assure that company role assignees can access get and head endpoint but users without company role cant`() {
+    fun `assure that user with assigned company role can access get and head endpoint but users without cant`() {
         val companyIdAlpha = uploadCompanyAndReturnCompanyId()
         val companyIdBeta = uploadCompanyAndReturnCompanyId()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
