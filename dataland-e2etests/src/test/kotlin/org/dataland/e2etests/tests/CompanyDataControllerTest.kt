@@ -32,6 +32,22 @@ class CompanyDataControllerTest {
     private val checkOtherCompanyTrue = "Other Company true"
     private val checkOtherCompanyFalse = "Other Company false"
     private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+    private val fullPatchObject = CompanyInformationPatch(
+        companyContactDetails = listOf("New-companyContactDetails"),
+        companyName = "New-companyName",
+        companyAlternativeNames = listOf("New-companyAlternativeNames"),
+        companyLegalForm = "New-companyLegalForm",
+        headquarters = "New-headquarters",
+        headquartersPostalCode = "New-headquartersPostalCode",
+        sector = "New-sector",
+        countryCode = "New-countryCode",
+        isTeaserCompany = false,
+        website = "New-website",
+        parentCompanyLei = "New-parentCompanyLei",
+        identifiers = mapOf(
+            IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+        ),
+    )
 
     @BeforeAll
     fun postTestDocuments() {
@@ -464,30 +480,12 @@ class CompanyDataControllerTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val originalCompany = uploadInfo.actualStoredCompany
         val companyId = originalCompany.companyId
-
-        val patchObject = CompanyInformationPatch(
-            companyContactDetails = listOf("New-companyContactDetails"),
-            companyName = "New-companyName",
-            companyAlternativeNames = listOf("New-companyAlternativeNames"),
-            companyLegalForm = "New-companyLegalForm",
-            headquarters = "New-headquarters",
-            headquartersPostalCode = "New-headquartersPostalCode",
-            sector = "New-sector",
-            countryCode = "New-countryCode",
-            isTeaserCompany = false,
-            website = "New-website",
-            parentCompanyLei = "New-parentCompanyLei",
-            identifiers = mapOf(
-                IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
-            ),
-
-        )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
         assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
-                patchObject,
+                fullPatchObject,
             )
         }
 
