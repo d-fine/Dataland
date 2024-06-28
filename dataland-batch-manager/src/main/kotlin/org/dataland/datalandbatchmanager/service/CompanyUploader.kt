@@ -191,8 +191,8 @@ class CompanyUploader(
     fun uploadOrPatchFromNorthData(northDataCompanyInformation: NorthDataCompanyInformation) {
         var companyId: String? = null
         if (northDataCompanyInformation.lei != "") companyId = searchCompanyByLEI(northDataCompanyInformation.lei)
-        if (companyId != null) {
+        if (companyId == null) {
             uploadOrPatchSingleCompany(northDataCompanyInformation)
-        }
+        } else patchSingleCompany(companyId, northDataCompanyInformation)
     }
 }
