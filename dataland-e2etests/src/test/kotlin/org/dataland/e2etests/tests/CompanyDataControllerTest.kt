@@ -422,11 +422,12 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `check that the dataUploader can patch contactDetails if the company does not have companyOwner`() {
+    fun `check that the dataUploader can patch contactDetails and website if the company does not have companyOwner`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
         val patchObject = CompanyInformationPatch(
             companyContactDetails = listOf("New-Email-1", "New-Email-2"),
+            website = "New-Website",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
@@ -437,10 +438,14 @@ class CompanyDataControllerTest {
             patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyContactDetails,
             "The company contact details should have been updated",
         )
+        assertEquals(
+            patchObject.website!!, updatedCompany.companyInformation.website,
+            "The company website should have been updated",
+        )
     }
 
     @Test
-    fun `check that the dataUploader cannot patch contactDetails if the company has a companyOwner`() {
+    fun `check that the dataUploader cannot patch contactDetails or website if the company has a companyOwner`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val ownerId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
         val originalCompany = uploadInfo.actualStoredCompany
@@ -455,6 +460,7 @@ class CompanyDataControllerTest {
 
         val patchObject = CompanyInformationPatch(
             companyContactDetails = listOf("New-Email-3"),
+            website = "New-Website-2",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
@@ -503,7 +509,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `check that the a company owner can patch any field of their own company`() {
+    fun `check that the a company owner can patch contact details and website of their own company`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val originalCompany = uploadInfo.actualStoredCompany
         val companyId = originalCompany.companyId
@@ -515,7 +521,7 @@ class CompanyDataControllerTest {
         )
 
         val patchObject = CompanyInformationPatch(
-            companyName = "New-Name",
+            website = "New-Website-3",
             companyContactDetails = listOf("New-Email-1"),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
@@ -528,8 +534,30 @@ class CompanyDataControllerTest {
             "The company contact details should have been updated",
         )
         assertEquals(
-            patchObject.companyName!!, updatedCompany.companyInformation.companyName,
+            patchObject.website!!, updatedCompany.companyInformation.website,
             "The company name should have been updated by the company owner",
         )
+    }
+
+    @Test
+    fun `check that the data owner cannot patch unallowed fields`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyRolesControllerApi.assignCompanyRole(
+            CompanyRole.CompanyOwner,
+            UUID.fromString(companyId),
+            dataReaderUserId,
+        )
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+
+        assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                fullPatchObject,
+            )
+        }
     }
 }

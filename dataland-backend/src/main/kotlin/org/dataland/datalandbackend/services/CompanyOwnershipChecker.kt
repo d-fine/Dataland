@@ -79,7 +79,7 @@ class CompanyOwnershipChecker(
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
     @Transactional(readOnly = true)
-    fun onlyPatchesAuthorizedFieldsForUploader(patch: CompanyInformationPatch): Boolean {
+    fun onlyPatchesAuthorizedFields(patch: CompanyInformationPatch): Boolean {
         val unauthorizedFields = mutableListOf<String>()
 
         if (patch.companyName != null) unauthorizedFields.add("companyName")
@@ -91,7 +91,6 @@ class CompanyOwnershipChecker(
         if (patch.identifiers != null) unauthorizedFields.add("identifiers")
         if (patch.countryCode != null) unauthorizedFields.add("countryCode")
         if (patch.isTeaserCompany != null) unauthorizedFields.add("isTeaserCompany")
-        if (patch.website != null) unauthorizedFields.add("website")
         if (patch.parentCompanyLei != null) unauthorizedFields.add("parentCompanyLei")
 
         if (unauthorizedFields.isNotEmpty()) {
