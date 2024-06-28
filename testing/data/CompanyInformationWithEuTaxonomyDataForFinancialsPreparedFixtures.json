@@ -1355,5 +1355,372 @@
 			}
 		},
 		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "TestForIncompleteReferencedReport",
+			"headquarters": "Port Waylonton",
+			"headquartersPostalCode": "48072-3360",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"ecdPzEgZaMxXWlRcHVo0"
+				],
+				"Isin": [
+					"KPvfHcsJv7kQ"
+				],
+				"PermId": [
+					"aUUZn5iJul"
+				],
+				"Ticker": [
+					"zsDoLMJ"
+				],
+				"Duns": [
+					"m5FPGPmu9"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TJ",
+			"companyAlternativeNames": [
+				"Fisher, Kris and Rempel",
+				"Hermiston - Smitham",
+				"Von Inc",
+				"Walsh Inc"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "I5DWpQ2TWTmKHlLbJcPf"
+		},
+		"t": {
+			"financialServicesTypes": [
+				"InvestmentFirm",
+				"AssetManagement",
+				"InsuranceOrReinsurance",
+				"CreditInstitution"
+			],
+			"eligibilityKpis": {
+				"InvestmentFirm": {
+					"banksAndIssuersInPercent": {
+						"value": 2.48,
+						"dataSource": {
+							"page": 35,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "synthesize online bus",
+						"quality": "Reported"
+					},
+					"derivativesInPercent": {
+						"value": 74.25,
+						"dataSource": {
+							"page": 1060,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "generate redundant matrix",
+						"quality": "Reported"
+					},
+					"investmentNonNfrdInPercent": {
+						"value": 62.87,
+						"dataSource": {
+							"page": 160,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "synthesize online circuit",
+						"quality": "Estimated"
+					},
+					"taxonomyEligibleActivityInPercent": {
+						"value": 73.83,
+						"dataSource": {
+							"page": 1175,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "copy open-source port",
+						"quality": "Estimated"
+					},
+					"taxonomyNonEligibleActivityInPercent": {
+						"value": 27.95,
+						"dataSource": {
+							"page": 594,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "connect auxiliary sensor",
+						"quality": "Reported"
+					}
+				},
+				"AssetManagement": {
+					"banksAndIssuersInPercent": {
+						"value": 27.8,
+						"dataSource": {
+							"page": 816,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "connect optical interface",
+						"quality": "Audited"
+					},
+					"derivativesInPercent": {
+						"value": 3.87,
+						"dataSource": {
+							"page": 903,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "index open-source application",
+						"quality": "Incomplete"
+					},
+					"investmentNonNfrdInPercent": {
+						"value": 10.9,
+						"dataSource": {
+							"page": 1074,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "calculate cross-platform program",
+						"quality": "Reported"
+					},
+					"taxonomyEligibleActivityInPercent": {
+						"value": 79.04,
+						"dataSource": {
+							"page": 962,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "bypass auxiliary capacitor",
+						"quality": "Estimated"
+					},
+					"taxonomyNonEligibleActivityInPercent": {
+						"value": 45.84,
+						"dataSource": {
+							"page": 1113,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "navigate auxiliary alarm",
+						"quality": "Estimated"
+					}
+				},
+				"InsuranceOrReinsurance": {
+					"banksAndIssuersInPercent": {
+						"value": 71.12,
+						"dataSource": {
+							"page": 692,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "bypass online bandwidth",
+						"quality": "Reported"
+					},
+					"derivativesInPercent": {
+						"value": 3.33,
+						"dataSource": {
+							"page": 637,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "override open-source matrix",
+						"quality": "Incomplete"
+					},
+					"investmentNonNfrdInPercent": {
+						"value": 59.57,
+						"dataSource": {
+							"page": 264,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "back up back-end pixel",
+						"quality": "Estimated"
+					},
+					"taxonomyEligibleActivityInPercent": {
+						"value": 87.64,
+						"dataSource": {
+							"page": 1119,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "bypass 1080p sensor",
+						"quality": "Incomplete"
+					},
+					"taxonomyNonEligibleActivityInPercent": {
+						"value": 96.99,
+						"dataSource": {
+							"page": 52,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "input redundant alarm",
+						"quality": "Estimated"
+					}
+				},
+				"CreditInstitution": {
+					"banksAndIssuersInPercent": {
+						"value": 20.08,
+						"dataSource": {
+							"page": 521,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "connect primary feed",
+						"quality": "Reported"
+					},
+					"derivativesInPercent": {
+						"value": 53.48,
+						"dataSource": {
+							"page": 957,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "override cross-platform microchip",
+						"quality": "Incomplete"
+					},
+					"investmentNonNfrdInPercent": {
+						"value": 91.97,
+						"dataSource": {
+							"page": 783,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "compress online alarm",
+						"quality": "Estimated"
+					},
+					"taxonomyEligibleActivityInPercent": {
+						"value": 48.1,
+						"dataSource": {
+							"page": 287,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "transmit online interface",
+						"quality": "Estimated"
+					},
+					"taxonomyNonEligibleActivityInPercent": {
+						"value": 20.65,
+						"dataSource": {
+							"page": 1190,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "input optical pixel",
+						"quality": "Incomplete"
+					}
+				}
+			},
+			"creditInstitutionKpis": {
+				"interbankLoansInPercent": {
+					"value": 93.56,
+					"dataSource": {
+						"page": 326,
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					},
+					"comment": "copy mobile firewall",
+					"quality": "Incomplete"
+				},
+				"tradingPortfolioInPercent": {
+					"value": 35.74,
+					"dataSource": {
+						"page": 381,
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "infrastructures"
+					},
+					"comment": "transmit haptic matrix",
+					"quality": "Audited"
+				},
+				"tradingPortfolioAndInterbankLoansInPercent": {
+					"value": 46.56,
+					"dataSource": {
+						"page": 227,
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					},
+					"comment": "index back-end system",
+					"quality": "Reported"
+				},
+				"greenAssetRatioInPercent": {
+					"value": 51.61,
+					"dataSource": {
+						"page": 152,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": "generate redundant firewall",
+					"quality": "Reported"
+				}
+			},
+			"investmentFirmKpis": {
+				"greenAssetRatioInPercent": {
+					"value": 40.18,
+					"dataSource": {
+						"page": 1026,
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks"
+					},
+					"comment": "bypass optical program",
+					"quality": "Incomplete"
+				}
+			},
+			"insuranceKpis": {
+				"taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+					"value": 66.68,
+					"dataSource": {
+						"page": 115,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "niches"
+					},
+					"comment": "generate mobile application",
+					"quality": "Reported"
+				}
+			},
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-10-10",
+			"scopeOfEntities": "Yes",
+			"nfrdMandatory": "No",
+			"euTaxonomyActivityLevelReporting": "Yes",
+			"assurance": {
+				"value": "LimitedAssurance",
+				"provider": "Collins - Feil",
+				"dataSource": {
+					"page": 1120,
+					"fileName": "AnnualReport",
+					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"tagName": "networks"
+				}
+			},
+			"numberOfEmployees": 1230,
+			"referencedReports": {
+			}
+		},
+		"reportingPeriod": "2021"
 	}
 ]
