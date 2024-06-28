@@ -96,7 +96,7 @@ class DocumentControllerTest {
     }
 
     @Test
-    fun `test that users without keycloak-uploader-role can upload documents only if assigned company-owner-role`() {
+    fun `test that users without keycloak uploader role can upload documents only if assigned company owner role`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyIdString = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val testCompanyId = UUID.fromString(testCompanyIdString)
