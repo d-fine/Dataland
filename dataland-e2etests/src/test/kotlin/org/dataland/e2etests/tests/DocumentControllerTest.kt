@@ -96,13 +96,13 @@ class DocumentControllerTest {
     }
 
     @Test
-    fun `test that non admin users can upload documents only when they are CompanyOwner and not otherwise`() {
+    fun `test that users without keycloak-uploader-role can upload documents only if assigned company-owner-role`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyIdString = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val testCompanyId = UUID.fromString(testCompanyIdString)
         val dataReaderId = UUID.fromString(READER_USER_ID)
 
-        ensureUserIsNotOwnerOfAnyCompany(dataReaderId)
+        removeAllCompanyOwnershipsFromUser(dataReaderId)
 
         apiAccessor.companyRolesControllerApi.assignCompanyRole(
             CompanyRole.CompanyOwner,
@@ -114,20 +114,16 @@ class DocumentControllerTest {
         assertDoesNotThrow { uploadDocument(pdfDocument, TechnicalUser.Reader) }
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyRolesControllerApi.removeCompanyRole(
-            CompanyRole.CompanyOwner,
-            testCompanyId,
-            dataReaderId,
-        )
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        removeAllCompanyOwnershipsFromUser(dataReaderId)
 
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val clientException = assertThrows<ClientException> {
             uploadDocument(pdfDocument, TechnicalUser.Reader)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
 
-    private fun ensureUserIsNotOwnerOfAnyCompany(userId: UUID) {
+    private fun removeAllCompanyOwnershipsFromUser(userId: UUID) {
         val companiesOwnedByUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
             CompanyRole.CompanyOwner,
             null,
