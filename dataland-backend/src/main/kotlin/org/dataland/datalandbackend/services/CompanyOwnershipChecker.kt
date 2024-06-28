@@ -11,6 +11,7 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import kotlin.reflect.full.memberProperties
 
 /**
  * Service to execute company-ownership-checks to decide whether a user can access a resource or not
@@ -64,7 +65,6 @@ class CompanyOwnershipChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the company has at least one company owner
      */
-    @Transactional(readOnly = true)
     fun companyExistsAndHasNoOwner(companyId: String): Boolean {
         val companyOwners = companyRolesControllerApi.getCompanyRoleAssignments(
             CompanyRole.CompanyOwner, UUID.fromString(companyId),
@@ -72,26 +72,19 @@ class CompanyOwnershipChecker(
         return companyOwners.isEmpty()
     }
 
-    // This function can be made more generic if additional field-specific checks are needed in the future
     /**
      * Method to check whether the patch contains only fields that are allowed to be altered by the uploader
      * @param patch the fields to be patched
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
-    @Transactional(readOnly = true)
-    fun onlyPatchesAuthorizedFields(patch: CompanyInformationPatch): Boolean {
-        val unauthorizedFields = mutableListOf<String>()
-
-        if (patch.companyName != null) unauthorizedFields.add("companyName")
-        if (patch.companyAlternativeNames != null) unauthorizedFields.add("companyAlternativeNames")
-        if (patch.companyLegalForm != null) unauthorizedFields.add("companyLegalForm")
-        if (patch.headquarters != null) unauthorizedFields.add("headquarters")
-        if (patch.headquartersPostalCode != null) unauthorizedFields.add("headquartersPostalCode")
-        if (patch.sector != null) unauthorizedFields.add("sector")
-        if (patch.identifiers != null) unauthorizedFields.add("identifiers")
-        if (patch.countryCode != null) unauthorizedFields.add("countryCode")
-        if (patch.isTeaserCompany != null) unauthorizedFields.add("isTeaserCompany")
-        if (patch.parentCompanyLei != null) unauthorizedFields.add("parentCompanyLei")
+    fun areOnlyAuthorizedFieldsPatched(patch: CompanyInformationPatch): Boolean {
+        val unauthorizedFields = CompanyInformationPatch::class.memberProperties
+            .filter { property ->
+                property.get(patch) != null &&
+                    property.name != "companyContactDetails" &&
+                    property.name != "website"
+            }
+            .map { it.name }
 
         if (unauthorizedFields.isNotEmpty()) {
             throw AccessDeniedException(logMessageBuilder.generateInvalidAlterationExceptionMessage(unauthorizedFields))

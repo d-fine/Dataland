@@ -273,10 +273,10 @@ interface CompanyApi {
         "hasRole('ROLE_ADMIN') or " +
             "(hasRole('ROLE_USER') and " +
             "@CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId) and " +
-            "@CompanyOwnershipChecker.onlyPatchesAuthorizedFields(#companyInformationPatch)) or " +
+            "@CompanyOwnershipChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch)) or " +
             "(hasRole('ROLE_UPLOADER') and " +
             "@CompanyOwnershipChecker.companyExistsAndHasNoOwner(#companyId) and " +
-            "@CompanyOwnershipChecker.onlyPatchesAuthorizedFields(#companyInformationPatch))",
+            "@CompanyOwnershipChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch))",
     )
     fun patchCompanyById(
         @PathVariable("companyId") companyId: String,

@@ -28,7 +28,6 @@ class CompanyAlterationManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
-    @Autowired val logMessageBuilder: LogMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
