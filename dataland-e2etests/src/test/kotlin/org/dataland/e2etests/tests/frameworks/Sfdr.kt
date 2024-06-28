@@ -71,4 +71,32 @@ class Sfdr {
         assertTrue(testClientError.body.toString().contains("Invalid input"))
         assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
     }
+
+    @Test
+    fun `check that Sfdr dataset cannot be uploaded if list of referenced Reports is incomplete`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyName = "TestForIncompleteReferencedReport"
+
+        val companyInformation = apiAccessor.testDataProviderForSfdrData
+            .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
+
+        val dataSet = companyInformation!!.t
+
+        val uploadPair = Pair(dataSet, "2022")
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.uploadWithWait(
+                companyId = companyId,
+                frameworkData = uploadPair.first,
+                reportingPeriod = uploadPair.second,
+                uploadFunction = apiAccessor::sfdrUploaderFunction,
+            )
+        }
+
+        val testClientError = exception.response as ClientError<*>
+
+        assertTrue(testClientError.statusCode == 400)
+        assertTrue(testClientError.body.toString().contains("Invalid input"))
+        assertTrue(testClientError.body.toString().contains("The list of referenced reports is not complete."))
+    }
 }
