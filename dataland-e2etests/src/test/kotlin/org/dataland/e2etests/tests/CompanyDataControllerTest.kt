@@ -466,8 +466,21 @@ class CompanyDataControllerTest {
         val companyId = originalCompany.companyId
 
         val patchObject = CompanyInformationPatch(
-            companyContactDetails = listOf("New-Email-4"),
-            companyName = "New-Name",
+            companyContactDetails = listOf("New-companyContactDetails"),
+            companyName = "New-companyName",
+            companyAlternativeNames = listOf("New-companyAlternativeNames"),
+            companyLegalForm = "New-companyLegalForm",
+            headquarters = "New-headquarters",
+            headquartersPostalCode = "New-headquartersPostalCode",
+            sector = "New-sector",
+            countryCode = "New-countryCode",
+            isTeaserCompany = false,
+            website = "New-website",
+            parentCompanyLei = "New-parentCompanyLei",
+            identifiers = mapOf(
+                IdentifierType.Duns.value to listOf("Test-DUNS${UUID.randomUUID()}"),
+            ),
+
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
