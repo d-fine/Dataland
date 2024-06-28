@@ -2,14 +2,10 @@ package org.dataland.datalandbatchmanager.service
 
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
-import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.context.event.ApplicationReadyEvent
-import org.springframework.context.event.EventListener
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
 import java.net.ConnectException
@@ -48,13 +44,12 @@ class NorthdataDataIngestor(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-
     @Synchronized
     private fun processNorthdataFile(zipFile: File, downloadFile: (file: File) -> Unit) {
         val duration = measureTime {
             try {
                 downloadFile(zipFile)
-                //TODO function that maps Northdata data to the GLEIF data
+                // TODO function that maps Northdata data to the GLEIF data
             } finally {
                 if (!zipFile.delete()) {
                     logger.error("Unable to delete temporary file $zipFile")
@@ -72,7 +67,7 @@ class NorthdataDataIngestor(
             northDataAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
             val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
-            //if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
+            // if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
         }
         logger.info("Finished processing of GLEIF RR file $newRelationshipFile in ${formatExecutionTime(duration)}.")
     }
@@ -120,21 +115,15 @@ class NorthdataDataIngestor(
     }
 
     private fun uploadCompanies(zipFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
-        val gleifIterator = gleifParser.readGleifDataFromBufferedReader(gleifDataStream)
-        val gleifIterable = Iterable<GleifCompanyInformation> { gleifIterator }
+        val northDataDataStream = gleifParser.getCsvStreamFromZip(zipFile)
+        val northDataIterable: Iterable<NorthDataCompanyInformation> = gleifParser.readDataFromBufferedReader(northDataDataStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
         try {
             uploadThreadPool.submit {
-                StreamSupport.stream(gleifIterable.spliterator(), true)
+                StreamSupport.stream(northDataIterable.spliterator(), true)
                     .forEach {
-                        companyUploader.uploadOrPatchSingleCompany(
-                            GleifCompanyCombinedInformation(
-                                it,
-                                relationshipExtractor.finalParentMapping.getOrDefault(it.lei, null),
-                            ),
-                        )
+                        companyUploader.uploadOrPatchSingleCompany(it)
                     }
             }.get()
         } finally {

@@ -9,12 +9,12 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 data class GleifCompanyCombinedInformation(
     val gleifCompanyInformation: GleifCompanyInformation,
     val finalParentLei: String? = null,
-) {
+) : ExternalCompanyInformation {
     /**
      * function to transform a company information object from GLEIF to the corresponding Dataland object.
      * @return the Dataland companyInformation object with the information of the corresponding GLEIF object
      */
-    fun toCompanyPost(): CompanyInformation {
+    override fun toCompanyPost(): CompanyInformation {
         return CompanyInformation(
             companyName = gleifCompanyInformation.companyName,
             companyAlternativeNames = null,
@@ -35,7 +35,7 @@ data class GleifCompanyCombinedInformation(
      * Transform the GLEIF company information to a PATCH object that can be used to update the information of the
      * company using the Dataland API
      */
-    fun toCompanyPatch(): CompanyInformationPatch {
+    override fun toCompanyPatch(): CompanyInformationPatch {
         return CompanyInformationPatch(
             companyName = gleifCompanyInformation.companyName,
             countryCode = gleifCompanyInformation.countryCode,
@@ -46,5 +46,10 @@ data class GleifCompanyCombinedInformation(
             ),
             parentCompanyLei = finalParentLei,
         )
+    }
+
+    override fun getNameAndIdentifier(): String {
+        return "${gleifCompanyInformation.companyName} " +
+            " (LEI: ${gleifCompanyInformation.lei})"
     }
 }

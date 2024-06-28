@@ -7,7 +7,8 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
+import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
+import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -84,15 +85,12 @@ class CompanyUploader(
      * This function absorbs errors and logs them.
      */
     fun uploadOrPatchSingleCompany(
-        companyInformation: GleifCompanyCombinedInformation,
+        companyInformation: ExternalCompanyInformation,
     ) {
         var patchCompanyId: String? = null
         retryOnCommonApiErrors {
             try {
-                logger.info(
-                    "Uploading company data for ${companyInformation.gleifCompanyInformation.companyName} " +
-                        "(LEI: ${companyInformation.gleifCompanyInformation.lei})",
-                )
+                logger.info("Uploading company data for ${companyInformation.getNameAndIdentifier()} ")
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
                 val conflictingCompanyId = checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
@@ -106,8 +104,7 @@ class CompanyUploader(
 
         patchCompanyId?.let {
             logger.info(
-                "Company Data for Company ${companyInformation.gleifCompanyInformation.companyName} " +
-                    "(LEI: ${companyInformation.gleifCompanyInformation.lei}) " +
+                "Company Data for Company ${companyInformation.getNameAndIdentifier()}" +
                     "already present on Dataland. Proceeding to patch company with id $it",
             )
             patchSingleCompany(it, companyInformation)
@@ -119,7 +116,7 @@ class CompanyUploader(
      */
     private fun patchSingleCompany(
         companyId: String,
-        companyInformation: GleifCompanyCombinedInformation,
+        companyInformation: ExternalCompanyInformation,
     ) {
         retryOnCommonApiErrors {
             companyDataControllerApi.patchCompanyById(
@@ -188,6 +185,14 @@ class CompanyUploader(
                 companyId,
                 companyPatch,
             )
+        }
+    }
+
+    fun uploadOrPatchFromNorthData(northDataCompanyInformation: NorthDataCompanyInformation) {
+        var companyId: String? = null
+        if (northDataCompanyInformation.lei != "") companyId = searchCompanyByLEI(northDataCompanyInformation.lei)
+        if (companyId != null) {
+            uploadOrPatchSingleCompany(northDataCompanyInformation)
         }
     }
 }
