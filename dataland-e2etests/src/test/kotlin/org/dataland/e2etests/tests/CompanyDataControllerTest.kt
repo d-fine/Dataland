@@ -418,7 +418,7 @@ class CompanyDataControllerTest {
             patchObject,
         )
         assertEquals(
-            patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyAlternativeNames,
+            patchObject.companyContactDetails!!, updatedCompany.companyInformation.companyContactDetails,
             "The company contact details should have been updated",
         )
     }
@@ -471,7 +471,6 @@ class CompanyDataControllerTest {
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
-        //ToDo: try to access the message from generateInvalidAlterationExceptionMessage
         assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,

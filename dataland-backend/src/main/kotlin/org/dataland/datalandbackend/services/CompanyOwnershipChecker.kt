@@ -66,18 +66,10 @@ class CompanyOwnershipChecker(
      */
     @Transactional(readOnly = true)
     fun companyExistsAndHasNoOwner(companyId: String): Boolean {
-        return try {
-            val companyOwners = companyRolesControllerApi.getCompanyRoleAssignments(
-                CompanyRole.CompanyOwner, UUID.fromString(companyId),
-            )
-            companyOwners.isEmpty()
-        } catch (clientException: ClientException) {
-            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                false
-            } else {
-                throw clientException
-            }
-        }
+        val companyOwners = companyRolesControllerApi.getCompanyRoleAssignments(
+            CompanyRole.CompanyOwner, UUID.fromString(companyId),
+        )
+        return companyOwners.isEmpty()
     }
 
     // This function can be made more generic if additional field-specific checks are needed in the future
