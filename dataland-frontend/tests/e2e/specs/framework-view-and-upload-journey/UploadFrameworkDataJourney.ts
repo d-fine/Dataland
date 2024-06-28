@@ -217,21 +217,19 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
        * vice versa renders the dataset".
        */
       function checkIfDropDownSwitchRendersData(): void {
-        cy.get('div[data-test="chooseFrameworkDropdown"]')
-          .click()
-          .get("li:contains('EU Taxonomy for financial companies')")
-          .click();
+        cy.get('div[data-test="chooseFrameworkDropdown"]').click();
+        cy.get("li:contains('EU Taxonomy for financial companies')").click();
         cy.get('td[data-cell-label="Level of Assurance"]').should('be.visible');
 
         cy.get('div[data-test="chooseFrameworkDropdown"]').click();
         cy.get("li:contains('LkSG')").click();
-        cy.get('td[data-cell-label="Data Date"]')
-          .should('be.visible')
-          .next('td')
-          .find('span')
-          .should('be.visible')
-          .contains('2022-07-30');
+        cy.get('td[data-cell-label="Data Date"]').should('be.visible');
+
+        cy.get('td[data-cell-label="Data Date"]').next('td').find('span')
+            .should('be.visible')
+            .contains('2022-07-30');
       }
+
 
       it(
         'Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks,' +
