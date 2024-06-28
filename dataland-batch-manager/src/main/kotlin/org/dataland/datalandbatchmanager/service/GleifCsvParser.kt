@@ -60,6 +60,10 @@ class GleifCsvParser {
             .readValues(bufferedReader)
     }
 
+    /**
+     * Method which reads data from buffered reader
+     */
+    // TODO make this doc more detailed
     final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader):
         Iterable<T> {
         return Iterable<T> {
