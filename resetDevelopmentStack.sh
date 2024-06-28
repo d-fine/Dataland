@@ -12,7 +12,7 @@ fi
 ./dataland-eurodat-client/write_secret_files.sh
 
 echo "Clearing Docker..."
-docker compose --profile development down
+docker compose --profile development --profile developmentContainerFrontend down
 docker compose --profile init down
 docker compose down --remove-orphans
 docker volume prune --force --all

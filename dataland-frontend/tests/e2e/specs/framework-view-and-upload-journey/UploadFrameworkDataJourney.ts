@@ -69,6 +69,7 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             .then((dataMetaInformationOfFirstUpload) => {
               dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
               const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
+              // eslint-disable-next-line cypress/no-unnecessary-waiting
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
@@ -107,11 +108,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
         cy.visitAndCheckAppMount('/companies');
         verifySearchResultTableExists();
 
-        cy.get('button')
-          .contains('New Dataset')
-          .click({ force: true })
-          .url()
-          .should('eq', getBaseUrl() + '/companies/choose');
+        cy.get('button').contains('New Dataset').click({ force: true });
+        cy.url().should('eq', getBaseUrl() + '/companies/choose');
         cy.get('div[id=option1Container').find('a:contains(Add it)').click({ force: true });
         cy.intercept('**/api/metadata*').as('retrieveExistingDatasetsForCompany');
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
@@ -225,7 +223,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
           .click();
         cy.get('td[data-cell-label="Level of Assurance"]').should('be.visible');
 
-        cy.get('div[data-test="chooseFrameworkDropdown"]').click().get("li:contains('LkSG')").click();
+        cy.get('div[data-test="chooseFrameworkDropdown"]').click();
+        cy.get("li:contains('LkSG')").click();
         cy.get('td[data-cell-label="Data Date"]')
           .should('be.visible')
           .next('td')
@@ -247,9 +246,8 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
             .url()
             .should('eq', getBaseUrl() + '/companies/choose');
           cy.intercept('**/api/companies/names*').as('searchCompanyName');
-          cy.get('input[id=company_search_bar_standard]')
-            .click({ force: true })
-            .type(testCompanyNameForManyDatasetsCompany);
+          cy.get('input[id=company_search_bar_standard]').click({ force: true });
+          cy.get('input[id=company_search_bar_standard]').type(testCompanyNameForManyDatasetsCompany);
           cy.wait('@searchCompanyName', { timeout: Cypress.env('short_timeout_in_ms') as number });
           cy.get('ul[class=p-autocomplete-items]').should('exist');
           cy.get('input[id=company_search_bar_standard]').type('{downArrow}');

@@ -205,12 +205,9 @@ function testDatasetPresentWithCorrectStatus(companyName: string, status: string
  */
 function safeLogout(): void {
   cy.intercept('**/api-keys/getApiKeyMetaInfoForUser', { body: [] }).as('getApiKeyMetaInfoForUser');
-  cy.visitAndCheckAppMount('/api-key')
-    .wait('@getApiKeyMetaInfoForUser')
-    .get("div[id='profile-picture-dropdown-toggle']")
-    .click()
-    .get("a[id='profile-picture-dropdown-logout-anchor']")
-    .click();
+  cy.visitAndCheckAppMount('/api-key').wait('@getApiKeyMetaInfoForUser');
+  cy.get("div[id='profile-picture-dropdown-toggle']").click();
+  cy.get("a[id='profile-picture-dropdown-logout-anchor']").click();
   cy.url().should('eq', getBaseUrl() + '/');
   cy.contains('a', 'Login');
 }

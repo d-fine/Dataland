@@ -1,5 +1,36 @@
 #!/usr/bin/env bash
 
+local_frontend=false
+
+while getopts ':lh' opt; do
+  case "$opt" in
+    l)
+      echo "Launching in local frontend mode."
+      local_frontend=true
+      export FRONTEND_LOCATION_CONFIG="Localhost"
+      ;;
+
+    h)
+      echo "Usage: $(basename $0) [-l] [-h]"
+      echo "  -l: Run in local frontend mode. Do not launch a frontend docker container. Instead, redirect frontend traffic to localhost."
+      echo "      This significantly speeds up frontend development. Nevertheless, at some point, the frontend may freeze requiring a full restart of the docker engine."
+      echo "      Note: You have to run the frontend locally on your machine (npm run dev) to make this work."
+      echo "  -h: Display this help message."
+      exit 0
+      ;;
+
+    :)
+      echo -e "option requires an argument.\n"
+      exit 1
+      ;;
+
+    ?)
+      echo -e "Invalid command option.\n"
+      exit 1
+      ;;
+  esac
+done
+
 set -euxo pipefail
 ./verifyEnvironmentVariables.sh
 
@@ -38,22 +69,27 @@ set -o allexport
 source ./*github_env.log
 set +o allexport
 
+compose_profiles=(--profile development)
+if [[ $local_frontend == false ]]; then
+  compose_profiles+=(--profile developmentContainerFrontend)
+fi
+
 # start containers with the stack except backend
-docker compose --profile development down
+docker compose --profile development --profile developmentContainerFrontend down
 docker volume rm $(docker volume ls -q | grep _pgadmin_config) || true
 docker volume rm $(docker volume ls -q | grep _qa_service_data) || true
 docker volume rm $(docker volume ls -q | grep _community_manager_data) || true
-docker compose --profile development pull --ignore-pull-failures --include-deps
+docker compose --profile development --profile developmentContainerFrontend pull --ignore-pull-failures --include-deps
 
 if [[ -s ./localContainer.conf ]]; then
   echo "Starting only configured services."
   for service in $(cat ./localContainer.conf); do
     echo "Starting service $service"
-    docker compose --profile development up -d --build "$service"
+    docker compose "${compose_profiles[@]}" up -d --build "$service"
   done
 else
   echo "Starting stack in mode development."
-  docker compose --profile development up -d --build
+  docker compose "${compose_profiles[@]}" up -d --build
 fi
 
 #start the backend

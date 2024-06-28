@@ -132,12 +132,11 @@ describeIf(
      * Checks if all expected human-readable labels are visible in the dropdown options
      */
     function checkDropdownLabels(): void {
-      const dropdown = cy.get("[data-test='datapoint-framework']");
-      dropdown.should('exist').click();
+      cy.get("[data-test='datapoint-framework']").should('exist').click();
       FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         cy.get('.p-dropdown-item').contains(humanizeStringOrNumber(framework)).should('exist');
       });
-      dropdown.click();
+      cy.get("[data-test='datapoint-framework']").click();
     }
 
     /**
