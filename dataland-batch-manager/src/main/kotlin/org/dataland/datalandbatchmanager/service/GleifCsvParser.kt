@@ -59,4 +59,15 @@ class GleifCsvParser {
             .with(CsvSchema.emptySchema().withHeader())
             .readValues(bufferedReader)
     }
+
+    final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader):
+        Iterable<T> {
+        return Iterable<T> {
+            CsvMapper()
+                .registerModule(kotlinModule())
+                .readerFor(T::class.java)
+                .with(CsvSchema.emptySchema().withHeader())
+                .readValues(bufferedReader)
+        }
+    }
 }

@@ -29,7 +29,7 @@ interface DocumentApi {
      * Upload a document
      * @param document a document
      */
-    @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwner()")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     @Operation(
         summary = "Upload a document.",
         description = "Upload a document and receive meta information",

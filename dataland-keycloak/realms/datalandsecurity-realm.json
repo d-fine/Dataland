@@ -374,7 +374,6 @@
       "dataland-batch-manager": [],
       "dataland-community-manager": [],
       "dataland-automated-qa-service": [],
-      "dataland-document-manager": [],
       "account-console": [],
       "broker": [
         {
@@ -673,24 +672,6 @@
     },
     "notBefore": 0,
     "groups" : [ ]
-  }, {
-    "id": "80d3352b-1add-49df-90c3-b6163cd5edf0",
-    "username": "service-account-dataland-document-manager",
-    "emailVerified": false,
-    "createdTimestamp": 1719317760296,
-    "enabled": true,
-    "totp": false,
-    "serviceAccountClientId": "dataland-document-manager",
-    "disableableCredentialTypes": [],
-    "requiredActions": [
-      "TERMS_AND_CONDITIONS"
-    ],
-    "realmRoles": [
-      "ROLE_ADMIN",
-      "default-roles-datalandsecurity"
-    ],
-    "notBefore": 0,
-    "groups": []
   }, {
     "id": "f4627eda-1361-4548-a9d3-c0120be9bdb7",
     "createdTimestamp" : 123456789,
@@ -1190,106 +1171,6 @@
             "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "clientHost",
-            "jsonType.label": "String"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "web-origins",
-        "acr",
-        "profile",
-        "roles",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access",
-        "microprofile-jwt"
-      ]
-    },
-    {
-      "id": "074e29c1-b731-45f4-b02b-20f68666fee0",
-      "clientId": "dataland-document-manager",
-      "name": "",
-      "description": "",
-      "rootUrl": "",
-      "adminUrl": "",
-      "baseUrl": "",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "alwaysDisplayInConsole": false,
-      "clientAuthenticatorType": "client-secret",
-      "secret": "${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}",
-      "redirectUris": [
-        "/*"
-      ],
-      "webOrigins": [
-        "/*"
-      ],
-      "notBefore": 0,
-      "bearerOnly": false,
-      "consentRequired": false,
-      "standardFlowEnabled": false,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
-      "serviceAccountsEnabled": true,
-      "publicClient": false,
-      "frontchannelLogout": true,
-      "protocol": "openid-connect",
-      "attributes": {
-        "oidc.ciba.grant.enabled": "false",
-        "oauth2.device.authorization.grant.enabled": "false",
-        "client.secret.creation.time": "1719317760",
-        "backchannel.logout.session.required": "true",
-        "backchannel.logout.revoke.offline.tokens": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "protocolMappers": [
-        {
-          "id": "0fddc9dc-c0a7-4822-9631-994782afc34d",
-          "name": "Client ID",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": false,
-          "config": {
-            "user.session.note": "client_id",
-            "introspection.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "client_id",
-            "jsonType.label": "String"
-          }
-        },
-        {
-          "id": "77a66e9a-6ff8-4517-ba83-6f6ca70dda1d",
-          "name": "Client Host",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": false,
-          "config": {
-            "user.session.note": "clientHost",
-            "introspection.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientHost",
-            "jsonType.label": "String"
-          }
-        },
-        {
-          "id": "0a0ddf39-4381-4b52-a128-10fee2f1dee6",
-          "name": "Client IP Address",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usersessionmodel-note-mapper",
-          "consentRequired": false,
-          "config": {
-            "user.session.note": "clientAddress",
-            "introspection.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "clientAddress",
             "jsonType.label": "String"
           }
         }
