@@ -69,7 +69,8 @@ class GleifGoldenCopyIngestor(
     }
 
     /**
-     * This method
+     * This method processes the gleif relationship file
+     * @param updateAllCompanies boolean to control whether all companies should be updated or not
      */
     @Synchronized
     fun processRelationshipFile(updateAllCompanies: Boolean = false) {
