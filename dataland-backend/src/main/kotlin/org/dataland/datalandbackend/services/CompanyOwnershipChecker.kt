@@ -73,12 +73,10 @@ class CompanyOwnershipChecker(
             )
             companyOwners.isEmpty()
         } catch (clientException: ClientException) {
-            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "Dataland does not know the company ID $companyId",
-                )
-            } else { throw clientException }
+            throw ResourceNotFoundApiException(
+                "Company not found",
+                "Dataland does not know the company ID $companyId",
+            )
         }
     }
 
