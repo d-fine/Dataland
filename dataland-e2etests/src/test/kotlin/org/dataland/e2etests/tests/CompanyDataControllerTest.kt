@@ -560,4 +560,20 @@ class CompanyDataControllerTest {
             )
         }
     }
+
+    @Test
+    fun `check that patching with an invalid company ID and invalid patch fields returns an exception`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val originalCompany = uploadInfo.actualStoredCompany
+        val companyId = originalCompany.companyId
+
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                fullPatchObject,
+            )
+        }
+    }
 }

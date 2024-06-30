@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
@@ -66,10 +67,19 @@ class CompanyOwnershipChecker(
      * @return a Boolean indicating whether the company has at least one company owner
      */
     fun companyExistsAndHasNoOwner(companyId: String): Boolean {
-        val companyOwners = companyRolesControllerApi.getCompanyRoleAssignments(
-            CompanyRole.CompanyOwner, UUID.fromString(companyId),
-        )
-        return companyOwners.isEmpty()
+        return try {
+            val companyOwners = companyRolesControllerApi.getCompanyRoleAssignments(
+                CompanyRole.CompanyOwner, UUID.fromString(companyId),
+            )
+            companyOwners.isEmpty()
+        } catch (clientException: ClientException) {
+            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                throw ResourceNotFoundApiException(
+                    "Company not found",
+                    "Dataland does not know the company ID $companyId",
+                )
+            } else { throw clientException }
+        }
     }
 
     /**
