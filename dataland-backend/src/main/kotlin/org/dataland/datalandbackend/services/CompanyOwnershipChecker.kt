@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
@@ -73,10 +72,7 @@ class CompanyOwnershipChecker(
             )
             companyOwners.isEmpty()
         } catch (clientException: ClientException) {
-            throw ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland does not know the company ID $companyId",
-            )
+            throw clientException
         }
     }
 
