@@ -72,7 +72,11 @@ class CompanyOwnershipChecker(
             )
             companyOwners.isEmpty()
         } catch (clientException: ClientException) {
-            throw clientException
+            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
+                false
+            } else {
+                throw clientException
+            }
         }
     }
 
