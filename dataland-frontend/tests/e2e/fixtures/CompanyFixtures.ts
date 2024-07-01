@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { type CompanyInformation } from '@clients/backend';
 import { valueOrNull } from '@e2e/utils/FakeFixtureUtils';
-import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement } from '@e2e/fixtures/FixtureUtils';
+import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement, generateArray } from '@e2e/fixtures/FixtureUtils';
 
 const legalForms = [
   'Public Limited Company (PLC)',
@@ -31,15 +31,6 @@ function getRandomIdentifiers(): { [p: string]: string[] } {
 }
 
 /**
- * Generates a random company contact email address
- * @returns a random company contact email address
- */
-function generateCompanyContactDetails(): string {
-  const randomFourDigitNumber = faker.number.int({ min: 1, max: 999 });
-  return `dummy${randomFourDigitNumber}@email.com`;
-}
-
-/**
  * Generates a company fixture with random information
  * @returns information about a randomly generated company
  */
@@ -51,11 +42,7 @@ export function generateCompanyInformation(): CompanyInformation {
     sector: valueOrNull(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
-    companyContactDetails: pickSubsetOfElements(
-      [generateCompanyContactDetails(), generateCompanyContactDetails()],
-      0,
-      2
-    ),
+    companyContactDetails: valueOrNull(generateArray(() => faker.internet.email({ provider: 'example.com' }), 0)),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),
