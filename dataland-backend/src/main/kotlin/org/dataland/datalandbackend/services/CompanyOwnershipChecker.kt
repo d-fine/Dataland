@@ -94,7 +94,7 @@ class CompanyOwnershipChecker(
         if (unauthorizedFields.isNotEmpty()) {
             throw InvalidPatchApiException(
                 "Invalid alteration attempt",
-                " You do not have the required permission to change the following fields:" +
+                "You do not have the required permission to change the following fields:" +
                     " ${unauthorizedFields.joinToString(", ")}",
             )
         }
