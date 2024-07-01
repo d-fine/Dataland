@@ -82,7 +82,7 @@ class CompanyOwnershipChecker(
      * @param patch the fields to be patched
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
-    fun areOnlyAuthorizedFieldsPatched(patch: CompanyInformationPatch): Boolean {
+    fun areOnlyAuthorizedFieldsPatched(patch: CompanyInformationPatch) {
         val unauthorizedFields = CompanyInformationPatch::class.memberProperties
             .filter { property ->
                 property.get(patch) != null &&
@@ -98,6 +98,5 @@ class CompanyOwnershipChecker(
                     " ${unauthorizedFields.joinToString(", ")}",
             )
         }
-        return true
     }
 }
