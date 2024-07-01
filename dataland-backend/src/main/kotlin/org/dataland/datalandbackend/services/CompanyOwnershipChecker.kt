@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.reflect.full.memberProperties
 
@@ -30,7 +29,6 @@ class CompanyOwnershipChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the user is company owner or not
      */
-    @Transactional(readOnly = true)
     fun isCurrentUserCompanyOwnerForCompany(companyId: String): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         return try {
@@ -54,7 +52,6 @@ class CompanyOwnershipChecker(
      * @param dataId of the framework dataset
      * @return a Boolean indicating whether the user is company owner of the company associated with the dataset
      */
-    @Transactional(readOnly = true)
     fun isCurrentUserCompanyOwnerForCompanyOfDataId(dataId: String): Boolean {
         val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
         return isCurrentUserCompanyOwnerForCompany(companyId)
@@ -81,7 +78,8 @@ class CompanyOwnershipChecker(
     }
 
     /**
-     * Method to check whether the patch contains only fields that are allowed to be altered by a non-keycloak-admin-user
+     * Method to check whether the patch contains only fields
+     * that are allowed to be altered by a non-keycloak-admin-user
      * @param patch the fields to be patched
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
