@@ -22,6 +22,7 @@ class CompanyOwnershipChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
     @Autowired val logMessageBuilder: LogMessageBuilder,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
      * Method to check whether the currently authenticated user is company owner of a specified company and therefore
@@ -62,15 +63,14 @@ class CompanyOwnershipChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the company has at least one company owner
      */
-    fun companyExistsAndHasNoOwner(companyId: String): Boolean {
+    fun doesCompanyExistsAndHaveNoOwner(companyId: String): Boolean {
+        companyQueryManager.verifyCompanyIdExists(companyId)
         return try {
-            val companyOwners = companyRolesControllerApi.getCompanyRoleAssignments(
-                CompanyRole.CompanyOwner, UUID.fromString(companyId),
-            )
-            companyOwners.isEmpty()
+            companyRolesControllerApi.hasCompanyAtLeastOneOwner(UUID.fromString(companyId))
+            false
         } catch (clientException: ClientException) {
             if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                false
+                true
             } else {
                 throw clientException
             }
