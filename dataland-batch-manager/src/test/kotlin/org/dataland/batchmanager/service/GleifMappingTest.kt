@@ -38,8 +38,9 @@ class GleifMappingTest {
     @Test
     fun `check that parsing the test file results in the expected company information objects`() {
         val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
-        val gleifCompanyInformation = GleifCsvParser().readGleifDataFromBufferedReader(input).next()
-        val companyInformation = GleifCompanyCombinedInformation(gleifCompanyInformation).toCompanyPost()
+        val gleifCompanyInformation = GleifCsvParser().readDataFromBufferedReader<GleifCompanyInformation>(input)
+            .iterator()
+        val companyInformation = GleifCompanyCombinedInformation(gleifCompanyInformation.next()).toCompanyPost()
         Assertions.assertEquals(
             expectedGleifCompanyInformation,
             gleifCompanyInformation,

@@ -1,8 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
-import org.dataland.datalandbatchmanager.model.GleifRelationshipTypes
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor.Companion.UPLOAD_THREAT_POOL_SIZE
 import org.slf4j.LoggerFactory
@@ -28,10 +25,10 @@ class NorthdataDataIngestor(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
+    //TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
         val csvParser = GleifCsvParser()
-        // TODO: how to select correct csv file in zip?
+        //TODO how to select correct csv file in zip?
         val northStream = csvParser.getCsvStreamFromZip(zipFile)
         val northDataIterable: Iterable<NorthDataCompanyInformation> = csvParser.readDataFromBufferedReader(northStream)
 

@@ -1,6 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import com.fasterxml.jackson.databind.MappingIterator
 import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.dataland.datalandbatchmanager.model.GleifRelationshipTypes
 import org.springframework.stereotype.Component

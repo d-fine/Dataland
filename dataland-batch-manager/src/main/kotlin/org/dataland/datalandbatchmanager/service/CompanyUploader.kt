@@ -197,6 +197,8 @@ class CompanyUploader(
         if (northDataCompanyInformation.lei != "") companyId = searchCompanyByLEI(northDataCompanyInformation.lei)
         if (companyId == null) {
             uploadOrPatchSingleCompany(northDataCompanyInformation)
-        } else patchSingleCompany(companyId, northDataCompanyInformation)
+        } else {
+            patchSingleCompany(companyId, northDataCompanyInformation)
+        }
     }
 }

@@ -50,7 +50,8 @@ bb,dd,IS_FEEDER_TO"""
         ZipFileCreator.createZipFile(zipFile, testFileContent)
 
         val bufferedReader = GleifCsvParser().getCsvStreamFromZip(zipFile)
-        val iterable: Iterable<GleifRelationshipInformation> = GleifCsvParser().readDataFromBufferedReader(bufferedReader)
+        val iterable: Iterable<GleifRelationshipInformation> = GleifCsvParser()
+            .readDataFromBufferedReader(bufferedReader)
 
         assert(relationshipExtractor.prepareFinalParentMapping(iterable) == finalMap)
     }

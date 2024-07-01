@@ -76,6 +76,6 @@ data class NorthDataCompanyInformation(
 
     override fun getNameAndIdentifier(): String {
         return "$companyName " +
-                " (RegisterID: $registerId) and VatId: $vatId)"
+            " (RegisterID: $registerId) and VatId: $vatId)"
     }
 }

@@ -81,7 +81,8 @@ class GleifGoldenCopyIngestor(
             gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
             val gleifCsvParser: Iterable<GleifRelationshipInformation> = gleifParser.readDataFromBufferedReader(
-                gleifDataStream)
+                gleifDataStream,
+            )
             relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
             if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
         }
