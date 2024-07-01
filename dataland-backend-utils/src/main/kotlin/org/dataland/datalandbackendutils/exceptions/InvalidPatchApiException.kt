@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus
 
 /**
  * An InvalidPatchApiException should be thrown if the requester does not have the required rights
- * Both message and summary are displayed to the user with a 404 status code
+ * Both message and summary are displayed to the user with a 403 status code
  */
 open class InvalidPatchApiException(
     val summary: String,
@@ -17,7 +17,7 @@ open class InvalidPatchApiException(
             errorType = "request-rejected",
             summary = summary,
             message = message,
-            httpStatus = HttpStatus.NOT_FOUND,
+            httpStatus = HttpStatus.FORBIDDEN,
         )
     }
 }
