@@ -1,13 +1,13 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
+import org.dataland.datalandbackendutils.exceptions.InvalidPatchApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import java.util.*
 import kotlin.reflect.full.memberProperties
@@ -21,7 +21,6 @@ import kotlin.reflect.full.memberProperties
 class CompanyOwnershipChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
-    @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
@@ -93,7 +92,11 @@ class CompanyOwnershipChecker(
             .map { it.name }
 
         if (unauthorizedFields.isNotEmpty()) {
-            throw AccessDeniedException(logMessageBuilder.generateInvalidAlterationExceptionMessage(unauthorizedFields))
+            throw InvalidPatchApiException(
+                "Invalid alteration attempt",
+                " You do not have the required permission to change the following fields:" +
+                        " ${unauthorizedFields.joinToString(", ")}",
+            )
         }
         return true
     }
