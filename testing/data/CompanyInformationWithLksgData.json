@@ -23,12 +23,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "SA",
-			"companyContactDetails": [
-				"Amari_Collins89@example.com",
-				"Carrie56@example.com",
-				"Barry61@example.com",
-				"Christ66@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Goldner and Sons",
 				"Hirthe, Hand and Hills",
@@ -846,12 +841,7 @@
 				]
 			},
 			"countryCode": "YE",
-			"companyContactDetails": [
-				"Camryn62@example.com",
-				"Abbey_Herzog@example.com",
-				"Opal_Kuphal25@example.com",
-				"Neoma_Nienow53@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Hoppe, Grant and Schumm",
 				"Thompson - Morissette",
@@ -1681,12 +1671,7 @@
 				]
 			},
 			"countryCode": "BG",
-			"companyContactDetails": [
-				"Trever52@example.com",
-				"Kenya_Stokes@example.com",
-				"Jena88@example.com",
-				"Toney_Fritsch@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Littel - Hayes",
 				"Wyman, Casper and Reichert"
@@ -2511,10 +2496,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "ER",
-			"companyContactDetails": [
-				"Carolina93@example.com",
-				"Johanna_Reichert88@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Feest - Lubowitz"
 			],
@@ -3349,11 +3331,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "IO",
-			"companyContactDetails": [
-				"Brent_Roberts83@example.com",
-				"Royce.Huel@example.com",
-				"Weldon.Mitchell15@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Private Limited Company (Ltd)",
 			"website": null,
@@ -4161,9 +4139,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "GL",
-			"companyContactDetails": [
-				"Brook8@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Schamberger, Kihn and Williamson",
 				"Shields LLC"
@@ -4960,9 +4936,7 @@
 				]
 			},
 			"countryCode": "CN",
-			"companyContactDetails": [
-				"Estella.Feil@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Jacobson, Welch and Adams",
 				"Kutch - Stamm",
@@ -5833,12 +5807,7 @@
 				]
 			},
 			"countryCode": "TW",
-			"companyContactDetails": [
-				"Lina_Satterfield@example.com",
-				"Lupe_Mann@example.com",
-				"Jakayla80@example.com",
-				"Keith98@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Bogan, Grant and Orn",
 				"Collier and Sons",
@@ -6707,12 +6676,7 @@
 				]
 			},
 			"countryCode": "GL",
-			"companyContactDetails": [
-				"Euna_Roob89@example.com",
-				"Brielle64@example.com",
-				"Sheridan40@example.com",
-				"Micheal_Spencer@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Little LLC",
 				"Nicolas, Fisher and Hessel",
@@ -7590,12 +7554,7 @@
 				]
 			},
 			"countryCode": "UM",
-			"companyContactDetails": [
-				"Dejon_Kuhn@example.com",
-				"Glen_Pfeffer@example.com",
-				"Doyle23@example.com",
-				"Dorcas3@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Davis and Sons",
 				"Goyette - Collins",
@@ -8420,9 +8379,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "CK",
-			"companyContactDetails": [
-				"Toney.Bayer17@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Christiansen LLC",
 				"Kunde Group",
@@ -9229,11 +9186,7 @@
 				]
 			},
 			"countryCode": "AS",
-			"companyContactDetails": [
-				"Dashawn.Reynolds@example.com",
-				"Damaris_Labadie@example.com",
-				"Madyson_Purdy@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Mayert Inc"
 			],
@@ -9985,9 +9938,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "BB",
-			"companyContactDetails": [
-				"Theodore_Price22@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Abbott - Schroeder",
 				"Ernser, Powlowski and Kerluke",
@@ -10779,11 +10730,7 @@
 				]
 			},
 			"countryCode": "BM",
-			"companyContactDetails": [
-				"Nelle.Schimmel98@example.com",
-				"Blanche.Lebsack@example.com",
-				"Emmanuel_Goodwin@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Barrows and Sons",
 				"Mohr - Hand",
@@ -11633,10 +11580,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "KR",
-			"companyContactDetails": [
-				"Ansel75@example.com",
-				"Carlie_Heaney@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Ferry - Rau",
 				"Jenkins, Stiedemann and Weissnat",
@@ -12452,10 +12396,7 @@
 				]
 			},
 			"countryCode": "TC",
-			"companyContactDetails": [
-				"Karen40@example.com",
-				"Leopoldo_Russel@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Bayer, Kunze and Kihn",
 				"Lindgren - Grimes",
@@ -13173,7 +13114,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "SI",
-			"companyContactDetails": [],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Cole Inc",
 				"Huels Group",
@@ -13891,7 +13832,7 @@
 				]
 			},
 			"countryCode": "MR",
-			"companyContactDetails": [],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Jaskolski LLC",
 				"Monahan Group",
@@ -14710,11 +14651,7 @@
 				]
 			},
 			"countryCode": "GY",
-			"companyContactDetails": [
-				"Beaulah63@example.com",
-				"Carrie_Runolfsson@example.com",
-				"Jaime_Jones59@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Murray - Gorczany",
 				"Toy, Boyer and Gorczany",
@@ -15504,11 +15441,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "LS",
-			"companyContactDetails": [
-				"Gretchen_Hermiston@example.com",
-				"Laurianne.Altenwerth48@example.com",
-				"Zander_Cassin@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Stehr - Gibson",
 				"Stracke Group",
@@ -16369,7 +16302,7 @@
 				]
 			},
 			"countryCode": "SB",
-			"companyContactDetails": [],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Frami LLC",
 				"Funk - Conroy",
@@ -17225,13 +17158,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "NO",
-			"companyContactDetails": [
-				"Arianna.Huel-Johnston@example.com",
-				"Pansy_Murphy96@example.com",
-				"Antonina46@example.com",
-				"Kelsie.Reinger68@example.com",
-				"Colby0@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Beier - Wiza",
 				"Bernier, Gislason and Lueilwitz",
@@ -17963,10 +17890,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "AO",
-			"companyContactDetails": [
-				"Estevan_Ondricka82@example.com",
-				"Gretchen_Lehner@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Waters, Orn and Ritchie"
 			],
@@ -18819,13 +18743,7 @@
 				]
 			},
 			"countryCode": "NI",
-			"companyContactDetails": [
-				"Keenan.Schaefer@example.com",
-				"Arely_McClure56@example.com",
-				"Freddy_Fay@example.com",
-				"Laila3@example.com",
-				"Jaylon68@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Dietrich, Pouros and Buckridge",
 				"Kub and Sons",
@@ -19673,9 +19591,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "TO",
-			"companyContactDetails": [
-				"Hannah_Larson73@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://sharp-sweatshirt.info/",
@@ -20457,12 +20373,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "PS",
-			"companyContactDetails": [
-				"Tiana.OHara@example.com",
-				"Sadye_Strosin@example.com",
-				"Leonie.Bogisich@example.com",
-				"Mellie.Hilll@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Daugherty, Cummings and Weber",
 				"Hirthe, Sipes and Kovacek"
@@ -22039,10 +21950,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "IL",
-			"companyContactDetails": [
-				"Ericka_Stracke@example.com",
-				"Dasia_Bosco60@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Jones - Muller",
 				"Koepp, Schultz and Treutel",
@@ -23776,9 +23684,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "KG",
-			"companyContactDetails": [
-				"Kassandra_Wintheiser46@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Nienow, Bartell and Ondricka",
 				"Oberbrunner LLC"
@@ -24687,10 +24593,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "JP",
-			"companyContactDetails": [
-				"Kristopher.Rath@example.com",
-				"Jamil_Hayes@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": null,
@@ -25557,10 +25460,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MO",
-			"companyContactDetails": [
-				"Lilyan.Howe-White92@example.com",
-				"Mervin_Botsford59@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Kerluke, Braun and McGlynn"
 			],
@@ -26371,9 +26271,7 @@
 				]
 			},
 			"countryCode": "SS",
-			"companyContactDetails": [
-				"Rowena51@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Effertz - Schumm",
 				"Gottlieb LLC",
@@ -27974,7 +27872,7 @@
 				]
 			},
 			"countryCode": "BY",
-			"companyContactDetails": [],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Kling - Ernser",
 				"Littel - Hayes"
@@ -28728,11 +28626,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "SB",
-			"companyContactDetails": [
-				"Rosanna33@example.com",
-				"Mia.Wiegand@example.com",
-				"Alfonso.Flatley26@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Bernhard - Grant",
 				"Davis LLC",
@@ -29648,9 +29542,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "GU",
-			"companyContactDetails": [
-				"Zechariah_Walsh@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Feest, Sanford and Kertzmann",
 				"Hagenes Group",
@@ -30481,10 +30373,7 @@
 				]
 			},
 			"countryCode": "MY",
-			"companyContactDetails": [
-				"Camilla_Langosh14@example.com",
-				"Shaina.Kozey2@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Cummings, Satterfield and Langworth",
 				"Legros, Jerde and Homenick"
@@ -31305,9 +31194,7 @@
 				]
 			},
 			"countryCode": "ML",
-			"companyContactDetails": [
-				"Zack_Connelly34@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Collins, White and Keeling",
 				"Goldner - Carroll",
@@ -32234,9 +32121,7 @@
 				]
 			},
 			"countryCode": "CF",
-			"companyContactDetails": [
-				"Dorcas.Lesch19@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": "https://mild-dinosaur.net",
@@ -33064,9 +32949,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "SZ",
-			"companyContactDetails": [
-				"Viva_Langworth21@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Leuschke Inc"
 			],
@@ -33927,9 +33810,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "CI",
-			"companyContactDetails": [
-				"Garth_Stamm20@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH",
 			"website": "https://green-shakedown.biz/",
@@ -34846,9 +34727,7 @@
 				]
 			},
 			"countryCode": "RU",
-			"companyContactDetails": [
-				"Liliane_Willms@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Denesik, Cassin and Wunsch",
 				"Rowe, Wehner and Strosin"
@@ -35708,11 +35587,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "CY",
-			"companyContactDetails": [
-				"Thomas42@example.com",
-				"Walter.Friesen@example.com",
-				"Jade20@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Kilback LLC",
 				"Von Group"
@@ -36549,10 +36424,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "FO",
-			"companyContactDetails": [
-				"Milton_Emard71@example.com",
-				"Donnell41@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Gibson - O'Hara",
 				"Nader - Doyle",
@@ -37361,9 +37233,7 @@
 				]
 			},
 			"countryCode": "TV",
-			"companyContactDetails": [
-				"Neil.Howell@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Bernhard and Sons",
 				"Botsford - Rogahn",
@@ -38296,12 +38166,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "KM",
-			"companyContactDetails": [
-				"Tiana_Romaguera9@example.com",
-				"Grant.Kulas24@example.com",
-				"Esther_Sporer@example.com",
-				"Gunnar_Schultz42@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Green, Jast and Wilderman",
 				"Kerluke - Homenick",
@@ -39130,11 +38995,7 @@
 				]
 			},
 			"countryCode": "CU",
-			"companyContactDetails": [
-				"Lucas.Heller-Durgan91@example.com",
-				"Arthur_Cronin80@example.com",
-				"Barton_Kreiger@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Conroy, Fadel and Frami"
 			],
@@ -39940,12 +39801,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "GS",
-			"companyContactDetails": [
-				"Florida_Rosenbaum40@example.com",
-				"Peggie98@example.com",
-				"Else92@example.com",
-				"Daisha_Kunde@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Corwin Group"
 			],

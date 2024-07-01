@@ -42,7 +42,9 @@ export function generateCompanyInformation(): CompanyInformation {
     sector: valueOrNull(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
     countryCode: faker.location.countryCode(),
-    companyContactDetails: valueOrNull(generateArray(() => faker.internet.email({ provider: 'example.com' }), 0)),
+    companyContactDetails: valueOrNull(new Set(
+        generateArray(() => faker.internet.email({ provider: 'example.com' }), 0)
+    )),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),

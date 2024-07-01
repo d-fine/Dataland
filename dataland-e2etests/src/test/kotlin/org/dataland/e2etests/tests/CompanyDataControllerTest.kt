@@ -33,7 +33,7 @@ class CompanyDataControllerTest {
     private val checkOtherCompanyFalse = "Other Company false"
     private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
     private val fullPatchObject = CompanyInformationPatch(
-        companyContactDetails = listOf("New-companyContactDetails"),
+        companyContactDetails = setOf("New-companyContactDetails"),
         companyName = "New-companyName",
         companyAlternativeNames = listOf("New-companyAlternativeNames"),
         companyLegalForm = "New-companyLegalForm",
@@ -426,7 +426,7 @@ class CompanyDataControllerTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
         val patchObject = CompanyInformationPatch(
-            companyContactDetails = listOf("New-Email-1", "New-Email-2"),
+            companyContactDetails = setOf("New-Email-1", "New-Email-2"),
             website = "New-Website",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -459,7 +459,7 @@ class CompanyDataControllerTest {
         )
 
         val patchObject = CompanyInformationPatch(
-            companyContactDetails = listOf("New-Email-3"),
+            companyContactDetails = setOf("New-Email-3"),
             website = "New-Website-2",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -522,7 +522,7 @@ class CompanyDataControllerTest {
 
         val patchObject = CompanyInformationPatch(
             website = "New-Website-3",
-            companyContactDetails = listOf("New-Email-1"),
+            companyContactDetails = setOf("New-Email-1"),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(

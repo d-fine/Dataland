@@ -29,11 +29,7 @@
 				]
 			},
 			"countryCode": "SO",
-			"companyContactDetails": [
-				"Deborah_Donnelly@example.com",
-				"Johnny2@example.com",
-				"Mazie.Gibson70@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Dach Group",
 				"Hagenes Inc",
@@ -118,7 +114,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "ME",
-			"companyContactDetails": [],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Cole LLC",
 				"Heller - Connelly",
@@ -286,10 +282,7 @@
 				]
 			},
 			"countryCode": "KY",
-			"companyContactDetails": [
-				"Royce_Paucek67@example.com",
-				"Jared_Boyer51@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "AG",
 			"website": null,
@@ -447,10 +440,7 @@
 				]
 			},
 			"countryCode": "MW",
-			"companyContactDetails": [
-				"Adan_Borer@example.com",
-				"Itzel49@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Anderson Group",
 				"Bahringer, Schaefer and Fritsch"
@@ -667,10 +657,7 @@
 				]
 			},
 			"countryCode": "MH",
-			"companyContactDetails": [
-				"Marlin_Treutel@example.com",
-				"Grant73@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"McDermott, Howe and Reilly",
 				"Treutel - Schaefer"
@@ -1050,13 +1037,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "NE",
-			"companyContactDetails": [
-				"Margarete.Schmitt@example.com",
-				"Gilbert.Rau@example.com",
-				"Reid_Paucek86@example.com",
-				"Lottie28@example.com",
-				"Otto_Kutch@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
 			"website": "https://delectable-lambkin.net/",
@@ -1279,7 +1260,7 @@
 				]
 			},
 			"countryCode": "SA",
-			"companyContactDetails": [],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Dietrich - Crooks"
 			],

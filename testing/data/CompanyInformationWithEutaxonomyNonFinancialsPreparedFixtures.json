@@ -24,9 +24,7 @@
 				]
 			},
 			"countryCode": "NO",
-			"companyContactDetails": [
-				"April.Keebler@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [
 				"Hauck, Jenkins and Champlin",
 				"Hintz, Wuckert and Terry",
@@ -1262,12 +1260,7 @@
 				]
 			},
 			"countryCode": "FR",
-			"companyContactDetails": [
-				"Jerrold.Smitham@example.com",
-				"Porter.Marks@example.com",
-				"Waino72@example.com",
-				"Claire.Conroy@example.com"
-			],
+			"companyContactDetails": {},
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Sole Trader",
 			"website": "https://frightening-acknowledgment.biz/",

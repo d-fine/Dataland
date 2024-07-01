@@ -25,7 +25,7 @@ data class CompanyInformationPatch(
 
     val companyAlternativeNames: List<String>? = null,
 
-    val companyContactDetails: List<String>? = null,
+    val companyContactDetails: Set<String>? = null,
 
     val companyLegalForm: String? = null,
 
