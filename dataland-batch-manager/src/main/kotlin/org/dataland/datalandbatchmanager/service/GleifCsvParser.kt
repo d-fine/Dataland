@@ -21,13 +21,48 @@ class GleifCsvParser {
      */
     fun getCsvStreamFromZip(zipFile: File): BufferedReader {
         val zipInputStream = ZipInputStream(zipFile.inputStream())
-        val zipEntry = zipInputStream.nextEntry
-        require(zipEntry?.name?.endsWith(".csv") ?: false) {
-            "The downloaded ZIP file does not contain the CSV file in the first position"
+        return getCsvFromInputStream(zipInputStream)
+    }
+
+    private fun getCsvFromInputStream(zipInputStream: ZipInputStream): BufferedReader {
+        var zipEntry = zipInputStream.nextEntry
+        var foundCsv = false
+        while (zipEntry != null) {
+            if (zipEntry.name.endsWith(".csv")) {
+                foundCsv = true
+                break
+            }
+            zipEntry = zipInputStream.nextEntry
+        }
+        require(foundCsv) {
+            "The downloaded ZIP file does not contain a CSV file"
         }
 
-        val inputStreamReader = InputStreamReader(zipInputStream)
+        val inputStreamReader = InputStreamReader(zipInputStream, "UTF-8")
         return BufferedReader(inputStreamReader)
+    }
+
+    /**
+     * Reads the zip file and checks for the contained zipped CSV file and returns the content as buffered reader
+     * @param zipFile The zip file containing the zipped CSV file to be parsed
+     * @return the content of the CSV file as buffered reader
+     */
+    fun getCsvStreamFromNorthDataZipFile(zipFile: File): BufferedReader {
+        val zipInputStream = ZipInputStream(zipFile.inputStream())
+        var zipEntry = zipInputStream.nextEntry
+        var foundContainedZip = false
+        while (zipEntry != null) {
+            if (zipEntry.name.endsWith("M-de.csv.zip")) {
+                foundContainedZip = true
+                break
+            }
+            zipEntry = zipInputStream.nextEntry
+        }
+        require(foundContainedZip) {
+            "Could not find zipped CSV file in zip file"
+        }
+        val zipStreamTwo = ZipInputStream(zipInputStream)
+        return getCsvFromInputStream(zipStreamTwo)
     }
 
     /**

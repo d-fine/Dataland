@@ -11,38 +11,47 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class NorthDataCompanyInformation(
-    @JsonProperty("Entity.LegalName")
+    @JsonProperty("Name")
     val companyName: String,
 
-    @JsonProperty("Entity.Ort")
+    @JsonProperty("Ort")
     val headquarters: String,
 
-    @JsonProperty("Entity.PLZ")
+    @JsonProperty("PLZ")
     val headquartersPostalCode: String,
 
     @JsonProperty("LEI")
     val lei: String,
 
-    @JsonProperty("Entity.Land")
+    @JsonProperty("Land")
     val countryCode: String,
 
-    @JsonProperty("Entity.RegisterId")
+    @JsonProperty("Register ID")
     val registerId: String,
 
-    @JsonProperty("Entity.Straße")
-    val street: String,
+    @JsonProperty("Straße")
+    val street: String?,
 
-    @JsonProperty("Entity.USt.-Id")
+    @JsonProperty("USt.-Id.")
     val vatId: String,
 
-    @JsonProperty("Entity.Status")
+    @JsonProperty("Status")
     val status: String,
+
+    @JsonProperty("Branchencode")
+    val sector: String?,
+
 ) : ExternalCompanyInformation {
     /**
      * function to transform a company information object from NorthData to the corresponding Dataland object.
      * @return the Dataland companyInformation object
      */
     override fun toCompanyPost(): CompanyInformation {
+        var identifiers: MutableMap<String, List<String>> = HashMap()
+        if (lei != "") identifiers[IdentifierType.Lei.value] = listOf(lei)
+        if (registerId != "") identifiers[IdentifierType.CompanyRegistrationNumber.value] = listOf(registerId)
+        if (vatId != "") identifiers[IdentifierType.VatNumber.value] = listOf(vatId)
+
         return CompanyInformation(
             companyName = companyName,
             companyAlternativeNames = null,
@@ -52,11 +61,7 @@ data class NorthDataCompanyInformation(
             headquartersPostalCode = headquartersPostalCode,
             sector = null,
             website = null,
-            identifiers = mapOf(
-                IdentifierType.Lei.value to listOf(lei),
-                IdentifierType.CompanyRegistrationNumber.value to listOf(registerId),
-                IdentifierType.VatNumber.value to listOf(vatId),
-            ),
+            identifiers = identifiers,
             parentCompanyLei = null,
         )
     }

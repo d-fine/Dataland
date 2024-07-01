@@ -28,8 +28,7 @@ class NorthdataDataIngestor(
     // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
         val csvParser = GleifCsvParser()
-        // TODO how to select correct csv file in zip?
-        val northStream = csvParser.getCsvStreamFromZip(zipFile)
+        val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
         val northDataIterable: Iterable<NorthDataCompanyInformation> = csvParser.readDataFromBufferedReader(northStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
