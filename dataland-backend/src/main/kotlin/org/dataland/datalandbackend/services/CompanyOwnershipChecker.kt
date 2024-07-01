@@ -81,7 +81,7 @@ class CompanyOwnershipChecker(
     }
 
     /**
-     * Method to check whether the patch contains only fields that are allowed to be altered by the uploader
+     * Method to check whether the patch contains only fields that are allowed to be altered by a non-keycloak-admin-user
      * @param patch the fields to be patched
      * @return a Boolean indicating whether the patch complies with the access requirements
      */
