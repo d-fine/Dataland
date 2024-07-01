@@ -81,5 +81,4 @@ data class NorthDataCompanyInformation(
         return "$companyName " +
             " (RegisterID: $registerId) and VatId: $vatId)"
     }
-
 }

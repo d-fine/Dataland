@@ -36,7 +36,7 @@ class NorthDataMappingTest {
     )
 
     private val expectedCompanyInformationPatch = CompanyInformationPatch(
-        identifiers = expectedIdentifiers
+        identifiers = expectedIdentifiers,
     )
 
     @Test
