@@ -47,7 +47,7 @@ data class NorthDataCompanyInformation(
      * @return the Dataland companyInformation object
      */
     override fun toCompanyPost(): CompanyInformation {
-        var identifiers: MutableMap<String, List<String>> = HashMap()
+        val identifiers: MutableMap<String, List<String>> = HashMap()
         if (lei != "") identifiers[IdentifierType.Lei.value] = listOf(lei)
         if (registerId != "") identifiers[IdentifierType.CompanyRegistrationNumber.value] = listOf(registerId)
         if (vatId != "") identifiers[IdentifierType.VatNumber.value] = listOf(vatId)
@@ -71,16 +71,15 @@ data class NorthDataCompanyInformation(
      * company using the Dataland API
      */
     override fun toCompanyPatch(): CompanyInformationPatch {
-        return CompanyInformationPatch(
-            identifiers = mapOf(
-                IdentifierType.CompanyRegistrationNumber.value to listOf(registerId),
-                IdentifierType.VatNumber.value to listOf(vatId),
-            ),
-        )
+        val identifiers: MutableMap<String, List<String>> = HashMap()
+        if (registerId != "") identifiers[IdentifierType.CompanyRegistrationNumber.value] = listOf(registerId)
+        if (vatId != "") identifiers[IdentifierType.VatNumber.value] = listOf(vatId)
+        return CompanyInformationPatch(identifiers = identifiers)
     }
 
     override fun getNameAndIdentifier(): String {
         return "$companyName " +
             " (RegisterID: $registerId) and VatId: $vatId)"
     }
+
 }

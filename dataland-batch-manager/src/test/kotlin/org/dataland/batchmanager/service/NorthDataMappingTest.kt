@@ -1,6 +1,7 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
@@ -10,7 +11,7 @@ import java.io.File
 
 class NorthDataMappingTest {
 
-    private val testData = NorthDataCompanyInformation(
+    private val expectedNorthDataCompanyInformation = NorthDataCompanyInformation(
         companyName = "test Gmbh",
         headquarters = "Osnabrück",
         headquartersPostalCode = "49078",
@@ -34,6 +35,10 @@ class NorthDataMappingTest {
         countryCode = "DE",
     )
 
+    private val expectedCompanyInformationPatch = CompanyInformationPatch(
+        identifiers = expectedIdentifiers
+    )
+
     @Test
     fun `test north data data type`() {
         val zipFile = File("./build/resources/test/testHierarchicalFile.zip")
@@ -42,7 +47,8 @@ class NorthDataMappingTest {
         val iterable: Iterable<NorthDataCompanyInformation> =
             GleifCsvParser().readDataFromBufferedReader(bufferedReader)
         val onlyElement = iterable.iterator().next()
-        assertEquals(testData, onlyElement)
+        assertEquals(expectedNorthDataCompanyInformation, onlyElement)
         assertEquals(expectedCompanyInformation, onlyElement.toCompanyPost())
+        assertEquals(expectedCompanyInformationPatch, onlyElement.toCompanyPatch())
     }
 }
