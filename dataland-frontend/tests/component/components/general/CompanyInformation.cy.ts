@@ -22,7 +22,7 @@ describe('Component tests for the company info sheet', function (): void {
       companyInformationForTest = vsmeFixtureForTest.companyInformation;
       companyInformationForTest.parentCompanyLei = dummyParentCompanyLei;
       companyInformationForTest.identifiers = {
-        'Lei' : [dummyCompanyLei]
+        Lei: [dummyCompanyLei],
       };
     });
     cy.fixture('DataRequestsMock').then(function (jsonContent) {
