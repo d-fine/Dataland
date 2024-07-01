@@ -40,9 +40,10 @@ class ReferencedReportsListValidatorFor${framework} :
         }
     }
     private fun getFileReferencesFromReports(map: Map<String, CompanyReport>?): List<String> {
+        if(map == null) return emptyList()
         val referencedReportsList = mutableListOf<String>()
-            for (entry in map?.entries!!) {
-                referencedReportsList.add(entry.value.fileReference)
+            for (entry in map.entries) {
+            referencedReportsList.add(entry.value.fileReference)
             }
         return referencedReportsList
     }

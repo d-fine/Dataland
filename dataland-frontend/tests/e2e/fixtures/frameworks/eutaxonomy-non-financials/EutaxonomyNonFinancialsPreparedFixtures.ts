@@ -21,6 +21,7 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
     createCompanyAlphaWithAllFieldsDefined,
     createCompanyBetaWithAllFieldsDefined,
     createCompanyGammaWithAllFieldsDefined,
+      createCompanyWithIncompleteReferencedReportsList,
   ];
   const preparedFixturesBeforeManipulation = generateEutaxonomyNonFinancialsFixtures(manipulatorFunctions.length);
 
@@ -103,4 +104,18 @@ function createCompanyGammaWithAllFieldsDefined(
     modifiedInput.t.capex.alignedActivities = someAlignedActivities;
   }
   return modifiedInput;
+}
+/**
+ * Creates a prepared fixture with a missing referenced reports list
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyWithIncompleteReferencedReportsList (
+    input: FixtureData<EutaxonomyNonFinancialsData>
+): FixtureData<EutaxonomyNonFinancialsData> {
+  input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  input.reportingPeriod = '2021';
+  input.t = generateEutaxonomyNonFinancialsData(0);
+  if(input.t.general) input.t.general.referencedReports = null
+  return input
 }
