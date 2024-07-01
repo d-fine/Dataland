@@ -47,7 +47,7 @@ class ReferencedReportsListValidatorFor${framework} :
         return referencedReportsList
     }
 
-    private fun getExtendedDocumentReferences(dataset: SfdrData): List<String> {
+    private fun getExtendedDocumentReferences(dataset: ${framework}Data): List<String> {
         return (listOf(${extendedDocumentsFileReferences})).filterNotNull()
     }
 }
