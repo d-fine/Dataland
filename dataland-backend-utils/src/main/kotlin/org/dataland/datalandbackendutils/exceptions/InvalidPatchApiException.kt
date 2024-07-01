@@ -14,7 +14,7 @@ open class InvalidPatchApiException(
 ) : SingleApiException(message, cause) {
     override fun getErrorResponse(): ErrorDetails {
         return ErrorDetails(
-            errorType = "request-rejected",
+            errorType = "access-denied",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.FORBIDDEN,
