@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -14,6 +15,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
@@ -183,5 +185,16 @@ open class ComponentBase(
      */
     fun generateFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         return fixtureGeneratorGenerator?.let { it(sectionBuilder) } ?: generateDefaultFixtureGenerator(sectionBuilder)
+    }
+
+    /**
+     * Returns the list of extended document references of the component
+     */
+    open fun getExtendedDocumentReference(): List<String> {
+        if (documentSupport == ExtendedDocumentSupport) {
+            return listOf("${this.getTypescriptFieldAccessor()}?.dataSource?.fileReference")
+        } else {
+            return emptyList()
+        }
     }
 }

@@ -5,29 +5,36 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
-import ${frameworkSpecificImport} //import org.dataland.datalandbackend.frameworks.${smallFramework}.model.${framework}Data
+import ${frameworkSpecificImport}
 import org.dataland.datalandbackend.model.documents.CompanyReport
+import kotlin.reflect.KClass
 
+/**
+* Annotation for the validation of referenced reports list for ${framework}
+*/
 
 @Constraint(validatedBy = [ReferencedReportsListValidatorFor${framework}::class])
 @Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)
-annotation class ValidateReferencedReportsList${framework}(
+annotation class ValidateReferencedReportsList(
 val message: String = "The list of referenced reports is not complete.",
 val groups: Array<KClass<*>> = [],
 val payload: Array<KClass<out Payload>> = [],
     )
 
+/**
+* Class holding the validation logic for referenced reports list. It checks if the referenced reports list is complete
+*/
 class ReferencedReportsListValidatorFor${framework} :
-    ConstraintValidator<ValidateReferencedReportsList${framework}, ${framework}Data> {
-    private val referencedReportsMap = ${referencedReportsMap}
-    private val extendedDocumentsFileReferences = ${extendedDocumentsFileReferences}
+    ConstraintValidator<ValidateReferencedReportsList, ${framework}Data> {
 
-    override fun isValid(value: ${framework}Data?, context: ConstraintValidatorContext?): Boolean {
-        if (value == null) {
+    override fun isValid(dataset: ${framework}Data?, context: ConstraintValidatorContext?): Boolean {
+        if (dataset == null) {
             return false
         }
+        val referencedReportsMap = ${referencedReportsMap}
         val referencedReportsFileReference = getFileReferencesFromReports(referencedReportsMap)
 
+        val extendedDocumentsFileReferences = getExtendedDocumentReferences(dataset)
         return extendedDocumentsFileReferences.all {
             referencedReportsFileReference.contains(it)
         }
@@ -38,5 +45,9 @@ class ReferencedReportsListValidatorFor${framework} :
                 referencedReportsList.add(entry.value.fileReference)
             }
         return referencedReportsList
+    }
+
+    private fun getExtendedDocumentReferences(dataset: SfdrData): List<String> {
+        return (listOf(${extendedDocumentsFileReferences})).filterNotNull()
     }
 }

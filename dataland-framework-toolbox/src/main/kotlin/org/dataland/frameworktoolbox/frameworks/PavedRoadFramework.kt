@@ -2,11 +2,15 @@ package org.dataland.frameworktoolbox.frameworks
 
 import org.dataland.frameworktoolbox.SpringConfig
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentFactoryContainer
@@ -15,10 +19,12 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
+import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
+import java.io.FileWriter
 
 /**
  * A PavedRoadFramework is the simplest way to integrate a new framework into Dataland or
@@ -170,10 +176,45 @@ abstract class PavedRoadFramework(
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
+        val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
+        if (referencedReports != null) {
+            generateReferencedReportsListValidatorIfNeeded(referencedReports)
+            dataModel.rootDataModelClass.annotations.add(
+                Annotation(
+                    "org.dataland.datalandbackend.frameworks." +
+                        "${framework.identifier}.validator.ValidateReferencedReportsList",
+                ),
+            )
+        }
+
         dataModel.build(
             into = datalandProject,
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
             privateFrameworkBoolean = isPrivateFramework,
+        )
+    }
+
+    private fun generateReferencedReportsListValidatorIfNeeded(referencedReports: ComponentBase) {
+        val extendedDocumentFileReferences =
+            framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
+        val pathOfReferenceReports = referencedReports.getTypescriptFieldAccessor()
+        val freemarkerTemplate = FreeMarker.configuration.getTemplate(
+            "/specific/datamodel/elements/ValidateReferencedReportsList.kt.ftl",
+        )
+        val classPath = "./dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/" +
+            "${framework.identifier}/validator/ReferencedReportsListValidatorForSfdr.kt"
+        val writer = FileWriter(classPath)
+        val capitalFrameworkName = framework.identifier.replaceFirstChar { it.uppercaseChar() }
+        freemarkerTemplate.process(
+            mapOf(
+                "package" to "org.dataland.datalandbackend.frameworks.${framework.identifier}.validator",
+                "framework" to capitalFrameworkName,
+                "frameworkSpecificImport" to
+                    "org.dataland.datalandbackend.frameworks.${framework.identifier}.model.${capitalFrameworkName}Data",
+                "referencedReportsMap" to pathOfReferenceReports,
+                "extendedDocumentsFileReferences" to extendedDocumentFileReferences.joinToString(),
+            ),
+            writer,
         )
     }
 
