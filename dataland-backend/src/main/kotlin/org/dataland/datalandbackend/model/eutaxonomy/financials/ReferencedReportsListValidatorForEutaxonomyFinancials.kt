@@ -29,11 +29,9 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
             return false
         }
 
-        println("######Start########")
         val referencedReportsMap = dataset.referencedReports
         val referencedReportsFileReference = getFileReferencesFromReports(referencedReportsMap)
 
-        println("######ReferencedReportsDone########")
         val extendedDocumentsFileReferences = mutableListOf<String>()
         collectFileReferences(dataset.investmentFirmKpis, extendedDocumentsFileReferences)
         collectFileReferences(dataset.creditInstitutionKpis, extendedDocumentsFileReferences)
@@ -55,7 +53,6 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
     }
     private fun collectFileReferences(data: Any?, fileReferences: MutableList<String>) {
         if (data == null) return
-        println("################")
         when (data) {
             is ExtendedDocumentReference -> {
                 val fileReference = data.fileReference
