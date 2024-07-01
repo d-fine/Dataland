@@ -74,7 +74,11 @@ data class NorthDataCompanyInformation(
         )
     }
 
-    override fun getMainIdentifier(): String {
+    override fun getNameAndIdentifier(): String {
+        TODO("Not yet implemented")
+    }
+
+    fun getMainIdentifier(): String {
         if (registerId == "") return vatId else return registerId
     }
 }

@@ -188,6 +188,10 @@ class CompanyUploader(
         }
     }
 
+    /**
+     * Method which patches existing company entry with northdata data or creates new company entry from northdata data
+     */
+    // TODO make this doc more detailed
     fun uploadOrPatchFromNorthData(northDataCompanyInformation: NorthDataCompanyInformation) {
         var companyId: String? = null
         if (northDataCompanyInformation.lei != "") companyId = searchCompanyByLEI(northDataCompanyInformation.lei)
