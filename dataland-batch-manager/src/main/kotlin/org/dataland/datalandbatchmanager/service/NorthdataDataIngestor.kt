@@ -1,10 +1,17 @@
 package org.dataland.datalandbatchmanager.service
 
+import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
+import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifRelationshipTypes
+import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
+import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor.Companion.UPLOAD_THREAT_POOL_SIZE
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.*
+import java.util.concurrent.ForkJoinPool
+import java.util.stream.StreamSupport
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
@@ -17,15 +24,36 @@ import kotlin.time.measureTime
 @Component
 class NorthdataDataIngestor(
     @Autowired private val northDataAccessor: NorthDataAccessor,
+    @Autowired private val companyUploader: CompanyUploader,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
+    private fun updateNorthData(zipFile: File) {
+        val csvParser = GleifCsvParser()
+        // TODO: how to select correct csv file in zip?
+        val northStream = csvParser.getCsvStreamFromZip(zipFile)
+        val northDataIterable: Iterable<NorthDataCompanyInformation> = csvParser.readDataFromBufferedReader(northStream)
+
+        val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
+        try {
+            uploadThreadPool.submit {
+                StreamSupport.stream(northDataIterable.spliterator(), true)
+                    .forEach {
+                        companyUploader.uploadOrPatchFromNorthData(it)
+                    }
+            }.get()
+        } finally {
+            uploadThreadPool.shutdown()
+        }
+    }
 
     @Synchronized
     private fun processNorthdataFile(zipFile: File, downloadFile: (file: File) -> Unit) {
         val duration = measureTime {
             try {
                 downloadFile(zipFile)
-                // TODO function that maps Northdata data to the GLEIF data
+                updateNorthData(zipFile)
             } finally {
                 if (!zipFile.delete()) {
                     logger.error("Unable to delete temporary file $zipFile")

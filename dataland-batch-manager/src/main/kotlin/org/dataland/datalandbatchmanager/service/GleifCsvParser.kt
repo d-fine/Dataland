@@ -1,11 +1,8 @@
 package org.dataland.datalandbatchmanager.service
 
-import com.fasterxml.jackson.databind.MappingIterator
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
-import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
 import java.io.File
@@ -34,34 +31,9 @@ class GleifCsvParser {
     }
 
     /**
-     * Transforms the streamed CSV content into an iterable of GleifCompanyInformation objects
-     * @param bufferedReader the input stream read from the GLEIF csv file
-     * @return An iterable of the corresponding GleifCompanyInformation objects
-     */
-    fun readGleifDataFromBufferedReader(bufferedReader: BufferedReader): MappingIterator<GleifCompanyInformation> {
-        return CsvMapper()
-            .registerModule(kotlinModule())
-            .readerFor(GleifCompanyInformation::class.java)
-            .with(CsvSchema.emptySchema().withHeader())
-            .readValues(bufferedReader)
-    }
-
-    /**
-     * Transforms the streamed CSV content of the RR file into an iterable of GleifRelationshipInformation objects
-     * @param bufferedReader the input stream read from the GLEIF RR csv file
-     * @return An iterable of the corresponding GleifRelationshipInformation objects
-     */
-    fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader):
-        MappingIterator<GleifRelationshipInformation> {
-        return CsvMapper()
-            .registerModule(kotlinModule())
-            .readerFor(GleifRelationshipInformation::class.java)
-            .with(CsvSchema.emptySchema().withHeader())
-            .readValues(bufferedReader)
-    }
-
-    /**
-     * Method which reads data from buffered reader
+     * Transforms the streamed CSV content into an iterable of objects of class T
+     * @param bufferedReader the input stream read from the csv file
+     * @return An iterable of the corresponding T objects
      */
     // TODO make this doc more detailed
     final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader):

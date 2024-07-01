@@ -1,6 +1,7 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.batchmanager.utils.ZipFileCreator
+import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.junit.jupiter.api.Test
@@ -49,8 +50,8 @@ bb,dd,IS_FEEDER_TO"""
         ZipFileCreator.createZipFile(zipFile, testFileContent)
 
         val bufferedReader = GleifCsvParser().getCsvStreamFromZip(zipFile)
-        val mappingIterator = GleifCsvParser().readGleifRelationshipDataFromBufferedReader(bufferedReader)
+        val iterable: Iterable<GleifRelationshipInformation> = GleifCsvParser().readDataFromBufferedReader(bufferedReader)
 
-        assert(relationshipExtractor.prepareFinalParentMapping(mappingIterator) == finalMap)
+        assert(relationshipExtractor.prepareFinalParentMapping(iterable) == finalMap)
     }
 }

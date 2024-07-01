@@ -3,6 +3,7 @@ package org.dataland.datalandbatchmanager.service
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -79,7 +80,8 @@ class GleifGoldenCopyIngestor(
         val duration = measureTime {
             gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
-            val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
+            val gleifCsvParser: Iterable<GleifRelationshipInformation> = gleifParser.readDataFromBufferedReader(
+                gleifDataStream)
             relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
             if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
         }
@@ -114,8 +116,7 @@ class GleifGoldenCopyIngestor(
 
     private fun uploadCompanies(zipFile: File) {
         val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
-        val gleifIterator = gleifParser.readGleifDataFromBufferedReader(gleifDataStream)
-        val gleifIterable = Iterable<GleifCompanyInformation> { gleifIterator }
+        val gleifIterable: Iterable<GleifCompanyInformation> = gleifParser.readDataFromBufferedReader(gleifDataStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
         try {
