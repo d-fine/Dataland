@@ -35,7 +35,7 @@ class CompanyDataControllerTest {
     private val fullPatchObject = CompanyInformationPatch(
         companyContactDetails = setOf("New-companyContactDetails"),
         companyName = "New-companyName",
-        companyAlternativeNames = listOf("New-companyAlternativeNames"),
+        companyAlternativeNames = listOf("New-companyAlternativeNames@example.com"),
         companyLegalForm = "New-companyLegalForm",
         headquarters = "New-headquarters",
         headquartersPostalCode = "New-headquartersPostalCode",
@@ -421,12 +421,34 @@ class CompanyDataControllerTest {
         )
     }
 
+    /*@Test
+    fun `check that an exception is thrown if the contactDetails does not have the valid format`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val companyId = uploadInfo.actualStoredCompany.companyId
+        val patchObject = CompanyInformationPatch(
+            companyContactDetails = setOf("New-Email-1"),
+        )
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.patchCompanyById(
+            companyId,
+            patchObject,
+        )
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.patchCompanyById(
+                companyId,
+                patchObject,
+            )
+        }
+        assertTrue(exception.statusCode == 403, "The exception should indicate unauthorized access (HTTP 403)")
+    }
+*/
     @Test
     fun `check that the dataUploader can patch contactDetails and website if the company does not have companyOwner`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
         val patchObject = CompanyInformationPatch(
-            companyContactDetails = setOf("New-Email-1", "New-Email-2"),
+            companyContactDetails = setOf("New-Email-1@example.com", "New-Email-2@example.com"),
             website = "New-Website",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -459,7 +481,7 @@ class CompanyDataControllerTest {
         )
 
         val patchObject = CompanyInformationPatch(
-            companyContactDetails = setOf("New-Email-3"),
+            companyContactDetails = setOf("New-Email-3@example.com"),
             website = "New-Website-2",
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -522,7 +544,7 @@ class CompanyDataControllerTest {
 
         val patchObject = CompanyInformationPatch(
             website = "New-Website-3",
-            companyContactDetails = setOf("New-Email-1"),
+            companyContactDetails = setOf("New-Email-1@example.com"),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val updatedCompany = apiAccessor.companyDataControllerApi.patchCompanyById(
