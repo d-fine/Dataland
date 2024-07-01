@@ -25,10 +25,10 @@ class NorthdataDataIngestor(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    //TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
+    // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
         val csvParser = GleifCsvParser()
-        //TODO how to select correct csv file in zip?
+        // TODO how to select correct csv file in zip?
         val northStream = csvParser.getCsvStreamFromZip(zipFile)
         val northDataIterable: Iterable<NorthDataCompanyInformation> = csvParser.readDataFromBufferedReader(northStream)
 
