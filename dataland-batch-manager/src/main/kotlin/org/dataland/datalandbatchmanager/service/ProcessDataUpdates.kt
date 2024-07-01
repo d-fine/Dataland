@@ -28,7 +28,9 @@ class ProcessDataUpdates(
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
-    private val allCompaniesIngestFlagFilePath: String?,
+    private val allGleifCompaniesIngestFlagFilePath: String?,
+    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
+    private val allNorthDataCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
     private val savedIsinMappingFile: File,
 ) {
@@ -41,7 +43,7 @@ class ProcessDataUpdates(
      */
     @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
-        val flagFile = allCompaniesIngestFlagFilePath?.let { File(it) }
+        val flagFile = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
         if (allCompaniesForceIngest || flagFile?.exists() == true) {
             if (flagFile?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
