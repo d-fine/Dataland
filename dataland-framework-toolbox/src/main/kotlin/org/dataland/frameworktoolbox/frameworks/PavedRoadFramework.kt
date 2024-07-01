@@ -177,12 +177,13 @@ abstract class PavedRoadFramework(
         customizeDataModel(dataModel)
 
         val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
+
         if (referencedReports != null) {
-            generateReferencedReportsListValidatorIfNeeded(referencedReports)
+            val pathToValidator = dataModel.rootPackageBuilder.fullyQualifiedName
+            generateReferencedReportsListValidatorIfNeeded(referencedReports, dataModel.rootDataModelClass.fullyQualifiedName, pathToValidator)
             dataModel.rootDataModelClass.annotations.add(
                 Annotation(
-                    "org.dataland.datalandbackend.frameworks." +
-                        "${framework.identifier}.validator.ValidateReferencedReportsList",
+                    "${pathToValidator}.validator.ValidateReferencedReportsList",
                 ),
             )
         }
@@ -194,23 +195,23 @@ abstract class PavedRoadFramework(
         )
     }
 
-    private fun generateReferencedReportsListValidatorIfNeeded(referencedReports: ComponentBase) {
+    private fun generateReferencedReportsListValidatorIfNeeded(referencedReports: ComponentBase,
+                                                               dataModel: String, validatorPath: String) {
         val extendedDocumentFileReferences =
             framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
         val pathOfReferenceReports = referencedReports.getTypescriptFieldAccessor()
         val freemarkerTemplate = FreeMarker.configuration.getTemplate(
             "/specific/datamodel/elements/ValidateReferencedReportsList.kt.ftl",
         )
-        val classPath = "./dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/" +
-            "${framework.identifier}/validator/ReferencedReportsListValidatorForSfdr.kt"
+        val classPath = "./dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/eutaxonomynonfinancials/model/validator/ReferencedReportsListValidator.kt"
         val writer = FileWriter(classPath)
         val capitalFrameworkName = framework.identifier.replaceFirstChar { it.uppercaseChar() }
         freemarkerTemplate.process(
             mapOf(
-                "package" to "org.dataland.datalandbackend.frameworks.${framework.identifier}.validator",
+                "package" to "${validatorPath}.validator",
                 "framework" to capitalFrameworkName,
                 "frameworkSpecificImport" to
-                    "org.dataland.datalandbackend.frameworks.${framework.identifier}.model.${capitalFrameworkName}Data",
+                    dataModel,
                 "referencedReportsMap" to pathOfReferenceReports,
                 "extendedDocumentsFileReferences" to extendedDocumentFileReferences.joinToString(),
             ),
