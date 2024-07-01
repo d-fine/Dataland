@@ -275,7 +275,7 @@ interface CompanyApi {
             "@CompanyOwnershipChecker.isCurrentUserCompanyOwnerForCompany(#companyId) and " +
             "@CompanyOwnershipChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch)) or " +
             "(hasRole('ROLE_UPLOADER') and " +
-            "@CompanyOwnershipChecker.doesCompanyExistsAndHaveNoOwner(#companyId) and " +
+            "@CompanyOwnershipChecker.isCompanyExistentAndWithoutOwner(#companyId) and " +
             "@CompanyOwnershipChecker.areOnlyAuthorizedFieldsPatched(#companyInformationPatch))",
     )
     fun patchCompanyById(

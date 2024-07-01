@@ -62,7 +62,7 @@ class CompanyOwnershipChecker(
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the company has at least one company owner
      */
-    fun doesCompanyExistsAndHaveNoOwner(companyId: String): Boolean {
+    fun isCompanyExistentAndWithoutOwner(companyId: String): Boolean {
         companyQueryManager.verifyCompanyIdExists(companyId)
         return try {
             companyRolesControllerApi.hasCompanyAtLeastOneOwner(UUID.fromString(companyId))
