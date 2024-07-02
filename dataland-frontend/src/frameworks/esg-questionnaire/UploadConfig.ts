@@ -57,7 +57,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'beschreibungDerEsgZiele',
@@ -95,7 +95,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'auflistungDerSektoren',
@@ -160,7 +160,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'frequenzDerBerichterstattung',
@@ -215,7 +215,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'iso45001',
@@ -226,7 +226,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'iso27001',
@@ -237,7 +237,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'iso50001',
@@ -248,7 +248,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'weitereAkkreditierungen',
@@ -259,7 +259,7 @@ export const esgQuestionnaireDataModel = [
             component: 'ListOfBaseDataPointsFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -276,7 +276,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'richtlinienZurEinhaltungDerUngcp',
@@ -314,7 +314,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'richtlinienZurEinhaltungDerOecdLeitsaetze',
@@ -352,7 +352,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'ausschlusslistenAufBasisVonEsgKriterien',
@@ -363,7 +363,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'ausschlusslisten',
@@ -390,7 +390,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'anreizmechanismenFuerDasManagementUmwelt',
@@ -465,7 +465,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'rechtsstreitigkeitenMitBezugZuE',
@@ -601,7 +601,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'agentur',
@@ -653,7 +653,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen',
@@ -674,7 +674,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'ausstehendeSustainibilityLinkedDebt',
@@ -702,7 +702,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'hindernisseBeimUmgangMitEsgBedenken',
@@ -713,7 +713,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -752,7 +752,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird',
@@ -763,7 +763,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'strategieUndZieleZurReduzierungVonTreibhausgasEmissionen',
@@ -774,7 +774,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -791,7 +791,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'verringerungenDerUmweltbelastung',
@@ -812,7 +812,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -843,7 +843,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'unternehmensGruppenStrategieBzglEnergieverbrauch',
@@ -854,7 +854,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -877,7 +877,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen',
@@ -888,7 +888,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -915,7 +915,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'unternehmensGruppenStrategieBzglWasserverbrauch',
@@ -926,7 +926,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -957,7 +957,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'unternehmensGruppenStrategieBzglAbfallproduktion',
@@ -968,7 +968,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'recyclingImProduktionsprozess',
@@ -985,7 +985,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'gefaehrlicherAbfall',
@@ -996,7 +996,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -1013,7 +1013,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'negativeMassnahmenFuerDieBiologischeVielfalt',
@@ -1035,7 +1035,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'positiveMassnahmenFuerDieBiologischeVielfalt',
@@ -1063,7 +1063,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'berichterstattungEinnahmenAusFossilenBrennstoffen',
@@ -1106,7 +1106,7 @@ export const esgQuestionnaireDataModel = [
             component: 'SingleSelectFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'euTaxonomieKompassAktivitaeten',
@@ -1117,7 +1117,7 @@ export const esgQuestionnaireDataModel = [
             component: 'MultiSelectFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten',
@@ -1146,7 +1146,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -1171,7 +1171,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'anzahlUnbefristeterVertraegeInDeutschland',
@@ -1287,7 +1287,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'unfallrate',
@@ -1304,7 +1304,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'budgetFuerSchulungAusbildung',
@@ -1321,7 +1321,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -1352,7 +1352,7 @@ export const esgQuestionnaireDataModel = [
             component: 'EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'massnahmenZurVerbesserungDerEinkommensungleichheit',
@@ -1363,7 +1363,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -1379,7 +1379,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1390,7 +1390,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1401,7 +1401,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1412,7 +1412,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1423,7 +1423,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'einhaltungRechtlicherVorgaben',
@@ -1434,7 +1434,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -1451,7 +1451,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'artDesAudits',
@@ -1509,7 +1509,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1520,7 +1520,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1531,7 +1531,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
         ],
@@ -1548,7 +1548,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1559,7 +1559,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1570,7 +1570,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
         ],
@@ -1587,7 +1587,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1598,7 +1598,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1609,7 +1609,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
         ],
@@ -1626,7 +1626,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1637,7 +1637,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1648,7 +1648,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
         ],
@@ -1665,7 +1665,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1676,7 +1676,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
           {
@@ -1687,7 +1687,7 @@ export const esgQuestionnaireDataModel = [
             component: 'NumberFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             validation: 'integer',
           },
         ],
@@ -1703,7 +1703,7 @@ export const esgQuestionnaireDataModel = [
             component: 'InputTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'trennungVonCeoOderVorsitzenden',
@@ -1714,7 +1714,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'amtszeitBisZurTrennung',
@@ -1742,7 +1742,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'prozessDerEinbeziehungVonStakeholdern',
@@ -1830,7 +1830,7 @@ export const esgQuestionnaireDataModel = [
             component: 'MultiSelectFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'weitereVeroeffentlicheUnternehmensrichtlinien',
@@ -1840,7 +1840,7 @@ export const esgQuestionnaireDataModel = [
             component: 'FreeTextFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
         ],
       },
@@ -1857,7 +1857,7 @@ export const esgQuestionnaireDataModel = [
             component: 'YesNoFormField',
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
           },
           {
             name: 'auswahlkriterien',

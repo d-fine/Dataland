@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.frameworks
 
 import org.dataland.frameworktoolbox.SpringConfig
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
@@ -175,6 +174,16 @@ abstract class PavedRoadFramework(
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
+        insertReferencedReportValidatorIfNeeded(dataModel)
+
+        dataModel.build(
+            into = datalandProject,
+            buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
+            privateFrameworkBoolean = isPrivateFramework,
+        )
+    }
+
+    private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
         val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
         if (referencedReports != null) {
 
@@ -189,24 +198,14 @@ abstract class PavedRoadFramework(
                 dataModel.rootDataModelClass.name,
                 dataModel.rootDataModelClass.fullyQualifiedName,
                 referencedReportsPath,
-                extendedDocumentFileReferences)
+                extendedDocumentFileReferences
+            )
             validatorPackage.childElements.add(referencedReportValidatorBuilder)
 
             dataModel.rootDataModelClass.annotations.add(
                 Annotation(referencedReportValidatorBuilder.fullyQualifiedName),
             )
         }
-
-        dataModel.build(
-            into = datalandProject,
-            buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
-            privateFrameworkBoolean = isPrivateFramework,
-        )
-    }
-
-    private fun generateReferencedReportsListValidatorIfNeeded(referencedReports: ComponentBase,
-                                                               dataModel: String, validatorPath: String) {
-
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {

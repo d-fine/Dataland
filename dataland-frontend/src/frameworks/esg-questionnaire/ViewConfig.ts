@@ -33,7 +33,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung
+                dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung
               ),
           },
           {
@@ -42,7 +42,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation: 'Datum bis wann die Information gültig ist',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.masterData?.gueltigkeitsDatum),
+              formatStringForDatatable(dataset.general.masterData.gueltigkeitsDatum),
           },
         ],
       },
@@ -66,7 +66,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.esgZiele?.existenzVonEsgZielen),
           },
@@ -102,7 +102,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen),
           },
@@ -147,7 +147,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Nachhaltigkeitsberichte',
             explanation: 'Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte),
           },
@@ -202,7 +202,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'ISO 14001',
             explanation: 'Hat das Unternehmen eine ISO 14001-Akkreditierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso14001?.value),
@@ -215,7 +215,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'ISO 45001',
             explanation: 'Hat das Unternehmen eine ISO 45001-Akkreditierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso45001?.value),
@@ -228,7 +228,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'ISO 27001',
             explanation: 'Hat das Unternehmen eine ISO 27001-Akkreditierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso27001?.value),
@@ -241,7 +241,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'ISO 50001',
             explanation: 'Hat das Unternehmen eine ISO 50001-Akkreditierung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso50001?.value),
@@ -254,7 +254,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Weitere Akkreditierungen',
             explanation: 'Weitere Akkreditierungen',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 'Weitere Akkreditierungen',
@@ -278,7 +278,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp
@@ -323,7 +323,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze
@@ -368,7 +368,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.allgemein?.sonstige?.ausrichtungAufDieUnSdgsUndAktivesVerfolgen),
           },
@@ -378,7 +378,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien),
           },
@@ -405,7 +405,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Hat sich das Unternehmen zu ökologischen/sozialen Führungsstandards oder Prinzipien verpflichtet?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien
@@ -473,7 +473,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in abgeschlossenen Rechtsstreitigkeiten im Zusammenhang mit ESG involviert?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten),
           },
@@ -604,7 +604,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'ESG-Rating',
             explanation: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.rating?.esgRating),
           },
@@ -657,7 +657,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Grüne, soziale und/oder nachhaltige Emissionen',
             explanation: 'Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen),
           },
@@ -678,7 +678,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Sustainibility Linked Debt',
             explanation: 'Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.anleihen?.sustainibilityLinkedDebt),
           },
@@ -704,7 +704,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Wichtigste E-, S- und G-Risiken und Bewertung',
             explanation: 'Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.allgemein?.risiken?.wichtigsteESUndGRisikenUndBewertung),
           },
@@ -714,7 +714,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.allgemein?.risiken?.hindernisseBeimUmgangMitEsgBedenken),
           },
@@ -740,7 +740,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Scope 1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre (in tCO2-Äquiv.)',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
@@ -758,7 +758,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'THG-Emissionsintensität der Unternehmen, in die investiert wird. (1) Scope 1 + Scope 2 Treibhausgasemissionen / Umsatz in Millionen EUR, (2) Scope 1 + Scope 2 Treibhausgasemissionen / Unternehmensgröße in Mio. EUR',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.treibhausgasemissionen
@@ -771,7 +771,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Wie plant das Unternehmen, diesen Kurs zu erreichen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.treibhausgasemissionen?.strategieUndZieleZurReduzierungVonTreibhausgasEmissionen
@@ -791,7 +791,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung),
           },
@@ -810,7 +810,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Verfügt das Unternehmen über interne Richtlinien, die einen Mindestumweltstandard im Produktionsprozess sicherstellen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.produktion?.oekologischerMindestStandardFuerProduktionsprozesse
@@ -830,7 +830,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
@@ -854,7 +854,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch
@@ -874,7 +874,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
@@ -894,7 +894,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
@@ -915,7 +915,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.wasserverbrauch?.berichterstattungWasserverbrauch,
@@ -932,7 +932,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch
@@ -952,7 +952,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
@@ -970,7 +970,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion
@@ -982,7 +982,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Anteil an Recyclaten (bereits recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
@@ -1001,7 +1001,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
           },
@@ -1019,7 +1019,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt
@@ -1041,7 +1041,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens positiv auf diese Gebiete auswirken?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt
@@ -1071,7 +1071,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen),
           },
@@ -1107,7 +1107,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Taxonomie Berichterstattung',
             explanation: 'Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 Nfrd: 'NFRD',
@@ -1125,7 +1125,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'EU Taxonomie Kompass Aktivitäten',
             explanation: 'Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatListOfStringsForDatatable(
                 dataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.map((it) => {
@@ -1140,7 +1140,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
@@ -1187,7 +1187,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.soziales?.unternehmensstrukturaenderungen
@@ -1312,7 +1312,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.sicherheitsmassnahmenFuerMitarbeiter
@@ -1324,7 +1324,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.unfallrate,
@@ -1343,7 +1343,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Budget, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.budgetFuerSchulungAusbildung,
@@ -1365,7 +1365,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Unbereinigte geschlechtsspezifische Lohngefälle, Einkommensungleichheitsverhältnis, und CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
@@ -1389,7 +1389,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit
@@ -1408,7 +1408,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Mitarbeiter auf Top-Management Ebene',
             explanation: 'Anzahl der Personen, die eine Top-Management-Position innehaben.',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitarbeiterAufTopManagementEbene, ''),
           },
@@ -1417,7 +1417,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Frauen auf Top-Management-Ebene',
             explanation: 'Anzahl der Frauen in einer Top-Management Position',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenAufTopManagementEbene, ''),
           },
@@ -1426,7 +1426,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Mitglieder Geschäftsführung',
             explanation: 'Anzahl der Mitglieder der Geschäftsführung',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitgliederGeschaeftsfuehrung, ''),
           },
@@ -1435,7 +1435,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Frauen in der Geschäftsführung',
             explanation: 'Anzahl der Frauen in der Geschäftsführung',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenInDerGeschaeftsfuehrung, ''),
           },
@@ -1444,7 +1444,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Definition Top-Management',
             explanation: 'Definition von "Top-Management"',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.soziales?.geschlechterdiversitaet?.definitionTopManagement),
           },
@@ -1454,7 +1454,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(dataset.soziales?.geschlechterdiversitaet?.einhaltungRechtlicherVorgaben),
           },
@@ -1472,7 +1472,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards),
           },
@@ -1525,7 +1525,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl der Mitglieder im Aufsichtsrat',
             explanation: 'Wieviele Mitglieder hat der Aufsichtsrat?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlDerMitgliederImAufsichtsrat,
@@ -1537,7 +1537,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl unabhängiger Mitglieder im Aufsichtsrat',
             explanation: 'Wieviele unabhängige Mitglieder hat der Aufsichtsrat?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlUnabhaengigerMitgliederImAufsichtsrat,
@@ -1549,7 +1549,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl von Frauen im Aufsichtsrat',
             explanation: 'Wieviele Frauen sind im Aufsichtsrat?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlVonFrauenImAufsichtsrat,
@@ -1569,7 +1569,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl der Mitglieder im Vergütungsausschuss',
             explanation: 'Wieviele Mitglieder hat der Vergütungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlDerMitgliederImVerguetungsausschuss,
@@ -1581,7 +1581,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl unabhängiger Mitglieder im Vergütungsausschuss',
             explanation: 'Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.verguetungsausschuss
@@ -1594,7 +1594,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl von Frauen im Vergütungsausschuss',
             explanation: 'Wieviele Frauen sind im Vergütungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
@@ -1614,7 +1614,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl der Mitglieder im Nominierungsausschuss',
             explanation: 'Wieviele Mitglieder hat der Nominierungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
@@ -1627,7 +1627,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl unabhängiger Mitglieder im Nominierungsausschuss',
             explanation: 'Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
@@ -1640,7 +1640,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl von Frauen im Vergütungsausschuss',
             explanation: 'Wieviele Frauen sind im Nominierungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nominierungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
@@ -1660,7 +1660,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl der Mitglieder im Prüfungsausschuss',
             explanation: 'Wieviele Mitglieder hat der Prüfungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlDerMitgliederImPruefungsausschuss,
@@ -1672,7 +1672,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl unabhängiger Mitglieder im Prüfungsausschuss',
             explanation: 'Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.pruefungsausschuss
@@ -1685,7 +1685,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl von Frauen im Prüfungsausschuss',
             explanation: 'Wieviele Frauen sind im Prüfungsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlVonFrauenImPruefungsausschuss,
@@ -1705,7 +1705,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl der Mitglieder im Nachhaltigkeitsausschuss',
             explanation: 'Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
@@ -1718,7 +1718,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss',
             explanation: 'Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
@@ -1731,7 +1731,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Anzahl von Frauen im Nachhaltigkeitsausschuss',
             explanation: 'Wieviele Frauen sind im Nachhaltigkeitsausschuss?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
@@ -1752,7 +1752,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Wirtschaftsprüfer',
 
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
           },
@@ -1762,7 +1762,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden
@@ -1793,7 +1793,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Einbeziehung von Stakeholdern',
             explanation: 'Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern
@@ -1835,7 +1835,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Veröffentlichte Unternehmensrichtlinien',
             explanation: 'Welche Richtlinien sind im Unternehmen veröffentlicht?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 AntiKorruption: 'Anti-Korruption',
@@ -1864,7 +1864,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             label: 'Weitere veröffentliche Unternehmensrichtlinien',
             explanation: 'Weitere Richtlinien',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien
@@ -1885,7 +1885,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             explanation:
               'Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
-              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
+              dataset.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung == 'Yes',
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten

@@ -40,7 +40,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'The date until when the information collected is valid',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.masterData?.dataDate),
+              formatStringForDatatable(dataset.general.masterData.dataDate),
           },
           {
             type: 'cell',
@@ -49,7 +49,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               'Is your head office, administrative headquarters, registered office, or subsidiary located in Germany?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.masterData?.headOfficeInGermany),
+              formatYesNoValueForDatatable(dataset.general.masterData.headOfficeInGermany),
           },
           {
             type: 'cell',
@@ -57,15 +57,15 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'Do you belong to a group of companies?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.masterData?.groupOfCompanies),
+              formatYesNoValueForDatatable(dataset.general.masterData.groupOfCompanies),
           },
           {
             type: 'cell',
             label: 'Group of Companies Name',
             explanation: 'If yes, name of company group',
-            shouldDisplay: (dataset: LksgData): boolean => dataset.general?.masterData?.groupOfCompanies == 'Yes',
+            shouldDisplay: (dataset: LksgData): boolean => dataset.general.masterData.groupOfCompanies == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.masterData?.groupOfCompaniesName),
+              formatStringForDatatable(dataset.general.masterData.groupOfCompaniesName),
           },
           {
             type: 'cell',
@@ -73,7 +73,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'In which industry is your company primarily active (select all that apply)?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNaceCodesForDatatable(dataset.general?.masterData?.industry, 'Industry'),
+              formatNaceCodesForDatatable(dataset.general.masterData.industry, 'Industry'),
           },
           {
             type: 'cell',
@@ -81,7 +81,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'Total number of employees (including temporary workers with assignment duration >6 months)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.masterData?.numberOfEmployees, ''),
+              formatNumberForDatatable(dataset.general.masterData.numberOfEmployees, ''),
           },
           {
             type: 'cell',
@@ -89,14 +89,13 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'Do your company employ seasonal or migrant workers?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.masterData?.seasonalOrMigrantWorkers),
+              formatYesNoValueForDatatable(dataset.general.masterData.seasonalOrMigrantWorkers),
           },
           {
             type: 'cell',
             label: 'Share of Temporary Workers',
             explanation: 'What share of the total number of employees in your company is made up by temporary workers?',
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.masterData?.seasonalOrMigrantWorkers == 'Yes',
+            shouldDisplay: (dataset: LksgData): boolean => dataset.general.masterData.seasonalOrMigrantWorkers == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 Smaller10: '<10%',
@@ -105,8 +104,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 Greater50: '>50%',
               };
               return formatStringForDatatable(
-                dataset.general?.masterData?.shareOfTemporaryWorkers
-                  ? getOriginalNameFromTechnicalName(dataset.general?.masterData?.shareOfTemporaryWorkers, mappings)
+                dataset.general.masterData.shareOfTemporaryWorkers
+                  ? getOriginalNameFromTechnicalName(dataset.general.masterData.shareOfTemporaryWorkers, mappings)
                   : ''
               );
             },
@@ -117,7 +116,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'Total revenue per annum',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.annualTotalRevenue)),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.general.masterData.annualTotalRevenue)),
           },
           {
             type: 'cell',
@@ -126,7 +125,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               'Combined fixed and working capital (only for own operations) in same currency than total revenue',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.general?.masterData?.fixedAndWorkingCapital)),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.general.masterData.fixedAndWorkingCapital)),
           },
         ],
       },
@@ -142,35 +141,35 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation: 'Is your company a manufacturing company?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.productionSpecific?.manufacturingCompany),
+              formatYesNoValueForDatatable(dataset.general.productionSpecific?.manufacturingCompany),
           },
           {
             type: 'cell',
             label: 'Capacity',
             explanation: 'Production capacity per year, e.g. quantity with units.',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.productionSpecific?.capacity),
+              formatStringForDatatable(dataset.general.productionSpecific?.capacity),
           },
           {
             type: 'cell',
             label: 'Production via Subcontracting',
             explanation: 'Is the production done via subcontracting?',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionViaSubcontracting),
+              formatYesNoValueForDatatable(dataset.general.productionSpecific?.productionViaSubcontracting),
           },
           {
             type: 'cell',
             label: 'Subcontracting Companies Countries',
             explanation: 'In which countries do the subcontracting companies operate?',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionViaSubcontracting == 'Yes',
+              dataset.general.productionSpecific?.productionViaSubcontracting == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatLksgSubcontractingCompaniesForDisplay(
-                dataset.general?.productionSpecific?.subcontractingCompaniesCountries,
+                dataset.general.productionSpecific?.subcontractingCompaniesCountries,
                 'Subcontracting Companies Countries'
               ),
           },
@@ -179,28 +178,26 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: 'Production Sites',
             explanation: 'Do you have production sites in your company?',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.productionSpecific?.productionSites),
+              formatYesNoValueForDatatable(dataset.general.productionSpecific?.productionSites),
           },
           {
             type: 'cell',
             label: 'Number of Production Sites',
             explanation: 'How many production sites are there?',
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionSites == 'Yes',
+            shouldDisplay: (dataset: LksgData): boolean => dataset.general.productionSpecific?.productionSites == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.productionSpecific?.numberOfProductionSites, ''),
+              formatNumberForDatatable(dataset.general.productionSpecific?.numberOfProductionSites, ''),
           },
           {
             type: 'cell',
             label: 'List Of Production Sites',
             explanation: 'Please list the production sites in your company.',
-            shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.productionSites == 'Yes',
+            shouldDisplay: (dataset: LksgData): boolean => dataset.general.productionSpecific?.productionSites == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatLksgProductionSitesForDisplay(
-                dataset.general?.productionSpecific?.listOfProductionSites,
+                dataset.general.productionSpecific?.listOfProductionSites,
                 'List Of Production Sites'
               ),
           },
@@ -209,7 +206,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: 'Market',
             explanation: 'Does your business focus predominantly on national or international markets?',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 National: 'National',
@@ -217,8 +214,8 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 Both: 'Both',
               };
               return formatStringForDatatable(
-                dataset.general?.productionSpecific?.market
-                  ? getOriginalNameFromTechnicalName(dataset.general?.productionSpecific?.market, mappings)
+                dataset.general.productionSpecific?.market
+                  ? getOriginalNameFromTechnicalName(dataset.general.productionSpecific?.market, mappings)
                   : ''
               );
             },
@@ -228,7 +225,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: 'Specific Procurement',
             explanation: 'Does your company have one of the specific procurement models?',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 ShortLivedAndChangingBusinessRelationships: 'Short-lived and changing business relationships',
@@ -238,7 +235,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 NoneOfTheAbove: 'None of the above',
               };
               return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.specificProcurement?.map((it) =>
+                dataset.general.productionSpecific?.specificProcurement?.map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings)
                 ),
                 'Specific Procurement'
@@ -259,10 +256,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             explanation:
               'Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatLksgMostImportantProductsForDisplay(
-                dataset.general?.productionSpecificOwnOperations?.mostImportantProducts,
+                dataset.general.productionSpecificOwnOperations?.mostImportantProducts,
                 'Most Important Products'
               ),
           },
@@ -271,10 +268,10 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             label: 'Procurement Categories',
             explanation: 'Name their procurement categories (products, raw materials, services) (own operations)',
             shouldDisplay: (dataset: LksgData): boolean =>
-              dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
+              dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatLksgProcurementCategoriesForDisplay(
-                dataset.general?.productionSpecificOwnOperations?.procurementCategories,
+                dataset.general.productionSpecificOwnOperations?.procurementCategories,
                 'Procurement Categories'
               ),
           },

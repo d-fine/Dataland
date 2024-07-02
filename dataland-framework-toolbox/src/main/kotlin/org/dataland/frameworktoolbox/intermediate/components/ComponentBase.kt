@@ -74,7 +74,7 @@ open class ComponentBase(
     /**
      * True iff this component is optional / accepts null values
      */
-    var isNullable: Boolean = true
+    open var isNullable: Boolean = true
 
     /**
      * True iff this component is required (just a pointer to !isNullable for convenience)
@@ -191,10 +191,10 @@ open class ComponentBase(
      * Returns the list of extended document references of the component
      */
     open fun getExtendedDocumentReference(): List<String> {
-        if (documentSupport == ExtendedDocumentSupport) {
-            return listOf("${this.getTypescriptFieldAccessor()}?.dataSource?.fileReference")
+        return if (documentSupport == ExtendedDocumentSupport) {
+            listOf("${this.getTypescriptFieldAccessor()}?.dataSource?.fileReference")
         } else {
-            return emptyList()
+            emptyList()
         }
     }
 }
