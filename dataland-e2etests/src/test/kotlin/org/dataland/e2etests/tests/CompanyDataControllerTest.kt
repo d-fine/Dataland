@@ -422,28 +422,23 @@ class CompanyDataControllerTest {
         )
     }
 
-    /*@Test
+    @Test
     fun `check that an exception is thrown if the contactDetails does not have the valid format`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
         val patchObject = CompanyInformationPatch(
-            companyContactDetails = setOf("New-Email-1"),
+            companyContactDetails = listOf("Email-without-proper-format"),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyDataControllerApi.patchCompanyById(
-            companyId,
-            patchObject,
-        )
 
-        val exception = assertThrows<ClientException> {
+        assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
                 patchObject,
             )
         }
-        assertTrue(exception.statusCode == 403, "The exception should indicate unauthorized access (HTTP 403)")
     }
-*/
+
     @Test
     fun `check that the Dataland uploader can patch contactDetails and website if the company does not have companyOwner`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
