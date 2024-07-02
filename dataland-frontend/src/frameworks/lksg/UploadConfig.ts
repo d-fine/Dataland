@@ -50,7 +50,7 @@ export const lksgDataModel = [
 
             component: 'InputTextFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.masterData.groupOfCompanies == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.masterData?.groupOfCompanies == 'Yes',
           },
           {
             name: 'industry',
@@ -105,7 +105,7 @@ export const lksgDataModel = [
 
             component: 'RadioButtonsFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.masterData.seasonalOrMigrantWorkers == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.masterData?.seasonalOrMigrantWorkers == 'Yes',
           },
           {
             name: 'annualTotalRevenue',
@@ -148,7 +148,7 @@ export const lksgDataModel = [
 
             component: 'InputTextFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
           {
             name: 'productionViaSubcontracting',
@@ -157,7 +157,7 @@ export const lksgDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
           {
             name: 'subcontractingCompaniesCountries',
@@ -167,7 +167,7 @@ export const lksgDataModel = [
             component: 'LksgSubcontractingCompaniesFormField',
             required: false,
             showIf: (dataset: LksgData): boolean =>
-              dataset.general.productionSpecific?.productionViaSubcontracting == 'Yes',
+              dataset.general?.productionSpecific?.productionViaSubcontracting == 'Yes',
           },
           {
             name: 'productionSites',
@@ -176,7 +176,7 @@ export const lksgDataModel = [
 
             component: 'YesNoFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
           {
             name: 'numberOfProductionSites',
@@ -185,7 +185,7 @@ export const lksgDataModel = [
 
             component: 'NumberFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.productionSites == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionSites == 'Yes',
           },
           {
             name: 'listOfProductionSites',
@@ -194,7 +194,7 @@ export const lksgDataModel = [
 
             component: 'ProductionSitesFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.productionSites == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.productionSites == 'Yes',
           },
           {
             name: 'market',
@@ -217,7 +217,7 @@ export const lksgDataModel = [
 
             component: 'RadioButtonsFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
           {
             name: 'specificProcurement',
@@ -244,7 +244,7 @@ export const lksgDataModel = [
 
             component: 'MultiSelectFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
         ],
       },
@@ -260,7 +260,7 @@ export const lksgDataModel = [
 
             component: 'MostImportantProductsFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
           {
             name: 'procurementCategories',
@@ -269,7 +269,7 @@ export const lksgDataModel = [
 
             component: 'ProcurementCategoriesFormField',
             required: false,
-            showIf: (dataset: LksgData): boolean => dataset.general.productionSpecific?.manufacturingCompany == 'Yes',
+            showIf: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == 'Yes',
           },
         ],
       },

@@ -10,7 +10,7 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureG
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentFactoryContainer
@@ -186,16 +186,15 @@ abstract class PavedRoadFramework(
     private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
         val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
         if (referencedReports != null) {
-            val referencedReportsPath = referencedReports.getTypescriptFieldAccessor()
+            val referencedReportsPath = referencedReports.getKotlinFieldAccessor()
             val extendedDocumentFileReferences =
                 framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
 
             val validatorPackage = dataModel.rootPackageBuilder.addPackage("validator")
             val referencedReportValidatorBuilder = ReferencedReportValidatorBuilder(
                 validatorPackage,
+                dataModel.rootDataModelClass,
                 framework.identifier,
-                dataModel.rootDataModelClass.name,
-                dataModel.rootDataModelClass.fullyQualifiedName,
                 referencedReportsPath,
                 extendedDocumentFileReferences,
             )

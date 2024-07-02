@@ -39,6 +39,7 @@ class ReferencedReportsListConstraintValidator :
             referencedReportsFileReference.contains(it)
         }
     }
+
     private fun getFileReferencesFromReports(map: Map<String, CompanyReport>?): List<String> {
         if (map == null) return emptyList()
         val referencedReportsList = mutableListOf<String>()
@@ -47,6 +48,7 @@ class ReferencedReportsListConstraintValidator :
         }
         return referencedReportsList
     }
+
     @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: EutaxonomyNonFinancialsData): List<String?> {
         return listOf(

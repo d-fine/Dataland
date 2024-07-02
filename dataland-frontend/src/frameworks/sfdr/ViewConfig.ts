@@ -28,7 +28,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             explanation: 'The year for which the data is reported',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general.general.dataDate),
+              formatStringForDatatable(dataset.general?.general?.dataDate),
           },
           {
             type: 'cell',
@@ -41,8 +41,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 NoDeviation: 'No Deviation',
               };
               return formatStringForDatatable(
-                dataset.general.general.fiscalYearDeviation
-                  ? getOriginalNameFromTechnicalName(dataset.general.general.fiscalYearDeviation, mappings)
+                dataset.general?.general?.fiscalYearDeviation
+                  ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation, mappings)
                   : ''
               );
             },
@@ -53,7 +53,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             explanation: 'The date the fiscal year ends',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general.general.fiscalYearEnd),
+              formatStringForDatatable(dataset.general?.general?.fiscalYearEnd),
           },
         ],
       },

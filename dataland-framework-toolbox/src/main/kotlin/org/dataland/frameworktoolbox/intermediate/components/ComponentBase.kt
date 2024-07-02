@@ -15,7 +15,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
@@ -192,7 +192,7 @@ open class ComponentBase(
      */
     open fun getExtendedDocumentReference(): List<String> {
         return if (documentSupport == ExtendedDocumentSupport) {
-            listOf("${this.getTypescriptFieldAccessor()}?.dataSource?.fileReference")
+            listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
         } else {
             emptyList()
         }
