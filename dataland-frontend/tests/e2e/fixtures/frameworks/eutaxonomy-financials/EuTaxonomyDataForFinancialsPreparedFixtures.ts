@@ -18,6 +18,7 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createInsuranceCompany,
     createAssetManagementCompany,
     createAllValuesCompany,
+    createCompanyWithBrokenFileReference,
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(26),
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(29),
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(29.2),
@@ -104,7 +105,7 @@ function createAssetManagementCompany(
  * @returns the modified fixture
  */
 function createAssetManagementAndInsuranceCompany(
-  input: FixtureData<EuTaxonomyDataForFinancials>
+    input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = 'asset-management-insurance-company';
   input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes([
@@ -139,6 +140,19 @@ function createAllValuesCompany(
   };
   return input;
 }
+/**
+ * Creates a fixture of a company that is an asset management and insurance company
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyWithBrokenFileReference(
+    input: FixtureData<EuTaxonomyDataForFinancials>
+): FixtureData<EuTaxonomyDataForFinancials> {
+  input = createAllValuesCompany(input)
+  input.companyInformation.companyName =  'TestForIncompleteReferencedReport'
+  input.t.referencedReports = null
+  return input;
+}
 
 /**
  * Higher order function which returns a function that creates a fixture of a credit institution, but sets the value
@@ -163,3 +177,5 @@ function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
     return input;
   };
 }
+
+

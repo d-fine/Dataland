@@ -66,7 +66,7 @@ class EuTaxonomyNonFinancials {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val companyName = "TestForIncompleteReferencedReport"
 
-        val companyInformation = apiAccessor.testDataProviderForSfdrData
+        val companyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName)
 
         val dataSet = companyInformation!!.t
@@ -78,7 +78,7 @@ class EuTaxonomyNonFinancials {
                 companyId = companyId,
                 frameworkData = uploadPair.first,
                 reportingPeriod = uploadPair.second,
-                uploadFunction = apiAccessor::sfdrUploaderFunction,
+                uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
             )
         }
 
@@ -87,7 +87,7 @@ class EuTaxonomyNonFinancials {
         Assertions.assertTrue(testClientError.statusCode == 400)
         Assertions.assertTrue(testClientError.body.toString().contains("Invalid input"))
         Assertions.assertTrue(
-            testClientError.body.toString().contains("The list of referenced reports is not complete.")
+            testClientError.body.toString().contains("The list of referenced reports is not complete."),
         )
     }
 }
