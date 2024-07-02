@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.frameworks
 
 import org.dataland.frameworktoolbox.SpringConfig
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
@@ -202,11 +201,6 @@ abstract class PavedRoadFramework(
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
             privateFrameworkBoolean = isPrivateFramework,
         )
-    }
-
-    private fun generateReferencedReportsListValidatorIfNeeded(referencedReports: ComponentBase,
-                                                               dataModel: String, validatorPath: String) {
-
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {
