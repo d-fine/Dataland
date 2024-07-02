@@ -11,7 +11,7 @@ class ReferencedReportValidatorBuilder(
     val dataModelClassName: String,
     val dataModelFullyQualifiedName: String,
     val referencedReportsPath: String,
-    val extendedDocumentFileReferences: List<String>
+    val extendedDocumentFileReferences: List<String>,
 ) : DataModelElement {
 
     override val name: String = "ReferencedReportsListValidator"

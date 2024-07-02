@@ -91,12 +91,14 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     }
     private fun companyListForTestingEuTaxonomyNonFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json"))
+            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json"),
+        )
     }
 
     private fun companyListForTestingEuTaxonomyFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json"))
+            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json"),
+        )
     }
 
     fun getSpecificCompanyByNameFromLksgPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
@@ -112,14 +114,16 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     }
 
     fun getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(
-        companyName: String): CompanyInformationWithT<T>? {
+        companyName: String,
+    ): CompanyInformationWithT<T>? {
         return companyListForTestingEuTaxonomyNonFinancialsSpecificValidation().find {
             it.companyInformation.companyName == companyName
         }
     }
 
     fun getSpecificCompanyByNameFromEuTaxonomyFinancialsPreparedFixtures(
-        companyName: String): CompanyInformationWithT<T>? {
+        companyName: String,
+    ): CompanyInformationWithT<T>? {
         return companyListForTestingEuTaxonomyFinancialsSpecificValidation().find {
             it.companyInformation.companyName == companyName
         }

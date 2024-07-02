@@ -46,17 +46,21 @@ class Sfdr {
 
     @Test
     fun `check that Sfdr dataset cannot be uploaded if document does not exist`() {
-        tryToUploadDataWithInvalidInputAndAssertThatItsForbidden("TestForBrokenFileReference",
-            "The document reference doesn't exist" )
+        tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(
+            "TestForBrokenFileReference",
+            "The document reference doesn't exist",
+        )
     }
 
     @Test
     fun `check that Sfdr dataset cannot be uploaded if list of referenced Reports is incomplete`() {
-        tryToUploadDataWithInvalidInputAndAssertThatItsForbidden("TestForIncompleteReferencedReport",
-            "The list of referenced reports is not complete." )
+        tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(
+            "TestForIncompleteReferencedReport",
+            "The list of referenced reports is not complete.",
+        )
     }
 
-    private fun tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(companyName: String, errorMessage: String){
+    private fun tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(companyName: String, errorMessage: String) {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         val companyInformation = apiAccessor.testDataProviderForSfdrData

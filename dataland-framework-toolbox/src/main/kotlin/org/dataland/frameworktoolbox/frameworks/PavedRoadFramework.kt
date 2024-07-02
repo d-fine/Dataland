@@ -186,7 +186,6 @@ abstract class PavedRoadFramework(
     private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
         val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
         if (referencedReports != null) {
-
             val referencedReportsPath = referencedReports.getTypescriptFieldAccessor()
             val extendedDocumentFileReferences =
                 framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
@@ -198,7 +197,7 @@ abstract class PavedRoadFramework(
                 dataModel.rootDataModelClass.name,
                 dataModel.rootDataModelClass.fullyQualifiedName,
                 referencedReportsPath,
-                extendedDocumentFileReferences
+                extendedDocumentFileReferences,
             )
             validatorPackage.childElements.add(referencedReportValidatorBuilder)
 
