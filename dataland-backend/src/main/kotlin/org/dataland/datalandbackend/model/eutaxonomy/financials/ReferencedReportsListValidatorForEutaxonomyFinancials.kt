@@ -55,8 +55,7 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
         if (data == null) return
         when (data) {
             is ExtendedDocumentReference -> {
-                val fileReference = data.fileReference
-                fileReferences.add(fileReference)
+                fileReferences.add(data.fileReference)
             }
             is Collection<*> -> {
                 data.forEach { item ->
@@ -74,8 +73,7 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
                 if (data::class.isData) {
                     val properties = data::class.declaredMemberProperties
                     for (property in properties) {
-                        val kCallableProperty = property as KCallable<*>
-                        val value = kCallableProperty.call(data)
+                        val value = (property as KCallable<*>).call(data)
                         collectFileReferences(value, fileReferences)
                     }
                 }
