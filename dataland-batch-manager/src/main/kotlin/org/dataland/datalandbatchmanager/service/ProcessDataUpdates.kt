@@ -24,6 +24,8 @@ import java.util.*
 class ProcessDataUpdates(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifGoldenCopyIngestor: GleifGoldenCopyIngestor,
+    @Autowired private val northDataAccessor: NorthDataAccessor,
+    @Autowired private val northdataDataIngestor: NorthdataDataIngestor,
     @Autowired private val actuatorApi: ActuatorApi,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
@@ -33,7 +35,12 @@ class ProcessDataUpdates(
     private val allNorthDataCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
     private val savedIsinMappingFile: File,
-) {
+) { companion object {
+    const val MS_PER_S = 1000L
+    const val MAX_WAITING_TIME_IN_MS = 10L * 60L * MS_PER_S
+    const val WAIT_TIME_IN_MS: Long = 5000
+    const val UPLOAD_THREAT_POOL_SIZE = 32
+}
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -83,21 +90,29 @@ class ProcessDataUpdates(
         gleifGoldenCopyIngestor.processRelationshipFile(updateAllCompanies = true)
     }
 
+    @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+    @Scheduled(cron = "0 0 5 1-7 1,4,7,10 SUN")
+    // TODO discuss with someone if this cron job is correct
+    private fun processNorthDataUpdates() {
+        waitForBackend()
+        northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
+    }
+
     /**
      * This method waits for the backend to be ready
      */
     fun waitForBackend() {
-        val timeoutTime = Instant.now().toEpochMilli() + GleifGoldenCopyIngestor.MAX_WAITING_TIME_IN_MS
+        val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
         while (Instant.now().toEpochMilli() <= timeoutTime) {
             try {
                 actuatorApi.health()
                 break
             } catch (exception: ConnectException) {
                 logger.info(
-                    "Waiting for ${GleifGoldenCopyIngestor.WAIT_TIME_IN_MS / GleifGoldenCopyIngestor.MS_PER_S}s " +
+                    "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s " +
                         "backend to be available. Exception was: ${exception.message}.",
                 )
-                Thread.sleep(GleifGoldenCopyIngestor.WAIT_TIME_IN_MS)
+                Thread.sleep(WAIT_TIME_IN_MS)
             }
         }
     }

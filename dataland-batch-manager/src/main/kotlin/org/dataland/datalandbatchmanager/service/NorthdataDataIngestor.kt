@@ -13,9 +13,9 @@ import kotlin.time.Duration
 import kotlin.time.measureTime
 
 /**
- * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
- * @param northDataAccessor downloads the golden copy files from GLEIF
- * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * Class to execute scheduled tasks, like the import of the NorthData golden copy files
+ * @param northDataAccessor downloads the golden copy files from NorthData
+ * @param companyUploader uploads the updated company entries to dataland
  */
 @Suppress("LongParameterList")
 @Component
@@ -45,7 +45,8 @@ class NorthdataDataIngestor(
     }
 
     @Synchronized
-    private fun processNorthdataFile(zipFile: File, downloadFile: (file: File) -> Unit) {
+    fun processNorthdataFile(downloadFile: (file: File) -> Unit) {
+        val zipFile = File.createTempFile("northdata_golden_copy", ".zip")
         val duration = measureTime {
             try {
                 downloadFile(zipFile)

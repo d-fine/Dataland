@@ -32,9 +32,6 @@ class GleifGoldenCopyIngestor(
     private val savedIsinMappingFile: File,
 ) {
     companion object {
-        const val MS_PER_S = 1000L
-        const val MAX_WAITING_TIME_IN_MS = 10L * 60L * MS_PER_S
-        const val WAIT_TIME_IN_MS: Long = 5000
         const val UPLOAD_THREAT_POOL_SIZE = 32
     }
 
