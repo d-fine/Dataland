@@ -48,6 +48,7 @@ class ReferencedReportsListConstraintValidator :
         return referencedReportsList
     }
 
+    @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: ${dataModelClassName}): List<String?> {
         return listOf(
             <#list extendedDocumentsFileReferences as fileReference>

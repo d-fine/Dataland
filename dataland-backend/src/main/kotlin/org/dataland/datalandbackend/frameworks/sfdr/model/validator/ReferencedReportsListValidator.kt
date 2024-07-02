@@ -48,6 +48,7 @@ class ReferencedReportsListConstraintValidator :
         return referencedReportsList
     }
 
+    @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: SfdrData): List<String?> {
         return listOf(
             dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.dataSource?.fileReference,

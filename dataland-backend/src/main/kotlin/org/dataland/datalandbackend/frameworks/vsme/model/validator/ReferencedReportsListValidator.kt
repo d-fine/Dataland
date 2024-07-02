@@ -48,6 +48,7 @@ class ReferencedReportsListConstraintValidator :
         return referencedReportsList
     }
 
+    @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: VsmeData): List<String?> {
         return listOf(
             dataset.basic?.energyAndGreenhousGasEmissions?.electricityTotalInMWh?.dataSource?.fileReference,
