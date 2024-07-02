@@ -91,7 +91,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     }
     private fun companyListForTestingEuTaxonomyNonFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
         return convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyNonFinancialsPreparedFixtures.json"))
+            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json"))
     }
 
     private fun companyListForTestingEuTaxonomyFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> {
