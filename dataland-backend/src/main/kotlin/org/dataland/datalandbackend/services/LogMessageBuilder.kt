@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
     /**
-     * Generates an access denied message if a user without the necessary role tries to bypass the QA process
+     * Generates an "access denied" message if a user without the necessary role tries to bypass the QA process
      * @param qaStatus the qa status of the respective dataset
      */
     fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) =

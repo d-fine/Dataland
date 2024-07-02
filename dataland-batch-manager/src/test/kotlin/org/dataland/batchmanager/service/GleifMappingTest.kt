@@ -23,6 +23,7 @@ class GleifMappingTest {
 
     private val expectedCompanyInformation = CompanyInformation(
         companyName = expectedGleifCompanyInformation.companyName,
+        companyContactDetails = null,
         companyAlternativeNames = null,
         companyLegalForm = null,
         countryCode = expectedGleifCompanyInformation.countryCode,

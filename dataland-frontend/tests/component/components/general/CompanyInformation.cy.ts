@@ -12,6 +12,7 @@ describe('Component tests for the company info sheet', function (): void {
   const dummyParentCompanyLei = 'dummyParentLei';
   const dummyParentCompanyId = 'dummyParentCompanyId';
   const dummyParentCompanyName = 'dummyParent Company';
+  const dummyCompanyLei = 'dummyCompanyLei';
   let mockedStoredDataRequests: StoredDataRequest[];
   before(function () {
     cy.fixture('CompanyInformationWithVsmePreparedFixtures').then(function (jsonContent) {
@@ -20,6 +21,9 @@ describe('Component tests for the company info sheet', function (): void {
 
       companyInformationForTest = vsmeFixtureForTest.companyInformation;
       companyInformationForTest.parentCompanyLei = dummyParentCompanyLei;
+      companyInformationForTest.identifiers = {
+        Lei: [dummyCompanyLei],
+      };
     });
     cy.fixture('DataRequestsMock').then(function (jsonContent) {
       mockedStoredDataRequests = jsonContent as Array<StoredDataRequest>;

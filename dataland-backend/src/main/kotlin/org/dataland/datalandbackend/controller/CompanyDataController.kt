@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +44,7 @@ class CompanyDataController(
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
+        companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
         return ResponseEntity.ok(
             companyAlterationManager.addCompany(companyInformation)
                 .toApiModel(DatalandAuthentication.fromContext()),
@@ -161,6 +163,7 @@ class CompanyDataController(
         companyId: String,
         companyInformationPatch: CompanyInformationPatch,
     ): ResponseEntity<StoredCompany> {
+        companyInformationPatch.companyContactDetails?.forEach { it.validateIsEmailAddress() }
         companyAlterationManager.patchCompany(companyId, companyInformationPatch)
         return ResponseEntity.ok(
             companyQueryManager
@@ -172,6 +175,7 @@ class CompanyDataController(
         companyId: String,
         companyInformation: CompanyInformation,
     ): ResponseEntity<StoredCompany> {
+        companyInformation.companyContactDetails?.forEach { it.validateIsEmailAddress() }
         companyAlterationManager.putCompany(companyId, companyInformation)
         return ResponseEntity.ok(
             companyQueryManager

@@ -36,6 +36,7 @@ internal class CompanyDataControllerTest(
     val companyWithTestLei = CompanyInformation(
         companyName = "Test Company",
         companyAlternativeNames = null,
+        companyContactDetails = null,
         companyLegalForm = null,
         countryCode = "DE",
         headquarters = "Berlin",

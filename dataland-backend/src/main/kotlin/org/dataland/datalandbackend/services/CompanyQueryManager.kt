@@ -91,6 +91,7 @@ class CompanyQueryManager(
     private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
         var companiesWithFetchedFields = companyRepository.fetchIdentifiers(storedCompanies)
         companiesWithFetchedFields = companyRepository.fetchAlternativeNames(companiesWithFetchedFields)
+        companiesWithFetchedFields = companyRepository.fetchCompanyContactDetails(companiesWithFetchedFields)
         companiesWithFetchedFields = companyRepository.fetchCompanyAssociatedByDataland(companiesWithFetchedFields)
         return companiesWithFetchedFields
     }
