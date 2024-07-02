@@ -9,6 +9,10 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
+/**
+ * Annotation Class holding the validation logic for referenced reports list.
+ * It checks if the referenced reports list is complete
+ */
 
 @Constraint(validatedBy = [ReferencedReportsListValidatorForEutaxonomyFinancials::class])
 @Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)
