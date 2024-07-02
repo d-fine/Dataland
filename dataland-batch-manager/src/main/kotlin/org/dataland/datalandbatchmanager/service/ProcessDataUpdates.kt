@@ -25,11 +25,11 @@ class ProcessDataUpdates(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifGoldenCopyIngestor: GleifGoldenCopyIngestor,
     @Autowired private val actuatorApi: ActuatorApi,
-    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
+    @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
-    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
+    @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
     private val allGleifCompaniesIngestFlagFilePath: String?,
-    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
+    @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
     private val allNorthDataCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
     private val savedIsinMappingFile: File,
@@ -39,7 +39,7 @@ class ProcessDataUpdates(
 
     /**
      * Downloads the entire GLEIF golden copy file and uploads all included companies to the Dataland Backend.
-     * Does so only if the property "dataland.dataland-batch-managet.get-all-gleif-companies" is set.
+     * Does so only if the property "dataland.dataland-batch-manager.get-all-gleif-companies" is set.
      */
     @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
