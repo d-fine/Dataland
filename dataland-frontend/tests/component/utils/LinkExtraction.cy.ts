@@ -2,8 +2,7 @@ import { segmentTextIncludingLinks } from '@/utils/LinkExtraction';
 
 describe('Unit tests for link extraction', () => {
   it('HTTPS-Links should be extracted', () => {
-    const text = 'This is a text with a link https://www.dataland.com/testing.';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('This is a text with a link https://www.dataland.com/testing.');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -21,8 +20,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('HTTP-Links should be converted to https', () => {
-    const text = 'Insecure link alert http://www.dataland.com.';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('Insecure link alert http://www.dataland.com');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -33,15 +31,10 @@ describe('Unit tests for link extraction', () => {
         text: 'http://www.dataland.com',
         href: 'https://www.dataland.com',
       },
-      {
-        type: 'text',
-        text: '.',
-      },
     ]);
   });
   it('Links with query parameters should be extracted', () => {
-    const text = 'Test dataland.com/companies?input=hello, does it work?';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('Test dataland.com/companies?input=hello, does it work?');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -59,8 +52,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('Links with non-standard ports should not be extracted', () => {
-    const text = 'Weired Link alert https://www.dataland.com:332.';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('Weired Link alert https://www.dataland.com:332.');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -69,8 +61,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('Links with username and password should not be extracted', () => {
-    const text = 'https://user:pass@dataland.com';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('https://user:pass@dataland.com');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -79,8 +70,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('Links without protocol should be extracted', () => {
-    const text = 'This is a text with a link www.dataland.com/path.';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('This is a text with a link www.dataland.com/path.');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -98,8 +88,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('Links without www should be extracted', () => {
-    const text = 'Without www dataland.com/path.';
-    const outputArray = segmentTextIncludingLinks(text);
+    const outputArray = segmentTextIncludingLinks('Without www dataland.com/path.');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',

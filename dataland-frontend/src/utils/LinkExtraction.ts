@@ -58,7 +58,6 @@ export function segmentTextIncludingLinks(text: string): Segment[] {
   let match;
 
   while ((match = domainIdentificationRegex.exec(text)) !== null) {
-    // Push the non-matching segment
     if (match.index > lastIndex) {
       result.push({ type: 'text', text: text.slice(lastIndex, match.index) });
     }
@@ -77,7 +76,6 @@ export function segmentTextIncludingLinks(text: string): Segment[] {
     lastIndex = domainIdentificationRegex.lastIndex;
   }
 
-  // Push the remaining non-matching segment
   if (lastIndex < text.length) {
     result.push({ type: 'text', text: text.slice(lastIndex) });
   }
