@@ -20,7 +20,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('HTTP-Links should be converted to https', () => {
-    const outputArray = segmentTextIncludingLinks('Insecure link alert http://www.dataland.com');
+    const outputArray = segmentTextIncludingLinks('Insecure link alert http://www.google.com');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -28,8 +28,8 @@ describe('Unit tests for link extraction', () => {
       },
       {
         type: 'link',
-        text: 'http://www.dataland.com',
-        href: 'https://www.dataland.com',
+        text: 'http://www.google.com',
+        href: 'https://www.google.com',
       },
     ]);
   });
@@ -88,7 +88,7 @@ describe('Unit tests for link extraction', () => {
     ]);
   });
   it('Links without www should be extracted', () => {
-    const outputArray = segmentTextIncludingLinks('Without www dataland.com/path.');
+    const outputArray = segmentTextIncludingLinks('Without www dataland.com/companies.');
     expect(outputArray).to.deep.equal([
       {
         type: 'text',
@@ -96,8 +96,8 @@ describe('Unit tests for link extraction', () => {
       },
       {
         type: 'link',
-        text: 'dataland.com/path',
-        href: 'https://dataland.com/path',
+        text: 'dataland.com/companies',
+        href: 'https://dataland.com/companies',
       },
       {
         type: 'text',
