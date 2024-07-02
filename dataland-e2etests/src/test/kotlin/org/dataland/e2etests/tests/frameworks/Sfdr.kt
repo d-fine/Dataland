@@ -46,36 +46,18 @@ class Sfdr {
 
     @Test
     fun `check that Sfdr dataset cannot be uploaded if document does not exist`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val companyName = "TestForBrokenFileReference"
-
-        val companyInformation = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
-
-        val dataSet = companyInformation!!.t
-
-        val uploadPair = Pair(dataSet, "2022")
-
-        val exception = assertThrows<ClientException> {
-            apiAccessor.uploadWithWait(
-                companyId = companyId,
-                frameworkData = uploadPair.first,
-                reportingPeriod = uploadPair.second,
-                uploadFunction = apiAccessor::sfdrUploaderFunction,
-            )
-        }
-
-        val testClientError = exception.response as ClientError<*>
-
-        assertTrue(testClientError.statusCode == 400)
-        assertTrue(testClientError.body.toString().contains("Invalid input"))
-        assertTrue(testClientError.body.toString().contains("The document reference doesn't exist"))
+        tryToUploadDataWithInvalidInputAndAssertThatItsForbidden("TestForBrokenFileReference",
+            "The document reference doesn't exist" )
     }
 
     @Test
     fun `check that Sfdr dataset cannot be uploaded if list of referenced Reports is incomplete`() {
+        tryToUploadDataWithInvalidInputAndAssertThatItsForbidden("TestForIncompleteReferencedReport",
+            "The list of referenced reports is not complete." )
+    }
+
+    private fun tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(companyName: String, errorMessage: String){
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val companyName = "TestForIncompleteReferencedReport"
 
         val companyInformation = apiAccessor.testDataProviderForSfdrData
             .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
@@ -97,6 +79,6 @@ class Sfdr {
 
         assertTrue(testClientError.statusCode == 400)
         assertTrue(testClientError.body.toString().contains("Invalid input"))
-        assertTrue(testClientError.body.toString().contains("The list of referenced reports is not complete."))
+        assertTrue(testClientError.body.toString().contains(errorMessage))
     }
 }
