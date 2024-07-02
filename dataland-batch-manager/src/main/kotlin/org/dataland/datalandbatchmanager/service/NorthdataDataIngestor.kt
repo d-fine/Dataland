@@ -13,9 +13,9 @@ import kotlin.time.Duration
 import kotlin.time.measureTime
 
 /**
- * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
- * @param northDataAccessor downloads the golden copy files from GLEIF
- * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * Class to handle the scheduled update of the NorthData data
+ * @param northDataAccessor downloads the NorthData bulk data
+ * @param companyUploader uploads the company information to the backend
  */
 @Suppress("LongParameterList")
 @Component
@@ -25,7 +25,6 @@ class NorthdataDataIngestor(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
         val csvParser = GleifCsvParser()
         val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
@@ -36,7 +35,7 @@ class NorthdataDataIngestor(
             uploadThreadPool.submit {
                 StreamSupport.stream(northDataIterable.spliterator(), true)
                     .forEach {
-                        companyUploader.uploadOrPatchFromNorthData(it)
+                        companyUploader.uploadOrPatchSingleCompany(it)
                     }
             }.get()
         } finally {

@@ -3,7 +3,12 @@ package org.dataland.batchmanager.service
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
-import org.dataland.datalandbatchmanager.service.*
+import org.dataland.datalandbatchmanager.service.CompanyUploader
+import org.dataland.datalandbatchmanager.service.GleifApiAccessor
+import org.dataland.datalandbatchmanager.service.GleifCsvParser
+import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
+import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
+import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -37,7 +42,7 @@ class GleifGoldenCopyIngestorTest {
     private lateinit var oldFile: File
     private lateinit var newFile: File
 
-    val oldContent = """
+    private val oldContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -49,7 +54,7 @@ class GleifGoldenCopyIngestorTest {
             6000,6667
         """
 
-    val newContent = """
+    private val newContent = """
             LEI,ISIN
             1000,1111
             1000,1112

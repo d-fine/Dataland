@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
-import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -40,23 +39,23 @@ class CompanyUploader(
         val exceptionBodyString = exceptionResponse.body.toString()
 
         val errorResponseBody = objectMapper.readTree(exceptionBodyString)
-        val firstError = errorResponseBody.get("errors")?.get(0)
+        val firstError = errorResponseBody["errors"]?.get(0)
         if (firstError?.get("errorType")?.textValue() != "duplicate-company-identifier") {
             return null
         }
 
-        val conflictingIdentifiers = firstError.get("metaInformation")
+        val conflictingIdentifiers = firstError["metaInformation"]
         if (conflictingIdentifiers == null || !conflictingIdentifiers.isArray || conflictingIdentifiers.size() != 1) {
             return null
         }
 
-        val conflictingIdentifier = conflictingIdentifiers.get(0)
-        val conflictingIdentifierType = conflictingIdentifier.get("identifierType")?.textValue()
+        val conflictingIdentifier = conflictingIdentifiers[0]
+        val conflictingIdentifierType = conflictingIdentifier["identifierType"]?.textValue()
         if (conflictingIdentifierType != IdentifierType.Lei.value) {
             return null
         }
 
-        return conflictingIdentifier.get("companyId")?.textValue()
+        return conflictingIdentifier["companyId"]?.textValue()
     }
 
     private fun retryOnCommonApiErrors(functionToExecute: () -> Unit) {
@@ -185,20 +184,6 @@ class CompanyUploader(
                 companyId,
                 companyPatch,
             )
-        }
-    }
-
-    /**
-     * Method which patches existing company entry with northdata data or creates new company entry from northdata data
-     */
-    // TODO make this doc more detailed
-    fun uploadOrPatchFromNorthData(northDataCompanyInformation: NorthDataCompanyInformation) {
-        var companyId: String? = null
-        if (northDataCompanyInformation.lei != "") companyId = searchCompanyByLEI(northDataCompanyInformation.lei)
-        if (companyId == null) {
-            uploadOrPatchSingleCompany(northDataCompanyInformation)
-        } else {
-            patchSingleCompany(companyId, northDataCompanyInformation)
         }
     }
 }
