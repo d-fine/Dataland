@@ -440,7 +440,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `check that the Dataland uploader can patch contactDetails and website if the company does not have companyOwner`() {
+    fun `check that the Dataland uploader can patch contactDetails and website of a company without an owner`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val companyId = uploadInfo.actualStoredCompany.companyId
         val patchObject = CompanyInformationPatch(
