@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import kotlin.reflect.KClass
 
 /**
-* Annotation for the validation of referenced reports list for Eutaxonomy-non-financials
+* Annotation for the validation of referenced reports list for eutaxonomy-non-financials
 */
 
 @Constraint(validatedBy = [ReferencedReportsListConstraintValidator::class])
@@ -40,8 +40,9 @@ class ReferencedReportsListConstraintValidator :
         }
     }
     private fun getFileReferencesFromReports(map: Map<String, CompanyReport>?): List<String> {
+        if (map == null) return emptyList()
         val referencedReportsList = mutableListOf<String>()
-        for (entry in map?.entries!!) {
+        for (entry in map.entries) {
             referencedReportsList.add(entry.value.fileReference)
         }
         return referencedReportsList
