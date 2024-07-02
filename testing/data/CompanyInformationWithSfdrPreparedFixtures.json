@@ -22,7 +22,13 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "TR",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Jacinthe_Hauck@example.com",
+				"Carmine55@example.com",
+				"Delmer_Rolfson@example.com",
+				"Marguerite.Turner75@example.com",
+				"Justyn1@example.com"
+			],
 			"companyAlternativeNames": [
 				"Cartwright LLC",
 				"Zieme - O'Reilly"
@@ -950,7 +956,7 @@
 				]
 			},
 			"countryCode": "MH",
-			"companyContactDetails": {},
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
 				"Barrows, Gorczany and Okuneva",
 				"Rippin - Adams",
@@ -2163,7 +2169,10 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MS",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Grover_Witting99@example.com",
+				"Colton.Monahan@example.com"
+			],
 			"companyAlternativeNames": [
 				"Ortiz, Gutmann and Orn",
 				"Schneider - Wolf"
@@ -2209,7 +2218,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "RO",
-			"companyContactDetails": {},
+			"companyContactDetails": [],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH",
 			"website": null,
@@ -4723,7 +4732,13 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "RE",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Theodore_Koelpin42@example.com",
+				"Damian.Reichel@example.com",
+				"Mariela93@example.com",
+				"Camilla13@example.com",
+				"Lavonne10@example.com"
+			],
 			"companyAlternativeNames": [
 				"Emard LLC",
 				"Monahan, Wilderman and Cartwright"
@@ -6051,7 +6066,9 @@
 				]
 			},
 			"countryCode": "MW",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Dagmar.DAmore@example.com"
+			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://burly-sleep.org",
@@ -7348,7 +7365,7 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MG",
-			"companyContactDetails": {},
+			"companyContactDetails": [],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"website": null,
@@ -8611,7 +8628,10 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "HM",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Rylan_Tillman@example.com",
+				"Jackson.Connelly@example.com"
+			],
 			"companyAlternativeNames": [
 				"Bartell Inc",
 				"Leannon - Schinner",
@@ -9767,7 +9787,9 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MD",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Edwardo83@example.com"
+			],
 			"companyAlternativeNames": [
 				"Daniel Inc",
 				"Hegmann Group",

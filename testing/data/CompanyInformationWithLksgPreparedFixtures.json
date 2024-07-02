@@ -23,7 +23,7 @@
 				]
 			},
 			"countryCode": "AS",
-			"companyContactDetails": {},
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
 				"Herzog - Green",
 				"Koepp and Sons",
@@ -1032,7 +1032,12 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "BD",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Afton.Harber28@example.com",
+				"Carissa_Stehr@example.com",
+				"Marianna30@example.com",
+				"Danika_Franey47@example.com"
+			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH & Co. KG",
 			"website": "https://incomparable-speaking.info/",
@@ -1850,7 +1855,13 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "AZ",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Catalina_Bernhard@example.com",
+				"Madisyn65@example.com",
+				"Allison.Little@example.com",
+				"Sterling_Hahn@example.com",
+				"Kelsi_Hagenes@example.com"
+			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "AG",
 			"website": "https://golden-ore.org/",
@@ -2620,7 +2631,10 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "TZ",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Alyce.Okuneva@example.com",
+				"Montana_Nolan@example.com"
+			],
 			"companyAlternativeNames": [
 				"Hammes - Pouros",
 				"Hintz, Moore and Ondricka",
@@ -3614,7 +3628,9 @@
 				]
 			},
 			"countryCode": "MM",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Tevin64@example.com"
+			],
 			"companyAlternativeNames": [
 				"Fahey, Wehner and Flatley",
 				"Hayes and Sons",
@@ -4430,7 +4446,13 @@
 				]
 			},
 			"countryCode": "PL",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Brigitte.Adams@example.com",
+				"Ruth.Kling@example.com",
+				"Freddie67@example.com",
+				"Karlee_Hodkiewicz@example.com",
+				"Giles.Conn11@example.com"
+			],
 			"companyAlternativeNames": [
 				"Hagenes - Smitham",
 				"Kertzmann and Sons",
@@ -4505,7 +4527,13 @@
 				]
 			},
 			"countryCode": "NC",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Celia.Homenick61@example.com",
+				"Bryana_Langworth27@example.com",
+				"Elinor21@example.com",
+				"Giovani_Fisher@example.com",
+				"Ahmad81@example.com"
+			],
 			"companyAlternativeNames": [
 				"Adams and Sons",
 				"Beier Group",
@@ -5332,7 +5360,10 @@
 				]
 			},
 			"countryCode": "MW",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Trystan_Davis@example.com",
+				"Pattie_Schiller18@example.com"
+			],
 			"companyAlternativeNames": [
 				"Reilly and Sons",
 				"Welch - Bahringer"
@@ -6059,7 +6090,11 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "PR",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Griffin.Lebsack@example.com",
+				"Godfrey_Bergstrom41@example.com",
+				"Nathanael.Raynor@example.com"
+			],
 			"companyAlternativeNames": [
 				"Carroll - Thompson",
 				"Crooks - Kautzer",
@@ -7049,7 +7084,10 @@
 				]
 			},
 			"countryCode": "SJ",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Reyes_Rutherford27@example.com",
+				"Emmy.Pacocha@example.com"
+			],
 			"companyAlternativeNames": [
 				"Adams Group",
 				"Considine Group",
@@ -8132,7 +8170,13 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "DO",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Mary.Lind75@example.com",
+				"Terry85@example.com",
+				"Alena26@example.com",
+				"Aniyah.Lebsack9@example.com",
+				"Allison_Zboncak89@example.com"
+			],
 			"companyAlternativeNames": [
 				"Bechtelar, Grady and Hudson",
 				"Hegmann - Mosciski",
@@ -9013,7 +9057,10 @@
 				]
 			},
 			"countryCode": "LR",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Rico62@example.com",
+				"Janice.Zemlak@example.com"
+			],
 			"companyAlternativeNames": [
 				"Murray - Bernhard",
 				"Rath, Schmidt and Hirthe"
@@ -9765,7 +9812,13 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "NU",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Loma.Hayes10@example.com",
+				"Beulah24@example.com",
+				"Carmen84@example.com",
+				"Tevin88@example.com",
+				"Salvador_Jenkins88@example.com"
+			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"website": "https://whirlwind-conclusion.info",

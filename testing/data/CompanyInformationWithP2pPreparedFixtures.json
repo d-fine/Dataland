@@ -26,7 +26,9 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "SO",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Nathaniel33@example.com"
+			],
 			"companyAlternativeNames": [
 				"Osinski, Jacobi and Heathcote"
 			],
@@ -257,7 +259,9 @@
 				]
 			},
 			"countryCode": "UG",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Pierce31@example.com"
+			],
 			"companyAlternativeNames": [
 				"Johns - Hyatt",
 				"Thiel LLC"
@@ -460,7 +464,9 @@
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "MX",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Elizabeth.Collier@example.com"
+			],
 			"companyAlternativeNames": [
 				"Beer - Dickinson",
 				"Cruickshank LLC",
@@ -708,7 +714,13 @@
 				]
 			},
 			"countryCode": "HK",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Lawson31@example.com",
+				"Damien86@example.com",
+				"Velva.VonRueden88@example.com",
+				"Uriah30@example.com",
+				"Kay_Blanda2@example.com"
+			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
 			"website": "https://prime-chives.biz",

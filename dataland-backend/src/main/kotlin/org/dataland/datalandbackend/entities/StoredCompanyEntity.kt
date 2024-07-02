@@ -35,7 +35,7 @@ data class StoredCompanyEntity(
     @ElementCollection
     @Column(name = "company_contact_details")
     @OrderBy("asc")
-    var companyContactDetails: Set<String>?,
+    var companyContactDetails: List<String>?,
 
     @Column(name = "company_legal_form")
     var companyLegalForm: String?,

@@ -26,7 +26,7 @@ data class CompanyInformation(
 
     val companyAlternativeNames: List<String>?,
 
-    val companyContactDetails: Set<String>?,
+    val companyContactDetails: List<String>?,
 
     val companyLegalForm: String?,
 

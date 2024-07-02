@@ -28,7 +28,10 @@
 				]
 			},
 			"countryCode": "MK",
-			"companyContactDetails": {},
+			"companyContactDetails": [
+				"Alejandra.OReilly@example.com",
+				"Glenna21@example.com"
+			],
 			"companyAlternativeNames": [
 				"Berge LLC",
 				"Daugherty Group",
