@@ -3,7 +3,6 @@ package org.dataland.e2etests.tests
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -571,27 +570,36 @@ class CompanyDataControllerTest {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        assertThrows<ClientException> {
+        val exception = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
                 companyId,
                 fullPatchObject,
             )
         }
+        val responseBody = (exception.response as ClientError<*>).body as String
+        assertTrue(
+            responseBody.contains(
+                "You do not have the required permission to change the following fields",
+            ),
+        )
     }
 
     @Test
     fun `check that patching with an invalid company ID and invalid patch fields returns an exception`() {
-        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val originalCompany = uploadInfo.actualStoredCompany
-        val companyId = originalCompany.companyId + "1"
-
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
-        assertThrows<ServerException> {
+        val exception = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.patchCompanyById(
-                companyId,
+                UUID.randomUUID().toString(),
                 fullPatchObject,
             )
         }
+
+        val responseBody = (exception.response as ClientError<*>).body as String
+        assertTrue(
+            responseBody.contains(
+                "Dataland does not know the company ID",
+            ),
+        )
     }
 }
