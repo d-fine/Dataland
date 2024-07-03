@@ -105,7 +105,7 @@ function createAssetManagementCompany(
  * @returns the modified fixture
  */
 function createAssetManagementAndInsuranceCompany(
-    input: FixtureData<EuTaxonomyDataForFinancials>
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
   input.companyInformation.companyName = 'asset-management-insurance-company';
   input.t = new EuFinancialsGenerator().generateEuTaxonomyDataForFinancialsWithTypes([
@@ -146,11 +146,11 @@ function createAllValuesCompany(
  * @returns the modified fixture
  */
 function createCompanyWithBrokenFileReference(
-    input: FixtureData<EuTaxonomyDataForFinancials>
+  input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
-  input = createAllValuesCompany(input)
-  input.companyInformation.companyName =  'TestForIncompleteReferencedReport'
-  input.t.referencedReports = null
+  input = createAllValuesCompany(input);
+  input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
+  input.t.referencedReports = null;
   return input;
 }
 
@@ -177,5 +177,3 @@ function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
     return input;
   };
 }
-
-

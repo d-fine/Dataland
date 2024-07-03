@@ -15,7 +15,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
     manipulateFixtureForOneFilledSubcategory,
     generateFixtureWithBrokenFileReference,
-      generateFixtureWithIncompleteReferencedReport,
+    generateFixtureWithIncompleteReferencedReport,
   ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
@@ -208,6 +208,6 @@ function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): F
  */
 function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
-  input.t.general.general.referencedReports = null
+  input.t.general.general.referencedReports = null;
   return input;
 }
