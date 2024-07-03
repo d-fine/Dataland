@@ -115,7 +115,7 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
         fileReference: String?,
         referencedReport: JSONObject?,
         dataPointFileName: String?,
-        referencedReports: JSONObject
+        referencedReports: JSONObject,
     ) {
         if (referencedReport != null) {
             if (!referencedReport.optString("fileName").isNullOrEmpty()) {
@@ -127,7 +127,7 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
             } else {
                 logger.warn(
                     "Found a referenced report with file reference $fileReference without a file name" +
-                            "and no data point with a fileName",
+                        "and no data point with a fileName",
                 )
             }
         } else if (dataPointFileName != null) {
@@ -139,7 +139,7 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
         } else {
             logger.warn(
                 "Found a file reference $fileReference without a file name " +
-                        "and no data point with a fileName",
+                    "and no data point with a fileName",
             )
         }
     }
