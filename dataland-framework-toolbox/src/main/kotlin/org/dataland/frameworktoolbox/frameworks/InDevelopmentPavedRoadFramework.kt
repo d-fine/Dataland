@@ -56,12 +56,19 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun insertReferencedReportValidatorIfNeeded(dataModel: FrameworkDataModelBuilder) {
+        logger.info(
+            "Searching for report preupload component to determine " +
+                "if a referenced report validator is needed.",
+        )
         val referencedReports = framework.root.nestedChildren.find { it is ReportPreuploadComponent }
         if (referencedReports != null) {
             val referencedReportsPath = referencedReports.getKotlinFieldAccessor()
             val extendedDocumentFileReferences =
                 framework.root.nestedChildren.flatMap { it.getExtendedDocumentReference() }.toList()
-
+            logger.info(
+                "The validator will check for ${extendedDocumentFileReferences.size} " +
+                    "extended document file references.",
+            )
             val validatorPackage = dataModel.rootPackageBuilder.addPackage("validator")
             val referencedReportValidatorBuilder = ReferencedReportValidatorBuilder(
                 validatorPackage,
