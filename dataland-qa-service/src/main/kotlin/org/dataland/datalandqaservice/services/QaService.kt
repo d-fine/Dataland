@@ -41,6 +41,8 @@ class QaService(
     private data class ForwardedQaMessage(
         val identifier: String,
         val comment: String,
+        val reviewer: String,
+        val message: String?,
     )
 
     /**
@@ -122,8 +124,8 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
-        val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
-        val documentId = message.identifier
+        val forwardedQaMessage = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+        val documentId = forwardedQaMessage.identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -132,7 +134,10 @@ class QaService(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
             val messageToSend = objectMapper.writeValueAsString(
-                QaCompletedMessage(documentId, QaStatus.Accepted),
+                QaCompletedMessage(
+                    documentId, QaStatus.Accepted,
+                    forwardedQaMessage.reviewer, forwardedQaMessage.message,
+                ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 messageToSend, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
