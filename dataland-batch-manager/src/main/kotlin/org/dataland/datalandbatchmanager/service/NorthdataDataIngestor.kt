@@ -28,7 +28,8 @@ class NorthdataDataIngestor(
     private fun filterAndTriggerUpload(northDataCompanyInformation: NorthDataCompanyInformation) {
         when (northDataCompanyInformation.status) {
             "terminated" -> return
-            "active" -> {
+            //TODO discuss how to handle these cases
+            "active", "liquidation", "" -> {
                 companyUploader.uploadOrPatchSingleCompany(northDataCompanyInformation)
             }
             else -> {
