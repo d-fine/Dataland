@@ -30,7 +30,6 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
     }
 
     fun migrateReferencedReports(dataTableEntity: DataTableEntity, framework: String) {
-
         val dataset = dataTableEntity.dataJsonObject
         val dataPoints = findAllDataPoints(dataset)
 
@@ -92,7 +91,6 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
     }
 
     private fun updateReferencedReports(referencedReports: JSONObject, dataPoints: List<JSONObject>) {
-
         val referencedReportsFileReferences = referencedReports.keys().asSequence().map { key ->
             val nestedObject = referencedReports.getJSONObject(key)
             Pair(nestedObject.getString("fileReference"), nestedObject)
@@ -105,34 +103,44 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
         } // note that in the case of the same key with two names the last key remains
 
         val allFileReferences = referencedReportsFileReferences.keys.union(dataPointsFileReferences.keys)
-        for (fileReference in allFileReferences) {
 
+        for (fileReference in allFileReferences) {
             val referencedReport = referencedReportsFileReferences[fileReference]
             val dataPointFileName = dataPointsFileReferences[fileReference]
-            if (referencedReport != null) {
-
-                if (!referencedReport.optString("fileName").isNullOrEmpty()) {
-                    continue
-                }
-
-                if (dataPointFileName != null) {
-                    referencedReport.put("fileName", dataPointFileName)
-                }
-                else {
-                    logger.warn("Found a referenced report with file reference $fileReference without a file name" +
-                            "and no data point with a fileName")
-                }
-            } else if (dataPointFileName != null) {
-                // there is no referenced report, hence we add a new json object into the list of referenced reports
-                referencedReports.put(
-                    dataPointFileName,
-                    JSONObject(mapOf("fileReference" to fileReference, "fileName" to dataPointFileName))
-                )
-            } else {
-                logger.warn("Found a file reference $fileReference without a file name " +
-                        "and no data point with a fileName")
-            }
+            updateFileReference(fileReference, referencedReport, dataPointFileName, referencedReports)
         }
     }
 
+    private fun updateFileReference(
+        fileReference: String?,
+        referencedReport: JSONObject?,
+        dataPointFileName: String?,
+        referencedReports: JSONObject
+    ) {
+        if (referencedReport != null) {
+            if (!referencedReport.optString("fileName").isNullOrEmpty()) {
+                return
+            }
+
+            if (dataPointFileName != null) {
+                referencedReport.put("fileName", dataPointFileName)
+            } else {
+                logger.warn(
+                    "Found a referenced report with file reference $fileReference without a file name" +
+                            "and no data point with a fileName",
+                )
+            }
+        } else if (dataPointFileName != null) {
+            // there is no referenced report, hence we add a new json object into the list of referenced reports
+            referencedReports.put(
+                dataPointFileName,
+                JSONObject(mapOf("fileReference" to fileReference, "fileName" to dataPointFileName)),
+            )
+        } else {
+            logger.warn(
+                "Found a file reference $fileReference without a file name " +
+                        "and no data point with a fileName",
+            )
+        }
+    }
 }

@@ -51,7 +51,7 @@ class V18__CompleteListOfReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V18/originalNonFinancialCase1.json",
             "V18/expectedNonFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") }
+            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") },
         )
     }
 
@@ -61,7 +61,7 @@ class V18__CompleteListOfReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V18/originalNonFinancialCase2.json",
             "V18/expectedNonFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") }
+            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") },
         )
     }
 
@@ -71,7 +71,7 @@ class V18__CompleteListOfReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V18/originalFinancialCase1.json",
             "V18/expectedFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") }
+            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") },
         )
     }
 
@@ -81,7 +81,7 @@ class V18__CompleteListOfReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V18/originalFinancialCase2.json",
             "V18/expectedFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") }
+            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") },
         )
     }
 }
