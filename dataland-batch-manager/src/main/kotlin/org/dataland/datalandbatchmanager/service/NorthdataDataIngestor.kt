@@ -25,6 +25,20 @@ class NorthdataDataIngestor(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private fun filterAndTriggerUpload(northDataCompanyInformation: NorthDataCompanyInformation) {
+        when (northDataCompanyInformation.status) {
+            "terminated" -> return
+            "active" -> {
+                companyUploader.uploadOrPatchSingleCompany(northDataCompanyInformation)
+            }
+            else -> {
+                logger.info("Found unexpected status code for NorthDataCompanyInformation " +
+                        "${northDataCompanyInformation.status} for company with name " +
+                        "${northDataCompanyInformation.companyName}")
+            }
+        }
+    }
+
     // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
         val csvParser = GleifCsvParser()
@@ -36,7 +50,7 @@ class NorthdataDataIngestor(
             uploadThreadPool.submit {
                 StreamSupport.stream(northDataIterable.spliterator(), true)
                     .forEach {
-                        companyUploader.uploadOrPatchSingleCompany(it)
+                        filterAndTriggerUpload(it)
                     }
             }.get()
         } finally {

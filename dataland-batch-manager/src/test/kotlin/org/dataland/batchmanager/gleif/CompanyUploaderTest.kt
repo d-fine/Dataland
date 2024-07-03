@@ -15,6 +15,8 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -138,54 +140,66 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload handles a socket timeout and terminates after two retries`() {
+    fun `check that the upload handles a socket timeout and terminates after MAX_RETRIES tries`() {
         `when`(
             mockCompanyDataControllerApi
                 .postCompany(dummyCompanyInformation1.toCompanyPost()),
         ).thenThrow(SocketTimeoutException())
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
-        verify(mockCompanyDataControllerApi, times(3))
+        verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
             .postCompany(dummyCompanyInformation1.toCompanyPost())
     }
 
     @Test
-    fun `check that the upload handles a server exception and terminates after two retries`() {
+    fun `check that the upload handles a server exception and terminates after MAX_RETRIES tries`() {
         `when`(
             mockCompanyDataControllerApi
                 .postCompany(dummyCompanyInformation1.toCompanyPost()),
         ).thenThrow(ServerException())
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
-        verify(mockCompanyDataControllerApi, times(3))
+        verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
             .postCompany(dummyCompanyInformation1.toCompanyPost())
     }
 
     @Test
-    fun `check that the upload handles a client exception and terminates after two retries`() {
+    fun `check that the upload handles a client exception and terminates after MAX_RETRIES tries`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
             ClientException(
                 statusCode = UNAUTHORIZED_CODE,
             ),
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
-        verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1.toCompanyPost())
+        verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES)).postCompany(
+            dummyCompanyInformation1.toCompanyPost())
     }
 
-    @Test
-    fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`() {
-        val exceptionBodyContents = javaClass.getResourceAsStream("/sampleResponseIdentifierAlreadyExists.json")
-            .readAllBytes()
+    private fun readAndPrepareBadRequestClientException(resourceFileName: String)
+    : ClientException {
+        val exceptionBodyContents = javaClass.getResourceAsStream(resourceFileName)!!.readAllBytes()
         val exceptionBodyString = String(exceptionBodyContents)
-
-        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
-            ClientException(
-                statusCode = HttpStatus.BAD_REQUEST.value(),
-                response = ClientError<Any>(
-                    body = exceptionBodyString,
-                ),
+        return ClientException(
+            statusCode = HttpStatus.BAD_REQUEST.value(),
+            response = ClientError<Any>(
+                body = exceptionBodyString,
             ),
         )
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = [
+        "/sampleResponseLeiIdentifierAlreadyExists.json:1",
+        "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json:0",
+        "/sampleResponseMultipleIdentifierAlreadyExists.json:0"],
+        delimiter = ':')
+    fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`(
+        responseFilePath: String, numberOfPatchInvocations: String
+    ) {
+
+        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
+            readAndPrepareBadRequestClientException(responseFilePath),
+        )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
-        verify(mockCompanyDataControllerApi, times(1))
+        verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations.toInt()))
             .patchCompanyById("violating-company-id", dummyCompanyInformation1.toCompanyPatch())
     }
 }
