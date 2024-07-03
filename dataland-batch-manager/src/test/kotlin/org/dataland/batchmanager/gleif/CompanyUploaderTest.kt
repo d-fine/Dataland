@@ -170,11 +170,11 @@ class CompanyUploaderTest {
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES)).postCompany(
-            dummyCompanyInformation1.toCompanyPost())
+            dummyCompanyInformation1.toCompanyPost(),
+        )
     }
 
-    private fun readAndPrepareBadRequestClientException(resourceFileName: String)
-    : ClientException {
+    private fun readAndPrepareBadRequestClientException(resourceFileName: String): ClientException {
         val exceptionBodyContents = javaClass.getResourceAsStream(resourceFileName)!!.readAllBytes()
         val exceptionBodyString = String(exceptionBodyContents)
         return ClientException(
@@ -186,15 +186,18 @@ class CompanyUploaderTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = [
-        "/sampleResponseLeiIdentifierAlreadyExists.json:1",
-        "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json:0",
-        "/sampleResponseMultipleIdentifierAlreadyExists.json:0"],
-        delimiter = ':')
+    @CsvSource(
+        value = [
+            "/sampleResponseLeiIdentifierAlreadyExists.json:1",
+            "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json:0",
+            "/sampleResponseMultipleIdentifierAlreadyExists.json:0",
+        ],
+        delimiter = ':',
+    )
     fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`(
-        responseFilePath: String, numberOfPatchInvocations: String
+        responseFilePath: String,
+        numberOfPatchInvocations: String,
     ) {
-
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
