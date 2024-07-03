@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
-import org.dataland.datalandbackendutils.exceptions.InvalidPatchApiException
+import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole
@@ -92,7 +92,7 @@ class CompanyOwnershipChecker(
             .map { it.name }
 
         if (unauthorizedFields.isNotEmpty()) {
-            throw InvalidPatchApiException(
+            throw InsufficientRightsApiException(
                 "Invalid alteration attempt",
                 "You do not have the required permission to change the following fields:" +
                     " ${unauthorizedFields.joinToString(", ")}",
