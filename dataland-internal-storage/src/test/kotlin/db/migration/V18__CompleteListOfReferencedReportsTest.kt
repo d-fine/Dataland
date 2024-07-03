@@ -3,6 +3,8 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+private const val V_18_EXPECTED_SFDR_JSON = "V18/expectedSfdr.json"
+
 class V18__CompleteListOfReferencedReportsTest {
 
     @Test
@@ -10,8 +12,10 @@ class V18__CompleteListOfReferencedReportsTest {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V18/originalSfdrCase1.json",
-            "V18/expectedSfdr.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr") },
+            V_18_EXPECTED_SFDR_JSON,
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr")
+            },
         )
     }
 
@@ -20,8 +24,10 @@ class V18__CompleteListOfReferencedReportsTest {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V18/originalSfdrCase2.json",
-            "V18/expectedSfdr.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr") },
+            V_18_EXPECTED_SFDR_JSON,
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr")
+            },
         )
     }
 
@@ -30,8 +36,10 @@ class V18__CompleteListOfReferencedReportsTest {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V18/originalSfdrCase3.json",
-            "V18/expectedSfdr.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr") },
+            V_18_EXPECTED_SFDR_JSON,
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr")
+            },
         )
     }
 
@@ -41,7 +49,9 @@ class V18__CompleteListOfReferencedReportsTest {
             "sfdr",
             "V18/originalSfdrCase4.json",
             "V18/expectedSfdrCase4.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr") },
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "sfdr")
+            },
         )
     }
 
@@ -51,7 +61,12 @@ class V18__CompleteListOfReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V18/originalNonFinancialCase1.json",
             "V18/expectedNonFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") },
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(
+                    dataTableEntity,
+                    "eutaxonomy-non-financials",
+                )
+            },
         )
     }
 
@@ -61,27 +76,42 @@ class V18__CompleteListOfReferencedReportsTest {
             "eutaxonomy-non-financials",
             "V18/originalNonFinancialCase2.json",
             "V18/expectedNonFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-non-financials") },
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(
+                    dataTableEntity,
+                    "eutaxonomy-non-financials",
+                )
+            },
         )
     }
 
     @Test
     fun `check migration script for Financial with no changes`() {
         TestUtils().testMigrationOfSingleDataset(
-            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
             "V18/originalFinancialCase1.json",
             "V18/expectedFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") },
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(
+                    dataTableEntity,
+                    "eutaxonomy-financials",
+                )
+            },
         )
     }
 
     @Test
     fun `check migration script for Financial add missing information`() {
         TestUtils().testMigrationOfSingleDataset(
-            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
             "V18/originalFinancialCase2.json",
             "V18/expectedFinancial.json",
-            { dataTableEntity -> V18__CompleteListOfReferencedReports().migrateReferencedReports(dataTableEntity, "eutaxonomy-financials") },
+            { dataTableEntity ->
+                V18__CompleteListOfReferencedReports().migrateReferencedReports(
+                    dataTableEntity,
+                    "eutaxonomy-financials",
+                )
+            },
         )
     }
 }

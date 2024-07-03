@@ -8,6 +8,10 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 
+/**
+ * This migration script completes the list of referenced reports
+ * with all reports referenced in ExtendedDataPoints.
+ */
 class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
 
     private val frameworksToMigrate = listOf(
@@ -29,6 +33,9 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
         }
     }
 
+    /**
+     * Migrates the referencedReports to the new desired structure
+     */
     fun migrateReferencedReports(dataTableEntity: DataTableEntity, framework: String) {
         val dataset = dataTableEntity.dataJsonObject
         val dataPoints = findAllDataPoints(dataset)
