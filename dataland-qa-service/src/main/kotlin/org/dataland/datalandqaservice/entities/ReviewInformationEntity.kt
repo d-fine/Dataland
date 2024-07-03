@@ -16,4 +16,5 @@ data class ReviewInformationEntity(
     val receptionTime: Long,
     var qaStatus: QaStatus,
     val reviewerKeycloakId: String,
+    var message: String?
 )
