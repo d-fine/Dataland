@@ -11,7 +11,7 @@ import { formatStringForDatatable } from '@/components/resources/dataTable/conve
 import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory';
 import { activityApiNameToHumanizedName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames';
 import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
-import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory';
+import { formatListOfBaseDataPoint } from '@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory';
 export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData> = [
   {
     type: 'section',

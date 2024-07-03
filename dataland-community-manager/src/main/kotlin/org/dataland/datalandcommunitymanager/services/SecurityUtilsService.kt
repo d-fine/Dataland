@@ -96,11 +96,12 @@ class SecurityUtilsService(
      */
     @Transactional
     fun isUserMemberOfTheCompany(
-        companyId: UUID,
+        companyId: UUID?,
     ): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name ?: return false
-        return companyRoleAssignmentRepository.findByCompanyIdAndCompanyRoleAndUserId(
-            companyId = companyId.toString(), companyRole = null, userId = userId,
+        val userId = SecurityContextHolder.getContext().authentication.name
+        if (companyId == null || userId == null) return false
+        return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+            companyId = companyId.toString(), userId = userId, companyRole = null,
         ).isNotEmpty()
     }
 
@@ -116,15 +117,11 @@ class SecurityUtilsService(
     ): Boolean {
         val userId = SecurityContextHolder.getContext().authentication.name ?: return false
         val userCompanyRoles =
-            companyRoleAssignmentRepository.findByCompanyIdAndCompanyRoleAndUserId(
-                companyId = companyId.toString(), companyRole = null, userId = userId,
+            companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
+                companyId = companyId.toString(), userId = userId, companyRole = null,
             )
-        var hasUserPermission = false
-        userCompanyRoles.forEach {
-            if (roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true) {
-                hasUserPermission = true
-            }
+        return userCompanyRoles.any {
+            roleModificationPermissionsMap[it.companyRole]?.contains(companyRoleToModify) == true
         }
-        return hasUserPermission
     }
 }

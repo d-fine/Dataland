@@ -146,7 +146,7 @@
           "company-roles-controller"
         ],
         "summary": "Assign company role for the company to the user.",
-        "description": "The company role for the specified company is being assigned to the user.",
+        "description": "The company role for the specified company is being assigned to the user. Endpoint accessible for all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be assigned.",
         "operationId": "assignCompanyRole",
         "parameters": [
           {
@@ -222,7 +222,7 @@
           "company-roles-controller"
         ],
         "summary": "Remove company role for the company from the user.",
-        "description": "The company role for the specified company is being removed from the user.",
+        "description": "The company role for the specified company is being removed from the user. Endpoint accessible for all Dataland-Admins and some Company-Role-Assignees of the company, based on the company role that shall be removed.",
         "operationId": "removeCompanyRole",
         "parameters": [
           {
@@ -291,7 +291,7 @@
           "company-roles-controller"
         ],
         "summary": "Validate company role for company and user.",
-        "description": "Checks whether the company role for the company is assigned to the user.",
+        "description": "Checks whether the company role for the company is assigned to the user. Endpoint accessible for all Dataland-Admins, for all users that check for their own userId, and all Company-Role-Assignees of the company.",
         "operationId": "hasUserCompanyRole",
         "parameters": [
           {
@@ -365,7 +365,7 @@
           "company-roles-controller"
         ],
         "summary": "Request company ownership for the company.",
-        "description": "Request company ownership for the company on Dataland.",
+        "description": "Request company ownership for the company on Dataland. Endpoint accessible for all Dataland users.",
         "operationId": "postCompanyOwnershipRequest",
         "parameters": [
           {
@@ -425,7 +425,7 @@
           "company-roles-controller"
         ],
         "summary": "Validate existence of company ownership for the company.",
-        "description": "Validates if at least one company owner exists for the specified company",
+        "description": "Validates if at least one company owner exists for the specified company. Endpoint accessible for all Dataland users.",
         "operationId": "hasCompanyAtLeastOneOwner",
         "parameters": [
           {
@@ -586,7 +586,7 @@
                 "lksg",
                 "p2p",
                 "sfdr",
-                "sme",
+                "vsme",
                 "esg-questionnaire",
                 "heimathafen"
               ]
@@ -816,7 +816,7 @@
                   "lksg",
                   "p2p",
                   "sfdr",
-                  "sme",
+                  "vsme",
                   "esg-questionnaire",
                   "heimathafen"
                 ]
@@ -885,27 +885,36 @@
         ]
       }
     },
-    "/company-role-assignments/{role}/{companyId}": {
+    "/company-role-assignments": {
       "get": {
         "tags": [
           "company-roles-controller"
         ],
         "summary": "Retrieve company role assignments for company and company role.",
-        "description": "Get company role assignments for the specified company role and company.",
+        "description": "Get company role assignments for the specified company role and company. Endpoint accessible for all Dataland-Admins and all Company-Role-Assignees of the company.",
         "operationId": "getCompanyRoleAssignments",
         "parameters": [
           {
             "name": "role",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/CompanyRole"
             }
           },
           {
             "name": "companyId",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -1216,7 +1225,7 @@
               "lksg",
               "p2p",
               "sfdr",
-              "sme",
+              "vsme",
               "esg-questionnaire",
               "heimathafen"
             ]
@@ -1295,7 +1304,7 @@
             "type": "array",
             "example": [
               "p2p",
-              "sme"
+              "vsme"
             ],
             "items": {
               "type": "string",
@@ -1305,7 +1314,7 @@
                 "lksg",
                 "p2p",
                 "sfdr",
-                "sme",
+                "vsme",
                 "esg-questionnaire",
                 "heimathafen"
               ]
@@ -1542,7 +1551,7 @@
               "lksg",
               "p2p",
               "sfdr",
-              "sme",
+              "vsme",
               "esg-questionnaire",
               "heimathafen"
             ]

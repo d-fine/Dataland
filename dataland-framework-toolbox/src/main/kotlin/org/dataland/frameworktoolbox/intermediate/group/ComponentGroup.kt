@@ -26,6 +26,10 @@ class ComponentGroup(
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
+    override var isNullable: Boolean
+        get() = super.isNullable && nestedChildren.all { it.isNullable }
+        set(value) { super.isNullable = value }
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
         val groupClass = groupPackage.addClass(
@@ -37,11 +41,9 @@ class ComponentGroup(
             it.generateDataModel(groupClass)
         }
 
-        val isRequired = isRequired || nestedChildren.any { it.isRequired }
-
         dataClassBuilder.addProperty(
             identifier,
-            groupClass.getTypeReference(nullable = !isRequired),
+            groupClass.getTypeReference(isNullable),
             listOf(ValidAnnotation),
         )
     }

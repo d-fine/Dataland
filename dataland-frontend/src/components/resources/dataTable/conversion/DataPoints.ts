@@ -99,6 +99,9 @@ export function wrapDisplayValueWithDatapointInformation(
   fieldLabel: string,
   datapointProperties: DatapointProperties | undefined | null
 ): AvailableMLDTDisplayObjectTypes {
+  if (inputValue === undefined) {
+    return MLDTDisplayObjectForEmptyString;
+  }
   if (doesAnyDataPointPropertyExist(datapointProperties)) {
     return {
       displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,

@@ -1,11 +1,14 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class EuTaxonomyNonFinancials {
@@ -56,5 +59,35 @@ class EuTaxonomyNonFinancials {
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
         Assertions.assertEquals(listOfOneEuTaxonomyNonFinancialsDataSet[0], downloadedAssociatedData.data)
+    }
+
+    @Test
+    fun `check that EuTaxonomyForNonFinancials data cannot be uploaded if list of referenced Reports is incomplete`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyName = "TestForIncompleteReferencedReport"
+
+        val companyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName)
+
+        val dataSet = companyInformation!!.t
+
+        val uploadPair = Pair(dataSet, "2024")
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.uploadWithWait(
+                companyId = companyId,
+                frameworkData = uploadPair.first,
+                reportingPeriod = uploadPair.second,
+                uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
+            )
+        }
+
+        val testClientError = exception.response as ClientError<*>
+
+        Assertions.assertTrue(testClientError.statusCode == 400)
+        Assertions.assertTrue(testClientError.body.toString().contains("Invalid input"))
+        Assertions.assertTrue(
+            testClientError.body.toString().contains("The list of referenced reports is not complete."),
+        )
     }
 }
