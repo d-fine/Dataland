@@ -70,11 +70,31 @@ data class NorthDataCompanyInformation(
      * Transform the North Data company information to a PATCH object that can be used to update the information of the
      * company using the Dataland API
      */
-    override fun toCompanyPatch(): CompanyInformationPatch {
+    override fun toCompanyPatch(conflictingIdentifiers: Set<String?>?): CompanyInformationPatch? {
+        var returnFullPatch = false
+
+        if (conflictingIdentifiers != null) {
+            if (conflictingIdentifiers.size > 3) return null
+            val hasLei = conflictingIdentifiers.contains(IdentifierType.Lei.value)
+            val hasRegisterId = conflictingIdentifiers.contains(IdentifierType.CompanyRegistrationNumber.value)
+            if (!hasLei && hasRegisterId) returnFullPatch = true
+        }
+
         val identifiers: MutableMap<String, List<String>> = HashMap()
         if (registerId != "") identifiers[IdentifierType.CompanyRegistrationNumber.value] = listOf(registerId)
         if (vatId != "") identifiers[IdentifierType.VatNumber.value] = listOf(vatId)
-        return CompanyInformationPatch(identifiers = identifiers)
+
+        if (!returnFullPatch) return CompanyInformationPatch(identifiers = identifiers)
+
+        return CompanyInformationPatch(
+            companyName = companyName,
+            companyAlternativeNames = null,
+            companyLegalForm = null,
+            countryCode = countryCode,
+            headquarters = headquarters,
+            headquartersPostalCode = headquartersPostalCode,
+            identifiers = identifiers,
+        )
     }
 
     override fun getNameAndIdentifier(): String {

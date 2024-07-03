@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
@@ -49,6 +50,19 @@ class CompanyUploaderTest {
             headquartersPostalCode = "CompanyPostalCode",
             lei = "DummyLei2",
         ),
+    )
+
+    private val dummyCompanyInformation3 = NorthDataCompanyInformation(
+        companyName = "CompanyName3",
+        countryCode = "CompanyCountry",
+        headquarters = "CompanyCity",
+        headquartersPostalCode = "CompanyPostalCode",
+        lei = "dummy-lei1234",
+        vatId = "",
+        registerId = "Dummy HRB 12356",
+        sector = "",
+        status = "active",
+        street = "Teststraße",
     )
 
     @BeforeEach
@@ -170,11 +184,11 @@ class CompanyUploaderTest {
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES)).postCompany(
-            dummyCompanyInformation1.toCompanyPost())
+            dummyCompanyInformation1.toCompanyPost(),
+        )
     }
 
-    private fun readAndPrepareBadRequestClientException(resourceFileName: String)
-    : ClientException {
+    private fun readAndPrepareBadRequestClientException(resourceFileName: String): ClientException {
         val exceptionBodyContents = javaClass.getResourceAsStream(resourceFileName)!!.readAllBytes()
         val exceptionBodyString = String(exceptionBodyContents)
         return ClientException(
@@ -186,20 +200,24 @@ class CompanyUploaderTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = [
-        "/sampleResponseLeiIdentifierAlreadyExists.json:1",
-        "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json:0",
-        "/sampleResponseMultipleIdentifierAlreadyExists.json:0"],
-        delimiter = ':')
+    @CsvSource(
+        value = [
+            "/sampleResponseLeiIdentifierAlreadyExists.json:1",
+            "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json:0",
+            "/sampleResponseMultipleIdentifierAlreadyExists.json:0",
+        ],
+        delimiter = ':',
+    )
     fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`(
-        responseFilePath: String, numberOfPatchInvocations: String
+        responseFilePath: String,
+        numberOfPatchInvocations: String,
     ) {
-
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
+        val dummyPatch = dummyCompanyInformation1.toCompanyPatch() ?: return
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations.toInt()))
-            .patchCompanyById("violating-company-id", dummyCompanyInformation1.toCompanyPatch())
+            .patchCompanyById("violating-company-id", dummyPatch)
     }
 }

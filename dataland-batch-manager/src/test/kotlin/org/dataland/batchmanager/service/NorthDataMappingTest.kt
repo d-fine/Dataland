@@ -35,8 +35,16 @@ class NorthDataMappingTest {
         countryCode = "DE",
     )
 
-    private val expectedCompanyInformationPatch = CompanyInformationPatch(
+    private val expectedMinimalCompanyInformationPatch = CompanyInformationPatch(
         identifiers = expectedIdentifiers,
+    )
+
+    private val expectedCompanyInformationPatch = CompanyInformationPatch(
+        companyName = "test Gmbh",
+        headquarters = "Osnabrück",
+        headquartersPostalCode = "49078",
+        identifiers = expectedIdentifiers,
+        countryCode = "DE",
     )
 
     @Test
@@ -49,6 +57,38 @@ class NorthDataMappingTest {
         val onlyElement = iterable.iterator().next()
         assertEquals(expectedNorthDataCompanyInformation, onlyElement)
         assertEquals(expectedCompanyInformation, onlyElement.toCompanyPost())
-        assertEquals(expectedCompanyInformationPatch, onlyElement.toCompanyPatch())
+        // Test all getters
+        assertEquals(
+            expectedNorthDataCompanyInformation,
+            NorthDataCompanyInformation(
+                headquarters = onlyElement.headquarters,
+                headquartersPostalCode = onlyElement.headquartersPostalCode,
+                countryCode = onlyElement.countryCode,
+                companyName = onlyElement.companyName,
+                registerId = onlyElement.registerId,
+                street = onlyElement.street,
+                vatId = onlyElement.vatId,
+                status = onlyElement.status,
+                sector = onlyElement.sector,
+                lei = onlyElement.lei,
+            ),
+        )
+        assertEquals(expectedMinimalCompanyInformationPatch, onlyElement.toCompanyPatch())
+        assertEquals(
+            null,
+            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber", "Lei", "VatId", "Something")),
+        )
+        assertEquals(
+            expectedMinimalCompanyInformationPatch,
+            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber", "Lei")),
+        )
+        assertEquals(
+            expectedMinimalCompanyInformationPatch,
+            onlyElement.toCompanyPatch(setOf("Lei")),
+        )
+        assertEquals(
+            expectedCompanyInformationPatch,
+            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber")),
+        )
     }
 }

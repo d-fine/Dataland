@@ -2,6 +2,7 @@ package org.dataland.datalandbatchmanager.model
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 
 /**
  * Data class combining the information found in the GLEIF LEI and RR files
@@ -35,7 +36,12 @@ data class GleifCompanyCombinedInformation(
      * Transform the GLEIF company information to a PATCH object that can be used to update the information of the
      * company using the Dataland API
      */
-    override fun toCompanyPatch(): CompanyInformationPatch {
+    override fun toCompanyPatch(conflictingIdentifiers: Set<String?>?): CompanyInformationPatch? {
+        // When updating from GLEIF data, the only conflicting identifier must always be the Lei
+        if ((conflictingIdentifiers != null) &&
+            !(conflictingIdentifiers.size == 1 && conflictingIdentifiers.contains(IdentifierType.Lei.value))
+        ) { return null }
+
         return CompanyInformationPatch(
             companyName = gleifCompanyInformation.companyName,
             countryCode = gleifCompanyInformation.countryCode,

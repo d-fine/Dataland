@@ -28,14 +28,16 @@ class NorthdataDataIngestor(
     private fun filterAndTriggerUpload(northDataCompanyInformation: NorthDataCompanyInformation) {
         when (northDataCompanyInformation.status) {
             "terminated" -> return
-            //TODO discuss how to handle these cases
+            // TODO discuss how to handle these cases
             "active", "liquidation", "" -> {
                 companyUploader.uploadOrPatchSingleCompany(northDataCompanyInformation)
             }
             else -> {
-                logger.info("Found unexpected status code for NorthDataCompanyInformation " +
+                logger.info(
+                    "Found unexpected status code for NorthDataCompanyInformation " +
                         "${northDataCompanyInformation.status} for company with name " +
-                        "${northDataCompanyInformation.companyName}")
+                        northDataCompanyInformation.companyName,
+                )
             }
         }
     }
