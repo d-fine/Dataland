@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyId
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
@@ -17,7 +18,8 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUT
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -25,45 +27,13 @@ import org.mockito.Mockito.`when`
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.HttpStatus
 import java.net.SocketTimeoutException
+import java.util.stream.Stream
 
 @ComponentScan(basePackages = ["org.dataland"])
 class CompanyUploaderTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var companyUploader: CompanyUploader
     private lateinit var mockStoredCompany: StoredCompany
-
-    private val dummyCompanyInformation1 = GleifCompanyCombinedInformation(
-        GleifCompanyInformation(
-            companyName = "CompanyName1",
-            countryCode = "CompanyCountry",
-            headquarters = "CompanyCity",
-            headquartersPostalCode = "CompanyPostalCode",
-            lei = "DummyLei1",
-        ),
-    )
-
-    private val dummyCompanyInformation2 = GleifCompanyCombinedInformation(
-        GleifCompanyInformation(
-            companyName = "CompanyName2",
-            countryCode = "CompanyCountry",
-            headquarters = "CompanyCity",
-            headquartersPostalCode = "CompanyPostalCode",
-            lei = "DummyLei2",
-        ),
-    )
-
-    private val dummyCompanyInformation3 = NorthDataCompanyInformation(
-        companyName = "CompanyName3",
-        countryCode = "CompanyCountry",
-        headquarters = "CompanyCity",
-        headquartersPostalCode = "CompanyPostalCode",
-        lei = "dummy-lei1234",
-        vatId = "",
-        registerId = "Dummy HRB 12356",
-        sector = "",
-        status = "active",
-        street = "Teststraße",
-    )
 
     @BeforeEach
     fun setup() {
@@ -200,24 +170,63 @@ class CompanyUploaderTest {
     }
 
     @ParameterizedTest
-    @CsvSource(
-        value = [
-            "/sampleResponseLeiIdentifierAlreadyExists.json:1",
-            "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json:0",
-            "/sampleResponseMultipleIdentifierAlreadyExists.json:0",
-        ],
-        delimiter = ':',
-    )
+    @MethodSource("provideInputForDuplicateIdentifiers")
     fun `check that the upload handles a bad request exception and switches to patching on duplicate identifiers`(
         responseFilePath: String,
-        numberOfPatchInvocations: String,
+        numberOfPatchInvocations: Int,
+        dummyCompanyInformation: ExternalCompanyInformation,
     ) {
-        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
+        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
-        val dummyPatch = dummyCompanyInformation1.toCompanyPatch() ?: return
-        verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations.toInt()))
+        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
+        val dummyPatch = dummyCompanyInformation.toCompanyPatch() ?: return
+        verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
             .patchCompanyById("violating-company-id", dummyPatch)
+    }
+
+    companion object {
+        private val dummyCompanyInformation1 = GleifCompanyCombinedInformation(
+            GleifCompanyInformation(
+                companyName = "CompanyName1",
+                countryCode = "CompanyCountry",
+                headquarters = "CompanyCity",
+                headquartersPostalCode = "CompanyPostalCode",
+                lei = "DummyLei1",
+            ),
+        )
+
+        private val dummyCompanyInformation2 = GleifCompanyCombinedInformation(
+            GleifCompanyInformation(
+                companyName = "CompanyName2",
+                countryCode = "CompanyCountry",
+                headquarters = "CompanyCity",
+                headquartersPostalCode = "CompanyPostalCode",
+                lei = "DummyLei2",
+            ),
+        )
+
+        private val dummyCompanyInformation3 = NorthDataCompanyInformation(
+            companyName = "CompanyName3",
+            countryCode = "CompanyCountry",
+            headquarters = "CompanyCity",
+            headquartersPostalCode = "CompanyPostalCode",
+            lei = "dummy-lei1234",
+            vatId = "",
+            registerId = "Dummy HRB 12356",
+            sector = "",
+            status = "active",
+            street = "Teststraße",
+        )
+
+        @JvmStatic
+        fun provideInputForDuplicateIdentifiers(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of("/sampleResponseLeiIdentifierAlreadyExists.json", 1, dummyCompanyInformation1),
+                Arguments.of("/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json", 0, dummyCompanyInformation2),
+                Arguments.of("/sampleResponseMultipleIdentifierAlreadyExists.json", 0, dummyCompanyInformation3),
+                Arguments.of("/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json", 1, dummyCompanyInformation3),
+            )
+        }
     }
 }

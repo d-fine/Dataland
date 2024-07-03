@@ -88,8 +88,6 @@ data class NorthDataCompanyInformation(
 
         return CompanyInformationPatch(
             companyName = companyName,
-            companyAlternativeNames = null,
-            companyLegalForm = null,
             countryCode = countryCode,
             headquarters = headquarters,
             headquartersPostalCode = headquartersPostalCode,
