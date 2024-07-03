@@ -6,6 +6,7 @@ import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 
 class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
 
@@ -14,6 +15,8 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
         "eutaxonomy-financials",
         "sfdr",
     )
+
+    private val logger = LoggerFactory.getLogger("Migration V18")
 
     override fun migrate(context: Context?) {
         frameworksToMigrate.forEach { framework ->
@@ -43,7 +46,7 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
 
     private fun findAllDataPoints(jsonObject: JSONObject): List<JSONObject> {
         val dataSource = jsonObject.getOrJavaNull("dataSource") as JSONObject?
-        return if (dataSource !== null) {
+        return if (dataSource !== null && dataSource.has("fileName") && dataSource.has("fileReference")) {
             listOf(dataSource)
         } else {
             jsonObject.keys().asSequence().mapNotNull { key ->
@@ -81,9 +84,8 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
                 val generalGeneral = general.optJSONObject("general")
                 getOrInsertJSONObject(generalGeneral, "referencedReports")
             }
-
             else -> {
-                JSONObject() // ????????
+                JSONObject()
             }
         }
         return referencedReports
@@ -116,14 +118,19 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
                 if (dataPointFileName != null) {
                     referencedReport.put("fileName", dataPointFileName)
                 }
+                else {
+                    logger.warn("Found a referenced report with file reference $fileReference without a file name" +
+                            "and no data point with a fileName")
+                }
             } else if (dataPointFileName != null) {
-
+                // there is no referenced report, hence we add a new json object into the list of referenced reports
                 referencedReports.put(
                     dataPointFileName,
                     JSONObject(mapOf("fileReference" to fileReference, "fileName" to dataPointFileName))
                 )
             } else {
-                // sollte man vorher auschliessen
+                logger.warn("Found a file reference $fileReference without a file name " +
+                        "and no data point with a fileName")
             }
         }
     }
