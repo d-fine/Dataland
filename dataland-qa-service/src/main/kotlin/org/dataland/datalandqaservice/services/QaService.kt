@@ -41,8 +41,6 @@ class QaService(
     private data class ForwardedQaMessage(
         val identifier: String,
         val comment: String,
-        val reviewer: String,
-        val message: String?,
     )
 
     /**
@@ -135,8 +133,8 @@ class QaService(
             )
             val messageToSend = objectMapper.writeValueAsString(
                 QaCompletedMessage(
+                    //todo
                     documentId, QaStatus.Accepted,
-                    forwardedQaMessage.reviewer, forwardedQaMessage.message,
                 ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
