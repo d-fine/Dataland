@@ -14,7 +14,8 @@ fun ComponentBase.getTypescriptFieldAccessor(valueAccessor: Boolean = false): St
         .mapNotNull {
             when (it) {
                 // Normally: you would expect the condition: if (it.isNullable) "?" else ""
-                // However, due to a previous bug in it.isNullable, a "?" was always emitted and some code paths depend on this.
+                // However, due to a previous bug in it.isNullable,
+                // a "?" was always emitted and some code paths depend on this.
                 // So we always output a "?".
                 is ComponentGroup -> it.identifier + "?"
                 else -> null

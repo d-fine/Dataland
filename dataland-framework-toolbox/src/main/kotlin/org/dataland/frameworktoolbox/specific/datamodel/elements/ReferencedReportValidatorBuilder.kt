@@ -11,7 +11,8 @@ import kotlin.io.path.div
  * This validator checks whether all extendedDocumentReferences are also in the referencedReports stored in
  * referencedReportsPath for a dataClass specified by dataClass.
  * The validator will be placed in the parent package and the framework identifier is used to create the template.
- * Note: This builder only creates the validator class. The annotation needs to be added to the dataClass to be effective.
+ * Note: This builder only creates the validator class.
+ * The annotation needs to be added to the dataClass to be effective.
  */
 data class ReferencedReportValidatorBuilder(
     override val parentPackage: PackageBuilder,
