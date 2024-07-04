@@ -52,13 +52,18 @@ class CompanyUploaderTest {
 
         companyUploader.updateIsins(deltaMap)
 
-        val compIdentifiers = mapOf(
-            "Isin" to listOf("1111", "1112", "1113"),
-        )
         val compPatch = CompanyInformationPatch(
-            companyName = null, companyAlternativeNames = null, companyLegalForm = null,
-            headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
-            website = null, isTeaserCompany = null,
+            companyName = null,
+            companyContactDetails = null,
+            companyAlternativeNames = null,
+            companyLegalForm = null,
+            headquarters = null,
+            headquartersPostalCode = null,
+            sector = null,
+            identifiers = mapOf("Isin" to listOf("1111", "1112", "1113")),
+            countryCode = null,
+            website = null,
+            isTeaserCompany = null,
         )
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.Lei, "1000")

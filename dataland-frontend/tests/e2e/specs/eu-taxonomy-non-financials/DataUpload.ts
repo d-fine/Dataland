@@ -28,7 +28,7 @@ describeIf(
      */
     function fillRequiredEutaxonomyNonFinancialsFields(): void {
       cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-trigger').click();
-      cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').click();
+      cy.get('div.p-datepicker').find('button[aria-label="Next Month"]').first().click();
       cy.get('div.p-datepicker').find('span:contains("11")').click();
       selectItemFromDropdownByIndex(cy.get('div[name="value"]'), 1);
       cy.get('input[name="provider"]').type('Some Assurance Provider Company');

@@ -1,6 +1,7 @@
 export const companyDataNames = {
   companyName: 'Company Name',
   companyAlternativeNames: 'Company Alternative Names',
+  companyContactDetails: 'Company Contact Details',
   companyLegalForm: 'Company Legal Form',
   headquarters: 'Headquarters',
   headquartersPostalCode: 'Headquarters Postal Code',
@@ -19,6 +20,7 @@ export const companyDataNames = {
 export const companyDataExplanations = {
   companyName: 'Name of the company',
   companyAlternativeNames: 'Short names or aliases of the company',
+  companyContactDetails: 'E-Mail addresses of the company',
   companyLegalForm:
     'Legal Form means, for example, „Public Limited Company (PLC)‟, Private Limited Company (Ltd)‟, „Limited Liability Partnership (LLP)‟, „Partnership without Limited Liability‟ or „Sole Trader‟, or the equivalent in the jurisdiction in which company based',
   headquarters: 'City where the headquarters of the company are located',
