@@ -2,8 +2,6 @@ package org.dataland.datalandbatchmanager.service
 
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.model.GleifCompanyCombinedInformation
-import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
-import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

@@ -1,7 +1,6 @@
 package org.dataland.batchmanager.service
 
 import org.dataland.batchmanager.utils.ZipFileCreator
-import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
 import org.junit.jupiter.api.Test

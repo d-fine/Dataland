@@ -90,7 +90,7 @@ class GleifCsvParser {
      * @return An iterable of the corresponding objects
      */
     fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader):
-            Iterable<GleifRelationshipInformation> {
+        Iterable<GleifRelationshipInformation> {
         return readDataFromBufferedReader(bufferedReader)
     }
 
@@ -100,7 +100,7 @@ class GleifCsvParser {
      * @return An iterable of the corresponding objects
      */
     fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader):
-            Iterable<GleifCompanyInformation> {
+        Iterable<GleifCompanyInformation> {
         return readDataFromBufferedReader(bufferedReader)
     }
 
@@ -110,7 +110,7 @@ class GleifCsvParser {
      * @return An iterable of the corresponding objects
      */
     fun readNorthDataFromBufferedReader(bufferedReader: BufferedReader):
-            Iterable<NorthDataCompanyInformation> {
+        Iterable<NorthDataCompanyInformation> {
         return readDataFromBufferedReader(bufferedReader)
     }
 }
