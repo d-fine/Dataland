@@ -96,4 +96,13 @@ class QaEventListenerQaServiceTest(
         }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
+
+    @Test
+    fun `check an exception is thrown in reading out message from data quality assured queue when dataId is empty`() {
+        val correlationId = "correlationId"
+        val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
+            qaEventListenerQaService.addDataToReviewHistory(noIdPayload, correlationId, MessageType.ManualQaRequested)
+        }
+        Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
+    }
 }

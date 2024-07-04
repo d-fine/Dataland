@@ -176,10 +176,10 @@ class QaEventListenerQaService(
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(messageAsJsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
-        val validationResult = qaCompletedMessage.validationResult
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
+        val validationResult = qaCompletedMessage.validationResult
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
             logger.info("Assigning quality status $validationResult to dataset with ID $dataId")
