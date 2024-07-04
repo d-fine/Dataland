@@ -10,7 +10,9 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -30,11 +32,12 @@ import java.time.Instant
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-class AutomatedQaCompletedListener(
+class QaEventListenerQaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
+    @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -133,8 +136,7 @@ class AutomatedQaCompletedListener(
             )
             val messageToSend = objectMapper.writeValueAsString(
                 QaCompletedMessage(
-                    //todo
-                    documentId, QaStatus.Accepted, "todo", null
+                    documentId, QaStatus.Accepted, "automated-qa", null
                 ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -144,7 +146,7 @@ class AutomatedQaCompletedListener(
         }
     }
     /**
-     * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
+     * Method to retrieve qa completed message and store the
      * @param messageAsJsonString the message body as json string
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
@@ -165,12 +167,29 @@ class AutomatedQaCompletedListener(
             ),
         ],
     )
-    fun assureQualityOfData2(
+    fun addDataToReviewHistory(
         @Payload messageAsJsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
-      //todo
+        val qaCompletedMessage = objectMapper.readValue(messageAsJsonString, QaCompletedMessage::class.java)
+        val dataId = qaCompletedMessage.identifier
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
+            logger.info("Assigning quality status ${QaStatus.Accepted} to dataset with ID $dataId")
+            reviewHistoryRepository.save(
+                ReviewInformationEntity(
+                    dataId = dataId,
+                    receptionTime = System.currentTimeMillis(),
+                    qaStatus = QaStatus.Accepted,
+                    reviewerKeycloakId = qaCompletedMessage.reviewerId,
+                    message = qaCompletedMessage.message,
+                ),
+            )
+        }
     }
 }

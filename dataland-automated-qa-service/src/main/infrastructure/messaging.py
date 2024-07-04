@@ -96,7 +96,7 @@ def _send_qa_completed_message(
     status: QaStatus,
     correlation_id: str,
 ) -> None:
-    message_to_send = {"identifier": resource_id, "validationResult": status}
+    message_to_send = {"identifier": resource_id, "validationResult": status, "reviewerId": "automated-qa"}
     _send_message(
         channel=channel,
         exchange=p.mq_quality_assured_exchange,

@@ -10,5 +10,5 @@ data class QaCompletedMessage(
     val identifier: String,
     val validationResult: QaStatus,
     val reviewerId: String,
-    val message: String?,
+    val message: String? = null,
 )
