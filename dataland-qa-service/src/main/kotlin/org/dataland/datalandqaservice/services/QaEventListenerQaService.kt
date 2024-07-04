@@ -136,7 +136,7 @@ class QaEventListenerQaService(
             )
             val messageToSend = objectMapper.writeValueAsString(
                 QaCompletedMessage(
-                    documentId, QaStatus.Accepted, "automated-qa", null
+                    documentId, QaStatus.Accepted, "automated-qa", null,
                 ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -145,6 +145,7 @@ class QaEventListenerQaService(
             )
         }
     }
+
     /**
      * Method to retrieve qa completed message and store the
      * @param messageAsJsonString the message body as json string
@@ -175,17 +176,18 @@ class QaEventListenerQaService(
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(messageAsJsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
+        val validationResult = qaCompletedMessage.validationResult
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            logger.info("Assigning quality status ${QaStatus.Accepted} to dataset with ID $dataId")
+            logger.info("Assigning quality status $validationResult to dataset with ID $dataId")
             reviewHistoryRepository.save(
                 ReviewInformationEntity(
                     dataId = dataId,
                     receptionTime = System.currentTimeMillis(),
-                    qaStatus = QaStatus.Accepted,
+                    qaStatus = validationResult,
                     reviewerKeycloakId = qaCompletedMessage.reviewerId,
                     message = qaCompletedMessage.message,
                 ),
