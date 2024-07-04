@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * An enum that holds the different activites related to EU taxonomy for non financial companies
+ * An enum that holds the different activities related to EU taxonomy for non-financial companies
  */
 @Schema(
     enumAsRef = true,
@@ -158,6 +158,6 @@ enum class Activity(val value: String) {
     CollectionAndTransportOfHazardousWaste("Collection and transport of hazardous waste"),
     RemediationOfLegallyNonConformingLandfillsAndAbandonedOrIllegalWasteDumps("Remediation of legally non-conforming landfills and abandoned or illegal waste dumps"),
     RemediationOfContaminatedSitesAndAreas("Remediation of contaminated sites and areas"),
-    ConservationIncludingRestorationOfHabitats[1]Ecosystems[2]AndSpecies("Conservation, including restoration, of habitats[1], ecosystems[2] and species"),
+    ConservationIncludingRestorationOfHabitats_1_Ecosystems_2_AndSpecies("Conservation, including restoration, of habitats[1], ecosystems[2] and species"),
     HotelsHolidayCampingGroundsAndSimilarAccommodation("Hotels, holiday, camping grounds and similar accommodation"),
 }
