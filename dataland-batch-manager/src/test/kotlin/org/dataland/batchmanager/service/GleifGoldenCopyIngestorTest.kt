@@ -112,6 +112,8 @@ class GleifGoldenCopyIngestorTest {
         val mockFile = mock(File::class.java)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mockFile)
         `when`(mockGleifCsvParser.getCsvStreamFromZip(mockFile)).thenReturn(bufferedReader)
+        `when`(mockGleifCsvParser.readGleifCompanyDataFromBufferedReader(bufferedReader)).thenReturn(
+            GleifCsvParser().readGleifCompanyDataFromBufferedReader(bufferedReader))
 
         companyIngestor.prepareGleifDeltaFile()
 
