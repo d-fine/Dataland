@@ -116,45 +116,45 @@ class CompanyUploaderTest {
 
     @Test
     fun `check that the upload requests are succesfully sent on the first try if the environment is ideal`() {
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation2)
+        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1)
+        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation2)
 
-        verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation1.toCompanyPost())
-        verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation2.toCompanyPost())
+        verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyGleifCompanyInformation1.toCompanyPost())
+        verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyGleifCompanyInformation2.toCompanyPost())
     }
 
     @Test
     fun `check that the upload handles a socket timeout and terminates after MAX_RETRIES tries`() {
         `when`(
             mockCompanyDataControllerApi
-                .postCompany(dummyCompanyInformation1.toCompanyPost()),
+                .postCompany(dummyGleifCompanyInformation1.toCompanyPost()),
         ).thenThrow(SocketTimeoutException())
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
-            .postCompany(dummyCompanyInformation1.toCompanyPost())
+            .postCompany(dummyGleifCompanyInformation1.toCompanyPost())
     }
 
     @Test
     fun `check that the upload handles a server exception and terminates after MAX_RETRIES tries`() {
         `when`(
             mockCompanyDataControllerApi
-                .postCompany(dummyCompanyInformation1.toCompanyPost()),
+                .postCompany(dummyGleifCompanyInformation1.toCompanyPost()),
         ).thenThrow(ServerException())
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES))
-            .postCompany(dummyCompanyInformation1.toCompanyPost())
+            .postCompany(dummyGleifCompanyInformation1.toCompanyPost())
     }
 
     @Test
     fun `check that the upload handles a client exception and terminates after MAX_RETRIES tries`() {
-        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1.toCompanyPost())).thenThrow(
+        `when`(mockCompanyDataControllerApi.postCompany(dummyGleifCompanyInformation1.toCompanyPost())).thenThrow(
             ClientException(
                 statusCode = UNAUTHORIZED_CODE,
             ),
         )
-        companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadOrPatchSingleCompany(dummyGleifCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(CompanyUploader.MAX_RETRIES)).postCompany(
-            dummyCompanyInformation1.toCompanyPost(),
+            dummyGleifCompanyInformation1.toCompanyPost(),
         )
     }
 
@@ -175,18 +175,18 @@ class CompanyUploaderTest {
         responseFilePath: String,
         numberOfPatchInvocations: Int,
         dummyCompanyInformation: ExternalCompanyInformation,
+        expectedPatch: CompanyInformationPatch,
     ) {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation.toCompanyPost())).thenThrow(
             readAndPrepareBadRequestClientException(responseFilePath),
         )
         companyUploader.uploadOrPatchSingleCompany(dummyCompanyInformation)
-        val dummyPatch = dummyCompanyInformation.toCompanyPatch() ?: return
         verify(mockCompanyDataControllerApi, times(numberOfPatchInvocations))
-            .patchCompanyById("violating-company-id", dummyPatch)
+            .patchCompanyById("violating-company-id", expectedPatch)
     }
 
     companion object {
-        private val dummyCompanyInformation1 = GleifCompanyCombinedInformation(
+        private val dummyGleifCompanyInformation1 = GleifCompanyCombinedInformation(
             GleifCompanyInformation(
                 companyName = "CompanyName1",
                 countryCode = "CompanyCountry",
@@ -196,7 +196,7 @@ class CompanyUploaderTest {
             ),
         )
 
-        private val dummyCompanyInformation2 = GleifCompanyCombinedInformation(
+        private val dummyGleifCompanyInformation2 = GleifCompanyCombinedInformation(
             GleifCompanyInformation(
                 companyName = "CompanyName2",
                 countryCode = "CompanyCountry",
@@ -206,7 +206,7 @@ class CompanyUploaderTest {
             ),
         )
 
-        private val dummyCompanyInformation3 = NorthDataCompanyInformation(
+        private val dummyNorthDataCompanyInformation3 = NorthDataCompanyInformation(
             companyName = "CompanyName3",
             countryCode = "CompanyCountry",
             headquarters = "CompanyCity",
@@ -223,16 +223,34 @@ class CompanyUploaderTest {
         fun provideInputForDuplicateIdentifiers(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of(
-                    "/sampleResponseLeiIdentifierAlreadyExists.json", 1, dummyCompanyInformation1,
+                    "/sampleResponseLeiIdentifierAlreadyExists.json",
+                    1,
+                    dummyGleifCompanyInformation1,
+                    dummyGleifCompanyInformation1.toCompanyPatch(),
                 ),
                 Arguments.of(
-                    "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json", 0, dummyCompanyInformation2,
+                    "/sampleResponseLeiIdentifierAlreadyExists.json",
+                    1,
+                    dummyNorthDataCompanyInformation3,
+                    dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
                 Arguments.of(
-                    "/sampleResponseMultipleIdentifierAlreadyExists.json", 0, dummyCompanyInformation3,
+                    "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json",
+                    1,
+                    dummyNorthDataCompanyInformation3,
+                    dummyNorthDataCompanyInformation3.toCompanyPatch(setOf("CompanyRegistrationNumber")),
                 ),
                 Arguments.of(
-                    "/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json", 1, dummyCompanyInformation3,
+                    "/sampleResponseMultipleIdentifierAlreadyExists.json",
+                    0,
+                    dummyNorthDataCompanyInformation3,
+                    dummyNorthDataCompanyInformation3.toCompanyPatch(),
+                ),
+                Arguments.of(
+                    "/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json",
+                    1,
+                    dummyNorthDataCompanyInformation3,
+                    dummyNorthDataCompanyInformation3.toCompanyPatch(),
                 ),
             )
         }
