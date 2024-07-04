@@ -30,7 +30,7 @@ import java.time.Instant
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-class QaService(
+class AutomatedQaCompletedListener(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
@@ -134,7 +134,7 @@ class QaService(
             val messageToSend = objectMapper.writeValueAsString(
                 QaCompletedMessage(
                     //todo
-                    documentId, QaStatus.Accepted,
+                    documentId, QaStatus.Accepted, "todo", null
                 ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -142,5 +142,35 @@ class QaService(
                 RoutingKeyNames.document,
             )
         }
+    }
+    /**
+     * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
+     * @param messageAsJsonString the message body as json string
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "dataQualityAssuredQaService",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
+                key = [RoutingKeyNames.data],
+            ),
+        ],
+    )
+    fun assureQualityOfData2(
+        @Payload messageAsJsonString: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
+    ) {
+        messageUtils.validateMessageType(type, MessageType.QaCompleted)
+      //todo
     }
 }

@@ -44,6 +44,14 @@
             "schema": {
               "$ref": "#/components/schemas/QaStatus"
             }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

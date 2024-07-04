@@ -28,13 +28,13 @@ import org.springframework.boot.test.context.SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(classes = [DatalandQaService::class])
-class QaServiceTest(
+class AutomatedQaCompletedListenerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val testReviewQueueRepository: ReviewQueueRepository,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
-    lateinit var qaService: QaService
+    lateinit var automatedQaCompletedListener: AutomatedQaCompletedListener
 
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
@@ -42,7 +42,7 @@ class QaServiceTest(
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-        qaService = QaService(
+        automatedQaCompletedListener = AutomatedQaCompletedListener(
             mockCloudEventMessageHandler,
             objectMapper,
             messageUtils,
@@ -54,7 +54,7 @@ class QaServiceTest(
     fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.addDataToQueue(noIdPayload, correlationId, MessageType.ManualQaRequested)
+            automatedQaCompletedListener.addDataToQueue(noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -66,6 +66,8 @@ class QaServiceTest(
             QaCompletedMessage(
                 identifier = dataId,
                 validationResult = QaStatus.Accepted,
+                reviewerId = "someId",
+                message = null,
             ),
         )
         `when`(
@@ -77,7 +79,7 @@ class QaServiceTest(
         )
         val dummyPayload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to true.toString())).toString()
         assertThrows<AmqpException> {
-            qaService.addDataToQueue(dummyPayload, correlationId, MessageType.DataStored)
+            automatedQaCompletedListener.addDataToQueue(dummyPayload, correlationId, MessageType.DataStored)
         }
     }
 
@@ -85,7 +87,8 @@ class QaServiceTest(
     fun `check an exception is thrown in reading out message from document stored queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.assureQualityOfDocument(noIdPayload, correlationId, MessageType.ManualQaRequested)
+            automatedQaCompletedListener.assureQualityOfDocument(
+                noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
