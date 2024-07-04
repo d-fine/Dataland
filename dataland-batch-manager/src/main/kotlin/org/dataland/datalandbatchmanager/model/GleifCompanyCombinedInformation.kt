@@ -18,6 +18,7 @@ data class GleifCompanyCombinedInformation(
     override fun toCompanyPost(): CompanyInformation {
         return CompanyInformation(
             companyName = gleifCompanyInformation.companyName,
+            companyContactDetails = null,
             companyAlternativeNames = null,
             companyLegalForm = null,
             countryCode = gleifCompanyInformation.countryCode,

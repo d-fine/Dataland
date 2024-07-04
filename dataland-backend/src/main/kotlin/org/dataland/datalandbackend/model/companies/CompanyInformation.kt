@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * Class for defining the request body of a post company request
  * @param companyName official name of the company
  * @param companyAlternativeNames other names or abbreviations the company is known under
+ * @param companyContactDetails the email addresses of the company
  * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
@@ -25,6 +26,8 @@ data class CompanyInformation(
     val companyName: String,
 
     val companyAlternativeNames: List<String>?,
+
+    val companyContactDetails: List<String>?,
 
     val companyLegalForm: String?,
 

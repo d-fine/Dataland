@@ -32,6 +32,11 @@ data class StoredCompanyEntity(
     @OrderBy("asc")
     var companyAlternativeNames: List<String>?,
 
+    @ElementCollection
+    @Column(name = "company_contact_details")
+    @OrderBy("asc")
+    var companyContactDetails: List<String>?,
+
     @Column(name = "company_legal_form")
     var companyLegalForm: String?,
 
@@ -86,6 +91,7 @@ data class StoredCompanyEntity(
                 companyName = companyName,
                 companyAlternativeNames = companyAlternativeNames,
                 companyLegalForm = companyLegalForm,
+                companyContactDetails = companyContactDetails,
                 headquarters = headquarters,
                 headquartersPostalCode = headquartersPostalCode,
                 sector = sector,

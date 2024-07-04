@@ -39,6 +39,7 @@ class CompanyAlterationManager(
             companyId = companyId,
             companyName = companyInformation.companyName,
             companyAlternativeNames = companyInformation.companyAlternativeNames,
+            companyContactDetails = companyInformation.companyContactDetails,
             companyLegalForm = companyInformation.companyLegalForm,
             headquarters = companyInformation.headquarters,
             headquartersPostalCode = companyInformation.headquartersPostalCode,
@@ -135,6 +136,7 @@ class CompanyAlterationManager(
         val companyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
         patch.companyName?.let { companyEntity.companyName = it }
+        patch.companyContactDetails?.let { companyEntity.companyContactDetails = it }
         patch.companyLegalForm?.let { companyEntity.companyLegalForm = it }
         patch.headquarters?.let { companyEntity.headquarters = it }
         patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
@@ -173,6 +175,7 @@ class CompanyAlterationManager(
         val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
         storedCompanyEntity.companyName = companyInformation.companyName
+        storedCompanyEntity.companyContactDetails = companyInformation.companyContactDetails
         storedCompanyEntity.companyLegalForm = companyInformation.companyLegalForm
         storedCompanyEntity.headquarters = companyInformation.headquarters
         storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
