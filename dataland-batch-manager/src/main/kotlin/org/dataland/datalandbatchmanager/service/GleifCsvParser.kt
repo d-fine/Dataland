@@ -73,7 +73,7 @@ class GleifCsvParser {
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding T objects
      */
-    final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader):
+    private final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader):
         Iterable<T> {
         return Iterable<T> {
             CsvMapper()
