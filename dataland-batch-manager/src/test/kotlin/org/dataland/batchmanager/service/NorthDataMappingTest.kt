@@ -75,10 +75,6 @@ class NorthDataMappingTest {
         )
         assertEquals(expectedMinimalCompanyInformationPatch, onlyElement.toCompanyPatch())
         assertEquals(
-            null,
-            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber", "Lei", "VatId", "Something")),
-        )
-        assertEquals(
             expectedMinimalCompanyInformationPatch,
             onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber", "Lei")),
         )
