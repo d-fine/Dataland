@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -36,6 +37,33 @@ interface QaApi {
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getUnreviewedDatasetsIds(): ResponseEntity<List<String>>
+
+    /**
+     * A method to get the QA review status of an uploaded dataset for a given identifier
+     * @param identifier the identifier
+     */
+    @Operation(
+        summary = "Gets the QA review status of an uploaded dataset for a given identifier.",
+        description = "Gets the QA review status of an uploaded dataset for a given identifier.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Found a QA review status corresponding the identifier."),
+            ApiResponse(responseCode = "404", description = "Found QA review status corresponding the identifier."),
+        ],
+    )
+    @GetMapping(
+        value = ["/datasets/{identifier}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_REVIEWER') " +
+            "or hasRole('ROLE_ADMIN') " +
+            "or @SecurityUtilsService.isUserAskingQaReviewStatusOfUploadedDataset(#identifier)",
+    )
+    fun getDatasetByIdentifier(
+        @PathVariable("identifier") identifier: String,
+    ): ResponseEntity<ReviewInformationEntity>
 
     /**
      * Assigns a quality status to a unreviewed dataset

@@ -41,6 +41,19 @@ class QaController(
         return ResponseEntity.ok(reviewQueueRepository.getSortedPendingDataIds())
     }
 
+    @Transactional // braucht man das?
+    override fun getDatasetByIdentifier(identifier: String): ResponseEntity<ReviewInformationEntity> {
+        logger.info("Received request to respond with the status of a dataset with the identifier $identifier")
+
+        // TODO make a ReviewInformationResponse where ReviewerKeycloak ID is optional
+        //  Siehe auch GetDataRequest fragt eine DataRequestEntity in der Datenbank ab
+        //  diese wird dann in einen StoredDataRequst verwandelt
+
+        // TODO check if user is admin
+        val roles = DatalandAuthentication.fromContext().roles
+        TODO()
+    }
+
     @Transactional
     override fun assignQaStatus(dataId: String, qaStatus: QaStatus, message: String?) {
         val correlationId = randomUUID().toString()
