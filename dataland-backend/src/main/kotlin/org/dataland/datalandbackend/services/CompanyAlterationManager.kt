@@ -131,6 +131,7 @@ class CompanyAlterationManager(
      * @param patch the patch to apply to the company
      * @return the updated company information object
      */
+    @Suppress("CyclomaticComplexMethod")
     @Transactional
     fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
         val companyEntity = companyQueryManager.getCompanyById(companyId)

@@ -61,6 +61,10 @@ class NorthdataDataIngestor(
         }
     }
 
+    /**
+     * Method to download and execute the NorthData bulk data update
+     * @param downloadFile function to execute to download the NorthData bulk data
+     */
     @Synchronized
     fun processNorthdataFile(downloadFile: (file: File) -> Unit) {
         val zipFile = File.createTempFile("northdata_golden_copy", ".zip")
