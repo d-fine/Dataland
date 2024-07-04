@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * Defines an update to basic company information
  * @param companyName official name of the company
  * @param companyAlternativeNames other names or abbreviations the company is known under
+ * @param companyContactDetails the email addresses of the company
  * @param companyLegalForm legal structure of the company (e.g. „Public Limited Company (PLC)‟)
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
@@ -23,6 +24,8 @@ data class CompanyInformationPatch(
     val companyName: String? = null,
 
     val companyAlternativeNames: List<String>? = null,
+
+    val companyContactDetails: List<String>? = null,
 
     val companyLegalForm: String? = null,
 

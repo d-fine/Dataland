@@ -26,39 +26,39 @@
           "cards": [
             {
               "icon": "BzUkAtdcKvg",
-              "title": "Sven Schubert,",
+              "title": "Sven Schubert",
               "text": " CEO of Envoria",
               "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
             },
             {
-              "icon": "NqEjkz-3hPw",
-              "title": "Jonas Weisbach,",
-              "text": "Business Development Manager ESG\n at Metzler Asset Management",
-              "date": "\"We believe that open source, reliable and comparable data is the single best way to identify the companies that walk the walk.\""
-            },
-            {
               "icon": "rCkISSQreCI",
-              "title": "Dr. Egbert Schark,",
+              "title": "Dr. Egbert Schark",
               "text": "Founder and Managing Director\n at d-fine GmbH",
               "date": "\"I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!\""
             },
             {
               "icon": "g40FkVQZjUc",
-              "title": "Daniel Sailer,",
+              "title": "Daniel Sailer",
               "text": " Head of Sustainable Investment Office\n at Metzler Asset Management GmbH",
               "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
             },
             {
               "icon": "Jx1v2Z-9cBw",
               "title": "Dr. Anna-Lisa Schwarz",
-              "text": "Managing Director at Werte-Stiftung ",
+              "text": "Managing Director at Werte-Stiftung",
               "date": "\"Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data.\""
             },
             {
               "icon": "WJg2KKUVch4",
               "title": "Rudolf Siebel",
-              "text": "Managing Director at BVI German Fund Association ",
+              "text": "Managing Director at BVI German Fund Association",
               "date": "\"[Through Dataland], we hope that data availability, coverage and quality is improved, for the benefit of the users, the corporations and society overall.\""
+            },
+            {
+              "icon": "tFTkaG2p2D4",
+              "title": "Stephan Henkel",
+              "text": "Managing Directer at VÖB-Service GmbH",
+              "date": "\"Then came Dataland with the idea that ESG data should be a common good, and I think that's excellent [...].\""
             },
             {
               "icon": "jeyQERlJPP8",
@@ -68,31 +68,31 @@
             },
             {
               "icon": "Hz-5xC8BSAg",
-              "title": "Matthias Kopp,",
+              "title": "Matthias Kopp",
               "text": " Director of Sustainable Finance at WWF Germany",
               "date": "\"Dataland can provide the data ecosystem we all need [to support our] transition to stay within 1.5 degrees or within the planetary boundaries.\""
             },
             {
               "icon": "34qs_8D78JY",
-              "title": "Christian Heller,",
+              "title": "Christian Heller",
               "text": " CEO of Value Balancing Alliance",
               "date": "\"Join Dataland, share your data, and make use of it to transform the economy into a just and sustainable one.\""
             },
             {
               "icon": "NMaN0Autdok",
-              "title": "Fabian Klose,",
+              "title": "Fabian Klose",
               "text": "Cloud Services Sales\n at T-Systems International",
               "date": "\"Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!\""
             },
             {
               "icon": "UpEYtR_v5ws",
-              "title": "Ingo Speich,",
+              "title": "Ingo Speich",
               "text": "Head of Sustainability & Corporate Governance\n at Deka Investment",
               "date": "\"We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner.\""
             },
             {
               "icon": "1CArXxrcsvg",
-              "title": "Christoph Benner,",
+              "title": "Christoph Benner",
               "text": "CEO of Chom Capital",
               "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
             }
