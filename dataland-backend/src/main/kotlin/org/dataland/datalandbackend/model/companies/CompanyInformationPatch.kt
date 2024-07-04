@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param headquarters city where the headquarters of the company is located
  * @param headquartersPostalCode postal code of the headquarters
  * @param sector in which the company operates (e.g. Financials)
+ * @param sectorClassification according to a NACE compliant classification method
  * @param identifiers under which the company is registered (LEI, PermID, ...)
  * @param countryCode of the country of origin
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
@@ -31,6 +32,8 @@ data class CompanyInformationPatch(
     val headquartersPostalCode: String? = null,
 
     val sector: String? = null,
+
+    val sectorClassification: String?,
 
     @field:Schema(
         example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",

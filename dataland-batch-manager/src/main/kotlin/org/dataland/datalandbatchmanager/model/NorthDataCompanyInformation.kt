@@ -60,6 +60,7 @@ data class NorthDataCompanyInformation(
             headquarters = headquarters,
             headquartersPostalCode = headquartersPostalCode,
             sector = null,
+            sectorClassification = sector,
             website = null,
             identifiers = identifiers,
             parentCompanyLei = null,
@@ -83,13 +84,19 @@ data class NorthDataCompanyInformation(
         if (registerId != "") identifiers[IdentifierType.CompanyRegistrationNumber.value] = listOf(registerId)
         if (vatId != "") identifiers[IdentifierType.VatNumber.value] = listOf(vatId)
 
-        if (!returnFullPatch) return CompanyInformationPatch(identifiers = identifiers)
+        if (!returnFullPatch) {
+            return CompanyInformationPatch(
+                sectorClassification = sector,
+                identifiers = identifiers,
+            )
+        }
 
         return CompanyInformationPatch(
             companyName = companyName,
             countryCode = countryCode,
             headquarters = headquarters,
             headquartersPostalCode = headquartersPostalCode,
+            sectorClassification = sector,
             identifiers = identifiers,
         )
     }

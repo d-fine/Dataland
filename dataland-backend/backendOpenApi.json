@@ -3375,6 +3375,10 @@
             "type": "string",
             "nullable": true
           },
+          "sectorClassification": {
+            "type": "string",
+            "nullable": true
+          },
           "identifiers": {
             "type": "object",
             "additionalProperties": {
@@ -14279,6 +14283,10 @@
             "nullable": true
           },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "sectorClassification": {
             "type": "string",
             "nullable": true
           },

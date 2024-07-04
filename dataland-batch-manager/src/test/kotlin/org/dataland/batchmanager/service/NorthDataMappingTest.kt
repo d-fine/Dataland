@@ -31,11 +31,13 @@ class NorthDataMappingTest {
         companyName = "test Gmbh",
         headquarters = "Osnabrück",
         headquartersPostalCode = "49078",
+        sectorClassification = "73.11.0",
         identifiers = expectedIdentifiers,
         countryCode = "DE",
     )
 
     private val expectedMinimalCompanyInformationPatch = CompanyInformationPatch(
+        sectorClassification = "73.11.0",
         identifiers = expectedIdentifiers,
     )
 
@@ -43,6 +45,7 @@ class NorthDataMappingTest {
         companyName = "test Gmbh",
         headquarters = "Osnabrück",
         headquartersPostalCode = "49078",
+        sectorClassification = "73.11.0",
         identifiers = expectedIdentifiers,
         countryCode = "DE",
     )

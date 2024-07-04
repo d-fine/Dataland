@@ -43,6 +43,7 @@ class CompanyAlterationManager(
             headquarters = companyInformation.headquarters,
             headquartersPostalCode = companyInformation.headquartersPostalCode,
             sector = companyInformation.sector,
+            sectorClassification = companyInformation.sectorClassification,
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
@@ -138,6 +139,7 @@ class CompanyAlterationManager(
         patch.headquarters?.let { companyEntity.headquarters = it }
         patch.headquartersPostalCode?.let { companyEntity.headquartersPostalCode = it }
         patch.sector?.let { companyEntity.sector = it }
+        patch.sectorClassification?.let { companyEntity.sectorClassification = it }
         patch.countryCode?.let { companyEntity.countryCode = it }
         patch.website?.let { companyEntity.website = it }
         patch.isTeaserCompany?.let { companyEntity.isTeaserCompany = it }
@@ -175,6 +177,7 @@ class CompanyAlterationManager(
         storedCompanyEntity.headquarters = companyInformation.headquarters
         storedCompanyEntity.headquartersPostalCode = companyInformation.headquartersPostalCode
         storedCompanyEntity.sector = companyInformation.sector
+        storedCompanyEntity.sectorClassification = companyInformation.sectorClassification
         storedCompanyEntity.countryCode = companyInformation.countryCode
         storedCompanyEntity.website = companyInformation.website
         storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false

@@ -41,6 +41,7 @@ internal class CompanyDataControllerTest(
         headquarters = "Berlin",
         headquartersPostalCode = "8",
         sector = null,
+        sectorClassification = null,
         website = null,
         isTeaserCompany = null,
         identifiers = mapOf(

@@ -57,7 +57,8 @@ class CompanyUploaderTest {
         )
         val compPatch = CompanyInformationPatch(
             companyName = null, companyAlternativeNames = null, companyLegalForm = null,
-            headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
+            headquarters = null, headquartersPostalCode = null, sector = null, sectorClassification = null,
+            compIdentifiers, countryCode = null,
             website = null, isTeaserCompany = null,
         )
 

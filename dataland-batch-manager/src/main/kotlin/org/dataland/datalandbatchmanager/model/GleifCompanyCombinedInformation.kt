@@ -24,6 +24,7 @@ data class GleifCompanyCombinedInformation(
             headquarters = gleifCompanyInformation.headquarters,
             headquartersPostalCode = gleifCompanyInformation.headquartersPostalCode,
             sector = null,
+            sectorClassification = null,
             website = null,
             identifiers = mapOf(
                 "Lei" to listOf(gleifCompanyInformation.lei),
