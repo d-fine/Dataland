@@ -55,8 +55,7 @@ class NorthDataMappingTest {
         val zipFile = File("./build/resources/test/testHierarchicalFile.zip")
 
         val bufferedReader = GleifCsvParser().getCsvStreamFromNorthDataZipFile(zipFile)
-        val iterable: Iterable<NorthDataCompanyInformation> =
-            GleifCsvParser().readDataFromBufferedReader(bufferedReader)
+        val iterable = GleifCsvParser().readNorthDataFromBufferedReader(bufferedReader)
         val onlyElement = iterable.iterator().next()
         assertEquals(expectedNorthDataCompanyInformation, onlyElement)
         assertEquals(expectedCompanyInformation, onlyElement.toCompanyPost())

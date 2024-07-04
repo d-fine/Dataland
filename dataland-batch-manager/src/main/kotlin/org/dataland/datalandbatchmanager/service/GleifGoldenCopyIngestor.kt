@@ -77,9 +77,7 @@ class GleifGoldenCopyIngestor(
         val duration = measureTime {
             gleifApiAccessor.getFullGoldenCopyOfRelationships(newRelationshipFile)
             val gleifDataStream = gleifParser.getCsvStreamFromZip(newRelationshipFile)
-            val gleifCsvParser: Iterable<GleifRelationshipInformation> = gleifParser.readDataFromBufferedReader(
-                gleifDataStream,
-            )
+            val gleifCsvParser = gleifParser.readGleifRelationshipDataFromBufferedReader(gleifDataStream)
             relationshipExtractor.prepareFinalParentMapping(gleifCsvParser)
             if (updateAllCompanies) companyUploader.updateRelationships(relationshipExtractor.finalParentMapping)
         }
@@ -114,7 +112,7 @@ class GleifGoldenCopyIngestor(
 
     private fun uploadCompanies(zipFile: File) {
         val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
-        val gleifIterable: Iterable<GleifCompanyInformation> = gleifParser.readDataFromBufferedReader(gleifDataStream)
+        val gleifIterable = gleifParser.readGleifCompanyDataFromBufferedReader(gleifDataStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
         try {

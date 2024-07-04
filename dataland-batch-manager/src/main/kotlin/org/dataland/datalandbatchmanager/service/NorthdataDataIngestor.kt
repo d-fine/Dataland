@@ -46,7 +46,7 @@ class NorthdataDataIngestor(
     private fun updateNorthData(zipFile: File) {
         val csvParser = GleifCsvParser()
         val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
-        val northDataIterable: Iterable<NorthDataCompanyInformation> = csvParser.readDataFromBufferedReader(northStream)
+        val northDataIterable = csvParser.readNorthDataFromBufferedReader(northStream)
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAT_POOL_SIZE)
         try {

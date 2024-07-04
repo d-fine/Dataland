@@ -40,8 +40,7 @@ class GleifMappingTest {
     fun `check that parsing the test file results in the expected company information objects`() {
         val input = BufferedReader(FileReader("./build/resources/test/GleifTestData.csv"))
         var gleifCompanyInformation = GleifCompanyInformation("", "", "", "", "")
-        val gleifIterable: Iterable<GleifCompanyInformation> = GleifCsvParser().readDataFromBufferedReader<
-            GleifCompanyInformation,>(input)
+        val gleifIterable = GleifCsvParser().readGleifCompanyDataFromBufferedReader(input)
         gleifIterable.forEach {
             gleifCompanyInformation = GleifCompanyInformation(
                 it.companyName, it.headquarters,

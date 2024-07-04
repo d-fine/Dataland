@@ -3,6 +3,9 @@ package org.dataland.datalandbatchmanager.service
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
+import org.dataland.datalandbatchmanager.model.GleifRelationshipInformation
+import org.dataland.datalandbatchmanager.model.NorthDataCompanyInformation
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
 import java.io.File
@@ -79,5 +82,35 @@ class GleifCsvParser {
                 .with(CsvSchema.emptySchema().withHeader())
                 .readValues(bufferedReader)
         }
+    }
+
+    /**
+     * Transforms the streamed CSV content into an iterable of objects of GleifRelationshipInformation
+     * @param bufferedReader the input stream read from the csv file
+     * @return An iterable of the corresponding objects
+     */
+    fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader):
+            Iterable<GleifRelationshipInformation> {
+        return readDataFromBufferedReader(bufferedReader)
+    }
+
+    /**
+     * Transforms the streamed CSV content into an iterable of objects of GleifCompanyInformation
+     * @param bufferedReader the input stream read from the csv file
+     * @return An iterable of the corresponding objects
+     */
+    fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader):
+            Iterable<GleifCompanyInformation> {
+        return readDataFromBufferedReader(bufferedReader)
+    }
+
+    /**
+     * Transforms the streamed CSV content into an iterable of objects of NorthDataCompanyInformation
+     * @param bufferedReader the input stream read from the csv file
+     * @return An iterable of the corresponding objects
+     */
+    fun readNorthDataFromBufferedReader(bufferedReader: BufferedReader):
+            Iterable<NorthDataCompanyInformation> {
+        return readDataFromBufferedReader(bufferedReader)
     }
 }
