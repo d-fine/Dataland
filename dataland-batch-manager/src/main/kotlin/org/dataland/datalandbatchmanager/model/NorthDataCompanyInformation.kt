@@ -74,7 +74,6 @@ data class NorthDataCompanyInformation(
         var returnFullPatch = false
 
         if (conflictingIdentifiers != null) {
-            if (conflictingIdentifiers.size > 3) return null
             val hasLei = conflictingIdentifiers.contains(IdentifierType.Lei.value)
             val hasRegisterId = conflictingIdentifiers.contains(IdentifierType.CompanyRegistrationNumber.value)
             if (!hasLei && hasRegisterId) returnFullPatch = true

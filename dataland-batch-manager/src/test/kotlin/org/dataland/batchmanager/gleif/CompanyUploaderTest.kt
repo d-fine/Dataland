@@ -222,10 +222,18 @@ class CompanyUploaderTest {
         @JvmStatic
         fun provideInputForDuplicateIdentifiers(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of("/sampleResponseLeiIdentifierAlreadyExists.json", 1, dummyCompanyInformation1),
-                Arguments.of("/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json", 0, dummyCompanyInformation2),
-                Arguments.of("/sampleResponseMultipleIdentifierAlreadyExists.json", 0, dummyCompanyInformation3),
-                Arguments.of("/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json", 1, dummyCompanyInformation3),
+                Arguments.of(
+                    "/sampleResponseLeiIdentifierAlreadyExists.json", 1, dummyCompanyInformation1,
+                ),
+                Arguments.of(
+                    "/sampleResponseCompanyRegistrationNumberIdentifierAlreadyExists.json", 0, dummyCompanyInformation2,
+                ),
+                Arguments.of(
+                    "/sampleResponseMultipleIdentifierAlreadyExists.json", 0, dummyCompanyInformation3,
+                ),
+                Arguments.of(
+                    "/sampleResponseMultipleIdentifierAlreadyExistsSameCompany.json", 1, dummyCompanyInformation3,
+                ),
             )
         }
     }
