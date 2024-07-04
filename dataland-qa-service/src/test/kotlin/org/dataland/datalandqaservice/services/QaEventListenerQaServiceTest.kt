@@ -91,7 +91,8 @@ class QaEventListenerQaServiceTest(
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaEventListenerQaService.assureQualityOfDocument(
-                noIdPayload, correlationId, MessageType.ManualQaRequested)
+                noIdPayload, correlationId, MessageType.ManualQaRequested,
+            )
         }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
