@@ -40,6 +40,15 @@ class QaEventListenerQaServiceTest(
 
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
+    val correlationId = "correlationId"
+    private fun getAutomatedQaCompletedMessage(identifier: String, validationResult: QaStatus, message: String?): String {
+        return JSONObject(
+            mapOf(
+                "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to "automated-qa",
+                "message" to message.toString(),
+            ),
+        ).toString()
+    }
 
     @BeforeEach
     fun resetMocks() {
@@ -55,7 +64,6 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
-        val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaEventListenerQaService.addDataToQueue(noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
@@ -64,7 +72,6 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check that an exception is thrown when sending a success notification to message queue fails`() {
-        val correlationId = "correlationId"
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = dataId,
@@ -88,7 +95,6 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check an exception is thrown in reading out message from document stored queue when dataId is empty`() {
-        val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaEventListenerQaService.assureQualityOfDocument(
                 noIdPayload, correlationId, MessageType.ManualQaRequested,
@@ -99,10 +105,32 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check an exception is thrown in reading out message from data quality assured queue when dataId is empty`() {
-        val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaEventListenerQaService.addDataToReviewHistory(noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
+    }
+
+    @Test
+    fun `check an that the automated qa result is stored correctly in the review history repository`() {
+        val acceptedData = "acceptedDataId"
+        val automatedQaAcceptedMessage = getAutomatedQaCompletedMessage(acceptedData, QaStatus.Accepted, "accepted")
+        qaEventListenerQaService.addDataToReviewHistory(automatedQaAcceptedMessage, correlationId, MessageType.QaCompleted)
+        testReviewHistoryRepository.findById(acceptedData).ifPresent {
+            Assertions.assertEquals("automated-qa", it.reviewerKeycloakId)
+            Assertions.assertEquals(acceptedData, it.dataId)
+            Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
+            Assertions.assertEquals("accepted", it.message)
+        }
+
+        val rejectedData = "rejectedDataId"
+        val automatedQaRejectedMessage = getAutomatedQaCompletedMessage(rejectedData, QaStatus.Rejected, "rejected")
+        qaEventListenerQaService.addDataToReviewHistory(automatedQaRejectedMessage, correlationId, MessageType.QaCompleted)
+        testReviewHistoryRepository.findById(rejectedData).ifPresent {
+            Assertions.assertEquals("automated-qa", it.reviewerKeycloakId)
+            Assertions.assertEquals(rejectedData, it.dataId)
+            Assertions.assertEquals(QaStatus.Rejected, it.qaStatus)
+            Assertions.assertEquals("rejected", it.message)
+        }
     }
 }
