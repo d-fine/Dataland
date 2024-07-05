@@ -61,7 +61,6 @@ class ProcessDataUpdates(
      * Downloads the entire GLEIF golden copy file and uploads all included companies to the Dataland Backend.
      * Does so only if the property "dataland.dataland-batch-manager.get-all-gleif-companies" is set.
      */
-    @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
         val flagFileGleif = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
         if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
@@ -98,7 +97,6 @@ class ProcessDataUpdates(
      * Downloads the entire NorthData golden copy file and uploads all included companies to the Dataland Backend.
      * Does so only if the property "dataland.dataland-batch-manager.get-all-northdata-companies" is set.
      */
-    @EventListener(ApplicationReadyEvent::class)
     fun processNorthDataFullGoldenCopyFileIfEnabled() {
         val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
         if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
