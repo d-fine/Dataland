@@ -61,13 +61,6 @@ class ReferencedReportsListValidatorForEutaxonomyFinancials :
             is ExtendedDocumentReference -> {
                 fileReferences.add(data.fileReference)
             }
-            is Collection<*> -> {
-                data.forEach { item ->
-                    if (item != null) {
-                        collectFileReferences(item, fileReferences)
-                    }
-                }
-            }
             is Map<*, *> -> {
                 data.values.forEach { value ->
                     collectFileReferences(value, fileReferences)

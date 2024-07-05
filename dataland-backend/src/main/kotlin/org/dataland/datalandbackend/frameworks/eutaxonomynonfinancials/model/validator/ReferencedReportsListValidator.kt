@@ -52,6 +52,7 @@ class ReferencedReportsListConstraintValidator :
     @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: EutaxonomyNonFinancialsData): List<String?> {
         return listOf(
+            dataset.general?.assurance?.dataSource?.fileReference,
             dataset.revenue?.totalAmount?.dataSource?.fileReference,
             dataset.capex?.totalAmount?.dataSource?.fileReference,
             dataset.opex?.totalAmount?.dataSource?.fileReference,

@@ -2058,7 +2058,12 @@
 					"dataDate": "2024-03-15",
 					"fiscalYearDeviation": "Deviation",
 					"fiscalYearEnd": "2024-10-29",
-					"referencedReports": null
+					"referencedReports": {
+						"notReferencedFile": {
+							"fileReference": "invalidFileReference",
+							"fileName": "notReferencedFile"
+						}
+					}
 				}
 			},
 			"environmental": {
