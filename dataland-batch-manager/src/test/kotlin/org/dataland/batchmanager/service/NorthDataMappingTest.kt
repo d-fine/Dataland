@@ -64,6 +64,23 @@ class NorthDataMappingTest {
         assertEquals(expectedNorthDataCompanyInformation, onlyElement)
         assertEquals(expectedCompanyInformation, onlyElement.toCompanyPost())
         // Test all getters
+        assertExpectedAndActualNorthDataDataAreTheSame(onlyElement)
+        assertEquals(expectedMinimalCompanyInformationPatch, onlyElement.toCompanyPatch())
+        assertEquals(
+            expectedMinimalCompanyInformationPatch,
+            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber", "Lei")),
+        )
+        assertEquals(
+            expectedMinimalCompanyInformationPatch,
+            onlyElement.toCompanyPatch(setOf("Lei")),
+        )
+        assertEquals(
+            expectedCompanyInformationPatch,
+            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber")),
+        )
+    }
+
+    private fun assertExpectedAndActualNorthDataDataAreTheSame(onlyElement: NorthDataCompanyInformation) {
         assertEquals(
             expectedNorthDataCompanyInformation,
             NorthDataCompanyInformation(
@@ -78,19 +95,6 @@ class NorthDataMappingTest {
                 sector = onlyElement.sector,
                 lei = onlyElement.lei,
             ),
-        )
-        assertEquals(expectedMinimalCompanyInformationPatch, onlyElement.toCompanyPatch())
-        assertEquals(
-            expectedMinimalCompanyInformationPatch,
-            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber", "Lei")),
-        )
-        assertEquals(
-            expectedMinimalCompanyInformationPatch,
-            onlyElement.toCompanyPatch(setOf("Lei")),
-        )
-        assertEquals(
-            expectedCompanyInformationPatch,
-            onlyElement.toCompanyPatch(setOf("CompanyRegistrationNumber")),
         )
     }
 }
