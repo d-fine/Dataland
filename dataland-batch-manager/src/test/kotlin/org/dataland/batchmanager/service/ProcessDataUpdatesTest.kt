@@ -16,17 +16,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.MockedStatic
-import org.mockito.Mockito.any
-import org.mockito.Mockito.anyString
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.mockStatic
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import java.io.BufferedReader
 import java.io.File
 import java.io.PrintWriter
+import java.net.ConnectException
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
@@ -119,6 +114,10 @@ class ProcessDataUpdatesTest {
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
 
         val mockFileUtils = mockStatic(FileUtils::class.java)
+
+        `when`(mockActuatorApi.health()).thenThrow(ConnectException()).thenReturn(true)
+        mock(Thread::class.java)
+
         processDataUpdates.processFullGoldenCopyFileIfEnabled()
 
         val numberOfDownloadedFiles = 3
