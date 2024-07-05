@@ -13,7 +13,7 @@ describe('Component test for ActivitiesFormField', () => {
     cy.get('ul.p-treenode-children')
       .should('be.visible')
       .find('li.p-treenode')
-      .should('have.length', 7)
+      .should('have.length', 10)
       .eq(1)
       .should('contain', 'Renovation of existing buildings')
       .find('div.p-radiobutton-box')
