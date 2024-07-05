@@ -23,7 +23,8 @@ class NorthDataAccessor(
      */
     fun getFullGoldenCopy(targetFile: File) {
         downloadFileFromNorthdata(
-            "testdata20240402-osnabrueck-DE-M-de.csv.zip", targetFile,
+            "testdata20240402-osnabrueck-DE-M-de.csv.zip",
+            targetFile,
             "quarterly dataset of german sme from Northdata",
         )
     }
