@@ -14,9 +14,11 @@ import java.time.Instant
 import java.util.*
 
 /**
- * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
+ * Class to execute scheduled tasks, like the import of the GLEIF or NorthData golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
  * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * @param northDataAccessor downloads the golden copy files from NorthData
+ * @param northdataDataIngestor reads in the csv file from NorthData and creates NorthDataCompanyInformation objects
  * @param actuatorApi the actuatorApi of the backend
  */
 @Suppress("LongParameterList")
@@ -47,7 +49,7 @@ class ProcessDataUpdates(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Me
+     * Method that listens to a trigger event and calls the methods for GLEIF and NorthData updates
      */
     @EventListener(ApplicationReadyEvent::class)
     fun processExternalCompanyDataIfEnabled() {
@@ -61,7 +63,6 @@ class ProcessDataUpdates(
      */
     fun processFullGoldenCopyFileIfEnabled() {
         val flagFileGleif = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
-        val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
         if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
             if (flagFileGleif?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
@@ -87,8 +88,6 @@ class ProcessDataUpdates(
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             gleifGoldenCopyIngestor.processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             gleifGoldenCopyIngestor.processIsinMappingFile()
-        } else if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
-            northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -118,7 +117,6 @@ class ProcessDataUpdates(
         }
     }
 
-    // TODO introduce northdata part based on the respective flag
     // TODO write test for northdata part
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
