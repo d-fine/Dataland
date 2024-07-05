@@ -127,7 +127,7 @@ class ProcessDataUpdates(
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 0 5 1-7 1,4,7,10 SUN")
+    @Scheduled(cron = "0 0 17 1-7 1,4,7,10 FRI")
     // TODO discuss with someone if this cron job is correct
     private fun processNorthDataUpdates() {
         logger.info("Running scheduled update of NorthData data.")
