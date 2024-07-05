@@ -16,7 +16,7 @@ import java.util.*
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF or NorthData golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
- * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * @param gleifGoldenCopyIngestor reads in the csv file from GLEIF and creates GleifCompanyInformation objects
  * @param northDataAccessor downloads the golden copy files from NorthData
  * @param northdataDataIngestor reads in the csv file from NorthData and creates NorthDataCompanyInformation objects
  * @param actuatorApi the actuatorApi of the backend
@@ -61,6 +61,7 @@ class ProcessDataUpdates(
      * Downloads the entire GLEIF golden copy file and uploads all included companies to the Dataland Backend.
      * Does so only if the property "dataland.dataland-batch-manager.get-all-gleif-companies" is set.
      */
+    @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
         val flagFileGleif = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
         if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
@@ -89,7 +90,7 @@ class ProcessDataUpdates(
             gleifGoldenCopyIngestor.processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             gleifGoldenCopyIngestor.processIsinMappingFile()
         } else {
-            logger.info("Flag file not present & no force update variable set => Not performing any download")
+            logger.info("Gleif flag file not present & no force update variable set => Not performing any download")
         }
     }
 
@@ -97,6 +98,7 @@ class ProcessDataUpdates(
      * Downloads the entire NorthData golden copy file and uploads all included companies to the Dataland Backend.
      * Does so only if the property "dataland.dataland-batch-manager.get-all-northdata-companies" is set.
      */
+    @EventListener(ApplicationReadyEvent::class)
     fun processNorthDataFullGoldenCopyFileIfEnabled() {
         val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
         if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
@@ -113,7 +115,7 @@ class ProcessDataUpdates(
             logger.info("Retrieving all company data available via NorthData.")
             northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
         } else {
-            logger.info("Flag file not present & no force update variable set => Not performing any download")
+            logger.info("NorthData flag file not present & no force update variable set => Not performing any download")
         }
     }
 
