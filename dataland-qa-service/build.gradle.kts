@@ -42,6 +42,7 @@ dependencies {
     implementation(Spring.boot.security)
     implementation(libs.springdoc.openapi.ui)
     implementation(Spring.boot.data.jpa)
+    implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)

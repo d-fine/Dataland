@@ -142,6 +142,76 @@
         ]
       }
     },
+    "/datasets/{identifier}": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Gets the QA review status of an uploaded dataset for a given identifier.",
+        "description": "Gets the QA review status of an uploaded dataset for a given identifier.",
+        "operationId": "getDatasetByIdentifier",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Found no QA review status corresponding the identifier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewInformationResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Found a QA review status corresponding the identifier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewInformationResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [
@@ -375,6 +445,32 @@
           "Rejected"
         ]
       },
+      "ReviewInformationResponse": {
+        "required": [
+          "dataId",
+          "qaStatus",
+          "receptionTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "reviewerKeycloakId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "Link": {
         "type": "object",
         "properties": {
@@ -387,14 +483,14 @@
         }
       },
       "ErrorDetails": {
+        "required": [
+          "errorType",
+          "httpStatus",
+          "message",
+          "summary"
+        ],
         "type": "object",
         "properties": {
-          "httpStatus": {
-            "type": "number"
-          },
-          "metaInformation": {
-            "type": "object"
-          },
           "errorType": {
             "type": "string"
           },
@@ -403,10 +499,19 @@
           },
           "message": {
             "type": "string"
+          },
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
           }
         }
       },
       "ErrorResponse": {
+        "required": [
+          "errors"
+        ],
         "type": "object",
         "properties": {
           "errors": {
