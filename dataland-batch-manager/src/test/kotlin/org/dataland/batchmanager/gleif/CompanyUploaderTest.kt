@@ -130,7 +130,7 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload handles a socket timeout and terminates after MAX_RETRIES tries`() {
+    fun `check that the upload handles a socket timeout and terminates after MAX RETRIES tries`() {
         `when`(
             mockCompanyDataControllerApi
                 .postCompany(dummyGleifCompanyInformation1.toCompanyPost()),
@@ -141,7 +141,7 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload handles a server exception and terminates after MAX_RETRIES tries`() {
+    fun `check that the upload handles a server exception and terminates after MAX RETRIES tries`() {
         `when`(
             mockCompanyDataControllerApi
                 .postCompany(dummyGleifCompanyInformation1.toCompanyPost()),
@@ -152,7 +152,7 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload handles a client exception and terminates after MAX_RETRIES tries`() {
+    fun `check that the upload handles a client exception and terminates after MAX RETRIES tries`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyGleifCompanyInformation1.toCompanyPost())).thenThrow(
             ClientException(
                 statusCode = UNAUTHORIZED_CODE,

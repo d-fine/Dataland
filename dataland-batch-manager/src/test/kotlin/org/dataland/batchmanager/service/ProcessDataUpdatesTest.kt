@@ -170,5 +170,4 @@ class ProcessDataUpdatesTest {
         return Pair(bufferedReader, mockStaticFile)
     }
 // TODO commonMock is duplicated here, needs to be refactored
-    // TODO Check test coverage once final version of ProcessDataUpdate is there
 }

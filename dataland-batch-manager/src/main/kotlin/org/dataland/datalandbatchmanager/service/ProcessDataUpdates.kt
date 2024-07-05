@@ -31,7 +31,6 @@ class ProcessDataUpdates(
     @Autowired private val actuatorApi: ActuatorApi,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
     private val allGleifCompaniesForceIngest: Boolean,
-    // TODO check wehere value of allCompaniesForceIngest is set
     @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.force:false}")
     private val allNorthDataCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
@@ -116,8 +115,6 @@ class ProcessDataUpdates(
             logger.info("NorthData flag file not present & no force update variable set => Not performing any download")
         }
     }
-
-    // TODO write test for northdata part
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 3 * * SUN")
