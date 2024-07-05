@@ -15,6 +15,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.mockito.MockedStatic
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyString
@@ -116,7 +117,7 @@ class ProcessDataUpdatesTest {
 
     @Test
     fun `test ingestion performs successfully if a file is provided`() {
-        val (emptyBufferedReader, mockStaticFile) = commonMock()
+        val (emptyBufferedReader, mockStaticFile) = commonMock(oldFile)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
 
         val mockFileUtils = mockStatic(FileUtils::class.java)
@@ -133,7 +134,17 @@ class ProcessDataUpdatesTest {
         mockStaticFile.close()
         mockFileUtils.close()
     }
-    private fun commonMock(): Pair<BufferedReader, MockedStatic<File>> {
+
+    @Test
+    fun `test error when mapping file still exists`() {
+        val mockOldIsinFile = mock(File::class.java)
+        commonMock(mockOldIsinFile)
+        `when`(mockOldIsinFile.exists()).thenReturn(true)
+        `when`(mockOldIsinFile.delete()).thenReturn(false)
+        assertThrows<FileSystemException> { processDataUpdates.processFullGoldenCopyFileIfEnabled() }
+    }
+
+    private fun commonMock(isinMappingFile: File): Pair<BufferedReader, MockedStatic<File>> {
         val flagFileGleif = File.createTempFile("test", ".csv")
         val flagFileNorthdata = File.createTempFile("test2", ".csv")
         val bufferedReader = BufferedReader(BufferedReader.nullReader())
@@ -146,7 +157,7 @@ class ProcessDataUpdatesTest {
         processDataUpdates = ProcessDataUpdates(
             mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
             mockNorthDataIngestorTest, mockActuatorApi, false, flagFileGleif.absolutePath,
-            flagFileNorthdata.absolutePath, oldFile,
+            flagFileNorthdata.absolutePath, isinMappingFile,
         )
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
