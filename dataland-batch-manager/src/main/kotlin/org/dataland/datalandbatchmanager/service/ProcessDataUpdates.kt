@@ -28,8 +28,10 @@ class ProcessDataUpdates(
     @Autowired private val northdataDataIngestor: NorthdataDataIngestor,
     @Autowired private val actuatorApi: ActuatorApi,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
-    private val allCompaniesForceIngest: Boolean,
+    private val allGleifCompaniesForceIngest: Boolean,
     // TODO check wehere value of allCompaniesForceIngest is set
+    @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.force:false}")
+    private val allNorthDataCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
     private val allGleifCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
@@ -40,20 +42,27 @@ class ProcessDataUpdates(
     const val MS_PER_S = 1000L
     const val MAX_WAITING_TIME_IN_MS = 10L * 60L * MS_PER_S
     const val WAIT_TIME_IN_MS: Long = 5000
-    const val UPLOAD_THREAT_POOL_SIZE = 32
 }
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
+     * Me
+     */
+    @EventListener(ApplicationReadyEvent::class)
+    fun processExternalCompanyDataIfEnabled() {
+        processFullGoldenCopyFileIfEnabled()
+        processNorthDataFullGoldenCopyFileIfEnabled()
+    }
+
+    /**
      * Downloads the entire GLEIF golden copy file and uploads all included companies to the Dataland Backend.
      * Does so only if the property "dataland.dataland-batch-manager.get-all-gleif-companies" is set.
      */
-    @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
         val flagFileGleif = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
         val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
-        if (allCompaniesForceIngest || flagFileGleif?.exists() == true) {
+        if (allGleifCompaniesForceIngest || flagFileGleif?.exists() == true) {
             if (flagFileGleif?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
                 if (!flagFileGleif.delete()) {
@@ -78,12 +87,37 @@ class ProcessDataUpdates(
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             gleifGoldenCopyIngestor.processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             gleifGoldenCopyIngestor.processIsinMappingFile()
-        } else if (flagFileNorthData?.exists() == true) {
+        } else if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
             northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
     }
+
+    /**
+     * Downloads the entire NorthData golden copy file and uploads all included companies to the Dataland Backend.
+     * Does so only if the property "dataland.dataland-batch-manager.get-all-northdata-companies" is set.
+     */
+    fun processNorthDataFullGoldenCopyFileIfEnabled() {
+        val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
+        if (allNorthDataCompaniesForceIngest || flagFileNorthData?.exists() == true) {
+            if (flagFileNorthData?.exists() == true) {
+                logger.info("Found collect all companies flag. Deleting it.")
+                if (!flagFileNorthData.delete()) {
+                    logger.error(
+                        "Unable to delete flag file $flagFileNorthData. Manually remove it or import will " +
+                            "be triggered after service restart again.",
+                    )
+                }
+            }
+            waitForBackend()
+            logger.info("Retrieving all company data available via NorthData.")
+            northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
+        } else {
+            logger.info("Flag file not present & no force update variable set => Not performing any download")
+        }
+    }
+
     // TODO introduce northdata part based on the respective flag
     // TODO write test for northdata part
 
