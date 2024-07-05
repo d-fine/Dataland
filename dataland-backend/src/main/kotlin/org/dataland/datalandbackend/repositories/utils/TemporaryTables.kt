@@ -27,6 +27,7 @@ class TemporaryTables private constructor() {
             " MAX( CASE " +
             "   WHEN company_name = :#{#searchFilter.searchString} THEN 10 " +
             "   WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5 " +
+            "   WHEN levenshtein(company_name, :#{#searchFilter.searchString}) < 3 THEN 3 " + // TODO set as app prop
             "   ELSE 1 " +
             "   END) AS match_quality, " +
             DATASET_RANK +
@@ -34,6 +35,7 @@ class TemporaryTables private constructor() {
             " LEFT JOIN data_meta_information " +
             "   ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true " +
             " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
+            "   OR (levenshtein(company_name, :#{#searchFilter.searchString}) < 3)" + // TODO set as app prop
             " GROUP BY stored_companies.company_id) " +
 
             " UNION " +
