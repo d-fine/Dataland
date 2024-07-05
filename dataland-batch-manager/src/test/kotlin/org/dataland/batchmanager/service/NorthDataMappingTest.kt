@@ -10,10 +10,14 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class NorthDataMappingTest {
-
+    // TODO we could think about moving this test data into test .csv files. maybe is this more readable than
+    //  defining it here
+    private val testCompanyName = "test Gmbh"
+    private val testHeadquarters = "Osnabrück"
+    private val testSectorClassification = "73.11.0"
     private val expectedNorthDataCompanyInformation = NorthDataCompanyInformation(
-        companyName = "test Gmbh",
-        headquarters = "Osnabrück",
+        companyName = testCompanyName,
+        headquarters = testHeadquarters,
         headquartersPostalCode = "49078",
         lei = "",
         countryCode = "DE",
@@ -21,31 +25,31 @@ class NorthDataMappingTest {
         street = "Test Weg 22",
         vatId = "",
         status = "active",
-        sector = "73.11.0",
+        sector = testSectorClassification,
     )
 
     private val expectedIdentifiers = mapOf(
         IdentifierType.CompanyRegistrationNumber.value to listOf("Amtsgericht Osnabrück HRB 123456"),
     )
     private val expectedCompanyInformation = CompanyInformation(
-        companyName = "test Gmbh",
-        headquarters = "Osnabrück",
+        companyName = testCompanyName,
+        headquarters = testHeadquarters,
         headquartersPostalCode = "49078",
-        sectorClassification = "73.11.0",
+        sectorClassification = testSectorClassification,
         identifiers = expectedIdentifiers,
         countryCode = "DE",
     )
 
     private val expectedMinimalCompanyInformationPatch = CompanyInformationPatch(
-        sectorClassification = "73.11.0",
+        sectorClassification = testSectorClassification,
         identifiers = expectedIdentifiers,
     )
 
     private val expectedCompanyInformationPatch = CompanyInformationPatch(
-        companyName = "test Gmbh",
-        headquarters = "Osnabrück",
+        companyName = testCompanyName,
+        headquarters = testHeadquarters,
         headquartersPostalCode = "49078",
-        sectorClassification = "73.11.0",
+        sectorClassification = testSectorClassification,
         identifiers = expectedIdentifiers,
         countryCode = "DE",
     )
