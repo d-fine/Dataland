@@ -22,7 +22,7 @@ class NorthDataAccessor(
      * @param targetFile the local target file to be written
      */
     fun getFullGoldenCopy(targetFile: File) {
-        downloadFileFromNorthdata("lei2/latest.csv", targetFile, "quarterly dataset of german sme from Northdata")
+        downloadFileFromNorthdata("testdata20240402-osnabrueck-DE-M-de.csv.zip", targetFile, "quarterly dataset of german sme from Northdata")
     }
 
     private fun downloadFileFromNorthdata(urlSuffx: String, targetFile: File, fileDescription: String) {
