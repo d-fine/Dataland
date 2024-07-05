@@ -125,23 +125,17 @@
   "referencedReports": {
     "ESEFReport": {
       "fileReference": "30a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-      "isGroupLevel": null,
-      "reportDate": "2023-05-18",
-      "currency": "ISK"
+      "reportDate": "2023-05-18"
     },
     "SustainabilityReport": {
       "fileReference": "20a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
       "fileName": null,
-      "isGroupLevel": "No",
-      "reportDate": "2023-11-11",
-      "currency": "SYP"
+      "reportDate": "2023-11-11"
     },
     "IntegratedReport": {
       "fileReference": "10a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
       "fileName": "",
-      "isGroupLevel": null,
-      "reportDate": "2023-05-02",
-      "currency": "MAD"
+      "reportDate": "2023-05-02"
     }
   }
 }
