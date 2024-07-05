@@ -4,6 +4,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
 
 /**
  * The entity storing the information gathered during the review of a dataset
@@ -17,4 +18,19 @@ data class ReviewInformationEntity(
     var qaStatus: QaStatus,
     val reviewerKeycloakId: String,
     var message: String?,
-)
+) {
+    /**
+     * Converts the ReviewInformationEntity into a ReviewInformationResponse that is used in a response for a
+     * GET Request.
+     * The ReviewInformationResponse can optionally hide the reviewerKeycloakId and this function respects this.
+     */
+    fun toReviewInformationResponse(shouldHideReviewKeycloakId: Boolean): ReviewInformationResponse {
+        return ReviewInformationResponse(
+            dataId,
+            receptionTime,
+            qaStatus,
+            if (shouldHideReviewKeycloakId) null else reviewerKeycloakId,
+            message,
+        )
+    }
+}

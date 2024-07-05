@@ -1,16 +1,26 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
+/**
+ * Implements a utility function that can be used e.g., in PRE_AUTHORIZE
+ * for several one authentication use-case.
+ */
 @Service("SecurityUtilsService")
-class SecurityUtilsService {
+class SecurityUtilsService(
+    @Autowired val metaDataControllerApi: MetaDataControllerApi,
+) {
 
-    @Transactional // TODO Braucht man das?
-    fun isUserAskingQaReviewStatusOfUploadedDataset(identifier: UUID): Boolean {
-        // GET /metadata/{dataId}
-        // check if user id is the same
-        return true
+    /**
+     * This function checks whether the user uploaded the dataset with the corresponding identifier.
+     */
+    fun isUserAskingQaReviewStatusOfUploadedDataset(identifier: String): Boolean {
+        val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(identifier)
+        // TODO Catch exceptions
+        // SecurityContextHolder.getContext().authentication.name
+        return DatalandAuthentication.fromContext().userId == dataMetaInformation.uploaderUserId
     }
 }

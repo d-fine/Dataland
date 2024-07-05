@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -49,7 +49,7 @@ interface QaApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Found a QA review status corresponding the identifier."),
-            ApiResponse(responseCode = "404", description = "Found QA review status corresponding the identifier."),
+            ApiResponse(responseCode = "404", description = "Found no QA review status corresponding the identifier."),
         ],
     )
     @GetMapping(
@@ -63,7 +63,7 @@ interface QaApi {
     )
     fun getDatasetByIdentifier(
         @PathVariable("identifier") identifier: String,
-    ): ResponseEntity<ReviewInformationEntity>
+    ): ResponseEntity<ReviewInformationResponse>
 
     /**
      * Assigns a quality status to a unreviewed dataset

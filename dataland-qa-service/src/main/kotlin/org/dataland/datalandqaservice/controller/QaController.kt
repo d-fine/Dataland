@@ -11,9 +11,11 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -41,17 +43,19 @@ class QaController(
         return ResponseEntity.ok(reviewQueueRepository.getSortedPendingDataIds())
     }
 
-    @Transactional // braucht man das?
-    override fun getDatasetByIdentifier(identifier: String): ResponseEntity<ReviewInformationEntity> {
+    @Transactional
+    override fun getDatasetByIdentifier(identifier: String): ResponseEntity<ReviewInformationResponse> {
         logger.info("Received request to respond with the status of a dataset with the identifier $identifier")
 
-        // TODO make a ReviewInformationResponse where ReviewerKeycloak ID is optional
-        //  Siehe auch GetDataRequest fragt eine DataRequestEntity in der Datenbank ab
-        //  diese wird dann in einen StoredDataRequst verwandelt
+        val reviewHistoryEntity = reviewHistoryRepository.findById(identifier).orElse(null)
 
-        // TODO check if user is admin
-        val roles = DatalandAuthentication.fromContext().roles
-        TODO()
+        return if (reviewHistoryEntity != null) {
+            val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            val response = reviewHistoryEntity.toReviewInformationResponse(!userIsAdmin)
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @Transactional
