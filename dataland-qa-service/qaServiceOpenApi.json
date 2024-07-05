@@ -21,6 +21,74 @@
   ],
   "paths": {
     "/datasets/{dataId}": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Gets the QA review status of an uploaded dataset for a given identifier.",
+        "description": "Gets the QA review status of an uploaded dataset for a given identifier.",
+        "operationId": "getDatasetByIdentifier",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Found no QA review status corresponding the identifier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewInformationResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Found a QA review status corresponding the identifier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewInformationResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "qa-controller"
@@ -107,76 +175,6 @@
                   "items": {
                     "type": "string"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/datasets/{identifier}": {
-      "get": {
-        "tags": [
-          "qa-controller"
-        ],
-        "summary": "Gets the QA review status of an uploaded dataset for a given identifier.",
-        "description": "Gets the QA review status of an uploaded dataset for a given identifier.",
-        "operationId": "getDatasetByIdentifier",
-        "parameters": [
-          {
-            "name": "identifier",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Found no QA review status corresponding the identifier.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReviewInformationResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Found a QA review status corresponding the identifier.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReviewInformationResponse"
                 }
               }
             }

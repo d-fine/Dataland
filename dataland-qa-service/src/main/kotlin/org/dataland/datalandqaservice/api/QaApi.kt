@@ -53,16 +53,16 @@ interface QaApi {
         ],
     )
     @GetMapping(
-        value = ["/datasets/{identifier}"],
+        value = ["/datasets/{dataId}"],
         produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
             "or hasRole('ROLE_ADMIN') " +
-            "or @SecurityUtilsService.isUserAskingQaReviewStatusOfUploadedDataset(#identifier)",
+            "or @SecurityUtilsService.isUserAskingQaReviewStatusOfUploadedDataset(#dataId)",
     )
     fun getDatasetByIdentifier(
-        @PathVariable("identifier") identifier: String,
+        @PathVariable("dataId") dataId: String,
     ): ResponseEntity<ReviewInformationResponse>
 
     /**
