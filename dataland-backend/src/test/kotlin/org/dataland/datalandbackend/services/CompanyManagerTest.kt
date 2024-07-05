@@ -173,6 +173,7 @@ class CompanyManagerTest(
         companyName = "Placholder Inc.",
         countryCode = "DE",
         companyAlternativeNames = null,
+        companyContactDetails = null,
         companyLegalForm = null,
         headquarters = "Frankfurt",
         headquartersPostalCode = "60313",
