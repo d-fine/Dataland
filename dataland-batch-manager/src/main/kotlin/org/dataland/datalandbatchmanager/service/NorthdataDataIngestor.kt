@@ -14,13 +14,11 @@ import kotlin.time.measureTime
 
 /**
  * Class to handle the scheduled update of the NorthData data
- * @param northDataAccessor downloads the NorthData bulk data
  * @param companyUploader uploads the company information to the backend
  */
 @Suppress("LongParameterList")
 @Component
 class NorthdataDataIngestor(
-    @Autowired private val northDataAccessor: NorthDataAccessor,
     @Autowired private val companyUploader: CompanyUploader,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

@@ -29,6 +29,7 @@ class ProcessDataUpdates(
     @Autowired private val actuatorApi: ActuatorApi,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
+    // TODO check wehere value of allCompaniesForceIngest is set
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.flag-file:#{null}}")
     private val allGleifCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.flag-file:#{null}}")
@@ -50,13 +51,14 @@ class ProcessDataUpdates(
      */
     @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
-        val flagFile = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
-        if (allCompaniesForceIngest || flagFile?.exists() == true) {
-            if (flagFile?.exists() == true) {
+        val flagFileGleif = allGleifCompaniesIngestFlagFilePath?.let { File(it) }
+        val flagFileNorthData = allNorthDataCompaniesIngestFlagFilePath?.let { File(it) }
+        if (allCompaniesForceIngest || flagFileGleif?.exists() == true) {
+            if (flagFileGleif?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
-                if (!flagFile.delete()) {
+                if (!flagFileGleif.delete()) {
                     logger.error(
-                        "Unable to delete flag file $flagFile. Manually remove it or import will " +
+                        "Unable to delete flag file $flagFileGleif. Manually remove it or import will " +
                             "be triggered after service restart again.",
                     )
                 }
@@ -76,10 +78,14 @@ class ProcessDataUpdates(
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             gleifGoldenCopyIngestor.processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             gleifGoldenCopyIngestor.processIsinMappingFile()
+        } else if (flagFileNorthData?.exists() == true) {
+            northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
     }
+    // TODO introduce northdata part based on the respective flag
+    // TODO write test for northdata part
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 3 * * SUN")
