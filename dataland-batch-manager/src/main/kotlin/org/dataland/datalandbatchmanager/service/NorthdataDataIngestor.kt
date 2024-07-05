@@ -20,6 +20,7 @@ import kotlin.time.measureTime
 @Component
 class NorthdataDataIngestor(
     @Autowired private val companyUploader: CompanyUploader,
+    @Autowired private val csvParser: GleifCsvParser,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -42,7 +43,6 @@ class NorthdataDataIngestor(
 
     // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
-        val csvParser = GleifCsvParser()
         val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
         val northDataIterable = csvParser.readNorthDataFromBufferedReader(northStream)
 

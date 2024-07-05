@@ -43,6 +43,7 @@ class ProcessDataUpdatesTest {
     private val mockActuatorApi = mock(ActuatorApi::class.java)
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
+    private lateinit var companyIngestorNorthData: NorthdataDataIngestor
 
     private lateinit var oldFile: File
     private lateinit var newFile: File
@@ -126,12 +127,13 @@ class ProcessDataUpdatesTest {
         `when`(mockActuatorApi.health()).thenThrow(ConnectException()).thenReturn(true)
         mock(Thread::class.java)
 
-        processDataUpdates.processFullGoldenCopyFileIfEnabled()
+        processDataUpdates.processExternalCompanyDataIfEnabled()
 
-        val numberOfDownloadedFiles = 3
+        val numberOfDownloadedFiles = 4
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(numberOfDownloadedFiles))
         verify(mockGleifCsvParser, times(1)).readGleifCompanyDataFromBufferedReader((any() ?: emptyBufferedReader))
         verify(mockGleifCsvParser, times(1)).readGleifRelationshipDataFromBufferedReader((any() ?: emptyBufferedReader))
+        verify(mockGleifCsvParser, times(1)).readNorthDataFromBufferedReader((any() ?: emptyBufferedReader))
         mockStaticFile.close()
         mockFileUtils.close()
     }
@@ -155,9 +157,12 @@ class ProcessDataUpdatesTest {
             mockRelationshipExtractor,
             File.createTempFile("tesd", ".csv"),
         )
+
+        companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockGleifCsvParser)
+
         processDataUpdates = ProcessDataUpdates(
             mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
-            mockNorthDataIngestorTest, mockActuatorApi,
+            companyIngestorNorthData, mockActuatorApi,
             false, false,
             flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
         )
