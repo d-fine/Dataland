@@ -108,7 +108,8 @@ class ProcessDataUpdatesTest {
         processDataUpdates = ProcessDataUpdates(
             mockGleifApiAccessor, mockGleifGoldenCopyIngestorTest, mockNorthDataAccessor, mockNorthDataIngestorTest,
             mockActuatorApi,
-            false, null, null, oldFile,
+            false, false,
+            null, null, oldFile,
         )
         processDataUpdates.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
@@ -156,8 +157,9 @@ class ProcessDataUpdatesTest {
         )
         processDataUpdates = ProcessDataUpdates(
             mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
-            mockNorthDataIngestorTest, mockActuatorApi, false, flagFileGleif.absolutePath,
-            flagFileNorthdata.absolutePath, isinMappingFile,
+            mockNorthDataIngestorTest, mockActuatorApi,
+            false, false,
+            flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
         )
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
