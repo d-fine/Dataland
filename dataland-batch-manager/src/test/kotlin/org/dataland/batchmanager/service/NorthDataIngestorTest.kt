@@ -8,7 +8,6 @@ import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito.any
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
@@ -24,25 +23,20 @@ class NorthDataIngestorTest {
     private val mockCsvParser = mock(GleifCsvParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
 
-    private val statusCodes = listOf("active", "terminated", "liquidation", "notCovered")
-    private val infoIterable = mutableListOf<NorthDataCompanyInformation>()
-
-    private val emptyNorthDataCompanyInformation = NorthDataCompanyInformation(
-        headquarters = "",
-        countryCode = "",
-        companyName = "",
-        headquartersPostalCode = "",
-        lei = "",
-        registerId = "",
-        status = "",
-        sector = "",
-        street = "",
-        vatId = "",
+    // Map status codes to number of expected invocations of mockCompanyUploader.uploadOrPatchSingleCompany
+    private val statusCodes = mapOf(
+        "active" to 1,
+        "terminated" to 0,
+        "liquidation" to 1,
+        "" to 1,
+        "notCovered" to 0,
     )
+
+    private val infoIterable = mutableListOf<NorthDataCompanyInformation>()
 
     @BeforeAll
     fun createFakeIterable() {
-        statusCodes.forEach { statusCode ->
+        statusCodes.keys.forEach { statusCode ->
             val thisMock = mock(NorthDataCompanyInformation::class.java)
             `when`(thisMock.status).thenReturn(statusCode)
             infoIterable.add(thisMock)
@@ -62,15 +56,10 @@ class NorthDataIngestorTest {
         val northDataIngestor = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
         northDataIngestor.processNorthdataFile(mockNorthDataAccessor::getFullGoldenCopy)
 
-        verify(mockCompanyUploader, times(2))
-            .uploadOrPatchSingleCompany(any() ?: emptyNorthDataCompanyInformation)
-
-        verify(mockCompanyUploader, times(1))
-            .uploadOrPatchSingleCompany(infoIterable[statusCodes.indexOf("active")])
-        verify(mockCompanyUploader, times(1))
-            .uploadOrPatchSingleCompany(infoIterable[statusCodes.indexOf("liquidation")])
-        verify(mockCompanyUploader, times(0))
-            .uploadOrPatchSingleCompany(infoIterable[statusCodes.indexOf("terminated")])
+        statusCodes.forEach {
+            verify(mockCompanyUploader, times(it.value))
+                .uploadOrPatchSingleCompany(infoIterable[statusCodes.keys.indexOf(it.key)])
+        }
 
         mockStaticFile.close()
     }
