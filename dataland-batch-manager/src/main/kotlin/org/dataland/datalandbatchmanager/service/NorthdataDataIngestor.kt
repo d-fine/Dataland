@@ -27,7 +27,6 @@ class NorthdataDataIngestor(
     private fun filterAndTriggerUpload(northDataCompanyInformation: NorthDataCompanyInformation) {
         when (northDataCompanyInformation.status) {
             "terminated" -> return
-            // TODO discuss how to handle these cases
             "active", "liquidation", "" -> {
                 companyUploader.uploadOrPatchSingleCompany(northDataCompanyInformation)
             }
@@ -41,7 +40,6 @@ class NorthdataDataIngestor(
         }
     }
 
-    // TODO is almost a copy of code in GleifGoldenCopyIngestor, somehow avoid duplicate code?
     private fun updateNorthData(zipFile: File) {
         val northStream = csvParser.getCsvStreamFromNorthDataZipFile(zipFile)
         val northDataIterable = csvParser.readNorthDataFromBufferedReader(northStream)

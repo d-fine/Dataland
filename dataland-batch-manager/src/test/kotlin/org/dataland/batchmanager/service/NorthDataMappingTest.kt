@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class NorthDataMappingTest {
-    // TODO we could think about moving this test data into test .csv files. maybe is this more readable than
-    //  defining it here
     private val testCompanyName = "test Gmbh"
     private val testHeadquarters = "Osnabrück"
     private val testSectorClassification = "73.11.0"
