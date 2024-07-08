@@ -22,6 +22,8 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaSta
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException as QaServiceClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
 
+private const val CLIENT_ERROR_403 = "Client error : 403 "
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaServiceTest {
     private val apiAccessor = ApiAccessor()
@@ -121,11 +123,11 @@ class QaServiceTest {
             val metaInfoException = assertThrows<BackendClientException> {
                 apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
             }
-            assertEquals("Client error : 403 ", metaInfoException.message)
+            assertEquals(CLIENT_ERROR_403, metaInfoException.message)
             val dataException = assertThrows<BackendClientException> {
                 dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
             }
-            assertEquals("Client error : 403 ", dataException.message)
+            assertEquals(CLIENT_ERROR_403, dataException.message)
         }
     }
 
@@ -198,7 +200,7 @@ class QaServiceTest {
             val exception = assertThrows<QaServiceClientException> {
                 apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
             }
-            assertEquals("Client error : 403 ", exception.message)
+            assertEquals(CLIENT_ERROR_403, exception.message)
         }
     }
 
@@ -221,6 +223,6 @@ class QaServiceTest {
         val exception = assertThrows<QaServiceClientException> {
             apiAccessor.qaServiceControllerApi.getDatasetById(UUID.fromString(dataId))
         }
-        assertEquals("Client error : 403 ", exception.message)
+        assertEquals(CLIENT_ERROR_403, exception.message)
     }
 }

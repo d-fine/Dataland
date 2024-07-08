@@ -26,6 +26,8 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 
+private const val AUTOMATED_QA = "automated-qa"
+
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(classes = [DatalandQaService::class])
@@ -56,7 +58,7 @@ class QaEventListenerQaServiceTest(
     ): String {
         return JSONObject(
             mapOf(
-                "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to "automated-qa",
+                "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to AUTOMATED_QA,
                 "message" to message.toString(),
             ),
         ).toString()
@@ -134,7 +136,7 @@ class QaEventListenerQaServiceTest(
             automatedQaAcceptedMessage, correlationId, MessageType.QaCompleted,
         )
         testReviewHistoryRepository.findById(acceptedData).ifPresent {
-            Assertions.assertEquals("automated-qa", it.reviewerKeycloakId)
+            Assertions.assertEquals(AUTOMATED_QA, it.reviewerKeycloakId)
             Assertions.assertEquals(acceptedData, it.dataId)
             Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
             Assertions.assertEquals("accepted", it.message)
@@ -146,7 +148,7 @@ class QaEventListenerQaServiceTest(
             automatedQaRejectedMessage, correlationId, MessageType.QaCompleted,
         )
         testReviewHistoryRepository.findById(rejectedData).ifPresent {
-            Assertions.assertEquals("automated-qa", it.reviewerKeycloakId)
+            Assertions.assertEquals(AUTOMATED_QA, it.reviewerKeycloakId)
             Assertions.assertEquals(rejectedData, it.dataId)
             Assertions.assertEquals(QaStatus.Rejected, it.qaStatus)
             Assertions.assertEquals("rejected", it.message)
