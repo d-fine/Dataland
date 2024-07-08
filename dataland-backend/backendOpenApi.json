@@ -14519,17 +14519,17 @@
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "lei": {

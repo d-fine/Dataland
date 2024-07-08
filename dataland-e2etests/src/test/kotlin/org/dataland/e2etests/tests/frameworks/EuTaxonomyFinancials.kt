@@ -1,9 +1,12 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class EuTaxonomyFinancials {
     private val apiAccessor = ApiAccessor()
@@ -36,6 +39,36 @@ class EuTaxonomyFinancials {
             downloadedAssociatedData.data.copy(
                 financialServicesTypes = downloadedAssociatedData.data.financialServicesTypes?.sorted(),
             ),
+        )
+    }
+
+    @Test
+    fun `check that EuTaxonomyForNonFinancials data cannot be uploaded if list of referenced Reports is incomplete`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyName = "TestForIncompleteReferencedReport"
+
+        val companyInformation =
+            apiAccessor.testDataProviderEuTaxonomyForFinancials
+                .getSpecificCompanyByNameFromEuTaxonomyFinancialsPreparedFixtures(companyName)
+        val dataSet = companyInformation!!.t
+
+        val uploadPair = Pair(dataSet, "2023")
+
+        val exception = assertThrows<ClientException> {
+            apiAccessor.uploadWithWait(
+                companyId = companyId,
+                frameworkData = uploadPair.first,
+                reportingPeriod = uploadPair.second,
+                uploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+            )
+        }
+
+        val testClientError = exception.response as ClientError<*>
+
+        Assertions.assertTrue(testClientError.statusCode == 400)
+        Assertions.assertTrue(testClientError.body.toString().contains("Invalid input"))
+        Assertions.assertTrue(
+            testClientError.body.toString().contains("The list of referenced reports is not complete."),
         )
     }
 }
