@@ -65,11 +65,12 @@ class NorthdataDataIngestor(
      */
     @Synchronized
     fun processNorthdataFile(downloadFile: (file: File) -> Unit) {
-        val zipFile = File.createTempFile("northdata_golden_copy", ".zip")
+        val zipFile = File("northdata_golden_copy", ".zip")
+        val zipFile2 = File("/config/northdata_copy", ".zip")
         val duration = measureTime {
             try {
                 downloadFile(zipFile)
-                updateNorthData(zipFile)
+                updateNorthData(zipFile2)
             } finally {
                 if (!zipFile.delete()) {
                     logger.error("Unable to delete temporary file $zipFile")
