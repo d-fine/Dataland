@@ -120,6 +120,7 @@ sonar {
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
+                "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
 
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
