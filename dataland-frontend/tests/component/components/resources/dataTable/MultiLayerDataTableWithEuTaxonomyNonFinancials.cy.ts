@@ -36,7 +36,13 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
   before(function () {
     cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then(
       (preparedFixtures: FixtureData<EutaxonomyNonFinancialsData>[]) => {
-        fixturesForTests = preparedFixtures;
+        fixturesForTests = preparedFixtures.filter((it) =>
+          [
+            'all-fields-defined-for-eu-taxo-non-financials-alpha',
+            'all-fields-defined-for-eu-taxo-non-financials-beta',
+            'all-fields-defined-for-eu-taxo-non-financials-gamma',
+          ].includes(it.companyInformation.companyName)
+        );
 
         const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0].t.revenue?.totalAmount);
         revenueOfDatasetAlphaTotalAmount.value = 0;
