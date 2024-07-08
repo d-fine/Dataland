@@ -4,7 +4,9 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntit
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignmentId
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * A JPA repository for accessing the CompanyRoleAssignment Entity
@@ -28,4 +30,17 @@ interface CompanyRoleAssignmentRepository : JpaRepository<CompanyRoleAssignmentE
         userId: String?,
         companyRole: CompanyRole?,
     ): List<CompanyRoleAssignmentEntity>
+
+    /** Deletes all company role assignments for a specific user and company
+     * @param companyId to delete the assignments for
+     * @param userId to delete the assignments for
+     */
+    @Modifying
+    @Transactional
+    @Query(
+        "DELETE FROM CompanyRoleAssignmentEntity roleAssignment " +
+            "WHERE roleAssignment.companyId = :companyId " +
+            "AND roleAssignment.userId = :userId",
+    )
+    fun deleteAllByCompanyIdAndUserId(companyId: String, userId: String)
 }

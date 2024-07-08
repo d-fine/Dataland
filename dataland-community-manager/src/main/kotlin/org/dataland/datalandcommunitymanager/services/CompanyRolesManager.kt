@@ -56,9 +56,9 @@ class CompanyRolesManager(
             logCompanyRoleAlreadyAssigned(companyRole, companyId, userId)
             companyRoleAssignmentEntityOptional.get()
         } else {
-            val savedEntity = companyRoleAssignmentRepository.save(
-                CompanyRoleAssignmentEntity(companyRole = companyRole, companyId = companyId, userId = userId),
-            )
+            deleteAllCompanyRoleAssignmentsForCompanyAndUser(companyId = companyId, userId = userId)
+            val savedEntity =
+                saveCompanyRoleAssignment(companyRole = companyRole, companyId = companyId, userId = userId)
             logCompanyRoleHasBeenAssigned(companyRole, companyId, userId)
             if (companyRole == CompanyRole.CompanyOwner) {
                 companyOwnershipAcceptedEmailMessageSender.sendCompanyOwnershipAcceptanceExternalEmailMessage(
@@ -67,6 +67,16 @@ class CompanyRolesManager(
             }
             savedEntity
         }
+    }
+
+    private fun saveCompanyRoleAssignment(companyRole: CompanyRole, companyId: String, userId: String): CompanyRoleAssignmentEntity {
+        return companyRoleAssignmentRepository.save(
+            CompanyRoleAssignmentEntity(companyRole = companyRole, companyId = companyId, userId = userId),
+        )
+    }
+
+    private fun deleteAllCompanyRoleAssignmentsForCompanyAndUser(companyId: String, userId: String) {
+        companyRoleAssignmentRepository.deleteAllByCompanyIdAndUserId(companyId, userId)
     }
 
     /**
