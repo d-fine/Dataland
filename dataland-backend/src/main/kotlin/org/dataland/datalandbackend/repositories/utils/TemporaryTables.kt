@@ -23,7 +23,15 @@ class TemporaryTables private constructor() {
         // Select company_id, company_name, match_quality, dataset_rank based on searchString as filtered_text_results
         // Requires the parameter searchFilter : StoredCompanySearchFilter
         const val TABLE_FILTERED_TEXT_RESULTS = " ( " +
-            " (SELECT stored_companies.company_id, MAX(stored_companies.company_name) AS company_name, " +
+            "WITH pre_filtered AS ( " +
+            "SELECT company_id, company_name " +
+            "FROM stored_companies " +
+            "WHERE " +
+            "ABS(LENGTH(company_name) - LENGTH(:#{#searchFilter.searchString})) <= 2 " +
+            "OR " +
+            "company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
+            ")" +
+            " (SELECT pre_filtered.company_id, MAX(pre_filtered.company_name) AS company_name, " +
             " MAX( CASE " +
             "   WHEN company_name = :#{#searchFilter.searchString} THEN 10 " +
             "   WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 5 " +
@@ -31,12 +39,12 @@ class TemporaryTables private constructor() {
             "   ELSE 1 " +
             "   END) AS match_quality, " +
             DATASET_RANK +
-            " FROM stored_companies " +
+            " FROM pre_filtered " +
             " LEFT JOIN data_meta_information " +
-            "   ON stored_companies.company_id = data_meta_information.company_id AND currently_active = true " +
+            "   ON pre_filtered.company_id = data_meta_information.company_id AND currently_active = true " +
             " WHERE company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} " +
             "   OR (levenshtein(company_name, :#{#searchFilter.searchString}) < 3)" + // TODO set as app prop
-            " GROUP BY stored_companies.company_id) " +
+            " GROUP BY pre_filtered.company_id) " +
 
             " UNION " +
             // Fuzzy-Search Company Alternative Name
