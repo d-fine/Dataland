@@ -1,9 +1,14 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ServerError
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -21,10 +26,13 @@ class SecurityUtilsService(
      * This function checks whether the user uploaded the dataset with the corresponding identifier.
      */
     fun isUserAskingQaReviewStatusOfUploadedDataset(dataId: UUID): Boolean {
-        logger.info("########################################################")
         logger.info("Checking if user created the dataset $dataId")
-        val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId.toString())
-        // TODO Catch exceptions
-        return DatalandAuthentication.fromContext().userId == dataMetaInformation.uploaderUserId
+        try {
+            val dataMetaInformation = metaDataControllerApi.getDataMetaInfo(dataId.toString())
+            return DatalandAuthentication.fromContext().userId == dataMetaInformation.uploaderUserId
+        } catch (_: ClientException) {
+            logger.info("Unable to find the dataset $dataId")
+            return false
+        }
     }
 }
